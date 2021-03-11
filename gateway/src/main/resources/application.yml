@@ -1,0 +1,39 @@
+server:
+  port: 11900
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allow-credentials: true
+            allowedOrigins: "*"
+            allowed-headers: "*"
+            allowedMethods: "*"
+            max-age: 3600
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: back_route
+          uri: lb://back
+          predicates:
+            - Path=/back/{path}
+          filters:
+            - SetPath=/{path}
+  application:
+    name: gateway
+#  main:
+#    allow-bean-definition-overriding: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
