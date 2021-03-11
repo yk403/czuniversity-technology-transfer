@@ -1,0 +1,2 @@
+# czuniversity-technology-transfer
+
