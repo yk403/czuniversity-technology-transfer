@@ -1,13 +1,12 @@
-package com.itts.technologytransactionservice.cd.controller;
+package com.itts.technologytransactionservice.controller.cd;
 
 
 import com.alibaba.fastjson.JSON;
-import com.itts.technologytransactionservice.cd.model.TCd;
-import com.itts.technologytransactionservice.cd.service.TCdService;
+import com.itts.technologytransactionservice.model.cd.TCd;
+import com.itts.technologytransactionservice.service.cd.TCdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

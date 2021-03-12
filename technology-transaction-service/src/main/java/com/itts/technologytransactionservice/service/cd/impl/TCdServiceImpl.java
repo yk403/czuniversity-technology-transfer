@@ -1,10 +1,10 @@
-package com.itts.technologytransactionservice.cd.service.impl;
+package com.itts.technologytransactionservice.service.cd.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.itts.technologytransactionservice.cd.mapper.TCdMapper;
-import com.itts.technologytransactionservice.cd.model.TCd;
-import com.itts.technologytransactionservice.cd.service.TCdService;
+import com.itts.technologytransactionservice.mapper.cd.TCdMapper;
+import com.itts.technologytransactionservice.model.cd.TCd;
+import com.itts.technologytransactionservice.service.cd.TCdService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 

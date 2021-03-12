@@ -1,8 +1,8 @@
-package com.itts.technologytransactionservice.cd.mapper;
+package com.itts.technologytransactionservice.mapper.cd;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.itts.technologytransactionservice.cd.model.TCd;
+import com.itts.technologytransactionservice.model.cd.TCd;
 
 /**
  * <p>

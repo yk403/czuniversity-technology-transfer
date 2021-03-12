@@ -1,6 +1,6 @@
-package com.itts.technologytransactionservice.cd.service;
+package com.itts.technologytransactionservice.service.cd;
 
-import com.itts.technologytransactionservice.cd.model.TCd;
+import com.itts.technologytransactionservice.model.cd.TCd;
 
 import java.util.List;
 
