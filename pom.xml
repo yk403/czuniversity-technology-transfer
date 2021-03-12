@@ -5,6 +5,7 @@
 
     <modules>
         <module>gateway</module>
+        <module>common</module>
     </modules>
 
     <parent>
@@ -27,6 +28,9 @@
         <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
         <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
         <java.version>1.8</java.version>
+        <mybatisplus.boot.starter.version>3.4.0</mybatisplus.boot.starter.version>
+        <commons.codec.version>1.15</commons.codec.version>
+        <springfox.boot.starter.version>3.0.0</springfox.boot.starter.version>
     </properties>
 
 
@@ -95,6 +99,20 @@
                 <groupId>io.github.openfeign</groupId>
                 <artifactId>feign-httpclient</artifactId>
                 <version>10.1.0</version>
+            </dependency>
+
+            <!-- MybatisPlus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatisplus.boot.starter.version}</version>
+            </dependency>
+
+            <!-- 代码文档 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${springfox.boot.starter.version}</version>
             </dependency>
 
         </dependencies>
