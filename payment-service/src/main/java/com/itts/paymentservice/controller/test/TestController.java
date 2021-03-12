@@ -1,6 +1,7 @@
 package com.itts.paymentservice.controller.test;
 
 import com.alibaba.fastjson.JSON;
+import com.itts.common.utils.ResponseUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @GetMapping("/get/")
-    public Object get() {
+    public ResponseUtil get() {
 
-        return JSON.toJSON("test");
+        return ResponseUtil.success("test");
     }
 }

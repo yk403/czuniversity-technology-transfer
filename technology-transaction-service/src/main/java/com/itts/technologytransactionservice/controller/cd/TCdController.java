@@ -2,6 +2,8 @@ package com.itts.technologytransactionservice.controller.cd;
 
 
 import com.alibaba.fastjson.JSON;
+import com.itts.common.utils.ResponseUtil;
+import com.itts.technologytransactionservice.feign.payment.PaymentService;
 import com.itts.technologytransactionservice.model.cd.TCd;
 import com.itts.technologytransactionservice.service.cd.TCdService;
 import io.swagger.annotations.Api;
@@ -31,11 +33,19 @@ public class TCdController {
 
     @GetMapping("/get/list/")
     @ApiOperation(value = "获取列表")
-    public Object getList() {
+    public ResponseUtil getList() {
 
         List<TCd> list = service.getList();
 
-        return JSON.toJSON(list);
+        return ResponseUtil.success(list);
+    }
+
+    @GetMapping("/test/feign/")
+    public ResponseUtil testFeign() {
+
+        ResponseUtil test = service.testFeign();
+
+        return test;
     }
 
 }

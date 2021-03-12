@@ -2,9 +2,12 @@ package com.itts.technologytransactionservice.service.cd.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.itts.common.utils.ResponseUtil;
+import com.itts.technologytransactionservice.feign.payment.PaymentService;
 import com.itts.technologytransactionservice.mapper.cd.TCdMapper;
 import com.itts.technologytransactionservice.model.cd.TCd;
 import com.itts.technologytransactionservice.service.cd.TCdService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,9 @@ public class TCdServiceImpl implements TCdService {
     @Resource
     private TCdMapper mapper;
 
+    @Autowired
+    private PaymentService paymentService;
+
     @Override
     public List<TCd> getList() {
 
@@ -34,5 +40,14 @@ public class TCdServiceImpl implements TCdService {
 
         return list;
     }
+
+    @Override
+    public ResponseUtil testFeign() {
+
+        ResponseUtil test = paymentService.test();
+        return test;
+
+    }
+
 
 }

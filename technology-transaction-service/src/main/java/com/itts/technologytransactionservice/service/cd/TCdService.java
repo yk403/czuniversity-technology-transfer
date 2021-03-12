@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.service.cd;
 
+import com.itts.common.utils.ResponseUtil;
 import com.itts.technologytransactionservice.model.cd.TCd;
 
 import java.util.List;
@@ -15,5 +16,7 @@ import java.util.List;
 public interface TCdService {
 
     List<TCd> getList();
+
+    ResponseUtil testFeign();
 
 }
