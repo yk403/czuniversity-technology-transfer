@@ -2,6 +2,8 @@ package com.itts.technologytransactionservice.service.cd.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.ResponseUtil;
 import com.itts.technologytransactionservice.feign.payment.PaymentService;
 import com.itts.technologytransactionservice.mapper.cd.TCdMapper;
@@ -39,6 +41,17 @@ public class TCdServiceImpl implements TCdService {
         List<TCd> list = mapper.selectList(query);
 
         return list;
+    }
+
+    @Override
+    public PageInfo<TCd> getByPage(Integer pageNum, Integer pageSize) {
+
+        PageHelper.startPage(pageNum, pageSize);
+        QueryWrapper<TCd> query = new QueryWrapper<>();
+        List<TCd> list = mapper.selectList(query);
+
+        PageInfo<TCd> page = new PageInfo<>(list);
+        return page;
     }
 
     @Override

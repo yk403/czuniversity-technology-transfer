@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.service.cd;
 
+import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.ResponseUtil;
 import com.itts.technologytransactionservice.model.cd.TCd;
 
@@ -16,6 +17,8 @@ import java.util.List;
 public interface TCdService {
 
     List<TCd> getList();
+
+    PageInfo<TCd> getByPage(Integer pageNum, Integer pageSize);
 
     ResponseUtil testFeign();
 

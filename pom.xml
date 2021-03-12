@@ -41,6 +41,7 @@
 
         <mysql.connector.java.version>8.0.18</mysql.connector.java.version>
         <mybatisplus.boot.starter.version>3.4.0</mybatisplus.boot.starter.version>
+        <pagehelper.spring.boot.starter.version>1.2.12</pagehelper.spring.boot.starter.version>
         <druid.version>1.1.20</druid.version>
 
         <commons.codec.version>1.15</commons.codec.version>
@@ -144,6 +145,14 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.connector.java.version}</version>
             </dependency>
+
+            <!--   pageHelper 分页插件-->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.spring.boot.starter.version}</version>
+            </dependency>
+
 
             <!-- druid -->
             <dependency>
