@@ -7,7 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@MapperScan("com.itts.technologytransactionservice.mapper")
+@MapperScan("com.itts.technologytransactionservice.*")
 @EnableDiscoveryClient
 @EnableFeignClients
 public class TechnologyTransactionServiceApplication {
