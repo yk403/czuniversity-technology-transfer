@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itts.technologytransactionservice.mapper.TJsShMapper">
+
+	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsSh">
+		select `id`,`lx`,`cgxq_id`,`fbshzt`,`hdsqzt`,`fbwtgsm`,`hdsqwtgsm`,`cjsj`,`gxsj` from t_js_sh
+        <where>  
+		  		  <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
+		  		  <if test="map.lx != null and map.lx != ''"> and lx = #{map.lx} </if>
+		  		  <if test="map.cgxqId != null and map.cgxqId != ''"> and cgxq_id = #{map.cgxqId} </if>
+		  		  <if test="map.fbshzt != null and map.fbshzt != ''"> and fbshzt = #{map.fbshzt} </if>
+		  		  <if test="map.hdsqzt != null and map.hdsqzt != ''"> and hdsqzt = #{map.hdsqzt} </if>
+		  		  <if test="map.fbwtgsm != null and map.fbwtgsm != ''"> and fbwtgsm = #{map.fbwtgsm} </if>
+		  		  <if test="map.hdsqwtgsm != null and map.hdsqwtgsm != ''"> and hdsqwtgsm = #{map.hdsqwtgsm} </if>
+		  		  <if test="map.cjsj != null and map.cjsj != ''"> and cjsj = #{map.cjsj} </if>
+		  		  <if test="map.gxsj != null and map.gxsj != ''"> and gxsj = #{map.gxsj} </if>
+		  		</where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+	</select>
+<insert id="save" parameterType="Long">
+	INSERT INTO  t_js_sh(lx,cgxq_id,fbshzt,cjsj,gxsj) VALUES(2,#{id},1,NOW(),NOW())
+</insert>
+	<select id="selectBycgxqIds" resultType="com.itts.technologytransactionservice.model.TJsSh">
+		select * from t_js_sh where cgxq_id in
+		<foreach item="cgxqId" collection="cgxqIds" index="index" open="(" separator="," close=")">
+			#{cgxqId}
+		</foreach>
+	</select>
+
+
+</mapper>

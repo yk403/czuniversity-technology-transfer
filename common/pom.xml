@@ -44,7 +44,10 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
         <!--mybatis plus-->
         <dependency>
             <groupId>com.baomidou</groupId>

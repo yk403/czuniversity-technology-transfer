@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itts.technologytransactionservice.mapper.TJsCgMapper">
+
+	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsCg">
+		select `id`,`cgqsr`,`qsrlxdh`,`cgmc`,`gjc`,`cgwcsj`,`zzqk`,`ly_id`,`cghqfs`,`jscsd`,`hjqk`,`hzjg`,`hzfs`,`dwmc`,`dwdz`,`fr`,`contracts`,`zj`,`dzyx`,`zscqxs`,`cgjs`,`jszb`,`syfx`,`cgtp`,`cgsp`,`bz`,`jshd_id` from t_js_cg
+        <where>  
+		  		  <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
+		  		  <if test="map.cgqsr != null and map.cgqsr != ''"> and cgqsr = #{map.cgqsr} </if>
+		  		  <if test="map.qsrlxdh != null and map.qsrlxdh != ''"> and qsrlxdh = #{map.qsrlxdh} </if>
+		  		  <if test="map.cgmc != null and map.cgmc != ''"> and cgmc = #{map.cgmc} </if>
+		  		  <if test="map.gjc != null and map.gjc != ''"> and gjc = #{map.gjc} </if>
+		  		  <if test="map.cgwcsj != null and map.cgwcsj != ''"> and cgwcsj = #{map.cgwcsj} </if>
+		  		  <if test="map.zzqk != null and map.zzqk != ''"> and zzqk = #{map.zzqk} </if>
+		  		  <if test="map.lyId != null and map.lyId != ''"> and ly_id = #{map.lyId} </if>
+		  		  <if test="map.cghqfs != null and map.cghqfs != ''"> and cghqfs = #{map.cghqfs} </if>
+		  		  <if test="map.jscsd != null and map.jscsd != ''"> and jscsd = #{map.jscsd} </if>
+		  		  <if test="map.hjqk != null and map.hjqk != ''"> and hjqk = #{map.hjqk} </if>
+		  		  <if test="map.hzjg != null and map.hzjg != ''"> and hzjg = #{map.hzjg} </if>
+		  		  <if test="map.hzfs != null and map.hzfs != ''"> and hzfs = #{map.hzfs} </if>
+		  		  <if test="map.dwmc != null and map.dwmc != ''"> and dwmc = #{map.dwmc} </if>
+		  		  <if test="map.dwdz != null and map.dwdz != ''"> and dwdz = #{map.dwdz} </if>
+		  		  <if test="map.fr != null and map.fr != ''"> and fr = #{map.fr} </if>
+		  		  <if test="map.contracts != null and map.contracts != ''"> and contracts = #{map.contracts} </if>
+		  		  <if test="map.zj != null and map.zj != ''"> and zj = #{map.zj} </if>
+		  		  <if test="map.dzyx != null and map.dzyx != ''"> and dzyx = #{map.dzyx} </if>
+		  		  <if test="map.zscqxs != null and map.zscqxs != ''"> and zscqxs = #{map.zscqxs} </if>
+		  		  <if test="map.cgjs != null and map.cgjs != ''"> and cgjs = #{map.cgjs} </if>
+		  		  <if test="map.jszb != null and map.jszb != ''"> and jszb = #{map.jszb} </if>
+		  		  <if test="map.syfx != null and map.syfx != ''"> and syfx = #{map.syfx} </if>
+		  		  <if test="map.cgtp != null and map.cgtp != ''"> and cgtp = #{map.cgtp} </if>
+		  		  <if test="map.cgsp != null and map.cgsp != ''"> and cgsp = #{map.cgsp} </if>
+		  		  <if test="map.bz != null and map.bz != ''"> and bz = #{map.bz} </if>
+		  		  <if test="map.jshdId != null and map.jshdId != ''"> and jshd_id = #{map.jshdId} </if>
+		  		</where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+	</select>
+
+	<select id="FindtJsCgByTJsLbTJsLy" resultType="com.itts.technologytransactionservice.model.TJsCg">
+		select a.id as id,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dwdz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,c.fbshzt as status,c.cjsj as createTime,c.release_status as releaseStatus
+		from t_js_cg a left join t_js_ly b on(a.ly_id=b.id) left join t_js_sh c on(a.id=c.cgxq_id)
+		<where>
+			<if test="map.lyId != null and map.lyId != ''"> and a.ly_id = #{map.lyId} </if>
+			<if test="map.cgxqId != null and map.cgxqId != ''"> and a.id = #{map.cgxqId} </if>
+			<if test="map.cgmc != null and map.cgmc != ''"> and a.cgmc = #{map.cgmc} </if>
+			<if test="map.cjsj != null and map.cjsj != ''"> and a.createTime = #{map.cjsj} </if>
+			<if test="map.fbshzt != null and map.fbshzt != ''"> and a.status = #{map.fbshzt} </if>
+			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and c.release_status = #{map.releaseStatus} </if>
+		</where>
+	<choose>
+		<when test="map.sort != null and map.sort.trim() != ''">
+			order by ${map.sort} ${map.order}
+		</when>
+		<otherwise>
+			order by id desc
+		</otherwise>
+	</choose>
+</select>
+	<update id="updateTJsCg">
+		update t_js_cg
+		<set>
+			<if test="cgmc != null">cgmc = #{cgmc},</if>
+			<if test="cgqsr != null">cgqsr = #{cgqsr},</if>
+			<if test="qsrlxdh != null">qsrlxdh = #{qsrlxdh},</if>
+			<if test="gjc != null">gjc = #{gjc},</if>
+			<if test="cgwcsj != null">cgwcsj = #{cgwcsj},</if>
+			<if test="zzqk != null">zzqk = #{zzqk},</if>
+			<if test="lyId != null">ly_id = #{lyId},</if>
+			<if test="cghqfs != null">cghqfs = #{cghqfs},</if>
+			<if test="jscsd != null">jscsd = #{jscsd},</if>
+			<if test="hjqk != null">hjqk = #{hjqk},</if>
+			<if test="hzjg != null">hzjg = #{hzjg},</if>
+			<if test="hzfs != null">hzfs = #{hzfs},</if>
+			<if test="dwmc != null">dwmc = #{dwmc},</if>
+			<if test="fr != null">fr = #{fr},</if>
+			<if test="contracts != null">contracts = #{contracts},</if>
+			<if test="zj != null">zj = #{zj},</if>
+			<if test="dzyx != null">dzyx = #{dzyx},</if>
+			<if test="zscqxs != null">zscqxs = #{zscqxs},</if>
+			<if test="cgjs != null">cgjs = #{cgjs},</if>
+			<if test="jszb != null">jszb = #{jszb},</if>
+			<if test="syfx != null">syfx = #{syfx},</if>
+			<if test="cgtp != null">cgtp = #{cgtp},</if>
+			<if test="cgsp != null">cgsp = #{cgsp},</if>
+			<if test="bz != null">bz = #{bz},</if>
+			<if test="jshdId != null">jshd_id = #{jshdId},</if>
+			<if test="dwdz != null">dwdz = #{dwdz}</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

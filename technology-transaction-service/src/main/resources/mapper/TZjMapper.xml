@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itts.technologytransactionservice.mapper.TZjMapper">
+
+	<select id="list" resultType="com.itts.technologytransactionservice.model.TZj">
+		select `id`,`xm`,`sfz`,`xb`,`sr`,`mz`,`dp`,`xl`,`zyjszw`,`dw`,`dz`,`dh`,`zjh`,`sshy`,`csxk`,`zcfx`,`yjcg`,`dzyj`,`yjly`,`zscq`,`zjxm`,`lw`,`zlh`,`bz` from t_zj
+        <where>  
+		  		  <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
+		  		  <if test="map.xm != null and map.xm != ''"> and xm = #{map.xm} </if>
+		  		  <if test="map.sfz != null and map.sfz != ''"> and sfz = #{map.sfz} </if>
+		  		  <if test="map.xb != null and map.xb != ''"> and xb = #{map.xb} </if>
+		  		  <if test="map.sr != null and map.sr != ''"> and sr = #{map.sr} </if>
+		  		  <if test="map.mz != null and map.mz != ''"> and mz = #{map.mz} </if>
+		  		  <if test="map.dp != null and map.dp != ''"> and dp = #{map.dp} </if>
+		  		  <if test="map.xl != null and map.xl != ''"> and xl = #{map.xl} </if>
+		  		  <if test="map.zyjszw != null and map.zyjszw != ''"> and zyjszw = #{map.zyjszw} </if>
+		  		  <if test="map.dw != null and map.dw != ''"> and dw = #{map.dw} </if>
+		  		  <if test="map.dz != null and map.dz != ''"> and dz = #{map.dz} </if>
+		  		  <if test="map.dh != null and map.dh != ''"> and dh = #{map.dh} </if>
+		  		  <if test="map.zjh != null and map.zjh != ''"> and zjh = #{map.zjh} </if>
+		  		  <if test="map.sshy != null and map.sshy != ''"> and sshy = #{map.sshy} </if>
+		  		  <if test="map.csxk != null and map.csxk != ''"> and csxk = #{map.csxk} </if>
+		  		  <if test="map.zcfx != null and map.zcfx != ''"> and zcfx = #{map.zcfx} </if>
+		  		  <if test="map.yjcg != null and map.yjcg != ''"> and yjcg = #{map.yjcg} </if>
+		  		  <if test="map.dzyj != null and map.dzyj != ''"> and dzyj = #{map.dzyj} </if>
+		  		  <if test="map.yjly != null and map.yjly != ''"> and yjly = #{map.yjly} </if>
+		  		  <if test="map.zscq != null and map.zscq != ''"> and zscq = #{map.zscq} </if>
+		  		  <if test="map.zjxm != null and map.zjxm != ''"> and zjxm = #{map.zjxm} </if>
+		  		  <if test="map.lw != null and map.lw != ''"> and lw = #{map.lw} </if>
+		  		  <if test="map.zlh != null and map.zlh != ''"> and zlh = #{map.zlh} </if>
+		  		  <if test="map.bz != null and map.bz != ''"> and bz = #{map.bz} </if>
+		  		</where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+	</select>
+
+</mapper>

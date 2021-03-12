@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itts.technologytransactionservice.mapper.TJsXqMapper">
+
+	<select id="FindTJsXqByTJsLbTJsLy" resultType="com.itts.technologytransactionservice.model.TJsXq">
+		select a.id as id,xqmc,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,d.fbshzt as status,d.cjsj as createTime,d.release_status as releaseStatus
+		from t_js_xq a left join t_js_ly b on(a.ly_id=b.id) left join t_js_lb c on(a.lb_id=c.id) left join t_js_sh d on(a.id=d.cgxq_id)
+		<where>
+			<if test="map.lyId != null and map.lyId != ''"> and a.ly_id = #{map.lyId} </if>
+			<if test="map.lbId != null and map.lbId != ''"> and a.lb_id = #{map.lbId} </if>
+			<if test="map.cgxqId != null and map.cgxqId != ''"> and a.id = #{map.cgxqId} </if>
+			<if test="map.xqmc != null and map.xqmc != ''"> and a.xqmc = #{map.xqmc} </if>
+			<if test="map.cjsj != null and map.cjsj != ''"> and a.createTime = #{map.cjsj} </if>
+			<if test="map.fbshzt != null and map.fbshzt != ''"> and a.status = #{map.fbshzt} </if>
+			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and d.release_status = #{map.releaseStatus} </if>
+		</where>
+		<choose>
+			<when test="map.sort != null and map.sort.trim() != ''">
+				order by ${map.sort} ${map.order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+	</select>
+	<select id="PageByTJsFb" resultType="com.itts.technologytransactionservice.model.TJsFb">
+		SELECT
+		a.id AS id,a.xqmc as name,a.release_type as releaseType,b.mc as lyName,a.hzjg as hzjg,a.dz as dz,d.cjsj as applyTime
+		FROM
+		t_js_xq a
+		LEFT JOIN t_js_ly b ON (a.ly_id = b.id)
+		LEFT JOIN t_js_lb c ON (a.lb_id = c.id)
+		LEFT JOIN t_js_sh d ON (a.id = d.cgxq_id)
+		<where>
+			<if test="map.name != null and map.name != ''"> and a.xqmc = #{map.name} </if>
+		</where>
+		UNION
+		SELECT
+		e.id AS id,e.cgmc as name,e.release_type as releaseType,b.mc as lyName,e.hzjg as hzjg,e.dwdz as dz,d.cjsj as applyTime
+		FROM
+		t_js_cg e
+		LEFT JOIN t_js_ly b ON (e.ly_id = b.id)
+		LEFT JOIN t_js_sh d ON (e.id = d.cgxq_id)
+		<where>
+			<if test="map.name != null and map.name != ''"> and e.cgmc = #{map.name} </if>
+		</where>
+		<choose>
+			<when test="map.sort != null and map.sort.trim() != ''">
+				order by ${map.sort} ${map.order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+	</select>
+	<update id="updateTJsXq">
+		update t_js_xq
+		<set>
+			<if test="xqmc != null">xqmc = #{xqmc},</if>
+			<if test="gjz != null">gjz = #{gjz},</if>
+			<if test="yxq != null">yxq = #{yxq},</if>
+			<if test="lbId != null">lb_id = #{lbId},</if>
+			<if test="lyId != null">ly_id = #{lyId},</if>
+			<if test="hzfs != null">hzfs = #{hzfs},</if>
+			<if test="hzjg != null">hzjg = #{hzjg},</if>
+			<if test="yxhzdw != null">yxhzdw = #{yxhzdw},</if>
+			<if test="yxhzzj != null">yxhzzj = #{yxhzzj},</if>
+			<if test="xqxq != null">yxhzzj = #{xqxq},</if>
+			<if test="jszb != null">yxhzzj = #{jszb},</if>
+			<if test="xqtp != null">xqtp = #{xqtp},</if>
+			<if test="xqsp != null">xqsp = #{xqsp},</if>
+			<if test="dwmc != null">dwmc = #{dwmc},</if>
+			<if test="fr != null">fr = #{fr},</if>
+			<if test="lxrdh != null">lxrdh = #{lxrdh},</if>
+			<if test="zj != null">zj = #{zj},</if>
+			<if test="dzyx != null">dzyx = #{dzyx},</if>
+			<if test="jshdId != null">jshdId = #{jshdId},</if>
+			<if test="contracts != null">contracts = #{contracts},</if>
+			<if test="dz != null">dz = #{dz}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+
+
+</mapper>

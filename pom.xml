@@ -111,12 +111,12 @@
                 <version>${feign.httpclient.version}</version>
             </dependency>
 
-            <!-- redis -->
+            <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>5.3.5</version>
             </dependency>
-
             <!-- 代码文档 -->
             <dependency>
                 <groupId>io.springfox</groupId>
@@ -192,11 +192,6 @@
                 <version>${aliyun.java.sdk.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.aliyun.oss</groupId>
-                <artifactId>aliyun-sdk-oss</artifactId>
-                <version>${aliyun.sdk.oss.version}</version>
-            </dependency>
 
             <!-- Gson -->
             <dependency>

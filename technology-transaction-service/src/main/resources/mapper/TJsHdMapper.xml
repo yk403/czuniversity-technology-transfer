@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itts.technologytransactionservice.mapper.TJsHdMapper">
+
+	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsHd">
+		select `id`,`hdmc`,`hdlx`,`hdjj`,`hdgz`,`hdkssj`,`hdssj`,`hdzt`,`cjsj` from t_js_hd
+        <where>  
+		  		  <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
+		  		  <if test="map.hdmc != null and map.hdmc != ''"> and hdmc = #{map.hdmc} </if>
+		  		  <if test="map.hdlx != null and map.hdlx != ''"> and hdlx = #{map.hdlx} </if>
+		  		  <if test="map.hdjj != null and map.hdjj != ''"> and hdjj = #{map.hdjj} </if>
+		  		  <if test="map.hdgz != null and map.hdgz != ''"> and hdgz = #{map.hdgz} </if>
+		  		  <if test="map.hdkssj != null and map.hdkssj != ''"> and hdkssj = #{map.hdkssj} </if>
+		  		  <if test="map.hdssj != null and map.hdssj != ''"> and hdssj = #{map.hdssj} </if>
+		  		  <if test="map.hdzt != null and map.hdzt != ''"> and hdzt = #{map.hdzt} </if>
+		  		  <if test="map.cjsj != null and map.cjsj != ''"> and cjsj = #{map.cjsj} </if>
+		  		</where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+	</select>
+
+</mapper>
