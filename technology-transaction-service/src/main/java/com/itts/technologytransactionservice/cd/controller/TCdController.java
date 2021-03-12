@@ -24,13 +24,13 @@ import java.util.List;
  */
 @Api(tags = "获取tcd")
 @RestController
-@RequestMapping("/tCd")
+@RequestMapping("/api/tCd")
 public class TCdController {
 
     @Autowired
     private TCdService service;
 
-    @GetMapping("/get/list")
+    @GetMapping("/get/list/")
     @ApiOperation(value = "获取列表")
     public Object getList() {
 
