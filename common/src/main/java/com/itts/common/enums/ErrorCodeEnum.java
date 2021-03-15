@@ -18,13 +18,13 @@ import lombok.NoArgsConstructor;
 public enum ErrorCodeEnum {
 
     //====================      技术交易服务错误提示（服务码410）      ====================
-    TECHNOLOGY_TRANSACTION_REQUEST_PARAMS_ILLEGAL_ERROR(410001, "请求参数不合法"),
-    TECHNOLOGY_TRANSACTION_NOT_FIND_ERROR(410002, "数据不存在"),
+    TECHNOLOGY_TRANSACTION_REQUEST_PARAMS_ILLEGAL_ERROR(-410001, "请求参数不合法"),
+    TECHNOLOGY_TRANSACTION_NOT_FIND_ERROR(-410002, "数据不存在"),
     //====================      技术交易服务错误提示  END     ====================
 
 
     //====================       支付服务错误提示（服务码420）      ====================
-    PAY_FAIL_ERROR(420001, "支付失败");
+    PAY_FAIL_ERROR(-420001, "支付失败");
     //====================       支付服务错误提示END     ====================
 
     /**
