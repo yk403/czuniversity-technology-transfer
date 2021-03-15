@@ -1,4 +1,4 @@
-package com.itts.technologytransactionservice.common.config;
+package com.itts.common.config;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
