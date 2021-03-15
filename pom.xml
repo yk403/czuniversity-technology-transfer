@@ -36,7 +36,9 @@
         <spring.cloud.starter.alibaba.nacos.version>2.2.1.RELEASE</spring.cloud.starter.alibaba.nacos.version>
         <spring.boot.starter.mail.version>2.2.5.RELEASE</spring.boot.starter.mail.version>
         <spring.boot.starter.data.redis.version>2.2.5.RELEASE</spring.boot.starter.data.redis.version>
-        <spring.cloud.starter.openfeign.version>2.2.2.RELEASE</spring.cloud.starter.openfeign.version>
+        <spring.cloud.starter.openfeign.version>2.2.5.RELEASE</spring.cloud.starter.openfeign.version>
+        <spring.cloud.starter.sleuth.version>2.2.5.RELEASE</spring.cloud.starter.sleuth.version>
+        <spring.cloud.starter.zipkin.version>2.2.5.RELEASE</spring.cloud.starter.zipkin.version>
         <feign.httpclient.version>10.1.0</feign.httpclient.version>
         <springfox.boot.starter.version>3.0.0</springfox.boot.starter.version>
 
@@ -107,6 +109,20 @@
                 <artifactId>spring-cloud-starter-openfeign</artifactId>
                 <version>${spring.cloud.starter.openfeign.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-sleuth</artifactId>
+                <version>${spring.cloud.starter.sleuth.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-zipkin</artifactId>
+                <version>${spring.cloud.starter.zipkin.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>io.github.openfeign</groupId>
