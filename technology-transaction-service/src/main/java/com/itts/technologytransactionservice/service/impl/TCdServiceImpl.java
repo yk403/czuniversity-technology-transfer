@@ -34,17 +34,11 @@ public class TCdServiceImpl implements TCdService {
     @Autowired
     private PaymentService paymentService;
 
+    /**
+     * 获取列表 - 分页
+     */
     @Override
-    public List<TCd> getList() {
-
-        QueryWrapper<TCd> query = new QueryWrapper<>();
-        List<TCd> list = mapper.selectList(query);
-
-        return list;
-    }
-
-    @Override
-    public PageInfo<TCd> getByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<TCd> findByPage(Integer pageNum, Integer pageSize) {
 
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<TCd> query = new QueryWrapper<>();
@@ -52,6 +46,34 @@ public class TCdServiceImpl implements TCdService {
 
         PageInfo<TCd> page = new PageInfo<>(list);
         return page;
+    }
+
+    /**
+     * 获取详情
+     */
+    @Override
+    public TCd get(Long id) {
+        TCd tcd = mapper.selectById(id);
+        return tcd;
+    }
+
+    /**
+     * 新增
+     */
+    @Override
+    public TCd add(TCd tCd) {
+
+        mapper.insert(tCd);
+        return tCd;
+    }
+
+    /**
+     * 更新
+     */
+    @Override
+    public TCd update(TCd tCd) {
+        mapper.updateById(tCd);
+        return tCd;
     }
 
     @Override

@@ -4,8 +4,6 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.ResponseUtil;
 import com.itts.technologytransactionservice.model.TCd;
 
-import java.util.List;
-
 /**
  * <p>
  * 服务类
@@ -16,9 +14,25 @@ import java.util.List;
  */
 public interface TCdService {
 
-    List<TCd> getList();
+    /**
+     * 查询列表
+     */
+    PageInfo<TCd> findByPage(Integer pageNum, Integer pageSize);
 
-    PageInfo<TCd> getByPage(Integer pageNum, Integer pageSize);
+    /**
+     * 获取详情
+     */
+    TCd get(Long id);
+
+    /**
+     * 新增
+     */
+    TCd add(TCd tCd);
+
+    /**
+     * 更新
+     */
+    TCd update(TCd tCd);
 
     ResponseUtil testFeign();
 
