@@ -1,12 +1,12 @@
-package com.itts.technologytransactionservice.controller.cd;
+package com.itts.technologytransactionservice.controller;
 
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.ResponseUtil;
 import com.itts.technologytransactionservice.feign.payment.PaymentService;
-import com.itts.technologytransactionservice.model.cd.TCd;
-import com.itts.technologytransactionservice.service.cd.TCdService;
+import com.itts.technologytransactionservice.model.TCd;
+import com.itts.technologytransactionservice.service.TCdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
