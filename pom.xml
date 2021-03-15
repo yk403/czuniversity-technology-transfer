@@ -26,28 +26,31 @@
 
 
     <properties>
-        <spring.boot.starter.web.version>2.1.5.RELEASE</spring.boot.starter.web.version>
-        <spring.cloud.version>Hoxton.SR3</spring.cloud.version>
+        <!-- JDK版本， 如果是JDK8， 使用1.8， 如果是11使用11 -->
+        <java.version>1.8</java.version>
+
+        <!-- Spring 相关依赖 目前使用次新版本 -->
+        <spring.boot.starter.web.version>2.3.3.RELEASE</spring.boot.starter.web.version>
+        <spring.cloud.version>Hoxton.SR8</spring.cloud.version>
         <spring.cloud.alibaba.version>2.2.1.RELEASE</spring.cloud.alibaba.version>
         <spring.cloud.starter.alibaba.nacos.version>2.2.1.RELEASE</spring.cloud.starter.alibaba.nacos.version>
         <spring.boot.starter.mail.version>2.2.5.RELEASE</spring.boot.starter.mail.version>
         <spring.boot.starter.data.redis.version>2.2.5.RELEASE</spring.boot.starter.data.redis.version>
         <spring.cloud.starter.openfeign.version>2.2.2.RELEASE</spring.cloud.starter.openfeign.version>
         <feign.httpclient.version>10.1.0</feign.httpclient.version>
-
         <springfox.boot.starter.version>3.0.0</springfox.boot.starter.version>
 
-        <java.version>1.8</java.version>
-
+        <!-- 数据库、 Mybatis相关依赖 -->
         <mysql.connector.java.version>8.0.18</mysql.connector.java.version>
         <mybatisplus.boot.starter.version>3.4.0</mybatisplus.boot.starter.version>
-        <pagehelper.spring.boot.starter.version>1.2.12</pagehelper.spring.boot.starter.version>
+        <pagehelper.version>5.1.10</pagehelper.version>
         <druid.version>1.1.20</druid.version>
 
+        <!-- 工具包依赖 -->
         <commons.codec.version>1.15</commons.codec.version>
         <common.pool.version>2.6.0</common.pool.version>
         <commons.configuration.version>1.10</commons.configuration.version>
-        <commons.lang3.version>3.6</commons.lang3.version>
+        <commons.lang3.version>3.9</commons.lang3.version>
         <commons.io.version>2.5</commons.io.version>
 
         <aliyun.java.sdk.version>4.5.1</aliyun.java.sdk.version>
@@ -66,7 +69,6 @@
         <gson.version>2.8.6</gson.version>
         <aliyun.sdk.oss.version>3.8.0</aliyun.sdk.oss.version>
     </properties>
-
 
     <dependencyManagement>
         <dependencies>
@@ -112,12 +114,6 @@
                 <version>${feign.httpclient.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>5.3.5</version>
-            </dependency>
             <!-- 代码文档 -->
             <dependency>
                 <groupId>io.springfox</groupId>
@@ -149,8 +145,8 @@
             <!--   pageHelper 分页插件-->
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>${pagehelper.spring.boot.starter.version}</version>
+                <artifactId>pagehelper</artifactId>
+                <version>${pagehelper.version}</version>
             </dependency>
 
 
