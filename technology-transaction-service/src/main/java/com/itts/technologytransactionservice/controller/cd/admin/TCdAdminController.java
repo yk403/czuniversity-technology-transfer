@@ -7,7 +7,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.ResponseUtil;
 import com.itts.technologytransactionservice.model.TCd;
-import com.itts.technologytransactionservice.service.TCdService;
+import com.itts.technologytransactionservice.service.cd.TCdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
