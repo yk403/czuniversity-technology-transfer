@@ -2,9 +2,9 @@ package com.itts.technologytransactionservice.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.itts.common.exception.WebException;
+import com.itts.common.utils.OssUtil;
 import com.itts.common.utils.Result;
-import com.itts.technologytransactionservice.common.exception.GlobalException;
-import com.itts.technologytransactionservice.common.utils.OssUtil;
 import com.itts.technologytransactionservice.model.BackOss;
 import com.itts.technologytransactionservice.service.BackOssService;
 import io.swagger.annotations.Api;
@@ -81,7 +81,7 @@ public class BackOssController {
             backOss.setFileUrl(ossUtil.getUrl(url));
             backOssService.save(backOss);
         } catch (IOException e) {
-            throw new GlobalException("文件上传失败");
+            throw new WebException("文件上传失败");
         }
         return Result.ok().message("文件上传成功").data("file", backOss);
     }
