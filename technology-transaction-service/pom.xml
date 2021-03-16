@@ -123,13 +123,23 @@
     </dependencies>
 
     <build>
-        <finalName>technology-transaction</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--需要加这个，不然打包镜像找不到启动文件-->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
                 <configuration>
-                    <includeSystemScope>true</includeSystemScope>
+                    <fork>true</fork>
+                    <addResources>true</addResources>
+
                 </configuration>
             </plugin>
         </plugins>
