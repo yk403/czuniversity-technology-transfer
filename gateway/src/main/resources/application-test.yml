@@ -2,10 +2,10 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:1884
+        server-addr: 121.37.160.180:1884
   # Zipkin配置
   zipkin:
-    base-url: http://localhost:19411/ #zipkin server的请求地址
+    base-url: http://121.37.160.180:19411/ #zipkin server的请求地址
     discovery-client-enabled: false #让nacos把它当成一个URL， 而不要当做服务名
   sleuth:
     sampler:
