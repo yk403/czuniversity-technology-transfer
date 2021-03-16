@@ -8,7 +8,6 @@
         <module>cz-common</module>
         <module>technology-transaction-service</module>
         <module>payment-service</module>
-        <module>authentication</module>
     </modules>
 
     <parent>
