@@ -26,9 +26,9 @@ spring:
           filters: #过滤器，请求在传递过程中通过过滤器修改
             - StripPrefix=1                              #去掉第一层前缀，转发给后续的路径
   # Zipkin配置
-#  zipkin:
-#    base-url: http://localhost:9411/ #zipkin server的请求地址
-#    discovery-client-enabled: false #让nacos把它当成一个URL， 而不要当做服务名
+  zipkin:
+    base-url: http://localhost:9411/ #zipkin server的请求地址
+    discovery-client-enabled: false #让nacos把它当成一个URL， 而不要当做服务名
   sleuth:
     sampler:
       probability: 1.0 #采样的百分比
