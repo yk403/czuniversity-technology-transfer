@@ -1,6 +1,3 @@
-# 配置端口号
-server:
-  port: 11060
 spring:
   cloud:
     nacos:
@@ -33,4 +30,4 @@ spring:
     discovery-client-enabled: false #让nacos把它当成一个URL， 而不要当做服务名
   sleuth:
     sampler:
-      probability: 1.0 #采样的百分比
+      probability: 0.1 #采样的百分比
