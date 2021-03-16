@@ -11,6 +11,7 @@
         <module>user-service</module>
     </modules>
 
+
     <groupId>com.itts</groupId>
     <artifactId>czuniversity-technology-transfer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -202,5 +203,20 @@
 
         </dependencies>
     </dependencyManagement>
+
+    <!--module不用添加打包版本信息-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <configuration>
+                    <fork>true</fork>
+                    <addResources>true</addResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
