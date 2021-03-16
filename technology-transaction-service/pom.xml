@@ -3,7 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
     <parent>
         <groupId>com.itts</groupId>
         <artifactId>czuniversity-technology-transfer</artifactId>
@@ -26,7 +25,7 @@
         <!-- 通用模块 -->
         <dependency>
             <groupId>com.itts</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>cz-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -124,10 +123,14 @@
     </dependencies>
 
     <build>
+        <finalName>technology-transaction</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
             </plugin>
         </plugins>
     </build>

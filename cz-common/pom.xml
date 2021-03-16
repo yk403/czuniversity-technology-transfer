@@ -11,9 +11,9 @@
 
 
     <groupId>com.itts</groupId>
-    <artifactId>common</artifactId>
+    <artifactId>cz-common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>common</name>
+    <name>cz-common</name>
 
 
     <dependencies>

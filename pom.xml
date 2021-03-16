@@ -5,17 +5,22 @@
 
     <modules>
         <module>gateway</module>
-        <module>common</module>
+        <module>cz-common</module>
         <module>technology-transaction-service</module>
         <module>payment-service</module>
         <module>authentication</module>
     </modules>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.5.RELEASE</version>
+        <relativePath/>
+    </parent>
+
     <groupId>com.itts</groupId>
     <artifactId>czuniversity-technology-transfer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>czuniversity-technology-transfer</name>
-    <description>Demo project for Spring Boot</description>
     <packaging>pom</packaging>
 
 
@@ -60,7 +65,6 @@
 
     <dependencyManagement>
         <dependencies>
-
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
