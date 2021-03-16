@@ -7,6 +7,14 @@ spring:
       discovery:
         server-addr: localhost:8848
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allow-credentials: true
+            allowedOrigins: "*"
+            allowed-headers: "*"
+            allowedMethods: "*"
+            max-age: 3600
       #开启网关拉取nacos的服务
       discovery:
         locator:
