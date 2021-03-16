@@ -1,0 +1,105 @@
+Manifest-Version: 1.0
+Main-Class: com.itts.technologytransactionservice.TechnologyTransactionS
+ erviceApplication
+Class-Path: asm-4.2.jar druid-1.1.20.jar spring-plugin-metadata-2.0.0.RE
+ LEASE.jar commons-collections4-4.1.jar springfox-bean-validators-3.0.0.
+ jar jettison-1.1.jar jackson-annotations-2.10.2.jar netty-handler-4.1.4
+ 5.Final.jar netty-buffer-4.1.45.Final.jar spring-cloud-openfeign-core-2
+ .2.5.RELEASE.jar mapstruct-1.3.1.Final.jar commons-codec-1.13.jar slf4j
+ -api-1.7.30.jar commons-lang-2.4.jar commons-io-2.5.jar ribbon-transpor
+ t-2.3.0.jar mybatis-spring-2.0.1.jar lettuce-core-5.2.2.RELEASE.jar swa
+ gger-annotations-2.1.2.jar spring-cloud-sleuth-core-2.2.5.RELEASE.jar b
+ rave-instrumentation-jms-5.12.3.jar feign-form-spring-3.8.0.jar mybatis
+ -plus-boot-starter-3.4.0.jar snakeyaml-1.25.jar logback-core-1.2.3.jar 
+ jboss-logging-3.4.1.Final.jar spring-cloud-sleuth-zipkin-2.2.5.RELEASE.
+ jar jakarta.xml.bind-api-2.3.2.jar velocity-1.7.jar javax.inject-1.jar 
+ netty-codec-4.1.45.Final.jar spring-data-keyvalue-2.2.5.RELEASE.jar rib
+ bon-core-2.3.0.jar archaius-core-0.7.6.jar brave-instrumentation-httpcl
+ ient-5.12.3.jar ribbon-2.3.0.jar logback-classic-1.2.3.jar spring-cloud
+ -netflix-ribbon-2.2.5.RELEASE.jar aliyun-java-sdk-ecs-4.2.0.jar spring-
+ boot-starter-web-2.3.3.RELEASE.jar spring-beans-5.2.4.RELEASE.jar sprin
+ g-cloud-commons-2.2.5.RELEASE.jar easyexcel-2.1.6.jar jakarta.validatio
+ n-api-2.0.2.jar spring-data-redis-2.2.5.RELEASE.jar spring-aop-5.2.4.RE
+ LEASE.jar log4j-api-2.12.1.jar jackson-databind-2.10.2.jar rxjava-1.3.8
+ .jar spring-expression-5.2.4.RELEASE.jar spring-security-crypto-5.2.2.R
+ ELEASE.jar spring-cloud-starter-2.2.5.RELEASE.jar jaxb-api-2.3.1.jar sp
+ ring-cloud-starter-alibaba-nacos-discovery-2.2.1.RELEASE.jar ribbon-htt
+ pclient-2.3.0.jar pagehelper-spring-boot-autoconfigure-1.2.12.jar simpl
+ eclient-0.5.0.jar jackson-core-2.10.2.jar j2objc-annotations-1.3.jar re
+ actor-core-3.3.3.RELEASE.jar spring-cloud-starter-sleuth-2.2.5.RELEASE.
+ jar mysql-connector-java-8.0.18.jar opentracing-util-0.33.0.jar javax.a
+ ctivation-api-1.2.0.jar aliyun-java-sdk-ram-3.0.0.jar brave-instrumenta
+ tion-rpc-5.12.3.jar springfox-swagger-common-3.0.0.jar pagehelper-sprin
+ g-boot-starter-1.2.12.jar commons-configuration-1.10.jar aspectjweaver-
+ 1.9.5.jar springfox-spi-3.0.0.jar zipkin-reporter-2.15.0.jar error_pron
+ e_annotations-2.3.4.jar spring-boot-devtools-2.2.5.RELEASE.jar spring-b
+ oot-starter-aop-2.2.5.RELEASE.jar springfox-swagger2-3.0.0.jar zipkin-2
+ .21.1.jar zipkin-reporter-metrics-micrometer-2.15.0.jar mybatis-spring-
+ boot-autoconfigure-2.0.1.jar gson-2.8.6.jar spring-cloud-context-2.2.5.
+ RELEASE.jar brave-5.12.3.jar jackson-datatype-jsr310-2.10.2.jar rxnetty
+ -contexts-0.4.9.jar rxnetty-0.4.9.jar mybatis-3.5.6.jar spring-oxm-5.2.
+ 4.RELEASE.jar txw2-2.3.2.jar feign-hystrix-10.10.1.jar curvesapi-1.04.j
+ ar springfox-swagger-ui-3.0.0.jar spring-plugin-core-2.0.0.RELEASE.jar 
+ brave-instrumentation-kafka-clients-5.12.3.jar spring-security-web-5.2.
+ 2.RELEASE.jar mybatis-plus-annotation-3.4.1.jar spring-boot-starter-log
+ ging-2.2.5.RELEASE.jar brave-context-slf4j-5.12.3.jar spring-core-5.2.4
+ .RELEASE.jar opentracing-api-0.33.0.jar brave-instrumentation-kafka-str
+ eams-5.12.3.jar netty-resolver-4.1.45.Final.jar bcprov-jdk15on-1.64.jar
+  aliyun-java-sdk-sts-3.0.0.jar zipkin-reporter-brave-2.15.0.jar reactiv
+ e-streams-1.0.3.jar bcpkix-jdk15on-1.64.jar hystrix-core-1.5.18.jar spr
+ ing-tx-5.2.4.RELEASE.jar log4j-to-slf4j-2.12.1.jar ini4j-0.5.4.jar poi-
+ ooxml-3.17.jar aspectjrt-1.9.5.jar jersey-client-1.19.1.jar hutool-all-
+ 5.3.10.jar httpcore-4.4.12.jar classgraph-4.8.83.jar commons-collection
+ s-3.2.1.jar jsr305-3.0.2.jar jsqlparser-2.0.jar opentracing-noop-0.33.0
+ .jar mybatis-plus-generator-3.4.1.jar zipkin-sender-activemq-client-2.1
+ 5.0.jar spring-boot-starter-json-2.2.5.RELEASE.jar spring-boot-starter-
+ data-redis-2.2.5.RELEASE.jar spring-boot-2.2.5.RELEASE.jar spring-webmv
+ c-5.2.4.RELEASE.jar ehcache-3.8.1.jar jul-to-slf4j-1.7.30.jar springfox
+ -schema-3.0.0.jar springfox-spring-web-3.0.0.jar spring-cloud-starter-z
+ ipkin-2.2.5.RELEASE.jar ribbon-loadbalancer-2.3.0.jar nacos-api-1.2.1.j
+ ar spring-jcl-5.2.4.RELEASE.jar brave-instrumentation-http-5.12.3.jar n
+ etty-common-4.1.45.Final.jar spring-security-config-5.2.2.RELEASE.jar n
+ acos-common-1.2.1.jar netflix-commons-util-0.3.0.jar spring-boot-autoco
+ nfigure-2.2.5.RELEASE.jar protobuf-java-3.12.2.jar mybatis-spring-boot-
+ starter-2.0.1.jar istack-commons-runtime-3.0.8.jar servo-core-0.12.21.j
+ ar spring-data-commons-2.2.5.RELEASE.jar jsr311-api-1.1.1.jar tomcat-em
+ bed-websocket-9.0.31.jar feign-httpclient-10.1.0.jar brave-instrumentat
+ ion-servlet-5.12.3.jar checker-qual-2.11.1.jar spring-context-5.2.4.REL
+ EASE.jar poi-ooxml-schemas-3.17.jar pagehelper-5.1.10.jar spring-boot-s
+ tarter-2.2.5.RELEASE.jar netflix-statistics-0.1.1.jar commons-logging-1
+ .2.jar jackson-datatype-jdk8-2.10.2.jar brave-instrumentation-spring-we
+ b-5.12.3.jar spring-boot-starter-tomcat-2.2.5.RELEASE.jar spring-web-5.
+ 2.4.RELEASE.jar jackson-module-parameter-names-2.10.2.jar spring-cloud-
+ netflix-archaius-2.2.5.RELEASE.jar jaxb-runtime-2.3.2.jar spring-boot-s
+ tarter-validation-2.2.5.RELEASE.jar mybatis-plus-extension-3.4.1.jar Fa
+ stInfoset-1.2.16.jar javax.annotation-api-1.3.2.jar spring-cloud-starte
+ r-openfeign-2.2.5.RELEASE.jar spring-jdbc-5.2.4.RELEASE.jar HdrHistogra
+ m-2.1.9.jar brave-instrumentation-spring-rabbit-5.12.3.jar listenablefu
+ ture-9999.0-empty-to-avoid-conflict-with-guava.jar netty-transport-4.1.
+ 45.Final.jar hibernate-validator-6.0.18.Final.jar spring-context-suppor
+ t-1.0.6.jar jersey-core-1.19.1.jar mybatis-plus-3.4.0.jar jdom-1.1.jar 
+ springfox-core-3.0.0.jar classmate-1.5.1.jar spring-boot-starter-jdbc-2
+ .2.5.RELEASE.jar stax-ex-1.8.1.jar spring-context-support-5.2.4.RELEASE
+ .jar spring-security-core-5.2.2.RELEASE.jar jakarta.activation-1.2.2.ja
+ r spring-security-rsa-1.0.9.RELEASE.jar velocity-engine-core-2.0.jar zi
+ pkin-sender-kafka-2.15.0.jar failureaccess-1.0.1.jar zipkin-sender-amqp
+ -client-2.15.0.jar rxnetty-servo-0.4.9.jar springfox-oas-3.0.0.jar stax
+ -api-1.0.1.jar spring-boot-starter-security-2.2.5.RELEASE.jar aliyun-sd
+ k-oss-3.8.0.jar spring-cloud-starter-netflix-archaius-2.2.5.RELEASE.jar
+  guava-29.0-jre.jar nacos-client-1.2.1.jar jersey-apache-client4-1.19.1
+ .jar byte-buddy-1.10.8.jar httpclient-4.5.10.jar springfox-boot-starter
+ -3.0.0.jar swagger-models-2.1.2.jar springfox-spring-webflux-3.0.0.jar 
+ commons-lang3-3.9.jar springfox-spring-webmvc-3.0.0.jar brave-instrumen
+ tation-spring-webmvc-5.12.3.jar jakarta.mail-1.6.4.jar spring-cloud-sta
+ rter-netflix-ribbon-2.2.5.RELEASE.jar brave-instrumentation-messaging-5
+ .12.3.jar cglib-3.1.jar xmlbeans-2.6.0.jar spring-boot-starter-mail-2.2
+ .5.RELEASE.jar feign-form-3.8.0.jar mybatis-plus-core-3.4.1.jar poi-3.1
+ 7.jar jakarta.annotation-api-1.3.5.jar swagger-annotations-1.5.20.jar f
+ astjson-1.2.31.jar aliyun-java-sdk-core-4.5.1.jar feign-slf4j-10.10.1.j
+ ar feign-core-10.10.1.jar swagger-models-1.5.20.jar brave-instrumentati
+ on-httpasyncclient-5.12.3.jar tomcat-embed-core-9.0.31.jar commons-pool
+ 2-2.6.0.jar lombok-1.18.12.jar jakarta.activation-api-1.2.2.jar commons
+ -fileupload-1.4.jar tomcat-embed-el-9.0.31.jar springfox-data-rest-3.0.
+ 0.jar jjwt-0.9.0.jar HikariCP-3.4.2.jar org.jacoco.agent-0.8.5-runtime.
+ jar
+

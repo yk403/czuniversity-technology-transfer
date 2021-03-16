@@ -52,7 +52,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: /mapper/*Mapper.xml
-  typeAliasesPackage: com.lyh
+  typeAliasesPackage: com.itts
 
 # 阿里云配置信息
 aliyun:

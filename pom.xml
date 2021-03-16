@@ -8,6 +8,7 @@
         <module>common</module>
         <module>technology-transaction-service</module>
         <module>payment-service</module>
+        <module>authentication</module>
     </modules>
 
     <groupId>com.itts</groupId>
