@@ -1,10 +1,6 @@
 spring:
   application:
     name: technology-transaction-service
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
   main:
     allow-bean-definition-overriding: true
   profiles:

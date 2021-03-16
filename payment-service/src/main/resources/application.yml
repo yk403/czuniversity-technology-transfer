@@ -1,10 +1,6 @@
 spring:
   application:
     name: payment-service
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
   main:
     allow-bean-definition-overriding: true
   profiles:

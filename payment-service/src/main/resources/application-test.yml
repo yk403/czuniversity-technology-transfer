@@ -5,7 +5,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848
+        server-addr: localhost:18848
   # Redis 配置
   redis:
     # Redis 服务器地址
@@ -29,7 +29,7 @@ spring:
         min-idle: 0
   # Zipkin配置
   zipkin:
-    base-url: http://localhost:9411/ #zipkin server的请求地址
+    base-url: http://localhost:19411/ #zipkin server的请求地址
     discovery-client-enabled: false #让nacos把它当成一个URL， 而不要当做服务名
   sleuth:
     sampler:

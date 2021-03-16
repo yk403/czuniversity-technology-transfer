@@ -2,6 +2,10 @@
 server:
   port: 11050
 spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:18848
   # 配置数据源
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -29,6 +33,13 @@ spring:
         max-idle: 5
         # 最小空闲连接 默认为 0
         min-idle: 0
+  # Zipkin配置
+  zipkin:
+    base-url: http://localhost:19411/ #zipkin server的请求地址
+    discovery-client-enabled: false #让nacos把它当成一个URL， 而不要当做服务名
+  sleuth:
+    sampler:
+      probability: 1.0 #采样的百分比
 pagehelper:
   reasonable: true
   support-methods-arguments: true

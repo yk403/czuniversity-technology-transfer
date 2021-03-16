@@ -2,6 +2,10 @@
 server:
   port: 11060
 spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:18848
   # Redis 配置
   redis:
     # Redis 服务器地址
@@ -23,3 +27,10 @@ spring:
         max-idle: 5
         # 最小空闲连接 默认为 0
         min-idle: 0
+  # Zipkin配置
+  zipkin:
+    base-url: http://localhost:19411/ #zipkin server的请求地址
+    discovery-client-enabled: false #让nacos把它当成一个URL， 而不要当做服务名
+  sleuth:
+    sampler:
+      probability: 1.0 #采样的百分比
