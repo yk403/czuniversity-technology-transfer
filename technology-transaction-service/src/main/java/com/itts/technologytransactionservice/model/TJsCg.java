@@ -148,4 +148,8 @@ public class TJsCg implements Serializable {
 发布类型
 */
 	private String releaseType;
+	/*
+领域名称
+*/
+	private String lyName;
 }
