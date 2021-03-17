@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.TJsXqMapper">
 
 	<select id="FindTJsXqByTJsLbTJsLy" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select a.id as id,xqmc,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,d.fbshzt as status,d.cjsj as createTime,d.release_status as releaseStatus
+		select a.id as id,xqmc,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,d.fbshzt as status,d.cjsj as createTime,d.release_status as releaseStatus,b.mc as lyName,c.mc as lbName
 		from t_js_xq a left join t_js_ly b on(a.ly_id=b.id) left join t_js_lb c on(a.lb_id=c.id) left join t_js_sh d on(a.id=d.cgxq_id)
 		<where>
 			<if test="map.lyId != null and map.lyId != ''"> and a.ly_id = #{map.lyId} </if>
