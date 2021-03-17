@@ -1,10 +1,9 @@
+# 配置端口号
+server:
+  port: 11050
 spring:
   application:
     name: technology-transaction-service
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
   main:
     allow-bean-definition-overriding: true
   profiles:
@@ -52,7 +51,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: /mapper/*Mapper.xml
-  typeAliasesPackage: com.lyh
+  typeAliasesPackage: com.itts
 
 # 阿里云配置信息
 aliyun:

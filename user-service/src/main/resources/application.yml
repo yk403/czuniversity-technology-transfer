@@ -1,0 +1,20 @@
+# 配置端口号
+server:
+  port: 11070
+spring:
+  application:
+    name: user-service
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: /mapper/*Mapper.xml
+  typeAliasesPackage: com.itts
+#分页pageHelper
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
