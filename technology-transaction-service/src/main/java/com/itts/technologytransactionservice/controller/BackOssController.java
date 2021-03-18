@@ -3,8 +3,8 @@ package com.itts.technologytransactionservice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.exception.WebException;
+import com.itts.common.utils.OssUtil;
 import com.itts.common.utils.Result;
-import com.itts.technologytransactionservice.common.utils.OssUtil;
 import com.itts.technologytransactionservice.model.BackOss;
 import com.itts.technologytransactionservice.service.BackOssService;
 import io.swagger.annotations.Api;
