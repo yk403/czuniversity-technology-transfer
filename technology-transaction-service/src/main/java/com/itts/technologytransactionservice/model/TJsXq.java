@@ -128,4 +128,12 @@ public class TJsXq implements Serializable {
 发布类型
  */
 	private String releaseType;
+	/*
+领域名称
+*/
+	private String lyName;
+	/*
+类别名称
+*/
+	private String lbName;
 }
