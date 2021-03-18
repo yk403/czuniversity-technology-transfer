@@ -5,6 +5,7 @@ import com.itts.userservice.common.quartz.utils.FileUtil;
 import com.itts.userservice.mapper.quartz.QuartzLogMapper;
 import com.itts.userservice.model.quartz.QuartzLog;
 import com.itts.userservice.service.quartz.IQuartzLogService;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import java.util.Map;
  * @since 2020-03-24
  */
 @Service
+@Primary
 public class QuartzLogServiceImpl extends ServiceImpl<QuartzLogMapper, QuartzLog> implements IQuartzLogService {
 
     /**

@@ -11,6 +11,19 @@ task:
     keep-alive-seconds: 60
     # 队列容量
     queue-capacity: 50
+# 阿里云配置信息
+aliyun:
+  # common 配置信息
+  accessKeyId: LTAI4GEWZbLZocBzXKYEfmmq
+  accessKeySecret: rZLsruKxWex2qGYVA3UsuBgW5B3uJQ
+  # OSS 相关配置信息
+  endPoint: http://oss-cn-beijing.aliyuncs.com
+  bucketName: admin-vue-template
+  domain: http://admin-vue-template.oss-cn-beijing.aliyuncs.com
+  # SMS 短信服务
+  regionId: cn-hangzhou
+  signName: 后台管理系统
+  templateCode: SMS_194050461
 spring:
   application:
     name: user-service

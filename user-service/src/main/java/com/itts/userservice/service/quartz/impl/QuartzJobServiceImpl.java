@@ -11,6 +11,7 @@ import com.itts.userservice.mapper.quartz.QuartzJobMapper;
 import com.itts.userservice.model.quartz.QuartzJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ import java.util.*;
  * @since 2020-03-24
  */
 @Service
+@Primary
 public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob> implements IQuartzJobService {
     @Autowired
     QuartzJobMapper quartzJobMapper;
