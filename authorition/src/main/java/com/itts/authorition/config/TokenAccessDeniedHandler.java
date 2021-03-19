@@ -1,4 +1,4 @@
-package com.itts.config;
+package com.itts.authorition.config;
 
 import org.springframework.stereotype.Component;
 
