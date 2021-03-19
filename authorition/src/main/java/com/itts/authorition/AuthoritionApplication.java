@@ -1,4 +1,3 @@
-/*
 package com.itts.authorition;
 
 import org.springframework.boot.SpringApplication;
@@ -12,4 +11,3 @@ public class AuthoritionApplication {
     }
 
 }
-*/

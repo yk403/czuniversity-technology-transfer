@@ -1,27 +1,17 @@
 package com.itts.config;
 
-import com.alibaba.fastjson.JSONArray;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
-*@Description:
-*@Class: TokenAuthenticationEntryPoint
-*@Author: zslme
-*@date: 2020/3/11
-*/
+ * @Description:
+ * @Class: TokenAuthenticationEntryPoint
+ * @Author: zslme
+ * @date: 2020/3/11
+ */
 @Component
-public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class TokenAuthenticationEntryPoint { //implements AuthenticationEntryPoint {
 
-    @Override
+   /* @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
 //
 //        response.setHeader("Access-Control-Allow-Origin", "*");
@@ -36,5 +26,5 @@ public class TokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
         map.put("msg","用户未登录");
         response.getWriter().print(JSONArray.toJSON(map));
         response.flushBuffer();
-    }
+    }*/
 }

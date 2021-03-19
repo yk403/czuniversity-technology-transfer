@@ -1,16 +1,6 @@
 package com.itts.config;
 
-import com.alibaba.fastjson.JSONArray;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Create zslme
@@ -18,8 +8,8 @@ import java.util.Map;
  */
 
 @Component
-public class TokenAccessDeniedHandler implements AccessDeniedHandler {
-
+public class TokenAccessDeniedHandler { // implements AccessDeniedHandler {
+/*
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
 
@@ -38,5 +28,5 @@ public class TokenAccessDeniedHandler implements AccessDeniedHandler {
 
         httpServletResponse.getWriter().print(JSONArray.toJSON(map));
         httpServletResponse.flushBuffer();
-    }
+    }*/
 }
