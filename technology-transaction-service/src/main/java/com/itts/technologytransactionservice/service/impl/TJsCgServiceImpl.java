@@ -130,6 +130,7 @@ public class TJsCgServiceImpl extends ServiceImpl<TJsCgMapper, TJsCg> implements
 	public boolean assistanceUpdateTJsCg(TJsCg tJsCg) {
 		TJsSh tJsSh = tJsShService.selectBycgxqId(tJsCg.getId());
 		if(!"2".equals(tJsSh.getReleaseStatus())){
+			log.error("未发布的成果无法申请拍卖和招投标");
 			throw new ServiceException("未发布的成果无法申请拍卖和招投标");
 		}else{
 			tJsSh.setAssistanceStatus("1");
