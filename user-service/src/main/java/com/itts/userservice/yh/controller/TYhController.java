@@ -26,7 +26,7 @@ import java.util.Date;
  * @author fl
  * @since 2021-03-18
  */
-@Api(tags="获取tyh")
+@Api(tags="用户管理")
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL+"/tYh")
 public class TYhController {
