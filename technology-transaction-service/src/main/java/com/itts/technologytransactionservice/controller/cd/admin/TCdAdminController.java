@@ -92,12 +92,12 @@ public class TCdAdminController {
     public ResponseUtil update(@PathVariable("id") Long id, @RequestBody TCd tCd) throws WebException {
 
         if (id == null) {
-            throw new WebException(ErrorCodeEnum.TECHNOLOGY_TRANSACTION_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         TCd old = service.get(id);
         if (old == null) {
-            throw new WebException(ErrorCodeEnum.TECHNOLOGY_TRANSACTION_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
         checkRequest(tCd);
@@ -119,12 +119,12 @@ public class TCdAdminController {
     public ResponseUtil updateStatus(@PathVariable("id") Long id, @RequestParam("status") String status) throws WebException {
 
         if (id == null) {
-            throw new WebException(ErrorCodeEnum.TECHNOLOGY_TRANSACTION_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         TCd old = service.get(id);
         if (old == null) {
-            throw new WebException(ErrorCodeEnum.TECHNOLOGY_TRANSACTION_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
         //TODO：修改状态操作
@@ -143,7 +143,7 @@ public class TCdAdminController {
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
 
         if (id == null) {
-            throw new WebException(ErrorCodeEnum.TECHNOLOGY_TRANSACTION_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         //TODO: 逻辑删除， 修改delete_flag字段
@@ -166,11 +166,11 @@ public class TCdAdminController {
     private void checkRequest(TCd tCd) throws WebException {
 
         if (tCd == null) {
-            throw new WebException(ErrorCodeEnum.TECHNOLOGY_TRANSACTION_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (StringUtils.isBlank(tCd.getCdbm())) {
-            throw new WebException(ErrorCodeEnum.TECHNOLOGY_TRANSACTION_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
 }

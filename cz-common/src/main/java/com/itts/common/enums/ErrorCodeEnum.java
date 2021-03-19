@@ -17,9 +17,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public enum ErrorCodeEnum {
 
+    //====================      系统错误提示（服务码400）      ====================
+    SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR(-400001, "请求参数不合法"),
+    SYSTEM_NOT_FIND_ERROR(-400002, "数据不存在"),
+    //====================      系统错误提示  END     ====================
+
     //====================      技术交易服务错误提示（服务码410）      ====================
-    TECHNOLOGY_TRANSACTION_REQUEST_PARAMS_ILLEGAL_ERROR(-410001, "请求参数不合法"),
-    TECHNOLOGY_TRANSACTION_NOT_FIND_ERROR(-410002, "数据不存在"),
+    /*TECHNOLOGY_TRANSACTION_REQUEST_PARAMS_ILLEGAL_ERROR(-410001, "请求参数不合法"),
+    TECHNOLOGY_TRANSACTION_NOT_FIND_ERROR(-410002, "数据不存在"),*/
     //====================      技术交易服务错误提示  END     ====================
 
 
