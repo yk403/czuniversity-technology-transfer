@@ -33,9 +33,4 @@ public interface TYhService {
      * 更新
      */
     TYh update(TYh tYh);
-
-    /**
-     * 删除
-     */
-    Boolean delete(Long id);
 }

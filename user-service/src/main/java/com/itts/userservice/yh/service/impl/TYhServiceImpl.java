@@ -68,15 +68,4 @@ public class TYhServiceImpl implements TYhService {
         tYhMapper.updateById(tYh);
         return tYh;
     }
-
-    /**
-     * 删除
-     * @param id
-     * @return
-     */
-    @Override
-    public Boolean delete(Long id) {
-        tYhMapper.deleteById(id);
-        return true;
-    }
 }

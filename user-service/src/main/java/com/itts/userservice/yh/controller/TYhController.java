@@ -28,7 +28,7 @@ import java.util.Date;
  */
 @Api(tags="用户管理")
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL+"/tYh")
+@RequestMapping(SystemConstant.ADMIN_BASE_URL+"/yh")
 public class TYhController {
 
     @Resource
@@ -39,7 +39,7 @@ public class TYhController {
      * @param pageNum pageSize
      * @author fl
      */
-    @GetMapping("/list")
+    @GetMapping("/list/")
     @ApiOperation(value = "获取列表")
     public ResponseUtil find(@RequestParam(value="pageNum",defaultValue = "1") Integer pageNum,
                              @RequestParam(value="pageSize",defaultValue = "10")Integer pageSize){
@@ -122,9 +122,6 @@ public class TYhController {
 
         return ResponseUtil.success();
     }
-
-
-
 
     /**
      * 校验参数是否合法
