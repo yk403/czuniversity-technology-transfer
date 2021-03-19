@@ -155,7 +155,7 @@ public class TJsXqController extends BaseController {
         return update(result);
     }
     /*
-    需求下发
+    需求发布下发
      */
     @PostMapping("/issueBatch")
     public R issueBatch(@RequestBody List<String> ids){
@@ -167,6 +167,45 @@ public class TJsXqController extends BaseController {
         boolean result = tJsXqService.issueBatch(longs);
         return  remove(result);
     }
+    /*
+        受理协办审核
+     */
+    @RequestMapping("/assistancePass/{id}")
+    public R assistancePass(@PathVariable("id") String id) {
+        long l = Long.parseLong(id);
+        boolean result = tJsXqService.assistancePassUpdateById(l);
+        return update(result);
+    }
+        /*
+        受理协办审核不通过并填写备注
+     */
+        @PostMapping("/assistanceDisPass")
+        public R assistanceDisPass(@RequestBody Map<String, Object> params) {
+            boolean result = tJsXqService.assistanceDisPassById(params);
+            return update(result);
+        }
+        /*
+        受理协办下发
+     */
+        @PostMapping("/assistanceIssueBatch")
+        public R assistanceIssueBatch(@RequestBody List<String> ids){
+            ArrayList<Long> longs = new ArrayList<>();
+            for (String id: ids) {
+                long l = Long.parseLong(id);
+                longs.add(l);
+            }
+            boolean result = tJsXqService.assistanceIssueBatch(longs);
+            return  remove(result);
+        }
+            /*
+    已发布的需求申请挂牌(受理协办)
+     */
+            @RequestMapping("/assistanceUpdate")
+            public R assistanceUpdate(@RequestBody TJsXq tJsXq) {
+                boolean result = tJsXqService.assistanceUpdateTJsXq(tJsXq);
+                return update(result);
+            }
+
 
 
 }

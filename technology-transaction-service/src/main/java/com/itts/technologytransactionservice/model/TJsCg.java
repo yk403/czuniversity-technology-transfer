@@ -152,4 +152,16 @@ public class TJsCg implements Serializable {
 领域名称
 */
 	private String lyName;
+	/*
+	协议
+	 */
+	private String agreement;
+	/*
+	保证金
+	 */
+	private String bond;
+	/*
+	技术成果类别
+	 */
+	private Long lbId;
 }

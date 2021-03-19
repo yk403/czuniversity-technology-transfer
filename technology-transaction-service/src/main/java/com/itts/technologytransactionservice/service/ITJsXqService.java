@@ -26,11 +26,15 @@ public interface ITJsXqService extends IService<TJsXq> {
 
 	boolean removeByIdXq(Long id);
 	boolean passUpdateById(Long id);
+	boolean assistancePassUpdateById(Long id);
 	IPage PageByTJsFb(Query query);
 
 	boolean disPassById(Map<String, Object> params);
+	boolean assistanceDisPassById(Map<String, Object> params);
 
 	boolean issueBatch(List<Long> ids);
-
+	boolean assistanceIssueBatch(List<Long> ids);
 	boolean updateTJsXq(TJsXq tJsXq);
+
+	boolean assistanceUpdateTJsXq(TJsXq tJsXq);
 }

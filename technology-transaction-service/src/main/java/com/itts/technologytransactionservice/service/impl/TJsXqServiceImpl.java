@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.TJsXqMapper;
 import com.itts.technologytransactionservice.model.TJsFb;
@@ -14,6 +15,7 @@ import com.itts.technologytransactionservice.service.ITJsXqService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -104,7 +106,35 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
 		}
 
 	}
+	@Override
+	public boolean assistancePassUpdateById(Long id) {
+		TJsSh tJsSh = tJsShService.selectBycgxqId(id);
+		String assistanceStatus = tJsSh.getAssistanceStatus();
+		if (!"2".equals(assistanceStatus)) {
+			tJsSh.setAssistanceStatus("2");
+			tJsShService.saveOrUpdate(tJsSh);
+			return true;
+		}else{
+			return false;
+		}
 
+	}
+
+	@Override
+	public boolean assistanceDisPassById(Map<String, Object> params) {
+		String id = params.get("id").toString();
+		String assistanceRemark = params.get("assistanceRemark").toString();
+		TJsSh tJsSh = tJsShService.selectBycgxqId(Long.parseLong(id));
+		String assistanceStatus = tJsSh.getAssistanceStatus();
+		if(!"2".equals(assistanceStatus)){
+			tJsSh.setAssistanceStatus("3");
+			tJsSh.setAssistanceRemark(assistanceRemark);
+			tJsShService.saveOrUpdate(tJsSh);
+			return true;
+		}else{
+			return false;
+		}
+	}
 	@Override
 	public boolean disPassById(Map<String, Object> params) {
 		String id = params.get("id").toString();
@@ -122,7 +152,7 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
 	}
 
 	/*
-	批量下发
+	技术采集批量下发
 	 */
 	@Override
 	public boolean issueBatch(List<Long> ids) {
@@ -139,10 +169,43 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
 		}
 
 	}
+	/*
+技术转让受理批量下发
+ */
+	@Override
+	public boolean assistanceIssueBatch(List<Long> ids) {
+		if(CollectionUtils.isEmpty(ids)){
+			return false;
+		}else{
+			//List<TJsXq> tJsXqs = listByIds(ids);
+			List<TJsSh> tJsShes = tJsShService.selectBycgxqIds(ids);
+			for (TJsSh tJsShe: tJsShes) {
+				tJsShe.setReleaseAssistanceStatus("2");
+			}
+			tJsShService.updateBatchById(tJsShes);
+			return true;
+		}
+
+	}
 
 	@Override
 	public boolean updateTJsXq(TJsXq tJsXq) {
 		tJsXqMapper.updateTJsXq(tJsXq);
+		return true;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public boolean assistanceUpdateTJsXq(TJsXq tJsXq) {
+		TJsSh tJsSh = tJsShService.selectBycgxqId(tJsXq.getId());
+		if(!"2".equals(tJsSh.getReleaseStatus())){
+		throw new ServiceException("未发布的需求无法申请挂牌");
+		}else{
+			tJsSh.setAssistanceStatus("1");
+			tJsSh.setReleaseAssistanceStatus("1");
+			tJsShService.updateById(tJsSh);
+			tJsXqMapper.updateTJsXq(tJsXq);
+		}
 		return true;
 	}
 
