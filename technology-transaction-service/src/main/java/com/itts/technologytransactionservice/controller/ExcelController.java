@@ -47,10 +47,10 @@ public class ExcelController extends BaseController {
      * @return
      */
     @PostMapping("/importXq")
-    public R importXq(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber){
+    public R importXq(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber,@RequestParam(value = "importType", required = true) Integer importType){
 
         try {
-            return  excelService.importXq(file,headRowNumber);
+            return  excelService.importXq(file,headRowNumber,importType);
 //            EasyExcel.read(file.getInputStream(), StaffDO.class, new UploadDataListener(uploadDAO)).sheet().doRead();
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,10 +65,10 @@ public class ExcelController extends BaseController {
      * @return
      */
     @PostMapping("/importCg")
-    public R importCg(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber){
+    public R importCg(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber,@RequestParam(value = "importType", required = true) Integer importType){
 
         try {
-            return  excelService.importCg(file,headRowNumber);
+            return  excelService.importCg(file,headRowNumber,importType);
 //            EasyExcel.read(file.getInputStream(), StaffDO.class, new UploadDataListener(uploadDAO)).sheet().doRead();
         } catch (Exception e) {
             e.printStackTrace();

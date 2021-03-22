@@ -30,7 +30,7 @@ public class ExcelServiceImpl implements ExcelService {
     @Autowired
     private TJsShMapper tJsShMapper;
     @Override
-    public R importXq(MultipartFile file, Integer headRowNumber) {
+    public R importXq(MultipartFile file, Integer headRowNumber, Integer importType) {
         XqListener xqListener = new XqListener();
         xqListener.setTJsXqMapper(tJsXqMapper);
         xqListener.setTJsShMapper(tJsShMapper);
@@ -43,7 +43,7 @@ public class ExcelServiceImpl implements ExcelService {
         }
     }
     @Override
-    public R importCg(MultipartFile file, Integer headRowNumber) {
+    public R importCg(MultipartFile file, Integer headRowNumber, Integer importType) {
         CgListener cgListener = new CgListener();
         cgListener.setTJsCgMapper(tJsCgMapper);
         cgListener.setTJsShMapper(tJsShMapper);
