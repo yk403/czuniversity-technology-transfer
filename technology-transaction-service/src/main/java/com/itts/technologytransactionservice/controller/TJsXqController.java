@@ -2,8 +2,10 @@ package com.itts.technologytransactionservice.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
+import com.itts.common.utils.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsXq;
 import com.itts.technologytransactionservice.service.ITJsShService;
@@ -51,11 +53,11 @@ public class TJsXqController extends BaseController {
      * @return
      */
     @PostMapping("/FindTJsXqByTJsLbTJsLy")
-    public R FindTJsXqByTJsLbTJsLy(@RequestBody Map<String, Object> params) {
+    public ResponseUtil FindTJsXqByTJsLbTJsLy(@RequestBody Map<String, Object> params) {
         //查询邻域类别审核状态列表数据
         Query query = new Query(params);
-        IPage<TJsXq> tJsXqIPage = tJsXqService.FindTJsXqByTJsLbTJsLy(query);
-        return success(tJsXqIPage);
+        PageInfo<TJsXq> page = tJsXqService.FindTJsXqByTJsLbTJsLy(query);
+        return ResponseUtil.success(page);
     }
     /**
      * 分页条件查询

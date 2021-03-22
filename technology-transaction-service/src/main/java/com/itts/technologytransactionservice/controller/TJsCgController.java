@@ -1,9 +1,10 @@
 package com.itts.technologytransactionservice.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
+import com.itts.common.utils.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.service.ITJsCgService;
 import com.itts.technologytransactionservice.service.ITJsShService;
@@ -52,11 +53,11 @@ public class TJsCgController extends BaseController {
      * @return
      */
     @PostMapping("/page")
-    public R FindtJsCgByTJsLbTJsLy(@RequestBody Map<String, Object> params) {
+    public ResponseUtil FindtJsCgByTJsLbTJsLy(@RequestBody Map<String, Object> params) {
         //查询邻域类别审核状态列表数据
         Query query = new Query(params);
-        IPage<TJsCg> tJsCgIPage = tJsCgService.FindtJsCgByTJsLbTJsLy(query);
-        return success(tJsCgIPage);
+        PageInfo<TJsCg> page = tJsCgService.FindtJsCgByTJsLbTJsLy(query);
+        return ResponseUtil.success(page);
     }
 
     /**

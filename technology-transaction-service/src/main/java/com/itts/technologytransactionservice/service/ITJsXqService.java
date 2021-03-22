@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.TJsXq;
 
@@ -19,7 +20,7 @@ import java.util.Map;
 public interface ITJsXqService extends IService<TJsXq> {
 
 	/*IPage page(Query query);*/
-	IPage FindTJsXqByTJsLbTJsLy(Query query);
+	PageInfo FindTJsXqByTJsLbTJsLy(Query query);
 	TJsXq selectByName(String name);
 	boolean saveXq(TJsXq tJsXq) throws Exception;
 

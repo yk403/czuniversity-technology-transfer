@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.TJsCg;
 
@@ -19,10 +20,10 @@ import java.util.Map;
  */
 public interface ITJsCgService extends IService<TJsCg> {
 
-	IPage page(Query query);
+
 
 TJsCg selectByName(String name);
-IPage FindtJsCgByTJsLbTJsLy(Query query);
+	PageInfo FindtJsCgByTJsLbTJsLy(Query query);
 
 	boolean saveCg(TJsCg tJsCg) throws Exception;
 	boolean removeByIdCg(Long id);

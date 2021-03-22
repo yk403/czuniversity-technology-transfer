@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.TJsXqMapper;
@@ -38,11 +40,12 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
 		return p;
 	}*/
 	@Override
-	public IPage FindTJsXqByTJsLbTJsLy(Query query) {
-		Page<TJsXq> p = new Page<>(query.getPageNum(), query.getPageSize());
-		List<TJsXq> list = tJsXqMapper.FindTJsXqByTJsLbTJsLy(p,query);
-		p.setRecords(list);
-		return p;
+	public PageInfo FindTJsXqByTJsLbTJsLy(Query query) {
+		PageHelper.startPage(query.getPageNum(), query.getPageSize());
+		//Page<TJsXq> p = new Page<>(query.getPageNum(), query.getPageSize());
+		List<TJsXq> list = tJsXqMapper.FindTJsXqByTJsLbTJsLy(query);
+		PageInfo<TJsXq> page = new PageInfo<>(list);
+		return page;
 	}
 	@Override
 	public IPage PageByTJsFb(Query query) {
@@ -162,6 +165,7 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
 			//List<TJsXq> tJsXqs = listByIds(ids);
 			List<TJsSh> tJsShes = tJsShService.selectBycgxqIds(ids);
 			for (TJsSh tJsShe: tJsShes) {
+				if("2".equals(tJsShe.getFbshzt()))
 				tJsShe.setReleaseStatus("2");
 			}
 			tJsShService.updateBatchById(tJsShes);

@@ -26,7 +26,7 @@ public interface TJsXqMapper extends BaseMapper<TJsXq> {
 	@Select("select * from t_js_xq where xqmc = #{name}")
 	TJsXq selectByName(String name);
 
-	List<TJsXq> FindTJsXqByTJsLbTJsLy(IPage<TJsXq> page, @Param("map") Map map);
+	List<TJsXq> FindTJsXqByTJsLbTJsLy(@Param("map") Map map);
 	List<TJsFb> PageByTJsFb(IPage<TJsFb> page, @Param("map") Map map);
 	List<TJsXq> selectByStages(Integer companyId, String[] stages);
 

@@ -25,7 +25,7 @@ public interface TJsCgMapper extends BaseMapper<TJsCg> {
 	@Select("select * from t_js_cg where cgmc = #{name}")
 	TJsCg selectByName(String name);
 
-	List<TJsCg> FindtJsCgByTJsLbTJsLy(IPage<TJsCg> page, @Param("map") Map map);
+	List<TJsCg> FindtJsCgByTJsLbTJsLy(@Param("map") Map map);
 
 	void updateTJsCg(TJsCg tJsCg);
 }
