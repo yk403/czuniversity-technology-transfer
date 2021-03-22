@@ -1,7 +1,11 @@
-
 server:
   port: 12000
 spring:
+  security:
+    user:
+      name: user
+      password: 123456
+      roles: ADMIN
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
