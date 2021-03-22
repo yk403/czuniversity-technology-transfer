@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.TJsLbMapper">
 
 	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsLb">
-		select `id`,`mc`,`bh` from t_js_lb
+		select `id`,`mc`,`bh`,`xq` from t_js_lb
         <where>  
 		  		  <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
 		  		  <if test="map.mc != null and map.mc != ''"> and mc = #{map.mc} </if>
