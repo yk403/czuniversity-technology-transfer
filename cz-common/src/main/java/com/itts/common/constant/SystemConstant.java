@@ -17,4 +17,9 @@ public class SystemConstant {
      * 客户端、门户URL前缀
      */
     public static final String BASE_URL = "/api";
+
+    /**
+     * 后台人才培养系统URL前缀
+     */
+    public static final String PERSONNEL_BASE_URL = "/api/personnel";
 }

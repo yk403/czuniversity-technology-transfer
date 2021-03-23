@@ -2,7 +2,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 172.21.25.8:1884
+        server-addr: 172.21.25.8:18848
   # Zipkin配置
   zipkin:
     base-url: http://172.21.25.8:19411/ #zipkin server的请求地址

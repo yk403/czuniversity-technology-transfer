@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personneltrainingservice.mapper.TPcMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personneltrainingservice.model.TPc">
+        <id column="id" property="id" />
+        <result column="pcmc" property="pcmc" />
+        <result column="pch" property="pch" />
+        <result column="pclx" property="pclx" />
+        <result column="sczt" property="sczt" />
+        <result column="cjsj" property="cjsj" />
+        <result column="gxsj" property="gxsj" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, pcmc, pch, pclx, sczt, cjsj, gxsj
+    </sql>
+
+</mapper>
