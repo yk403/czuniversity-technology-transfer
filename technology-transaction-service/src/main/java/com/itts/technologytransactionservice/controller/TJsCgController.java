@@ -1,9 +1,10 @@
 package com.itts.technologytransactionservice.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
+import com.itts.common.utils.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.service.ITJsCgService;
 import com.itts.technologytransactionservice.service.ITJsShService;
@@ -52,11 +53,11 @@ public class TJsCgController extends BaseController {
      * @return
      */
     @PostMapping("/page")
-    public R FindtJsCgByTJsLbTJsLy(@RequestBody Map<String, Object> params) {
+    public ResponseUtil FindtJsCgByTJsLbTJsLy(@RequestBody Map<String, Object> params) {
         //查询邻域类别审核状态列表数据
         Query query = new Query(params);
-        IPage<TJsCg> tJsCgIPage = tJsCgService.FindtJsCgByTJsLbTJsLy(query);
-        return success(tJsCgIPage);
+        PageInfo<TJsCg> page = tJsCgService.FindtJsCgByTJsLbTJsLy(query);
+        return ResponseUtil.success(page);
     }
 
     /**
@@ -141,7 +142,7 @@ public class TJsCgController extends BaseController {
         return update(result);
     }
     /*
-需求下发
+成果下发
  */
     @PostMapping("/issueBatch")
     public R issueBatch(@RequestBody List<String> ids){
@@ -153,5 +154,44 @@ public class TJsCgController extends BaseController {
         boolean result = tJsCgService.issueBatch(longs);
         return  remove(result);
     }
+    /*
+    已发布的成果申请拍卖招标(受理协办)
+     */
+    @RequestMapping("/assistanceUpdate")
+    public R assistanceUpdate(@RequestBody TJsCg tJsCg) {
+        boolean result = tJsCgService.assistanceUpdateTJsCg(tJsCg);
+        return update(result);
+    }
+    /*
+    受理协办审核
+ */
+    @RequestMapping("/assistancePass/{id}")
+    public R assistancePass(@PathVariable("id") String id) {
+        long l = Long.parseLong(id);
+        boolean result = tJsCgService.assistancePassUpdateById(l);
+        return update(result);
+    }
+    /*
+受理协办审核不通过并填写备注
+*/
+    @PostMapping("/assistanceDisPass")
+    public R assistanceDisPass(@RequestBody Map<String, Object> params) {
+        boolean result = tJsCgService.assistanceDisPassById(params);
+        return update(result);
+    }
+    /*
+受理协办下发
+*/
+    @PostMapping("/assistanceIssueBatch")
+    public R assistanceIssueBatch(@RequestBody List<String> ids){
+        ArrayList<Long> longs = new ArrayList<>();
+        for (String id: ids) {
+            long l = Long.parseLong(id);
+            longs.add(l);
+        }
+        boolean result = tJsCgService.assistanceIssueBatch(longs);
+        return  remove(result);
+    }
+
 
 }

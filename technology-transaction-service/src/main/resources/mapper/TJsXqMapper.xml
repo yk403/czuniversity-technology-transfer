@@ -78,6 +78,11 @@
 			<if test="jshdId != null">jshdId = #{jshdId},</if>
 			<if test="contracts != null">contracts = #{contracts},</if>
 			<if test="dz != null">dz = #{dz}</if>
+			<if test="releaseType != null">release_type = #{releaseType}</if>
+			<if test="agreement != null">agreement = #{agreement}</if>
+			<if test="bond != null">bond = #{bond}</if>
+			<if test="introduction != null">introduction = #{introduction}</if>
+			<if test="remarks != null">remarks = #{remarks}</if>
 		</set>
 		where id = #{id}
 	</update>

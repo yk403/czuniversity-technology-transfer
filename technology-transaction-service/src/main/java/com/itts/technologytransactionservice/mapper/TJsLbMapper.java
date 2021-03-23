@@ -18,6 +18,6 @@ import java.util.Map;
 @Repository
 public interface TJsLbMapper extends BaseMapper<TJsLb> {
 	
-	List<TJsLb> list(IPage<TJsLb> page, @Param("map") Map map);
+	List<TJsLb> list(@Param("map") Map map);
 
 }

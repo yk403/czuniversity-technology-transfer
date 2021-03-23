@@ -60,5 +60,17 @@ public class TJsHd implements Serializable {
  	* 创建时间
  	*/
 	private String cjsj;
+	/**
+	 * 咨询电话
+	 */
+	private String zxdh;
+	/**
+	 * 活动负责人
+	 */
+	private String hdfzr;
+	/**
+	 * 活动内容
+	 */
+	private String hdnr;
 
 }

@@ -136,4 +136,20 @@ public class TJsXq implements Serializable {
 类别名称
 */
 	private String lbName;
+    /*
+协议
+ */
+    private String agreement;
+    /*
+    保证金
+     */
+    private String bond;
+	/*
+需求简介
+ */
+	private String introduction;
+	/*
+备注
+ */
+	private String remarks;
 }
