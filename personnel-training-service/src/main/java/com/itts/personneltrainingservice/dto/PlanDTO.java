@@ -15,6 +15,14 @@ import java.util.Date;
 @ToString
 public class PlanDTO {
     /**
+     * 培养计划id
+     */
+    private Integer id;
+    /**
+     * 批次id
+     */
+    private Integer pcId;
+    /**
      * 批次名称
      */
     private String pcmc;
