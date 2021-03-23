@@ -36,5 +36,8 @@ public class TJsLy implements Serializable {
  	* 编号
  	*/
 	private String bh;
-
+	/**
+	 * 详情
+	 */
+	private String xq;
 }

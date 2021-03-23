@@ -2,9 +2,11 @@ package com.itts.technologytransactionservice.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.TJsCg;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +20,10 @@ import java.util.Map;
  */
 public interface ITJsCgService extends IService<TJsCg> {
 
-	IPage page(Query query);
+
 
 TJsCg selectByName(String name);
-IPage FindtJsCgByTJsLbTJsLy(Query query);
+	PageInfo FindtJsCgByTJsLbTJsLy(Query query);
 
 	boolean saveCg(TJsCg tJsCg) throws Exception;
 	boolean removeByIdCg(Long id);
@@ -30,4 +32,12 @@ IPage FindtJsCgByTJsLbTJsLy(Query query);
 	boolean issueBatch(List<Long> ids);
 
     boolean updateTJsCg(TJsCg tJsCg);
+
+    boolean assistanceUpdateTJsCg(TJsCg tJsCg);
+
+	boolean assistancePassUpdateById(Long id);
+
+	boolean assistanceDisPassById(Map<String, Object> params);
+
+	boolean assistanceIssueBatch(List<Long> longs);
 }
