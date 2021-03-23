@@ -1,4 +1,4 @@
-package com.itts.userservice.yh.controller;
+package com.itts.userservice.controller.yh;
 
 
 import com.github.pagehelper.PageInfo;
@@ -68,7 +68,7 @@ public class TYhController {
     @ApiOperation(value = "新增")
     public ResponseUtil add(@RequestBody TYh tYh)throws WebException{
         //检查参数是否合法
-        checkPequest(tYh);
+        checkRequest(tYh);
         TYh add = tYhService.add(tYh);
         return ResponseUtil.success(add);
     }
@@ -82,15 +82,15 @@ public class TYhController {
     public ResponseUtil update(@PathVariable("id")Long id,@RequestBody TYh tYh)throws WebException{
         //检查参数是否合法
         if(id==null){
-            throw new WebException(ErrorCodeEnum.TECHNOLOGY_TRANSACTION_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //检查数据库中是否存在要更新的数据
         TYh tYh1 = tYhService.get(id);
         if(tYh1==null){
-            throw new WebException(ErrorCodeEnum.TECHNOLOGY_TRANSACTION_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         //检查参数是否合法
-        checkPequest(tYh);
+        checkRequest(tYh);
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
         BeanUtils.copyProperties(tYh,tYh1,"id","chsj","cjr");
         tYhService.update(tYh1);
@@ -106,13 +106,13 @@ public class TYhController {
     public ResponseUtil delete(@PathVariable("id")Long id)throws WebException{
         //检查参数是否为空
         if(id==null){
-            throw new WebException(ErrorCodeEnum.TECHNOLOGY_TRANSACTION_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         TYh yh = tYhService.get(id);
 
         if(yh == null){
-            throw new WebException(-1, "数据不存在");
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         //设置删除状态，更新删除时间
         yh.setSfsc(true);
@@ -126,10 +126,10 @@ public class TYhController {
     /**
      * 校验参数是否合法
      */
-    private void checkPequest(TYh tYh) throws WebException {
+    private void checkRequest(TYh tYh) throws WebException {
         //如果参数为空，抛出异常
         if(tYh==null){
-            throw new WebException(ErrorCodeEnum.TECHNOLOGY_TRANSACTION_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
 }
