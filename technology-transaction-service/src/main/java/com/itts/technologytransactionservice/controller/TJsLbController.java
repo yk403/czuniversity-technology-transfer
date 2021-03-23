@@ -2,8 +2,10 @@ package com.itts.technologytransactionservice.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
+import com.itts.common.utils.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsLb;
 import com.itts.technologytransactionservice.service.ITJsLbService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +36,11 @@ public class TJsLbController extends BaseController {
     * @return
     */
     @PostMapping("/page")
-    public R page(@RequestBody Map<String, Object> params) {
+    public ResponseUtil page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        IPage<TJsLb> tJsLbIPage = tJsLbService.page(query);
-        return success(tJsLbIPage);
+        PageInfo<TJsLb> page = tJsLbService.page(query);
+        return ResponseUtil.success(page);
     }
 
     /**

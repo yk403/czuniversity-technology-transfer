@@ -19,6 +19,6 @@ import java.util.Map;
 @Repository
 public interface TJsHdMapper extends BaseMapper<TJsHd> {
 	
-	List<TJsHd> list(IPage<TJsHd> page, @Param("map") Map map);
+	List<TJsHd> list(@Param("map") Map map);
 
 }
