@@ -1,5 +1,7 @@
 package com.itts.common.constant;
 
+import com.itts.common.bean.LoginUser;
+
 /**
  * @ClassName SystemConstant
  * @Description
@@ -17,4 +19,14 @@ public class SystemConstant {
      * 客户端、门户URL前缀
      */
     public static final String BASE_URL = "/api";
+
+    /**
+     * token前缀
+     */
+    public static final String TOKEN_PREFIX = "token";
+
+    /**
+    *存放用户登录信息， threadLocal
+    */
+    public static ThreadLocal<LoginUser> threadLocal = new ThreadLocal<>();
 }
