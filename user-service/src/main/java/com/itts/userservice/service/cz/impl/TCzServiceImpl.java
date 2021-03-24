@@ -1,12 +1,11 @@
-package com.itts.userservice.cz.service.impl;
+package com.itts.userservice.service.cz.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.cz.model.TCz;
-import com.itts.userservice.cz.service.TCzService;
-import com.itts.userservice.cz.mapper.TCzMapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.userservice.model.cz.TCz;
+import com.itts.userservice.service.cz.TCzService;
+import com.itts.userservice.mapper.cz.TCzMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 

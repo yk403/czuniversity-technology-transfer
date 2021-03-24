@@ -1,7 +1,7 @@
-package com.itts.userservice.cz.service;
+package com.itts.userservice.service.cz;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.cz.model.TCz;
+import com.itts.userservice.model.cz.TCz;
 
 /**
  * <p>

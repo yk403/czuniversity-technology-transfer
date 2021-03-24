@@ -1,4 +1,4 @@
-package com.itts.userservice.cz.model;
+package com.itts.userservice.model.yh;
 
 import com.baomidou.mybatisplus.annotation.*;
 
@@ -9,16 +9,16 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 操作表
+ * 用户表
  * </p>
  *
  * @author lym
- * @since 2021-03-19
+ * @since 2021-03-18
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_cz")
-public class TCz implements Serializable {
+@TableName("t_yh")
+public class TYh implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,14 +29,49 @@ public class TCz implements Serializable {
     private Long id;
 
     /**
-     * 操作名称
+     * 用户名
      */
-    private String czmc;
+    private String yhm;
 
     /**
-     * 操作编码
+     * 密码
      */
-    private String czbm;
+    private String mm;
+
+    /**
+     * 用户编号
+     */
+    private String yhbh;
+
+    /**
+     * 真实姓名
+     */
+    private String zsxm;
+
+    /**
+     * 联系电话
+     */
+    private String lxdh;
+
+    /**
+     * 用户类型
+     */
+    private String yhlx;
+
+    /**
+     * 用户级别
+     */
+    private String yhjb;
+
+    /**
+     * 是否会员
+     */
+    private Boolean sfhy;
+
+    /**
+     * 会员类型
+     */
+    private Long hylxId;
 
     /**
      * 是否删除

@@ -1,6 +1,6 @@
-package com.itts.userservice.yh.mapper;
+package com.itts.userservice.mapper.yh;
 
-import com.itts.userservice.yh.model.TYh;
+import com.itts.userservice.model.yh.TYh;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

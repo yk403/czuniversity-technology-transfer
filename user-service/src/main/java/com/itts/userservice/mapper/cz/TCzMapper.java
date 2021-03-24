@@ -1,6 +1,6 @@
-package com.itts.userservice.cz.mapper;
+package com.itts.userservice.mapper.cz;
 
-import com.itts.userservice.cz.model.TCz;
+import com.itts.userservice.model.cz.TCz;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

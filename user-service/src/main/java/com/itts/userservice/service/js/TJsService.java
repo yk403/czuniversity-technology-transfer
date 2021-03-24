@@ -1,8 +1,7 @@
-package com.itts.userservice.TJs.service;
+package com.itts.userservice.service.js;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.TJs.model.TJs;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.itts.userservice.model.js.TJs;
 
 
 /**

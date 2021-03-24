@@ -6,13 +6,11 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.ResponseUtil;
-import com.itts.userservice.yh.mapper.TYhMapper;
-import com.itts.userservice.yh.model.TYh;
-import com.itts.userservice.yh.service.TYhService;
+import com.itts.userservice.model.yh.TYh;
+import com.itts.userservice.service.yh.TYhService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

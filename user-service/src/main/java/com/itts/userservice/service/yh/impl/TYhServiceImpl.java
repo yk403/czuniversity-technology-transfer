@@ -1,12 +1,11 @@
-package com.itts.userservice.yh.service.impl;
+package com.itts.userservice.service.yh.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.yh.model.TYh;
-import com.itts.userservice.yh.mapper.TYhMapper;
-import com.itts.userservice.yh.service.TYhService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.itts.userservice.model.yh.TYh;
+import com.itts.userservice.mapper.yh.TYhMapper;
+import com.itts.userservice.service.yh.TYhService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 

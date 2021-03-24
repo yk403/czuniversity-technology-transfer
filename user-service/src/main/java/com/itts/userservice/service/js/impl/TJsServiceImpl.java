@@ -1,12 +1,11 @@
-package com.itts.userservice.TJs.service.impl;
+package com.itts.userservice.service.js.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.TJs.mapper.TJsMapper;
-import com.itts.userservice.TJs.model.TJs;
-import com.itts.userservice.TJs.service.TJsService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.userservice.mapper.js.TJsMapper;
+import com.itts.userservice.model.js.TJs;
+import com.itts.userservice.service.js.TJsService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
