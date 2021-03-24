@@ -3,9 +3,9 @@ package com.itts.userservice.service.js.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.mapper.js.TJsMapper;
-import com.itts.userservice.model.js.TJs;
-import com.itts.userservice.service.js.TJsService;
+import com.itts.userservice.mapper.js.JsMapper;
+import com.itts.userservice.model.js.Js;
+import com.itts.userservice.service.js.JsService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -22,21 +22,21 @@ import java.util.List;
  */
 @Service
 @Primary
-public class TJsServiceImpl  implements TJsService {
+public class JsServiceImpl implements JsService {
 
 
     @Resource
-    private TJsMapper tJsMapper;
+    private JsMapper tJsMapper;
     /**
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<TJs> findByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<Js> findByPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        QueryWrapper<TJs> objectQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<Js> objectQueryWrapper = new QueryWrapper<>();
         objectQueryWrapper.eq("sfsc",false);
-        List<TJs> tJs = tJsMapper.selectList(objectQueryWrapper);
-        PageInfo<TJs> tJsPageInfo = new PageInfo<>(tJs);
+        List<Js> js = tJsMapper.selectList(objectQueryWrapper);
+        PageInfo<Js> tJsPageInfo = new PageInfo<>(js);
         return tJsPageInfo;
     }
 
@@ -44,26 +44,26 @@ public class TJsServiceImpl  implements TJsService {
      * 获取详情
      */
     @Override
-    public TJs get(Long id) {
-        TJs tJs = tJsMapper.selectById(id);
-        return tJs;
+    public Js get(Long id) {
+        Js Js = tJsMapper.selectById(id);
+        return Js;
     }
 
     /**
      * 新增
      */
     @Override
-    public TJs add(TJs tJs) {
-        tJsMapper.insert(tJs);
-        return tJs;
+    public Js add(Js Js) {
+        tJsMapper.insert(Js);
+        return Js;
     }
 
     /**
      * 更新
      */
     @Override
-    public TJs update(TJs tJs) {
-        tJsMapper.updateById(tJs);
-        return tJs;
+    public Js update(Js Js) {
+        tJsMapper.updateById(Js);
+        return Js;
     }
 }

@@ -3,9 +3,9 @@ package com.itts.userservice.service.cz.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.model.cz.TCz;
-import com.itts.userservice.service.cz.TCzService;
-import com.itts.userservice.mapper.cz.TCzMapper;
+import com.itts.userservice.model.cz.Cz;
+import com.itts.userservice.service.cz.CzService;
+import com.itts.userservice.mapper.cz.CzMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -22,23 +22,23 @@ import java.util.List;
  */
 @Service
 @Primary
-public class TCzServiceImpl  implements TCzService {
+public class CzServiceImpl implements CzService {
 
 
     @Resource
-    private TCzMapper tCzMapper;
+    private CzMapper czMapper;
 
     /**
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<TCz> findByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<Cz> findByPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        QueryWrapper<TCz> objectQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<Cz> objectQueryWrapper = new QueryWrapper<>();
         //过滤
         objectQueryWrapper.eq("sfsc",false);
-        List<TCz> tCzs = tCzMapper.selectList(objectQueryWrapper);
-        PageInfo<TCz> tCzPageInfo = new PageInfo<>(tCzs);
+        List<Cz> Czs = czMapper.selectList(objectQueryWrapper);
+        PageInfo<Cz> tCzPageInfo = new PageInfo<>(Czs);
         return tCzPageInfo;
     }
 
@@ -46,25 +46,25 @@ public class TCzServiceImpl  implements TCzService {
      * 获取详情
      */
     @Override
-    public TCz get(Long id) {
-        return tCzMapper.selectById(id);
+    public Cz get(Long id) {
+        return czMapper.selectById(id);
     }
 
     /**
      * 新增
      */
     @Override
-    public TCz add(TCz tCz) {
-        tCzMapper.insert(tCz);
-        return tCz;
+    public Cz add(Cz Cz) {
+        czMapper.insert(Cz);
+        return Cz;
     }
 
     /**
      * 更新
      */
     @Override
-    public TCz update(TCz tCz) {
-        tCzMapper.updateById(tCz);
-        return tCz;
+    public Cz update(Cz Cz) {
+        czMapper.updateById(Cz);
+        return Cz;
     }
 }

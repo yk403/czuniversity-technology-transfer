@@ -1,7 +1,7 @@
 package com.itts.userservice.service.cz;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.model.cz.TCz;
+import com.itts.userservice.model.cz.Cz;
 
 /**
  * <p>
@@ -11,25 +11,25 @@ import com.itts.userservice.model.cz.TCz;
  * @author fl
  * @since 2021-03-19
  */
-public interface TCzService  {
+public interface CzService {
     /**
      * 查询列表
      */
-    PageInfo<TCz> findByPage(Integer pageNum, Integer pageSize);
+    PageInfo<Cz> findByPage(Integer pageNum, Integer pageSize);
 
     /**
      * 获取详情
      */
-    TCz get(Long id);
+    Cz get(Long id);
 
     /**
      * 新增
      */
-    TCz add(TCz tCz);
+    Cz add(Cz Cz);
 
     /**
      * 更新
      */
-    TCz update(TCz tCz);
+    Cz update(Cz Cz);
 
 }
