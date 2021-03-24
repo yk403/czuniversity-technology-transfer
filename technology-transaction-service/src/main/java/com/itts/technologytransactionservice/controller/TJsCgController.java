@@ -33,19 +33,6 @@ public class TJsCgController extends BaseController {
 
     @Autowired
     private ITJsShService tJsShService;
-/*    *//**
-    * 分页查询
-    * @param params
-    * @return
-    *//*
-    @PostMapping("/page")
-    public R page(@RequestBody Map<String, Object> params) {
-        //查询列表数据
-        Query query = new Query(params);
-        IPage<TJsCg> tJsCgIPage = tJsCgService.page(query);
-        return success(tJsCgIPage);
-    }*/
-
 
     /**
      * 分页条件查询

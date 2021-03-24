@@ -38,7 +38,6 @@ public class TJsCgServiceImpl extends ServiceImpl<TJsCgMapper, TJsCg> implements
 	@Override
 	public PageInfo<TJsCg> FindtJsCgByTJsLbTJsLy(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		//Page<TJsCg> p = new Page<>(query.getPageNum(), query.getPageSize());
 		List<TJsCg> list = tJsCgMapper.FindtJsCgByTJsLbTJsLy(query);
 		PageInfo<TJsCg> page = new PageInfo<>(list);
 		return page;
