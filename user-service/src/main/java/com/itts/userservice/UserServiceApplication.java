@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@SpringBootApplication(scanBasePackages = "com.itts.*")
-@MapperScan("com.itts.userservice.*")
+@SpringBootApplication(scanBasePackages = {"com.itts.common.exception", "com.itts.userservice"})
+@MapperScan("com.itts.userservice.mapper.*")
 @EnableDiscoveryClient
 @EnableFeignClients
 public class UserServiceApplication {

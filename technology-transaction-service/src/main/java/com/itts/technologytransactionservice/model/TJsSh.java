@@ -41,7 +41,7 @@ public class TJsSh implements Serializable {
  	*/
 	private String fbshzt;
 	/**
- 	* 活动申请状态 0未审核、1待审核、2通过、3不通过
+ 	* 活动申请状态 1待审核、2通过、3不通过
  	*/
 	private String hdsqzt;
 	/**
@@ -64,5 +64,18 @@ public class TJsSh implements Serializable {
 	发布状态 1 未发布 2已发布
 	 */
 	private String releaseStatus;
-
+	/*
+受理协办审核状态
+1待审核、2通过、3不通过
+ */
+	private String assistanceStatus;
+	/*
+	受理协办发布状态
+1 未发布 2已发布
+	 */
+	private String releaseAssistanceStatus;
+	/*
+	受理协办未通过说明
+	 */
+	private String assistanceRemark;
 }

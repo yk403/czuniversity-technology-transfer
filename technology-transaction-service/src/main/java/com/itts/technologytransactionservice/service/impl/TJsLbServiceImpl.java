@@ -3,6 +3,8 @@ package com.itts.technologytransactionservice.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.TJsLbMapper;
 import com.itts.technologytransactionservice.model.TJsLb;
@@ -21,11 +23,11 @@ public class TJsLbServiceImpl extends ServiceImpl<TJsLbMapper, TJsLb> implements
 	private TJsLbMapper tJsLbMapper;
 	
 	@Override
-	public IPage page(Query query) {
-		Page<TJsLb> p = new Page<>(query.getPageNum(), query.getPageSize());
-		List<TJsLb> list = tJsLbMapper.list(p,query);
-		p.setRecords(list);
-		return p;
+	public PageInfo page(Query query) {
+		PageHelper.startPage(query.getPageNum(), query.getPageSize());
+		List<TJsLb> list = tJsLbMapper.list(query);
+		PageInfo<TJsLb> page = new PageInfo<>(list);
+		return page;
 	}
 	
 }

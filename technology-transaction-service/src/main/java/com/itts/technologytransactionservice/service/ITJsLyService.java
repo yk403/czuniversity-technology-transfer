@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.TJsLy;
 
@@ -15,6 +16,6 @@ import com.itts.technologytransactionservice.model.TJsLy;
  */
 public interface ITJsLyService extends IService<TJsLy> {
 
-	IPage page(Query query);
+	PageInfo page(Query query);
 
 }

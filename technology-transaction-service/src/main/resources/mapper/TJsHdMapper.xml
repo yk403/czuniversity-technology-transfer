@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.TJsHdMapper">
 
 	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsHd">
-		select `id`,`hdmc`,`hdlx`,`hdjj`,`hdgz`,`hdkssj`,`hdssj`,`hdzt`,`cjsj` from t_js_hd
+		select `id`,`hdmc`,`hdlx`,`hdjj`,`hdgz`,`hdkssj`,`hdssj`,`hdzt`,`cjsj`,`zxdh`,`hdfzr`,`hdnr` from t_js_hd
         <where>  
 		  		  <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
 		  		  <if test="map.hdmc != null and map.hdmc != ''"> and hdmc = #{map.hdmc} </if>
