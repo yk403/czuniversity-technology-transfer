@@ -3,9 +3,9 @@ package com.itts.userservice.service.yh.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.model.yh.TYh;
-import com.itts.userservice.mapper.yh.TYhMapper;
-import com.itts.userservice.service.yh.TYhService;
+import com.itts.userservice.model.yh.Yh;
+import com.itts.userservice.mapper.yh.YhMapper;
+import com.itts.userservice.service.yh.YhService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -22,22 +22,22 @@ import java.util.List;
  */
 @Service
 @Primary
-public class TYhServiceImpl implements TYhService {
+public class YhServiceImpl implements YhService {
 
     @Resource
-    private TYhMapper tYhMapper;
+    private YhMapper tYhMapper;
 
 
     /**
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<TYh> findByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<Yh> findByPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        QueryWrapper<TYh> query = new QueryWrapper<>();
+        QueryWrapper<Yh> query = new QueryWrapper<>();
         query.eq("sfsc", false);
-        List<TYh> list = tYhMapper.selectList(query);
-        PageInfo<TYh> page = new PageInfo<>(list);
+        List<Yh> list = tYhMapper.selectList(query);
+        PageInfo<Yh> page = new PageInfo<>(list);
         return page;
     }
 
@@ -45,26 +45,26 @@ public class TYhServiceImpl implements TYhService {
      * 获取详情
      */
     @Override
-    public TYh get(Long id) {
-        TYh tYh = tYhMapper.selectById(id);
-        return tYh;
+    public Yh get(Long id) {
+        Yh Yh = tYhMapper.selectById(id);
+        return Yh;
     }
 
     /**
      * 新增
      */
     @Override
-    public TYh add(TYh tYh) {
-        tYhMapper.insert(tYh);
-        return tYh;
+    public Yh add(Yh Yh) {
+        tYhMapper.insert(Yh);
+        return Yh;
     }
 
     /**
      * 更新
      */
     @Override
-    public TYh update(TYh tYh) {
-        tYhMapper.updateById(tYh);
-        return tYh;
+    public Yh update(Yh Yh) {
+        tYhMapper.updateById(Yh);
+        return Yh;
     }
 }

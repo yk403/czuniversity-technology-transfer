@@ -1,7 +1,7 @@
 package com.itts.userservice.service.yh;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.model.yh.TYh;
+import com.itts.userservice.model.yh.Yh;
 
 /**
  * <p>
@@ -11,25 +11,25 @@ import com.itts.userservice.model.yh.TYh;
  * @author fl
  * @since 2021-03-18
  */
-public interface TYhService {
+public interface YhService {
 
     /**
      * 查询列表
      */
-    PageInfo<TYh> findByPage(Integer pageNum,Integer pageSize);
+    PageInfo<Yh> findByPage(Integer pageNum, Integer pageSize);
 
     /**
      * 获取详情
      */
-    TYh get(Long id);
+    Yh get(Long id);
 
     /**
      * 新增
      */
-    TYh add(TYh tYh);
+    Yh add(Yh Yh);
 
     /**
      * 更新
      */
-    TYh update(TYh tYh);
+    Yh update(Yh Yh);
 }

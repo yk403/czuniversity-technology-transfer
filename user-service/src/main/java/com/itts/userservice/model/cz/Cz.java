@@ -1,16 +1,15 @@
-package com.itts.userservice.model.js;
+package com.itts.userservice.model.cz;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 角色表
+ * 操作表
  * </p>
  *
  * @author lym
@@ -18,8 +17,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_js")
-public class TJs implements Serializable {
+@TableName("t_cz")
+public class Cz implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,14 +29,14 @@ public class TJs implements Serializable {
     private Long id;
 
     /**
-     * 角色名称
+     * 操作名称
      */
-    private String jsmc;
+    private String czmc;
 
     /**
-     * 角色编码
+     * 操作编码
      */
-    private String jsbm;
+    private String czbm;
 
     /**
      * 是否删除
@@ -47,6 +46,7 @@ public class TJs implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(fill= FieldFill.INSERT)
     private Date cjsj;
 
     /**

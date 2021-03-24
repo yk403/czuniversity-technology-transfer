@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itts.userservice.mapper.cz.TCzMapper">
+<mapper namespace="com.itts.userservice.mapper.js.JsMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.itts.userservice.model.cz.TCz">
+    <resultMap id="BaseResultMap" type="com.itts.userservice.model.js.Js">
         <id column="id" property="id" />
-        <result column="czmc" property="czmc" />
-        <result column="czbm" property="czbm" />
+        <result column="jsmc" property="jsmc" />
+        <result column="jsbm" property="jsbm" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
@@ -16,7 +16,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, czmc, czbm, sfsc, cjsj, cjr, gxsj, gxr
+        id, jsmc, jsbm, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

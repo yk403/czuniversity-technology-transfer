@@ -1,6 +1,6 @@
 package com.itts.userservice.mapper.js;
 
-import com.itts.userservice.model.js.TJs;
+import com.itts.userservice.model.js.Js;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author lym
  * @since 2021-03-19
  */
-public interface TJsMapper extends BaseMapper<TJs> {
+public interface JsMapper extends BaseMapper<Js> {
 
 }
