@@ -1,4 +1,4 @@
-package com.itts.userservice.controller.yh;
+package com.itts.userservice.controller.js;
 
 
 import com.github.pagehelper.PageInfo;
@@ -6,8 +6,8 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.ResponseUtil;
-import com.itts.userservice.model.yh.TYh;
-import com.itts.userservice.service.yh.TYhService;
+import com.itts.userservice.model.js.TJs;
+import com.itts.userservice.service.js.TJsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -18,115 +18,98 @@ import java.util.Date;
 
 /**
  * <p>
- * 用户表 前端控制器
+ * 角色表 前端控制器
  * </p>
  *
  * @author fl
- * @since 2021-03-18
+ * @since 2021-03-19
  */
-@Api(tags="用户管理")
+@Api(tags="角色管理")
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL+"/yh")
-public class TYhController {
+@RequestMapping(SystemConstant.ADMIN_BASE_URL+"/tJs")
+public class TJsController {
 
     @Resource
-    private TYhService tYhService;
+    private TJsService tJsService;
 
     /**
      * 获取列表
-     * @param pageNum pageSize
-     * @author fl
      */
+    @ApiOperation(value="获取列表")
     @GetMapping("/list/")
-    @ApiOperation(value = "获取列表")
-    public ResponseUtil find(@RequestParam(value="pageNum",defaultValue = "1") Integer pageNum,
+    public ResponseUtil find(@RequestParam(value="pageNum",defaultValue = "1")Integer pageNum,
                              @RequestParam(value="pageSize",defaultValue = "10")Integer pageSize){
-        PageInfo<TYh> byPage = tYhService.findByPage(pageNum, pageSize);
+        PageInfo<TJs> byPage = tJsService.findByPage(pageNum, pageSize);
         return ResponseUtil.success(byPage);
     }
 
     /**
      * 获取详情
-     * @param id
-     * @author fl
      */
     @GetMapping("/get/{id}")
     @ApiOperation(value = "获取详情")
-    public ResponseUtil get (@PathVariable("id")Long id){
-        TYh tYh = tYhService.get(id);
-        return ResponseUtil.success(tYh);
+    public ResponseUtil get(@PathVariable("id")Long id){
+        TJs tJs = tJsService.get(id);
+        return ResponseUtil.success(tJs);
     }
 
     /**
      * 新增
-     * @author fl
-     *
      */
-    @PostMapping("/add/")
     @ApiOperation(value = "新增")
-    public ResponseUtil add(@RequestBody TYh tYh)throws WebException{
-        //检查参数是否合法
-        checkRequest(tYh);
-        TYh add = tYhService.add(tYh);
+    @PostMapping("/add/")
+    public ResponseUtil add(@RequestBody TJs tJs)throws WebException {
+        checkRequst(tJs);
+        TJs add = tJsService.add(tJs);
         return ResponseUtil.success(add);
     }
     /**
      * 更新
-     * @author fl
-     *
      */
     @ApiOperation(value = "更新")
     @PutMapping("/update/{id}")
-    public ResponseUtil update(@PathVariable("id")Long id,@RequestBody TYh tYh)throws WebException{
+    public ResponseUtil update(@PathVariable("id")Long id,@RequestBody TJs tJs){
         //检查参数是否合法
         if(id==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //检查数据库中是否存在要更新的数据
-        TYh tYh1 = tYhService.get(id);
-        if(tYh1==null){
+        TJs tJs1 = tJsService.get(id);
+        if(tJs1==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        //检查参数是否合法
-        checkRequest(tYh);
+        checkRequst(tJs);
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
-        BeanUtils.copyProperties(tYh,tYh1,"id","chsj","cjr");
-        tYhService.update(tYh1);
-        return ResponseUtil.success(tYh1);
-
+        BeanUtils.copyProperties(tJs,tJs1,"id","chsj","cjr");
+        tJsService.update(tJs1);
+        return ResponseUtil.success(tJs1);
     }
+
     /**
      * 删除
-     * @author fl
      */
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete/{id}")
     public ResponseUtil delete(@PathVariable("id")Long id)throws WebException{
-        //检查参数是否为空
         if(id==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-
-        TYh yh = tYhService.get(id);
-
-        if(yh == null){
+        TJs tJs = tJsService.get(id);
+        if(tJs==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         //设置删除状态，更新删除时间
-        yh.setSfsc(true);
-        yh.setGxsj(new Date());
-        //更新
-        tYhService.update(yh);
-
+        tJs.setSfsc(true);
+        tJs.setCjsj(new Date());
+        tJsService.update(tJs);
         return ResponseUtil.success();
     }
 
     /**
-     * 校验参数是否合法
+     * 校验参数
      */
-    private void checkRequest(TYh tYh) throws WebException {
-        //如果参数为空，抛出异常
-        if(tYh==null){
+    private void checkRequst(TJs tJs)throws WebException{
+        if(tJs==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itts.userservice.yh.mapper.TYhMapper">
+<mapper namespace="com.itts.userservice.mapper.yh.TYhMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.itts.userservice.yh.model.TYh">
+    <resultMap id="BaseResultMap" type="com.itts.userservice.model.yh.TYh">
         <id column="id" property="id" />
         <result column="yhm" property="yhm" />
         <result column="mm" property="mm" />

@@ -1,8 +1,7 @@
-package com.itts.userservice.yh.service;
+package com.itts.userservice.service.yh;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.yh.model.TYh;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.itts.userservice.model.yh.TYh;
 
 /**
  * <p>
