@@ -32,10 +32,6 @@ public class TJsShServiceImpl extends ServiceImpl<TJsShMapper, TJsSh> implements
 		return tJsShMapper.selectBycgxqId(cgxqId);
 	}
 
-/*	@Override
-	public int updateById(Long id) {
-		return tJsShMapper.updateById(id);
-	}*/
 	public List<TJsSh> selectBycgxqIds(List<Long> cgxqIds) {
 		Long[] objects = cgxqIds.toArray(new Long[cgxqIds.size()]);
 		return tJsShMapper.selectBycgxqIds(objects);

@@ -19,7 +19,6 @@ import java.util.Map;
  */
 public interface ITJsXqService extends IService<TJsXq> {
 
-	/*IPage page(Query query);*/
 	PageInfo FindTJsXqByTJsLbTJsLy(Query query);
 	TJsXq selectByName(String name);
 	boolean saveXq(TJsXq tJsXq) throws Exception;

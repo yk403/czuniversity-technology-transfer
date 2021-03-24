@@ -112,44 +112,44 @@ public class TJsXq implements Serializable {
  	* 技术活动id
  	*/
 	private String jshdId;
-	/*
-	发布审核状态
+	/**
+	 * 发布审核状态
 	 */
 	private String status;
-	/*
-	发布时间
+	/**
+	 * 发布时间
 	 */
 	private String createTime;
-	/*
-	发布状态
+	/**
+	 * 发布状态
 	 */
 	private String releaseStatus;
-	/*
-发布类型
- */
+	/**
+	 * 发布类型
+	 */
 	private String releaseType;
-	/*
-领域名称
-*/
+	/**
+	 * 领域名称
+	 */
 	private String lyName;
-	/*
-类别名称
-*/
+	/**
+	 * 类别名称
+	 */
 	private String lbName;
-    /*
-协议
- */
-    private String agreement;
-    /*
-    保证金
-     */
-    private String bond;
-	/*
-需求简介
- */
+	/**
+	 * 协议
+	 */
+	private String agreement;
+	/**
+	 * 保证金
+	 */
+	private String bond;
+	/**
+	 * 需求简介
+	 */
 	private String introduction;
-	/*
-备注
- */
+	/**
+	 * 备注
+	 */
 	private String remarks;
 }

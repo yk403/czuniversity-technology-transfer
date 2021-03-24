@@ -60,22 +60,22 @@ public class TJsSh implements Serializable {
  	* 更新时间
  	*/
 	private String gxsj;
-	/*
-	发布状态 1 未发布 2已发布
+	/**
+	 * 发布状态 1 未发布 2已发布
 	 */
 	private String releaseStatus;
-	/*
-受理协办审核状态
-1待审核、2通过、3不通过
- */
+	/**
+	 * 受理协办审核状态
+	 * 1待审核、2通过、3不通过
+	 */
 	private String assistanceStatus;
-	/*
-	受理协办发布状态
-1 未发布 2已发布
+	/**
+	 * 受理协办发布状态
+	 * 1 未发布 2已发布
 	 */
 	private String releaseAssistanceStatus;
-	/*
-	受理协办未通过说明
+	/**
+	 * 受理协办未通过说明
 	 */
 	private String assistanceRemark;
 }

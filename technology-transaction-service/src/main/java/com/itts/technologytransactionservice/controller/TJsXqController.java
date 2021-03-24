@@ -35,7 +35,7 @@ public class TJsXqController extends BaseController {
     private ITJsShService tJsShService;
 
     /**
-     * 分页条件查询
+     * (后台)分页条件查询
      *
      * @param params
      * @return
