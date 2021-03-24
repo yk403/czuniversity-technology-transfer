@@ -88,6 +88,4 @@ public class TJsHdController extends BaseController {
         return  remove(result);
     }
 
-
-
 }

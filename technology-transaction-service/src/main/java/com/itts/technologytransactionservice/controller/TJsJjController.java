@@ -87,6 +87,4 @@ public class TJsJjController extends BaseController {
         return  remove(result);
     }
 
-
-
 }

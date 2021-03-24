@@ -30,7 +30,7 @@ public class TJsLyController extends BaseController {
     private ITJsLyService tJsLyService;
 
     /**
-    * 分页查询
+    * (前台)分页查询
     * @param params
     * @return
     */

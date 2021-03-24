@@ -86,6 +86,4 @@ public class TQyController extends BaseController {
         return  remove(result);
     }
 
-
-
 }
