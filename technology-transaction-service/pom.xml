@@ -25,7 +25,7 @@
         <!-- 通用模块 -->
         <dependency>
             <groupId>com.itts</groupId>
-            <artifactId>Cz-common</artifactId>
+            <artifactId>cz-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
