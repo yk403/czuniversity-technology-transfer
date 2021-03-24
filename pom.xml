@@ -5,7 +5,7 @@
 
     <modules>
         <module>gateway</module>
-        <module>Cz-common</module>
+        <module>cz-common</module>
         <module>technology-transaction-service</module>
         <module>payment-service</module>
         <module>user-service</module>
