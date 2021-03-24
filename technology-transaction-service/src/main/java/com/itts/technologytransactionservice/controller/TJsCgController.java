@@ -59,7 +59,7 @@ public class TJsCgController extends BaseController {
         return success(tJsCg);
     }
     /**
-     * 根据cgmc查询
+     * 根据成果名称查询
      * @param cgmc
      * @return
      */
@@ -111,8 +111,11 @@ public class TJsCgController extends BaseController {
         boolean result = tJsCgService.removeByIds(longs);
         return  remove(result);
     }
-    /*
-    发布审核通过
+
+    /**
+     * 发布审核通过
+     * @param id
+     * @return
      */
     @RequestMapping("/pass/{id}")
     public R pass(@PathVariable("id") String id) {
@@ -120,17 +123,23 @@ public class TJsCgController extends BaseController {
         boolean result = tJsCgService.passUpdateById(l);
         return update(result);
     }
-    /*
-发布审核不通过并填写备注
- */
+
+    /**
+     * 发布审核不通过并填写备注
+     * @param params
+     * @return
+     */
     @PostMapping("/disPass")
     public R disPass(@RequestBody Map<String, Object> params) {
         boolean result = tJsCgService.disPassById(params);
         return update(result);
     }
-    /*
-成果下发
- */
+
+    /**
+     * 成果下发
+     * @param ids
+     * @return
+     */
     @PostMapping("/issueBatch")
     public R issueBatch(@RequestBody List<String> ids){
         ArrayList<Long> longs = new ArrayList<>();
@@ -141,34 +150,46 @@ public class TJsCgController extends BaseController {
         boolean result = tJsCgService.issueBatch(longs);
         return  remove(result);
     }
-    /*
-    已发布的成果申请拍卖招标(受理协办)
+
+    /**
+     * 已发布的成果申请拍卖招标(受理协办)
+     * @param tJsCg
+     * @return
      */
     @RequestMapping("/assistanceUpdate")
     public R assistanceUpdate(@RequestBody TJsCg tJsCg) {
         boolean result = tJsCgService.assistanceUpdateTJsCg(tJsCg);
         return update(result);
     }
-    /*
-    受理协办审核
- */
+
+    /**
+     * 受理协办审核
+     * @param id
+     * @return
+     */
     @RequestMapping("/assistancePass/{id}")
     public R assistancePass(@PathVariable("id") String id) {
         long l = Long.parseLong(id);
         boolean result = tJsCgService.assistancePassUpdateById(l);
         return update(result);
     }
-    /*
-受理协办审核不通过并填写备注
-*/
+
+    /**
+     * 受理协办审核不通过并填写备注
+     * @param params
+     * @return
+     */
     @PostMapping("/assistanceDisPass")
     public R assistanceDisPass(@RequestBody Map<String, Object> params) {
         boolean result = tJsCgService.assistanceDisPassById(params);
         return update(result);
     }
-    /*
-受理协办下发
-*/
+
+    /**
+     * 受理协办下发
+     * @param ids
+     * @return
+     */
     @PostMapping("/assistanceIssueBatch")
     public R assistanceIssueBatch(@RequestBody List<String> ids){
         ArrayList<Long> longs = new ArrayList<>();
