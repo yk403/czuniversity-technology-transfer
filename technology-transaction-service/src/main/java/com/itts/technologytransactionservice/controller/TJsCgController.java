@@ -4,7 +4,7 @@ package com.itts.technologytransactionservice.controller;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
-import com.itts.common.utils.ResponseUtil;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.service.ITJsCgService;
 import com.itts.technologytransactionservice.service.ITJsShService;

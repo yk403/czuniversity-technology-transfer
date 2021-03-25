@@ -2,15 +2,14 @@ package com.itts.authorition.filter;
 
 import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Maps;
+import com.itts.authorition.model.yh.AuthoritionUser;
 import com.itts.authorition.request.LoginRequest;
+import com.itts.authorition.service.yh.AuthoritionUserService;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
-import com.itts.common.utils.JwtUtil;
-import com.itts.common.utils.ResponseUtil;
-import com.itts.userservice.model.yh.TYh;
-import com.itts.userservice.service.yh.TYhService;
+import com.itts.common.utils.common.JwtUtil;
+import com.itts.common.utils.common.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -36,9 +36,9 @@ public class AuthenticateFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
 
-    private TYhService yhService;
+    private AuthoritionUserService yhService;
 
-    public AuthenticateFilter(AuthenticationManager authenticationManager, TYhService service) {
+    public AuthenticateFilter(AuthenticationManager authenticationManager, AuthoritionUserService service) {
         this.authenticationManager = authenticationManager;
         this.yhService = service;
         //登录请求地址
@@ -74,17 +74,24 @@ public class AuthenticateFilter extends UsernamePasswordAuthenticationFilter {
         String userName = authResult.getPrincipal().toString();
 
         //通过用户名查询用户信息
-        TYh yh = yhService.getByUserName(userName);
+        AuthoritionUser yh = yhService.getByUserName(userName);
 
+        //设置登录用户信息
         LoginUser loginUser = new LoginUser();
         loginUser.setUserName(userName);
         loginUser.setUserId(yh.getId());
+        loginUser.setRealName(yh.getZsxm());
+        loginUser.setUserLevel(yh.getYhjb());
+
+        //生成token
         String token = JwtUtil.getJwtToken(JSONUtil.toJsonStr(loginUser), 1000L * 60 * 3);
 
-        Map<String, Object> resultMap = Maps.newHashMap();
+        //返回数据
+        Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("user", loginUser);
         resultMap.put("token", token);
 
+        response.setCharacterEncoding("UTF-8");
         response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.success(resultMap)));
     }
 

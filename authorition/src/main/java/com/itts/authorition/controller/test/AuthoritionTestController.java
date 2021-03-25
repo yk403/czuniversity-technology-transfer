@@ -1,8 +1,7 @@
 package com.itts.authorition.controller.test;
 
 import com.itts.common.constant.SystemConstant;
-import com.itts.common.utils.ResponseUtil;
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.itts.common.utils.common.ResponseUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

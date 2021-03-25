@@ -1,13 +1,13 @@
 package com.itts.authorition.config;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.itts.authorition.mapper.js.AuthoritionRoleMapper;
+import com.itts.authorition.mapper.yh.AuthoritionUserMapper;
+import com.itts.authorition.model.js.AuthoritionRole;
+import com.itts.authorition.model.yh.AuthoritionUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
-import com.itts.userservice.mapper.js.TJsMapper;
-import com.itts.userservice.mapper.yh.TYhMapper;
-import com.itts.userservice.model.js.TJs;
-import com.itts.userservice.model.yh.TYh;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,10 +32,10 @@ import java.util.Objects;
 public class UserPasswordAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private TYhMapper yhMapper;
+    private AuthoritionUserMapper yhMapper;
 
     @Autowired
-    private TJsMapper jsMapper;
+    private AuthoritionRoleMapper jsMapper;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -48,7 +48,7 @@ public class UserPasswordAuthenticationProvider implements AuthenticationProvide
         query.eq("yhm", userName);
         query.eq("sfsc", false);
 
-        TYh user = yhMapper.selectOne(query);
+        AuthoritionUser user = yhMapper.selectOne(query);
         if (user == null) {
 
             throw new ServiceException(ErrorCodeEnum.USER_NOT_FIND_ERROR);
@@ -59,7 +59,7 @@ public class UserPasswordAuthenticationProvider implements AuthenticationProvide
         if (Objects.equals(userName, user.getYhm()) && checkPassword) {
 
             //查询用户角色信息并设置userDetails
-            List<TJs> roles = jsMapper.findByYhId(user.getId());
+            List<AuthoritionRole> roles = jsMapper.findByYhId(user.getId());
 
             List<GrantedAuthority> authorities = new ArrayList<>();
             if (!CollectionUtils.isEmpty(roles)) {

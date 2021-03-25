@@ -25,12 +25,18 @@ public class LoginUser implements Serializable {
     private String userName;
 
     /**
+     * 用户真实姓名
+     */
+    private String realName;
+
+    /**
+     * 用户级别
+     */
+    private String userLevel;
+
+    /**
      * 用户头像
      */
     private String theme;
 
-    /**
-     * 角色名称
-     */
-    private String roleName;
 }

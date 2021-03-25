@@ -1,4 +1,4 @@
-package com.itts.common.utils;
+package com.itts.common.utils.common;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
