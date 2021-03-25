@@ -26,6 +26,7 @@ import java.util.Map;
 
 @Service
 @Primary
+@Transactional
 public class TJsCgServiceImpl extends ServiceImpl<TJsCgMapper, TJsCg> implements ITJsCgService {
     @Autowired
     private TJsCgMapper tJsCgMapper;
