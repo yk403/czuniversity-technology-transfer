@@ -1,15 +1,21 @@
 package com.itts.userservice.service.yh.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.userservice.dto.JsDTO;
+import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.mapper.yh.YhMapper;
 import com.itts.userservice.service.yh.YhService;
+import com.itts.userservice.vo.YhVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,5 +72,51 @@ public class YhServiceImpl implements YhService {
     public Yh update(Yh Yh) {
         tYhMapper.updateById(Yh);
         return Yh;
+    }
+
+    /**
+     * 查询角色菜单目录
+     * @param
+     * @return
+     * @author fl
+     */
+    @Override
+    public YhVO QueryMenuList(Long userId) {
+
+        //TODO 1. 通过用户ID查询所有角色  管理员
+        //TODO 2. 遍历角色，查询角色下的所有菜单，菜单递归遍历生成树
+
+        //角色及其菜单的全部列表
+        List<JsDTO> jsDTOList = tYhMapper.findByUserId(userId);
+
+        jsDTOList.forEach(jsDTO -> {
+            List<MenuDTO> rootMenu = jsDTO.getMenuDTOList();
+            //获取菜单树
+            List<MenuDTO> menuDTOList = buildMenuTree(rootMenu, 0L);
+
+            jsDTO.setMenuDTOList(menuDTOList);
+        });
+        //查询用户信息
+        Yh yh = tYhMapper.selectById(userId);
+        YhVO yhVO = new YhVO();
+        BeanUtils.copyProperties(yh,yhVO);
+        yhVO.setJsDTOList(jsDTOList);
+
+
+        return yhVO;
+    }
+    //生成菜单树
+    private List<MenuDTO> buildMenuTree(List<MenuDTO> rootMenu,Long parentId){
+        //菜单树
+        List<MenuDTO> treeList = new ArrayList<>();
+
+        rootMenu.forEach(menuDTO -> {
+            if(parentId.longValue() == menuDTO.getParentId().longValue()){
+                //通过递归，循环遍历子级菜单
+                menuDTO.setChildMenus(buildMenuTree(rootMenu, menuDTO.getId()));
+                treeList.add(menuDTO);
+            }
+        });
+        return treeList;
     }
 }

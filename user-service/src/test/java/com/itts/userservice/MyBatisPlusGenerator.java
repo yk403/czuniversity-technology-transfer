@@ -23,7 +23,7 @@ public class MyBatisPlusGenerator {
         // 是否支持AR模式
         config.setActiveRecord(true)
                 // 作者
-                .setAuthor("lym")
+                .setAuthor("fl")
                 // 生成路径，最好使用绝对路径，window路径是不一样的
                 .setOutputDir("D:\\code-generate")
                 // 文件覆盖
@@ -61,10 +61,10 @@ public class MyBatisPlusGenerator {
         //使用restcontroller注解
                 .setRestControllerStyle(true)
         // 生成的表, 支持多表一起生成，以数组形式填写
-                .setInclude("t_yh");
+                .setInclude("t_yh_js_gl");
         //4. 包名策略配置
         PackageConfig pkConfig = new PackageConfig();
-        pkConfig.setParent("com.itts.userservice.yh")
+        pkConfig.setParent("com.itts.userservice.yhjsgl")
                 .setMapper("mapper")
                 .setService("service")
                 .setController("controller")
