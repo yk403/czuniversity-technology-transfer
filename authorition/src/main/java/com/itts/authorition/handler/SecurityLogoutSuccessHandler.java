@@ -39,7 +39,7 @@ public class SecurityLogoutSuccessHandler implements LogoutSuccessHandler {
             redisTemplate.delete(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + token);
         }
 
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json;charset=utf-8");
         response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.success()));
     }
 }
