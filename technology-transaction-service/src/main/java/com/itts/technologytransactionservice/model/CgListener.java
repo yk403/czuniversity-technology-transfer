@@ -202,7 +202,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
         }else{
             try {
                 tJsCgMapper.insert(tJsCg);
-                Long id = tJsCg.getId();
+                Integer id = tJsCg.getId();
                 TJsSh tJsSh = new TJsSh();
                 tJsSh.setLx("1");
                 tJsSh.setCgxqId(id);

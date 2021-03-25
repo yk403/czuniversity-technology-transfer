@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -26,8 +27,8 @@ public class TJsHd implements Serializable {
 	/**
  	* 主键
  	*/
-	@TableId(value = "id")
-	private Long id;
+	@TableId(value = "id",type = IdType.AUTO)
+	private Integer id;
 	/**
  	* 活动名称
  	*/

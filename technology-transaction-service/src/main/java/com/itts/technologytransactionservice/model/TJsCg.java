@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -26,8 +27,8 @@ public class TJsCg implements Serializable {
 	/**
  	* 主键id
  	*/
-	@TableId(value = "id")
-	private Long id;
+	@TableId(value = "id",type = IdType.AUTO)
+	private Integer id;
 	/**
  	* 成果权属人
  	*/
@@ -125,6 +126,10 @@ public class TJsCg implements Serializable {
  	*/
 	private String cgsp;
 	/**
+	 * 组织机构代码
+	 */
+	private String zzjgdm;
+	/**
  	* 备注
  	*/
 	private String bz;
@@ -132,36 +137,40 @@ public class TJsCg implements Serializable {
  	* 活动id
  	*/
 	private Long jshdId;
-	/*
-	发布审核状态
+	/**
+	*发布审核状态
  	*/
 	private String status;
-	/*
-	发布时间
+	/**
+	 * 发布时间
 	 */
 	private String createTime;
-	/*
-发布状态
- */
+	/**
+	 * 发布状态
+	 */
 	private String releaseStatus;
-	/*
-发布类型
-*/
+	/**
+	 * 发布类型
+	 */
 	private String releaseType;
-	/*
-领域名称
-*/
+	/**
+	 * 领域名称
+	 */
 	private String lyName;
-	/*
-	协议
+	/**
+	 * 协议
 	 */
 	private String agreement;
-	/*
-	保证金
+	/**
+	 * 保证金
 	 */
 	private String bond;
-	/*
-	技术成果类别
+	/**
+	 * 技术成果类别
 	 */
 	private Long lbId;
+	/**
+	 * 删除状态(0:未删除;1:已删除)
+	 */
+	private Integer isDelete;
 }

@@ -1,7 +1,7 @@
 package com.itts.userservice.service.js;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.model.js.TJs;
+import com.itts.userservice.model.js.Js;
 
 
 /**
@@ -12,23 +12,23 @@ import com.itts.userservice.model.js.TJs;
  * @author fl
  * @since 2021-03-19
  */
-public interface TJsService  {
+public interface JsService {
 
     /**
      * 查询列表
      */
-    PageInfo<TJs> findByPage(Integer pageNum,Integer pageSize);
+    PageInfo<Js> findByPage(Integer pageNum, Integer pageSize);
 
     /**
      * 获取详情
      */
-    TJs get(Long id);
+    Js get(Long id);
     /**
      * 新增
      */
-    TJs add(TJs tJs);
+    Js add(Js Js);
     /**
      * 更新
      */
-    TJs update(TJs tJs);
+    Js update(Js Js);
 }

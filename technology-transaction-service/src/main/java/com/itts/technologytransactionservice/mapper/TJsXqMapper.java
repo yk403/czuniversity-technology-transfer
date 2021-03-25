@@ -23,12 +23,16 @@ public interface TJsXqMapper extends BaseMapper<TJsXq> {
 	
 	/*List<TJsXq> list(IPage<TJsXq> page, @Param("map") Map map);*/
 
-	@Select("select * from t_js_xq where xqmc = #{name}")
+	@Select("select * from t_js_xq where xqmc = #{name} and is_delete = 0")
 	TJsXq selectByName(String name);
 
 	List<TJsXq> FindTJsXqByTJsLbTJsLy(@Param("map") Map map);
-	List<TJsFb> PageByTJsFb(IPage<TJsFb> page, @Param("map") Map map);
+
+	List<TJsFb> PageByTJsFb(@Param("map") Map map);
+
 	List<TJsXq> selectByStages(Integer companyId, String[] stages);
 
     void updateTJsXq(TJsXq tJsXq);
+
+	TJsXq findById(Integer id);
 }

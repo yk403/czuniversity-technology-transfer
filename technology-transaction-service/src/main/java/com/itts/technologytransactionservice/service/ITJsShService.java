@@ -19,8 +19,9 @@ public interface ITJsShService extends IService<TJsSh> {
 
 	IPage page(Query query);
 
-	TJsSh selectBycgxqId(Long cgxqId);
-	List<TJsSh> selectBycgxqIds(List<Long> cgxqIds);
+	TJsSh selectBycgxqId(Integer cgxqId);
+
+	List<TJsSh> selectBycgxqIds(List<Integer> cgxqIds);
 
 	/*int updateById(Long id);*/
 }

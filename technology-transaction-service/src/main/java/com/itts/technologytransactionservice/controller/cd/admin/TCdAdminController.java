@@ -2,7 +2,6 @@ package com.itts.technologytransactionservice.controller.cd.admin;
 
 
 import com.github.pagehelper.PageInfo;
-import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.ResponseUtil;
@@ -15,6 +14,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
+
 /**
  * 测试Controller
  *
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "获取tcd")
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/tCd")
+@RequestMapping(ADMIN_BASE_URL + "/v1/tCd")
 public class TCdAdminController {
 
     @Autowired
@@ -43,7 +44,6 @@ public class TCdAdminController {
                              @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
 
         PageInfo<TCd> page = service.findByPage(pageNum, pageSize);
-
         return ResponseUtil.success(page);
     }
 

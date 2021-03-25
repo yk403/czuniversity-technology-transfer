@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -26,8 +27,8 @@ public class TJsSh implements Serializable {
 	/**
  	* 审核主键
  	*/
-	@TableId(value = "id")
-	private Long id;
+	@TableId(value = "id",type = IdType.INPUT)
+	private Integer id;
 	/**
  	* 类型 1成果、2需求
  	*/
@@ -35,13 +36,13 @@ public class TJsSh implements Serializable {
 	/**
  	* 技术成果需求id 外键
  	*/
-	private Long cgxqId;
+	private Integer cgxqId;
 	/**
  	* 发布审核状态 1待审核、2通过、3不通过
  	*/
 	private String fbshzt;
 	/**
- 	* 活动申请状态 0未审核、1待审核、2通过、3不通过
+ 	* 活动申请状态 1待审核、2通过、3不通过
  	*/
 	private String hdsqzt;
 	/**
@@ -60,22 +61,26 @@ public class TJsSh implements Serializable {
  	* 更新时间
  	*/
 	private String gxsj;
-	/*
-	发布状态 1 未发布 2已发布
+	/**
+	 * 发布状态 1 未发布 2已发布
 	 */
 	private String releaseStatus;
-	/*
-受理协办审核状态
-1待审核、2通过、3不通过
- */
+	/**
+	 * 受理协办审核状态
+	 * 1待审核、2通过、3不通过
+	 */
 	private String assistanceStatus;
-	/*
-	受理协办发布状态
-1 未发布 2已发布
+	/**
+	 * 受理协办发布状态
+	 * 1 未发布 2已发布
 	 */
 	private String releaseAssistanceStatus;
-	/*
-	受理协办未通过说明
+	/**
+	 * 受理协办未通过说明
 	 */
 	private String assistanceRemark;
+	/**
+	 * 删除状态(0:未删除;1:已删除)
+	 */
+	private Integer isDelete;
 }

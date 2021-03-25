@@ -25,8 +25,8 @@ public interface TJsShMapper extends BaseMapper<TJsSh> {
 	int save(@Param("id") Long id);
 
 	@Select("select * from t_js_sh where cgxq_id = #{cgxqId}")
-	TJsSh selectBycgxqId(@Param("cgxqId") Long cgxqId);
-	List<TJsSh> selectBycgxqIds(@Param("cgxqIds") Long[] cgxqIds);
+	TJsSh selectBycgxqId(@Param("cgxqId") Integer cgxqId);
+	List<TJsSh> selectBycgxqIds(@Param("cgxqIds") Integer[] cgxqIds);
 
 /*	@Update("update t_js_sh set fbshzt=2 where cgxq_id=#{id}")
 	int updateById(Long id);*/
