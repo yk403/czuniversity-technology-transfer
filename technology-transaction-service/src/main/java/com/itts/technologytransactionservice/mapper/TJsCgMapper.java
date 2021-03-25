@@ -22,7 +22,7 @@ public interface TJsCgMapper extends BaseMapper<TJsCg> {
 	
 	List<TJsCg> list(IPage<TJsCg> page, @Param("map") Map map);
 
-	@Select("select * from t_js_cg where cgmc = #{name}")
+	@Select("select * from t_js_cg where cgmc = #{name} and is_delete = 0")
 	TJsCg selectByName(String name);
 
 	List<TJsCg> FindtJsCgByTJsLbTJsLy(@Param("map") Map map);

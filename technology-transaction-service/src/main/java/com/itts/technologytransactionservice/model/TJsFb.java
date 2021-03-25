@@ -17,7 +17,7 @@ public class TJsFb implements Serializable {
     /**
      * 主键
      */
-    private Long id;
+    private Integer id;
     /**
      * 名称
      */

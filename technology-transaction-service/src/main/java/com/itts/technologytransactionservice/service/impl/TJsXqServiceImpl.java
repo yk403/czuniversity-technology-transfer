@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
+import com.itts.technologytransactionservice.mapper.TJsShMapper;
 import com.itts.technologytransactionservice.mapper.TJsXqMapper;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsSh;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,8 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
     private TJsXqMapper tJsXqMapper;
     @Autowired
     private ITJsShService tJsShService;
+    @Autowired
+    private TJsShMapper tJsShMapper;
 
     @Override
     public PageInfo FindTJsXqByTJsLbTJsLy(Query query) {
@@ -42,11 +46,11 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
     }
 
     @Override
-    public IPage PageByTJsFb(Query query) {
-        Page<TJsFb> p = new Page<>(query.getPageNum(), query.getPageSize());
-        List<TJsFb> list = tJsXqMapper.PageByTJsFb(p, query);
-        p.setRecords(list);
-        return p;
+    public PageInfo PageByTJsFb(Query query) {
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsFb> list = tJsXqMapper.PageByTJsFb(query);
+        PageInfo<TJsFb> page = new PageInfo<>(list);
+        return page;
     }
 
     @Override
@@ -74,7 +78,6 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
             Date date = new Date();
             String format = simpleDateFormat.format(date);
             tJsSh.setCjsj(format);
-            tJsSh.setGxsj(format);
             tJsShService.save(tJsSh);
             return true;
         }
@@ -82,17 +85,21 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
     }
 
     @Override
-    public boolean removeByIdXq(Long id) {
+    public boolean removeByIdXq(Integer id) {
         TJsSh tJsSh = tJsShService.selectBycgxqId(id);
-        removeById(id);
+        TJsXq tJsXq = new TJsXq();
+        tJsXq.setId(id);
+        tJsXq.setIsDelete(1);
+        tJsXqMapper.updateById(tJsXq);
         if (tJsSh.getId() != null) {
-            tJsShService.removeById(tJsSh.getId());
+            tJsSh.setIsDelete(1);
+            tJsShMapper.updateById(tJsSh);
         }
         return true;
     }
 
     @Override
-    public boolean passUpdateById(Long id) {
+    public boolean passUpdateById(Integer id) {
         TJsSh tJsSh = tJsShService.selectBycgxqId(id);
         String fbshzt = tJsSh.getFbshzt();
         if (!"2".equals(fbshzt)) {
@@ -106,7 +113,7 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
     }
 
     @Override
-    public boolean assistancePassUpdateById(Long id) {
+    public boolean assistancePassUpdateById(Integer id) {
         TJsSh tJsSh = tJsShService.selectBycgxqId(id);
         String assistanceStatus = tJsSh.getAssistanceStatus();
         if (!"2".equals(assistanceStatus)) {
@@ -123,7 +130,7 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
     public boolean assistanceDisPassById(Map<String, Object> params) {
         String id = params.get("id").toString();
         String assistanceRemark = params.get("assistanceRemark").toString();
-        TJsSh tJsSh = tJsShService.selectBycgxqId(Long.parseLong(id));
+        TJsSh tJsSh = tJsShService.selectBycgxqId(Integer.valueOf(id));
         String assistanceStatus = tJsSh.getAssistanceStatus();
         if (!"2".equals(assistanceStatus)) {
             tJsSh.setAssistanceStatus("3");
@@ -139,7 +146,7 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
     public boolean disPassById(Map<String, Object> params) {
         String id = params.get("id").toString();
         String fbwtgsm = params.get("fbwtgsm").toString();
-        TJsSh tJsSh = tJsShService.selectBycgxqId(Long.parseLong(id));
+        TJsSh tJsSh = tJsShService.selectBycgxqId(Integer.valueOf(id));
         String fbshzt = tJsSh.getFbshzt();
         if (!"2".equals(fbshzt)) {
             tJsSh.setFbshzt("3");
@@ -155,7 +162,7 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
      * 技术采集批量下发
      */
     @Override
-    public boolean issueBatch(List<Long> ids) {
+    public boolean issueBatch(List<Integer> ids) {
         if (CollectionUtils.isEmpty(ids)) {
             return false;
         } else {
@@ -174,7 +181,7 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
      * 技术转让受理批量下发
      */
     @Override
-    public boolean assistanceIssueBatch(List<Long> ids) {
+    public boolean assistanceIssueBatch(List<Integer> ids) {
         if (CollectionUtils.isEmpty(ids)) {
             return false;
         } else {
@@ -207,6 +214,17 @@ public class TJsXqServiceImpl extends ServiceImpl<TJsXqMapper, TJsXq> implements
             tJsXqMapper.updateTJsXq(tJsXq);
         }
         return true;
+    }
+
+    /**
+     * 根据id查询技术需求
+     * @param id
+     * @return
+     */
+    @Override
+    public TJsXq selectById(Integer id) {
+        TJsXq tJsXq = tJsXqMapper.findById(id);
+        return tJsXq;
     }
 
 

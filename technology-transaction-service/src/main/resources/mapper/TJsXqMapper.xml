@@ -4,9 +4,10 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.TJsXqMapper">
 
 	<select id="FindTJsXqByTJsLbTJsLy" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select a.id as id,xqmc,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,d.fbshzt as status,d.cjsj as createTime,d.release_status as releaseStatus,b.mc as lyName,c.mc as lbName
+		select a.id as id,xqmc,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,d.fbshzt as status,d.cjsj as createTime,d.release_status as releaseStatus,b.mc as lyName,c.mc as lbName
 		from t_js_xq a left join t_js_ly b on(a.ly_id=b.id) left join t_js_lb c on(a.lb_id=c.id) left join t_js_sh d on(a.id=d.cgxq_id)
 		<where>
+		    a.is_delete = 0
 			<if test="map.lyId != null and map.lyId != ''"> and a.ly_id = #{map.lyId} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and a.lb_id = #{map.lbId} </if>
 			<if test="map.cgxqId != null and map.cgxqId != ''"> and a.id = #{map.cgxqId} </if>
@@ -33,6 +34,7 @@
 		LEFT JOIN t_js_lb c ON (a.lb_id = c.id)
 		LEFT JOIN t_js_sh d ON (a.id = d.cgxq_id)
 		<where>
+		    a.is_delete = 0
 			<if test="map.name != null and map.name != ''"> and a.xqmc = #{map.name} </if>
 		</where>
 		UNION
@@ -43,6 +45,7 @@
 		LEFT JOIN t_js_ly b ON (e.ly_id = b.id)
 		LEFT JOIN t_js_sh d ON (e.id = d.cgxq_id)
 		<where>
+		    e.is_delete = 0
 			<if test="map.name != null and map.name != ''"> and e.cgmc = #{map.name} </if>
 		</where>
 		<choose>
@@ -53,6 +56,14 @@
 				order by id desc
 			</otherwise>
 		</choose>
+	</select>
+	<select id="findById" resultType="com.itts.technologytransactionservice.model.TJsXq">
+		SELECT id,xqmc,gjz,yxq,ly_id as lyId,lb_id as lbId,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id as jshdId,release_type as releaseType,agreement,bond,introduction,zzjgdm,remarks,cjsj,gxsj
+		from t_js_xq
+		where
+			id = #{id}
+		and
+			is_delete = 0
 	</select>
 	<update id="updateTJsXq">
 		update t_js_xq
@@ -76,18 +87,18 @@
 			<if test="zj != null">zj = #{zj},</if>
 			<if test="dzyx != null">dzyx = #{dzyx},</if>
 			<if test="jshdId != null">jshdId = #{jshdId},</if>
+			<if test="zzjgdm != null">zzjgdm = #{zzjgdm},</if>
+			<if test="isDelete != null">is_delete = #{isDelete},</if>
 			<if test="contracts != null">contracts = #{contracts},</if>
-			<if test="dz != null">dz = #{dz}</if>
-			<if test="releaseType != null">release_type = #{releaseType}</if>
-			<if test="agreement != null">agreement = #{agreement}</if>
-			<if test="bond != null">bond = #{bond}</if>
-			<if test="introduction != null">introduction = #{introduction}</if>
+			<if test="dz != null">dz = #{dz},</if>
+			<if test="releaseType != null">release_type = #{releaseType},</if>
+			<if test="agreement != null">agreement = #{agreement},</if>
+			<if test="bond != null">bond = #{bond},</if>
+			<if test="introduction != null">introduction = #{introduction},</if>
 			<if test="remarks != null">remarks = #{remarks}</if>
 		</set>
 		where id = #{id}
 	</update>
 	
-	
-
 
 </mapper>

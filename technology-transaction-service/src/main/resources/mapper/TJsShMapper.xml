@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.TJsShMapper">
 
 	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsSh">
-		select `id`,`lx`,`cgxq_id`,`fbshzt`,`hdsqzt`,`fbwtgsm`,`hdsqwtgsm`,`cjsj`,`gxsj`,`releaseAssistance_status`,`assistance_status`,`assistance_remark` from t_js_sh
+		select `id`,`lx`,`cgxq_id`,`fbshzt`,`hdsqzt`,`fbwtgsm`,`hdsqwtgsm`,`cjsj`,`gxsj`,`release_assistance_status`,`assistance_status`,`assistance_remark` from t_js_sh
         <where>  
 		  		  <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
 		  		  <if test="map.lx != null and map.lx != ''"> and lx = #{map.lx} </if>

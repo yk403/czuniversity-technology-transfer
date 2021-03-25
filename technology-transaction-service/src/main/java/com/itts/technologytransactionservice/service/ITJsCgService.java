@@ -22,22 +22,24 @@ public interface ITJsCgService extends IService<TJsCg> {
 
 
 
-TJsCg selectByName(String name);
+	TJsCg selectByName(String name);
 	PageInfo FindtJsCgByTJsLbTJsLy(Query query);
 
 	boolean saveCg(TJsCg tJsCg) throws Exception;
-	boolean removeByIdCg(Long id);
+	boolean removeByIdCg(Integer id);
 	boolean disPassById(Map<String, Object> params);
-	boolean passUpdateById(Long id);
-	boolean issueBatch(List<Long> ids);
+	boolean passUpdateById(Integer id);
+	boolean issueBatch(List<Integer> ids);
 
     boolean updateTJsCg(TJsCg tJsCg);
 
     boolean assistanceUpdateTJsCg(TJsCg tJsCg);
 
-	boolean assistancePassUpdateById(Long id);
+	boolean assistancePassUpdateById(Integer id);
 
 	boolean assistanceDisPassById(Map<String, Object> params);
 
-	boolean assistanceIssueBatch(List<Long> longs);
+	boolean assistanceIssueBatch(List<Integer> ids);
+
+	boolean removeByIdsCg(List<String> ids);
 }

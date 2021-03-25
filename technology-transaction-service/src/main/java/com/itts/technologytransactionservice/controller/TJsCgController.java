@@ -8,6 +8,7 @@ import com.itts.common.utils.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.service.ITJsCgService;
 import com.itts.technologytransactionservice.service.ITJsShService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ import java.util.Map;
  * @email 15161575502@163.com
  * @date 2021-02-22 09:16:14
  */
-
+@Api(tags = "技术成果")
 @RestController
 @RequestMapping("/back/tJsCg")
 public class TJsCgController extends BaseController {
@@ -54,7 +55,7 @@ public class TJsCgController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
-        return success(tJsCgService.getById(Long.parseLong(id)));
+        return success(tJsCgService.getById(Integer.valueOf(id)));
     }
     /**
      * 根据成果名称查询
@@ -87,7 +88,7 @@ public class TJsCgController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") String id) {
-        return remove(tJsCgService.removeByIdCg(Long.parseLong(id)));
+        return remove(tJsCgService.removeByIdCg(Integer.valueOf(id)));
     }
 
     /**
@@ -95,11 +96,8 @@ public class TJsCgController extends BaseController {
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<String> ids){
-        List<Long> longs = new ArrayList<>();
-        for (String id : ids) {
-            longs.add(Long.parseLong(id));
-        }
-        return  remove(tJsCgService.removeByIds(longs));
+
+        return  remove(tJsCgService.removeByIdsCg(ids));
     }
 
     /**
@@ -109,7 +107,7 @@ public class TJsCgController extends BaseController {
      */
     @RequestMapping("/pass/{id}")
     public R pass(@PathVariable("id") String id) {
-        return update(tJsCgService.passUpdateById(Long.parseLong(id)));
+        return update(tJsCgService.passUpdateById(Integer.valueOf(id)));
     }
 
     /**
@@ -129,11 +127,11 @@ public class TJsCgController extends BaseController {
      */
     @PostMapping("/issueBatch")
     public R issueBatch(@RequestBody List<String> ids){
-        List<Long> longs = new ArrayList<>();
-        for (String id: ids) {
-            longs.add(Long.parseLong(id));
+        List<Integer> list = new ArrayList<>();
+        for (String id : ids) {
+            list.add(Integer.valueOf(id));
         }
-        return  remove(tJsCgService.issueBatch(longs));
+        return  remove(tJsCgService.issueBatch(list));
     }
 
     /**
@@ -153,7 +151,7 @@ public class TJsCgController extends BaseController {
      */
     @RequestMapping("/assistancePass/{id}")
     public R assistancePass(@PathVariable("id") String id) {
-        return update(tJsCgService.assistancePassUpdateById(Long.parseLong(id)));
+        return update(tJsCgService.assistancePassUpdateById(Integer.valueOf(id)));
     }
 
     /**
@@ -173,12 +171,11 @@ public class TJsCgController extends BaseController {
      */
     @PostMapping("/assistanceIssueBatch")
     public R assistanceIssueBatch(@RequestBody List<String> ids){
-        List<Long> longs = new ArrayList<>();
-        for (String id: ids) {
-            longs.add(Long.parseLong(id));
+        List<Integer> list = new ArrayList<>();
+        for (String id : ids) {
+            list.add(Integer.valueOf(id));
         }
-        return  remove(tJsCgService.assistanceIssueBatch(longs));
+        return  remove(tJsCgService.assistanceIssueBatch(list));
     }
-
 
 }

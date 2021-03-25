@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.TJsCgMapper;
+import com.itts.technologytransactionservice.mapper.TJsShMapper;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.service.ITJsCgService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,9 @@ public class TJsCgServiceImpl extends ServiceImpl<TJsCgMapper, TJsCg> implements
 
     @Autowired
     private ITJsShService tJsShService;
+
+	@Autowired
+	private TJsShMapper tJsShMapper;
 
 
     @Override
@@ -66,18 +71,29 @@ public class TJsCgServiceImpl extends ServiceImpl<TJsCgMapper, TJsCg> implements
         return tJsCgMapper.selectByName(name);
     }
 
-    @Override
-    public boolean removeByIdCg(Long id) {
+	/**
+	 * 删除成果
+	 * @param id
+	 * @return
+	 */
+	@Override
+    public boolean removeByIdCg(Integer id) {
         TJsSh tJsSh = tJsShService.selectBycgxqId(id);
-        tJsCgMapper.deleteById(id);
+        TJsCg tJsCg = new TJsCg();
+        tJsCg.setId(id);
+        tJsCg.setIsDelete(1);
+        tJsCgMapper.updateTJsCg(tJsCg);
         if (tJsSh.getId() != null) {
-            tJsShService.removeById(tJsSh.getId());
+            tJsSh.setIsDelete(1);
+            if (!tJsShService.updateById(tJsSh)) {
+                throw new ServiceException("删除成功失败!");
+            }
         }
         return true;
     }
 
     @Override
-    public boolean passUpdateById(Long id) {
+    public boolean passUpdateById(Integer id) {
         TJsSh tJsSh = tJsShService.selectBycgxqId(id);
         String fbshzt = tJsSh.getFbshzt();
         if (!"2".equals(fbshzt)) {
@@ -96,7 +112,7 @@ public class TJsCgServiceImpl extends ServiceImpl<TJsCgMapper, TJsCg> implements
      * @return
      */
     @Override
-    public boolean issueBatch(List<Long> ids) {
+    public boolean issueBatch(List<Integer> ids) {
         if (CollectionUtils.isEmpty(ids)) {
             return false;
         } else {
@@ -134,7 +150,7 @@ public class TJsCgServiceImpl extends ServiceImpl<TJsCgMapper, TJsCg> implements
     }
 
     @Override
-    public boolean assistancePassUpdateById(Long id) {
+    public boolean assistancePassUpdateById(Integer id) {
         TJsSh tJsSh = tJsShService.selectBycgxqId(id);
         String assistanceStatus = tJsSh.getAssistanceStatus();
         if (!"2".equals(assistanceStatus)) {
@@ -150,7 +166,7 @@ public class TJsCgServiceImpl extends ServiceImpl<TJsCgMapper, TJsCg> implements
     public boolean assistanceDisPassById(Map<String, Object> params) {
         String id = params.get("id").toString();
         String assistanceRemark = params.get("assistanceRemark").toString();
-        TJsSh tJsSh = tJsShService.selectBycgxqId(Long.parseLong(id));
+        TJsSh tJsSh = tJsShService.selectBycgxqId(Integer.valueOf(id));
         String assistanceStatus = tJsSh.getAssistanceStatus();
         if (!"2".equals(assistanceStatus)) {
             tJsSh.setAssistanceStatus("3");
@@ -166,7 +182,7 @@ public class TJsCgServiceImpl extends ServiceImpl<TJsCgMapper, TJsCg> implements
     public boolean disPassById(Map<String, Object> params) {
         String id = params.get("id").toString();
         String fbwtgsm = params.get("fbwtgsm").toString();
-        TJsSh tJsSh = tJsShService.selectBycgxqId(Long.parseLong(id));
+        TJsSh tJsSh = tJsShService.selectBycgxqId(Integer.valueOf(id));
         String fbshzt = tJsSh.getFbshzt();
         if (!"2".equals(fbshzt)) {
             tJsSh.setFbshzt("3");
@@ -184,7 +200,7 @@ public class TJsCgServiceImpl extends ServiceImpl<TJsCgMapper, TJsCg> implements
 	 * @return
 	 */
 	@Override
-    public boolean assistanceIssueBatch(List<Long> ids) {
+    public boolean assistanceIssueBatch(List<Integer> ids) {
         if (CollectionUtils.isEmpty(ids)) {
             return false;
         } else {
@@ -196,6 +212,30 @@ public class TJsCgServiceImpl extends ServiceImpl<TJsCgMapper, TJsCg> implements
             return true;
         }
     }
+
+	/**
+	 * 批量删除成果
+	 * @param ids
+	 * @return
+	 */
+	@Override
+	public boolean removeByIdsCg(List<String> ids) {
+        List<Integer> list = new ArrayList<>();
+        for (String id : ids) {
+            Integer i = Integer.valueOf(id);
+            list.add(i);
+            TJsCg tJsCg = new TJsCg();
+            tJsCg.setId(i);
+            tJsCg.setIsDelete(1);
+            tJsCgMapper.updateTJsCg(tJsCg);
+		}
+		List<TJsSh> tJsShes = tJsShService.selectBycgxqIds(list);
+        for (TJsSh tJsSh : tJsShes) {
+            tJsSh.setIsDelete(1);
+            tJsShMapper.updateById(tJsSh);
+        }
+		return true;
+	}
 }
 
 

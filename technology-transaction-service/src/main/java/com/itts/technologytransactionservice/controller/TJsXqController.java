@@ -1,8 +1,8 @@
 package com.itts.technologytransactionservice.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.ResponseUtil;
@@ -12,11 +12,14 @@ import com.itts.technologytransactionservice.service.ITJsShService;
 import com.itts.technologytransactionservice.service.ITJsXqService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
 
 
 /**
@@ -55,11 +58,11 @@ public class TJsXqController extends BaseController {
      * @return
      */
     @PostMapping("/PageByTJsFb")
-    public R PageByTJsFb(@RequestBody Map<String, Object> params) {
+    public ResponseUtil PageByTJsFb(@RequestBody Map<String, Object> params) {
         //查询邻域类别审核状态列表数据
         Query query = new Query(params);
-        IPage<TJsFb> tJsFbIPage = tJsXqService.PageByTJsFb(query);
-        return success(tJsFbIPage);
+        PageInfo<TJsFb> page = tJsXqService.PageByTJsFb(query);
+        return ResponseUtil.success(page);
     }
 
     /**
@@ -69,8 +72,10 @@ public class TJsXqController extends BaseController {
      */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
-        long l = Long.parseLong(id);
-        TJsXq tJsXq = tJsXqService.getById(l);
+        if (StringUtils.isEmpty(id)) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        TJsXq tJsXq = tJsXqService.selectById(Integer.valueOf(id));
         return success(tJsXq);
     }
 
@@ -109,13 +114,13 @@ public class TJsXqController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") String id) {
-        long l = Long.parseLong(id);
-        boolean result = tJsXqService.removeByIdXq(l);
-        return remove(result);
+        return remove( tJsXqService.removeByIdXq(Integer.valueOf(id)));
     }
 
     /**
      * 批量删除
+     * @param ids
+     * @return
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<String> ids) {
@@ -131,12 +136,12 @@ public class TJsXqController extends BaseController {
 
     /**
      * 发布审核通过
+     * @param id
+     * @return
      */
     @RequestMapping("/pass/{id}")
     public R pass(@PathVariable("id") String id) {
-        long l = Long.parseLong(id);
-        boolean result = tJsXqService.passUpdateById(l);
-        return update(result);
+        return update(tJsXqService.passUpdateById(Integer.valueOf(id)));
     }
 
     /**
@@ -144,8 +149,7 @@ public class TJsXqController extends BaseController {
      */
     @PostMapping("/disPass")
     public R disPass(@RequestBody Map<String, Object> params) {
-        boolean result = tJsXqService.disPassById(params);
-        return update(result);
+        return update(tJsXqService.disPassById(params));
     }
 
     /**
@@ -153,13 +157,11 @@ public class TJsXqController extends BaseController {
      */
     @PostMapping("/issueBatch")
     public R issueBatch(@RequestBody List<String> ids) {
-        ArrayList<Long> longs = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
         for (String id : ids) {
-            long l = Long.parseLong(id);
-            longs.add(l);
+            list.add(Integer.valueOf(id));
         }
-        boolean result = tJsXqService.issueBatch(longs);
-        return remove(result);
+        return remove(tJsXqService.issueBatch(list));
     }
 
     /**
@@ -167,9 +169,7 @@ public class TJsXqController extends BaseController {
      */
     @RequestMapping("/assistancePass/{id}")
     public R assistancePass(@PathVariable("id") String id) {
-        long l = Long.parseLong(id);
-        boolean result = tJsXqService.assistancePassUpdateById(l);
-        return update(result);
+        return update(tJsXqService.assistancePassUpdateById(Integer.valueOf(id)));
     }
 
     /**
@@ -186,12 +186,11 @@ public class TJsXqController extends BaseController {
      */
     @PostMapping("/assistanceIssueBatch")
     public R assistanceIssueBatch(@RequestBody List<String> ids) {
-        ArrayList<Long> longs = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
         for (String id : ids) {
-            long l = Long.parseLong(id);
-            longs.add(l);
+            list.add(Integer.valueOf(id));
         }
-        boolean result = tJsXqService.assistanceIssueBatch(longs);
+        boolean result = tJsXqService.assistanceIssueBatch(list);
         return remove(result);
     }
 

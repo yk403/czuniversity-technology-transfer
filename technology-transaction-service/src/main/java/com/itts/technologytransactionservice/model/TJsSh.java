@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -26,8 +27,8 @@ public class TJsSh implements Serializable {
 	/**
  	* 审核主键
  	*/
-	@TableId(value = "id")
-	private Long id;
+	@TableId(value = "id",type = IdType.INPUT)
+	private Integer id;
 	/**
  	* 类型 1成果、2需求
  	*/
@@ -35,7 +36,7 @@ public class TJsSh implements Serializable {
 	/**
  	* 技术成果需求id 外键
  	*/
-	private Long cgxqId;
+	private Integer cgxqId;
 	/**
  	* 发布审核状态 1待审核、2通过、3不通过
  	*/
@@ -78,4 +79,8 @@ public class TJsSh implements Serializable {
 	 * 受理协办未通过说明
 	 */
 	private String assistanceRemark;
+	/**
+	 * 删除状态(0:未删除;1:已删除)
+	 */
+	private Integer isDelete;
 }
