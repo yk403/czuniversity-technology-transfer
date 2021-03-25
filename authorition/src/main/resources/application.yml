@@ -9,7 +9,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
   profiles:
-    active: dev
+    active: test
 #  security:
 #    permit:
 #      ant-matchers:

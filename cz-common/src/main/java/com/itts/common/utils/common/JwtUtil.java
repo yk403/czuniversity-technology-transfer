@@ -14,13 +14,13 @@ import java.util.Date;
  */
 public class JwtUtil {
 
-    // 设置默认过期时间（15 分钟）
-    private static final long DEFAULT_EXPIRE = 1000L * 60 * 15;
+    // 设置默认过期时间（3天）
+    private static final long DEFAULT_EXPIRE = 1000L * 60 * 60 * 24 * 3;
     // 设置 jwt 生成 secret（随意指定）
     private static final String APP_SECRET = "ukc8BDbRigUDaY6pZFfWus2jZWLPHO";
 
     /**
-     * 生成 jwt token，并指定默认过期时间 15 分钟
+     * 生成 jwt token，并指定默认过期时间 3天
      */
     public static String getJwtToken(Object data) {
         return getJwtToken(data, DEFAULT_EXPIRE);

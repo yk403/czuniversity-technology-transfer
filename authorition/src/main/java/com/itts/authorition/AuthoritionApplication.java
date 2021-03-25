@@ -4,8 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = {"com.itts.authorition", "com.itts.common.exception",
-        "com.itts.common.utils.common", "com.itts.common.config"})
+@SpringBootApplication(scanBasePackages = {"com.itts.authorition", "com.itts.common.exception"})
 @MapperScan("com.itts.authorition.mapper")
 public class AuthoritionApplication {
 

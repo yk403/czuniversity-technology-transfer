@@ -6,12 +6,14 @@ import com.itts.authorition.model.yh.AuthoritionUser;
 import com.itts.authorition.request.LoginRequest;
 import com.itts.authorition.service.yh.AuthoritionUserService;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.RedisConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.JwtUtil;
 import com.itts.common.utils.common.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description：用户登录校验过滤器
@@ -36,11 +39,14 @@ public class AuthenticateFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
 
-    private AuthoritionUserService yhService;
+    private AuthoritionUserService userService;
 
-    public AuthenticateFilter(AuthenticationManager authenticationManager, AuthoritionUserService service) {
+    private RedisTemplate redisTemplate;
+
+    public AuthenticateFilter(AuthenticationManager authenticationManager, AuthoritionUserService userService, RedisTemplate redisTemplate) {
         this.authenticationManager = authenticationManager;
-        this.yhService = service;
+        this.userService = userService;
+        this.redisTemplate = redisTemplate;
         //登录请求地址
         setFilterProcessesUrl("/api/login/");
     }
@@ -60,8 +66,8 @@ public class AuthenticateFilter extends UsernamePasswordAuthenticationFilter {
 
         } catch (Exception e) {
 
-            log.error("【用户鉴权登录】用户登录参数不合法", e);
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            log.error("【用户鉴权登录】用户账号或密码不正确", e);
+            throw new WebException(ErrorCodeEnum.LOGIN_USERNAME_PASSWORD_ERROR);
         }
     }
 
@@ -74,17 +80,19 @@ public class AuthenticateFilter extends UsernamePasswordAuthenticationFilter {
         String userName = authResult.getPrincipal().toString();
 
         //通过用户名查询用户信息
-        AuthoritionUser yh = yhService.getByUserName(userName);
+        AuthoritionUser user = userService.getByUserName(userName);
 
         //设置登录用户信息
         LoginUser loginUser = new LoginUser();
         loginUser.setUserName(userName);
-        loginUser.setUserId(yh.getId());
-        loginUser.setRealName(yh.getZsxm());
-        loginUser.setUserLevel(yh.getYhjb());
+        loginUser.setUserId(user.getId());
+        loginUser.setRealName(user.getZsxm());
+        loginUser.setUserLevel(user.getYhjb());
 
         //生成token
-        String token = JwtUtil.getJwtToken(JSONUtil.toJsonStr(loginUser), 1000L * 60 * 3);
+        String token = JwtUtil.getJwtToken(JSONUtil.toJsonStr(loginUser));
+        redisTemplate.opsForValue().set(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + token, token,
+                RedisConstant.EXPIRE_DATE, TimeUnit.MILLISECONDS);
 
         //返回数据
         Map<String, Object> resultMap = new HashMap<>();
@@ -104,11 +112,11 @@ public class AuthenticateFilter extends UsernamePasswordAuthenticationFilter {
         LoginRequest loginRequest = objectMapper.readValue(request.getInputStream(), LoginRequest.class);
 
         if (loginRequest == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(ErrorCodeEnum.LOGIN_USERNAME_PASSWORD_ERROR);
         }
 
         if (StringUtils.isBlank(loginRequest.getUserName()) || StringUtils.isBlank(loginRequest.getPassword())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(ErrorCodeEnum.LOGIN_USERNAME_PASSWORD_ERROR);
         }
 
         return loginRequest;

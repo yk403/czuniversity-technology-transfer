@@ -2,12 +2,15 @@ package com.itts.authorition.filter;
 
 import cn.hutool.json.JSONUtil;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.RedisConstant;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,8 +30,11 @@ import java.io.IOException;
 @Slf4j
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
-    public AuthorizationFilter(AuthenticationManager authenticationManager) {
+    private RedisTemplate redisTemplate;
+
+    public AuthorizationFilter(AuthenticationManager authenticationManager, RedisTemplate redisTemplate) {
         super(authenticationManager);
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -53,7 +59,9 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
         String token = request.getHeader(SystemConstant.TOKEN_PREFIX);
 
-        if (token == null) {
+        //验证当前用户token是否有效
+        Object checkToken = redisTemplate.opsForValue().get(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + token);
+        if (checkToken == null) {
             throw new WebException(ErrorCodeEnum.NO_LOGIN_ERROR);
         }
 
@@ -62,9 +70,6 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
             //解析token
             Claims claims = JwtUtil.getTokenBody(token);
             LoginUser loginUser = JSONUtil.toBean(claims.get("data").toString(), LoginUser.class);
-
-            //设置theadLocal
-            SystemConstant.threadLocal.set(loginUser);
 
             return new UsernamePasswordAuthenticationToken(loginUser.getUserName(), "", null);
         } catch (Exception e) {

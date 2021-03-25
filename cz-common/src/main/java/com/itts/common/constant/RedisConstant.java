@@ -5,7 +5,12 @@ package com.itts.common.constant;
  * @Author：lym
  * @Date: 2021/3/25
  */
-public class RedisPrefixConstant {
+public class RedisConstant {
+
+    /**
+     * 默认过期时间(15分钟)
+     */
+    public static final Long EXPIRE_DATE = 1000L * 60 * 15;
 
     /**
      * 用户登录token存放redis前缀
