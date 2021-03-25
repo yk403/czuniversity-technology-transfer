@@ -16,7 +16,12 @@ public interface TYhService {
     /**
      * 查询列表
      */
-    PageInfo<TYh> findByPage(Integer pageNum,Integer pageSize);
+    PageInfo<TYh> findByPage(Integer pageNum, Integer pageSize);
+
+    /**
+     * 通过账号获取用户信息
+     */
+    TYh getByUserName(String userName);
 
     /**
      * 获取详情

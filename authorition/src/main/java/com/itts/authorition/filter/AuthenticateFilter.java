@@ -2,11 +2,15 @@ package com.itts.authorition.filter;
 
 import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Maps;
 import com.itts.authorition.request.LoginRequest;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.JwtUtil;
+import com.itts.common.utils.ResponseUtil;
+import com.itts.userservice.model.yh.TYh;
+import com.itts.userservice.service.yh.TYhService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @Description：用户登录校验过滤器
@@ -31,8 +36,11 @@ public class AuthenticateFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticateFilter(AuthenticationManager authenticationManager) {
+    private TYhService yhService;
+
+    public AuthenticateFilter(AuthenticationManager authenticationManager, TYhService service) {
         this.authenticationManager = authenticationManager;
+        this.yhService = service;
         //登录请求地址
         setFilterProcessesUrl("/api/login/");
     }
@@ -52,7 +60,7 @@ public class AuthenticateFilter extends UsernamePasswordAuthenticationFilter {
 
         } catch (Exception e) {
 
-            log.error("【用户鉴权登录】用户登录参数不合法");
+            log.error("【用户鉴权登录】用户登录参数不合法", e);
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
@@ -66,12 +74,18 @@ public class AuthenticateFilter extends UsernamePasswordAuthenticationFilter {
         String userName = authResult.getPrincipal().toString();
 
         //通过用户名查询用户信息
+        TYh yh = yhService.getByUserName(userName);
 
         LoginUser loginUser = new LoginUser();
         loginUser.setUserName(userName);
+        loginUser.setUserId(yh.getId());
         String token = JwtUtil.getJwtToken(JSONUtil.toJsonStr(loginUser), 1000L * 60 * 3);
 
-        response.setHeader("token", token);
+        Map<String, Object> resultMap = Maps.newHashMap();
+        resultMap.put("user", loginUser);
+        resultMap.put("token", token);
+
+        response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.success(resultMap)));
     }
 
     /**

@@ -29,6 +29,19 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
+        <!-- 用户服务 -->
+        <dependency>
+            <groupId>com.itts</groupId>
+            <artifactId>user-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itts</groupId>
+            <artifactId>user-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!-- security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/test/authorition")
-public class TestController {
+public class AuthoritionTestController {
 
     /**
      * 测试方法

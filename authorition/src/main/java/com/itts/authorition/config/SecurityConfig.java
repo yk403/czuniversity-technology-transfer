@@ -2,6 +2,9 @@ package com.itts.authorition.config;
 
 import com.itts.authorition.filter.AuthenticateFilter;
 import com.itts.authorition.filter.AuthorizationFilter;
+import com.itts.authorition.service.SecurityUserDetailsServiceImpl;
+import com.itts.userservice.service.yh.TYhService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private TYhService tYhService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -30,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .httpBasic()
                 .and()
-                .addFilter(new AuthenticateFilter(authenticationManager()))
+                .addFilter(new AuthenticateFilter(authenticationManager(), tYhService))
                 .addFilter(new AuthorizationFilter(authenticationManager()))
                 //关闭session， 不再使用
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

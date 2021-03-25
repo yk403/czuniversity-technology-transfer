@@ -3,13 +3,13 @@ package com.itts.userservice.service.yh.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.model.yh.TYh;
 import com.itts.userservice.mapper.yh.TYhMapper;
+import com.itts.userservice.model.yh.TYh;
 import com.itts.userservice.service.yh.TYhService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -24,7 +24,7 @@ import java.util.List;
 @Primary
 public class TYhServiceImpl implements TYhService {
 
-    @Resource
+    @Autowired
     private TYhMapper tYhMapper;
 
 
@@ -39,6 +39,16 @@ public class TYhServiceImpl implements TYhService {
         List<TYh> list = tYhMapper.selectList(query);
         PageInfo<TYh> page = new PageInfo<>(list);
         return page;
+    }
+
+    /**
+     * 通过账号获取用户信息
+     */
+    @Override
+    public TYh getByUserName(String userName) {
+
+        TYh yh = tYhMapper.getByUserName(userName);
+        return yh;
     }
 
     /**
