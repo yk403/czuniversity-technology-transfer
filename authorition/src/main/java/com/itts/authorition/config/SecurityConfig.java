@@ -44,8 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 //权限设置管理
                 .authorizeRequests()
-                //校验用户是否有USER的角色，只有有的才可以访问
-                //.antMatchers(HttpMethod.GET, "/api/admin/test/authorition/**").hasRole("USER")
                 //设置白名单
                 .antMatchers("/api/login/", "/api/register/").permitAll()
                 //所有请求都需要授权（除了放行的）
@@ -58,9 +56,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //登录失败响应
                 .authenticationEntryPoint(securityAuthenticationEntryPoint)
                 .and()
+                //验证登录过滤器
                 .addFilter(new AuthenticateFilter(authenticationManager(), userService, redisTemplate))
+                //验证用户权限过滤器
                 .addFilter(new AuthorizationFilter(authenticationManager(), redisTemplate))
-                //关闭session， 不再使用
+                //关闭session，不再使用
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //设置登出
                 .and().logout().logoutUrl("/api/logout/").logoutSuccessHandler(securityLogoutSuccessHandler).permitAll();
