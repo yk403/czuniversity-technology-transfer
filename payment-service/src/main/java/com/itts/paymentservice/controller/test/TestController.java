@@ -1,7 +1,6 @@
 package com.itts.paymentservice.controller.test;
 
-import com.alibaba.fastjson.JSON;
-import com.itts.common.utils.ResponseUtil;
+import com.itts.common.utils.common.ResponseUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

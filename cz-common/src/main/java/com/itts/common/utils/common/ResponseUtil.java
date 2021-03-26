@@ -1,4 +1,4 @@
-package com.itts.common.utils;
+package com.itts.common.utils.common;
 
 import com.itts.common.enums.ErrorCodeEnum;
 import lombok.AllArgsConstructor;

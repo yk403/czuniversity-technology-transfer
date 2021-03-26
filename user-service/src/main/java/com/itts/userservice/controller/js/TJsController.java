@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
-import com.itts.common.utils.ResponseUtil;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.model.js.TJs;
 import com.itts.userservice.service.js.TJsService;
 import io.swagger.annotations.Api;

@@ -1,7 +1,7 @@
 package com.itts.technologytransactionservice.service.cd;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.common.utils.ResponseUtil;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.TCd;
 
 /**
