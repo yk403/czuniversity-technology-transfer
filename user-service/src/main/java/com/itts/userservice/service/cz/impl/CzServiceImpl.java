@@ -93,7 +93,9 @@ public class CzServiceImpl implements CzService {
     @Override
     public List<CzDTO> findCz(Long id, Long cdid){
         //获取缓存中的操作
-        List<CzDTO> czDTOList = JSONUtil.toList((JSONArray) redisTemplate.opsForValue().get(RedisConstant.USERSERVICE_MENUS_OPERTION + id), CzDTO.class);
+        Object json = redisTemplate.opsForValue().get(RedisConstant.USERSERVICE_MENUS_OPERTION + id);
+        JSONArray jsonArry = JSONUtil.parseArray(json);
+        List<CzDTO> czDTOList = JSONUtil.toList(jsonArry, CzDTO.class);
         if(czDTOList==null){
             //查询角色id
             YhJsGl yhJsGl = yhJsGlMapper.selectById(id);
@@ -101,9 +103,9 @@ public class CzServiceImpl implements CzService {
             //根据角色id和菜单id查出操作
             List<CzDTO> findcdcz = czMapper.findcdcz(jsid, cdid);
             czDTOList=findcdcz;
+            //缓存中没有数据则存入操作
+            redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS_OPERTION+id,czDTOList);
         }
-        //存入操作
-        redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS_OPERTION+id,czDTOList);
         return czDTOList;
     }
 }

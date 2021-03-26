@@ -125,8 +125,9 @@ public class YhServiceImpl implements YhService {
             /*YhVO yhVO = new YhVO();*/
             BeanUtils.copyProperties(yh,yhVO);
             yhVO.setJsDTOList(jsDTOList);
+            redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId,yhVO);
         }
-        redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId,yhVO);
+
 
         return yhVO;
     }
