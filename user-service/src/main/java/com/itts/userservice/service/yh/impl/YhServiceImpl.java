@@ -111,7 +111,7 @@ public class YhServiceImpl implements YhService {
         YhVO yhVO = JSONUtil.toBean((JSONObject) redisTemplate.opsForValue().get(RedisConstant.USERSERVICE_MENUS + userId),YhVO.class);
         if(yhVO==null){
             //角色及其菜单的全部列表
-            List<JsDTO> jsDTOList = tYhMapper.findByUserId(userId);
+            List<JsDTO> jsDTOList = yhMapper.findByUserId(userId);
 
             jsDTOList.forEach(jsDTO -> {
                 List<MenuDTO> rootMenu = jsDTO.getMenuDTOList();
@@ -121,7 +121,7 @@ public class YhServiceImpl implements YhService {
                 jsDTO.setMenuDTOList(menuDTOList);
             });
             //查询用户信息
-            Yh yh = tYhMapper.selectById(userId);
+            Yh yh = yhMapper.selectById(userId);
             /*YhVO yhVO = new YhVO();*/
             BeanUtils.copyProperties(yh,yhVO);
             yhVO.setJsDTOList(jsDTOList);
