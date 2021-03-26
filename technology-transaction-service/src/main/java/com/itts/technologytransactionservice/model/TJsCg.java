@@ -94,6 +94,10 @@ public class TJsCg implements Serializable {
  	*/
 	private String contracts;
 	/**
+	 * 手机号码
+	 */
+	private String sjhm;
+	/**
  	* 座机
  	*/
 	private String zj;

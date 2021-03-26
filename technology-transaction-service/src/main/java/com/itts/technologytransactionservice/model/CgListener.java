@@ -6,10 +6,10 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.itts.technologytransactionservice.mapper.TJsCgMapper;
-import com.itts.technologytransactionservice.mapper.TJsShMapper;
-import com.itts.technologytransactionservice.service.ITJsCgService;
-import com.itts.technologytransactionservice.service.ITJsShService;
+import com.itts.technologytransactionservice.mapper.JsCgMapper;
+import com.itts.technologytransactionservice.mapper.JsShMapper;
+import com.itts.technologytransactionservice.service.JsCgService;
+import com.itts.technologytransactionservice.service.JsShService;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -29,13 +29,13 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
 
     private Integer count= 0;
     @Autowired
-    private TJsShMapper tJsShMapper;
+    private JsShMapper jsShMapper;
     @Autowired
-    private TJsCgMapper tJsCgMapper;
+    private JsCgMapper jsCgMapper;
     @Autowired
-    private ITJsShService tJsShService;
+    private JsShService tJsShService;
     @Autowired
-    private ITJsCgService tJsCgService;
+    private JsCgService tJsCgService;
 
     public static CgListener cgListener;
 
@@ -190,27 +190,24 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
     }
 
     private void save(TJsCg tJsCg) {
-        TJsCg tJsCgOld = tJsCgMapper.selectByName(tJsCg.getCgmc());
+        TJsCg tJsCgOld = jsCgMapper.selectByName(tJsCg.getCgmc());
         if(tJsCgOld != null){
             tJsCg.setId(tJsCgOld.getId());
             try {
-                tJsCgMapper.updateById(tJsCg);
+                jsCgMapper.updateById(tJsCg);
                 count++;
             }catch (Exception e){
                 log.info(e.getMessage());
             }
         }else{
             try {
-                tJsCgMapper.insert(tJsCg);
+                jsCgMapper.insert(tJsCg);
                 Integer id = tJsCg.getId();
                 TJsSh tJsSh = new TJsSh();
-                tJsSh.setLx("1");
-                tJsSh.setCgxqId(id);
-                tJsSh.setFbshzt("1");
-                tJsSh.setReleaseStatus("1");
-                tJsSh.setCjsj(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-                tJsSh.setGxsj(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-                tJsShMapper.insert(tJsSh);
+                tJsSh.setLx(1);
+                tJsSh.setCgId(id);
+                tJsSh.setCjsj(new Date());
+                jsShMapper.insert(tJsSh);
                 count++;
             }catch (Exception e){
                 log.info(e.getMessage());

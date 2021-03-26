@@ -1,13 +1,12 @@
 package com.itts.technologytransactionservice.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -27,22 +26,26 @@ public class TJsSh implements Serializable {
 	/**
  	* 审核主键
  	*/
-	@TableId(value = "id",type = IdType.INPUT)
+	@TableId(value = "id",type = IdType.AUTO)
 	private Integer id;
 	/**
- 	* 类型 1成果、2需求
+ 	* 类型 1技术成果、2技术需求
  	*/
-	private String lx;
+	private Integer lx;
 	/**
- 	* 技术成果需求id 外键
+ 	* 技术成果id
  	*/
-	private Integer cgxqId;
+	private Integer cgId;
 	/**
- 	* 发布审核状态 1待审核、2通过、3不通过
+	 * 技术需求id
+	 */
+	private Integer xqId;
+	/**
+ 	* 发布审核状态 1待审核、2通过、3整改、4拒绝
  	*/
-	private String fbshzt;
+	private Integer fbshzt;
 	/**
- 	* 活动申请状态 1待审核、2通过、3不通过
+ 	* 活动申请状态 1待审核、2通过、3整改、4拒绝
  	*/
 	private String hdsqzt;
 	/**
@@ -56,25 +59,26 @@ public class TJsSh implements Serializable {
 	/**
  	* 创建时间
  	*/
-	private String cjsj;
+	@TableField(fill= FieldFill.INSERT)
+	private Date cjsj;
 	/**
  	* 更新时间
  	*/
-	private String gxsj;
+	private Date gxsj;
 	/**
 	 * 发布状态 1 未发布 2已发布
 	 */
-	private String releaseStatus;
+	private Integer releaseStatus;
 	/**
 	 * 受理协办审核状态
-	 * 1待审核、2通过、3不通过
+	 * 1待审核、2通过、3整改、4拒绝
 	 */
-	private String assistanceStatus;
+	private Integer assistanceStatus;
 	/**
 	 * 受理协办发布状态
 	 * 1 未发布 2已发布
 	 */
-	private String releaseAssistanceStatus;
+	private Integer releaseAssistanceStatus;
 	/**
 	 * 受理协办未通过说明
 	 */

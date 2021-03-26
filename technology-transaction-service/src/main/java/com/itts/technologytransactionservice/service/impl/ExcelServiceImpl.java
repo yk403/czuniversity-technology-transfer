@@ -2,9 +2,9 @@ package com.itts.technologytransactionservice.service.impl;
 
 import com.alibaba.excel.EasyExcel;
 import com.itts.common.utils.R;
-import com.itts.technologytransactionservice.mapper.TJsCgMapper;
-import com.itts.technologytransactionservice.mapper.TJsShMapper;
-import com.itts.technologytransactionservice.mapper.TJsXqMapper;
+import com.itts.technologytransactionservice.mapper.JsCgMapper;
+import com.itts.technologytransactionservice.mapper.JsShMapper;
+import com.itts.technologytransactionservice.mapper.JsXqMapper;
 import com.itts.technologytransactionservice.model.CgListener;
 import com.itts.technologytransactionservice.model.TJsCgDto;
 import com.itts.technologytransactionservice.model.TJsXqDto;
@@ -24,16 +24,16 @@ import java.io.IOException;
 public class ExcelServiceImpl implements ExcelService {
 
     @Autowired
-    private TJsXqMapper tJsXqMapper;
+    private JsXqMapper jsXqMapper;
     @Autowired
-    private TJsCgMapper tJsCgMapper;
+    private JsCgMapper jsCgMapper;
     @Autowired
-    private TJsShMapper tJsShMapper;
+    private JsShMapper jsShMapper;
     @Override
     public R importXq(MultipartFile file, Integer headRowNumber) {
         XqListener xqListener = new XqListener();
-        xqListener.setTJsXqMapper(tJsXqMapper);
-        xqListener.setTJsShMapper(tJsShMapper);
+        xqListener.setJsXqMapper(jsXqMapper);
+        xqListener.setJsShMapper(jsShMapper);
         try {
             EasyExcel.read(file.getInputStream(), TJsXqDto.class, xqListener).headRowNumber(headRowNumber).sheet().doRead();
             return R.ok(xqListener.getResult());
@@ -45,8 +45,8 @@ public class ExcelServiceImpl implements ExcelService {
     @Override
     public R importCg(MultipartFile file, Integer headRowNumber) {
         CgListener cgListener = new CgListener();
-        cgListener.setTJsCgMapper(tJsCgMapper);
-        cgListener.setTJsShMapper(tJsShMapper);
+        cgListener.setJsCgMapper(jsCgMapper);
+        cgListener.setJsShMapper(jsShMapper);
         try {
             EasyExcel.read(file.getInputStream(), TJsCgDto.class, cgListener).headRowNumber(headRowNumber).sheet().doRead();
             return R.ok(cgListener.getResult());

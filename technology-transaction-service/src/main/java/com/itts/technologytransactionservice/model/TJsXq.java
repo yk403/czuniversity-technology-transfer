@@ -114,7 +114,7 @@ public class TJsXq implements Serializable {
  	*/
 	private String jshdId;
 	/**
-	 * 发布审核状态
+	 * 发布审核状态(1待审核、2通过、3整改、4拒绝)
 	 */
 	private String status;
 	/**

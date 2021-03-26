@@ -6,8 +6,8 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.itts.technologytransactionservice.mapper.TJsShMapper;
-import com.itts.technologytransactionservice.mapper.TJsXqMapper;
+import com.itts.technologytransactionservice.mapper.JsShMapper;
+import com.itts.technologytransactionservice.mapper.JsXqMapper;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -28,10 +28,10 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
     private Integer count= 0;
 
     @Autowired
-    private TJsXqMapper tJsXqMapper;
+    private JsXqMapper jsXqMapper;
 
     @Autowired
-    private TJsShMapper tJsShMapper;
+    private JsShMapper jsShMapper;
     public static XqListener xqListener;
 
     @PostConstruct
@@ -165,11 +165,11 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
     }
 
     private void save(TJsXq tJsXq) {
-        TJsXq tJsXqOld = tJsXqMapper.selectByName(tJsXq.getXqmc());
+        TJsXq tJsXqOld = jsXqMapper.selectByName(tJsXq.getXqmc());
         if(tJsXqOld != null){
             tJsXq.setId(tJsXqOld.getId());
             try {
-                tJsXqMapper.updateById(tJsXq);
+                jsXqMapper.updateById(tJsXq);
                 count++;
             }catch (Exception e){
                 log.info(e.getMessage());
@@ -179,18 +179,12 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
                 if (tJsXq.getId() != null) {
 
                 } else {
-                    tJsXqMapper.insert(tJsXq);
+                    jsXqMapper.insert(tJsXq);
                     TJsSh tJsSh = new TJsSh();
-                    tJsSh.setLx("2");
-                    tJsSh.setCgxqId(tJsXq.getId());
-                    tJsSh.setFbshzt("1");
-                    tJsSh.setReleaseStatus("1");
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = new Date();
-                    String format = simpleDateFormat.format(date);
-                    tJsSh.setCjsj(format);
-                    tJsSh.setGxsj(format);
-                    tJsShMapper.insert(tJsSh);
+                    tJsSh.setLx(2);
+                    tJsSh.setXqId(tJsXq.getId());
+                    tJsSh.setCjsj(new Date());
+                    jsShMapper.insert(tJsSh);
                     count++;
 
                 }

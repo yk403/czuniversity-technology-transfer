@@ -6,7 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.ResponseUtil;
 import com.itts.technologytransactionservice.feign.payment.PaymentService;
-import com.itts.technologytransactionservice.mapper.TCdMapper;
+import com.itts.technologytransactionservice.mapper.CdMapper;
 import com.itts.technologytransactionservice.model.TCd;
 import com.itts.technologytransactionservice.service.cd.TCdService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.util.List;
 public class TCdServiceImpl implements TCdService {
 
     @Resource
-    private TCdMapper mapper;
+    private CdMapper mapper;
 
     @Autowired
     private PaymentService paymentService;

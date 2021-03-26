@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
+import static com.itts.common.constant.SystemConstant.BASE_URL;
+
 /**
  * @Description: soringboot整合vue,文件上传下载
  * @Author: yanhonghai
@@ -23,7 +25,7 @@ import java.io.*;
  */
 //上传不要用@Controller,用@RestController
 @RestController
-@RequestMapping("/file")
+@RequestMapping(BASE_URL+"/v1/file")
 public class FileController {
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
     //在文件操作中，不用/或者\最好，推荐使用File.separator
