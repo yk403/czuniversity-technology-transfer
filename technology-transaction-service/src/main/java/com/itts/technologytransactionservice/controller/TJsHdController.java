@@ -1,10 +1,9 @@
 package com.itts.technologytransactionservice.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
-import com.itts.common.utils.ResponseUtil;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsHd;
 import com.itts.technologytransactionservice.service.ITJsHdService;
 import org.springframework.beans.factory.annotation.Autowired;
