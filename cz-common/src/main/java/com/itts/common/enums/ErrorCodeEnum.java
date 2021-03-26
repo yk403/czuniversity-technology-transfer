@@ -36,6 +36,7 @@ public enum ErrorCodeEnum {
     NO_LOGIN_ERROR(-430001, "用户未登录"),
     NO_PERMISSION_ERROR(-430002, "用户无权限，请联系管理员"),
     LOGIN_USERNAME_PASSWORD_ERROR(-430003, "用户账号或密码错误，请重试"),
+    NO_PERMISSION_LOGIN_USERNAME_PASSWORD_ERROR(-43004, "用户权限不足，请检查账号密码或联系管理员"),
     //====================       登录登出错误提示END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

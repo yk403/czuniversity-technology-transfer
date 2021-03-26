@@ -24,9 +24,4 @@ public class SystemConstant {
      * token前缀
      */
     public static final String TOKEN_PREFIX = "token";
-
-    /**
-    *存放用户登录信息， threadLocal
-    */
-    public static ThreadLocal<LoginUser> threadLocal = new ThreadLocal<>();
 }
