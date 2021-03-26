@@ -23,18 +23,9 @@ public class YhJsGlServiceImpl implements YhJsGlService {
     @Resource
     private YhJsGlMapper yhJsGlMapper;
 
-    //通过用户id查出角色id
-    @Override
-    public Long selectbyid(Long id) {
-        QueryWrapper<String> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("yh_id",id)
-                    .eq("sfsc","false");
-        YhJsGl yhJsGl = yhJsGlMapper.selectById(queryWrapper);
-        Long jsId = yhJsGl.getJsId();
-        return jsId;
-    }
 
 
-    //通过用户id查出所拥有的菜单
+
+
 
 }

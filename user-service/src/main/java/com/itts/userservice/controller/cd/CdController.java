@@ -11,6 +11,7 @@ import com.itts.userservice.service.cd.CdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +32,9 @@ public class CdController {
 
     @Resource
     private CdService cdService;
+
+    @Resource
+    private RedisTemplate redisTemplate;
 
     /**
      * 获取列表
@@ -60,6 +64,7 @@ public class CdController {
     @PostMapping("/add/")
     public ResponseUtil add(@RequestBody Cd cd) throws WebException {
         checkRequst(cd);
+
         Cd add = cdService.add(cd);
         return ResponseUtil.success(add);
     }

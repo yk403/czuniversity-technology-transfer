@@ -1,9 +1,12 @@
 package com.itts.userservice.service.yh.impl;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.constant.RedisConstant;
 import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.model.yh.Yh;
@@ -12,6 +15,7 @@ import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.YhVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,6 +37,8 @@ public class YhServiceImpl implements YhService {
     @Resource
     private YhMapper tYhMapper;
 
+    @Resource
+    private RedisTemplate redisTemplate;
 
     /**
      * 获取列表 - 分页
@@ -82,24 +88,25 @@ public class YhServiceImpl implements YhService {
      */
     @Override
     public YhVO QueryMenuList(Long userId) {
+        YhVO yhVO = JSONUtil.toBean((JSONObject) redisTemplate.opsForValue().get(RedisConstant.USERSERVICE_MENUS + userId),YhVO.class);
+        if(yhVO==null){
+            //角色及其菜单的全部列表
+            List<JsDTO> jsDTOList = tYhMapper.findByUserId(userId);
 
+            jsDTOList.forEach(jsDTO -> {
+                List<MenuDTO> rootMenu = jsDTO.getMenuDTOList();
+                //获取菜单树
+                List<MenuDTO> menuDTOList = buildMenuTree(rootMenu, 0L);
 
-        //角色及其菜单的全部列表
-        List<JsDTO> jsDTOList = tYhMapper.findByUserId(userId);
-
-        jsDTOList.forEach(jsDTO -> {
-            List<MenuDTO> rootMenu = jsDTO.getMenuDTOList();
-            //获取菜单树
-            List<MenuDTO> menuDTOList = buildMenuTree(rootMenu, 0L);
-
-            jsDTO.setMenuDTOList(menuDTOList);
-        });
-        //查询用户信息
-        Yh yh = tYhMapper.selectById(userId);
-        YhVO yhVO = new YhVO();
-        BeanUtils.copyProperties(yh,yhVO);
-        yhVO.setJsDTOList(jsDTOList);
-
+                jsDTO.setMenuDTOList(menuDTOList);
+            });
+            //查询用户信息
+            Yh yh = tYhMapper.selectById(userId);
+            /*YhVO yhVO = new YhVO();*/
+            BeanUtils.copyProperties(yh,yhVO);
+            yhVO.setJsDTOList(jsDTOList);
+        }
+        redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId,yhVO);
 
         return yhVO;
     }
