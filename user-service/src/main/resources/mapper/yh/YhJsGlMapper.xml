@@ -4,19 +4,21 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.userservice.model.yh.YhJsGl">
-        <id column="id" property="id" />
-        <result column="yh_id" property="yhId" />
-        <result column="js_id" property="jsId" />
-        <result column="sfsc" property="sfsc" />
-        <result column="cjsj" property="cjsj" />
-        <result column="cjr" property="cjr" />
-        <result column="gxsj" property="gxsj" />
-        <result column="gxr" property="gxr" />
+        <id column="id" property="id"/>
+        <result column="yh_id" property="yhId"/>
+        <result column="js_id" property="jsId"/>
+        <result column="sfhy" property="sfhy"/>
+        <result column="hylx_id" property="hylxId"/>
+        <result column="sfsc" property="sfsc"/>
+        <result column="cjsj" property="cjsj"/>
+        <result column="cjr" property="cjr"/>
+        <result column="gxsj" property="gxsj"/>
+        <result column="gxr" property="gxr"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, yh_id, js_id, sfsc, cjsj, cjr, gxsj, gxr
+        id
+        , yh_id, js_id, sfhy, hylx_id, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
-
 </mapper>

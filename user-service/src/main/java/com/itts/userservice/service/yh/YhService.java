@@ -29,6 +29,11 @@ public interface YhService {
     Yh get(Long id);
 
     /**
+     *通过用户名获取用户信息
+     */
+    Yh getByUserName(String userName);
+
+    /**
      * 新增
      */
     Yh add(Yh Yh);

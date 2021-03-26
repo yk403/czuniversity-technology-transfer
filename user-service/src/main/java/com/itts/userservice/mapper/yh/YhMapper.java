@@ -4,6 +4,7 @@ import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.model.yh.Yh;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @author lym
  * @since 2021-03-18
  */
+@Repository
 public interface YhMapper extends BaseMapper<Yh> {
 
     /**

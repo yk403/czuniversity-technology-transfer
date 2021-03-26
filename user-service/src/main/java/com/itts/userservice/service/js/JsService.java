@@ -3,6 +3,8 @@ package com.itts.userservice.service.js;
 import com.github.pagehelper.PageInfo;
 import com.itts.userservice.model.js.Js;
 
+import java.util.List;
+
 
 /**
  * <p>
@@ -20,13 +22,25 @@ public interface JsService {
     PageInfo<Js> findByPage(Integer pageNum, Integer pageSize);
 
     /**
+     * 通过系统类型是否为默认角色获取角色信息
+     *
+     * @param systemType  系统类型
+     * @param defaultFlag 是否为默认角色
+     * @return
+     * @author liuyingming
+     */
+    List<Js> findBySystemTypeAndDefault(String systemType, Boolean defaultFlag);
+
+    /**
      * 获取详情
      */
     Js get(Long id);
+
     /**
      * 新增
      */
     Js add(Js Js);
+
     /**
      * 更新
      */

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,8 +15,8 @@ import lombok.EqualsAndHashCode;
  * 用户角色关联表
  * </p>
  *
- * @author fl
- * @since 2021-03-24
+ * @author lym
+ * @since 2021-03-26
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -40,6 +42,16 @@ public class YhJsGl implements Serializable {
     private Long jsId;
 
     /**
+     * 是否为会员
+     */
+    private Boolean sfhy;
+
+    /**
+     * 会员类型
+     */
+    private Long hylxId;
+
+    /**
      * 是否删除
      */
     private Boolean sfsc;
@@ -47,6 +59,7 @@ public class YhJsGl implements Serializable {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
@@ -57,6 +70,7 @@ public class YhJsGl implements Serializable {
     /**
      * 更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**
