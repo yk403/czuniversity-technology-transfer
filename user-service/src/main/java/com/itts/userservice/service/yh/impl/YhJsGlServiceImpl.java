@@ -2,10 +2,9 @@ package com.itts.userservice.service.yh.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.itts.userservice.mapper.yh.TYhJsGlMapper;
-import com.itts.userservice.model.yh.TYhJsGl;
-import com.itts.userservice.service.yh.TYhJsGlService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.userservice.mapper.yh.YhJsGlMapper;
+import com.itts.userservice.model.yh.YhJsGl;
+import com.itts.userservice.service.yh.YhJsGlService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,10 +18,10 @@ import javax.annotation.Resource;
  * @since 2021-03-24
  */
 @Service
-public class TYhJsGlServiceImpl implements TYhJsGlService {
+public class YhJsGlServiceImpl implements YhJsGlService {
 
     @Resource
-    private TYhJsGlMapper tYhJsGlMapper;
+    private YhJsGlMapper yhJsGlMapper;
 
     //通过用户id查出角色id
     @Override
@@ -30,8 +29,8 @@ public class TYhJsGlServiceImpl implements TYhJsGlService {
         QueryWrapper<String> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("yh_id",id)
                     .eq("sfsc","false");
-        TYhJsGl tYhJsGl = tYhJsGlMapper.selectById(queryWrapper);
-        Long jsId = tYhJsGl.getJsId();
+        YhJsGl yhJsGl = yhJsGlMapper.selectById(queryWrapper);
+        Long jsId = yhJsGl.getJsId();
         return jsId;
     }
 

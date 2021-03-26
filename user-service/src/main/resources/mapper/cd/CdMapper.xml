@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.userservice.mapper.cd.CdMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.userservice.model.cd.Cd">
+        <id column="id" property="id" />
+        <result column="cdmc" property="cdmc" />
+        <result column="cdbm" property="cdbm" />
+        <result column="fjcd_id" property="fjcdId" />
+        <result column="cj" property="cj" />
+        <result column="cddz" property="cddz" />
+        <result column="sfsc" property="sfsc" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, cdmc, cdbm, fjcd_id, cj, cddz, sfsc, cjsj, cjr, gxsj, gxr
+    </sql>
+
+</mapper>
