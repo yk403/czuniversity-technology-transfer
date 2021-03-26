@@ -83,8 +83,6 @@ public class YhServiceImpl implements YhService {
     @Override
     public YhVO QueryMenuList(Long userId) {
 
-        //TODO 1. 通过用户ID查询所有角色  管理员
-        //TODO 2. 遍历角色，查询角色下的所有菜单，菜单递归遍历生成树
 
         //角色及其菜单的全部列表
         List<JsDTO> jsDTOList = tYhMapper.findByUserId(userId);
