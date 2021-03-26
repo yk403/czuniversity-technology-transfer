@@ -24,6 +24,6 @@ public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoin
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
 
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.error(ErrorCodeEnum.LOGIN_USERNAME_PASSWORD_ERROR)));
+        response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.error(ErrorCodeEnum.NO_PERMISSION_ERROR)));
     }
 }

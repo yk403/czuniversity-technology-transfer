@@ -11,6 +11,7 @@ import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.mapper.yh.YhMapper;
+import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.YhVO;
 import org.springframework.beans.BeanUtils;
@@ -35,7 +36,7 @@ import java.util.List;
 public class YhServiceImpl implements YhService {
 
     @Resource
-    private YhMapper tYhMapper;
+    private YhMapper yhMapper;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -48,7 +49,7 @@ public class YhServiceImpl implements YhService {
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Yh> query = new QueryWrapper<>();
         query.eq("sfsc", false);
-        List<Yh> list = tYhMapper.selectList(query);
+        List<Yh> list = yhMapper.selectList(query);
         PageInfo<Yh> page = new PageInfo<>(list);
         return page;
     }
@@ -58,8 +59,26 @@ public class YhServiceImpl implements YhService {
      */
     @Override
     public Yh get(Long id) {
-        Yh Yh = tYhMapper.selectById(id);
+        Yh Yh = yhMapper.selectById(id);
         return Yh;
+    }
+
+    /**
+     * 通过用户名获取用户信息
+     *
+     * @param
+     * @return
+     * @author liuyingming
+     */
+    @Override
+    public Yh getByUserName(String userName) {
+
+        QueryWrapper query = new QueryWrapper();
+        query.eq("yhm", userName);
+        query.eq("sfsc", false);
+
+        Yh yh = yhMapper.selectOne(query);
+        return yh;
     }
 
     /**
@@ -67,7 +86,7 @@ public class YhServiceImpl implements YhService {
      */
     @Override
     public Yh add(Yh Yh) {
-        tYhMapper.insert(Yh);
+        yhMapper.insert(Yh);
         return Yh;
     }
 
@@ -76,12 +95,13 @@ public class YhServiceImpl implements YhService {
      */
     @Override
     public Yh update(Yh Yh) {
-        tYhMapper.updateById(Yh);
+        yhMapper.updateById(Yh);
         return Yh;
     }
 
     /**
      * 查询角色菜单目录
+     *
      * @param
      * @return
      * @author fl
@@ -110,13 +130,14 @@ public class YhServiceImpl implements YhService {
 
         return yhVO;
     }
+
     //生成菜单树
-    private List<MenuDTO> buildMenuTree(List<MenuDTO> rootMenu,Long parentId){
+    private List<MenuDTO> buildMenuTree(List<MenuDTO> rootMenu, Long parentId) {
         //菜单树
         List<MenuDTO> treeList = new ArrayList<>();
 
         rootMenu.forEach(menuDTO -> {
-            if(parentId.longValue() == menuDTO.getParentId().longValue()){
+            if (parentId.longValue() == menuDTO.getParentId().longValue()) {
                 //通过递归，循环遍历子级菜单
                 menuDTO.setChildMenus(buildMenuTree(rootMenu, menuDTO.getId()));
                 treeList.add(menuDTO);

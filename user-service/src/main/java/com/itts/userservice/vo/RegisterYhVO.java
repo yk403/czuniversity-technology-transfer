@@ -1,34 +1,24 @@
-package com.itts.userservice.model.yh;
-
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+package com.itts.userservice.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
- * <p>
- * 用户表
- * </p>
- *
- * @author lym
- * @since 2021-03-26
+ * @Description：
+ * @Author：lym
+ * @Date: 2021/3/26
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("t_yh")
-public class Yh implements Serializable {
+public class RegisterYhVO implements Serializable {
 
-    private static final long serialVersionUID = -635097659040539734L;
+    private static final long serialVersionUID = -6774734591689088311L;
 
     /**
      * 主键ID
      */
-      @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -37,24 +27,9 @@ public class Yh implements Serializable {
     private String yhm;
 
     /**
-     * 密码
-     */
-    private String mm;
-
-    /**
      * 用户编号
      */
     private String yhbh;
-
-    /**
-     * 真实姓名
-     */
-    private String zsxm;
-
-    /**
-     * 联系电话
-     */
-    private String lxdh;
 
     /**
      * 用户头像

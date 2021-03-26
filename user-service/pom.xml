@@ -20,11 +20,19 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.itts</groupId>
             <artifactId>cz-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <!-- 用户鉴权 -->
+        <!--<dependency>
+            <groupId>com.itts</groupId>
+            <artifactId>authorition</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>-->
 
         <!-- redis -->
         <dependency>

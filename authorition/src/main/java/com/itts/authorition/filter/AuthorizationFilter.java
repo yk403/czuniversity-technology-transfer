@@ -71,6 +71,9 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
             Claims claims = JwtUtil.getTokenBody(token);
             LoginUser loginUser = JSONUtil.toBean(claims.get("data").toString(), LoginUser.class);
 
+            //设置threadLocal
+            SystemConstant.threadLocal.set(loginUser);
+
             return new UsernamePasswordAuthenticationToken(loginUser.getUserName(), "", null);
         } catch (Exception e) {
 

@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //权限设置管理
                 .authorizeRequests()
                 //设置白名单
-                .antMatchers("/api/login/", "/api/register/").permitAll()
+                .antMatchers("/api/register/").permitAll()
                 //所有请求都需要授权（除了放行的）
                 .anyRequest().authenticated()
                 .and()

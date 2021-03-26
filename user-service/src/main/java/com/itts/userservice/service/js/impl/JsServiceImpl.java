@@ -26,18 +26,40 @@ public class JsServiceImpl implements JsService {
 
 
     @Resource
-    private JsMapper tJsMapper;
+    private JsMapper jsMapper;
+
     /**
      * 获取列表 - 分页
      */
     @Override
     public PageInfo<Js> findByPage(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Js> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.eq("sfsc",false);
-        List<Js> js = tJsMapper.selectList(objectQueryWrapper);
+        objectQueryWrapper.eq("sfsc", false);
+        List<Js> js = jsMapper.selectList(objectQueryWrapper);
         PageInfo<Js> tJsPageInfo = new PageInfo<>(js);
         return tJsPageInfo;
+    }
+
+    /**
+     * 通过系统类型是否为默认角色获取角色信息
+     *
+     * @param systemType  系统类型
+     * @param defaultFlag 是否为默认角色
+     * @return
+     * @author liuyingming
+     */
+    @Override
+    public List<Js> findBySystemTypeAndDefault(String systemType, Boolean defaultFlag) {
+
+        QueryWrapper query = new QueryWrapper();
+        query.eq("xtlx", systemType);
+        query.eq("sfmr", defaultFlag);
+        query.eq("sfsc", false);
+
+        List jsList = jsMapper.selectList(query);
+
+        return jsList;
     }
 
     /**
@@ -45,7 +67,7 @@ public class JsServiceImpl implements JsService {
      */
     @Override
     public Js get(Long id) {
-        Js Js = tJsMapper.selectById(id);
+        Js Js = jsMapper.selectById(id);
         return Js;
     }
 
@@ -54,7 +76,7 @@ public class JsServiceImpl implements JsService {
      */
     @Override
     public Js add(Js Js) {
-        tJsMapper.insert(Js);
+        jsMapper.insert(Js);
         return Js;
     }
 
@@ -63,7 +85,7 @@ public class JsServiceImpl implements JsService {
      */
     @Override
     public Js update(Js Js) {
-        tJsMapper.updateById(Js);
+        jsMapper.updateById(Js);
         return Js;
     }
 }

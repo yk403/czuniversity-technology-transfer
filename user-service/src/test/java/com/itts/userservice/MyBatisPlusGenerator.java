@@ -23,9 +23,9 @@ public class MyBatisPlusGenerator {
         // 是否支持AR模式
         config.setActiveRecord(true)
                 // 作者
-                .setAuthor("fl")
+                .setAuthor("lym")
                 // 生成路径，最好使用绝对路径，window路径是不一样的
-                .setOutputDir("D:\\code-generate")
+                .setOutputDir("/Users/liuyingming/Desktop/code")
                 // 文件覆盖
                 .setFileOverride(true)
                 // 主键策略
@@ -52,6 +52,8 @@ public class MyBatisPlusGenerator {
                 .setPassword("ZMHY@mysql");
         //3. 策略配置globalConfiguration中
         StrategyConfig stConfig = new StrategyConfig();
+        //去掉表头前缀
+        stConfig.setTablePrefix("t_");
         //全局大写命名
         stConfig.setCapitalMode(true)
                 // 数据库表映射到实体的命名策略
@@ -61,7 +63,7 @@ public class MyBatisPlusGenerator {
         //使用restcontroller注解
                 .setRestControllerStyle(true)
         // 生成的表, 支持多表一起生成，以数组形式填写
-                .setInclude("t_yh_js_gl");
+                .setInclude("t_yh");
         //4. 包名策略配置
         PackageConfig pkConfig = new PackageConfig();
         pkConfig.setParent("com.itts.userservice.yhjsgl")
