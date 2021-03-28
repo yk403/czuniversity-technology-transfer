@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.controller;
 
 
 import com.github.pagehelper.PageInfo;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.ResponseUtil;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
 
 
 /**
@@ -102,26 +104,6 @@ public class JsCgController extends BaseController {
     }
 
     /**
-     * 发布审核通过
-     * @param id
-     * @return
-     */
-    @RequestMapping("/pass/{id}")
-    public R pass(@PathVariable("id") String id) {
-        return update(jsCgService.passUpdateById(Integer.valueOf(id)));
-    }
-
-    /**
-     * 发布审核不通过并填写备注
-     * @param params
-     * @return
-     */
-    @PostMapping("/disPass")
-    public R disPass(@RequestBody Map<String, Object> params) {
-        return update(jsCgService.disPassById(params));
-    }
-
-    /**
      * 成果下发
      * @param ids
      * @return
@@ -132,7 +114,7 @@ public class JsCgController extends BaseController {
         for (String id : ids) {
             list.add(Integer.valueOf(id));
         }
-        return  remove(jsCgService.issueBatch(list));
+        return  update(jsCgService.issueBatch(list));
     }
 
     /**

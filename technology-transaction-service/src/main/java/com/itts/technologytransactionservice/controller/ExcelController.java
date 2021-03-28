@@ -1,6 +1,5 @@
 package com.itts.technologytransactionservice.controller;
 
-import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.R;
 import com.itts.technologytransactionservice.service.ExcelService;
 import lombok.extern.slf4j.Slf4j;

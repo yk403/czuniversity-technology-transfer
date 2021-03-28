@@ -138,25 +138,7 @@ public class JsXqController extends BaseController {
     }
 
     /**
-     * 发布审核通过
-     * @param id
-     * @return
-     */
-    @RequestMapping("/pass/{id}")
-    public R pass(@PathVariable("id") String id) {
-        return update(jsXqService.passUpdateById(Integer.valueOf(id)));
-    }
-
-    /**
-     * 发布审核不通过并填写备注
-     */
-    @PostMapping("/disPass")
-    public R disPass(@RequestBody Map<String, Object> params) {
-        return update(jsXqService.disPassById(params));
-    }
-
-    /**
-     * 需求发布下发
+     * 需求批量下发
      */
     @PostMapping("/issueBatch")
     public R issueBatch(@RequestBody List<String> ids) {
@@ -164,7 +146,7 @@ public class JsXqController extends BaseController {
         for (String id : ids) {
             list.add(Integer.valueOf(id));
         }
-        return remove(jsXqService.issueBatch(list));
+        return update(jsXqService.issueBatch(list));
     }
 
     /**

@@ -22,18 +22,9 @@ public interface JsCgAdminService extends IService<TJsCg> {
 	PageInfo FindtJsCgByTJsLbTJsLy(Query query);
 
 	boolean saveCg(TJsCg tJsCg) throws Exception;
-	boolean removeByIdCg(Integer id);
-	boolean disPassById(Map<String, Object> params);
-	boolean passUpdateById(Integer id);
 	boolean issueBatch(List<Integer> ids);
 
     boolean updateTJsCg(TJsCg tJsCg);
-
-    boolean assistanceUpdateTJsCg(TJsCg tJsCg);
-
-	boolean assistancePassUpdateById(Integer id);
-
-	boolean assistanceDisPassById(Map<String, Object> params);
 
 	boolean assistanceIssueBatch(List<Integer> ids);
 

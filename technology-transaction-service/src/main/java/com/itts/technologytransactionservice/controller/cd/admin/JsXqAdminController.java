@@ -113,13 +113,7 @@ public class JsXqAdminController extends BaseController {
         return update(result);
     }
 
-    /**
-     * 删除
-     */
-    @GetMapping("/remove/{id}")
-    public R remove(@PathVariable("id") String id) {
-        return remove( JsXqAdminService.removeByIdXq(Integer.valueOf(id)));
-    }
+
 
     /**
      * 批量删除
@@ -139,24 +133,6 @@ public class JsXqAdminController extends BaseController {
     }
 
     /**
-     * 发布审核通过
-     * @param id
-     * @return
-     */
-    @RequestMapping("/pass/{id}")
-    public R pass(@PathVariable("id") String id) {
-        return update(JsXqAdminService.passUpdateById(Integer.valueOf(id)));
-    }
-
-    /**
-     * 发布审核不通过并填写备注
-     */
-    @PostMapping("/disPass")
-    public R disPass(@RequestBody Map<String, Object> params) {
-        return update(JsXqAdminService.disPassById(params));
-    }
-
-    /**
      * 需求发布下发
      */
     @PostMapping("/issueBatch")
@@ -168,22 +144,6 @@ public class JsXqAdminController extends BaseController {
         return remove(JsXqAdminService.issueBatch(list));
     }
 
-    /**
-     * 受理协办审核
-     */
-    @RequestMapping("/assistancePass/{id}")
-    public R assistancePass(@PathVariable("id") String id) {
-        return update(JsXqAdminService.assistancePassUpdateById(Integer.valueOf(id)));
-    }
-
-    /**
-     * 受理协办审核不通过并填写备注
-     */
-    @PostMapping("/assistanceDisPass")
-    public R assistanceDisPass(@RequestBody Map<String, Object> params) {
-        boolean result = JsXqAdminService.assistanceDisPassById(params);
-        return update(result);
-    }
 
     /**
      * 受理协办下发
@@ -198,13 +158,5 @@ public class JsXqAdminController extends BaseController {
         return remove(result);
     }
 
-    /**
-     * 已发布的需求申请挂牌(受理协办)
-     */
-    @RequestMapping("/assistanceUpdate")
-    public R assistanceUpdate(@RequestBody TJsXq tJsXq) {
-        boolean result = JsXqAdminService.assistanceUpdateTJsXq(tJsXq);
-        return update(result);
-    }
 
 }

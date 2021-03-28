@@ -4,32 +4,17 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsShMapper">
 	<update id="updateJsSh">
 		UPDATE
-			t_js_sh
+			t_js_sh sh
+			<if test="cgId != null"> left join t_js_cg cg on cg.id = sh.cg_id </if>
+			<if test="xqId != null"> left join t_js_xq xq on xq.id = sh.xq_id </if>
 		<set>
-			<if test="lx != null">lx = #{lx},</if>
-			<if test="cgId != null">cg_id = #{cgId},</if>
-			<if test="xqId != null">xq_id = #{xqId},</if>
-			<if test="fbshzt != null">fbshzt = #{fbshzt},</if>
-			<if test="releaseStatus != null">release_status = #{releaseStatus},</if>
-			<if test="assistanceStatus != null">assistance_status = #{assistanceStatus},</if>
-			<if test="releaseAssistanceStatus != null">release_assistance_status = #{releaseAssistanceStatus},</if>
-			<if test="hdsqzt != null">hdsqzt = #{hdsqzt},</if>
-			<if test="fbwtgsm != null">fbwtgsm = #{fbwtgsm},</if>
-			<if test="assistanceRemark != null">assistance_remark = #{assistanceRemark},</if>
-			<if test="hdsqwtgsm != null">hdsqwtgsm = #{hdsqwtgsm},</if>
-			<if test="cjsj != null">cjsj = #{cjsj},</if>
-			<if test="gxsj != null">gxsj = #{gxsj},</if>
-			<if test="is_delete != null">is_delete = #{is_delete}</if>
+			<if test="cgId != null"> cg.is_delete = 1,</if>
+			<if test="xqId != null"> xq.is_delete = 1,</if>
+			sh.is_delete = 1
 		</set>
 		Where
-			<if test="xqId != null">
-				xq_id = #{xqId}
-			</if>
-			and
-			<if test="cgId != null">
-				cg_id = #{cgId}
-			</if>
-
+			<if test="xqId != null">xq_id = #{xqId} and sh.xq_id = #{xqId} </if>
+			<if test="cgId != null">cg_id = #{cgId} and sh.cg_id = #{cgId} </if>
 	</update>
 
 	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsSh">
@@ -61,6 +46,18 @@
 		select * from t_js_sh where cgxq_id in
 		<foreach item="cgxqId" collection="cgxqIds" index="index" open="(" separator="," close=")">
 			#{cgxqId}
+		</foreach>
+	</select>
+	<select id="selectBycgIds" resultType="com.itts.technologytransactionservice.model.TJsSh">
+		select * from t_js_sh where cg_id in
+		<foreach item="cgId" collection="cgIds" index="index" open="(" separator="," close=")">
+			#{cgId}
+		</foreach>
+	</select>
+	<select id="selectByxqIds" resultType="com.itts.technologytransactionservice.model.TJsSh">
+		select * from t_js_sh where xq_id in
+		<foreach item="xqId" collection="xqIds" index="index" open="(" separator="," close=")">
+			#{xqId}
 		</foreach>
 	</select>
 

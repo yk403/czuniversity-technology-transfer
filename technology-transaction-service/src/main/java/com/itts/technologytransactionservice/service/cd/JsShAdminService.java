@@ -6,6 +6,7 @@ import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.TJsSh;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -17,9 +18,10 @@ public interface JsShAdminService extends IService<TJsSh> {
 
 	IPage page(Query query);
 
-	TJsSh selectBycgxqId(Integer cgxqId,Integer lx);
-
 	List<TJsSh> selectBycgxqIds(List<Integer> cgxqIds);
 
-	/*int updateById(Long id);*/
+    Boolean auditCg(Map<String, Object> params, Integer fbshzt);
+
+	Boolean auditXq(Map<String, Object> params, Integer fbshzt);
+
 }

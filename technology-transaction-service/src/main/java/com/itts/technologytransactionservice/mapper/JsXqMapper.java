@@ -20,8 +20,6 @@ import java.util.Map;
  */
 @Repository
 public interface JsXqMapper extends BaseMapper<TJsXq> {
-	
-	/*List<TJsXq> list(IPage<TJsXq> page, @Param("map") Map map);*/
 
 	@Select("select * from t_js_xq where xqmc = #{name} and is_delete = 0")
 	TJsXq selectByName(String name);
@@ -29,8 +27,6 @@ public interface JsXqMapper extends BaseMapper<TJsXq> {
 	List<TJsXq> FindTJsXqByTJsLbTJsLy(@Param("map") Map map);
 
 	List<TJsFb> PageByTJsFb(@Param("map") Map map);
-
-	List<TJsXq> selectByStages(Integer companyId, String[] stages);
 
     void updateTJsXq(TJsXq tJsXq);
 

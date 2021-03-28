@@ -65,6 +65,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
                 return false;
             }
             tJsXq.setReleaseType("技术需求");
+            tJsXq.setCjsj(new Date());
             save(tJsXq);
             TJsSh tJsSh = new TJsSh();
             tJsSh.setLx(2);
@@ -77,8 +78,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
 
     @Override
     public boolean removeByIdXq(Integer id) {
-        Integer lx = 2;
-        TJsSh tJsSh = jsShService.selectBycgxqId(id,lx);
+        TJsSh tJsSh = jsShService.selectByxqId(id);
         TJsXq tJsXq = new TJsXq();
         tJsXq.setId(id);
         tJsXq.setIsDelete(1);
@@ -91,24 +91,9 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     }
 
     @Override
-    public boolean passUpdateById(Integer id) {
-        Integer lx = 2;
-        TJsSh tJsSh = jsShService.selectBycgxqId(id,lx);
-        Integer fbshzt = tJsSh.getFbshzt();
-        if (fbshzt != 2) {
-            tJsSh.setFbshzt(2);
-            jsShService.saveOrUpdate(tJsSh);
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    @Override
     public boolean assistancePassUpdateById(Integer id) {
         Integer lx = 2;
-        TJsSh tJsSh = jsShService.selectBycgxqId(id,lx);
+        TJsSh tJsSh = jsShService.selectByxqId(id);
         Integer assistanceStatus = tJsSh.getAssistanceStatus();
         if (!"2".equals(assistanceStatus)) {
             tJsSh.setAssistanceStatus(2);
@@ -123,30 +108,12 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     @Override
     public boolean assistanceDisPassById(Map<String, Object> params) {
         String id = params.get("id").toString();
-        Integer lx = 2;
         String assistanceRemark = params.get("assistanceRemark").toString();
-        TJsSh tJsSh = jsShService.selectBycgxqId(Integer.valueOf(id),lx);
+        TJsSh tJsSh = jsShService.selectByxqId(Integer.valueOf(id));
         Integer assistanceStatus = tJsSh.getAssistanceStatus();
         if (assistanceStatus != 2) {
             tJsSh.setAssistanceStatus(3);
-            tJsSh.setAssistanceRemark(assistanceRemark);
-            jsShService.saveOrUpdate(tJsSh);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean disPassById(Map<String, Object> params) {
-        String id = params.get("id").toString();
-        Integer lx = 2;
-        String fbwtgsm = params.get("fbwtgsm").toString();
-        TJsSh tJsSh = jsShService.selectBycgxqId(Integer.valueOf(id),lx);
-        Integer fbshzt = tJsSh.getFbshzt();
-        if (fbshzt != 2) {
-            tJsSh.setFbshzt(3);
-            tJsSh.setFbwtgsm(fbwtgsm);
+            tJsSh.setSlxbbz(assistanceRemark);
             jsShService.saveOrUpdate(tJsSh);
             return true;
         } else {
@@ -162,9 +129,9 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
         if (CollectionUtils.isEmpty(ids)) {
             return false;
         } else {
-            List<TJsSh> tJsShes = jsShService.selectBycgxqIds(ids);
+            List<TJsSh> tJsShes = jsShService.selectByxqIds(ids);
             for (TJsSh tJsShe : tJsShes) {
-                if ("2".equals(tJsShe.getFbshzt())) {
+                if (tJsShe.getFbshzt() == 2) {
                     tJsShe.setReleaseStatus(2);
                 }
             }
@@ -200,8 +167,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean assistanceUpdateTJsXq(TJsXq tJsXq) {
-        Integer lx = 2;
-        TJsSh tJsSh = jsShService.selectBycgxqId(tJsXq.getId(),lx);
+        TJsSh tJsSh = jsShService.selectByxqId(tJsXq.getId());
         if (!"2".equals(tJsSh.getReleaseStatus())) {
             throw new ServiceException("未发布的需求无法申请挂牌");
         } else {

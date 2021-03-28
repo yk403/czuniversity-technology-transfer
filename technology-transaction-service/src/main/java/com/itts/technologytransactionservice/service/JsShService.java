@@ -6,6 +6,7 @@ import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.TJsSh;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -19,11 +20,19 @@ public interface JsShService extends IService<TJsSh> {
 
 	IPage page(Query query);
 
-	TJsSh selectBycgxqId(Integer cgxqId,Integer lx);
+	TJsSh selectBycgId(Integer id);
 
 	List<TJsSh> selectBycgxqIds(List<Integer> cgxqIds);
 
-	boolean deleteById(Long cgId, Long xqId);
+	boolean deleteById(Integer cgId, Integer xqId);
 
-	/*int updateById(Long id);*/
+	TJsSh selectByxqId(Integer id);
+
+	Boolean auditCg(Map<String, Object> params, Integer fbshzt);
+
+	Boolean auditXq(Map<String, Object> params, Integer fbshzt);
+
+	List<TJsSh> selectBycgIds(List<Integer> cgIds);
+
+	List<TJsSh> selectByxqIds(List<Integer> xqIds);
 }

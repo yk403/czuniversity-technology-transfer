@@ -37,7 +37,7 @@ public class JsCgAdminController extends BaseController {
     private JsShAdminService JsShAdminService;
 
     /**
-     * (前台)分页条件查询
+     * 分页条件查询
      * @param params
      * @return
      */
@@ -83,13 +83,6 @@ public class JsCgAdminController extends BaseController {
         return update(JsCgAdminService.updateTJsCg(tJsCg));
     }
 
-    /**
-     * 删除
-     */
-    @GetMapping("/remove/{id}")
-    public R remove(@PathVariable("id") String id) {
-        return remove(JsCgAdminService.removeByIdCg(Integer.valueOf(id)));
-    }
 
     /**
      * 批量删除
@@ -98,26 +91,6 @@ public class JsCgAdminController extends BaseController {
     public R removeBatch(@RequestBody List<String> ids){
 
         return  remove(JsCgAdminService.removeByIdsCg(ids));
-    }
-
-    /**
-     * 发布审核通过
-     * @param id
-     * @return
-     */
-    @RequestMapping("/pass/{id}")
-    public R pass(@PathVariable("id") String id) {
-        return update(JsCgAdminService.passUpdateById(Integer.valueOf(id)));
-    }
-
-    /**
-     * 发布审核不通过并填写备注
-     * @param params
-     * @return
-     */
-    @PostMapping("/disPass")
-    public R disPass(@RequestBody Map<String, Object> params) {
-        return update(JsCgAdminService.disPassById(params));
     }
 
     /**
@@ -134,35 +107,7 @@ public class JsCgAdminController extends BaseController {
         return  remove(JsCgAdminService.issueBatch(list));
     }
 
-    /**
-     * 已发布的成果申请拍卖招标(受理协办)
-     * @param tJsCg
-     * @return
-     */
-    @RequestMapping("/assistanceUpdate")
-    public R assistanceUpdate(@RequestBody TJsCg tJsCg) {
-        return update(JsCgAdminService.assistanceUpdateTJsCg(tJsCg));
-    }
 
-    /**
-     * 受理协办审核
-     * @param id
-     * @return
-     */
-    @RequestMapping("/assistancePass/{id}")
-    public R assistancePass(@PathVariable("id") String id) {
-        return update(JsCgAdminService.assistancePassUpdateById(Integer.valueOf(id)));
-    }
-
-    /**
-     * 受理协办审核不通过并填写备注
-     * @param params
-     * @return
-     */
-    @PostMapping("/assistanceDisPass")
-    public R assistanceDisPass(@RequestBody Map<String, Object> params) {
-        return update(JsCgAdminService.assistanceDisPassById(params));
-    }
 
     /**
      * 受理协办下发

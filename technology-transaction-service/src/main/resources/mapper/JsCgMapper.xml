@@ -46,7 +46,7 @@
 	</select>
 
 	<select id="FindtJsCgByTJsLbTJsLy" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select a.id as id,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dwdz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,c.fbshzt as status,c.cjsj as createTime,c.release_status as releaseStatus,b.mc as lyName
+		select a.id as id,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dwdz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,c.fbshzt ,a.cjsj,c.release_status as releaseStatus,b.mc as lyName
 		from t_js_cg a left join t_js_ly b on(a.ly_id=b.id) left join t_js_sh c on(a.id=c.cg_id) left join t_js_lb d on(a.lb_id=d.id)
 		<where>
 			a.is_delete = 0
@@ -55,7 +55,7 @@
 			<if test="map.cgId != null and map.cgId != ''"> and a.id = #{map.cgId} </if>
 			<if test="map.xqId != null and map.xqId != ''"> and a.id = #{map.xqId} </if>
 			<if test="map.cgmc != null and map.cgmc != ''"> and a.cgmc = #{map.cgmc} </if>
-			<if test="map.cjsj != null and map.cjsj != ''"> and a.createTime = #{map.cjsj} </if>
+			<if test="map.cjsj != null and map.cjsj != ''"> and a.cjsj = #{map.cjsj} </if>
 			<if test="map.fbshzt != null and map.fbshzt != ''"> and a.status = #{map.fbshzt} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and c.release_status = #{map.releaseStatus} </if>
 		</where>

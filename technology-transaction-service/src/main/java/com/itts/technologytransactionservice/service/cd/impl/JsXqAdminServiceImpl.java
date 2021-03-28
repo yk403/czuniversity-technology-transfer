@@ -80,84 +80,6 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
 
     }
 
-    @Override
-    public boolean removeByIdXq(Integer id) {
-        Integer lx = 2;
-        TJsSh tJsSh = JsShAdminService.selectBycgxqId(id,lx);
-        TJsXq tJsXq = new TJsXq();
-        tJsXq.setId(id);
-        tJsXq.setIsDelete(1);
-        jsXqMapper.updateById(tJsXq);
-        if (tJsSh.getId() != null) {
-            tJsSh.setIsDelete(1);
-            jsShMapper.updateById(tJsSh);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean passUpdateById(Integer id) {
-        Integer lx = 2;
-        TJsSh tJsSh = JsShAdminService.selectBycgxqId(id,lx);
-        Integer fbshzt = tJsSh.getFbshzt();
-        if (fbshzt != 2) {
-            tJsSh.setFbshzt(2);
-            JsShAdminService.saveOrUpdate(tJsSh);
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    @Override
-    public boolean assistancePassUpdateById(Integer id) {
-        Integer lx = 2;
-        TJsSh tJsSh = JsShAdminService.selectBycgxqId(id,lx);
-        Integer assistanceStatus = tJsSh.getAssistanceStatus();
-        if (assistanceStatus != 2) {
-            tJsSh.setAssistanceStatus(2);
-            JsShAdminService.saveOrUpdate(tJsSh);
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    @Override
-    public boolean assistanceDisPassById(Map<String, Object> params) {
-        String id = params.get("id").toString();
-        Integer lx = 2;
-        String assistanceRemark = params.get("assistanceRemark").toString();
-        TJsSh tJsSh = JsShAdminService.selectBycgxqId(Integer.valueOf(id),lx);
-        Integer assistanceStatus = tJsSh.getAssistanceStatus();
-        if (assistanceStatus != 2) {
-            tJsSh.setAssistanceStatus(3);
-            tJsSh.setAssistanceRemark(assistanceRemark);
-            JsShAdminService.saveOrUpdate(tJsSh);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean disPassById(Map<String, Object> params) {
-        String id = params.get("id").toString();
-        Integer lx = 2;
-        String fbwtgsm = params.get("fbwtgsm").toString();
-        TJsSh tJsSh = JsShAdminService.selectBycgxqId(Integer.valueOf(id),lx);
-        Integer fbshzt = tJsSh.getFbshzt();
-        if (fbshzt != 2) {
-            tJsSh.setFbshzt(3);
-            tJsSh.setFbwtgsm(fbwtgsm);
-            JsShAdminService.saveOrUpdate(tJsSh);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * 技术采集批量下发
@@ -202,21 +124,6 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         return true;
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean assistanceUpdateTJsXq(TJsXq tJsXq) {
-        Integer lx = 2;
-        TJsSh tJsSh = JsShAdminService.selectBycgxqId(tJsXq.getId(),lx);
-        if (!"2".equals(tJsSh.getReleaseStatus())) {
-            throw new ServiceException("未发布的需求无法申请挂牌");
-        } else {
-            tJsSh.setAssistanceStatus(1);
-            tJsSh.setReleaseAssistanceStatus(1);
-            JsShAdminService.updateById(tJsSh);
-            jsXqMapper.updateTJsXq(tJsXq);
-        }
-        return true;
-    }
 
     /**
      * 根据id查询技术需求

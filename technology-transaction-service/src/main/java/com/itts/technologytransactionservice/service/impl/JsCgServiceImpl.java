@@ -17,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,6 +54,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
                 return false;
             }
             tJsCg.setReleaseType("技术成果");
+            tJsCg.setCjsj(new Date());
             save(tJsCg);
             TJsSh tJsSh = new TJsSh();
             tJsSh.setLx(1);
@@ -78,15 +77,13 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 	@Override
     public boolean removeByIdCg(Integer id) {
 	    log.info("【技术交易 - 根据id:{}删除成果】",id);
-	    Integer lx = 1;
-        TJsSh tJsSh = jsShService.selectBycgxqId(id,lx);
+        TJsSh tJsSh = jsShService.selectBycgId(id);
         TJsCg tJsCg = new TJsCg();
         tJsCg.setId(id);
         tJsCg.setIsDelete(1);
         jsCgMapper.updateTJsCg(tJsCg);
         if (tJsSh.getId() != null) {
             tJsSh.setIsDelete(1);
-            tJsSh.setLx(1);
             if (!jsShService.updateById(tJsSh)) {
                 throw new ServiceException("删除成功失败!");
             }
@@ -96,8 +93,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 
     @Override
     public boolean passUpdateById(Integer id) {
-	    Integer lx = 1;
-        TJsSh tJsSh = jsShService.selectBycgxqId(id,lx);
+        TJsSh tJsSh = jsShService.selectBycgId(id);
         Integer fbshzt = tJsSh.getFbshzt();
         if (fbshzt != 2) {
             tJsSh.setFbshzt(2);
@@ -109,7 +105,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     }
 
     /**
-     * 批量下发
+     * 成果批量下发
      *
      * @param ids
      * @return
@@ -119,7 +115,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         if (CollectionUtils.isEmpty(ids)) {
             return false;
         } else {
-            List<TJsSh> tJsShes = jsShService.selectBycgxqIds(ids);
+            List<TJsSh> tJsShes = jsShService.selectBycgIds(ids);
             for (TJsSh tJsShe : tJsShes) {
                 if (tJsShe.getFbshzt() == 2) {
 					tJsShe.setReleaseStatus(2);
@@ -139,8 +135,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean assistanceUpdateTJsCg(TJsCg tJsCg) {
-        Integer lx = 1;
-        TJsSh tJsSh = jsShService.selectBycgxqId(tJsCg.getId(),lx);
+        TJsSh tJsSh = jsShService.selectBycgId(tJsCg.getId());
         if (tJsSh.getReleaseStatus() != 2) {
             log.error("未发布的成果无法申请拍卖和招投标");
             throw new ServiceException("未发布的成果无法申请拍卖和招投标");
@@ -155,8 +150,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 
     @Override
     public boolean assistancePassUpdateById(Integer id) {
-        Integer lx = 1;
-        TJsSh tJsSh = jsShService.selectBycgxqId(id,lx);
+        TJsSh tJsSh = jsShService.selectBycgId(id);
         Integer assistanceStatus = tJsSh.getAssistanceStatus();
         if (assistanceStatus != 2) {
             tJsSh.setAssistanceStatus(2);
@@ -170,30 +164,12 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     @Override
     public boolean assistanceDisPassById(Map<String, Object> params) {
         String id = params.get("id").toString();
-        Integer lx = 1;
         String assistanceRemark = params.get("assistanceRemark").toString();
-        TJsSh tJsSh = jsShService.selectBycgxqId(Integer.valueOf(id),lx);
+        TJsSh tJsSh = jsShService.selectBycgId(Integer.valueOf(id));
         Integer assistanceStatus = tJsSh.getAssistanceStatus();
         if (assistanceStatus != 2) {
             tJsSh.setAssistanceStatus(3);
-            tJsSh.setAssistanceRemark(assistanceRemark);
-            jsShService.saveOrUpdate(tJsSh);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean disPassById(Map<String, Object> params) {
-        String id = params.get("id").toString();
-        Integer lx = 1;
-        String fbwtgsm = params.get("fbwtgsm").toString();
-        TJsSh tJsSh = jsShService.selectBycgxqId(Integer.valueOf(id),lx);
-        Integer fbshzt = tJsSh.getFbshzt();
-        if (fbshzt != 2) {
-            tJsSh.setFbshzt(3);
-            tJsSh.setFbwtgsm(fbwtgsm);
+            tJsSh.setSlxbbz(assistanceRemark);
             jsShService.saveOrUpdate(tJsSh);
             return true;
         } else {
@@ -243,6 +219,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         }
 		return true;
 	}
+
 }
 
 

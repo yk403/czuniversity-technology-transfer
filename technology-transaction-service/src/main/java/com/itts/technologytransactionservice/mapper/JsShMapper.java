@@ -24,16 +24,17 @@ public interface JsShMapper extends BaseMapper<TJsSh> {
 
 	int save(@Param("id") Long id);
 
-	//@Select("select * from t_js_sh where cgxq_id = #{cgxqId})
-	//TJsSh selectBycgxqId(@Param("cgxqId") Integer cgxqId);
-	List<TJsSh> selectBycgxqIds(@Param("cgxqIds") Integer[] cgxqIds);
+	@Select("select * from t_js_sh where cg_id = #{cgId}")
+	TJsSh selectBycgId(@Param("cgId") Integer cgId);
 
-	@Select("select * from t_js_sh where cgxq_id = #{cgxqId} and lx = #{lx}")
-	TJsSh selectBycgxqId(@Param("cgxqId") Integer cgxqId,@Param("lx") Integer lx);
+	List<TJsSh> selectBycgxqIds(@Param("cgxqIds") Integer[] cgxqIds);
 
 	void updateJsSh(@Param("cgId") Integer cgId, @Param("xqId") Integer xqId);
 
+	@Select("select * from t_js_sh where xq_id = #{xqId}")
+	TJsSh selectByxqId(Integer xqId);
 
-/*	@Update("update t_js_sh set fbshzt=2 where cgxq_id=#{id}")
-	int updateById(Long id);*/
+	List<TJsSh> selectBycgIds(@Param("cgIds")Integer[] cgIds);
+
+	List<TJsSh> selectByxqIds(@Param("xqIds")Integer[] xqIds);
 }

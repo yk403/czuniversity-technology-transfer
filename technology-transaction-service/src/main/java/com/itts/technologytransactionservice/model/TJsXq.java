@@ -1,13 +1,12 @@
 package com.itts.technologytransactionservice.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -114,9 +113,9 @@ public class TJsXq implements Serializable {
  	*/
 	private String jshdId;
 	/**
-	 * 发布审核状态(1待审核、2通过、3整改、4拒绝)
+	 * 发布需求审核状态(1待审核、2通过、3整改、4拒绝)
 	 */
-	private String status;
+	private Integer fbshzt;
 	/**
 	 * 发布时间
 	 */
@@ -161,4 +160,9 @@ public class TJsXq implements Serializable {
 	 * 删除状态(0:未删除;1:已删除)
 	 */
 	private Integer isDelete;
+	/**
+	 * 创建时间
+	 */
+	@TableField(fill= FieldFill.INSERT)
+	private Date cjsj;
 }

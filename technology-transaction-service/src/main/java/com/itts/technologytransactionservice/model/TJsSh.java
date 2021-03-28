@@ -49,13 +49,13 @@ public class TJsSh implements Serializable {
  	*/
 	private String hdsqzt;
 	/**
- 	* 发布未通过说明
+ 	* 发布审核备注
  	*/
-	private String fbwtgsm;
+	private String fbshbz;
 	/**
- 	* 活动申请未通过说明
+ 	* 活动申请备注
  	*/
-	private String hdsqwtgsm;
+	private String hdsqbz;
 	/**
  	* 创建时间
  	*/
@@ -80,9 +80,9 @@ public class TJsSh implements Serializable {
 	 */
 	private Integer releaseAssistanceStatus;
 	/**
-	 * 受理协办未通过说明
+	 * 受理协办备注
 	 */
-	private String assistanceRemark;
+	private String slxbbz;
 	/**
 	 * 删除状态(0:未删除;1:已删除)
 	 */

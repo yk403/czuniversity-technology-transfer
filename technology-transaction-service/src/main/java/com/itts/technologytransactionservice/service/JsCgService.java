@@ -25,7 +25,6 @@ public interface JsCgService extends IService<TJsCg> {
 
 	boolean saveCg(TJsCg tJsCg) throws Exception;
 	boolean removeByIdCg(Integer id);
-	boolean disPassById(Map<String, Object> params);
 	boolean passUpdateById(Integer id);
 	boolean issueBatch(List<Integer> ids);
 
