@@ -1,6 +1,5 @@
 package com.itts.technologytransactionservice.controller;
 
-import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.R;
 import com.itts.technologytransactionservice.service.ExcelService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.itts.common.constant.SystemConstant.BASE_URL;
+
 
 @RestController
-@RequestMapping("/sys/excel")
+@RequestMapping(BASE_URL+"/v1/sys/excel")
 //@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/excel")
 @Slf4j
 public class ExcelController extends BaseController {
