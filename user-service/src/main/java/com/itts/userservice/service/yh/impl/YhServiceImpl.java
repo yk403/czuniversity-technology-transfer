@@ -11,6 +11,7 @@ import com.itts.userservice.mapper.yh.YhMapper;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.YhVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -104,9 +106,15 @@ public class YhServiceImpl implements YhService {
      * @author fl
      */
     @Override
-    public YhVO findMenusByUserID(Long userId) {
+    public YhVO findMenusByUserID(Long userId, String systemType) {
 
-        Object redisResult = redisTemplate.opsForValue().get(RedisConstant.USERSERVICE_MENUS + userId);
+        Object redisResult;
+
+        if (StringUtils.isNotBlank(systemType)) {
+            redisResult = redisTemplate.opsForValue().get(RedisConstant.USERSERVICE_MENUS + userId + ":" + systemType);
+        } else {
+            redisResult = redisTemplate.opsForValue().get(RedisConstant.USERSERVICE_MENUS + userId);
+        }
 
         YhVO yhVO;
 
@@ -117,7 +125,7 @@ public class YhServiceImpl implements YhService {
 
         } else {
             //角色及其菜单的全部列表
-            List<JsDTO> jsDTOList = yhMapper.findByUserId(userId);
+            List<JsDTO> jsDTOList = yhMapper.findByUserId(userId, systemType);
 
             jsDTOList.forEach(jsDTO -> {
                 List<MenuDTO> rootMenu = jsDTO.getMenuDTOList();
@@ -132,7 +140,12 @@ public class YhServiceImpl implements YhService {
             BeanUtils.copyProperties(yh, yhVO);
             yhVO.setJsDTOList(jsDTOList);
 
-            redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId, JSONUtil.toJsonStr(yhVO));
+            if (StringUtils.isNotBlank(systemType)) {
+
+                redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId+ ":" + systemType, JSONUtil.toJsonStr(yhVO), RedisConstant.USER_MENU_EXPIRE_DATE, TimeUnit.DAYS);
+            } else {
+                redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId, JSONUtil.toJsonStr(yhVO), RedisConstant.USER_MENU_EXPIRE_DATE, TimeUnit.DAYS);
+            }
         }
         return yhVO;
     }

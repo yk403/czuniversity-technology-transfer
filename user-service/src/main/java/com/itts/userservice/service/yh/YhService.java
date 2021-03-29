@@ -48,5 +48,5 @@ public interface YhService {
      * @param
      * @return
      */
-    YhVO findMenusByUserID(Long userId);
+    YhVO findMenusByUserID(Long userId, String systemType);
 }

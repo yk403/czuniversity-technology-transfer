@@ -56,6 +56,9 @@
                  LEFT JOIN t_js js ON ysgl.js_id = js.id
                  LEFT JOIN t_js_cd_gl jcg ON jcg.js_id = js.id
                  LEFT JOIN t_cd cd on jcg.cd_id = cd.id
-        where yh.id = #{id}
+        where yh.id = #{userId}
+          <if test="systemType != null and systemType != ''">
+              AND js.xtlx = #{systemType}
+          </if>
     </select>
 </mapper>

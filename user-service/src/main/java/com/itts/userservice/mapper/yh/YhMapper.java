@@ -4,6 +4,8 @@ import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.model.yh.Yh;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,5 +26,5 @@ public interface YhMapper extends BaseMapper<Yh> {
      * @param id
      * @return
      */
-    List<JsDTO> findByUserId(Long id);
+    List<JsDTO> findByUserId(@Param("userId") Long id, @Param("systemType") String systemType);
 }

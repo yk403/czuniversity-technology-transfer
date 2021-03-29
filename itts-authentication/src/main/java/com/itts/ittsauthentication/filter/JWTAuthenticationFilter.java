@@ -5,6 +5,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.RedisConstant;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.enums.SystemTypeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -80,8 +81,26 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
         try {
 
+            //获取端口号
+            int thisPort = request.getServerPort();
+            //获取请求地址
+            String requestPath = request.getServletPath();
+
+            String systemType;
+            //判断是否是后台管理
+            if (requestPath.contains(SystemConstant.ADMIN_BASE_URL)) {
+
+                systemType = getSystemType(thisPort, true);
+            } else {
+                systemType = getSystemType(thisPort, false);
+            }
+
             Claims claims = JwtUtil.getTokenBody(token);
             LoginUser loginUser = JSONUtil.toBean(claims.get("data").toString(), LoginUser.class);
+
+            if (StringUtils.isNotBlank(systemType)) {
+                loginUser.setSystemType(systemType);
+            }
 
             //将用户信息设置到threadLocal
             SystemConstant.threadLocal.set(loginUser);
@@ -97,6 +116,32 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
         }
 
         //校验Token失败
+        return null;
+    }
+
+    /**
+     * 获取系统类型
+     */
+    private String getSystemType(Integer port, Boolean backstageManagementFlag) {
+
+        //技术交易
+        if (port >= 11050 && port <= 11059) {
+
+            if (backstageManagementFlag) {
+                return SystemTypeEnum.TECHNOLOGY_TRANSACTION_BACKSTAGE_MANAGEMENT.getKey();
+            }
+
+            return SystemTypeEnum.TALENT_TRAINING_PORTAL.getKey();
+
+            //人才培养
+        } else if (port >= 11070 && port <= 11079) {
+
+            if (backstageManagementFlag) {
+                return SystemTypeEnum.TALENT_TRAINING_BACKSTAGE_MANAGEMENT.getKey();
+            }
+            return SystemTypeEnum.TALENT_TRAINING_PORTAL.getKey();
+        }
+
         return null;
     }
 }

@@ -64,7 +64,7 @@ public class YhController {
         //获取登录用户信息
         LoginUser loginUser = SystemConstant.threadLocal.get();
 
-        YhVO yhVO = yhService.findMenusByUserID(loginUser.getUserId());
+        YhVO yhVO = yhService.findMenusByUserID(loginUser.getUserId(), loginUser.getSystemType());
         return ResponseUtil.success(yhVO);
     }
 }
