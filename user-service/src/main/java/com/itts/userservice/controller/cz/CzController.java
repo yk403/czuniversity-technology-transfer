@@ -6,6 +6,7 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.userservice.dto.CzDTO;
 import com.itts.userservice.model.cz.Cz;
 import com.itts.userservice.service.cz.CzService;
 import io.swagger.annotations.Api;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -32,12 +34,26 @@ public class CzController {
     @Resource
     private CzService tCzService;
 
+
+    /**
+     * 查询当前菜单的操作
+     * @param id
+     * @param cdid
+     * @return
+     */
+    @GetMapping("/czlist/{id}/{cdid}")
+    @ApiOperation(value = "获取操作列表")
+    public ResponseUtil findcz(@PathVariable("id") Long id,@PathVariable("cdid") Long cdid){
+        List<CzDTO> cz = tCzService.findCz(id, cdid);
+        return ResponseUtil.success(cz);
+    }
+
     /**
      * 获取列表
      *
      * @param pageNum pageSize
      * @author fl
-     * 54860a82e5df8ecfd44cc08cb8654e5638c4e77b
+     *
      */
     @GetMapping("/list/")
     @ApiOperation(value = "获取列表")
