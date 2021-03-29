@@ -1,7 +1,12 @@
 package com.itts.userservice.service.yh;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.userservice.dto.JsDTO;
+import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.model.yh.Yh;
+import com.itts.userservice.vo.YhVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -32,4 +37,11 @@ public interface YhService {
      * 更新
      */
     Yh update(Yh Yh);
+
+    /**
+     * 查询角色菜单目录
+     * @param
+     * @return
+     */
+    YhVO QueryMenuList(Long id);
 }

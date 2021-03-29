@@ -5,9 +5,12 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
-import com.itts.common.utils.ResponseUtil;
+import com.itts.common.utils.common.ResponseUtil;
+import com.itts.userservice.dto.JsDTO;
+import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.yh.YhService;
+import com.itts.userservice.vo.YhVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -31,6 +35,20 @@ public class YhController {
 
     @Resource
     private YhService yhService;
+
+
+    /**
+     * 获取用户的菜单
+     */
+    @ApiOperation(value="获取用户的菜单")
+    @GetMapping("/cdlist/{id}")
+    public ResponseUtil findlist(@PathVariable("id")Long id){
+        YhVO yhVO = yhService.QueryMenuList(id);
+        return ResponseUtil.success(yhVO);
+    }
+
+
+
 
     /**
      * 获取列表

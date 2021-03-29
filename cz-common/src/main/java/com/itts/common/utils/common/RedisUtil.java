@@ -1,4 +1,4 @@
-package com.itts.common.utils;
+package com.itts.common.utils.common;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

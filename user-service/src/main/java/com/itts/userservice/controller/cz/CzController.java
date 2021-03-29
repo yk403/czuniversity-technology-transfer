@@ -5,9 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
-import com.itts.common.utils.ResponseUtil;
-import com.itts.userservice.cz.model.TCz;
-import com.itts.userservice.cz.service.TCzService;
+import com.itts.common.utils.common.ResponseUtil;
+import com.itts.userservice.model.cz.Cz;
+import com.itts.userservice.service.cz.CzService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -27,10 +27,10 @@ import java.util.Date;
 @Api(tags = "操作管理")
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/tCz")
-public class TCzController {
+public class CzController {
 
     @Resource
-    private TCzService tCzService;
+    private CzService tCzService;
 
     /**
      * 获取列表
@@ -43,7 +43,7 @@ public class TCzController {
     @ApiOperation(value = "获取列表")
     public ResponseUtil find(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                              @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        PageInfo<TCz> byPage = tCzService.findByPage(pageNum, pageSize);
+        PageInfo<Cz> byPage = tCzService.findByPage(pageNum, pageSize);
         return ResponseUtil.success(byPage);
     }
 
@@ -54,11 +54,11 @@ public class TCzController {
      */
     @PostMapping("/add/")
     @ApiOperation(value = "新增")
-    public ResponseUtil add(@RequestBody TCz tCz) throws WebException {
+    public ResponseUtil add(@RequestBody Cz tCz) throws WebException {
         //检查参数是否合法
         checkPequest(tCz);
         //检查数据库中是否存在要更新的数据
-        TCz add = tCzService.add(tCz);
+        Cz add = tCzService.add(tCz);
         return ResponseUtil.success(add);
     }
 
@@ -69,12 +69,12 @@ public class TCzController {
      */
     @ApiOperation(value = "更新")
     @PutMapping("/update/{id}")
-    public ResponseUtil update(@PathVariable("id") Long id, @RequestBody TCz tCz) throws WebException {
+    public ResponseUtil update(@PathVariable("id") Long id, @RequestBody Cz tCz) throws WebException {
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //检查数据库中是否存在要更新的数据
-        TCz tCz1 = tCzService.get(id);
+        Cz tCz1 = tCzService.get(id);
         if (tCz1 == null) {
             throw new WebException((ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR));
         }
@@ -97,7 +97,7 @@ public class TCzController {
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        TCz tCz = tCzService.get(id);
+        Cz tCz = tCzService.get(id);
         if (tCz == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
@@ -111,7 +111,7 @@ public class TCzController {
     /**
      * 校验参数是否合法
      */
-    private void checkPequest(TCz tCz) throws WebException {
+    private void checkPequest(Cz tCz) throws WebException {
         //如果参数为空，抛出异常
         if (tCz == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);

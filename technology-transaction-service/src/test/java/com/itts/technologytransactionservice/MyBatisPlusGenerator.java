@@ -52,6 +52,8 @@ public class MyBatisPlusGenerator {
                 .setPassword("ZMHY@mysql");
         //3. 策略配置globalConfiguration中
         StrategyConfig stConfig = new StrategyConfig();
+        //去掉表前缀
+        stConfig.setTablePrefix("t_");
         //全局大写命名
         stConfig.setCapitalMode(true)
                 // 数据库表映射到实体的命名策略

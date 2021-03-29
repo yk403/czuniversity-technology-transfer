@@ -1,6 +1,6 @@
 package com.itts.technologytransactionservice.feign.payment;
 
-import com.itts.common.utils.ResponseUtil;
+import com.itts.common.utils.common.ResponseUtil;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 

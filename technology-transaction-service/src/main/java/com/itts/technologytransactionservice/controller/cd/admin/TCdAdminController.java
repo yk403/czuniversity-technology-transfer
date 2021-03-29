@@ -4,7 +4,7 @@ package com.itts.technologytransactionservice.controller.cd.admin;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
-import com.itts.common.utils.ResponseUtil;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.TCd;
 import com.itts.technologytransactionservice.service.cd.TCdService;
 import io.swagger.annotations.Api;
