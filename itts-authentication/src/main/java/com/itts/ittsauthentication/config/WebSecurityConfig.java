@@ -1,6 +1,7 @@
 package com.itts.ittsauthentication.config;
 
 import com.itts.ittsauthentication.bean.Http401AuthenticationEntryPoint;
+import com.itts.ittsauthentication.bean.SecurityLogoutHandler;
 import com.itts.ittsauthentication.filter.JWTAuthenticationFilter;
 import com.itts.ittsauthentication.filter.JWTLoginFilter;
 import com.itts.ittsauthentication.mapper.AuthoritionUserMapper;
@@ -50,11 +51,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(new Http401AuthenticationEntryPoint("Basic realm=\"MyApp\""))
+                .exceptionHandling().authenticationEntryPoint(new Http401AuthenticationEntryPoint())
                 .and()
                 .addFilter(new JWTLoginFilter(authenticationManager(), redisTemplate, authoritionUserMapper))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), redisTemplate))
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll();
+                .logout().logoutUrl("/api/logout/").logoutSuccessHandler(new SecurityLogoutHandler(redisTemplate)).permitAll();
     }
 
     @Bean

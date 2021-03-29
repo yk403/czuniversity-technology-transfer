@@ -18,12 +18,6 @@ import java.io.IOException;
  */
 public class Http401AuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private String headerValue;
-
-    public Http401AuthenticationEntryPoint(String headerValue) {
-        this.headerValue = headerValue;
-    }
-
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
 
