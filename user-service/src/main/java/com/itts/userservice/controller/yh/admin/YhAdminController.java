@@ -1,15 +1,13 @@
-package com.itts.userservice.controller.yh;
+package com.itts.userservice.controller.yh.admin;
 
 
 import com.github.pagehelper.PageInfo;
-import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.yh.YhService;
-import com.itts.userservice.vo.YhVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -26,10 +24,10 @@ import java.util.Date;
  * @author fl
  * @since 2021-03-18
  */
-@Api(tags = "用户管理")
+@Api(tags = "用户后台管理")
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/yh")
-public class YhController {
+public class YhAdminController {
 
     @Resource
     private YhService yhService;
@@ -127,21 +125,6 @@ public class YhController {
         yhService.update(Yh);
 
         return ResponseUtil.success();
-    }
-
-
-    /**
-     * 获取用户的菜单
-     */
-    @ApiOperation(value = "获取用户的菜单")
-    @GetMapping("/menus/")
-    public ResponseUtil findMenusByUserId() {
-
-        //获取登录用户信息
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-
-        YhVO yhVO = yhService.findMenusByUserID(loginUser.getUserId());
-        return ResponseUtil.success(yhVO);
     }
 
     /**
