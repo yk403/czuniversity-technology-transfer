@@ -9,7 +9,7 @@
         <module>technology-transaction-service</module>
         <module>payment-service</module>
         <module>user-service</module>
-        <module>authorition</module>
+        <module>itts-authentication</module>
     </modules>
 
 
