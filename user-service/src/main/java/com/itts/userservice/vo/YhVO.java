@@ -29,8 +29,6 @@ public class YhVO implements Serializable {
      */
     private String yhm;
 
-
-
     /**
      * 用户编号
      */

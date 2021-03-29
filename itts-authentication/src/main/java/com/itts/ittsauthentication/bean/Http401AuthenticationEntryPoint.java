@@ -26,9 +26,6 @@ public class Http401AuthenticationEntryPoint implements AuthenticationEntryPoint
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        /*response.setHeader("Authorization", this.headerValue);
-        //⽆权限返回401；
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,authException.getMessage());*/
 
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.error(ErrorCodeEnum.NO_PERMISSION_ERROR)));

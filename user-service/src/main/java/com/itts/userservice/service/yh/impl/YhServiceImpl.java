@@ -1,15 +1,12 @@
 package com.itts.userservice.service.yh.impl;
 
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.RedisConstant;
 import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
-import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.mapper.yh.YhMapper;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.yh.YhService;
@@ -107,9 +104,18 @@ public class YhServiceImpl implements YhService {
      * @author fl
      */
     @Override
-    public YhVO QueryMenuList(Long userId) {
-        YhVO yhVO = JSONUtil.toBean((JSONObject) redisTemplate.opsForValue().get(RedisConstant.USERSERVICE_MENUS + userId),YhVO.class);
-        if(yhVO==null){
+    public YhVO findMenusByUserID(Long userId) {
+
+        Object redisResult = redisTemplate.opsForValue().get(RedisConstant.USERSERVICE_MENUS + userId);
+
+        YhVO yhVO;
+
+        if (redisResult != null) {
+
+            yhVO = JSONUtil.toBean(redisResult.toString(), YhVO.class);
+            return yhVO;
+
+        } else {
             //角色及其菜单的全部列表
             List<JsDTO> jsDTOList = yhMapper.findByUserId(userId);
 
@@ -122,13 +128,12 @@ public class YhServiceImpl implements YhService {
             });
             //查询用户信息
             Yh yh = yhMapper.selectById(userId);
-            /*YhVO yhVO = new YhVO();*/
-            BeanUtils.copyProperties(yh,yhVO);
+            yhVO = new YhVO();
+            BeanUtils.copyProperties(yh, yhVO);
             yhVO.setJsDTOList(jsDTOList);
-            redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId,yhVO);
+
+            redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId, JSONUtil.toJsonStr(yhVO));
         }
-
-
         return yhVO;
     }
 
