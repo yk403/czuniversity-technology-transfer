@@ -175,20 +175,19 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
                 log.info(e.getMessage());
             }
         }else{
-
-                if (tJsXq.getId() != null) {
-
-                } else {
-                    jsXqMapper.insert(tJsXq);
-                    TJsSh tJsSh = new TJsSh();
-                    tJsSh.setLx(2);
-                    tJsSh.setXqId(tJsXq.getId());
-                    tJsSh.setCjsj(new Date());
-                    jsShMapper.insert(tJsSh);
-                    count++;
-
-                }
-
+            try {
+                tJsXq.setCjsj(new Date());
+                jsXqMapper.insert(tJsXq);
+                Integer id = tJsXq.getId();
+                TJsSh tJsSh = new TJsSh();
+                tJsSh.setLx(2);
+                tJsSh.setCgId(id);
+                tJsSh.setCjsj(new Date());
+                jsShMapper.insert(tJsSh);
+                count++;
+            }catch (Exception e){
+                log.info(e.getMessage());
+            }
         }
     }
 

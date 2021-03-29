@@ -56,6 +56,7 @@ public class JsCgController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
+
         return success(jsCgService.getById(Integer.valueOf(id)));
     }
     /**
