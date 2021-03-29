@@ -108,54 +108,59 @@ public class TJsCgDto implements Serializable {
 	@ExcelProperty(value = "联系人",index = 15)
 	private String contracts;
 	/**
+	 * 手机号码
+	 */
+	@ExcelProperty(value = "手机号码",index = 16)
+	private String sjhm;
+	/**
 	 * 座机
 	 */
-	@ExcelProperty(value = "座机",index = 16)
+	@ExcelProperty(value = "座机",index = 17)
 	private String zj;
 	/**
 	 * 电子邮箱
 	 */
-	@ExcelProperty(value = "电子邮箱",index = 17)
+	@ExcelProperty(value = "电子邮箱",index = 18)
 	private String dzyx;
 	/**
 	 * 知识产权形式
 	 */
-	@ExcelProperty(value = "知识产权形式",index = 18)
+	@ExcelProperty(value = "知识产权形式",index = 19)
 	private String zscqxs;
 	/**
 	 * 成果简介
 	 */
-	@ExcelProperty(value = "成果简介",index = 19)
+	@ExcelProperty(value = "成果简介",index = 20)
 	private String cgjs;
 	/**
 	 * 技术指标
 	 */
-	@ExcelProperty(value = "技术指标",index = 20)
+	@ExcelProperty(value = "技术指标",index = 21)
 	private String jszb;
 	/**
 	 * 商业分析
 	 */
-	@ExcelProperty(value = "商业分析",index = 21)
+	@ExcelProperty(value = "商业分析",index = 22)
 	private String syfx;
 	/**
 	 * 成果图片
 	 */
-	@ExcelProperty(value = "成果图片",index = 22)
+	@ExcelProperty(value = "成果图片",index = 23)
 	private String cgtp;
 	/**
 	 * 成果视频
 	 */
-	@ExcelProperty(value = "成果视频",index = 23)
+	@ExcelProperty(value = "成果视频",index = 24)
 	private String cgsp;
 	/**
 	 * 备注
 	 */
-	@ExcelProperty(value = "备注",index = 24)
+	@ExcelProperty(value = "备注",index = 25)
 	private String bz;
 	/**
 	 * 活动id
 	 */
-	@ExcelProperty(value = "活动id",index = 25)
+	@ExcelProperty(value = "活动id",index = 26)
 	private String jshdId;
 
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.TJsCg;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -39,4 +40,5 @@ public interface JsCgService extends IService<TJsCg> {
 	boolean assistanceIssueBatch(List<Integer> ids);
 
 	boolean removeByIdsCg(List<String> ids);
+
 }

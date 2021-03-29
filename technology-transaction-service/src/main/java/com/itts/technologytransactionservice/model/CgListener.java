@@ -117,6 +117,10 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
         if(!StringUtils.isBlank(data.getContracts())){
             tJsCg.setContracts(data.getContracts());
         }
+        //手机号码
+        if(!StringUtils.isBlank(data.getSjhm())){
+            tJsCg.setContracts(data.getContracts());
+        }
         //座机
         if(!StringUtils.isBlank(data.getZj())){
             tJsCg.setZj(data.getZj());

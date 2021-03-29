@@ -29,6 +29,10 @@ public class TJsCg implements Serializable {
 	@TableId(value = "id",type = IdType.AUTO)
 	private Integer id;
 	/**
+	 * 用户ID
+	 */
+	private Integer userId;
+	/**
  	* 成果权属人
  	*/
 	private String cgqsr;

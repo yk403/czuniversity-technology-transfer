@@ -181,7 +181,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
                 Integer id = tJsXq.getId();
                 TJsSh tJsSh = new TJsSh();
                 tJsSh.setLx(2);
-                tJsSh.setCgId(id);
+                tJsSh.setXqId(id);
                 tJsSh.setCjsj(new Date());
                 jsShMapper.insert(tJsSh);
                 count++;
