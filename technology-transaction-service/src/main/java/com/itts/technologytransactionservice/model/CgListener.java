@@ -201,6 +201,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
             }
         }else{
             try {
+                tJsCg.setCjsj(new Date());
                 jsCgMapper.insert(tJsCg);
                 Integer id = tJsCg.getId();
                 TJsSh tJsSh = new TJsSh();
