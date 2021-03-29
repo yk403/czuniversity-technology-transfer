@@ -2,10 +2,9 @@ package com.itts.technologytransactionservice.controller;
 
 
 import com.github.pagehelper.PageInfo;
-import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
-import com.itts.common.utils.ResponseUtil;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.service.JsCgService;
 import com.itts.technologytransactionservice.service.JsShService;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
 
 
 /**
