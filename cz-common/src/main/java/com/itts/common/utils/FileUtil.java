@@ -1,10 +1,16 @@
 package com.itts.common.utils;
 
+import com.itts.common.exception.ServiceException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.UUID;
 
+import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ERROR;
+
+@Slf4j
 public class FileUtil {
 
 	/**
@@ -96,5 +102,27 @@ public class FileUtil {
 				}
 			}
 		}
+	}
+	public static String uploadFile(@RequestParam MultipartFile multipartFile) throws IOException{
+		String[] fileAbsolutPath = {};
+		String fileName = multipartFile.getOriginalFilename();
+		String ext = fileName.substring(fileName.lastIndexOf(".")+1);
+		byte[] file_buff = null;
+		InputStream inputStream = multipartFile.getInputStream();
+		if (inputStream!=null) {
+			int len1 = inputStream.available();
+			file_buff = new byte[len1];
+			inputStream.read(file_buff);
+		}
+		inputStream.close();
+		FastDFSFile file = new FastDFSFile(fileName,file_buff,ext);
+		fileAbsolutPath = FastDFSClient.upload(file);
+		if(fileAbsolutPath==null){
+			log.error("【文件上传失败】");
+			throw new ServiceException(UPLOAD_FAIL_ERROR);
+		}
+		String path = FastDFSClient.getTrackerUrl()+"/"+fileAbsolutPath[0]+"/"+fileAbsolutPath[1];
+		log.info("【文件上传成功】,path: {}",path);
+		return path;
 	}
 }
