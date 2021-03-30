@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
 @TableName("t_yh_js_gl")
 public class YhJsGl implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 9191389249659770044L;
 
     /**
      * 主键ID

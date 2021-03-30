@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
 @TableName("t_js")
 public class Js implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 4981981793310936335L;
 
     /**
      * 主键ID

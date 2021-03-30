@@ -1,9 +1,12 @@
 package com.itts.userservice.model.cd;
 
-import com.baomidou.mybatisplus.annotation.*;
-
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,16 +15,15 @@ import lombok.EqualsAndHashCode;
  * 菜单表
  * </p>
  *
- * @author fl
- *
- * @since 2021-03-24
+ * @author lym
+ * @since 2021-03-30
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_cd")
 public class Cd implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -6639264334061316784L;
 
     /**
      * 主键ID
@@ -38,6 +40,11 @@ public class Cd implements Serializable {
      * 菜单编码
      */
     private String cdbm;
+
+    /**
+     * 菜单图标
+     */
+    private String cdtb;
 
     /**
      * 父级菜单ID
@@ -62,7 +69,7 @@ public class Cd implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(fill= FieldFill.INSERT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
@@ -73,6 +80,7 @@ public class Cd implements Serializable {
     /**
      * 更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**
