@@ -16,10 +16,9 @@ import java.util.Map;
  */
 public interface JsCgAdminService extends IService<TJsCg> {
 
-
-
 	TJsCg selectByName(String name);
-	PageInfo FindtJsCgByTJsLbTJsLy(Query query);
+
+	PageInfo findJsCg(Map<String, Object> params);
 
 	boolean saveCg(TJsCg tJsCg) throws Exception;
 	boolean issueBatch(List<Integer> ids);

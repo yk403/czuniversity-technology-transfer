@@ -2,7 +2,6 @@ package com.itts.technologytransactionservice.controller.cd.admin;
 
 
 import com.github.pagehelper.PageInfo;
-import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.controller.BaseController;
@@ -23,10 +22,10 @@ import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 /**
  * @Author: Austin
  * @Data: 2021/3/26
- * @Description: 技术成果管理
+ * @Description: 技术成果后台管理
  */
-@RequestMapping(ADMIN_BASE_URL+"/v1/tJsCg")
-@Api(value = "JsCgController", tags = "技术成果管理")
+@RequestMapping(ADMIN_BASE_URL+"/v1/JsCg")
+@Api(value = "JsCgAdminController", tags = "技术成果后台管理")
 @RestController
 public class JsCgAdminController extends BaseController {
     @Autowired
@@ -37,14 +36,14 @@ public class JsCgAdminController extends BaseController {
     private JsShAdminService JsShAdminService;
 
     /**
-     * 分页条件查询
+     * 分页条件查询成果(后台审批管理(用户录入信息))
      * @param params
      * @return
      */
     @PostMapping("/page")
-    public ResponseUtil FindJsCgByJsLbJsLy(@RequestBody Map<String, Object> params) {
+    public ResponseUtil findJsCg(@RequestBody Map<String, Object> params) {
         //查询邻域类别审核状态列表数据
-        PageInfo<TJsCg> page = JsCgAdminService.FindtJsCgByTJsLbTJsLy(new Query(params));
+        PageInfo<TJsCg> page = JsCgAdminService.findJsCg(params);
         return ResponseUtil.success(page);
     }
 

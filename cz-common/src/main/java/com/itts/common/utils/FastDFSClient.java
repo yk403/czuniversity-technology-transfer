@@ -109,7 +109,7 @@ public class FastDFSClient {
      * @return
      */
     public static String getTrackerUrl() throws IOException {
-        return "http://"+getTrackerServer().getInetSocketAddress().getHostString()+":8888";
+        return "http://"+getTrackerServer().getInetSocketAddress().getHostString()+":11000";
     }
     /**
      * 生成StorageClient

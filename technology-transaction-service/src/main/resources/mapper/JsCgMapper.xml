@@ -68,6 +68,29 @@
 		</otherwise>
 	</choose>
 </select>
+	<select id="findJsCg" resultType="com.itts.technologytransactionservice.model.TJsCg">
+		select cg.id as id,user_id,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dwdz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName
+		from t_js_cg cg left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lb lb on(cg.lb_id=lb.id)
+		<where>
+			cg.is_delete = 0
+			<if test="map.userId != null and map.userId != ''"> and cg.user_id != #{map.userId} </if>
+			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
+			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
+			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
+			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc = #{map.cgmc} </if>
+			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
+			<if test="map.fbshzt != null and map.fbshzt != ''"> and cg.status = #{map.fbshzt} </if>
+			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
+		</where>
+		<choose>
+			<when test="map.sort != null and map.sort.trim() != ''">
+				order by ${map.sort} ${map.order}
+			</when>
+			<otherwise>
+				order by id asc
+			</otherwise>
+		</choose>
+	</select>
 	<update id="updateTJsCg">
 		update t_js_cg
 		<set>

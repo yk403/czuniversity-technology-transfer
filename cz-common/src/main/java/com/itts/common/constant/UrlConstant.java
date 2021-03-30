@@ -10,7 +10,7 @@ public class UrlConstant {
     /**
      * 内网请求服务地址
      */
-    public static final String SERVER_NAME = "172.21.25.8:11003";
+    public static final String SERVER_NAME = "http://172.21.25.2:11000";
     /**
      * 转发请求地址
      */

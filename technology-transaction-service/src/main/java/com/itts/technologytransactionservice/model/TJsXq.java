@@ -164,4 +164,8 @@ public class TJsXq implements Serializable {
 	 * 创建时间
 	 */
 	private Date cjsj;
+	/**
+	 * 手机号码
+	 */
+	private String sjhm;
 }

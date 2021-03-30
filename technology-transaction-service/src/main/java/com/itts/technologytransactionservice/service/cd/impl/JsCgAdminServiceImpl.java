@@ -43,10 +43,18 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
 	private JsShMapper jsShMapper;
 
 
+    /**
+     * 分页查询成果(后台审批管理(用户录入信息))
+     * @param params
+     * @return
+     */
     @Override
-    public PageInfo<TJsCg> FindtJsCgByTJsLbTJsLy(Query query) {
+    public PageInfo<TJsCg> findJsCg(Map<String, Object> params) {
+        //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        params.put("userId",1);
+        Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<TJsCg> list = jsCgMapper.FindtJsCgByTJsLbTJsLy(query);
+        List<TJsCg> list = jsCgMapper.findJsCg(query);
         return new PageInfo<>(list);
     }
 

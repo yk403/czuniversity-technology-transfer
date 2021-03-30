@@ -3,6 +3,7 @@ package com.itts.technologytransactionservice.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.TJsCg;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -28,4 +29,6 @@ public interface JsCgMapper extends BaseMapper<TJsCg> {
 	List<TJsCg> FindtJsCgByTJsLbTJsLy(@Param("map") Map map);
 
 	void updateTJsCg(TJsCg tJsCg);
+
+	List<TJsCg> findJsCg(@Param("map") Map map);
 }

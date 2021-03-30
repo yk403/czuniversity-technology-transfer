@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.itts.common.constant.UrlConstant.PROXY_PASS;
+import static com.itts.common.constant.UrlConstant.SERVER_NAME;
 import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ERROR;
 
 /**
