@@ -48,14 +48,15 @@ public class JsCgAdminController extends BaseController {
     }
 
     /**
-    * 根据ID查询
+    * 根据成果id查询详细信息
     * @param id
     * @return
     */
     @GetMapping("/getById/{id}")
-    public R getById(@PathVariable("id") String id) {
-        return success(JsCgAdminService.getById(Integer.valueOf(id)));
+    public ResponseUtil findById(@PathVariable("id") Integer id) {
+        return ResponseUtil.success("查询成果详细信息成功",JsCgAdminService.findById(id));
     }
+
     /**
      * 根据成果名称查询
      * @param cgmc

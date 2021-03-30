@@ -50,6 +50,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
      */
     @Override
     public PageInfo<TJsCg> findJsCg(Map<String, Object> params) {
+        log.info("【技术交易 - 分页查询成果(后台审批管理)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据
         params.put("userId",1);
         Query query = new Query(params);
@@ -58,6 +59,16 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         return new PageInfo<>(list);
     }
 
+    /**
+     * 根据成果id查询详细信息
+     * @param id
+     * @return
+     */
+    @Override
+    public TJsCg findById(Integer id) {
+        log.info("【技术交易 - 根据成果id:{}查询详细信息】",id);
+        return jsCgMapper.findById(id);
+    }
     @Override
     public boolean saveCg(TJsCg tJsCg) throws Exception {
         if (tJsCg.getId() != null) {
@@ -156,6 +167,8 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         }
 		return true;
 	}
+
+
 }
 
 

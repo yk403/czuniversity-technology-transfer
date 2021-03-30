@@ -31,4 +31,7 @@ public interface JsCgMapper extends BaseMapper<TJsCg> {
 	void updateTJsCg(TJsCg tJsCg);
 
 	List<TJsCg> findJsCg(@Param("map") Map map);
+
+	@Select("select * from t_js_cg where id = #{id} and is_delete = 0")
+	TJsCg findById(Integer id);
 }

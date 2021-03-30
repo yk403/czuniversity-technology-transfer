@@ -28,4 +28,6 @@ public interface JsCgAdminService extends IService<TJsCg> {
 	boolean assistanceIssueBatch(List<Integer> ids);
 
 	boolean removeByIdsCg(List<String> ids);
+
+	TJsCg findById(Integer id);
 }

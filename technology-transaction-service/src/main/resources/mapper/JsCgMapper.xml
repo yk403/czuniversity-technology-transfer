@@ -91,6 +91,7 @@
 			</otherwise>
 		</choose>
 	</select>
+
 	<update id="updateTJsCg">
 		update t_js_cg
 		<set>
