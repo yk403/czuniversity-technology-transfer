@@ -2,6 +2,8 @@ package com.itts.technologytransactionservice.controller.cd.admin;
 
 
 import com.github.pagehelper.PageInfo;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.controller.BaseController;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
+import static com.itts.common.enums.ErrorCodeEnum.NAME_EXIST_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
 
 
 /**
@@ -54,7 +58,7 @@ public class JsCgAdminController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public ResponseUtil findById(@PathVariable("id") Integer id) {
-        return ResponseUtil.success("查询成果详细信息成功",JsCgAdminService.findById(id));
+        return ResponseUtil.success("查询成果详细信息成功!",JsCgAdminService.findById(id));
     }
 
     /**
@@ -63,16 +67,22 @@ public class JsCgAdminController extends BaseController {
      * @return
      */
     @GetMapping("/getByName/{cgmc}")
-    public R getByName(@PathVariable("cgmc") String cgmc) {
-        return success(JsCgAdminService.selectByName(cgmc));
+    public ResponseUtil getByName(@PathVariable("cgmc") String cgmc) {
+        return ResponseUtil.success(JsCgAdminService.selectByName(cgmc));
     }
 
     /**
-     * 保存
+     * 保存成果
      */
     @PostMapping("/save")
-    public R save(@RequestBody TJsCg tJsCg) throws Exception {
-        return save(JsCgAdminService.saveCg(tJsCg));
+    public ResponseUtil save(@RequestBody TJsCg tJsCg) {
+        if (tJsCg.getId() != null) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (!JsCgAdminService.saveCg(tJsCg)) {
+            return ResponseUtil.error(NAME_EXIST_ERROR);
+        }
+        return ResponseUtil.success("保存成果信息成功!");
     }
 
     /**

@@ -69,8 +69,20 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         log.info("【技术交易 - 根据成果id:{}查询详细信息】",id);
         return jsCgMapper.findById(id);
     }
+
+    /**
+     * 根据成果名称查询详细信息
+     * @param name
+     * @return
+     */
     @Override
-    public boolean saveCg(TJsCg tJsCg) throws Exception {
+    public TJsCg selectByName(String name) {
+        log.info("【技术交易 - 根据成果名称:{}查询详细信息】",name);
+        return jsCgMapper.selectByName(name);
+    }
+
+    @Override
+    public boolean saveCg(TJsCg tJsCg) {
         if (tJsCg.getId() != null) {
             return false;
         } else {
@@ -89,10 +101,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         }
     }
 
-    @Override
-    public TJsCg selectByName(String name) {
-        return jsCgMapper.selectByName(name);
-    }
+
 
 
     /**

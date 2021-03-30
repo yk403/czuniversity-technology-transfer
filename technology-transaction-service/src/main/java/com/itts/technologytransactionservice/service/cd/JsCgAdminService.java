@@ -20,7 +20,8 @@ public interface JsCgAdminService extends IService<TJsCg> {
 
 	PageInfo findJsCg(Map<String, Object> params);
 
-	boolean saveCg(TJsCg tJsCg) throws Exception;
+	boolean saveCg(TJsCg tJsCg);
+
 	boolean issueBatch(List<Integer> ids);
 
     boolean updateTJsCg(TJsCg tJsCg);
