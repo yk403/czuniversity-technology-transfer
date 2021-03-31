@@ -46,7 +46,7 @@ public class JsCgAdminController extends BaseController {
      */
     @PostMapping("/page")
     public ResponseUtil findJsCg(@RequestBody Map<String, Object> params) {
-        //查询邻域类别审核状态列表数据
+        //查询用户录入成功信息列表
         PageInfo<TJsCg> page = JsCgAdminService.findJsCg(params);
         return ResponseUtil.success(page);
     }

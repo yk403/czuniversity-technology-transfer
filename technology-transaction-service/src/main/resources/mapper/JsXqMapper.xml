@@ -3,18 +3,19 @@
 
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsXqMapper">
 
-	<select id="FindTJsXqByTJsLbTJsLy" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select a.id as id,xqmc,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,d.fbshzt as fbshzt,a.cjsj as cjsj,d.release_status as releaseStatus,b.mc as lyName,c.mc as lbName
-		from t_js_xq a left join t_js_ly b on(a.ly_id=b.id) left join t_js_lb c on(a.lb_id=c.id) left join t_js_sh d on(a.id=d.xq_id)
+	<select id="findJsCg" resultType="com.itts.technologytransactionservice.model.TJsXq">
+		select xq.id as id,xqmc,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName
+		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id)
 		<where>
-		    a.is_delete = 0
-			<if test="map.lyId != null and map.lyId != ''"> and a.ly_id = #{map.lyId} </if>
-			<if test="map.lbId != null and map.lbId != ''"> and a.lb_id = #{map.lbId} </if>
-			<if test="map.cgId != null and map.cgId != ''"> and d.cg_id = #{map.cgId} </if>
-			<if test="map.xqId != null and map.xqId != ''"> and d.xq_id = #{map.xqId} </if>
-			<if test="map.xqmc != null and map.xqmc != ''"> and a.xqmc = #{map.xqmc} </if>
-			<if test="map.cjsj != null and map.cjsj != ''"> and a.cjsj = #{map.cjsj} </if>
-			<if test="map.fbshzt != null and map.fbshzt != ''"> and a.status = #{map.fbshzt} </if>
+		    xq.is_delete = 0
+			<if test="map.userId != null and map.userId != ''"> and xq.user_id != #{map.userId} </if>
+			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
+			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
+			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
+			<if test="map.xqId != null and map.xqId != ''"> and sh.xq_id = #{map.xqId} </if>
+			<if test="map.xqmc != null and map.xqmc != ''"> and xq.xqmc = #{map.xqmc} </if>
+			<if test="map.cjsj != null and map.cjsj != ''"> and xq.cjsj = #{map.cjsj} </if>
+			<if test="map.fbshzt != null and map.fbshzt != ''"> and sh.fbshzt = #{map.fbshzt} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and d.release_status = #{map.releaseStatus} </if>
 		</where>
 		<choose>
@@ -66,6 +67,30 @@
 		and
 			is_delete = 0
 	</select>
+	<select id="FindTJsXqByTJsLbTJsLy" resultType="com.itts.technologytransactionservice.model.TJsXq">
+		select xq.id as id,xqmc,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName
+		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id)
+		<where>
+			xq.is_delete = 0
+			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
+			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
+			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
+			<if test="map.xqId != null and map.xqId != ''"> and sh.xq_id = #{map.xqId} </if>
+			<if test="map.xqmc != null and map.xqmc != ''"> and xq.xqmc = #{map.xqmc} </if>
+			<if test="map.cjsj != null and map.cjsj != ''"> and xq.cjsj = #{map.cjsj} </if>
+			<if test="map.fbshzt != null and map.fbshzt != ''"> and sh.fbshzt = #{map.fbshzt} </if>
+			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and d.release_status = #{map.releaseStatus} </if>
+		</where>
+		<choose>
+			<when test="map.sort != null and map.sort.trim() != ''">
+				order by ${map.sort} ${map.order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+	</select>
+
 	<update id="updateTJsXq">
 		update t_js_xq
 		<set>

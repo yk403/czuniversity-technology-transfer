@@ -28,11 +28,11 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_
 /**
  * @Author: Austin
  * @Data: 2021/3/26
- * @Description: 技术需求管理
+ * @Description: 技术需求后台管理
  */
 
-@RequestMapping(ADMIN_BASE_URL+"/v1/tJsXq")
-@Api(value = "JsShController", tags = "技术需求管理")
+@RequestMapping(ADMIN_BASE_URL+"/v1/JsXq")
+@Api(value = "JsXqAdminController", tags = "技术需求后台管理")
 @RestController
 public class JsXqAdminController extends BaseController {
     @Autowired
@@ -42,16 +42,14 @@ public class JsXqAdminController extends BaseController {
     private JsShAdminService JsShAdminService;
 
     /**
-     * (后台)分页条件查询
-     *
+     * 分页条件查询需求(后台审批管理(用户录入信息))
      * @param params
      * @return
      */
-    @PostMapping("/FindTJsXqByTJsLbTJsLy")
-    public ResponseUtil FindTJsXqByTJsLbTJsLy(@RequestBody Map<String, Object> params) {
-        //查询邻域类别审核状态列表数据
-        Query query = new Query(params);
-        PageInfo<TJsXq> page = JsXqAdminService.FindTJsXqByTJsLbTJsLy(query);
+    @PostMapping("/page")
+    public ResponseUtil findJsXq(@RequestBody Map<String, Object> params) {
+        //查询用户录入成功信息列表
+        PageInfo<TJsXq> page = JsXqAdminService.findJsXq(params);
         return ResponseUtil.success(page);
     }
 

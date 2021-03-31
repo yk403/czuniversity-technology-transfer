@@ -8,11 +8,13 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.mapper.JsXqMapper;
+import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.model.TJsXq;
 import com.itts.technologytransactionservice.service.cd.JsShAdminService;
 import com.itts.technologytransactionservice.service.cd.JsXqAdminService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ import java.util.Map;
 
 @Service
 @Primary
+@Slf4j
+@Transactional
 public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements JsXqAdminService {
     @Autowired
     private JsXqMapper jsXqMapper;
@@ -38,12 +42,20 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     @Autowired
     private JsShMapper jsShMapper;
 
+    /**
+     * 分页查询需求(后台审批管理(用户录入信息))
+     * @param params
+     * @return
+     */
     @Override
-    public PageInfo FindTJsXqByTJsLbTJsLy(Query query) {
+    public PageInfo<TJsXq> findJsXq(Map<String, Object> params) {
+        log.info("【技术交易 - 分页查询需求(后台审批管理)】");
+        //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        params.put("userId",1);
+        Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<TJsXq> list = jsXqMapper.FindTJsXqByTJsLbTJsLy(query);
-        PageInfo<TJsXq> page = new PageInfo<>(list);
-        return page;
+        List<TJsXq> list = jsXqMapper.findJsCg(query);
+        return new PageInfo<>(list);
     }
 
     @Override
@@ -135,6 +147,8 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         TJsXq tJsXq = jsXqMapper.findById(id);
         return tJsXq;
     }
+
+
 
 
 }
