@@ -27,7 +27,7 @@ import java.util.Date;
  */
 @Api(value = "菜单控制")
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL+"/tCd")
+@RequestMapping(SystemConstant.ADMIN_BASE_URL+"/v1/cd")
 public class CdController {
 
     @Resource

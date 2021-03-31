@@ -28,11 +28,11 @@ import java.util.List;
  */
 @Api(tags = "操作管理")
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/tCz")
+@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/cz")
 public class CzController {
 
     @Resource
-    private CzService tCzService;
+    private CzService czService;
 
 
     /**
@@ -44,7 +44,7 @@ public class CzController {
     @GetMapping("/czlist/{id}/{cdid}")
     @ApiOperation(value = "获取操作列表")
     public ResponseUtil findcz(@PathVariable("id") Long id,@PathVariable("cdid") Long cdid){
-        List<CzDTO> cz = tCzService.findCz(id, cdid);
+        List<CzDTO> cz = czService.findCz(id, cdid);
         return ResponseUtil.success(cz);
     }
 
@@ -59,7 +59,7 @@ public class CzController {
     @ApiOperation(value = "获取列表")
     public ResponseUtil find(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                              @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        PageInfo<Cz> byPage = tCzService.findByPage(pageNum, pageSize);
+        PageInfo<Cz> byPage = czService.findByPage(pageNum, pageSize);
         return ResponseUtil.success(byPage);
     }
 
@@ -74,7 +74,7 @@ public class CzController {
         //检查参数是否合法
         checkPequest(tCz);
         //检查数据库中是否存在要更新的数据
-        Cz add = tCzService.add(tCz);
+        Cz add = czService.add(tCz);
         return ResponseUtil.success(add);
     }
 
@@ -90,14 +90,14 @@ public class CzController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //检查数据库中是否存在要更新的数据
-        Cz tCz1 = tCzService.get(id);
+        Cz tCz1 = czService.get(id);
         if (tCz1 == null) {
             throw new WebException((ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR));
         }
         checkPequest(tCz);
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
         BeanUtils.copyProperties(tCz, tCz1, "id", "cjsj", "cjr");
-        tCzService.update(tCz1);
+        czService.update(tCz1);
         return ResponseUtil.success(tCz1);
     }
 
@@ -113,14 +113,14 @@ public class CzController {
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        Cz tCz = tCzService.get(id);
+        Cz tCz = czService.get(id);
         if (tCz == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         //设置删除状态，更新删除时间
         tCz.setSfsc(false);
         tCz.setGxsj(new Date());
-        tCzService.update(tCz);
+        czService.update(tCz);
         return ResponseUtil.success();
     }
 

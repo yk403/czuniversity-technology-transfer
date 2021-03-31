@@ -26,7 +26,7 @@ import java.util.Date;
  */
 @Api(tags="角色管理")
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL+"/tJs")
+@RequestMapping(SystemConstant.ADMIN_BASE_URL+"/v1/js")
 public class JsController {
 
     @Resource
