@@ -232,12 +232,6 @@
                 <artifactId>poi-ooxml</artifactId>
                 <version>${poi-ooxml.version}</version>
             </dependency>
-            <!-- Json in java -->
-           <!-- <dependency>
-                <groupId>org.json</groupId>
-                <artifactId>json</artifactId>
-                <version>${json.version}</version>
-            </dependency>-->
             <!--fastdfs-->
             <dependency>
                 <groupId>org.csource</groupId>
