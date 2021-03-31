@@ -1,5 +1,6 @@
 package com.itts.common.utils;
 
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -7,8 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.UUID;
-
-import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ERROR;
 
 @Slf4j
 public class FileUtil {
@@ -119,7 +118,7 @@ public class FileUtil {
 		fileAbsolutPath = FastDFSClient.upload(file);
 		if(fileAbsolutPath==null){
 			log.error("【文件上传失败】");
-			throw new ServiceException(UPLOAD_FAIL_ERROR);
+			throw new ServiceException(ErrorCodeEnum.UPLOAD_FAIL_ERROR);
 		}
 		String path = FastDFSClient.getTrackerUrl()+"/"+fileAbsolutPath[0]+"/"+fileAbsolutPath[1];
 		log.info("【文件上传成功】,path: {}",path);
