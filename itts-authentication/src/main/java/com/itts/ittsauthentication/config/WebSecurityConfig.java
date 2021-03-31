@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JWTLoginFilter(authenticationManager(), redisTemplate))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), redisTemplate))
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll();
+                .logout().logoutUrl("/api/logout").logoutSuccessUrl("/login").permitAll();
     }
 
     @Bean

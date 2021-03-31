@@ -1,6 +1,7 @@
 package com.itts.ittsauthentication.filter;
 
 import cn.hutool.json.JSONUtil;
+import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.common.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -38,7 +39,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         //获取Token信息
-        String token = request.getHeader("token");
+        String token = request.getHeader(SystemConstant.TOKEN_PREFIX);
         if (StringUtils.isBlank(token)) {
             chain.doFilter(request, response);
             return;
@@ -62,7 +63,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
      */
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
 
-        String token = request.getHeader("token");
+        String token = request.getHeader(SystemConstant.TOKEN_PREFIX);
 
         //验证当前用户token是否有效
         Object checkToken = redisTemplate.opsForValue().get("itts:user:login:token:" + token);

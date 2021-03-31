@@ -63,7 +63,13 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     /**
-     * 如果登录成功，则返回客户端Token * @param request * @param response * @param chain * @param authResult * @throws IOException * @throws ServletException
+     * 如果登录成功，则返回客户端Token
+     * @param request
+     * @param response
+     * @param chain
+     * @param authResult
+     * @throws IOException
+     * @throws ServletException
      */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
