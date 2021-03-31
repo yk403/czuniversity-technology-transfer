@@ -133,10 +133,10 @@
             <artifactId>hutool-all</artifactId>
         </dependency>
         <!-- Json in java -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.csource</groupId>
             <artifactId>fastdfs-client-java</artifactId>
