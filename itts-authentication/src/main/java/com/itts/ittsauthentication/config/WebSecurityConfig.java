@@ -1,8 +1,10 @@
 package com.itts.ittsauthentication.config;
 
 import com.itts.ittsauthentication.bean.Http401AuthenticationEntryPoint;
+import com.itts.ittsauthentication.bean.SecurityLogoutHandler;
 import com.itts.ittsauthentication.filter.JWTAuthenticationFilter;
 import com.itts.ittsauthentication.filter.JWTLoginFilter;
+import com.itts.ittsauthentication.mapper.AuthoritionUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +34,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private AuthoritionUserMapper authoritionUserMapper;
+
     /**
      * ⽩名单，不需要校验
      */
@@ -48,9 +53,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new Http401AuthenticationEntryPoint())
                 .and()
-                .addFilter(new JWTLoginFilter(authenticationManager(), redisTemplate))
+                .addFilter(new JWTLoginFilter(authenticationManager(), redisTemplate, authoritionUserMapper))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), redisTemplate))
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll();
+                .logout().logoutUrl("/api/logout/").logoutSuccessHandler(new SecurityLogoutHandler(redisTemplate)).permitAll();
     }
 
     @Bean
