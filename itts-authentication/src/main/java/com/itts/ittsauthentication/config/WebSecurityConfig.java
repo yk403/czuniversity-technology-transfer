@@ -1,6 +1,7 @@
 package com.itts.ittsauthentication.config;
 
 import com.itts.ittsauthentication.bean.Http401AuthenticationEntryPoint;
+import com.itts.ittsauthentication.bean.Http403AuthenticationEntryPoint;
 import com.itts.ittsauthentication.bean.SecurityLogoutHandler;
 import com.itts.ittsauthentication.filter.JWTAuthenticationFilter;
 import com.itts.ittsauthentication.filter.JWTLoginFilter;
@@ -49,9 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().access("@roleSecurity.check(authentication, request)") //.authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new Http401AuthenticationEntryPoint())
+                //权限不足结果处理
+                .accessDeniedHandler(new Http403AuthenticationEntryPoint())
                 .and()
                 .addFilter(new JWTLoginFilter(authenticationManager(), redisTemplate, authoritionUserMapper))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), redisTemplate))

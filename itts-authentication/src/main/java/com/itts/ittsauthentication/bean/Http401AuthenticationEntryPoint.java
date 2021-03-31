@@ -26,6 +26,6 @@ public class Http401AuthenticationEntryPoint implements AuthenticationEntryPoint
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
 
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.error(ErrorCodeEnum.NO_PERMISSION_ERROR)));
+        response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.error(ErrorCodeEnum.NO_LOGIN_ERROR)));
     }
 }
