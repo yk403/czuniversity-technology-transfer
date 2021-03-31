@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
-import static com.itts.common.enums.ErrorCodeEnum.NAME_EXIST_ERROR;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
 /**
@@ -89,12 +88,23 @@ public class JsXqAdminController extends BaseController {
     }
 
     /**
-     * 修改成果信息
+     * 修改需求信息
      */
-    @RequestMapping("/update")
+    @PutMapping("/update")
     public ResponseUtil update(@RequestBody TJsXq tJsXq) {
-        boolean result = jsXqAdminService.updateTJsXq(tJsXq);
-        return ResponseUtil.success();
+        jsXqAdminService.updateTJsXq(tJsXq);
+        return ResponseUtil.success("修改需求信息成功!");
+    }
+
+    /**
+     * 根据需求id删除需求信息
+     */
+    @GetMapping("/remove/{id}")
+    public ResponseUtil remove(@PathVariable("id") Integer id) {
+        if (!jsXqAdminService.removeByXqId(id)) {
+            throw new WebException(DELETE_ERROR);
+        }
+        return ResponseUtil.success("删除需求信息成功!");
     }
     /**
      * 分页条件查询

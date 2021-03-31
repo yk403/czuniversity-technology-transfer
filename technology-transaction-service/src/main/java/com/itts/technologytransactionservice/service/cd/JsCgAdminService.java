@@ -18,8 +18,6 @@ public interface JsCgAdminService extends IService<TJsCg> {
 
 	PageInfo findJsCg(Map<String, Object> params);
 
-	boolean removeByCgId(Integer id);
-
 	TJsCg selectByName(String name);
 
 	boolean saveCg(TJsCg tJsCg);
@@ -27,6 +25,8 @@ public interface JsCgAdminService extends IService<TJsCg> {
 	boolean issueBatch(List<Integer> ids);
 
     void updateTJsCg(TJsCg tJsCg);
+
+	boolean removeByCgId(Integer id);
 
 	boolean assistanceIssueBatch(List<Integer> ids);
 

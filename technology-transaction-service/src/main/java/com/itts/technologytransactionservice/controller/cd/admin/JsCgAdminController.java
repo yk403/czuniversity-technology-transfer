@@ -86,7 +86,7 @@ public class JsCgAdminController extends BaseController {
     /**
      * 修改成果信息
      */
-    @RequestMapping("/update")
+    @PutMapping("/update")
     public ResponseUtil update(@RequestBody TJsCg tJsCg) {
         jsCgAdminService.updateTJsCg(tJsCg);
         return ResponseUtil.success("修改成果信息成功!");

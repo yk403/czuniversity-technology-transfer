@@ -26,7 +26,7 @@ public interface JsShService extends IService<TJsSh> {
 
 	boolean deleteById(Integer cgId, Integer xqId);
 
-	TJsSh selectByxqId(Integer id);
+	TJsSh selectByXqId(Integer id);
 
 	Boolean auditCg(Map<String, Object> params, Integer fbshzt);
 

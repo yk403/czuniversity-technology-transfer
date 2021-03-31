@@ -24,14 +24,15 @@ public interface JsXqAdminService extends IService<TJsXq> {
 
 	boolean saveXq(TJsXq tJsXq) ;
 
+	void updateTJsXq(TJsXq tJsXq);
+
+	boolean removeByXqId(Integer id);
+
 	PageInfo PageByTJsFb(Query query);
 
 	boolean issueBatch(List<Integer> ids);
 
 	boolean assistanceIssueBatch(List<Integer> ids);
-
-	boolean updateTJsXq(TJsXq tJsXq);
-
 
 
 }

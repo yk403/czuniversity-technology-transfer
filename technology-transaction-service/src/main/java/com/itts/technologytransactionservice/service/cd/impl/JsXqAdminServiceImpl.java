@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.mapper.JsXqMapper;
+import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.model.TJsXq;
@@ -111,6 +113,38 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         return true;
     }
 
+    /**
+     * 更新需求信息
+     * @param tJsXq
+     * @return
+     */
+    @Override
+    public void updateTJsXq(TJsXq tJsXq) {
+        log.info("【技术交易 - 更新需求信息:{}】", tJsXq);
+        jsXqMapper.updateTJsXq(tJsXq);
+    }
+
+    /**
+     * 根据需求id删除需求信息
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean removeByXqId(Integer id) {
+        log.info("【技术交易 - 根据id:{}删除需求信息】",id);
+        TJsSh tJsSh = jsShMapper.selectByXqId(id);
+        TJsXq tJsXq = new TJsXq();
+        tJsXq.setId(id);
+        tJsXq.setIsDelete(1);
+        jsXqMapper.updateById(tJsXq);
+        if (tJsSh.getId() != null) {
+            tJsSh.setIsDelete(1);
+            if (!jsShAdminService.updateById(tJsSh)) {
+                throw new ServiceException("删除成果信息失败!");
+            }
+        }
+        return true;
+    }
 
     /**
      * 技术采集批量下发
@@ -148,13 +182,6 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         }
 
     }
-
-    @Override
-    public boolean updateTJsXq(TJsXq tJsXq) {
-        jsXqMapper.updateTJsXq(tJsXq);
-        return true;
-    }
-
 
 
 

@@ -32,7 +32,7 @@ public interface JsShMapper extends BaseMapper<TJsSh> {
 	void updateJsSh(@Param("cgId") Integer cgId, @Param("xqId") Integer xqId);
 
 	@Select("select * from t_js_sh where xq_id = #{xqId}")
-	TJsSh selectByxqId(Integer xqId);
+	TJsSh selectByXqId(Integer xqId);
 
 	List<TJsSh> selectBycgIds(@Param("cgIds")Integer[] cgIds);
 

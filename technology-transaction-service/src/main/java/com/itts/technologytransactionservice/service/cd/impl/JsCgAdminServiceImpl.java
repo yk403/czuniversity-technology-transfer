@@ -80,11 +80,11 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     @Override
     public boolean removeByCgId(Integer id) {
         log.info("【技术交易 - 根据id:{}删除成果信息】",id);
-        TJsSh tJsSh = jsShAdminService.selectByCgId(id);
+        TJsSh tJsSh = jsShMapper.selectByCgId(id);
         TJsCg tJsCg = new TJsCg();
         tJsCg.setId(id);
         tJsCg.setIsDelete(1);
-        jsCgMapper.updateTJsCg(tJsCg);
+        jsCgMapper.updateById(tJsCg);
         if (tJsSh.getId() != null) {
             tJsSh.setIsDelete(1);
             if (!jsShAdminService.updateById(tJsSh)) {

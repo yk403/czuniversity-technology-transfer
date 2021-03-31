@@ -33,17 +33,6 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 	@Autowired
 	private JsShAdminService jsShAdminService;
 
-	/**
-	 * 根据成果id查询审核信息
-	 * @param id
-	 * @return
-	 */
-	@Override
-	public TJsSh selectByCgId(Integer id) {
-		log.info("");
-		return jsShMapper.selectByCgId(id);
-	}
-
 	@Override
 	public IPage page(Query query) {
 		Page<TJsSh> p = new Page<>(query.getPageNum(), query.getPageSize());
