@@ -27,7 +27,7 @@ public interface JsXqMapper extends BaseMapper<TJsXq> {
 
 	List<TJsXq> findJsCg(@Param("map") Map map);
 
-	@Select("select * from t_js_xq where xqmc = #{name} and is_delete = 0")
+	@Select("select * from t_js_xq where xqmc like #{name} and is_delete = 0")
 	TJsXq selectByName(String name);
 
 	List<TJsFb> PageByTJsFb(@Param("map") Map map);

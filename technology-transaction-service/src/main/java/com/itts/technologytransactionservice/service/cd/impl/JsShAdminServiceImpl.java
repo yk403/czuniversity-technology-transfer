@@ -8,9 +8,11 @@ import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.service.cd.JsShAdminService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -23,11 +25,25 @@ import java.util.Map;
 
 @Service
 @Primary
+@Slf4j
+@Transactional
 public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> implements JsShAdminService {
 	@Autowired
 	private JsShMapper jsShMapper;
 	@Autowired
 	private JsShAdminService jsShAdminService;
+
+	/**
+	 * 根据成果id查询审核信息
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public TJsSh selectByCgId(Integer id) {
+		log.info("");
+		return jsShMapper.selectByCgId(id);
+	}
+
 	@Override
 	public IPage page(Query query) {
 		Page<TJsSh> p = new Page<>(query.getPageNum(), query.getPageSize());
@@ -49,7 +65,7 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 	 */
 	@Override
 	public Boolean auditCg(Map<String, Object> params, Integer fbshzt) {
-		TJsSh tJsSh = jsShMapper.selectBycgId(Integer.parseInt(params.get("id").toString()));
+		TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
 		String fbshbz = params.get("fbshbz").toString();
 		tJsSh.setFbshzt(fbshzt);
 		tJsSh.setFbshbz(fbshbz);
@@ -61,7 +77,7 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 
 	@Override
 	public Boolean auditXq(Map<String, Object> params, Integer fbshzt) {
-		TJsSh tJsSh = jsShMapper.selectBycgId(Integer.parseInt(params.get("id").toString()));
+		TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
 		String fbshbz = params.get("fbshbz").toString();
 		tJsSh.setFbshzt(fbshzt);
 		tJsSh.setFbshbz(fbshbz);
@@ -70,5 +86,7 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 		}
 		return true;
 	}
+
+
 
 }

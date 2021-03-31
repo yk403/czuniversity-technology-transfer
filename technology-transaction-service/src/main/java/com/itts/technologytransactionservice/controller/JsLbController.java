@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 
 
@@ -24,7 +25,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
  * @Description: 技术类别管理
  */
 
-@RequestMapping(BASE_URL+"/v1/JsLb")
+@RequestMapping(ADMIN_BASE_URL+"/v1/JsLb")
 @Api(value = "JsLbController", tags = "技术类别管理")
 @RestController
 public class JsLbController extends BaseController {

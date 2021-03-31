@@ -64,6 +64,17 @@ public class JsXqAdminController extends BaseController {
     }
 
     /**
+     * 根据需求名称查询需求详细信息
+     * @param xqmc
+     * @return
+     */
+    @GetMapping("/getByName/{xqmc}")
+    public R getByName(@PathVariable("xqmc") String xqmc) {
+        TJsXq tJsXq = JsXqAdminService.selectByName(xqmc);
+        return success(tJsXq);
+    }
+
+    /**
      * 分页条件查询
      *
      * @param params
@@ -79,16 +90,7 @@ public class JsXqAdminController extends BaseController {
 
 
 
-    /**
-     * 根据Name查询
-     * @param xqmc
-     * @return
-     */
-    @GetMapping("/getByName/{xqmc}")
-    public R getByName(@PathVariable("xqmc") String xqmc) {
-        TJsXq tJsXq = JsXqAdminService.selectByName(xqmc);
-        return success(tJsXq);
-    }
+
 
     /**
      * 保存

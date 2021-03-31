@@ -16,6 +16,9 @@ import java.util.Map;
  */
 public interface JsCgAdminService extends IService<TJsCg> {
 
+
+	boolean removeByCgId(Integer id);
+
 	TJsCg selectByName(String name);
 
 	PageInfo findJsCg(Map<String, Object> params);

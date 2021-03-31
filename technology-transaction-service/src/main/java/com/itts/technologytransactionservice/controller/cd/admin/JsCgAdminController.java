@@ -2,7 +2,6 @@ package com.itts.technologytransactionservice.controller.cd.admin;
 
 
 import com.github.pagehelper.PageInfo;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
@@ -19,8 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
-import static com.itts.common.enums.ErrorCodeEnum.NAME_EXIST_ERROR;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
 /**
@@ -33,7 +31,7 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_
 @RestController
 public class JsCgAdminController extends BaseController {
     @Autowired
-    private JsCgAdminService JsCgAdminService;
+    private JsCgAdminService jsCgAdminService;
 
 
     @Autowired
@@ -47,7 +45,7 @@ public class JsCgAdminController extends BaseController {
     @PostMapping("/page")
     public ResponseUtil findJsCg(@RequestBody Map<String, Object> params) {
         //查询用户录入成功信息列表
-        PageInfo<TJsCg> page = JsCgAdminService.findJsCg(params);
+        PageInfo<TJsCg> page = jsCgAdminService.findJsCg(params);
         return ResponseUtil.success(page);
     }
 
@@ -58,7 +56,7 @@ public class JsCgAdminController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public ResponseUtil findById(@PathVariable("id") Integer id) {
-        return ResponseUtil.success("查询成果详细信息成功!",JsCgAdminService.findById(id));
+        return ResponseUtil.success("查询成果详细信息成功!",jsCgAdminService.findById(id));
     }
 
     /**
@@ -68,21 +66,21 @@ public class JsCgAdminController extends BaseController {
      */
     @GetMapping("/getByName/{cgmc}")
     public ResponseUtil getByName(@PathVariable("cgmc") String cgmc) {
-        return ResponseUtil.success(JsCgAdminService.selectByName(cgmc));
+        return ResponseUtil.success(jsCgAdminService.selectByName(cgmc));
     }
 
     /**
-     * 保存成果信息
+     * 新增成果信息
      */
     @PostMapping("/save")
     public ResponseUtil save(@RequestBody TJsCg tJsCg) {
         if (tJsCg.getId() != null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (!JsCgAdminService.saveCg(tJsCg)) {
+        if (!jsCgAdminService.saveCg(tJsCg)) {
             return ResponseUtil.error(NAME_EXIST_ERROR);
         }
-        return ResponseUtil.success("保存成果信息成功!");
+        return ResponseUtil.success("新增成果信息成功!");
     }
 
     /**
@@ -90,10 +88,20 @@ public class JsCgAdminController extends BaseController {
      */
     @RequestMapping("/update")
     public ResponseUtil update(@RequestBody TJsCg tJsCg) {
-        JsCgAdminService.updateTJsCg(tJsCg);
+        jsCgAdminService.updateTJsCg(tJsCg);
         return ResponseUtil.success();
     }
 
+    /**
+     * 根据成果id删除成果信息
+     */
+    @DeleteMapping("/remove/{id}")
+    public ResponseUtil remove(@PathVariable("id") Integer id) {
+        if (!jsCgAdminService.removeByCgId(id)) {
+            throw new WebException(DELETE_ERROR);
+        }
+        return ResponseUtil.success("删除成果信息成功!");
+    }
 
     /**
      * 批量删除
@@ -101,7 +109,7 @@ public class JsCgAdminController extends BaseController {
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<String> ids){
 
-        return  remove(JsCgAdminService.removeByIdsCg(ids));
+        return  remove(jsCgAdminService.removeByIdsCg(ids));
     }
 
     /**
@@ -115,7 +123,7 @@ public class JsCgAdminController extends BaseController {
         for (String id : ids) {
             list.add(Integer.valueOf(id));
         }
-        return  remove(JsCgAdminService.issueBatch(list));
+        return  remove(jsCgAdminService.issueBatch(list));
     }
 
 
@@ -131,7 +139,7 @@ public class JsCgAdminController extends BaseController {
         for (String id : ids) {
             list.add(Integer.valueOf(id));
         }
-        return  remove(JsCgAdminService.assistanceIssueBatch(list));
+        return  remove(jsCgAdminService.assistanceIssueBatch(list));
     }
 
 }

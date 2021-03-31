@@ -24,4 +24,5 @@ public interface JsShAdminService extends IService<TJsSh> {
 
 	Boolean auditXq(Map<String, Object> params, Integer fbshzt);
 
+    TJsSh selectByCgId(Integer id);
 }

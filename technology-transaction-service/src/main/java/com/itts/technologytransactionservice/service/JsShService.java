@@ -20,7 +20,7 @@ public interface JsShService extends IService<TJsSh> {
 
 	IPage page(Query query);
 
-	TJsSh selectBycgId(Integer id);
+	TJsSh selectByCgId(Integer id);
 
 	List<TJsSh> selectBycgxqIds(List<Integer> cgxqIds);
 

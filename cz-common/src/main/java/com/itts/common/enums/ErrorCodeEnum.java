@@ -26,6 +26,7 @@ public enum ErrorCodeEnum {
     UPLOAD_FAIL_ERROR(-450001,"文件上传失败"),
     UPLOAD_FAIL_ISEMPTY_ERROR(-450002,"文件上传不可为空"),
     NAME_EXIST_ERROR(-45000,"名称已存在"),
+    DELETE_ERROR(-45003,"删除失败!"),
     //====================      技术交易服务错误提示  END     ====================
 
 
