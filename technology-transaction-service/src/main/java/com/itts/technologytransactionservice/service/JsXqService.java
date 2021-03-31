@@ -43,5 +43,4 @@ public interface JsXqService extends IService<TJsXq> {
 
 	boolean assistanceUpdateTJsXq(TJsXq tJsXq);
 
-	TJsXq selectById(Integer id);
 }

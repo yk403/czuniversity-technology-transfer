@@ -1,65 +1,65 @@
-package com.itts.technologytransactionservice.controller;
-
+package com.itts.technologytransactionservice.controller.cd.admin;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.technologytransactionservice.model.TJsLb;
-import com.itts.technologytransactionservice.service.JsLbService;
+import com.itts.technologytransactionservice.controller.BaseController;
+import com.itts.technologytransactionservice.model.TJsLy;
+import com.itts.technologytransactionservice.service.cd.JsLyAdminService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import static com.itts.common.constant.SystemConstant.BASE_URL;
 
+import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 
 /**
  * @Author: Austin
- * @Data: 2021/3/26
- * @Description: 技术类别管理
+ * @Data: 2021/3/31
+ * @Version: 1.0.0
+ * @Description: 技术领域后台管理
  */
-
-@RequestMapping(BASE_URL+"/v1/JsLb")
-@Api(value = "JsLbController", tags = "技术类别管理")
+@RequestMapping(ADMIN_BASE_URL+"/v1/JsLy")
+@Api(value = "JsLyAdminController", tags = "技术领域后台管理")
 @RestController
-public class JsLbController extends BaseController {
+public class JsLyAdminController extends BaseController {
     @Autowired
-    private JsLbService jsLbService;
-
+    private JsLyAdminService jsLyAdminService;
     /**
-    * 分页查询
-    * @param params
-    * @return
-    */
+     * (前台)分页查询
+     * @param params
+     * @return
+     */
     @PostMapping("/page")
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        PageInfo<TJsLb> page = jsLbService.page(query);
+        PageInfo<TJsLy> page = jsLyAdminService.page(query);
         return ResponseUtil.success(page);
     }
 
     /**
-    * 根据ID查询
-    * @param id
-    * @return
-    */
+     * 根据ID查询
+     * @param id
+     * @return
+     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
         long l = Long.parseLong(id);
-        TJsLb tJsLb = jsLbService.getById(l);
-        return success(tJsLb);
+        TJsLy tJsLy = jsLyAdminService.getById(l);
+        return success(tJsLy);
     }
 
     /**
      * 保存
      */
     @PostMapping("/save")
-    public R save(@RequestBody TJsLb tJsLb) {
-        boolean result = jsLbService.save(tJsLb);
+    public R save(@RequestBody TJsLy tJsLy) {
+        boolean result = jsLyAdminService.save(tJsLy);
         return save(result);
     }
 
@@ -67,8 +67,8 @@ public class JsLbController extends BaseController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody TJsLb tJsLb) {
-        boolean result = jsLbService.updateById(tJsLb);
+    public R update(@RequestBody TJsLy tJsLy) {
+        boolean result = jsLyAdminService.updateById(tJsLy);
         return update(result);
     }
 
@@ -78,7 +78,7 @@ public class JsLbController extends BaseController {
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") String id) {
         long l = Long.parseLong(id);
-        boolean result = jsLbService.removeById(l);
+        boolean result = jsLyAdminService.removeById(l);
         return remove(result);
     }
 
@@ -93,10 +93,7 @@ public class JsLbController extends BaseController {
             long l = Long.parseLong(id);
             longs.add(l);
         }
-        boolean result = jsLbService.removeByIds(longs);
+        boolean result = jsLyAdminService.removeByIds(longs);
         return  remove(result);
     }
-
-
-
 }

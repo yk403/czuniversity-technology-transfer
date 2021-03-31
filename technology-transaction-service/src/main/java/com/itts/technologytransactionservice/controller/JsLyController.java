@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 
 

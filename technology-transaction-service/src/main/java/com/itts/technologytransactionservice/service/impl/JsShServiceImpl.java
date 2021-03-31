@@ -44,8 +44,8 @@ public class JsShServiceImpl extends ServiceImpl<JsShMapper, TJsSh> implements J
     }
 
     @Override
-    public TJsSh selectBycgId(Integer cgId) {
-        return jsShMapper.selectBycgId(cgId);
+    public TJsSh selectByCgId(Integer cgId) {
+        return jsShMapper.selectByCgId(cgId);
     }
 
     @Override
@@ -61,8 +61,8 @@ public class JsShServiceImpl extends ServiceImpl<JsShMapper, TJsSh> implements J
     }
 
     @Override
-    public TJsSh selectByxqId(Integer xqId) {
-        return jsShMapper.selectByxqId(xqId);
+    public TJsSh selectByXqId(Integer xqId) {
+        return jsShMapper.selectByXqId(xqId);
     }
 
     /**
@@ -74,7 +74,7 @@ public class JsShServiceImpl extends ServiceImpl<JsShMapper, TJsSh> implements J
      */
     @Override
     public Boolean auditCg(Map<String, Object> params, Integer fbshzt) {
-        TJsSh tJsSh = jsShMapper.selectBycgId(Integer.parseInt(params.get("id").toString()));
+        TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
         if(params.containsKey("fbshbz") && params.get("fbshbz") != null){
             tJsSh.setFbshbz(params.get("fbshbz").toString());
         }
@@ -94,7 +94,7 @@ public class JsShServiceImpl extends ServiceImpl<JsShMapper, TJsSh> implements J
      */
     @Override
     public Boolean auditXq(Map<String, Object> params, Integer fbshzt) {
-        TJsSh tJsSh = jsShMapper.selectByxqId(Integer.parseInt(params.get("id").toString()));
+        TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
         if(params.containsKey("fbshbz") && params.get("fbshbz") != null){
             tJsSh.setFbshbz(params.get("fbshbz").toString());
         }

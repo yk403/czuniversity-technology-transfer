@@ -32,12 +32,14 @@ import java.util.Map;
 @Service
 @Primary
 @Slf4j
+@Transactional
 public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements JsCgAdminService {
     @Autowired
     private JsCgMapper jsCgMapper;
 
     @Autowired
     private JsShAdminService jsShAdminService;
+
 
 	@Autowired
 	private JsShMapper jsShMapper;
@@ -71,6 +73,28 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     }
 
     /**
+     * 根据成果id删除成果信息及审核信息
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean removeByCgId(Integer id) {
+        log.info("【技术交易 - 根据id:{}删除成果信息】",id);
+        TJsSh tJsSh = jsShMapper.selectByCgId(id);
+        TJsCg tJsCg = new TJsCg();
+        tJsCg.setId(id);
+        tJsCg.setIsDelete(1);
+        jsCgMapper.updateById(tJsCg);
+        if (tJsSh.getId() != null) {
+            tJsSh.setIsDelete(1);
+            if (!jsShAdminService.updateById(tJsSh)) {
+                throw new ServiceException("删除成果信息失败!");
+            }
+        }
+        return true;
+    }
+
+    /**
      * 根据成果名称查询详细信息
      * @param name
      * @return
@@ -81,26 +105,35 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         return jsCgMapper.selectByName(name);
     }
 
+    /**
+     * 新增成果信息
+     */
     @Override
     public boolean saveCg(TJsCg tJsCg) {
-        if (tJsCg.getId() != null) {
+        TJsCg tJsCg2 = selectByName(tJsCg.getCgmc());
+        if (tJsCg2 != null) {
             return false;
-        } else {
-            TJsCg tJsCg2 = selectByName(tJsCg.getCgmc());
-            if (tJsCg2 != null) {
-                return false;
-            }
-            tJsCg.setReleaseType("技术成果");
-            save(tJsCg);
-            TJsSh tJsSh = new TJsSh();
-            tJsSh.setLx(1);
-            tJsSh.setCgId(tJsCg.getId());
-            tJsSh.setCjsj(new Date());
-            jsShAdminService.save(tJsSh);
-            return true;
         }
+        tJsCg.setReleaseType("技术成果");
+        tJsCg.setCjsj(new Date());
+        log.info("【技术交易 - 新增成果信息:{}】", tJsCg);
+        save(tJsCg);
+        TJsSh tJsSh = new TJsSh();
+        tJsSh.setLx(1);
+        tJsSh.setCgId(tJsCg.getId());
+        tJsSh.setCjsj(new Date());
+        jsShAdminService.save(tJsSh);
+        return true;
     }
 
+    /**
+     * 修改成果信息
+     */
+    @Override
+    public void updateTJsCg(TJsCg tJsCg) {
+        log.info("【技术交易 - 修改成果信息:{}】",tJsCg);
+        jsCgMapper.updateTJsCg(tJsCg);
+    }
 
 
 
@@ -126,11 +159,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         }
     }
 
-    @Override
-    public boolean updateTJsCg(TJsCg tJsCg) {
-        jsCgMapper.updateTJsCg(tJsCg);
-        return true;
-    }
+
 
 
 

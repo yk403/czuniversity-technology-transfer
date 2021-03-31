@@ -20,13 +20,13 @@ public interface JsShService extends IService<TJsSh> {
 
 	IPage page(Query query);
 
-	TJsSh selectBycgId(Integer id);
+	TJsSh selectByCgId(Integer id);
 
 	List<TJsSh> selectBycgxqIds(List<Integer> cgxqIds);
 
 	boolean deleteById(Integer cgId, Integer xqId);
 
-	TJsSh selectByxqId(Integer id);
+	TJsSh selectByXqId(Integer id);
 
 	Boolean auditCg(Map<String, Object> params, Integer fbshzt);
 

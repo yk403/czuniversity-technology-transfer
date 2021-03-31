@@ -8,11 +8,13 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.mapper.JsXqMapper;
+import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.model.TJsXq;
 import com.itts.technologytransactionservice.service.cd.JsShAdminService;
 import com.itts.technologytransactionservice.service.cd.JsXqAdminService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -30,20 +32,54 @@ import java.util.Map;
 
 @Service
 @Primary
+@Slf4j
+@Transactional
 public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements JsXqAdminService {
     @Autowired
     private JsXqMapper jsXqMapper;
     @Autowired
-    private JsShAdminService JsShAdminService;
+    private JsShAdminService jsShAdminService;
     @Autowired
     private JsShMapper jsShMapper;
 
+
+
+    /**
+     * 分页查询需求(后台审批管理(用户录入信息))
+     * @param params
+     * @return
+     */
     @Override
-    public PageInfo FindTJsXqByTJsLbTJsLy(Query query) {
+    public PageInfo<TJsXq> findJsXq(Map<String, Object> params) {
+        log.info("【技术交易 - 分页查询需求(后台审批管理)】");
+        //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        params.put("userId",1);
+        Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<TJsXq> list = jsXqMapper.FindTJsXqByTJsLbTJsLy(query);
-        PageInfo<TJsXq> page = new PageInfo<>(list);
-        return page;
+        List<TJsXq> list = jsXqMapper.findJsCg(query);
+        return new PageInfo<>(list);
+    }
+
+    /**
+     * 根据需求id查询详细信息
+     * @param id
+     * @return
+     */
+    @Override
+    public TJsXq getById(Integer id) {
+        log.info("【技术交易 - 根据需求id:{}查询详细信息】",id);
+        return jsXqMapper.getById(id);
+    }
+
+    /**
+     * 根据需求名称查询需求详细信息
+     * @param name
+     * @return
+     */
+    @Override
+    public TJsXq selectByName(String name) {
+        log.info("【技术交易 - 根据需求名称:{}查询详细信息】",name);
+        return jsXqMapper.selectByName(name);
     }
 
     @Override
@@ -54,32 +90,61 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         return page;
     }
 
+    /**
+     * 新增需求信息
+     * @param tJsXq
+     * @return
+     */
     @Override
-    public TJsXq selectByName(String name) {
-        return jsXqMapper.selectByName(name);
-    }
-
-    @Override
-    public boolean saveXq(TJsXq tJsXq) throws Exception {
-        if (tJsXq.getId() != null) {
+    public boolean saveXq(TJsXq tJsXq) {
+        TJsXq tJsXq2 = selectByName(tJsXq.getXqmc());
+        if (tJsXq2 != null) {
             return false;
-        } else {
-            TJsXq tJsXq3 = selectByName(tJsXq.getXqmc());
-            if (tJsXq3 != null) {
-                return false;
-            }
-            tJsXq.setReleaseType("技术需求");
-            save(tJsXq);
-            TJsSh tJsSh = new TJsSh();
-            tJsSh.setLx(2);
-            tJsSh.setXqId(tJsXq.getId());
-            tJsSh.setCjsj(new Date());
-            JsShAdminService.save(tJsSh);
-            return true;
         }
-
+        tJsXq.setReleaseType("技术需求");
+        tJsXq.setCjsj(new Date());
+        log.info("【技术交易 - 新增需求信息:{}】", tJsXq);
+        save(tJsXq);
+        TJsSh tJsSh = new TJsSh();
+        tJsSh.setLx(2);
+        tJsSh.setXqId(tJsXq.getId());
+        tJsSh.setCjsj(new Date());
+        jsShAdminService.save(tJsSh);
+        return true;
     }
 
+    /**
+     * 更新需求信息
+     * @param tJsXq
+     * @return
+     */
+    @Override
+    public void updateTJsXq(TJsXq tJsXq) {
+        log.info("【技术交易 - 更新需求信息:{}】", tJsXq);
+        jsXqMapper.updateTJsXq(tJsXq);
+    }
+
+    /**
+     * 根据需求id删除需求信息
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean removeByXqId(Integer id) {
+        log.info("【技术交易 - 根据id:{}删除需求信息】",id);
+        TJsSh tJsSh = jsShMapper.selectByXqId(id);
+        TJsXq tJsXq = new TJsXq();
+        tJsXq.setId(id);
+        tJsXq.setIsDelete(1);
+        jsXqMapper.updateById(tJsXq);
+        if (tJsSh.getId() != null) {
+            tJsSh.setIsDelete(1);
+            if (!jsShAdminService.updateById(tJsSh)) {
+                throw new ServiceException("删除成果信息失败!");
+            }
+        }
+        return true;
+    }
 
     /**
      * 技术采集批量下发
@@ -89,13 +154,13 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         if (CollectionUtils.isEmpty(ids)) {
             return false;
         } else {
-            List<TJsSh> tJsShes = JsShAdminService.selectBycgxqIds(ids);
+            List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(ids);
             for (TJsSh tJsShe : tJsShes) {
                 if (tJsShe.getFbshzt() == 2) {
                     tJsShe.setReleaseStatus(2);
                 }
             }
-            JsShAdminService.updateBatchById(tJsShes);
+            jsShAdminService.updateBatchById(tJsShes);
             return true;
         }
     }
@@ -108,33 +173,17 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         if (CollectionUtils.isEmpty(ids)) {
             return false;
         } else {
-            List<TJsSh> tJsShes = JsShAdminService.selectBycgxqIds(ids);
+            List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(ids);
             for (TJsSh tJsShe : tJsShes) {
                 tJsShe.setReleaseAssistanceStatus(2);
             }
-            JsShAdminService.updateBatchById(tJsShes);
+            jsShAdminService.updateBatchById(tJsShes);
             return true;
         }
 
     }
 
-    @Override
-    public boolean updateTJsXq(TJsXq tJsXq) {
-        jsXqMapper.updateTJsXq(tJsXq);
-        return true;
-    }
 
-
-    /**
-     * 根据id查询技术需求
-     * @param id
-     * @return
-     */
-    @Override
-    public TJsXq selectById(Integer id) {
-        TJsXq tJsXq = jsXqMapper.findById(id);
-        return tJsXq;
-    }
 
 
 }

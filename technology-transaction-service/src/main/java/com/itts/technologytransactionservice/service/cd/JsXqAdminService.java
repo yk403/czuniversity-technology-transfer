@@ -16,16 +16,23 @@ import java.util.Map;
  */
 public interface JsXqAdminService extends IService<TJsXq> {
 
-	PageInfo FindTJsXqByTJsLbTJsLy(Query query);
+	PageInfo<TJsXq> findJsXq(Map<String, Object> params);
+
+	TJsXq getById(Integer id);
+
 	TJsXq selectByName(String name);
-	boolean saveXq(TJsXq tJsXq) throws Exception;
+
+	boolean saveXq(TJsXq tJsXq) ;
+
+	void updateTJsXq(TJsXq tJsXq);
+
+	boolean removeByXqId(Integer id);
 
 	PageInfo PageByTJsFb(Query query);
 
 	boolean issueBatch(List<Integer> ids);
+
 	boolean assistanceIssueBatch(List<Integer> ids);
-	boolean updateTJsXq(TJsXq tJsXq);
 
 
-	TJsXq selectById(Integer id);
 }

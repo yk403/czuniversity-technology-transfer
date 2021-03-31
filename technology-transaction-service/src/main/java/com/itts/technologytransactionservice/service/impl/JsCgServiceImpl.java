@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
-import com.itts.common.utils.FastDFSClient;
-import com.itts.common.utils.FastDFSFile;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
@@ -86,7 +83,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 	@Override
     public boolean removeByIdCg(Integer id) {
 	    log.info("【技术交易 - 根据id:{}删除成果】",id);
-        TJsSh tJsSh = jsShService.selectBycgId(id);
+        TJsSh tJsSh = jsShService.selectByCgId(id);
         TJsCg tJsCg = new TJsCg();
         tJsCg.setId(id);
         tJsCg.setIsDelete(1);
@@ -102,7 +99,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 
     @Override
     public boolean passUpdateById(Integer id) {
-        TJsSh tJsSh = jsShService.selectBycgId(id);
+        TJsSh tJsSh = jsShService.selectByCgId(id);
         Integer fbshzt = tJsSh.getFbshzt();
         if (fbshzt != 2) {
             tJsSh.setFbshzt(2);
@@ -144,7 +141,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean assistanceUpdateTJsCg(TJsCg tJsCg) {
-        TJsSh tJsSh = jsShService.selectBycgId(tJsCg.getId());
+        TJsSh tJsSh = jsShService.selectByCgId(tJsCg.getId());
         if (tJsSh.getReleaseStatus() != 2) {
             log.error("未发布的成果无法申请拍卖和招投标");
             throw new ServiceException("未发布的成果无法申请拍卖和招投标");
@@ -159,7 +156,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 
     @Override
     public boolean assistancePassUpdateById(Integer id) {
-        TJsSh tJsSh = jsShService.selectBycgId(id);
+        TJsSh tJsSh = jsShService.selectByCgId(id);
         Integer assistanceStatus = tJsSh.getAssistanceStatus();
         if (assistanceStatus != 2) {
             tJsSh.setAssistanceStatus(2);
@@ -174,7 +171,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     public boolean assistanceDisPassById(Map<String, Object> params) {
         String id = params.get("id").toString();
         String assistanceRemark = params.get("assistanceRemark").toString();
-        TJsSh tJsSh = jsShService.selectBycgId(Integer.valueOf(id));
+        TJsSh tJsSh = jsShService.selectByCgId(Integer.valueOf(id));
         Integer assistanceStatus = tJsSh.getAssistanceStatus();
         if (assistanceStatus != 2) {
             tJsSh.setAssistanceStatus(3);

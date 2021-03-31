@@ -76,9 +76,14 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
 
     }
 
+    /**
+     * 根据需求id删除需求信息
+     * @param id
+     * @return
+     */
     @Override
     public boolean removeByIdXq(Integer id) {
-        TJsSh tJsSh = jsShService.selectByxqId(id);
+        TJsSh tJsSh = jsShService.selectByXqId(id);
         TJsXq tJsXq = new TJsXq();
         tJsXq.setId(id);
         tJsXq.setIsDelete(1);
@@ -93,7 +98,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     @Override
     public boolean assistancePassUpdateById(Integer id) {
         Integer lx = 2;
-        TJsSh tJsSh = jsShService.selectByxqId(id);
+        TJsSh tJsSh = jsShService.selectByXqId(id);
         Integer assistanceStatus = tJsSh.getAssistanceStatus();
         if (!"2".equals(assistanceStatus)) {
             tJsSh.setAssistanceStatus(2);
@@ -109,7 +114,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     public boolean assistanceDisPassById(Map<String, Object> params) {
         String id = params.get("id").toString();
         String assistanceRemark = params.get("assistanceRemark").toString();
-        TJsSh tJsSh = jsShService.selectByxqId(Integer.valueOf(id));
+        TJsSh tJsSh = jsShService.selectByXqId(Integer.valueOf(id));
         Integer assistanceStatus = tJsSh.getAssistanceStatus();
         if (assistanceStatus != 2) {
             tJsSh.setAssistanceStatus(3);
@@ -167,7 +172,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean assistanceUpdateTJsXq(TJsXq tJsXq) {
-        TJsSh tJsSh = jsShService.selectByxqId(tJsXq.getId());
+        TJsSh tJsSh = jsShService.selectByXqId(tJsXq.getId());
         if (!"2".equals(tJsSh.getReleaseStatus())) {
             throw new ServiceException("未发布的需求无法申请挂牌");
         } else {
@@ -177,17 +182,6 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
             jsXqMapper.updateTJsXq(tJsXq);
         }
         return true;
-    }
-
-    /**
-     * 根据id查询技术需求
-     * @param id
-     * @return
-     */
-    @Override
-    public TJsXq selectById(Integer id) {
-        TJsXq tJsXq = jsXqMapper.findById(id);
-        return tJsXq;
     }
 
 

@@ -22,39 +22,90 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
 /**
  * @Author: Austin
  * @Data: 2021/3/26
- * @Description: 技术需求管理
+ * @Description: 技术需求后台管理
  */
 
-@RequestMapping(ADMIN_BASE_URL+"/v1/tJsXq")
-@Api(value = "JsShController", tags = "技术需求管理")
+@RequestMapping(ADMIN_BASE_URL+"/v1/JsXq")
+@Api(value = "JsXqAdminController", tags = "技术需求后台管理")
 @RestController
 public class JsXqAdminController extends BaseController {
     @Autowired
-    private JsXqAdminService JsXqAdminService;
+    private JsXqAdminService jsXqAdminService;
 
     @Autowired
     private JsShAdminService JsShAdminService;
 
     /**
-     * (后台)分页条件查询
-     *
+     * 分页条件查询需求(后台审批管理(用户录入信息))
      * @param params
      * @return
      */
-    @PostMapping("/FindTJsXqByTJsLbTJsLy")
-    public ResponseUtil FindTJsXqByTJsLbTJsLy(@RequestBody Map<String, Object> params) {
-        //查询邻域类别审核状态列表数据
-        Query query = new Query(params);
-        PageInfo<TJsXq> page = JsXqAdminService.FindTJsXqByTJsLbTJsLy(query);
+    @PostMapping("/page")
+    public ResponseUtil findJsXq(@RequestBody Map<String, Object> params) {
+        //查询用户录入成功信息列表
+        PageInfo<TJsXq> page = jsXqAdminService.findJsXq(params);
         return ResponseUtil.success(page);
     }
 
+    /**
+     * 根据需求id查询详细信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/getById/{id}")
+    public ResponseUtil getById(@PathVariable("id") Integer id) {
+        return ResponseUtil.success("查询需求详细信息成功!",jsXqAdminService.getById(id));
+    }
+
+    /**
+     * 根据需求名称查询详细信息
+     * @param xqmc
+     * @return
+     */
+    @GetMapping("/getByName/{xqmc}")
+    public ResponseUtil getByName(@PathVariable("xqmc") String xqmc) {
+        return ResponseUtil.success("查询需求详细信息成功!",jsXqAdminService.selectByName(xqmc));
+    }
+
+    /**
+     * 新增需求信息
+     */
+    @PostMapping("/save")
+    public ResponseUtil save(@RequestBody TJsXq tJsXq) {
+        if (tJsXq.getId() != null) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (!jsXqAdminService.saveXq(tJsXq)) {
+            return ResponseUtil.error(NAME_EXIST_ERROR);
+        }
+        return ResponseUtil.success("新增需求信息成功!");
+    }
+
+    /**
+     * 修改需求信息
+     */
+    @PutMapping("/update")
+    public ResponseUtil update(@RequestBody TJsXq tJsXq) {
+        jsXqAdminService.updateTJsXq(tJsXq);
+        return ResponseUtil.success("修改需求信息成功!");
+    }
+
+    /**
+     * 根据需求id删除需求信息
+     */
+    @GetMapping("/remove/{id}")
+    public ResponseUtil remove(@PathVariable("id") Integer id) {
+        if (!jsXqAdminService.removeByXqId(id)) {
+            throw new WebException(DELETE_ERROR);
+        }
+        return ResponseUtil.success("删除需求信息成功!");
+    }
     /**
      * 分页条件查询
      *
@@ -65,53 +116,17 @@ public class JsXqAdminController extends BaseController {
     public ResponseUtil PageByTJsFb(@RequestBody Map<String, Object> params) {
         //查询邻域类别审核状态列表数据
         Query query = new Query(params);
-        PageInfo<TJsFb> page = JsXqAdminService.PageByTJsFb(query);
+        PageInfo<TJsFb> page = jsXqAdminService.PageByTJsFb(query);
         return ResponseUtil.success(page);
     }
 
-    /**
-     * 根据ID查询
-     * @param id
-     * @return
-     */
-    @GetMapping("/getById/{id}")
-    public R getById(@PathVariable("id") String id) {
-        if (StringUtils.isEmpty(id)) {
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        TJsXq tJsXq = JsXqAdminService.selectById(Integer.valueOf(id));
-        return success(tJsXq);
-    }
 
-    /**
-     * 根据Name查询
-     * @param xqmc
-     * @return
-     */
-    @GetMapping("/getByName/{xqmc}")
-    public R getByName(@PathVariable("xqmc") String xqmc) {
-        TJsXq tJsXq = JsXqAdminService.selectByName(xqmc);
-        return success(tJsXq);
-    }
 
-    /**
-     * 保存
-     */
-    @PostMapping("/save")
-    @Transactional
-    public R save(@RequestBody TJsXq tJsXq) throws Exception {
-        boolean result = JsXqAdminService.saveXq(tJsXq);
-        return save(result);
-    }
 
-    /**
-     * 修改
-     */
-    @RequestMapping("/update")
-    public R update(@RequestBody TJsXq tJsXq) {
-        boolean result = JsXqAdminService.updateTJsXq(tJsXq);
-        return update(result);
-    }
+
+
+
+
 
 
 
@@ -128,7 +143,7 @@ public class JsXqAdminController extends BaseController {
             long l = Long.parseLong(id);
             longs.add(l);
         }
-        boolean result = JsXqAdminService.removeByIds(longs);
+        boolean result = jsXqAdminService.removeByIds(longs);
         return remove(result);
     }
 
@@ -141,7 +156,7 @@ public class JsXqAdminController extends BaseController {
         for (String id : ids) {
             list.add(Integer.valueOf(id));
         }
-        return remove(JsXqAdminService.issueBatch(list));
+        return remove(jsXqAdminService.issueBatch(list));
     }
 
 
@@ -154,7 +169,7 @@ public class JsXqAdminController extends BaseController {
         for (String id : ids) {
             list.add(Integer.valueOf(id));
         }
-        boolean result = JsXqAdminService.assistanceIssueBatch(list);
+        boolean result = jsXqAdminService.assistanceIssueBatch(list);
         return remove(result);
     }
 

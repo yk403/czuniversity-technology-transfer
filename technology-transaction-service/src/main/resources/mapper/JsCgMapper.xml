@@ -77,9 +77,9 @@
 			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
-			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc = #{map.cgmc} </if>
+			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like #{map.cgmc} </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
-			<if test="map.fbshzt != null and map.fbshzt != ''"> and cg.status = #{map.fbshzt} </if>
+			<if test="map.fbshzt != null and map.fbshzt != ''"> and sh.fbshzt = #{map.fbshzt} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
 		</where>
 		<choose>
