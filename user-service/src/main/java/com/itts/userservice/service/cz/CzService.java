@@ -1,7 +1,10 @@
 package com.itts.userservice.service.cz;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.userservice.dto.CzDTO;
 import com.itts.userservice.model.cz.Cz;
+
+import java.util.List;
 
 /**
  * <p>
@@ -31,5 +34,12 @@ public interface CzService {
      * 更新
      */
     Cz update(Cz Cz);
+
+    /**
+     * 查询操作按钮
+     * @param id
+     * @return
+     */
+    List<CzDTO> findCz(Long id, Long cdid);
 
 }

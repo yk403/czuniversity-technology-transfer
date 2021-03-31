@@ -13,7 +13,22 @@ public class RedisConstant {
     public static final Long EXPIRE_DATE = 1000L * 60 * 15;
 
     /**
+     * 用户菜单缓存过期时间(3天)
+     */
+    public static final Long USER_MENU_EXPIRE_DATE = 3L;
+
+    /**
      * 用户登录token存放redis前缀
      */
     public static final String REDIS_USER_LOGIN_TOKEN_PREFIX = "itts:user:login:token:";
+
+    /**
+     * 用户目录前缀
+     */
+    public static final String USERSERVICE_MENUS = "itts:userservice:menus:";
+
+    /**
+     * 用户目录菜单操作
+     */
+    public static final String USERSERVICE_MENUS_OPERTION = "itts:userservice:menus:operation:";
 }

@@ -9,6 +9,7 @@
         <module>technology-transaction-service</module>
         <module>payment-service</module>
         <module>user-service</module>
+        <module>itts-authentication</module>
     </modules>
 
 
@@ -244,7 +245,6 @@
                 <version>${fastdfs.version}</version>
             </dependency>
         </dependencies>
-
     </dependencyManagement>
 
     <!--module不用添加打包版本信息-->

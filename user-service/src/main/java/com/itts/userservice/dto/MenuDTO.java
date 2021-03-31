@@ -9,17 +9,35 @@ import java.util.List;
  */
 @Data
 public class MenuDTO {
-    // 菜单id
+
+    /**
+     * 菜单ID
+     */
     private Long id;
-    // 菜单名称
+
+    /**
+     * 菜单名称
+     */
     private String name;
-    // 父菜单id
+
+    /**
+     * 菜单父级ID
+     */
     private Long parentId;
-    // 菜单url
+
+    /**
+     * 菜单路径
+     */
     private String url;
-    // 菜单层级
+
+    /**
+     * 菜单曾经
+     */
     private String level;
-    // 子菜单
+
+    /**
+     * 子级菜单列表
+     */
     private List<MenuDTO> childMenus;
 
 }

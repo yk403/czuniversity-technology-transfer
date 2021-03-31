@@ -15,5 +15,5 @@ import java.util.List;
  */
 public interface JsCdGlService {
 
-    List<JsCdGl> findlist(Long id);
+
 }
