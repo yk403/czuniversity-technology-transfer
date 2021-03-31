@@ -1,7 +1,11 @@
 package com.itts.ittsauthentication.filter;
 
 import cn.hutool.json.JSONUtil;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.RedisConstant;
 import com.itts.common.constant.SystemConstant;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -59,31 +63,37 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
     }
 
     /**
-     * 校验Token值是否正确 * @param request * @return
+     * 校验Token值是否正确
+     *
+     * @param request
+     * @return
      */
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
 
         String token = request.getHeader(SystemConstant.TOKEN_PREFIX);
 
         //验证当前用户token是否有效
-        Object checkToken = redisTemplate.opsForValue().get("itts:user:login:token:" + token);
+        Object checkToken = redisTemplate.opsForValue().get(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + token);
         if (checkToken == null) {
-            System.out.println("Token为空");
+            throw new WebException(ErrorCodeEnum.NO_PERMISSION_ERROR);
         }
 
         try {
 
             Claims claims = JwtUtil.getTokenBody(token);
-            String loginUser = JSONUtil.toJsonStr(claims.get("data").toString());
+            LoginUser loginUser = JSONUtil.toBean(claims.get("data").toString(), LoginUser.class);
+
+            //将用户信息设置到threadLocal
+            SystemConstant.threadLocal.set(loginUser);
 
             //如果Token值正确，则返回认证信息
-            if (StringUtils.isNotBlank(loginUser)) {
-                return new UsernamePasswordAuthenticationToken(loginUser, loginUser, new ArrayList<>());
+            if (loginUser != null) {
+                return new UsernamePasswordAuthenticationToken(loginUser.getUserName(), null, new ArrayList<>());
             }
 
         } catch (ExpiredJwtException e) {
             logger.error("Token已过期: {} " + e);
-
+            throw new WebException(ErrorCodeEnum.NO_PERMISSION_ERROR);
         }
 
         //校验Token失败
