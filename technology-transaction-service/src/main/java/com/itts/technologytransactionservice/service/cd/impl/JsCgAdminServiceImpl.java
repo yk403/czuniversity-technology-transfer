@@ -81,6 +81,9 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         return jsCgMapper.selectByName(name);
     }
 
+    /**
+     * 保存成果信息
+     */
     @Override
     public boolean saveCg(TJsCg tJsCg) {
         if (tJsCg.getId() != null) {
@@ -101,6 +104,13 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         }
     }
 
+    /**
+     * 修改成果信息
+     */
+    @Override
+    public void updateTJsCg(TJsCg tJsCg) {
+        jsCgMapper.updateTJsCg(tJsCg);
+    }
 
 
 
@@ -126,11 +136,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         }
     }
 
-    @Override
-    public boolean updateTJsCg(TJsCg tJsCg) {
-        jsCgMapper.updateTJsCg(tJsCg);
-        return true;
-    }
+
 
 
 

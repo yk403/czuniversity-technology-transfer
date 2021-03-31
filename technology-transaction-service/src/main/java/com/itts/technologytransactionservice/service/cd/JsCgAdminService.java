@@ -24,7 +24,7 @@ public interface JsCgAdminService extends IService<TJsCg> {
 
 	boolean issueBatch(List<Integer> ids);
 
-    boolean updateTJsCg(TJsCg tJsCg);
+    void updateTJsCg(TJsCg tJsCg);
 
 	boolean assistanceIssueBatch(List<Integer> ids);
 

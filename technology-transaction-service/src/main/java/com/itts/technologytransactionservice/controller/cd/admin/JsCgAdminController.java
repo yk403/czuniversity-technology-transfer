@@ -72,7 +72,7 @@ public class JsCgAdminController extends BaseController {
     }
 
     /**
-     * 保存成果
+     * 保存成果信息
      */
     @PostMapping("/save")
     public ResponseUtil save(@RequestBody TJsCg tJsCg) {
@@ -86,11 +86,12 @@ public class JsCgAdminController extends BaseController {
     }
 
     /**
-     * 修改
+     * 修改成果信息
      */
     @RequestMapping("/update")
-    public R update(@RequestBody TJsCg tJsCg) {
-        return update(JsCgAdminService.updateTJsCg(tJsCg));
+    public ResponseUtil update(@RequestBody TJsCg tJsCg) {
+        JsCgAdminService.updateTJsCg(tJsCg);
+        return ResponseUtil.success();
     }
 
 
