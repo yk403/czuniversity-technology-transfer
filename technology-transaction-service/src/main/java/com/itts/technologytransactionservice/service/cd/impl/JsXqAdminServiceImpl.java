@@ -4,11 +4,9 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.mapper.JsXqMapper;
-import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.model.TJsXq;
@@ -38,7 +36,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     @Autowired
     private JsXqMapper jsXqMapper;
     @Autowired
-    private JsShAdminService JsShAdminService;
+    private JsShAdminService jsShAdminService;
     @Autowired
     private JsShMapper jsShMapper;
 
@@ -66,9 +64,20 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
      * @return
      */
     @Override
-    public TJsXq findById(Integer id) {
+    public TJsXq getById(Integer id) {
         log.info("【技术交易 - 根据需求id:{}查询详细信息】",id);
-        return jsXqMapper.findById(id);
+        return jsXqMapper.getById(id);
+    }
+
+    /**
+     * 根据需求名称查询需求详细信息
+     * @param name
+     * @return
+     */
+    @Override
+    public TJsXq selectByName(String name) {
+        log.info("【技术交易 - 根据需求名称:{}查询详细信息】",name);
+        return jsXqMapper.selectByName(name);
     }
 
     @Override
@@ -79,30 +88,27 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         return page;
     }
 
+    /**
+     * 新增需求信息
+     * @param tJsXq
+     * @return
+     */
     @Override
-    public TJsXq selectByName(String name) {
-        return jsXqMapper.selectByName(name);
-    }
-
-    @Override
-    public boolean saveXq(TJsXq tJsXq) throws Exception {
-        if (tJsXq.getId() != null) {
+    public boolean saveXq(TJsXq tJsXq) {
+        TJsXq tJsXq2 = selectByName(tJsXq.getXqmc());
+        if (tJsXq2 != null) {
             return false;
-        } else {
-            TJsXq tJsXq3 = selectByName(tJsXq.getXqmc());
-            if (tJsXq3 != null) {
-                return false;
-            }
-            tJsXq.setReleaseType("技术需求");
-            save(tJsXq);
-            TJsSh tJsSh = new TJsSh();
-            tJsSh.setLx(2);
-            tJsSh.setXqId(tJsXq.getId());
-            tJsSh.setCjsj(new Date());
-            JsShAdminService.save(tJsSh);
-            return true;
         }
-
+        tJsXq.setReleaseType("技术需求");
+        tJsXq.setCjsj(new Date());
+        log.info("【技术交易 - 新增需求信息:{}】", tJsXq);
+        save(tJsXq);
+        TJsSh tJsSh = new TJsSh();
+        tJsSh.setLx(2);
+        tJsSh.setXqId(tJsXq.getId());
+        tJsSh.setCjsj(new Date());
+        jsShAdminService.save(tJsSh);
+        return true;
     }
 
 
@@ -114,13 +120,13 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         if (CollectionUtils.isEmpty(ids)) {
             return false;
         } else {
-            List<TJsSh> tJsShes = JsShAdminService.selectBycgxqIds(ids);
+            List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(ids);
             for (TJsSh tJsShe : tJsShes) {
                 if (tJsShe.getFbshzt() == 2) {
                     tJsShe.setReleaseStatus(2);
                 }
             }
-            JsShAdminService.updateBatchById(tJsShes);
+            jsShAdminService.updateBatchById(tJsShes);
             return true;
         }
     }
@@ -133,11 +139,11 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         if (CollectionUtils.isEmpty(ids)) {
             return false;
         } else {
-            List<TJsSh> tJsShes = JsShAdminService.selectBycgxqIds(ids);
+            List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(ids);
             for (TJsSh tJsShe : tJsShes) {
                 tJsShe.setReleaseAssistanceStatus(2);
             }
-            JsShAdminService.updateBatchById(tJsShes);
+            jsShAdminService.updateBatchById(tJsShes);
             return true;
         }
 
@@ -149,17 +155,6 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         return true;
     }
 
-
-    /**
-     * 根据id查询技术需求
-     * @param id
-     * @return
-     */
-    @Override
-    public TJsXq selectById(Integer id) {
-        TJsXq tJsXq = jsXqMapper.findById(id);
-        return tJsXq;
-    }
 
 
 

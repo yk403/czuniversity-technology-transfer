@@ -60,7 +60,7 @@ public class JsCgAdminController extends BaseController {
     }
 
     /**
-     * 根据成果名称查询
+     * 根据成果名称查询详细信息
      * @param cgmc
      * @return
      */
@@ -89,7 +89,7 @@ public class JsCgAdminController extends BaseController {
     @RequestMapping("/update")
     public ResponseUtil update(@RequestBody TJsCg tJsCg) {
         jsCgAdminService.updateTJsCg(tJsCg);
-        return ResponseUtil.success();
+        return ResponseUtil.success("修改成果信息成功!");
     }
 
     /**

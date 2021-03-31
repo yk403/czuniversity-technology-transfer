@@ -179,16 +179,5 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
         return true;
     }
 
-    /**
-     * 根据id查询技术需求
-     * @param id
-     * @return
-     */
-    @Override
-    public TJsXq selectById(Integer id) {
-        TJsXq tJsXq = jsXqMapper.findById(id);
-        return tJsXq;
-    }
-
 
 }

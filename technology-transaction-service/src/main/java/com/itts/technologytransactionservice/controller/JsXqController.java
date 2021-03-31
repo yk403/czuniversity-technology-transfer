@@ -10,6 +10,7 @@ import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsXq;
 import com.itts.technologytransactionservice.service.JsShService;
 import com.itts.technologytransactionservice.service.JsXqService;
+import com.itts.technologytransactionservice.service.cd.JsXqAdminService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,8 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_
 public class JsXqController extends BaseController {
     @Autowired
     private JsXqService jsXqService;
-
+    @Autowired
+    private JsXqAdminService jsXqAdminService;
     @Autowired
     private JsShService jsShService;
 
@@ -78,7 +80,7 @@ public class JsXqController extends BaseController {
         if (StringUtils.isEmpty(id)) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        TJsXq tJsXq = jsXqService.selectById(Integer.valueOf(id));
+        TJsXq tJsXq = jsXqAdminService.getById(Integer.valueOf(id));
         return success(tJsXq);
     }
 

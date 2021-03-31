@@ -110,23 +110,20 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
      */
     @Override
     public boolean saveCg(TJsCg tJsCg) {
-        if (tJsCg.getId() != null) {
+        TJsCg tJsCg2 = selectByName(tJsCg.getCgmc());
+        if (tJsCg2 != null) {
             return false;
-        } else {
-            TJsCg tJsCg2 = selectByName(tJsCg.getCgmc());
-            if (tJsCg2 != null) {
-                return false;
-            }
-            tJsCg.setReleaseType("技术成果");
-            log.info("【技术交易 - 新增成果信息:{}】",tJsCg);
-            save(tJsCg);
-            TJsSh tJsSh = new TJsSh();
-            tJsSh.setLx(1);
-            tJsSh.setCgId(tJsCg.getId());
-            tJsSh.setCjsj(new Date());
-            jsShAdminService.save(tJsSh);
-            return true;
         }
+        tJsCg.setReleaseType("技术成果");
+        tJsCg.setCjsj(new Date());
+        log.info("【技术交易 - 新增成果信息:{}】", tJsCg);
+        save(tJsCg);
+        TJsSh tJsSh = new TJsSh();
+        tJsSh.setLx(1);
+        tJsSh.setCgId(tJsCg.getId());
+        tJsSh.setCjsj(new Date());
+        jsShAdminService.save(tJsSh);
+        return true;
     }
 
     /**
