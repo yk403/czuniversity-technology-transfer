@@ -59,14 +59,7 @@
 			</otherwise>
 		</choose>
 	</select>
-	<select id="findById" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		SELECT id,xqmc,gjz,yxq,ly_id as lyId,lb_id as lbId,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id as jshdId,release_type as releaseType,agreement,bond,introduction,zzjgdm,remarks,cjsj,gxsj
-		from t_js_xq
-		where
-			id = #{id}
-		and
-			is_delete = 0
-	</select>
+
 	<select id="FindTJsXqByTJsLbTJsLy" resultType="com.itts.technologytransactionservice.model.TJsXq">
 		select xq.id as id,xqmc,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id)
@@ -79,7 +72,7 @@
 			<if test="map.xqmc != null and map.xqmc != ''"> and xq.xqmc = #{map.xqmc} </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and xq.cjsj = #{map.cjsj} </if>
 			<if test="map.fbshzt != null and map.fbshzt != ''"> and sh.fbshzt = #{map.fbshzt} </if>
-			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and d.release_status = #{map.releaseStatus} </if>
+			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">

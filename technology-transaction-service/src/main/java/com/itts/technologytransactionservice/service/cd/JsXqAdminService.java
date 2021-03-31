@@ -16,6 +16,8 @@ import java.util.Map;
  */
 public interface JsXqAdminService extends IService<TJsXq> {
 
+	TJsXq findById(Integer id);
+
 	PageInfo<TJsXq> findJsXq(Map<String, Object> params);
 
 	TJsXq selectByName(String name);
@@ -32,5 +34,6 @@ public interface JsXqAdminService extends IService<TJsXq> {
 
 
 	TJsXq selectById(Integer id);
+
 
 }

@@ -54,6 +54,16 @@ public class JsXqAdminController extends BaseController {
     }
 
     /**
+     * 根据需求id查询详细信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/getById/{id}")
+    public ResponseUtil findById(@PathVariable("id") Integer id) {
+        return ResponseUtil.success("查询需求详细信息成功!",JsXqAdminService.findById(id));
+    }
+
+    /**
      * 分页条件查询
      *
      * @param params
@@ -67,19 +77,7 @@ public class JsXqAdminController extends BaseController {
         return ResponseUtil.success(page);
     }
 
-    /**
-     * 根据ID查询
-     * @param id
-     * @return
-     */
-    @GetMapping("/getById/{id}")
-    public R getById(@PathVariable("id") String id) {
-        if (StringUtils.isEmpty(id)) {
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        TJsXq tJsXq = JsXqAdminService.selectById(Integer.valueOf(id));
-        return success(tJsXq);
-    }
+
 
     /**
      * 根据Name查询

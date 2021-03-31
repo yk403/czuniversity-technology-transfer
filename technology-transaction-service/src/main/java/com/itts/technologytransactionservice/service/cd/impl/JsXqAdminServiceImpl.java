@@ -42,6 +42,8 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     @Autowired
     private JsShMapper jsShMapper;
 
+
+
     /**
      * 分页查询需求(后台审批管理(用户录入信息))
      * @param params
@@ -56,6 +58,17 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsXq> list = jsXqMapper.findJsCg(query);
         return new PageInfo<>(list);
+    }
+
+    /**
+     * 根据需求id查询详细信息
+     * @param id
+     * @return
+     */
+    @Override
+    public TJsXq findById(Integer id) {
+        log.info("【技术交易 - 根据需求id:{}查询详细信息】",id);
+        return jsXqMapper.findById(id);
     }
 
     @Override
