@@ -1,22 +1,26 @@
 package com.itts.userservice.service.yh.impl;
 
-import com.alibaba.druid.util.StringUtils;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.constant.RedisConstant;
 import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
-import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.mapper.yh.YhMapper;
+import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.YhVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -31,8 +35,10 @@ import java.util.List;
 public class YhServiceImpl implements YhService {
 
     @Resource
-    private YhMapper tYhMapper;
+    private YhMapper yhMapper;
 
+    @Resource
+    private RedisTemplate redisTemplate;
 
     /**
      * 获取列表 - 分页
@@ -42,7 +48,7 @@ public class YhServiceImpl implements YhService {
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Yh> query = new QueryWrapper<>();
         query.eq("sfsc", false);
-        List<Yh> list = tYhMapper.selectList(query);
+        List<Yh> list = yhMapper.selectList(query);
         PageInfo<Yh> page = new PageInfo<>(list);
         return page;
     }
@@ -52,8 +58,26 @@ public class YhServiceImpl implements YhService {
      */
     @Override
     public Yh get(Long id) {
-        Yh Yh = tYhMapper.selectById(id);
+        Yh Yh = yhMapper.selectById(id);
         return Yh;
+    }
+
+    /**
+     * 通过用户名获取用户信息
+     *
+     * @param
+     * @return
+     * @author liuyingming
+     */
+    @Override
+    public Yh getByUserName(String userName) {
+
+        QueryWrapper query = new QueryWrapper();
+        query.eq("yhm", userName);
+        query.eq("sfsc", false);
+
+        Yh yh = yhMapper.selectOne(query);
+        return yh;
     }
 
     /**
@@ -61,7 +85,7 @@ public class YhServiceImpl implements YhService {
      */
     @Override
     public Yh add(Yh Yh) {
-        tYhMapper.insert(Yh);
+        yhMapper.insert(Yh);
         return Yh;
     }
 
@@ -70,46 +94,69 @@ public class YhServiceImpl implements YhService {
      */
     @Override
     public Yh update(Yh Yh) {
-        tYhMapper.updateById(Yh);
+        yhMapper.updateById(Yh);
         return Yh;
     }
 
     /**
      * 查询角色菜单目录
+     *
      * @param
      * @return
      * @author fl
      */
     @Override
-    public YhVO QueryMenuList(Long userId) {
+    public YhVO findMenusByUserID(Long userId, String systemType) {
 
+        Object redisResult;
 
-        //角色及其菜单的全部列表
-        List<JsDTO> jsDTOList = tYhMapper.findByUserId(userId);
+        if (StringUtils.isNotBlank(systemType)) {
+            redisResult = redisTemplate.opsForValue().get(RedisConstant.USERSERVICE_MENUS + userId + ":" + systemType);
+        } else {
+            redisResult = redisTemplate.opsForValue().get(RedisConstant.USERSERVICE_MENUS + userId);
+        }
 
-        jsDTOList.forEach(jsDTO -> {
-            List<MenuDTO> rootMenu = jsDTO.getMenuDTOList();
-            //获取菜单树
-            List<MenuDTO> menuDTOList = buildMenuTree(rootMenu, 0L);
+        YhVO yhVO;
 
-            jsDTO.setMenuDTOList(menuDTOList);
-        });
-        //查询用户信息
-        Yh yh = tYhMapper.selectById(userId);
-        YhVO yhVO = new YhVO();
-        BeanUtils.copyProperties(yh,yhVO);
-        yhVO.setJsDTOList(jsDTOList);
+        if (redisResult != null) {
 
+            yhVO = JSONUtil.toBean(redisResult.toString(), YhVO.class);
+            return yhVO;
 
+        } else {
+            //角色及其菜单的全部列表
+            List<JsDTO> jsDTOList = yhMapper.findByUserId(userId, systemType);
+
+            jsDTOList.forEach(jsDTO -> {
+                List<MenuDTO> rootMenu = jsDTO.getMenuDTOList();
+                //获取菜单树
+                List<MenuDTO> menuDTOList = buildMenuTree(rootMenu, 0L);
+
+                jsDTO.setMenuDTOList(menuDTOList);
+            });
+            //查询用户信息
+            Yh yh = yhMapper.selectById(userId);
+            yhVO = new YhVO();
+            BeanUtils.copyProperties(yh, yhVO);
+            yhVO.setJsDTOList(jsDTOList);
+
+            if (StringUtils.isNotBlank(systemType)) {
+
+                redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId+ ":" + systemType, JSONUtil.toJsonStr(yhVO), RedisConstant.USER_MENU_EXPIRE_DATE, TimeUnit.DAYS);
+            } else {
+                redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId, JSONUtil.toJsonStr(yhVO), RedisConstant.USER_MENU_EXPIRE_DATE, TimeUnit.DAYS);
+            }
+        }
         return yhVO;
     }
+
     //生成菜单树
-    private List<MenuDTO> buildMenuTree(List<MenuDTO> rootMenu,Long parentId){
+    private List<MenuDTO> buildMenuTree(List<MenuDTO> rootMenu, Long parentId) {
         //菜单树
         List<MenuDTO> treeList = new ArrayList<>();
 
         rootMenu.forEach(menuDTO -> {
-            if(parentId.longValue() == menuDTO.getParentId().longValue()){
+            if (parentId.longValue() == menuDTO.getParentId().longValue()) {
                 //通过递归，循环遍历子级菜单
                 menuDTO.setChildMenus(buildMenuTree(rootMenu, menuDTO.getId()));
                 treeList.add(menuDTO);

@@ -7,6 +7,7 @@
         <id column="id" property="id" />
         <result column="cdmc" property="cdmc" />
         <result column="cdbm" property="cdbm" />
+        <result column="cdtb" property="cdtb" />
         <result column="fjcd_id" property="fjcdId" />
         <result column="cj" property="cj" />
         <result column="cddz" property="cddz" />
@@ -19,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, cdmc, cdbm, fjcd_id, cj, cddz, sfsc, cjsj, cjr, gxsj, gxr
+        id, cdmc, cdbm, cdtb, fjcd_id, cj, cddz, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

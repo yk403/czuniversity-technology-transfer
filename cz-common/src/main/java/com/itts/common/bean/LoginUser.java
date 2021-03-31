@@ -39,4 +39,9 @@ public class LoginUser implements Serializable {
      */
     private String theme;
 
+    /**
+     * 系统类型
+     */
+    private String systemType;
+
 }

@@ -1,11 +1,14 @@
 package com.itts.userservice.model.yh;
 
-import com.baomidou.mybatisplus.annotation.*;
-
-import java.util.Date;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -13,19 +16,19 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author lym
- * @since 2021-03-18
+ * @since 2021-03-26
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_yh")
 public class Yh implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -635097659040539734L;
 
     /**
      * 主键ID
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -54,6 +57,11 @@ public class Yh implements Serializable {
     private String lxdh;
 
     /**
+     * 用户头像
+     */
+    private String yhtx;
+
+    /**
      * 用户类型
      */
     private String yhlx;
@@ -64,14 +72,9 @@ public class Yh implements Serializable {
     private String yhjb;
 
     /**
-     * 是否会员
+     * 机构ID
      */
-    private Boolean sfhy;
-
-    /**
-     * 会员类型
-     */
-    private Long hylxId;
+    private Long jgId;
 
     /**
      * 是否删除
@@ -81,7 +84,7 @@ public class Yh implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(fill= FieldFill.INSERT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
@@ -92,12 +95,11 @@ public class Yh implements Serializable {
     /**
      * 更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**
      * 更新人
      */
     private Long gxr;
-
-
 }

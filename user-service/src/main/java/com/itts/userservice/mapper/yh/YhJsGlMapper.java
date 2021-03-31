@@ -2,6 +2,7 @@ package com.itts.userservice.mapper.yh;
 
 import com.itts.userservice.model.yh.YhJsGl;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author fl
  * @since 2021-03-24
  */
+@Repository
 public interface YhJsGlMapper extends BaseMapper<YhJsGl> {
 
 

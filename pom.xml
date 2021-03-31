@@ -9,8 +9,7 @@
         <module>technology-transaction-service</module>
         <module>payment-service</module>
         <module>user-service</module>
-        <module>authorition</module>
-        <module>personnel-training-service</module>
+        <module>itts-authentication</module>
     </modules>
 
 
@@ -222,12 +221,6 @@
                 <artifactId>quartz-jobs</artifactId>
                 <version>${quartz-jobs.version}</version>
             </dependency>
-            <!--log4j core-->
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-                <version>${log4j-core.version}</version>
-            </dependency>
             <!--poi-->
             <dependency>
                 <groupId>org.apache.poi</groupId>
@@ -239,25 +232,13 @@
                 <artifactId>poi-ooxml</artifactId>
                 <version>${poi-ooxml.version}</version>
             </dependency>
-            <!-- Json in java -->
-            <dependency>
-                <groupId>org.json</groupId>
-                <artifactId>json</artifactId>
-                <version>${json.version}</version>
-            </dependency>
             <!--fastdfs-->
             <dependency>
                 <groupId>org.csource</groupId>
                 <artifactId>fastdfs-client-java</artifactId>
                 <version>${fastdfs.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-thymeleaf</artifactId>
-                <version>2.4.3</version>
-            </dependency>
         </dependencies>
-
     </dependencyManagement>
 
     <!--module不用添加打包版本信息-->

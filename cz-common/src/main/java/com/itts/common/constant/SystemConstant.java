@@ -29,4 +29,9 @@ public class SystemConstant {
      * 后台人才培养系统URL前缀
      */
     public static final String PERSONNEL_BASE_URL = "/api/personnel";
+    
+    /**
+     *存放用户登录信息， threadLocal
+     */
+    public static ThreadLocal<LoginUser> threadLocal = new ThreadLocal<>();
 }

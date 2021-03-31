@@ -25,19 +25,5 @@ public class JsCdGlServiceImpl implements JsCdGlService {
     @Resource
     private JsCdGlMapper jsCdGlMapper;
 
-    /**
-     *
-     * @param id
-     * 通过角色id，查询角色关联菜单的集合
-     */
-    @Override
-    public List<JsCdGl> findlist(Long id) {
 
-        QueryWrapper<JsCdGl> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("js_id",id)
-                    .eq("sfsc", false);
-        List<JsCdGl> jsCdGls = jsCdGlMapper.selectList(queryWrapper);
-
-        return jsCdGls;
-    }
 }

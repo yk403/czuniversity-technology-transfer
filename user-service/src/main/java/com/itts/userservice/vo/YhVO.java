@@ -6,13 +6,18 @@ import com.itts.userservice.dto.JsDTO;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 用户角色菜单
  */
 @Data
-public class YhVO {
+public class YhVO implements Serializable {
+
+
+    private static final long serialVersionUID = -6912495371946045832L;
+
     /**
      * 主键ID
      */
@@ -23,8 +28,6 @@ public class YhVO {
      * 用户名
      */
     private String yhm;
-
-
 
     /**
      * 用户编号
