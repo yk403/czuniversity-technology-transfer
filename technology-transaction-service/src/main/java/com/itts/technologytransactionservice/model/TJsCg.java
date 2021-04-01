@@ -87,7 +87,7 @@ public class TJsCg implements Serializable {
 	/**
  	* 地址
  	*/
-	private String dwdz;
+	private String dz;
 	/**
  	* 法人
  	*/

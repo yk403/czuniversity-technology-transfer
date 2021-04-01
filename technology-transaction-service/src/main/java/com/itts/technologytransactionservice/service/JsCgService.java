@@ -40,4 +40,5 @@ public interface JsCgService extends IService<TJsCg> {
 
 	boolean removeByIdsCg(List<String> ids);
 
+	PageInfo<TJsCg> findJsCg(Map<String, Object> params);
 }

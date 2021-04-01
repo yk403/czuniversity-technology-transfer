@@ -28,6 +28,11 @@ public class TJsXq implements Serializable {
  	*/
 	@TableId(value = "id",type = IdType.AUTO)
 	private Integer id;
+
+	/**
+	 * 技术需求id
+	 */
+	private Integer userId;
 	/**
  	* 技术需求名称
  	*/

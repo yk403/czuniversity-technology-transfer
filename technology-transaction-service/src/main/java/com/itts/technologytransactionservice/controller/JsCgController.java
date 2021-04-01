@@ -50,6 +50,17 @@ public class JsCgController extends BaseController {
     }
 
     /**
+     * (个人详情)分页条件查询
+     * @param params
+     * @return
+     */
+    @PostMapping("/page/user")
+    public ResponseUtil findJsCg(@RequestBody Map<String, Object> params) {
+        PageInfo<TJsCg> page = jsCgService.findJsCg(params);
+        return ResponseUtil.success(page);
+    }
+
+    /**
     * 根据ID查询
     * @param id
     * @return

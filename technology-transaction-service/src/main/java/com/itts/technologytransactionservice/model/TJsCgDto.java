@@ -96,7 +96,7 @@ public class TJsCgDto implements Serializable {
 	 * 地址
 	 */
 	@ExcelProperty(value = "地址",index = 13)
-	private String dwdz;
+	private String dz;
 	/**
 	 * 法人
 	 */

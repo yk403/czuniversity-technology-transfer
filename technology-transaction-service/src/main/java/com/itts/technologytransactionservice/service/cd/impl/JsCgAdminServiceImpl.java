@@ -114,6 +114,8 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         if (tJsCg2 != null) {
             return false;
         }
+        //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
+        tJsCg.setUserId(1);
         tJsCg.setReleaseType("技术成果");
         tJsCg.setCjsj(new Date());
         log.info("【技术交易 - 新增成果信息:{}】", tJsCg);

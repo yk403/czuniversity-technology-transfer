@@ -64,11 +64,14 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
             if (tJsXq3 != null) {
                 return false;
             }
+            //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
+            tJsXq.setUserId(2);
             tJsXq.setReleaseType("技术需求");
             tJsXq.setCjsj(new Date());
             save(tJsXq);
             TJsSh tJsSh = new TJsSh();
             tJsSh.setLx(2);
+            tJsSh.setCjsj(new Date());
             tJsSh.setXqId(tJsXq.getId());
             jsShService.save(tJsSh);
             return true;

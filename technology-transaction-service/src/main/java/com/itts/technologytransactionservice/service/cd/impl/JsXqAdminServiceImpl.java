@@ -52,7 +52,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     @Override
     public PageInfo<TJsXq> findJsXq(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询需求(后台审批管理)】");
-        //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        //TODO 从ThreadLocal中获取用户id 暂时是假数据,1表示管理员
         params.put("userId",1);
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
@@ -101,6 +101,8 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         if (tJsXq2 != null) {
             return false;
         }
+        //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
+        tJsXq.setUserId(1);
         tJsXq.setReleaseType("技术需求");
         tJsXq.setCjsj(new Date());
         log.info("【技术交易 - 新增需求信息:{}】", tJsXq);

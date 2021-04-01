@@ -59,11 +59,14 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             if (tJsCg2 != null) {
                 return false;
             }
+            //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
+            tJsCg.setUserId(2);
             tJsCg.setReleaseType("技术成果");
             tJsCg.setCjsj(new Date());
             save(tJsCg);
             TJsSh tJsSh = new TJsSh();
             tJsSh.setLx(1);
+            tJsSh.setCjsj(new Date());
             tJsSh.setCgId(tJsCg.getId());
             jsShService.save(tJsSh);
             return true;
@@ -225,6 +228,22 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         }
 		return true;
 	}
+
+    /**
+     * 分页查询成果(个人详情)
+     * @param params
+     * @return
+     */
+    @Override
+    public PageInfo<TJsCg> findJsCg(Map<String, Object> params) {
+        log.info("【技术交易 - 分页查询成果(个人详情)】");
+        //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        params.put("userId",2);
+        Query query = new Query(params);
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsCg> list = jsCgMapper.findJsCg(query);
+        return new PageInfo<>(list);
+    }
 
 }
 
