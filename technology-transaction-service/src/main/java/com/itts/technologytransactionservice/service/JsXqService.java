@@ -27,7 +27,12 @@ public interface JsXqService extends IService<TJsXq> {
 	 */
 	boolean assistanceUpdateTJsXq(TJsXq tJsXq);
 
-	PageInfo FindTJsXqByTJsLbTJsLy(Query query);
+	/**
+	 * 分页条件查询需求(前台)
+	 * @param params
+	 * @return
+	 */
+	PageInfo findJsXqFront(Map<String, Object> params);
 
 	TJsXq selectByName(String name);
 

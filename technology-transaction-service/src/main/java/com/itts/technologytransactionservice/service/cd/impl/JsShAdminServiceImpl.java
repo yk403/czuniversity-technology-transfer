@@ -55,12 +55,13 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 	@Override
 	public Boolean auditCg(Map<String, Object> params, Integer fbshzt) {
 		TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
-		String fbshbz = params.get("fbshbz").toString();
+		if (params.get("fbshbz") != null) {
+			tJsSh.setFbshbz(params.get("fbshbz").toString());
+		}
 		if (fbshzt == 2) {
 			tJsSh.setReleaseStatus(2);
 		}
 		tJsSh.setFbshzt(fbshzt);
-		tJsSh.setFbshbz(fbshbz);
 		if (!jsShAdminService.updateById(tJsSh)) {
 			throw new ServiceException("发布审核成果操作失败!");
 		}
@@ -75,19 +76,18 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 	 */
 	@Override
 	public Boolean auditXq(Map<String, Object> params, Integer fbshzt) {
-		TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
-		String fbshbz = params.get("fbshbz").toString();
+		TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
+		if (params.get("fbshbz") != null) {
+			tJsSh.setFbshbz(params.get("fbshbz").toString());
+		}
 		if (fbshzt == 2) {
 			tJsSh.setReleaseStatus(2);
 		}
 		tJsSh.setFbshzt(fbshzt);
-		tJsSh.setFbshbz(fbshbz);
 		if (!jsShAdminService.updateById(tJsSh)) {
 			throw new ServiceException("发布审核需求操作失败!");
 		}
 		return true;
 	}
-
-
 
 }

@@ -2,7 +2,6 @@ package com.itts.technologytransactionservice.controller;
 
 
 import com.github.pagehelper.PageInfo;
-import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
@@ -44,16 +43,13 @@ public class JsXqController extends BaseController {
     private JsShService jsShService;
 
     /**
-     * (后台)分页条件查询
-     *
+     * 分页条件查询需求(前台)
      * @param params
      * @return
      */
-    @PostMapping("/FindTJsXqByTJsLbTJsLy")
-    public ResponseUtil FindTJsXqByTJsLbTJsLy(@RequestBody Map<String, Object> params) {
-        //查询邻域类别审核状态列表数据
-        Query query = new Query(params);
-        PageInfo<TJsXq> page = jsXqService.FindTJsXqByTJsLbTJsLy(query);
+    @PostMapping("/page")
+    public ResponseUtil findJsXqFront(@RequestBody Map<String, Object> params) {
+        PageInfo<TJsXq> page = jsXqService.findJsXqFront(params);
         return ResponseUtil.success(page);
     }
 

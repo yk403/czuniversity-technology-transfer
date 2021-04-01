@@ -39,6 +39,10 @@ public interface JsXqMapper extends BaseMapper<TJsXq> {
     void updateTJsXq(TJsXq tJsXq);
 
 
-
-	List<TJsXq> FindTJsXqByTJsLbTJsLy(@Param("map") Map map);
+	/**
+	 * 分页条件查询需求
+	 * @param map
+	 * @return
+	 */
+	List<TJsXq> findJsXqFront(@Param("map") Map map);
 }

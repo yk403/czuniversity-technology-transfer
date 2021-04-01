@@ -16,14 +16,14 @@ import java.util.Map;
 public interface JsCgService extends IService<TJsCg> {
 
 	/**
-	 * 分页条件查询(前台)
+	 * 分页条件查询成果(前台)
 	 * @param params
 	 * @return
 	 */
 	PageInfo findJsCgFront(Map<String, Object> params);
 
 	/**
-	 * 分页条件查询(个人详情)
+	 * 分页条件查询成果(个人详情)
 	 * @param params
 	 * @return
 	 */

@@ -35,12 +35,18 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     @Autowired
     private JsShMapper jsShMapper;
 
+    /**
+     * 分页条件查询需求(前台)
+     * @param params
+     * @return
+     */
     @Override
-    public PageInfo FindTJsXqByTJsLbTJsLy(Query query) {
+    public PageInfo findJsXqFront(Map<String, Object> params) {
+        log.info("【技术交易 - 分页条件查询(前台)】");
+        Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<TJsXq> list = jsXqMapper.FindTJsXqByTJsLbTJsLy(query);
-        PageInfo<TJsXq> page = new PageInfo<>(list);
-        return page;
+        List<TJsXq> list = jsXqMapper.findJsXqFront(query);
+        return new PageInfo<>(list);
     }
 
     @Override
