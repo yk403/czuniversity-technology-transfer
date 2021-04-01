@@ -17,21 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ERROR;
-
 
 @Service
 @Primary
 @Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements JsCgService {
     @Autowired
     private JsCgMapper jsCgMapper;
@@ -43,13 +38,52 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 	private JsShMapper jsShMapper;
 
 
+    /**
+     * 分页条件查询(前台)
+     * @param params
+     * @return
+     */
     @Override
-    public PageInfo<TJsCg> FindtJsCgByTJsLbTJsLy(Query query) {
+    public PageInfo<TJsCg> findJsCgFront(Map<String, Object> params) {
+        log.info("【技术交易 - 分页条件查询(前台)】");
+        Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<TJsCg> list = jsCgMapper.FindtJsCgByTJsLbTJsLy(query);
+        List<TJsCg> list = jsCgMapper.findJsCgFront(query);
         return new PageInfo<>(list);
     }
 
+    /**
+     * 分页条件查询(个人详情)
+     * @param params
+     * @return
+     */
+    @Override
+    public PageInfo<TJsCg> findJsCgUser(Map<String, Object> params) {
+        log.info("【技术交易 - 分页查询成果(个人详情)】");
+        //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        params.put("userId",2);
+        Query query = new Query(params);
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsCg> list = jsCgMapper.findJsCgFront(query);
+        return new PageInfo<>(list);
+    }
+
+    /**
+     * 根据成果名称查询
+     * @param name
+     * @return
+     */
+    @Override
+    public TJsCg selectByName(String name) {
+        log.info("【技术交易 - 根据成果名称:{}查询详细信息】",name);
+        return jsCgMapper.selectByName(name);
+    }
+
+    /**
+     *
+     * @param tJsCg
+     * @return
+     */
     @Override
     public boolean saveCg(TJsCg tJsCg) {
         if (tJsCg.getId() != null) {
@@ -63,6 +97,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             tJsCg.setUserId(2);
             tJsCg.setReleaseType("技术成果");
             tJsCg.setCjsj(new Date());
+            log.info("【技术交易 - 新增成果信息】",tJsCg);
             save(tJsCg);
             TJsSh tJsSh = new TJsSh();
             tJsSh.setLx(1);
@@ -73,10 +108,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         }
     }
 
-    @Override
-    public TJsCg selectByName(String name) {
-        return jsCgMapper.selectByName(name);
-    }
+
 
 	/**
 	 * 删除成果
@@ -135,14 +167,20 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         }
     }
 
+    /**
+     * 修改成果信息
+     * @param tJsCg
+     * @return
+     */
     @Override
     public boolean updateTJsCg(TJsCg tJsCg) {
+        tJsCg.setGxsj(new Date());
         jsCgMapper.updateTJsCg(tJsCg);
         return true;
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+
     public boolean assistanceUpdateTJsCg(TJsCg tJsCg) {
         TJsSh tJsSh = jsShService.selectByCgId(tJsCg.getId());
         if (tJsSh.getReleaseStatus() != 2) {
@@ -229,21 +267,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 		return true;
 	}
 
-    /**
-     * 分页查询成果(个人详情)
-     * @param params
-     * @return
-     */
-    @Override
-    public PageInfo<TJsCg> findJsCg(Map<String, Object> params) {
-        log.info("【技术交易 - 分页查询成果(个人详情)】");
-        //TODO 从ThreadLocal中获取用户id 暂时是假数据
-        params.put("userId",2);
-        Query query = new Query(params);
-        PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<TJsCg> list = jsCgMapper.findJsCg(query);
-        return new PageInfo<>(list);
-    }
+
 
 }
 

@@ -7,8 +7,11 @@ import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsLbMapper;
 import com.itts.technologytransactionservice.model.TJsLb;
 import com.itts.technologytransactionservice.service.cd.JsLbAdminService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +22,9 @@ import java.util.List;
  * @Description: 技术类别业务逻辑
  */
 @Service
+@Primary
+@Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class JsLbAdminServiceImpl extends ServiceImpl<JsLbMapper, TJsLb> implements JsLbAdminService {
     @Autowired
     private JsLbMapper jsLbMapper;

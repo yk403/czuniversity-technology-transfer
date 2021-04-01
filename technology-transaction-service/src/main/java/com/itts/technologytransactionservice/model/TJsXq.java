@@ -170,6 +170,10 @@ public class TJsXq implements Serializable {
 	 */
 	private Date cjsj;
 	/**
+	 * 更新时间
+	 */
+	private Date gxsj;
+	/**
 	 * 手机号码
 	 */
 	private String sjhm;

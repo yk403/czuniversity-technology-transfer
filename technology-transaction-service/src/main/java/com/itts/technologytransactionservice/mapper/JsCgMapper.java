@@ -23,7 +23,20 @@ public interface JsCgMapper extends BaseMapper<TJsCg> {
 	
 	List<TJsCg> list(IPage<TJsCg> page, @Param("map") Map map);
 
-	List<TJsCg> FindtJsCgByTJsLbTJsLy(@Param("map") Map map);
+	/**
+	 * 分页条件查询
+	 * @param map
+	 * @return
+	 */
+	List<TJsCg> findJsCgFront(@Param("map") Map map);
+
+	/**
+	 * 根据成果名称查询
+	 * @param name
+	 * @return
+	 */
+	@Select("select * from t_js_cg where cgmc like #{name} and is_delete = 0")
+	TJsCg selectByName(String name);
 
 	void updateTJsCg(TJsCg tJsCg);
 
@@ -32,6 +45,5 @@ public interface JsCgMapper extends BaseMapper<TJsCg> {
 	@Select("select * from t_js_cg where id = #{id} and is_delete = 0")
 	TJsCg findById(Integer id);
 
-	@Select("select * from t_js_cg where cgmc like #{name} and is_delete = 0")
-	TJsCg selectByName(String name);
+
 }

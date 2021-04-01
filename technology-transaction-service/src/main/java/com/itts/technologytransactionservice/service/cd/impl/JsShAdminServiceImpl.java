@@ -26,7 +26,7 @@ import java.util.Map;
 @Service
 @Primary
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> implements JsShAdminService {
 	@Autowired
 	private JsShMapper jsShMapper;

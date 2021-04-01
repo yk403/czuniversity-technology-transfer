@@ -179,6 +179,8 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
         if (!"2".equals(tJsSh.getReleaseStatus())) {
             throw new ServiceException("未发布的需求无法申请挂牌");
         } else {
+            tJsXq.setGxsj(new Date());
+            jsXqMapper.updateById(tJsXq);
             tJsSh.setAssistanceStatus(1);
             tJsSh.setReleaseAssistanceStatus(1);
             jsShService.updateById(tJsSh);

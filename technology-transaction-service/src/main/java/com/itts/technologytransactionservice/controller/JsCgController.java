@@ -1,8 +1,6 @@
 package com.itts.technologytransactionservice.controller;
 
 
-import com.github.pagehelper.PageInfo;
-import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsCg;
@@ -11,11 +9,9 @@ import com.itts.technologytransactionservice.service.JsShService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 
 
@@ -32,44 +28,39 @@ public class JsCgController extends BaseController {
     @Autowired
     private JsCgService jsCgService;
 
-
     @Autowired
     private JsShService jsShService;
 
     /**
-     * (前台)分页条件查询
+     * 分页条件查询(前台)
      * @param params
      * @return
      */
     @PostMapping("/page")
-    public ResponseUtil FindJsCgByJsLbJsLy(@RequestBody Map<String, Object> params) {
-        //查询邻域类别审核状态列表数据
-        Query query = new Query(params);
-        PageInfo<TJsCg> page = jsCgService.FindtJsCgByTJsLbTJsLy(query);
-        return ResponseUtil.success(page);
+    public ResponseUtil findJsCgFront(@RequestBody Map<String, Object> params) {
+        return ResponseUtil.success(jsCgService.findJsCgFront(params));
     }
 
     /**
-     * (个人详情)分页条件查询
+     * 分页条件查询(个人详情)
      * @param params
      * @return
      */
     @PostMapping("/page/user")
     public ResponseUtil findJsCg(@RequestBody Map<String, Object> params) {
-        PageInfo<TJsCg> page = jsCgService.findJsCg(params);
-        return ResponseUtil.success(page);
+        return ResponseUtil.success(jsCgService.findJsCgUser(params));
     }
 
     /**
-    * 根据ID查询
+    * 根据ID查询成果信息
     * @param id
     * @return
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
-
         return success(jsCgService.getById(Integer.valueOf(id)));
     }
+
     /**
      * 根据成果名称查询
      * @param cgmc
@@ -81,7 +72,9 @@ public class JsCgController extends BaseController {
     }
 
     /**
-     * 保存
+     * 新增成果信息
+     * @param tJsCg
+     * @return
      */
     @PostMapping("/save")
     public R save(@RequestBody TJsCg tJsCg) {
@@ -89,7 +82,9 @@ public class JsCgController extends BaseController {
     }
 
     /**
-     * 修改
+     * 修改成果信息
+     * @param tJsCg
+     * @return
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsCg tJsCg) {
@@ -97,7 +92,9 @@ public class JsCgController extends BaseController {
     }
 
     /**
-     * 删除
+     * 删除成果信息
+     * @param id
+     * @return
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") String id) {
@@ -109,7 +106,6 @@ public class JsCgController extends BaseController {
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<String> ids){
-
         return  remove(jsCgService.removeByIdsCg(ids));
     }
 

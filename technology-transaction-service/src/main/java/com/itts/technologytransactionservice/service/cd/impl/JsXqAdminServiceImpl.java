@@ -33,7 +33,7 @@ import java.util.Map;
 @Service
 @Primary
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements JsXqAdminService {
     @Autowired
     private JsXqMapper jsXqMapper;

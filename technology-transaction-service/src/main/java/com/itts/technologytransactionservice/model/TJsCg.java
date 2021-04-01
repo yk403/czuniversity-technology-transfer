@@ -3,6 +3,7 @@ package com.itts.technologytransactionservice.model;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -145,7 +146,7 @@ public class TJsCg implements Serializable {
  	*/
 	private Long jshdId;
 	/**
-	*发布成果审核状态(1审核中;2通过;3整改;4拒绝)
+	*发布成果审核状态(0带提交;1审核中;2通过;3整改;4拒绝)
  	*/
 	private Integer fbshzt;
 	/**
@@ -184,4 +185,8 @@ public class TJsCg implements Serializable {
 	 * 创建时间
 	 */
 	private Date cjsj;
+	/**
+	 * 更新时间
+	 */
+	private Date gxsj;
 }

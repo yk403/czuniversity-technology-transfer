@@ -32,7 +32,7 @@ import java.util.Map;
 @Service
 @Primary
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements JsCgAdminService {
     @Autowired
     private JsCgMapper jsCgMapper;
