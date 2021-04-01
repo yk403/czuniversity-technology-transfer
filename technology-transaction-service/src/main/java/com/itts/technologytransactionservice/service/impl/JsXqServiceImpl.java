@@ -13,6 +13,7 @@ import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.model.TJsXq;
 import com.itts.technologytransactionservice.service.JsShService;
 import com.itts.technologytransactionservice.service.JsXqService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.itts.common.enums.ErrorCodeEnum.AUDIT_STATUS_FAIL;
+
 
 @Service
 @Primary
+@Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements JsXqService {
     @Autowired
     private JsXqMapper jsXqMapper;
@@ -173,21 +178,17 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean assistanceUpdateTJsXq(TJsXq tJsXq) {
         TJsSh tJsSh = jsShService.selectByXqId(tJsXq.getId());
-        if (!"2".equals(tJsSh.getReleaseStatus())) {
-            throw new ServiceException("未发布的需求无法申请挂牌");
-        } else {
-            tJsXq.setGxsj(new Date());
-            jsXqMapper.updateById(tJsXq);
-            tJsSh.setAssistanceStatus(1);
-            tJsSh.setReleaseAssistanceStatus(1);
-            jsShService.updateById(tJsSh);
-            jsXqMapper.updateTJsXq(tJsXq);
+        if (tJsSh.getFbshzt() != 2) {
+            return false;
         }
+        tJsXq.setGxsj(new Date());
+        jsXqMapper.updateTJsXq(tJsXq);
+        tJsSh.setAssistanceStatus(1);
+        //tJsSh.setReleaseAssistanceStatus(1);
+        jsShService.updateById(tJsSh);
         return true;
     }
-
 
 }

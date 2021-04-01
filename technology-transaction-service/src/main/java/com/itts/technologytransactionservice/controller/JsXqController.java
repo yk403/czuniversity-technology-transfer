@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.controller;
 
 
 import com.github.pagehelper.PageInfo;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.enums.ErrorCodeEnum.AUDIT_STATUS_FAIL;
 import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
 
 
@@ -123,6 +125,18 @@ public class JsXqController extends BaseController {
     }
 
     /**
+     * 已发布的需求招标申请(受理协办)
+     */
+    @PutMapping("/assistanceUpdate")
+    public ResponseUtil assistanceUpdate(@RequestBody TJsXq tJsXq) {
+        if (!jsXqService.assistanceUpdateTJsXq(tJsXq)) {
+            throw new WebException(AUDIT_STATUS_FAIL);
+        }
+        return ResponseUtil.success("需求招标申请成功!");
+    }
+
+
+    /**
      * 批量删除
      * @param ids
      * @return
@@ -181,13 +195,6 @@ public class JsXqController extends BaseController {
         return remove(result);
     }
 
-    /**
-     * 已发布的需求申请挂牌(受理协办)
-     */
-    @RequestMapping("/assistanceUpdate")
-    public R assistanceUpdate(@RequestBody TJsXq tJsXq) {
-        boolean result = jsXqService.assistanceUpdateTJsXq(tJsXq);
-        return update(result);
-    }
+
 
 }

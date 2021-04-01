@@ -103,6 +103,8 @@ public class JsCgController extends BaseController {
 
     /**
      * 批量删除
+     * @param ids
+     * @return
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<String> ids){

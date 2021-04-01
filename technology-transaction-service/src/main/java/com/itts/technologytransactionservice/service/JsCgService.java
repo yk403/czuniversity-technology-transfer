@@ -58,6 +58,13 @@ public interface JsCgService extends IService<TJsCg> {
 	 */
 	boolean removeByIdCg(Integer id);
 
+	/**
+	 * 批量删除
+	 * @param ids
+	 * @return
+	 */
+	boolean removeByIdsCg(List<String> ids);
+
 	boolean passUpdateById(Integer id);
 	boolean issueBatch(List<Integer> ids);
 
@@ -71,7 +78,7 @@ public interface JsCgService extends IService<TJsCg> {
 
 	boolean assistanceIssueBatch(List<Integer> ids);
 
-	boolean removeByIdsCg(List<String> ids);
+
 
 
 }

@@ -96,8 +96,8 @@
 			<if test="hzjg != null">hzjg = #{hzjg},</if>
 			<if test="yxhzdw != null">yxhzdw = #{yxhzdw},</if>
 			<if test="yxhzzj != null">yxhzzj = #{yxhzzj},</if>
-			<if test="xqxq != null">yxhzzj = #{xqxq},</if>
-			<if test="jszb != null">yxhzzj = #{jszb},</if>
+			<if test="xqxq != null">xqxq = #{xqxq},</if>
+			<if test="jszb != null">jszb = #{jszb},</if>
 			<if test="xqtp != null">xqtp = #{xqtp},</if>
 			<if test="xqsp != null">xqsp = #{xqsp},</if>
 			<if test="dwmc != null">dwmc = #{dwmc},</if>
