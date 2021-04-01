@@ -94,6 +94,13 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- websocket -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-websocket</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+
             <!-- 代码文档 -->
             <dependency>
                 <groupId>io.springfox</groupId>
