@@ -23,8 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
-import static com.itts.common.enums.ErrorCodeEnum.AUDIT_STATUS_FAIL;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
 /**
@@ -126,13 +125,15 @@ public class JsXqController extends BaseController {
 
     /**
      * 已发布的需求招标申请(受理协办)
+     * @param tJsXq
+     * @return
      */
     @PutMapping("/assistanceUpdate")
     public ResponseUtil assistanceUpdate(@RequestBody TJsXq tJsXq) {
         if (!jsXqService.assistanceUpdateTJsXq(tJsXq)) {
-            throw new WebException(AUDIT_STATUS_FAIL);
+            throw new WebException(MSG_AUDIT_FAIL);
         }
-        return ResponseUtil.success("需求招标申请成功!");
+        return ResponseUtil.success("需求招标申请!");
     }
 
 

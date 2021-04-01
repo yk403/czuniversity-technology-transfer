@@ -20,6 +20,13 @@ import java.util.Map;
  */
 public interface JsXqService extends IService<TJsXq> {
 
+	/**
+	 * 已发布的需求招标申请(受理协办)
+	 * @param tJsXq
+	 * @return
+	 */
+	boolean assistanceUpdateTJsXq(TJsXq tJsXq);
+
 	PageInfo FindTJsXqByTJsLbTJsLy(Query query);
 
 	TJsXq selectByName(String name);
@@ -41,6 +48,6 @@ public interface JsXqService extends IService<TJsXq> {
 
 	boolean updateTJsXq(TJsXq tJsXq);
 
-	boolean assistanceUpdateTJsXq(TJsXq tJsXq);
+
 
 }

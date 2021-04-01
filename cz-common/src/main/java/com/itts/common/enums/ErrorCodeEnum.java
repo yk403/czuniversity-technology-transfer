@@ -27,7 +27,7 @@ public enum ErrorCodeEnum {
     UPLOAD_FAIL_ISEMPTY_ERROR(-450002,"文件上传不可为空"),
     NAME_EXIST_ERROR(-45000,"名称已存在"),
     DELETE_ERROR(-45003,"删除失败!"),
-    AUDIT_STATUS_FAIL(-45004,"审核状态失败!"),
+    MSG_AUDIT_FAIL(-45004,"信息审核未通过,无法申请招拍挂!"),
     //====================      技术交易服务错误提示  END     ====================
 
 

@@ -12,9 +12,8 @@ import java.util.Map;
  * @Data: 2021/4/1
  * @Description: 技术成果管理接口
  */
+
 public interface JsCgService extends IService<TJsCg> {
-
-
 
 	/**
 	 * 分页条件查询(前台)
@@ -65,12 +64,18 @@ public interface JsCgService extends IService<TJsCg> {
 	 */
 	boolean removeByIdsCg(List<String> ids);
 
+	/**
+	 * 已发布的成果申请拍卖挂牌(受理协办)
+	 * @param tJsCg
+	 * @return
+	 */
+	boolean assistanceUpdateTJsCg(TJsCg tJsCg);
+
 	boolean passUpdateById(Integer id);
 	boolean issueBatch(List<Integer> ids);
 
 
 
-    boolean assistanceUpdateTJsCg(TJsCg tJsCg);
 
 	boolean assistancePassUpdateById(Integer id);
 

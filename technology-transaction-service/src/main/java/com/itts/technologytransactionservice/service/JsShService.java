@@ -20,6 +20,11 @@ public interface JsShService extends IService<TJsSh> {
 
 	IPage page(Query query);
 
+	/**
+	 * 根据成果id查询详情
+	 * @param id
+	 * @return
+	 */
 	TJsSh selectByCgId(Integer id);
 
 	List<TJsSh> selectBycgxqIds(List<Integer> cgxqIds);

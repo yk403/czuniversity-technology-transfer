@@ -179,18 +179,23 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         return true;
     }
 
+    /**
+     * 已发布的成果申请拍卖挂牌(受理协办)
+     * @param tJsCg
+     * @return
+     */
     @Override
-
     public boolean assistanceUpdateTJsCg(TJsCg tJsCg) {
         TJsSh tJsSh = jsShService.selectByCgId(tJsCg.getId());
-        if (tJsSh.getReleaseStatus() != 2) {
-            log.error("未发布的成果无法申请拍卖和招投标");
-            throw new ServiceException("未发布的成果无法申请拍卖和招投标");
-        } else {
-            tJsSh.setAssistanceStatus(1);
-            tJsSh.setReleaseAssistanceStatus(1);
-            jsShService.updateById(tJsSh);
-            jsCgMapper.updateTJsCg(tJsCg);
+        if (tJsSh.getFbshzt() != 2) {
+            log.error("发布审核状态未通过,无法申请拍卖挂牌!");
+            return false;
+        }
+        tJsSh.setAssistanceStatus(1);
+        tJsSh.setReleaseAssistanceStatus(1);
+        if (!jsShService.updateById(tJsSh)) {
+            log.error("更新审核失败!");
+            throw new ServiceException("更新审核失败!");
         }
         return true;
     }

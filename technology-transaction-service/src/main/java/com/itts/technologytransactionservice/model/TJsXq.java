@@ -118,7 +118,7 @@ public class TJsXq implements Serializable {
  	*/
 	private String jshdId;
 	/**
-	 * 发布需求审核状态(1待审核、2通过、3整改、4拒绝)
+	 * 发布需求审核状态(0待提交、1待审核、2通过、3整改、4拒绝)
 	 */
 	private Integer fbshzt;
 	/**

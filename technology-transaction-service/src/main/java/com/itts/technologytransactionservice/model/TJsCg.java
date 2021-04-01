@@ -146,7 +146,7 @@ public class TJsCg implements Serializable {
  	*/
 	private Long jshdId;
 	/**
-	*发布成果审核状态(0带提交;1审核中;2通过;3整改;4拒绝)
+	*发布成果审核状态(0待提交;1审核中;2通过;3整改;4拒绝)
  	*/
 	private Integer fbshzt;
 	/**

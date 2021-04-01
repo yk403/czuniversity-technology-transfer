@@ -32,6 +32,10 @@ public interface JsXqMapper extends BaseMapper<TJsXq> {
 
 	List<TJsFb> PageByTJsFb(@Param("map") Map map);
 
+	/**
+	 * 更新技术需求
+	 * @param tJsXq
+	 */
     void updateTJsXq(TJsXq tJsXq);
 
 

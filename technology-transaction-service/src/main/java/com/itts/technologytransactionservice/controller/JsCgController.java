@@ -1,6 +1,7 @@
 package com.itts.technologytransactionservice.controller;
 
 
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsCg;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.enums.ErrorCodeEnum.MSG_AUDIT_FAIL;
 
 
 /**
@@ -32,7 +34,7 @@ public class JsCgController extends BaseController {
     private JsShService jsShService;
 
     /**
-     * 分页条件查询(前台)
+     * 分页条件查询成果(前台)
      * @param params
      * @return
      */
@@ -42,7 +44,7 @@ public class JsCgController extends BaseController {
     }
 
     /**
-     * 分页条件查询(个人详情)
+     * 分页条件查询成果(个人详情)
      * @param params
      * @return
      */
@@ -112,6 +114,19 @@ public class JsCgController extends BaseController {
     }
 
     /**
+     * 已发布的成果申请拍卖挂牌(受理协办)
+     * @param tJsCg
+     * @return
+     */
+    @PutMapping("/assistanceUpdate")
+    public ResponseUtil assistanceUpdate(@RequestBody TJsCg tJsCg) {
+        if (!jsCgService.assistanceUpdateTJsCg(tJsCg)) {
+            throw new WebException(MSG_AUDIT_FAIL);
+        }
+        return ResponseUtil.success("成果申请拍卖挂牌!");
+    }
+
+    /**
      * 成果下发
      * @param ids
      * @return
@@ -125,19 +140,7 @@ public class JsCgController extends BaseController {
         return  update(jsCgService.issueBatch(list));
     }
 
-    /**
-     * 已发布的成果申请拍卖挂牌(受理协办)
-     * @param tJsCg
-     * @return
-     */
-    @PutMapping("/assistanceUpdate")
-    public ResponseUtil assistanceUpdate(@RequestBody TJsCg tJsCg) {
-        boolean result = jsCgService.assistanceUpdateTJsCg(tJsCg);
-        if (!result) {
 
-        }
-        return ResponseUtil.success("成果申请拍卖挂牌成功!");
-    }
 
     /**
      * 受理协办审核

@@ -38,6 +38,10 @@ public interface JsCgMapper extends BaseMapper<TJsCg> {
 	@Select("select * from t_js_cg where cgmc like #{name} and is_delete = 0")
 	TJsCg selectByName(String name);
 
+	/**
+	 * 更新成果信息
+	 * @param tJsCg
+	 */
 	void updateTJsCg(TJsCg tJsCg);
 
 	List<TJsCg> findJsCg(@Param("map") Map map);

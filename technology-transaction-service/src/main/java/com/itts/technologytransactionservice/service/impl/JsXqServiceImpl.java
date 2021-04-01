@@ -18,13 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import static com.itts.common.enums.ErrorCodeEnum.AUDIT_STATUS_FAIL;
 
 
 @Service
@@ -177,17 +173,24 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
         return true;
     }
 
+    /**
+     * 已发布的需求申请招标(受理协办)
+     * @param tJsXq
+     * @return
+     */
     @Override
     public boolean assistanceUpdateTJsXq(TJsXq tJsXq) {
         TJsSh tJsSh = jsShService.selectByXqId(tJsXq.getId());
         if (tJsSh.getFbshzt() != 2) {
+            log.error("发布审核状态未通过,无法申请拍卖挂牌!");
             return false;
         }
-        tJsXq.setGxsj(new Date());
-        jsXqMapper.updateTJsXq(tJsXq);
         tJsSh.setAssistanceStatus(1);
-        //tJsSh.setReleaseAssistanceStatus(1);
-        jsShService.updateById(tJsSh);
+        tJsSh.setReleaseAssistanceStatus(1);
+        if (!jsShService.updateById(tJsSh)) {
+            log.error("更新审核失败!");
+            throw new ServiceException("更新审核失败!");
+        }
         return true;
     }
 
