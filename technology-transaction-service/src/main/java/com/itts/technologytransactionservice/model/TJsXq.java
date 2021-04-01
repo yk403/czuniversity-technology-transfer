@@ -129,10 +129,15 @@ public class TJsXq implements Serializable {
 	 * 发布状态
 	 */
 	private String releaseStatus;
+
 	/**
 	 * 发布类型
 	 */
 	private String releaseType;
+	/**
+	 * 受理协办审核状态
+	 */
+	private Integer assistanceStatus;
 	/**
 	 * 领域名称
 	 */

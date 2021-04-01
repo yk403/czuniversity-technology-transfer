@@ -126,13 +126,17 @@ public class JsCgController extends BaseController {
     }
 
     /**
-     * 已发布的成果申请拍卖招标(受理协办)
+     * 已发布的成果申请拍卖挂牌(受理协办)
      * @param tJsCg
      * @return
      */
-    @RequestMapping("/assistanceUpdate")
-    public R assistanceUpdate(@RequestBody TJsCg tJsCg) {
-        return update(jsCgService.assistanceUpdateTJsCg(tJsCg));
+    @PutMapping("/assistanceUpdate")
+    public ResponseUtil assistanceUpdate(@RequestBody TJsCg tJsCg) {
+        boolean result = jsCgService.assistanceUpdateTJsCg(tJsCg);
+        if (!result) {
+
+        }
+        return ResponseUtil.success("成果申请拍卖挂牌成功!");
     }
 
     /**

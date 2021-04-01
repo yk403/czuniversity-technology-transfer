@@ -158,6 +158,14 @@ public class TJsCg implements Serializable {
 	 */
 	private String releaseStatus;
 	/**
+	 * 受理协办审核状态
+	 */
+	private Integer assistanceStatus;
+	/**
+	 * 受理协办发布状态
+	 */
+	private Integer releaseAssistanceStatus;
+	/**
 	 * 发布类型
 	 */
 	private String releaseType;

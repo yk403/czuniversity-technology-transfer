@@ -56,6 +56,9 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 	public Boolean auditCg(Map<String, Object> params, Integer fbshzt) {
 		TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
 		String fbshbz = params.get("fbshbz").toString();
+		if (fbshzt == 2) {
+			tJsSh.setReleaseStatus(2);
+		}
 		tJsSh.setFbshzt(fbshzt);
 		tJsSh.setFbshbz(fbshbz);
 		if (!jsShAdminService.updateById(tJsSh)) {
@@ -64,10 +67,19 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 		return true;
 	}
 
+	/**
+	 * 发布审核需求(0待提交;1待审核;2通过;3整改;4拒绝)
+	 * @param params
+	 * @param fbshzt
+	 * @return
+	 */
 	@Override
 	public Boolean auditXq(Map<String, Object> params, Integer fbshzt) {
 		TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
 		String fbshbz = params.get("fbshbz").toString();
+		if (fbshzt == 2) {
+			tJsSh.setReleaseStatus(2);
+		}
 		tJsSh.setFbshzt(fbshzt);
 		tJsSh.setFbshbz(fbshbz);
 		if (!jsShAdminService.updateById(tJsSh)) {
