@@ -51,7 +51,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     }
 
     @Override
-    public boolean saveCg(TJsCg tJsCg) throws Exception {
+    public boolean saveCg(TJsCg tJsCg) {
         if (tJsCg.getId() != null) {
             return false;
         } else {

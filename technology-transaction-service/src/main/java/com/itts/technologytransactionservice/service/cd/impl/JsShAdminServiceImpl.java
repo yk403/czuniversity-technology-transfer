@@ -47,7 +47,7 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 	}
 
 	/**
-	 * 发布审核成果(1待审核;2通过;3整改;4拒绝)
+	 * 发布审核成果(0待提交;1待审核;2通过;3整改;4拒绝)
 	 * @param params
 	 * @param fbshzt
 	 * @return

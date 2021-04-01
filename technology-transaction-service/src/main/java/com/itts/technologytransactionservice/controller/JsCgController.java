@@ -2,9 +2,6 @@ package com.itts.technologytransactionservice.controller;
 
 
 import com.github.pagehelper.PageInfo;
-import com.itts.common.exception.WebException;
-import com.itts.common.utils.FastDFSClient;
-import com.itts.common.utils.FastDFSFile;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
@@ -14,7 +11,6 @@ import com.itts.technologytransactionservice.service.JsShService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +73,7 @@ public class JsCgController extends BaseController {
      * 保存
      */
     @PostMapping("/save")
-    public R save(@RequestBody TJsCg tJsCg) throws Exception {
+    public R save(@RequestBody TJsCg tJsCg) {
         return save(jsCgService.saveCg(tJsCg));
     }
 

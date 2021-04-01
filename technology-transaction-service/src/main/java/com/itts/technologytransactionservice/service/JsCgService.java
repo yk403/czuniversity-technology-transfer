@@ -23,7 +23,7 @@ public interface JsCgService extends IService<TJsCg> {
 
 	PageInfo FindtJsCgByTJsLbTJsLy(Query query);
 
-	boolean saveCg(TJsCg tJsCg) throws Exception;
+	boolean saveCg(TJsCg tJsCg);
 	boolean removeByIdCg(Integer id);
 	boolean passUpdateById(Integer id);
 	boolean issueBatch(List<Integer> ids);
