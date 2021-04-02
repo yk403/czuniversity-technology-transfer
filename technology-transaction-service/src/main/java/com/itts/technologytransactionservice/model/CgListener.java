@@ -197,6 +197,8 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
         TJsCg tJsCgOld = jsCgMapper.selectByName(tJsCg.getCgmc());
         if(tJsCgOld != null){
             tJsCg.setId(tJsCgOld.getId());
+            //TODO 暂时假数据,管理员userId为1
+            tJsCg.setUserId(1);
             try {
                 jsCgMapper.updateById(tJsCg);
                 count++;

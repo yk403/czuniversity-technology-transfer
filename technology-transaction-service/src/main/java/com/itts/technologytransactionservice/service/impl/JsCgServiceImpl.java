@@ -80,7 +80,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     }
 
     /**
-     *
+     *新增成果信息
      * @param tJsCg
      * @return
      */
@@ -89,7 +89,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         if (tJsCg.getId() != null) {
             return false;
         } else {
-            TJsCg tJsCg2 = selectByName(tJsCg.getCgmc());
+            TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc());
             if (tJsCg2 != null) {
                 return false;
             }

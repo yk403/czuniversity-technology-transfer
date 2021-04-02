@@ -168,6 +168,8 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
         TJsXq tJsXqOld = jsXqMapper.selectByName(tJsXq.getXqmc());
         if(tJsXqOld != null){
             tJsXq.setId(tJsXqOld.getId());
+            //TODO 暂时假数据,管理员userId为1
+            tJsXq.setUserId(1);
             try {
                 jsXqMapper.updateById(tJsXq);
                 count++;

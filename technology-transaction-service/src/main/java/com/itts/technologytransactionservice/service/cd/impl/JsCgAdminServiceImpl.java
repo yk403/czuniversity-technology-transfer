@@ -113,7 +113,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
      */
     @Override
     public boolean saveCg(TJsCg tJsCg) {
-        TJsCg tJsCg2 = selectByName(tJsCg.getCgmc());
+        TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc());
         if (tJsCg2 != null) {
             return false;
         }
