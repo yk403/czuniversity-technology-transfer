@@ -21,7 +21,6 @@ public class FileAdminAdminServiceImpl implements FileAdminService {
 
     @Override
     public String fileUpload(MultipartFile file) {
-
         String path = null;
         try {
             path = FileUtil.uploadFile(file);

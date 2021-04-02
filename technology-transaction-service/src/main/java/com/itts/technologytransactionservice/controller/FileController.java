@@ -30,7 +30,7 @@ public class FileController {
      * @param file
      * @return
      */
-    @PostMapping("upload")
+    @PostMapping("/upload")
     public ResponseUtil fileUpload(@RequestParam MultipartFile file) {
         if(file.isEmpty()){
             throw new WebException(UPLOAD_FAIL_ISEMPTY_ERROR);

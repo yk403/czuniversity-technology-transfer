@@ -182,4 +182,8 @@ public class TJsXq implements Serializable {
 	 * 手机号码
 	 */
 	private String sjhm;
+	/**
+	 * 发布审核备注
+	 */
+	private String fbshbz;
 }

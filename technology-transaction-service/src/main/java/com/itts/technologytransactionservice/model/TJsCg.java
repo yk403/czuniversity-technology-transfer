@@ -197,4 +197,8 @@ public class TJsCg implements Serializable {
 	 * 更新时间
 	 */
 	private Date gxsj;
+	/**
+	 * 发布审核备注
+	 */
+	private String fbshbz;
 }

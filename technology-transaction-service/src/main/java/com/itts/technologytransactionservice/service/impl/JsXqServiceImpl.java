@@ -203,7 +203,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
      */
     @Override
     public boolean auditXq(Map<String, Object> params, Integer fbshzt) {
-        TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
+        TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
         tJsSh.setFbshzt(fbshzt);
         if (!jsShService.updateById(tJsSh)) {
             throw new ServiceException("发布审核需求申请失败!");

@@ -7,6 +7,7 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.service.JsCgService;
 import com.itts.technologytransactionservice.service.JsShService;
+import com.itts.technologytransactionservice.service.cd.JsCgAdminService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,8 @@ public class JsCgController extends BaseController {
 
     @Autowired
     private JsShService jsShService;
+    @Autowired
+    private JsCgAdminService jsCgAdminService;
 
     /**
      * 分页条件查询成果(前台)
@@ -61,7 +64,7 @@ public class JsCgController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
-        return success(jsCgService.getById(Integer.valueOf(id)));
+        return success(jsCgAdminService.getById(Integer.valueOf(id)));
     }
 
     /**

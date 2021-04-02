@@ -72,11 +72,7 @@ public class JsXqController extends BaseController {
      */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
-        if (StringUtils.isEmpty(id)) {
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        TJsXq tJsXq = jsXqAdminService.getById(Integer.valueOf(id));
-        return success(tJsXq);
+        return success(jsXqAdminService.getById(Integer.valueOf(id)));
     }
 
     /**

@@ -46,14 +46,15 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
 
 
     /**
-     * 分页查询成果(后台审批管理(用户录入信息))
+     * 分页查询成果(后台管理)
      * @param params
      * @return
      */
     @Override
     public PageInfo<TJsCg> findJsCg(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询成果(后台审批管理)】");
-        //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        //前端传输标识type(0：审批管理;1：信息采集)
+        //TODO 从ThreadLocal中获取管理员id 暂时是假数据
         params.put("userId",1);
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
@@ -67,9 +68,9 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
      * @return
      */
     @Override
-    public TJsCg findById(Integer id) {
+    public TJsCg getById(Integer id) {
         log.info("【技术交易 - 根据成果id:{}查询详细信息】",id);
-        return jsCgMapper.findById(id);
+        return jsCgMapper.getById(id);
     }
 
     /**
@@ -122,6 +123,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         save(tJsCg);
         TJsSh tJsSh = new TJsSh();
         tJsSh.setLx(1);
+        tJsSh.setFbshzt(1);
         tJsSh.setCgId(tJsCg.getId());
         tJsSh.setCjsj(new Date());
         jsShAdminService.save(tJsSh);

@@ -109,6 +109,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         save(tJsXq);
         TJsSh tJsSh = new TJsSh();
         tJsSh.setLx(2);
+        tJsSh.setFbshzt(1);
         tJsSh.setXqId(tJsXq.getId());
         tJsSh.setCjsj(new Date());
         jsShAdminService.save(tJsSh);
