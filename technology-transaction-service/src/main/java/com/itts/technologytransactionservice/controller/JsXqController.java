@@ -6,6 +6,7 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsXq;
 import com.itts.technologytransactionservice.service.JsShService;
@@ -54,21 +55,18 @@ public class JsXqController extends BaseController {
     }
 
     /**
-     * 分页条件查询
-     *
+     * 分页条件查询成果(个人详情)(type: 0 采集 type: 1 发布 type:2 招拍挂)
      * @param params
      * @return
      */
-    @PostMapping("/PageByTJsFb")
-    public ResponseUtil PageByTJsFb(@RequestBody Map<String, Object> params) {
-        //查询邻域类别审核状态列表数据
-        Query query = new Query(params);
-        PageInfo<TJsFb> page = jsXqService.PageByTJsFb(query);
-        return ResponseUtil.success(page);
+    @PostMapping("/page/user")
+    public ResponseUtil findJsXq(@RequestBody Map<String, Object> params) {
+        return ResponseUtil.success(jsXqService.findJsXqUser(params));
     }
 
+
     /**
-     * 根据ID查询
+     * 根据ID查询需求信息
      * @param id
      * @return
      */
@@ -130,6 +128,34 @@ public class JsXqController extends BaseController {
             throw new WebException(MSG_AUDIT_FAIL);
         }
         return ResponseUtil.success("需求招标申请!");
+    }
+
+    /**
+     * 个人发布审核需求申请(0待提交;1待审核;2通过;3整改;4拒绝)
+     * @param params
+     * @return
+     */
+    @PutMapping("/auditXq")
+    public ResponseUtil auditXq(@RequestBody Map<String, Object> params) {
+        Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
+        if (fbshzt != 1 ){
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        return ResponseUtil.success(jsXqService.auditXq(params,fbshzt));
+    }
+
+    /**
+     * 分页条件查询
+     *
+     * @param params
+     * @return
+     */
+    @PostMapping("/PageByTJsFb")
+    public ResponseUtil PageByTJsFb(@RequestBody Map<String, Object> params) {
+        //查询邻域类别审核状态列表数据
+        Query query = new Query(params);
+        PageInfo<TJsFb> page = jsXqService.PageByTJsFb(query);
+        return ResponseUtil.success(page);
     }
 
 

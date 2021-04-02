@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.MSG_AUDIT_FAIL;
+import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
 
 
 /**
@@ -44,7 +45,7 @@ public class JsCgController extends BaseController {
     }
 
     /**
-     * 分页条件查询成果(个人详情)
+     * 分页条件查询成果(个人详情)(type: 0 采集 type: 1 发布 type:2 招拍挂)
      * @param params
      * @return
      */
@@ -124,6 +125,20 @@ public class JsCgController extends BaseController {
             throw new WebException(MSG_AUDIT_FAIL);
         }
         return ResponseUtil.success("成果申请拍卖挂牌!");
+    }
+
+    /**
+     * 个人发布审核成果申请(0待提交;1待审核;2通过;3整改;4拒绝)
+     * @param params
+     * @return
+     */
+    @PutMapping("/auditCg")
+    public ResponseUtil auditCg(@RequestBody Map<String, Object> params) {
+        Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
+        if (fbshzt != 1 ){
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        return ResponseUtil.success(jsCgService.auditCg(params,fbshzt));
     }
 
     /**

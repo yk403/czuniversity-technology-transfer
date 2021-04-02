@@ -65,14 +65,15 @@
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id)
 		<where>
 			xq.is_delete = 0
-			<if test="map.userId != null and map.userId != ''"> and xq.user_id == #{map.userId} </if>
+			<if test="map.userId != null and map.userId != ''"> and xq.user_id = #{map.userId} </if>
+			<if test="map.type == 0"> and sh.fbshzt != 2 </if>
+			<if test="map.type == 1"> and sh.fbshzt = 2 and sh.assistance_status != 2 </if>
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
 			<if test="map.xqId != null and map.xqId != ''"> and sh.xq_id = #{map.xqId} </if>
 			<if test="map.xqmc != null and map.xqmc != ''"> and xq.xqmc = #{map.xqmc} </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and xq.cjsj = #{map.cjsj} </if>
-			<if test="map.fbshzt != null and map.fbshzt != ''"> and sh.fbshzt = #{map.fbshzt} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
 		</where>
 		<choose>

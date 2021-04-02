@@ -53,7 +53,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     }
 
     /**
-     * 分页条件查询(个人详情)
+     * 分页条件查询成果(个人详情)
      * @param params
      * @return
      */
@@ -196,6 +196,21 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         if (!jsShService.updateById(tJsSh)) {
             log.error("更新审核失败!");
             throw new ServiceException("更新审核失败!");
+        }
+        return true;
+    }
+
+    /**
+     * 个人发布审核成果申请(0待提交;1待审核;2通过;3整改;4拒绝)
+     * @param params
+     * @return
+     */
+    @Override
+    public boolean auditCg(Map<String, Object> params, Integer fbshzt) {
+        TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
+        tJsSh.setFbshzt(fbshzt);
+        if (!jsShService.updateById(tJsSh)) {
+            throw new ServiceException("发布审核成果申请失败!");
         }
         return true;
     }

@@ -1,28 +1,23 @@
-package com.itts.technologytransactionservice.service.impl;
+package com.itts.technologytransactionservice.service.cd.impl;
 
 
 import com.itts.common.utils.FileUtil;
-import com.itts.technologytransactionservice.service.FileService;
+import com.itts.technologytransactionservice.service.cd.FileAdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
-
-import static com.itts.common.constant.UrlConstant.PROXY_PASS;
-import static com.itts.common.constant.UrlConstant.SERVER_NAME;
-import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ERROR;
 
 /**
  * @Author: Austin
- * @Data: 2021/3/29
+ * @Data: 2021/4/4
  * @Version: 1.0.0
  * @Description: 文件服务业务逻辑
  */
 @Service
 @Slf4j
-public class FileServiceImpl implements FileService {
+public class FileAdminAdminServiceImpl implements FileAdminService {
 
     @Override
     public String fileUpload(MultipartFile file) {

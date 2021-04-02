@@ -71,6 +71,13 @@ public interface JsCgService extends IService<TJsCg> {
 	 */
 	boolean assistanceUpdateTJsCg(TJsCg tJsCg);
 
+	/**
+	 * 个人发布审核成果申请(0待提交;1待审核;2通过;3整改;4拒绝)
+	 * @param params
+	 * @return
+	 */
+	boolean auditCg(Map<String, Object> params, Integer fbshzt);
+
 	boolean passUpdateById(Integer id);
 	boolean issueBatch(List<Integer> ids);
 
@@ -82,8 +89,6 @@ public interface JsCgService extends IService<TJsCg> {
 	boolean assistanceDisPassById(Map<String, Object> params);
 
 	boolean assistanceIssueBatch(List<Integer> ids);
-
-
 
 
 }

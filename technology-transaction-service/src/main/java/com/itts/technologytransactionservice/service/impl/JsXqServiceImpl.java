@@ -8,6 +8,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.mapper.JsXqMapper;
+import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.model.TJsXq;
@@ -176,6 +177,37 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     @Override
     public boolean updateTJsXq(TJsXq tJsXq) {
         jsXqMapper.updateTJsXq(tJsXq);
+        return true;
+    }
+
+    /**
+     * 分页条件查询需求(个人详情)
+     * @param params
+     * @return
+     */
+    @Override
+    public PageInfo<TJsXq> findJsXqUser(Map<String, Object> params) {
+        log.info("【技术交易 - 分页查询需求(个人详情)】");
+        //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        params.put("userId",2);
+        Query query = new Query(params);
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsXq> list = jsXqMapper.findJsXqFront(query);
+        return new PageInfo<>(list);
+    }
+
+    /**
+     * 个人发布审核需求申请(0待提交;1待审核;2通过;3整改;4拒绝)
+     * @param params
+     * @return
+     */
+    @Override
+    public boolean auditXq(Map<String, Object> params, Integer fbshzt) {
+        TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
+        tJsSh.setFbshzt(fbshzt);
+        if (!jsShService.updateById(tJsSh)) {
+            throw new ServiceException("发布审核需求申请失败!");
+        }
         return true;
     }
 
