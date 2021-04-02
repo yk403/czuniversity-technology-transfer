@@ -23,6 +23,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.itts.common.enums.ErrorCodeEnum.ISSUE_BATCH_FAIL;
+
 /**
  * @Author: Austin
  * @Data: 2021/3/26
@@ -139,33 +141,27 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         jsCgMapper.updateTJsCg(tJsCg);
     }
 
-
-
     /**
-     * 批量下发
-     *
+     * 根据id批量发布成果
      * @param ids
      * @return
      */
     @Override
     public boolean issueBatch(List<Integer> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return false;
-        } else {
-            List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(ids);
-            for (TJsSh tJsShe : tJsShes) {
-                if ("2".equals(tJsShe.getFbshzt())) {
-					tJsShe.setReleaseStatus(2);
-				}
+        log.info("【技术交易 - 根据id:{}批量发布成果】",ids);
+        List<TJsSh> tJsShes = jsShMapper.selectByCgIds(ids);
+        for (TJsSh tJsSh : tJsShes) {
+            if (tJsSh.getFbshzt() == 1) {
+                tJsSh.setFbshzt(2);
+                tJsSh.setReleaseStatus(2);
             }
-            jsShAdminService.updateBatchById(tJsShes);
-            return true;
         }
+        if (!jsShAdminService.updateBatchById(tJsShes)) {
+            log.error("【技术交易 - 批量发布成果失败!】");
+            return false;
+        }
+        return true;
     }
-
-
-
-
 
 	/**
 	 * 技术转让受理批量下发

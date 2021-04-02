@@ -24,6 +24,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.itts.common.enums.ErrorCodeEnum.ISSUE_BATCH_FAIL;
+
 /**
  * @Author: Austin
  * @Data: 2021/3/26
@@ -45,7 +47,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
 
 
     /**
-     * 分页查询需求(后台审批管理(用户录入信息))
+     * 分页查询需求(后台管理)
      * @param params
      * @return
      */
@@ -150,22 +152,25 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     }
 
     /**
-     * 技术采集批量下发
+     * 根据id批量发布需求
+     * @param ids
+     * @return
      */
     @Override
     public boolean issueBatch(List<Integer> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return false;
-        } else {
-            List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(ids);
-            for (TJsSh tJsShe : tJsShes) {
-                if (tJsShe.getFbshzt() == 2) {
-                    tJsShe.setReleaseStatus(2);
-                }
+        log.info("【技术交易 - 根据id:{}批量发布需求】",ids);
+        List<TJsSh> tJsShes = jsShMapper.selectByXqIds(ids);
+        for (TJsSh tJsSh : tJsShes) {
+            if (tJsSh.getFbshzt() == 1) {
+                tJsSh.setFbshzt(2);
+                tJsSh.setReleaseStatus(2);
             }
-            jsShAdminService.updateBatchById(tJsShes);
-            return true;
         }
+        if (!jsShAdminService.updateBatchById(tJsShes)) {
+            log.error("【技术交易 - 批量发布需求失败!】");
+            return false;
+        }
+        return true;
     }
 
     /**

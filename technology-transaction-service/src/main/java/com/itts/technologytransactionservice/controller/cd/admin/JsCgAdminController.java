@@ -1,6 +1,7 @@
 package com.itts.technologytransactionservice.controller.cd.admin;
 
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
@@ -113,6 +114,22 @@ public class JsCgAdminController extends BaseController {
     }
 
     /**
+     * 根据id批量发布成果
+     * @param ids
+     * @return
+     */
+    @PutMapping("/issueBatch")
+    public ResponseUtil issueBatch(@RequestBody List<Integer> ids){
+        if (CollectionUtils.isEmpty(ids)) {
+            throw new WebException(REQUEST_PARAMS_ISEMPTY);
+        }
+        if (!jsCgAdminService.issueBatch(ids)) {
+            throw new WebException(ISSUE_BATCH_FAIL);
+        }
+        return ResponseUtil.success("批量发布成果成功!");
+    }
+
+    /**
      * 批量删除
      */
     @PostMapping("/removeBatch")
@@ -120,22 +137,6 @@ public class JsCgAdminController extends BaseController {
 
         return  remove(jsCgAdminService.removeByIdsCg(ids));
     }
-
-    /**
-     * 成果下发
-     * @param ids
-     * @return
-     */
-    @PostMapping("/issueBatch")
-    public R issueBatch(@RequestBody List<String> ids){
-        List<Integer> list = new ArrayList<>();
-        for (String id : ids) {
-            list.add(Integer.valueOf(id));
-        }
-        return  remove(jsCgAdminService.issueBatch(list));
-    }
-
-
 
     /**
      * 受理协办下发

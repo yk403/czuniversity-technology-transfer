@@ -1,7 +1,9 @@
 package com.itts.technologytransactionservice.controller.cd.admin;
 
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
@@ -42,7 +44,7 @@ public class JsXqAdminController extends BaseController {
     private JsShAdminService JsShAdminService;
 
     /**
-     * 分页条件查询需求(后台审批管理(用户录入信息))
+     * 分页条件查询需求(后台管理)
      * @param params
      * @return
      */
@@ -114,6 +116,23 @@ public class JsXqAdminController extends BaseController {
         }
         return ResponseUtil.success("删除需求信息成功!");
     }
+
+    /**
+     * 根据id批量发布需求
+     * @param ids
+     * @return
+     */
+    @PutMapping("/issueBatch")
+    public ResponseUtil issueBatch(@RequestBody List<Integer> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            throw new WebException(REQUEST_PARAMS_ISEMPTY);
+        }
+        if (!jsXqAdminService.issueBatch(ids)) {
+            throw new WebException(ISSUE_BATCH_FAIL);
+        }
+        return ResponseUtil.success("批量发布需求成功!");
+    }
+
     /**
      * 分页条件查询
      *
@@ -127,16 +146,6 @@ public class JsXqAdminController extends BaseController {
         PageInfo<TJsFb> page = jsXqAdminService.PageByTJsFb(query);
         return ResponseUtil.success(page);
     }
-
-
-
-
-
-
-
-
-
-
 
     /**
      * 批量删除
@@ -156,19 +165,6 @@ public class JsXqAdminController extends BaseController {
     }
 
     /**
-     * 需求发布下发
-     */
-    @PostMapping("/issueBatch")
-    public R issueBatch(@RequestBody List<String> ids) {
-        List<Integer> list = new ArrayList<>();
-        for (String id : ids) {
-            list.add(Integer.valueOf(id));
-        }
-        return remove(jsXqAdminService.issueBatch(list));
-    }
-
-
-    /**
      * 受理协办下发
      */
     @PostMapping("/assistanceIssueBatch")
@@ -180,6 +176,5 @@ public class JsXqAdminController extends BaseController {
         boolean result = jsXqAdminService.assistanceIssueBatch(list);
         return remove(result);
     }
-
 
 }

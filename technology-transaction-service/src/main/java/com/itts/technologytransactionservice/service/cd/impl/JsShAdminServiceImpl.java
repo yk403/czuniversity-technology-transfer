@@ -90,4 +90,15 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 		return true;
 	}
 
+	/**
+	 * 根据id批量发布成果
+	 * @param ids
+	 * @return
+	 */
+	@Override
+	public List<TJsSh> selectByCgIds(List<Integer> ids) {
+		List<TJsSh> tJsShes = jsShMapper.selectByCgIds(ids);
+		return tJsShes;
+	}
+
 }
