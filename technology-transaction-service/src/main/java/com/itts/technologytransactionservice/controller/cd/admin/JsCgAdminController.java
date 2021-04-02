@@ -1,7 +1,9 @@
 package com.itts.technologytransactionservice.controller.cd.admin;
 
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
@@ -38,12 +40,20 @@ public class JsCgAdminController extends BaseController {
     private JsShAdminService JsShAdminService;
 
     /**
-     * 分页条件查询成果(后台审批管理(用户录入信息))
+     * 分页条件查询成果(后台管理)
      * @param params
      * @return
      */
     @PostMapping("/page")
     public ResponseUtil findJsCg(@RequestBody Map<String, Object> params) {
+        //前端传输标识type(0：审批管理;1：信息采集)
+        if (params.get("type") == null) {
+            Integer type = Integer.valueOf(params.get("type").toString());
+            if (type != 0 && type != 1) {
+                throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            }
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
         //查询用户录入成功信息列表
         PageInfo<TJsCg> page = jsCgAdminService.findJsCg(params);
         return ResponseUtil.success(page);
@@ -56,7 +66,7 @@ public class JsCgAdminController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public ResponseUtil findById(@PathVariable("id") Integer id) {
-        return ResponseUtil.success("查询成果详细信息成功!",jsCgAdminService.findById(id));
+        return ResponseUtil.success("查询成果详细信息成功!",jsCgAdminService.getById(id));
     }
 
     /**
@@ -104,6 +114,22 @@ public class JsCgAdminController extends BaseController {
     }
 
     /**
+     * 根据id批量发布成果
+     * @param ids
+     * @return
+     */
+    @PutMapping("/issueBatch")
+    public ResponseUtil issueBatch(@RequestBody List<Integer> ids){
+        if (CollectionUtils.isEmpty(ids)) {
+            throw new WebException(REQUEST_PARAMS_ISEMPTY);
+        }
+        if (!jsCgAdminService.issueBatch(ids)) {
+            throw new WebException(ISSUE_BATCH_FAIL);
+        }
+        return ResponseUtil.success("批量发布成果成功!");
+    }
+
+    /**
      * 批量删除
      */
     @PostMapping("/removeBatch")
@@ -111,22 +137,6 @@ public class JsCgAdminController extends BaseController {
 
         return  remove(jsCgAdminService.removeByIdsCg(ids));
     }
-
-    /**
-     * 成果下发
-     * @param ids
-     * @return
-     */
-    @PostMapping("/issueBatch")
-    public R issueBatch(@RequestBody List<String> ids){
-        List<Integer> list = new ArrayList<>();
-        for (String id : ids) {
-            list.add(Integer.valueOf(id));
-        }
-        return  remove(jsCgAdminService.issueBatch(list));
-    }
-
-
 
     /**
      * 受理协办下发

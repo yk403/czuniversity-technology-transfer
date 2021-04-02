@@ -6,6 +6,7 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsXq;
 import com.itts.technologytransactionservice.service.JsShService;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
 /**
@@ -43,45 +44,35 @@ public class JsXqController extends BaseController {
     private JsShService jsShService;
 
     /**
-     * (后台)分页条件查询
-     *
+     * 分页条件查询需求(前台)
      * @param params
      * @return
      */
-    @PostMapping("/FindTJsXqByTJsLbTJsLy")
-    public ResponseUtil FindTJsXqByTJsLbTJsLy(@RequestBody Map<String, Object> params) {
-        //查询邻域类别审核状态列表数据
-        Query query = new Query(params);
-        PageInfo<TJsXq> page = jsXqService.FindTJsXqByTJsLbTJsLy(query);
+    @PostMapping("/page")
+    public ResponseUtil findJsXqFront(@RequestBody Map<String, Object> params) {
+        PageInfo<TJsXq> page = jsXqService.findJsXqFront(params);
         return ResponseUtil.success(page);
     }
 
     /**
-     * 分页条件查询
-     *
+     * 分页条件查询成果(个人详情)(type: 0 采集 type: 1 发布 type:2 招拍挂)
      * @param params
      * @return
      */
-    @PostMapping("/PageByTJsFb")
-    public ResponseUtil PageByTJsFb(@RequestBody Map<String, Object> params) {
-        //查询邻域类别审核状态列表数据
-        Query query = new Query(params);
-        PageInfo<TJsFb> page = jsXqService.PageByTJsFb(query);
-        return ResponseUtil.success(page);
+    @PostMapping("/page/user")
+    public ResponseUtil findJsXq(@RequestBody Map<String, Object> params) {
+        return ResponseUtil.success(jsXqService.findJsXqUser(params));
     }
 
+
     /**
-     * 根据ID查询
+     * 根据ID查询需求信息
      * @param id
      * @return
      */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
-        if (StringUtils.isEmpty(id)) {
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        TJsXq tJsXq = jsXqAdminService.getById(Integer.valueOf(id));
-        return success(tJsXq);
+        return success(jsXqAdminService.getById(Integer.valueOf(id)));
     }
 
     /**
@@ -121,6 +112,48 @@ public class JsXqController extends BaseController {
     public R remove(@PathVariable("id") String id) {
         return remove( jsXqService.removeByIdXq(Integer.valueOf(id)));
     }
+
+    /**
+     * 已发布的需求招标申请(受理协办)
+     * @param tJsXq
+     * @return
+     */
+    @PutMapping("/assistanceUpdate")
+    public ResponseUtil assistanceUpdate(@RequestBody TJsXq tJsXq) {
+        if (!jsXqService.assistanceUpdateTJsXq(tJsXq)) {
+            throw new WebException(MSG_AUDIT_FAIL);
+        }
+        return ResponseUtil.success("需求招标申请!");
+    }
+
+    /**
+     * 个人发布审核需求申请(0待提交;1待审核;2通过;3整改;4拒绝)
+     * @param params
+     * @return
+     */
+    @PutMapping("/auditXq")
+    public ResponseUtil auditXq(@RequestBody Map<String, Object> params) {
+        Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
+        if (fbshzt != 1 ){
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        return ResponseUtil.success(jsXqService.auditXq(params,fbshzt));
+    }
+
+    /**
+     * 分页条件查询
+     *
+     * @param params
+     * @return
+     */
+    @PostMapping("/PageByTJsFb")
+    public ResponseUtil PageByTJsFb(@RequestBody Map<String, Object> params) {
+        //查询邻域类别审核状态列表数据
+        Query query = new Query(params);
+        PageInfo<TJsFb> page = jsXqService.PageByTJsFb(query);
+        return ResponseUtil.success(page);
+    }
+
 
     /**
      * 批量删除
@@ -181,13 +214,6 @@ public class JsXqController extends BaseController {
         return remove(result);
     }
 
-    /**
-     * 已发布的需求申请挂牌(受理协办)
-     */
-    @RequestMapping("/assistanceUpdate")
-    public R assistanceUpdate(@RequestBody TJsXq tJsXq) {
-        boolean result = jsXqService.assistanceUpdateTJsXq(tJsXq);
-        return update(result);
-    }
+
 
 }

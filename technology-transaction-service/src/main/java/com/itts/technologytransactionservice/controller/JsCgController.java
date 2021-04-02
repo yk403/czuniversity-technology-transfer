@@ -1,26 +1,22 @@
 package com.itts.technologytransactionservice.controller;
 
 
-import com.github.pagehelper.PageInfo;
 import com.itts.common.exception.WebException;
-import com.itts.common.utils.FastDFSClient;
-import com.itts.common.utils.FastDFSFile;
-import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.service.JsCgService;
 import com.itts.technologytransactionservice.service.JsShService;
+import com.itts.technologytransactionservice.service.cd.JsCgAdminService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.enums.ErrorCodeEnum.MSG_AUDIT_FAIL;
+import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
 
 
 /**
@@ -36,33 +32,41 @@ public class JsCgController extends BaseController {
     @Autowired
     private JsCgService jsCgService;
 
-
     @Autowired
     private JsShService jsShService;
+    @Autowired
+    private JsCgAdminService jsCgAdminService;
 
     /**
-     * (前台)分页条件查询
+     * 分页条件查询成果(前台)
      * @param params
      * @return
      */
     @PostMapping("/page")
-    public ResponseUtil FindJsCgByJsLbJsLy(@RequestBody Map<String, Object> params) {
-        //查询邻域类别审核状态列表数据
-        Query query = new Query(params);
-        PageInfo<TJsCg> page = jsCgService.FindtJsCgByTJsLbTJsLy(query);
-        return ResponseUtil.success(page);
+    public ResponseUtil findJsCgFront(@RequestBody Map<String, Object> params) {
+        return ResponseUtil.success(jsCgService.findJsCgFront(params));
     }
 
     /**
-    * 根据ID查询
+     * 分页条件查询成果(个人详情)(type: 0 采集 type: 1 发布 type:2 招拍挂)
+     * @param params
+     * @return
+     */
+    @PostMapping("/page/user")
+    public ResponseUtil findJsCg(@RequestBody Map<String, Object> params) {
+        return ResponseUtil.success(jsCgService.findJsCgUser(params));
+    }
+
+    /**
+    * 根据ID查询成果信息
     * @param id
     * @return
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
-
-        return success(jsCgService.getById(Integer.valueOf(id)));
+        return success(jsCgAdminService.getById(Integer.valueOf(id)));
     }
+
     /**
      * 根据成果名称查询
      * @param cgmc
@@ -74,15 +78,19 @@ public class JsCgController extends BaseController {
     }
 
     /**
-     * 保存
+     * 新增成果信息
+     * @param tJsCg
+     * @return
      */
     @PostMapping("/save")
-    public R save(@RequestBody TJsCg tJsCg) throws Exception {
+    public R save(@RequestBody TJsCg tJsCg) {
         return save(jsCgService.saveCg(tJsCg));
     }
 
     /**
-     * 修改
+     * 修改成果信息
+     * @param tJsCg
+     * @return
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsCg tJsCg) {
@@ -90,7 +98,9 @@ public class JsCgController extends BaseController {
     }
 
     /**
-     * 删除
+     * 删除成果信息
+     * @param id
+     * @return
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") String id) {
@@ -99,11 +109,39 @@ public class JsCgController extends BaseController {
 
     /**
      * 批量删除
+     * @param ids
+     * @return
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<String> ids){
-
         return  remove(jsCgService.removeByIdsCg(ids));
+    }
+
+    /**
+     * 已发布的成果申请拍卖挂牌(受理协办)
+     * @param tJsCg
+     * @return
+     */
+    @PutMapping("/assistanceUpdate")
+    public ResponseUtil assistanceUpdate(@RequestBody TJsCg tJsCg) {
+        if (!jsCgService.assistanceUpdateTJsCg(tJsCg)) {
+            throw new WebException(MSG_AUDIT_FAIL);
+        }
+        return ResponseUtil.success("成果申请拍卖挂牌!");
+    }
+
+    /**
+     * 个人发布审核成果申请(0待提交;1待审核;2通过;3整改;4拒绝)
+     * @param params
+     * @return
+     */
+    @PutMapping("/auditCg")
+    public ResponseUtil auditCg(@RequestBody Map<String, Object> params) {
+        Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
+        if (fbshzt != 1 ){
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        return ResponseUtil.success(jsCgService.auditCg(params,fbshzt));
     }
 
     /**
@@ -120,15 +158,7 @@ public class JsCgController extends BaseController {
         return  update(jsCgService.issueBatch(list));
     }
 
-    /**
-     * 已发布的成果申请拍卖招标(受理协办)
-     * @param tJsCg
-     * @return
-     */
-    @RequestMapping("/assistanceUpdate")
-    public R assistanceUpdate(@RequestBody TJsCg tJsCg) {
-        return update(jsCgService.assistanceUpdateTJsCg(tJsCg));
-    }
+
 
     /**
      * 受理协办审核

@@ -32,5 +32,5 @@ public interface JsCgAdminService extends IService<TJsCg> {
 
 	boolean removeByIdsCg(List<String> ids);
 
-	TJsCg findById(Integer id);
+	TJsCg getById(Integer id);
 }

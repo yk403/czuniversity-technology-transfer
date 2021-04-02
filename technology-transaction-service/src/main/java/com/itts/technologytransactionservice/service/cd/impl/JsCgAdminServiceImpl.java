@@ -23,6 +23,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.itts.common.enums.ErrorCodeEnum.ISSUE_BATCH_FAIL;
+
 /**
  * @Author: Austin
  * @Data: 2021/3/26
@@ -32,7 +34,7 @@ import java.util.Map;
 @Service
 @Primary
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements JsCgAdminService {
     @Autowired
     private JsCgMapper jsCgMapper;
@@ -46,14 +48,15 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
 
 
     /**
-     * 分页查询成果(后台审批管理(用户录入信息))
+     * 分页查询成果(后台管理)
      * @param params
      * @return
      */
     @Override
     public PageInfo<TJsCg> findJsCg(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询成果(后台审批管理)】");
-        //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        //前端传输标识type(0：审批管理;1：信息采集)
+        //TODO 从ThreadLocal中获取管理员id 暂时是假数据
         params.put("userId",1);
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
@@ -67,9 +70,9 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
      * @return
      */
     @Override
-    public TJsCg findById(Integer id) {
+    public TJsCg getById(Integer id) {
         log.info("【技术交易 - 根据成果id:{}查询详细信息】",id);
-        return jsCgMapper.findById(id);
+        return jsCgMapper.getById(id);
     }
 
     /**
@@ -114,12 +117,15 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         if (tJsCg2 != null) {
             return false;
         }
+        //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
+        tJsCg.setUserId(1);
         tJsCg.setReleaseType("技术成果");
         tJsCg.setCjsj(new Date());
         log.info("【技术交易 - 新增成果信息:{}】", tJsCg);
         save(tJsCg);
         TJsSh tJsSh = new TJsSh();
         tJsSh.setLx(1);
+        tJsSh.setFbshzt(1);
         tJsSh.setCgId(tJsCg.getId());
         tJsSh.setCjsj(new Date());
         jsShAdminService.save(tJsSh);
@@ -135,33 +141,27 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         jsCgMapper.updateTJsCg(tJsCg);
     }
 
-
-
     /**
-     * 批量下发
-     *
+     * 根据id批量发布成果
      * @param ids
      * @return
      */
     @Override
     public boolean issueBatch(List<Integer> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return false;
-        } else {
-            List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(ids);
-            for (TJsSh tJsShe : tJsShes) {
-                if ("2".equals(tJsShe.getFbshzt())) {
-					tJsShe.setReleaseStatus(2);
-				}
+        log.info("【技术交易 - 根据id:{}批量发布成果】",ids);
+        List<TJsSh> tJsShes = jsShMapper.selectByCgIds(ids);
+        for (TJsSh tJsSh : tJsShes) {
+            if (tJsSh.getFbshzt() == 1) {
+                tJsSh.setFbshzt(2);
+                tJsSh.setReleaseStatus(2);
             }
-            jsShAdminService.updateBatchById(tJsShes);
-            return true;
         }
+        if (!jsShAdminService.updateBatchById(tJsShes)) {
+            log.error("【技术交易 - 批量发布成果失败!】");
+            return false;
+        }
+        return true;
     }
-
-
-
-
 
 	/**
 	 * 技术转让受理批量下发

@@ -100,7 +100,7 @@ public class JsShAdminController extends BaseController {
     @RequestMapping("/auditCg")
     public ResponseUtil auditCg(@RequestBody Map<String, Object> params) {
         Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
-        if (fbshzt != 2 || fbshzt != 3 || fbshzt != 4){
+        if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4){
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         return ResponseUtil.success(JsShAdminService.auditCg(params,fbshzt));
@@ -114,7 +114,7 @@ public class JsShAdminController extends BaseController {
     @RequestMapping("/auditXq")
     public ResponseUtil auditXq(@RequestBody Map<String, Object> params) {
         Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
-        if (fbshzt != 2 || fbshzt != 3 || fbshzt != 4){
+        if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4){
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         return ResponseUtil.success(JsShAdminService.auditXq(params,fbshzt));

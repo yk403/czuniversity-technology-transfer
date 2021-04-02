@@ -106,8 +106,8 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
             tJsCg.setDwmc(data.getDwmc());
         }
         //地址
-        if(!StringUtils.isBlank(data.getDwdz())){
-            tJsCg.setDwdz(data.getDwdz());
+        if(!StringUtils.isBlank(data.getDz())){
+            tJsCg.setDz(data.getDz());
         }
         //法人
         if(!StringUtils.isBlank(data.getFr())){

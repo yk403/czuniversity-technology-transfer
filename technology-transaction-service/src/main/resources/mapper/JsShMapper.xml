@@ -60,6 +60,18 @@
 			#{xqId}
 		</foreach>
 	</select>
+	<select id="selectByCgIds" resultType="com.itts.technologytransactionservice.model.TJsSh">
+		select * from t_js_sh where cg_id in
+		<foreach item="cgId" collection="cgIds" index="index" open="(" separator="," close=")">
+			#{cgId}
+		</foreach>
+	</select>
+	<select id="selectByXqIds" resultType="com.itts.technologytransactionservice.model.TJsSh">
+		select * from t_js_sh where xq_id in
+		<foreach item="xqId" collection="xqIds" index="index" open="(" separator="," close=")">
+			#{xqId}
+		</foreach>
+	</select>
 
 
 </mapper>

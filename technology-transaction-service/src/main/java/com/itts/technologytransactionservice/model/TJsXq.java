@@ -28,6 +28,11 @@ public class TJsXq implements Serializable {
  	*/
 	@TableId(value = "id",type = IdType.AUTO)
 	private Integer id;
+
+	/**
+	 * 技术需求id
+	 */
+	private Integer userId;
 	/**
  	* 技术需求名称
  	*/
@@ -113,7 +118,7 @@ public class TJsXq implements Serializable {
  	*/
 	private String jshdId;
 	/**
-	 * 发布需求审核状态(1待审核、2通过、3整改、4拒绝)
+	 * 发布需求审核状态(0待提交、1待审核、2通过、3整改、4拒绝)
 	 */
 	private Integer fbshzt;
 	/**
@@ -124,10 +129,15 @@ public class TJsXq implements Serializable {
 	 * 发布状态
 	 */
 	private String releaseStatus;
+
 	/**
 	 * 发布类型
 	 */
 	private String releaseType;
+	/**
+	 * 受理协办审核状态
+	 */
+	private Integer assistanceStatus;
 	/**
 	 * 领域名称
 	 */
@@ -165,7 +175,15 @@ public class TJsXq implements Serializable {
 	 */
 	private Date cjsj;
 	/**
+	 * 更新时间
+	 */
+	private Date gxsj;
+	/**
 	 * 手机号码
 	 */
 	private String sjhm;
+	/**
+	 * 发布审核备注
+	 */
+	private String fbshbz;
 }

@@ -37,4 +37,8 @@ public interface JsShMapper extends BaseMapper<TJsSh> {
 	List<TJsSh> selectBycgIds(@Param("cgIds")Integer[] cgIds);
 
 	List<TJsSh> selectByxqIds(@Param("xqIds")Integer[] xqIds);
+
+	List<TJsSh> selectByCgIds(@Param("cgIds")List<Integer> cgIds);
+
+	List<TJsSh> selectByXqIds(@Param("xqIds")List<Integer> xqIds);
 }

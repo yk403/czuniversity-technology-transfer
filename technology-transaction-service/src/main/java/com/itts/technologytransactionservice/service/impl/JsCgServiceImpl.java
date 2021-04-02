@@ -17,21 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ERROR;
-
 
 @Service
 @Primary
 @Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements JsCgService {
     @Autowired
     private JsCgMapper jsCgMapper;
@@ -43,15 +38,54 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 	private JsShMapper jsShMapper;
 
 
+    /**
+     * 分页条件查询成果(前台)
+     * @param params
+     * @return
+     */
     @Override
-    public PageInfo<TJsCg> FindtJsCgByTJsLbTJsLy(Query query) {
+    public PageInfo<TJsCg> findJsCgFront(Map<String, Object> params) {
+        log.info("【技术交易 - 分页条件查询成果(前台)】");
+        Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<TJsCg> list = jsCgMapper.FindtJsCgByTJsLbTJsLy(query);
+        List<TJsCg> list = jsCgMapper.findJsCgFront(query);
         return new PageInfo<>(list);
     }
 
+    /**
+     * 分页条件查询成果(个人详情)
+     * @param params
+     * @return
+     */
     @Override
-    public boolean saveCg(TJsCg tJsCg) throws Exception {
+    public PageInfo<TJsCg> findJsCgUser(Map<String, Object> params) {
+        log.info("【技术交易 - 分页查询成果(个人详情)】");
+        //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        params.put("userId",2);
+        Query query = new Query(params);
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsCg> list = jsCgMapper.findJsCgFront(query);
+        return new PageInfo<>(list);
+    }
+
+    /**
+     * 根据成果名称查询
+     * @param name
+     * @return
+     */
+    @Override
+    public TJsCg selectByName(String name) {
+        log.info("【技术交易 - 根据成果名称:{}查询详细信息】",name);
+        return jsCgMapper.selectByName(name);
+    }
+
+    /**
+     *
+     * @param tJsCg
+     * @return
+     */
+    @Override
+    public boolean saveCg(TJsCg tJsCg) {
         if (tJsCg.getId() != null) {
             return false;
         } else {
@@ -59,21 +93,22 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             if (tJsCg2 != null) {
                 return false;
             }
+            //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
+            tJsCg.setUserId(2);
             tJsCg.setReleaseType("技术成果");
             tJsCg.setCjsj(new Date());
+            log.info("【技术交易 - 新增成果信息】",tJsCg);
             save(tJsCg);
             TJsSh tJsSh = new TJsSh();
             tJsSh.setLx(1);
+            tJsSh.setCjsj(new Date());
             tJsSh.setCgId(tJsCg.getId());
             jsShService.save(tJsSh);
             return true;
         }
     }
 
-    @Override
-    public TJsCg selectByName(String name) {
-        return jsCgMapper.selectByName(name);
-    }
+
 
 	/**
 	 * 删除成果
@@ -132,24 +167,50 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         }
     }
 
+    /**
+     * 修改成果信息
+     * @param tJsCg
+     * @return
+     */
     @Override
     public boolean updateTJsCg(TJsCg tJsCg) {
+        tJsCg.setGxsj(new Date());
         jsCgMapper.updateTJsCg(tJsCg);
         return true;
     }
 
+    /**
+     * 已发布的成果申请拍卖挂牌(受理协办)
+     * @param tJsCg
+     * @return
+     */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean assistanceUpdateTJsCg(TJsCg tJsCg) {
         TJsSh tJsSh = jsShService.selectByCgId(tJsCg.getId());
-        if (tJsSh.getReleaseStatus() != 2) {
-            log.error("未发布的成果无法申请拍卖和招投标");
-            throw new ServiceException("未发布的成果无法申请拍卖和招投标");
-        } else {
-            tJsSh.setAssistanceStatus(1);
-            tJsSh.setReleaseAssistanceStatus(1);
-            jsShService.updateById(tJsSh);
-            jsCgMapper.updateTJsCg(tJsCg);
+        if (tJsSh.getFbshzt() != 2) {
+            log.error("发布审核状态未通过,无法申请拍卖挂牌!");
+            return false;
+        }
+        tJsSh.setAssistanceStatus(1);
+        tJsSh.setReleaseAssistanceStatus(1);
+        if (!jsShService.updateById(tJsSh)) {
+            log.error("更新审核失败!");
+            throw new ServiceException("更新审核失败!");
+        }
+        return true;
+    }
+
+    /**
+     * 个人发布审核成果申请(0待提交;1待审核;2通过;3整改;4拒绝)
+     * @param params
+     * @return
+     */
+    @Override
+    public boolean auditCg(Map<String, Object> params, Integer fbshzt) {
+        TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
+        tJsSh.setFbshzt(fbshzt);
+        if (!jsShService.updateById(tJsSh)) {
+            throw new ServiceException("发布审核成果申请失败!");
         }
         return true;
     }
@@ -225,6 +286,8 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         }
 		return true;
 	}
+
+
 
 }
 

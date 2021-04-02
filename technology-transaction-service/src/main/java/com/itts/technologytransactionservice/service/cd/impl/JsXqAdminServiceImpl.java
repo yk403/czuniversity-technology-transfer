@@ -24,6 +24,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.itts.common.enums.ErrorCodeEnum.ISSUE_BATCH_FAIL;
+
 /**
  * @Author: Austin
  * @Data: 2021/3/26
@@ -33,7 +35,7 @@ import java.util.Map;
 @Service
 @Primary
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements JsXqAdminService {
     @Autowired
     private JsXqMapper jsXqMapper;
@@ -45,14 +47,14 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
 
 
     /**
-     * 分页查询需求(后台审批管理(用户录入信息))
+     * 分页查询需求(后台管理)
      * @param params
      * @return
      */
     @Override
     public PageInfo<TJsXq> findJsXq(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询需求(后台审批管理)】");
-        //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        //TODO 从ThreadLocal中获取用户id 暂时是假数据,1表示管理员
         params.put("userId",1);
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
@@ -101,12 +103,15 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         if (tJsXq2 != null) {
             return false;
         }
+        //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
+        tJsXq.setUserId(1);
         tJsXq.setReleaseType("技术需求");
         tJsXq.setCjsj(new Date());
         log.info("【技术交易 - 新增需求信息:{}】", tJsXq);
         save(tJsXq);
         TJsSh tJsSh = new TJsSh();
         tJsSh.setLx(2);
+        tJsSh.setFbshzt(1);
         tJsSh.setXqId(tJsXq.getId());
         tJsSh.setCjsj(new Date());
         jsShAdminService.save(tJsSh);
@@ -147,22 +152,25 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     }
 
     /**
-     * 技术采集批量下发
+     * 根据id批量发布需求
+     * @param ids
+     * @return
      */
     @Override
     public boolean issueBatch(List<Integer> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return false;
-        } else {
-            List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(ids);
-            for (TJsSh tJsShe : tJsShes) {
-                if (tJsShe.getFbshzt() == 2) {
-                    tJsShe.setReleaseStatus(2);
-                }
+        log.info("【技术交易 - 根据id:{}批量发布需求】",ids);
+        List<TJsSh> tJsShes = jsShMapper.selectByXqIds(ids);
+        for (TJsSh tJsSh : tJsShes) {
+            if (tJsSh.getFbshzt() == 1) {
+                tJsSh.setFbshzt(2);
+                tJsSh.setReleaseStatus(2);
             }
-            jsShAdminService.updateBatchById(tJsShes);
-            return true;
         }
+        if (!jsShAdminService.updateBatchById(tJsShes)) {
+            log.error("【技术交易 - 批量发布需求失败!】");
+            return false;
+        }
+        return true;
     }
 
     /**

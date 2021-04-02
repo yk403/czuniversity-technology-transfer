@@ -8,17 +8,17 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.mapper.JsXqMapper;
+import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.model.TJsXq;
 import com.itts.technologytransactionservice.service.JsShService;
 import com.itts.technologytransactionservice.service.JsXqService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +26,8 @@ import java.util.Map;
 
 @Service
 @Primary
+@Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements JsXqService {
     @Autowired
     private JsXqMapper jsXqMapper;
@@ -34,12 +36,18 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     @Autowired
     private JsShMapper jsShMapper;
 
+    /**
+     * 分页条件查询需求(前台)
+     * @param params
+     * @return
+     */
     @Override
-    public PageInfo FindTJsXqByTJsLbTJsLy(Query query) {
+    public PageInfo findJsXqFront(Map<String, Object> params) {
+        log.info("【技术交易 - 分页条件查询(前台)】");
+        Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<TJsXq> list = jsXqMapper.FindTJsXqByTJsLbTJsLy(query);
-        PageInfo<TJsXq> page = new PageInfo<>(list);
-        return page;
+        List<TJsXq> list = jsXqMapper.findJsXqFront(query);
+        return new PageInfo<>(list);
     }
 
     @Override
@@ -64,11 +72,14 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
             if (tJsXq3 != null) {
                 return false;
             }
+            //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
+            tJsXq.setUserId(2);
             tJsXq.setReleaseType("技术需求");
             tJsXq.setCjsj(new Date());
             save(tJsXq);
             TJsSh tJsSh = new TJsSh();
             tJsSh.setLx(2);
+            tJsSh.setCjsj(new Date());
             tJsSh.setXqId(tJsXq.getId());
             jsShService.save(tJsSh);
             return true;
@@ -169,20 +180,56 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
         return true;
     }
 
+    /**
+     * 分页条件查询需求(个人详情)
+     * @param params
+     * @return
+     */
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean assistanceUpdateTJsXq(TJsXq tJsXq) {
-        TJsSh tJsSh = jsShService.selectByXqId(tJsXq.getId());
-        if (!"2".equals(tJsSh.getReleaseStatus())) {
-            throw new ServiceException("未发布的需求无法申请挂牌");
-        } else {
-            tJsSh.setAssistanceStatus(1);
-            tJsSh.setReleaseAssistanceStatus(1);
-            jsShService.updateById(tJsSh);
-            jsXqMapper.updateTJsXq(tJsXq);
+    public PageInfo<TJsXq> findJsXqUser(Map<String, Object> params) {
+        log.info("【技术交易 - 分页查询需求(个人详情)】");
+        //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        params.put("userId",2);
+        Query query = new Query(params);
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsXq> list = jsXqMapper.findJsXqFront(query);
+        return new PageInfo<>(list);
+    }
+
+    /**
+     * 个人发布审核需求申请(0待提交;1待审核;2通过;3整改;4拒绝)
+     * @param params
+     * @return
+     */
+    @Override
+    public boolean auditXq(Map<String, Object> params, Integer fbshzt) {
+        TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
+        tJsSh.setFbshzt(fbshzt);
+        if (!jsShService.updateById(tJsSh)) {
+            throw new ServiceException("发布审核需求申请失败!");
         }
         return true;
     }
 
+    /**
+     * 已发布的需求申请招标(受理协办)
+     * @param tJsXq
+     * @return
+     */
+    @Override
+    public boolean assistanceUpdateTJsXq(TJsXq tJsXq) {
+        TJsSh tJsSh = jsShService.selectByXqId(tJsXq.getId());
+        if (tJsSh.getFbshzt() != 2) {
+            log.error("发布审核状态未通过,无法申请拍卖挂牌!");
+            return false;
+        }
+        tJsSh.setAssistanceStatus(1);
+        tJsSh.setReleaseAssistanceStatus(1);
+        if (!jsShService.updateById(tJsSh)) {
+            log.error("更新审核失败!");
+            throw new ServiceException("更新审核失败!");
+        }
+        return true;
+    }
 
 }
