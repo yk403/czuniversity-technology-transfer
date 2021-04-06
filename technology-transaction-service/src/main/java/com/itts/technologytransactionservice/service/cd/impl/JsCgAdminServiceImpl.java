@@ -112,7 +112,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
      * 新增成果信息
      */
     @Override
-    public boolean saveCg(TJsCg tJsCg) {
+    public boolean saveCg(TJsCg tJsCg,Integer jylx) {
         TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc());
         if (tJsCg2 != null) {
             return false;
@@ -121,11 +121,16 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         tJsCg.setUserId(1);
         tJsCg.setReleaseType("技术成果");
         tJsCg.setCjsj(new Date());
-        log.info("【技术交易 - 新增成果信息:{}】", tJsCg);
+        log.info("【技术交易 - 新增成果信息:{},交易类型:{}】", tJsCg,jylx);
         save(tJsCg);
         TJsSh tJsSh = new TJsSh();
         tJsSh.setLx(1);
         tJsSh.setFbshzt(1);
+        if (jylx != null) {
+            tJsSh.setJylx(jylx);
+            tJsSh.setAssistanceStatus(1);
+            //TODO 发布审核是否需要改变
+        }
         tJsSh.setCgId(tJsCg.getId());
         tJsSh.setCjsj(new Date());
         jsShAdminService.save(tJsSh);
@@ -164,22 +169,22 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     }
 
 	/**
-	 * 技术转让受理批量下发
+	 * 技术拍卖挂牌受理批量下发
 	 * @param ids
 	 * @return
 	 */
-	@Override
+    @Override
     public boolean assistanceIssueBatch(List<Integer> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return false;
-        } else {
-            List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(ids);
-            for (TJsSh tJsShe : tJsShes) {
-                tJsShe.setReleaseAssistanceStatus(2);
-            }
-            jsShAdminService.updateBatchById(tJsShes);
-            return true;
+        log.info("【技术交易 - 技术拍卖挂牌受理批量下发,id:{}!】",ids);
+        List<TJsSh> tJsShes = jsShMapper.selectByCgIds(ids);
+        for (TJsSh tJsShe : tJsShes) {
+            tJsShe.setAssistanceStatus(2);
+            tJsShe.setReleaseAssistanceStatus(2);
         }
+        if (!jsShAdminService.updateBatchById(tJsShes)) {
+            return false;
+        }
+        return true;
     }
 
 	/**

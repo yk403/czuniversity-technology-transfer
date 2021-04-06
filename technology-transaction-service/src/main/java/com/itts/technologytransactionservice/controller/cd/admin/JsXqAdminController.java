@@ -134,6 +134,17 @@ public class JsXqAdminController extends BaseController {
     }
 
     /**
+     * 受理协办需求招标下发
+     */
+    @PostMapping("/assistanceIssueBatch")
+    public ResponseUtil assistanceIssueBatch(@RequestBody List<Integer> ids) {
+        if (!jsXqAdminService.assistanceIssueBatch(ids)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("受理协办需求招标下发成功!");
+    }
+
+    /**
      * 分页条件查询
      *
      * @param params
@@ -164,17 +175,6 @@ public class JsXqAdminController extends BaseController {
         return remove(result);
     }
 
-    /**
-     * 受理协办下发
-     */
-    @PostMapping("/assistanceIssueBatch")
-    public R assistanceIssueBatch(@RequestBody List<String> ids) {
-        List<Integer> list = new ArrayList<>();
-        for (String id : ids) {
-            list.add(Integer.valueOf(id));
-        }
-        boolean result = jsXqAdminService.assistanceIssueBatch(list);
-        return remove(result);
-    }
+
 
 }

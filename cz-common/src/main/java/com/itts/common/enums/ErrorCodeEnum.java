@@ -31,6 +31,7 @@ public enum ErrorCodeEnum {
     REQUEST_PARAMS_ISEMPTY(-45005,"请求参数不可为空!"),
     ISSUE_BATCH_FAIL(-45006,"批量发布失败!"),
     AUDIT_MSG_ISEMPTY(-45007,"审核意见不可为空!"),
+    UPDATE_FAIL(-45008,"更新失败"),
     //====================      技术交易服务错误提示  END     ====================
 
 

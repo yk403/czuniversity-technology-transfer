@@ -174,24 +174,20 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     }
 
     /**
-     * 技术转让受理批量下发
+     * 技术招标受理批量下发
      */
     @Override
     public boolean assistanceIssueBatch(List<Integer> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return false;
-        } else {
-            List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(ids);
-            for (TJsSh tJsShe : tJsShes) {
-                tJsShe.setReleaseAssistanceStatus(2);
-            }
-            jsShAdminService.updateBatchById(tJsShes);
-            return true;
+        log.info("【技术交易 - 技术招标受理批量下发,id:{}】",ids);
+        List<TJsSh> tJsShes = jsShMapper.selectByXqIds(ids);
+        for (TJsSh tJsShe : tJsShes) {
+            tJsShe.setAssistanceStatus(2);
+            tJsShe.setReleaseAssistanceStatus(2);
         }
-
+        if (!jsShAdminService.updateBatchById(tJsShes)) {
+            return false;
+        }
+        return true;
     }
-
-
-
 
 }

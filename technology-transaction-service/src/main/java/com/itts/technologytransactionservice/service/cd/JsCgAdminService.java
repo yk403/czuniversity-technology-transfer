@@ -20,7 +20,7 @@ public interface JsCgAdminService extends IService<TJsCg> {
 
 	TJsCg selectByName(String name);
 
-	boolean saveCg(TJsCg tJsCg);
+	boolean saveCg(TJsCg tJsCg,Integer jylx);
 
 	boolean issueBatch(List<Integer> ids);
 

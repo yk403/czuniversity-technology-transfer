@@ -83,11 +83,11 @@ public class JsCgAdminController extends BaseController {
      * 新增成果信息
      */
     @PostMapping("/save")
-    public ResponseUtil save(@RequestBody TJsCg tJsCg) {
+    public ResponseUtil save(@RequestBody TJsCg tJsCg,@RequestParam(value = "jylx",required = false)Integer jylx) {
         if (tJsCg.getId() != null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (!jsCgAdminService.saveCg(tJsCg)) {
+        if (!jsCgAdminService.saveCg(tJsCg,jylx)) {
             return ResponseUtil.error(NAME_EXIST_ERROR);
         }
         return ResponseUtil.success("新增成果信息成功!");
@@ -130,6 +130,19 @@ public class JsCgAdminController extends BaseController {
     }
 
     /**
+     * 受理协办成果拍卖挂牌下发
+     * @param ids
+     * @return
+     */
+    @PostMapping("/assistanceIssueBatch")
+    public ResponseUtil assistanceIssueBatch(@RequestBody List<Integer> ids){
+        if (!jsCgAdminService.assistanceIssueBatch(ids)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return  ResponseUtil.success("受理协办成果拍卖挂牌下发成功!");
+    }
+
+    /**
      * 批量删除
      */
     @PostMapping("/removeBatch")
@@ -138,18 +151,6 @@ public class JsCgAdminController extends BaseController {
         return  remove(jsCgAdminService.removeByIdsCg(ids));
     }
 
-    /**
-     * 受理协办下发
-     * @param ids
-     * @return
-     */
-    @PostMapping("/assistanceIssueBatch")
-    public R assistanceIssueBatch(@RequestBody List<String> ids){
-        List<Integer> list = new ArrayList<>();
-        for (String id : ids) {
-            list.add(Integer.valueOf(id));
-        }
-        return  remove(jsCgAdminService.assistanceIssueBatch(list));
-    }
+
 
 }
