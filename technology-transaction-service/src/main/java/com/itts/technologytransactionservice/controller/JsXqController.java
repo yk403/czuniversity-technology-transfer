@@ -115,12 +115,19 @@ public class JsXqController extends BaseController {
 
     /**
      * 已发布的需求招标申请(受理协办)
-     * @param tJsXq
+     * @param params
      * @return
      */
     @PutMapping("/assistanceUpdate")
-    public ResponseUtil assistanceUpdate(@RequestBody TJsXq tJsXq) {
-        if (!jsXqService.assistanceUpdateTJsXq(tJsXq)) {
+    public ResponseUtil assistanceUpdate(@RequestBody Map<String, Object> params) {
+        if (params.get("jylx") == null || params.get("id") == null) {
+            throw new WebException(REQUEST_PARAMS_ISEMPTY);
+        }
+        Integer jylx = Integer.valueOf(params.get("jylx").toString());
+        if (jylx != 1) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (!jsXqService.assistanceUpdateTJsXq(params,jylx)) {
             throw new WebException(MSG_AUDIT_FAIL);
         }
         return ResponseUtil.success("需求招标申请!");

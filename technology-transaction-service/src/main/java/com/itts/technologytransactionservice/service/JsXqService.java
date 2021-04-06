@@ -23,10 +23,10 @@ public interface JsXqService extends IService<TJsXq> {
 
 	/**
 	 * 已发布的需求招标申请(受理协办)
-	 * @param tJsXq
+	 * @param params
 	 * @return
 	 */
-	boolean assistanceUpdateTJsXq(TJsXq tJsXq);
+	boolean assistanceUpdateTJsXq(Map<String, Object> params,Integer jylx);
 
 	/**
 	 * 分页条件查询需求(前台)

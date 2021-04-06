@@ -55,10 +55,12 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 	@Override
 	public Boolean auditCg(Map<String, Object> params, Integer fbshzt) {
 		TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
-		if (params.get("fbshbz") != null) {
+		Object fbshbz = params.get("fbshbz");
+		if (fbshzt != 2 && fbshbz == null) {
+			return false;
+		} else if (fbshbz != null) {
 			tJsSh.setFbshbz(params.get("fbshbz").toString());
-		}
-		if (fbshzt == 2) {
+		} else if (fbshzt == 2) {
 			tJsSh.setReleaseStatus(2);
 		}
 		tJsSh.setFbshzt(fbshzt);
@@ -77,10 +79,12 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 	@Override
 	public Boolean auditXq(Map<String, Object> params, Integer fbshzt) {
 		TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
-		if (params.get("fbshbz") != null) {
+		Object fbshbz = params.get("fbshbz");
+		if (fbshzt != 2 && fbshbz == null) {
+			return false;
+		} else if (fbshbz != null) {
 			tJsSh.setFbshbz(params.get("fbshbz").toString());
-		}
-		if (fbshzt == 2) {
+		} else if (fbshzt == 2) {
 			tJsSh.setReleaseStatus(2);
 		}
 		tJsSh.setFbshzt(fbshzt);

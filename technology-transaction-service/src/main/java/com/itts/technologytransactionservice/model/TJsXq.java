@@ -186,4 +186,5 @@ public class TJsXq implements Serializable {
 	 * 发布审核备注
 	 */
 	private String fbshbz;
+
 }

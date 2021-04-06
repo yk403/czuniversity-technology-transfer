@@ -168,8 +168,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
         TJsXq tJsXqOld = jsXqMapper.selectByName(tJsXq.getXqmc());
         if(tJsXqOld != null){
             tJsXq.setId(tJsXqOld.getId());
-            //TODO 暂时假数据,管理员userId为1
-            tJsXq.setUserId(1);
+
             try {
                 jsXqMapper.updateById(tJsXq);
                 count++;
@@ -178,12 +177,15 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
             }
         }else{
             try {
+                //TODO 暂时假数据,管理员userId为1
+                tJsXq.setUserId(1);
                 tJsXq.setCjsj(new Date());
                 jsXqMapper.insert(tJsXq);
                 Integer id = tJsXq.getId();
                 TJsSh tJsSh = new TJsSh();
                 tJsSh.setLx(2);
                 tJsSh.setXqId(id);
+                tJsSh.setFbshzt(1);
                 tJsSh.setCjsj(new Date());
                 jsShMapper.insert(tJsSh);
                 count++;

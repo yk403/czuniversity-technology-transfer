@@ -1,6 +1,7 @@
 package com.itts.technologytransactionservice.controller;
 
 
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
@@ -15,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
-import static com.itts.common.enums.ErrorCodeEnum.MSG_AUDIT_FAIL;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
 /**
@@ -119,12 +119,19 @@ public class JsCgController extends BaseController {
 
     /**
      * 已发布的成果申请拍卖挂牌(受理协办)
-     * @param tJsCg
+     * @param params
      * @return
      */
     @PutMapping("/assistanceUpdate")
-    public ResponseUtil assistanceUpdate(@RequestBody TJsCg tJsCg) {
-        if (!jsCgService.assistanceUpdateTJsCg(tJsCg)) {
+    public ResponseUtil assistanceUpdate(@RequestBody Map<String, Object> params) {
+        if (params.get("jylx") == null) {
+            throw new WebException(REQUEST_PARAMS_ISEMPTY);
+        }
+        Integer jylx = Integer.valueOf(params.get("jylx").toString());
+        if (jylx != 0 && jylx != 2) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (!jsCgService.assistanceUpdateTJsCg(params,jylx)) {
             throw new WebException(MSG_AUDIT_FAIL);
         }
         return ResponseUtil.success("成果申请拍卖挂牌!");

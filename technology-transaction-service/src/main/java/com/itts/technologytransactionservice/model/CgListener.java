@@ -197,8 +197,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
         TJsCg tJsCgOld = jsCgMapper.selectByName(tJsCg.getCgmc());
         if(tJsCgOld != null){
             tJsCg.setId(tJsCgOld.getId());
-            //TODO 暂时假数据,管理员userId为1
-            tJsCg.setUserId(1);
+
             try {
                 jsCgMapper.updateById(tJsCg);
                 count++;
@@ -207,12 +206,15 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
             }
         }else{
             try {
+                //TODO 暂时假数据,管理员userId为1
+                tJsCg.setUserId(1);
                 tJsCg.setCjsj(new Date());
                 jsCgMapper.insert(tJsCg);
                 Integer id = tJsCg.getId();
                 TJsSh tJsSh = new TJsSh();
                 tJsSh.setLx(1);
                 tJsSh.setCgId(id);
+                tJsSh.setFbshzt(1);
                 tJsSh.setCjsj(new Date());
                 jsShMapper.insert(tJsSh);
                 count++;

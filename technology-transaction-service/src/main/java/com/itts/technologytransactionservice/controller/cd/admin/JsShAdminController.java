@@ -16,17 +16,18 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
+import static com.itts.common.enums.ErrorCodeEnum.AUDIT_MSG_ISEMPTY;
 import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
 
 
 /**
  * @Author: Austin
  * @Data: 2021/3/26
- * @Description: 技术审核管理
+ * @Description: 技术审核后台管理
  */
 
 @RequestMapping(ADMIN_BASE_URL+"/v1/JsSh")
-@Api(value = "JsShController", tags = "技术审核管理")
+@Api(value = "JsShController", tags = "技术审核后台管理")
 @RestController
 public class JsShAdminController extends BaseController {
     @Autowired
@@ -103,7 +104,10 @@ public class JsShAdminController extends BaseController {
         if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4){
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(JsShAdminService.auditCg(params,fbshzt));
+        if (!JsShAdminService.auditCg(params,fbshzt)) {
+            throw new WebException(AUDIT_MSG_ISEMPTY);
+        }
+        return ResponseUtil.success("审核成果完成!");
     }
 
     /**
@@ -117,7 +121,10 @@ public class JsShAdminController extends BaseController {
         if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4){
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(JsShAdminService.auditXq(params,fbshzt));
+        if (!JsShAdminService.auditXq(params,fbshzt)) {
+            throw new WebException(AUDIT_MSG_ISEMPTY);
+        }
+        return ResponseUtil.success("审核需求完成!");
     }
 
 }

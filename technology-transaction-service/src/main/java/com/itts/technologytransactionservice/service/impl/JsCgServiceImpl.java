@@ -181,17 +181,18 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 
     /**
      * 已发布的成果申请拍卖挂牌(受理协办)
-     * @param tJsCg
+     * @param params
      * @return
      */
     @Override
-    public boolean assistanceUpdateTJsCg(TJsCg tJsCg) {
-        TJsSh tJsSh = jsShService.selectByCgId(tJsCg.getId());
+    public boolean assistanceUpdateTJsCg(Map<String, Object> params,Integer jylx) {
+        TJsSh tJsSh = jsShService.selectByCgId(Integer.valueOf(params.get("id").toString()));
         if (tJsSh.getFbshzt() != 2) {
             log.error("发布审核状态未通过,无法申请拍卖挂牌!");
             return false;
         }
         tJsSh.setAssistanceStatus(1);
+        tJsSh.setJylx(jylx);
         tJsSh.setReleaseAssistanceStatus(1);
         if (!jsShService.updateById(tJsSh)) {
             log.error("更新审核失败!");
@@ -263,7 +264,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         }
     }
 
-	/**
+    /**
 	 * 批量删除成果
 	 * @param ids
 	 * @return
