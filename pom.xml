@@ -101,6 +101,13 @@
                 <version>${spring.boot.version}</version>
             </dependency>
 
+            <!-- amqp -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+
             <!-- 代码文档 -->
             <dependency>
                 <groupId>io.springfox</groupId>
