@@ -46,7 +46,7 @@
 	</select>
 
 	<select id="findJsCgFront" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.fbshbz
+		select cg.id as id,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.fbshbz,sh.jylx
 		from t_js_cg cg left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lb d on(cg.lb_id=d.id)
 		<where>
 			cg.is_delete = 0
@@ -60,6 +60,8 @@
 			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc = concat('%',#{map.cgmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
+			<if test="map.jylx != null and map.jylx != ''"> and sh.jylx = #{map.jylx} </if>
+			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
 		</where>
 	<choose>
 		<when test="map.sort != null and map.sort.trim() != ''">
@@ -71,7 +73,7 @@
 	</choose>
 </select>
 	<select id="findJsCg" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,user_id,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status
+		select cg.id as id,user_id,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx
 		from t_js_cg cg left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lb lb on(cg.lb_id=lb.id)
 		<where>
 			cg.is_delete = 0
@@ -83,6 +85,8 @@
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
 			<if test="map.fbshzt != null and map.fbshzt != ''"> and sh.fbshzt = #{map.fbshzt} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
+			<if test="map.jylx != null and map.jylx != ''"> and sh.jylx = #{map.jylx} </if>
+			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
 			<if test="map.type == 0"> and cg.user_id != #{map.userId} </if>
 		</where>
 		<choose>
