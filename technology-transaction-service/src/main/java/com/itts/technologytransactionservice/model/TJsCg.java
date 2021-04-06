@@ -201,5 +201,12 @@ public class TJsCg implements Serializable {
 	 * 发布审核备注
 	 */
 	private String fbshbz;
+	/**
+	 * 领域名称
+	 */
+	private String lyMc;
+	/**
+	 * 类别名称
+	 */
 
 }

@@ -87,11 +87,11 @@ public class JsXqAdminController extends BaseController {
      * 新增需求信息
      */
     @PostMapping("/save")
-    public ResponseUtil save(@RequestBody TJsXq tJsXq) {
+    public ResponseUtil save(@RequestBody TJsXq tJsXq,@RequestParam(value = "jylx",required = false)Integer jylx) {
         if (tJsXq.getId() != null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (!jsXqAdminService.saveXq(tJsXq)) {
+        if (!jsXqAdminService.saveXq(tJsXq,jylx)) {
             return ResponseUtil.error(NAME_EXIST_ERROR);
         }
         return ResponseUtil.success("新增需求信息成功!");

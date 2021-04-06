@@ -124,13 +124,13 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         log.info("【技术交易 - 新增成果信息:{},交易类型:{}】", tJsCg,jylx);
         save(tJsCg);
         TJsSh tJsSh = new TJsSh();
-        tJsSh.setLx(1);
-        tJsSh.setFbshzt(1);
-        if (jylx != null) {
+        if (jylx == null) {
+            tJsSh.setFbshzt(1);
+        } else {
             tJsSh.setJylx(jylx);
-            tJsSh.setAssistanceStatus(1);
-            //TODO 发布审核是否需要改变
+            tJsSh.setReleaseAssistanceStatus(1);
         }
+        tJsSh.setLx(1);
         tJsSh.setCgId(tJsCg.getId());
         tJsSh.setCjsj(new Date());
         jsShAdminService.save(tJsSh);
