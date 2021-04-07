@@ -174,6 +174,10 @@ public class TJsCg implements Serializable {
 	 */
 	private String lyName;
 	/**
+	 * 类别名称
+	 */
+	private String lbName;
+	/**
 	 * 协议
 	 */
 	private String agreement;
@@ -202,11 +206,8 @@ public class TJsCg implements Serializable {
 	 */
 	private String fbshbz;
 	/**
-	 * 领域名称
+	 * 交易类型
 	 */
-	private String lyMc;
-	/**
-	 * 类别名称
-	 */
+	private Integer jylx;
 
 }

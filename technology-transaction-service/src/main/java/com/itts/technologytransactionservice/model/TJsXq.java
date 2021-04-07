@@ -183,8 +183,8 @@ public class TJsXq implements Serializable {
 	 */
 	private String sjhm;
 	/**
-	 * 发布审核备注
+	 * 交易类型
 	 */
-	private String fbshbz;
+	private Integer jylx;
 
 }

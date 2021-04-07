@@ -98,7 +98,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
      * @return
      */
     @Override
-    public boolean saveXq(TJsXq tJsXq,Integer jylx) {
+    public boolean saveXq(TJsXq tJsXq) {
         TJsXq tJsXq2 = selectByName(tJsXq.getXqmc());
         if (tJsXq2 != null) {
             return false;
@@ -107,15 +107,17 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         tJsXq.setUserId(1);
         tJsXq.setReleaseType("技术需求");
         tJsXq.setCjsj(new Date());
-        log.info("【技术交易 - 新增需求信息:{}】", tJsXq);
-        save(tJsXq);
         TJsSh tJsSh = new TJsSh();
+        Integer jylx = tJsXq.getJylx();
         if (jylx == null) {
             tJsSh.setFbshzt(1);
         } else {
             tJsSh.setJylx(jylx);
             tJsSh.setReleaseAssistanceStatus(1);
         }
+        log.info("【技术交易 - 新增需求信息:{}】", tJsXq);
+        tJsXq.setJylx(null);
+        save(tJsXq);
         tJsSh.setLx(2);
         tJsSh.setXqId(tJsXq.getId());
         tJsSh.setCjsj(new Date());

@@ -83,11 +83,11 @@ public class JsCgAdminController extends BaseController {
      * 新增成果信息
      */
     @PostMapping("/save")
-    public ResponseUtil save(@RequestBody TJsCg tJsCg,@RequestParam(value = "jylx",required = false)Integer jylx) {
+    public ResponseUtil save(@RequestBody TJsCg tJsCg) {
         if (tJsCg.getId() != null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (!jsCgAdminService.saveCg(tJsCg,jylx)) {
+        if (!jsCgAdminService.saveCg(tJsCg)) {
             return ResponseUtil.error(NAME_EXIST_ERROR);
         }
         return ResponseUtil.success("新增成果信息成功!");

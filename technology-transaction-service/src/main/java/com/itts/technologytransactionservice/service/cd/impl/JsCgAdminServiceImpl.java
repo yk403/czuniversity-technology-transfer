@@ -112,7 +112,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
      * 新增成果信息
      */
     @Override
-    public boolean saveCg(TJsCg tJsCg,Integer jylx) {
+    public boolean saveCg(TJsCg tJsCg) {
         TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc());
         if (tJsCg2 != null) {
             return false;
@@ -121,15 +121,16 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         tJsCg.setUserId(1);
         tJsCg.setReleaseType("技术成果");
         tJsCg.setCjsj(new Date());
-        log.info("【技术交易 - 新增成果信息:{},交易类型:{}】", tJsCg,jylx);
-        save(tJsCg);
         TJsSh tJsSh = new TJsSh();
+        Integer jylx = tJsCg.getJylx();
         if (jylx == null) {
             tJsSh.setFbshzt(1);
         } else {
             tJsSh.setJylx(jylx);
             tJsSh.setReleaseAssistanceStatus(1);
         }
+        log.info("【技术交易 - 新增成果信息:{},交易类型:{}】", tJsCg,jylx);
+        save(tJsCg);
         tJsSh.setLx(1);
         tJsSh.setCgId(tJsCg.getId());
         tJsSh.setCjsj(new Date());

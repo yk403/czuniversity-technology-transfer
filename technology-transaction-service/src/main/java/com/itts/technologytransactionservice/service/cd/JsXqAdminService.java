@@ -22,7 +22,7 @@ public interface JsXqAdminService extends IService<TJsXq> {
 
 	TJsXq selectByName(String name);
 
-	boolean saveXq(TJsXq tJsXq,Integer jylx) ;
+	boolean saveXq(TJsXq tJsXq) ;
 
 	void updateTJsXq(TJsXq tJsXq);
 
