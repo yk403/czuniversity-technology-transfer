@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Slf4j
@@ -179,7 +180,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
             try {
                 //TODO 暂时假数据,管理员userId为1
                 tJsXq.setUserId(1);
-                tJsXq.setCjsj(new Date());
+                tJsXq.setCjsj(LocalDate.now());
                 jsXqMapper.insert(tJsXq);
                 Integer id = tJsXq.getId();
                 TJsSh tJsSh = new TJsSh();

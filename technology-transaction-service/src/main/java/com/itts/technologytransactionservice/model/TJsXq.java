@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -173,7 +174,7 @@ public class TJsXq implements Serializable {
 	/**
 	 * 创建时间
 	 */
-	private Date cjsj;
+	private LocalDate cjsj;
 	/**
 	 * 更新时间
 	 */

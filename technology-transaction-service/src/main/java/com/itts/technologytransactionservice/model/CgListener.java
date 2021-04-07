@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Slf4j
@@ -208,7 +209,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
             try {
                 //TODO 暂时假数据,管理员userId为1
                 tJsCg.setUserId(1);
-                tJsCg.setCjsj(new Date());
+                tJsCg.setCjsj(LocalDate.now());
                 jsCgMapper.insert(tJsCg);
                 Integer id = tJsCg.getId();
                 TJsSh tJsSh = new TJsSh();

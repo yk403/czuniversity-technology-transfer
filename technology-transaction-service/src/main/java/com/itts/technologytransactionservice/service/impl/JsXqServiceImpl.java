@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +77,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
             //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
             tJsXq.setUserId(2);
             tJsXq.setReleaseType("技术需求");
-            tJsXq.setCjsj(new Date());
+            tJsXq.setCjsj(LocalDate.now());
             save(tJsXq);
             TJsSh tJsSh = new TJsSh();
             tJsSh.setLx(2);

@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,6 +8,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -196,7 +198,7 @@ public class TJsCg implements Serializable {
 	/**
 	 * 创建时间
 	 */
-	private Date cjsj;
+	private LocalDate cjsj;
 	/**
 	 * 更新时间
 	 */

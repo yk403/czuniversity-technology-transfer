@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -120,7 +121,8 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
         tJsCg.setUserId(1);
         tJsCg.setReleaseType("技术成果");
-        tJsCg.setCjsj(new Date());
+        tJsCg.setCjsj(LocalDate.now());
+
         TJsSh tJsSh = new TJsSh();
         Integer jylx = tJsCg.getJylx();
         if (jylx == null) {

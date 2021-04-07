@@ -47,13 +47,13 @@ public class JsCgAdminController extends BaseController {
     @PostMapping("/page")
     public ResponseUtil findJsCg(@RequestBody Map<String, Object> params) {
         //前端传输标识type(0：审批管理;1：信息采集)
-        if (params.get("type") == null) {
+        /*if (params.get("type") == null) {
             Integer type = Integer.valueOf(params.get("type").toString());
             if (type != 0 && type != 1) {
                 throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
             }
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
+        }*/
         //查询用户录入成功信息列表
         PageInfo<TJsCg> page = jsCgAdminService.findJsCg(params);
         return ResponseUtil.success(page);
