@@ -20,6 +20,8 @@ public class SystemConstant {
      */
     public static final String BASE_URL = "/api";
 
+    public static final String WEBSOCKET_URL = "/websocket";
+
     /**
      * token前缀
      */

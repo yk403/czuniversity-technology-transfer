@@ -5,10 +5,9 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.RedisConstant;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
-import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.JwtUtil;
+import com.itts.common.utils.common.ResponseUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -51,15 +50,19 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
         //校验Token是否正确
         UsernamePasswordAuthenticationToken authenticationToken = this.getAuthentication(request);
+
         //Token校验失败
         if (authenticationToken == null) {
-            chain.doFilter(request, response);
-            return;
-        }
 
-        //如果Token正确，设置Token到上下⽂中
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        chain.doFilter(request, response);
+            response.setContentType("application/json;charset=utf-8");
+            response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.error(ErrorCodeEnum.NO_LOGIN_ERROR)));
+            return;
+        } else {
+
+            //如果Token正确，设置Token到上下⽂中
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            chain.doFilter(request, response);
+        }
     }
 
     /**
@@ -75,25 +78,23 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
         //验证当前用户token是否有效
         Object checkToken = redisTemplate.opsForValue().get(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + token);
         if (checkToken == null) {
-            throw new WebException(ErrorCodeEnum.NO_PERMISSION_ERROR);
+            return null;
         }
 
-        try {
+        Claims claims = JwtUtil.getTokenBody(token);
 
-            Claims claims = JwtUtil.getTokenBody(token);
-            LoginUser loginUser = JSONUtil.toBean(claims.get("data").toString(), LoginUser.class);
+        if(claims == null){
+            return null;
+        }
 
-            //将用户信息设置到threadLocal
-            SystemConstant.threadLocal.set(loginUser);
+        LoginUser loginUser = JSONUtil.toBean(claims.get("data").toString(), LoginUser.class);
 
-            //如果Token值正确，则返回认证信息
-            if (loginUser != null) {
-                return new UsernamePasswordAuthenticationToken(loginUser.getUserName(), null, new ArrayList<>());
-            }
+        //将用户信息设置到threadLocal
+        SystemConstant.threadLocal.set(loginUser);
 
-        } catch (ExpiredJwtException e) {
-            logger.error("Token已过期: {} " + e);
-            throw new WebException(ErrorCodeEnum.NO_PERMISSION_ERROR);
+        //如果Token值正确，则返回认证信息
+        if (loginUser != null) {
+            return new UsernamePasswordAuthenticationToken(loginUser.getUserName(), null, new ArrayList<>());
         }
 
         //校验Token失败

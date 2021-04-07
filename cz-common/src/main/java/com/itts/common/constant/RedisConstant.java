@@ -31,4 +31,9 @@ public class RedisConstant {
      * 用户目录菜单操作
      */
     public static final String USERSERVICE_MENUS_OPERTION = "itts:userservice:menus:operation:";
+
+    /**
+     * 拍卖大厅存放redis前缀
+     */
+    public static final String BID_ACTIVITY_PREFIX = "itts:bis:websocket:";
 }
