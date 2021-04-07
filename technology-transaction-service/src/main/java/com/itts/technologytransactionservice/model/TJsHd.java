@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -57,7 +58,7 @@ public class TJsHd implements Serializable {
 	/**
  	* 活动状态
  	*/
-	private String hdzt;
+	private Integer hdzt;
 	/**
  	* 创建时间
  	*/

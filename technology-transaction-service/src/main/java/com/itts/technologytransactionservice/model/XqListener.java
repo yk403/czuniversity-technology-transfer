@@ -131,7 +131,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
         }
         //活动id
         if(!StringUtils.isBlank(data.getJshdId())){
-            tJsXq.setJshdId(data.getJshdId());
+            tJsXq.setJshdId(Integer.parseInt(data.getJshdId()));
         }
         //发布类型
         tJsXq.setReleaseType("技术需求");

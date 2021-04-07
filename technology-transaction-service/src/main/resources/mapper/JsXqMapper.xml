@@ -19,6 +19,7 @@
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and d.release_status = #{map.releaseStatus} </if>
 			<if test="map.jylx != null and map.jylx != ''"> and sh.jylx = #{map.jylx} </if>
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
+			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 			<if test="map.type == 0"> and xq.user_id != #{map.userId} </if>
 		</where>
 		<choose>
@@ -80,6 +81,7 @@
 			<if test="map.jylx != null and map.jylx != ''"> and sh.jylx = #{map.jylx} </if>
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
+			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">
@@ -112,7 +114,7 @@
 			<if test="lxrdh != null">lxrdh = #{lxrdh},</if>
 			<if test="zj != null">zj = #{zj},</if>
 			<if test="dzyx != null">dzyx = #{dzyx},</if>
-			<if test="jshdId != null">jshdId = #{jshdId},</if>
+			<if test="jshdId != null">jshd_id = #{jshdId},</if>
 			<if test="zzjgdm != null">zzjgdm = #{zzjgdm},</if>
 			<if test="isDelete != null">is_delete = #{isDelete},</if>
 			<if test="contracts != null">contracts = #{contracts},</if>

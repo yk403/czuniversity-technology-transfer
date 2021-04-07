@@ -160,7 +160,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
         }
         //活动id
         if(!StringUtils.isBlank(data.getJshdId())){
-            tJsCg.setJshdId(Long.parseLong(data.getJshdId()));
+            tJsCg.setJshdId(Integer.parseInt(data.getJshdId()));
         }
         //发布类型
         tJsCg.setReleaseType("技术成果");

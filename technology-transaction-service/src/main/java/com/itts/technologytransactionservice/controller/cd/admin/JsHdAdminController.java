@@ -1,10 +1,13 @@
 package com.itts.technologytransactionservice.controller.cd.admin;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.controller.BaseController;
+import com.itts.technologytransactionservice.model.JsHdDTO;
 import com.itts.technologytransactionservice.model.TJsHd;
 import com.itts.technologytransactionservice.service.JsHdService;
 import io.swagger.annotations.Api;
@@ -16,6 +19,8 @@ import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.enums.ErrorCodeEnum.INSERT_FAIL;
+import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
 
 
 /**
@@ -25,7 +30,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
  */
 
 @RequestMapping(ADMIN_BASE_URL+"/v1/JsHd")
-@Api(value = "JsHdController", tags = "技术活动管理")
+@Api(value = "JsHdAdminController", tags = "技术活动后台管理")
 @RestController
 public class JsHdAdminController extends BaseController {
     @Autowired
@@ -56,12 +61,17 @@ public class JsHdAdminController extends BaseController {
     }
 
     /**
-     * 保存
+     * 新增技术活动
      */
     @PostMapping("/save")
-    public R save(@RequestBody TJsHd tJsHd) {
-        boolean result = jsHdService.save(tJsHd);
-        return save(result);
+    public ResponseUtil save(@RequestBody JsHdDTO jsHdDTO) {
+        if (jsHdDTO.getHdlx() != 0 && jsHdDTO.getHdlx() != 1 && jsHdDTO.getHdlx() != 2) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (!jsHdService.add(jsHdDTO)) {
+            throw new WebException(INSERT_FAIL);
+        }
+        return ResponseUtil.success("新增技术活动成功!");
     }
 
     /**
