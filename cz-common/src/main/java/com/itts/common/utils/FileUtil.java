@@ -115,13 +115,18 @@ public class FileUtil {
 		}
 		inputStream.close();
 		FastDFSFile file = new FastDFSFile(fileName,file_buff,ext);
-		fileAbsolutPath = FastDFSClient.upload(file);
-		if(fileAbsolutPath==null){
-			log.error("【文件上传失败】");
-			throw new ServiceException(ErrorCodeEnum.UPLOAD_FAIL_ERROR);
+		if(file == null){
+			log.error("文件上传失败, 文件为空");
+		}else{
+			fileAbsolutPath = FastDFSClient.upload(file);
+			if(fileAbsolutPath==null){
+				log.error("【文件上传失败】");
+				throw new ServiceException(ErrorCodeEnum.UPLOAD_FAIL_ERROR);
+			}
+			String path = FastDFSClient.getTrackerUrl()+"/"+fileAbsolutPath[0]+"/"+fileAbsolutPath[1];
+			log.info("【文件上传成功】,path: {}",path);
+			return path;
 		}
-		String path = FastDFSClient.getTrackerUrl()+"/"+fileAbsolutPath[0]+"/"+fileAbsolutPath[1];
-		log.info("【文件上传成功】,path: {}",path);
-		return path;
+		return null;
 	}
 }
