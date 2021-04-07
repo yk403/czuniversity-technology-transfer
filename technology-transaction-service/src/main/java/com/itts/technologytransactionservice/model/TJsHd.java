@@ -75,5 +75,8 @@ public class TJsHd implements Serializable {
 	 * 活动内容
 	 */
 	private String hdnr;
-
+	/**
+	 * 活动发布状态
+	 */
+	private Integer hdfbzt;
 }

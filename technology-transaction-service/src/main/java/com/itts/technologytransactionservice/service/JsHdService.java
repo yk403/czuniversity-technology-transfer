@@ -7,17 +7,19 @@ import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.JsHdDTO;
 import com.itts.technologytransactionservice.model.TJsHd;
 
+import java.util.List;
+
 
 /**
- * 
- * 
- * @author xp
- * @email 15161575502@163.com
- * @date 2021-02-22 11:17:27
+ * @Author: Austin
+ * @Data: 2021/3/26
+ * @Description: 技术活动管理接口
  */
 public interface JsHdService extends IService<TJsHd> {
 
 	PageInfo page(Query query);
 
     boolean add(JsHdDTO jsHdDTO);
+
+    boolean issueBatch(List<Integer> ids);
 }

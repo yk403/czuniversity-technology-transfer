@@ -3,6 +3,8 @@ package com.itts.technologytransactionservice.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
 import com.itts.technologytransactionservice.mapper.JsHdMapper;
@@ -23,7 +25,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+import static com.itts.common.enums.ErrorCodeEnum.INSERT_FAIL;
+import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 
+/**
+ * @Author: Austin
+ * @Data: 2021/3/26
+ * @Description: 技术活动业务逻辑
+ */
 @Service
 @Primary
 @Slf4j
@@ -76,6 +85,27 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 				TJsXq tJsXq = jsXqMapper.getById(id);
 				tJsXq.setJshdId(tJsHd.getId());
 				jsXqMapper.updateTJsXq(tJsXq);
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 批量发布活动
+	 * @param ids
+	 * @return
+	 */
+	@Override
+	public boolean issueBatch(List<Integer> ids) {
+		log.info("【技术交易 - 批量发布活动,ids:{}】",ids);
+		List<TJsHd> tJsHds = jsHdMapper.selectBatchIds(ids);
+		for (TJsHd tJsHd : tJsHds) {
+			tJsHd.setHdfbzt(1);
+			try {
+				jsHdMapper.updateById(tJsHd);
+			} catch (Exception e) {
+				log.error("更新失败!",e);
+				throw new ServiceException(UPDATE_FAIL);
 			}
 		}
 		return true;
