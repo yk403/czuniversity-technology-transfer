@@ -187,5 +187,8 @@ public class TJsXq implements Serializable {
 	 * 交易类型
 	 */
 	private Integer jylx;
-
+	/**
+	 * 受理协办发布状态（1 未发布 2 已发布）
+	 */
+	private Integer releaseAssistanceStatus;
 }
