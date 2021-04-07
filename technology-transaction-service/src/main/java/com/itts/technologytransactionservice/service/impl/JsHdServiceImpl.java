@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -59,6 +60,7 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 		TJsHd tJsHd = new TJsHd();
 		Integer hdlx = jsHdDTO.getHdlx();
 		List<Integer> ids = jsHdDTO.getIds();
+		jsHdDTO.setCjsj(new Date());
 		BeanUtils.copyProperties(jsHdDTO,tJsHd);
 		if (!jsHdService.save(tJsHd)) {
 			return false;
