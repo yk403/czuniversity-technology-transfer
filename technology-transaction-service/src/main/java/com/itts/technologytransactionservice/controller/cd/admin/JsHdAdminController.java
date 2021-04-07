@@ -19,14 +19,13 @@ import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
-import static com.itts.common.enums.ErrorCodeEnum.INSERT_FAIL;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
 /**
  * @Author: Austin
  * @Data: 2021/3/26
- * @Description: 技术活动管理
+ * @Description: 技术活动后台管理
  */
 
 @RequestMapping(ADMIN_BASE_URL+"/v1/JsHd")
@@ -99,6 +98,18 @@ public class JsHdAdminController extends BaseController {
     public R removeBatch(@RequestBody List<Long> ids){
         boolean result = jsHdService.removeByIds(ids);
         return  remove(result);
+    }
+
+    /**
+     * 批量发布活动
+     * @return
+     */
+    @PutMapping("/issueBatch")
+    public ResponseUtil issueBatch(@RequestBody List<Integer> ids) {
+        if (!jsHdService.issueBatch(ids)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("批量发布活动成功!");
     }
 
 }
