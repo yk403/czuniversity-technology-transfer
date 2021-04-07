@@ -51,13 +51,13 @@ public class JsXqAdminController extends BaseController {
     @PostMapping("/page")
     public ResponseUtil findJsXq(@RequestBody Map<String, Object> params) {
         //前端传输标识type(0：审批管理;1：信息采集)
-        if (params.get("type") == null) {
+       /* if (params.get("type") == null) {
             Integer type = Integer.valueOf(params.get("type").toString());
             if (type != 0 && type != 1) {
                 throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
             }
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
+        }*/
         //查询用户录入成功信息列表
         PageInfo<TJsXq> page = jsXqAdminService.findJsXq(params);
         return ResponseUtil.success(page);
@@ -134,6 +134,17 @@ public class JsXqAdminController extends BaseController {
     }
 
     /**
+     * 受理协办需求招标下发
+     */
+    @PostMapping("/assistanceIssueBatch")
+    public ResponseUtil assistanceIssueBatch(@RequestBody List<Integer> ids) {
+        if (!jsXqAdminService.assistanceIssueBatch(ids)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("受理协办需求招标下发成功!");
+    }
+
+    /**
      * 分页条件查询
      *
      * @param params
@@ -164,17 +175,6 @@ public class JsXqAdminController extends BaseController {
         return remove(result);
     }
 
-    /**
-     * 受理协办下发
-     */
-    @PostMapping("/assistanceIssueBatch")
-    public R assistanceIssueBatch(@RequestBody List<String> ids) {
-        List<Integer> list = new ArrayList<>();
-        for (String id : ids) {
-            list.add(Integer.valueOf(id));
-        }
-        boolean result = jsXqAdminService.assistanceIssueBatch(list);
-        return remove(result);
-    }
+
 
 }

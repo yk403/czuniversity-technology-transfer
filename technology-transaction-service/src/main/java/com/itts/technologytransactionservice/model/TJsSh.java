@@ -75,6 +75,10 @@ public class TJsSh implements Serializable {
 	 */
 	private Integer assistanceStatus;
 	/**
+	 * 交易类型（0：拍卖；1：招标；2：挂牌）
+	 */
+	private Integer jylx;
+	/**
 	 * 受理协办发布状态
 	 * 1 未发布 2已发布
 	 */

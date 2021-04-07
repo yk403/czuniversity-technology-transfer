@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
+import com.itts.technologytransactionservice.model.JsHdDTO;
 import com.itts.technologytransactionservice.model.TJsHd;
 
 
@@ -18,4 +19,5 @@ public interface JsHdService extends IService<TJsHd> {
 
 	PageInfo page(Query query);
 
+    boolean add(JsHdDTO jsHdDTO);
 }

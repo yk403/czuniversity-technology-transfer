@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +77,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
             //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
             tJsXq.setUserId(2);
             tJsXq.setReleaseType("技术需求");
-            tJsXq.setCjsj(new Date());
+            tJsXq.setCjsj(LocalDate.now());
             save(tJsXq);
             TJsSh tJsSh = new TJsSh();
             tJsSh.setLx(2);
@@ -213,17 +215,18 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
 
     /**
      * 已发布的需求申请招标(受理协办)
-     * @param tJsXq
+     * @param params
      * @return
      */
     @Override
-    public boolean assistanceUpdateTJsXq(TJsXq tJsXq) {
-        TJsSh tJsSh = jsShService.selectByXqId(tJsXq.getId());
+    public boolean assistanceUpdateTJsXq(Map<String, Object> params,Integer jylx) {
+        TJsSh tJsSh = jsShService.selectByXqId(Integer.valueOf(params.get("id").toString()));
         if (tJsSh.getFbshzt() != 2) {
             log.error("发布审核状态未通过,无法申请拍卖挂牌!");
             return false;
         }
         tJsSh.setAssistanceStatus(1);
+        tJsSh.setJylx(jylx);
         tJsSh.setReleaseAssistanceStatus(1);
         if (!jsShService.updateById(tJsSh)) {
             log.error("更新审核失败!");

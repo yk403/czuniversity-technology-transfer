@@ -70,14 +70,14 @@ public class DateUtils {
 
     }
 
-    public static String format(Date date) {
+    public static Date format(Date date) throws ParseException {
         return format(date, DATE_PATTERN);
     }
 
-    public static String format(Date date, String pattern) {
+    public static Date format(Date date, String pattern) throws ParseException {
         if (date != null) {
             SimpleDateFormat df = new SimpleDateFormat(pattern);
-            return df.format(date);
+            return df.parse(df.format(date));
         }
         return null;
     }

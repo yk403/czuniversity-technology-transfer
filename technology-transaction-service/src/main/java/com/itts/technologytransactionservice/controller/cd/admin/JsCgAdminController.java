@@ -47,13 +47,13 @@ public class JsCgAdminController extends BaseController {
     @PostMapping("/page")
     public ResponseUtil findJsCg(@RequestBody Map<String, Object> params) {
         //前端传输标识type(0：审批管理;1：信息采集)
-        if (params.get("type") == null) {
+        /*if (params.get("type") == null) {
             Integer type = Integer.valueOf(params.get("type").toString());
             if (type != 0 && type != 1) {
                 throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
             }
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
+        }*/
         //查询用户录入成功信息列表
         PageInfo<TJsCg> page = jsCgAdminService.findJsCg(params);
         return ResponseUtil.success(page);
@@ -130,6 +130,19 @@ public class JsCgAdminController extends BaseController {
     }
 
     /**
+     * 受理协办成果拍卖挂牌下发
+     * @param ids
+     * @return
+     */
+    @PostMapping("/assistanceIssueBatch")
+    public ResponseUtil assistanceIssueBatch(@RequestBody List<Integer> ids){
+        if (!jsCgAdminService.assistanceIssueBatch(ids)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return  ResponseUtil.success("受理协办成果拍卖挂牌下发成功!");
+    }
+
+    /**
      * 批量删除
      */
     @PostMapping("/removeBatch")
@@ -138,18 +151,6 @@ public class JsCgAdminController extends BaseController {
         return  remove(jsCgAdminService.removeByIdsCg(ids));
     }
 
-    /**
-     * 受理协办下发
-     * @param ids
-     * @return
-     */
-    @PostMapping("/assistanceIssueBatch")
-    public R assistanceIssueBatch(@RequestBody List<String> ids){
-        List<Integer> list = new ArrayList<>();
-        for (String id : ids) {
-            list.add(Integer.valueOf(id));
-        }
-        return  remove(jsCgAdminService.assistanceIssueBatch(list));
-    }
+
 
 }

@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -113,19 +114,26 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
      */
     @Override
     public boolean saveCg(TJsCg tJsCg) {
-        TJsCg tJsCg2 = selectByName(tJsCg.getCgmc());
+        TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc());
         if (tJsCg2 != null) {
             return false;
         }
         //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
         tJsCg.setUserId(1);
         tJsCg.setReleaseType("技术成果");
-        tJsCg.setCjsj(new Date());
-        log.info("【技术交易 - 新增成果信息:{}】", tJsCg);
-        save(tJsCg);
+        tJsCg.setCjsj(LocalDate.now());
+
         TJsSh tJsSh = new TJsSh();
+        Integer jylx = tJsCg.getJylx();
+        if (jylx == null) {
+            tJsSh.setFbshzt(1);
+        } else {
+            tJsSh.setJylx(jylx);
+            tJsSh.setReleaseAssistanceStatus(1);
+        }
+        log.info("【技术交易 - 新增成果信息:{},交易类型:{}】", tJsCg,jylx);
+        save(tJsCg);
         tJsSh.setLx(1);
-        tJsSh.setFbshzt(1);
         tJsSh.setCgId(tJsCg.getId());
         tJsSh.setCjsj(new Date());
         jsShAdminService.save(tJsSh);
@@ -164,22 +172,22 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     }
 
 	/**
-	 * 技术转让受理批量下发
+	 * 技术拍卖挂牌受理批量下发
 	 * @param ids
 	 * @return
 	 */
-	@Override
+    @Override
     public boolean assistanceIssueBatch(List<Integer> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return false;
-        } else {
-            List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(ids);
-            for (TJsSh tJsShe : tJsShes) {
-                tJsShe.setReleaseAssistanceStatus(2);
-            }
-            jsShAdminService.updateBatchById(tJsShes);
-            return true;
+        log.info("【技术交易 - 技术拍卖挂牌受理批量下发,id:{}!】",ids);
+        List<TJsSh> tJsShes = jsShMapper.selectByCgIds(ids);
+        for (TJsSh tJsShe : tJsShes) {
+            tJsShe.setAssistanceStatus(2);
+            tJsShe.setReleaseAssistanceStatus(2);
         }
+        if (!jsShAdminService.updateBatchById(tJsShes)) {
+            return false;
+        }
+        return true;
     }
 
 	/**

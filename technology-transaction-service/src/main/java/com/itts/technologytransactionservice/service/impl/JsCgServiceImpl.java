@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.DateUtils;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,7 +83,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     }
 
     /**
-     *
+     *新增成果信息
      * @param tJsCg
      * @return
      */
@@ -89,14 +92,14 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         if (tJsCg.getId() != null) {
             return false;
         } else {
-            TJsCg tJsCg2 = selectByName(tJsCg.getCgmc());
+            TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc());
             if (tJsCg2 != null) {
                 return false;
             }
             //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
             tJsCg.setUserId(2);
             tJsCg.setReleaseType("技术成果");
-            tJsCg.setCjsj(new Date());
+            tJsCg.setCjsj(LocalDate.now());
             log.info("【技术交易 - 新增成果信息】",tJsCg);
             save(tJsCg);
             TJsSh tJsSh = new TJsSh();
@@ -181,17 +184,18 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 
     /**
      * 已发布的成果申请拍卖挂牌(受理协办)
-     * @param tJsCg
+     * @param params
      * @return
      */
     @Override
-    public boolean assistanceUpdateTJsCg(TJsCg tJsCg) {
-        TJsSh tJsSh = jsShService.selectByCgId(tJsCg.getId());
+    public boolean assistanceUpdateTJsCg(Map<String, Object> params,Integer jylx) {
+        TJsSh tJsSh = jsShService.selectByCgId(Integer.valueOf(params.get("id").toString()));
         if (tJsSh.getFbshzt() != 2) {
             log.error("发布审核状态未通过,无法申请拍卖挂牌!");
             return false;
         }
         tJsSh.setAssistanceStatus(1);
+        tJsSh.setJylx(jylx);
         tJsSh.setReleaseAssistanceStatus(1);
         if (!jsShService.updateById(tJsSh)) {
             log.error("更新审核失败!");
@@ -263,7 +267,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         }
     }
 
-	/**
+    /**
 	 * 批量删除成果
 	 * @param ids
 	 * @return

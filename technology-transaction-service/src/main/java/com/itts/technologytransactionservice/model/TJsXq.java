@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -116,7 +117,7 @@ public class TJsXq implements Serializable {
 	/**
  	* 技术活动id
  	*/
-	private String jshdId;
+	private Integer jshdId;
 	/**
 	 * 发布需求审核状态(0待提交、1待审核、2通过、3整改、4拒绝)
 	 */
@@ -173,7 +174,7 @@ public class TJsXq implements Serializable {
 	/**
 	 * 创建时间
 	 */
-	private Date cjsj;
+	private LocalDate cjsj;
 	/**
 	 * 更新时间
 	 */
@@ -183,7 +184,8 @@ public class TJsXq implements Serializable {
 	 */
 	private String sjhm;
 	/**
-	 * 发布审核备注
+	 * 交易类型
 	 */
-	private String fbshbz;
+	private Integer jylx;
+
 }

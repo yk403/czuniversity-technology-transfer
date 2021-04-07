@@ -31,7 +31,7 @@ public interface JsCgMapper extends BaseMapper<TJsCg> {
 	List<TJsCg> findJsCgFront(@Param("map") Map map);
 
 	/**
-	 * 根据成果名称查询
+	 * 根据成果名称精准查询
 	 * @param name
 	 * @return
 	 */
@@ -48,6 +48,5 @@ public interface JsCgMapper extends BaseMapper<TJsCg> {
 
 	@Select("select * from t_js_cg where id = #{id} and is_delete = 0")
 	TJsCg getById(Integer id);
-
 
 }

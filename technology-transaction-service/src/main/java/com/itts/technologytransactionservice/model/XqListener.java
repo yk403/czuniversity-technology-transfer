@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Slf4j
@@ -130,7 +131,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
         }
         //活动id
         if(!StringUtils.isBlank(data.getJshdId())){
-            tJsXq.setJshdId(data.getJshdId());
+            tJsXq.setJshdId(Integer.parseInt(data.getJshdId()));
         }
         //发布类型
         tJsXq.setReleaseType("技术需求");
@@ -168,6 +169,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
         TJsXq tJsXqOld = jsXqMapper.selectByName(tJsXq.getXqmc());
         if(tJsXqOld != null){
             tJsXq.setId(tJsXqOld.getId());
+
             try {
                 jsXqMapper.updateById(tJsXq);
                 count++;
@@ -176,12 +178,15 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
             }
         }else{
             try {
-                tJsXq.setCjsj(new Date());
+                //TODO 暂时假数据,管理员userId为1
+                tJsXq.setUserId(1);
+                tJsXq.setCjsj(LocalDate.now());
                 jsXqMapper.insert(tJsXq);
                 Integer id = tJsXq.getId();
                 TJsSh tJsSh = new TJsSh();
                 tJsSh.setLx(2);
                 tJsSh.setXqId(id);
+                tJsSh.setFbshzt(1);
                 tJsSh.setCjsj(new Date());
                 jsShMapper.insert(tJsSh);
                 count++;

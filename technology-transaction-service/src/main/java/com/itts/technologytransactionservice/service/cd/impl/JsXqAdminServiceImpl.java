@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -106,12 +107,19 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
         tJsXq.setUserId(1);
         tJsXq.setReleaseType("技术需求");
-        tJsXq.setCjsj(new Date());
-        log.info("【技术交易 - 新增需求信息:{}】", tJsXq);
-        save(tJsXq);
+        tJsXq.setCjsj(LocalDate.now());
         TJsSh tJsSh = new TJsSh();
+        Integer jylx = tJsXq.getJylx();
+        if (jylx == null) {
+            tJsSh.setFbshzt(1);
+        } else {
+            tJsSh.setJylx(jylx);
+            tJsSh.setReleaseAssistanceStatus(1);
+        }
+        log.info("【技术交易 - 新增需求信息:{}】", tJsXq);
+        tJsXq.setJylx(null);
+        save(tJsXq);
         tJsSh.setLx(2);
-        tJsSh.setFbshzt(1);
         tJsSh.setXqId(tJsXq.getId());
         tJsSh.setCjsj(new Date());
         jsShAdminService.save(tJsSh);
@@ -174,24 +182,20 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     }
 
     /**
-     * 技术转让受理批量下发
+     * 技术招标受理批量下发
      */
     @Override
     public boolean assistanceIssueBatch(List<Integer> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return false;
-        } else {
-            List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(ids);
-            for (TJsSh tJsShe : tJsShes) {
-                tJsShe.setReleaseAssistanceStatus(2);
-            }
-            jsShAdminService.updateBatchById(tJsShes);
-            return true;
+        log.info("【技术交易 - 技术招标受理批量下发,id:{}】",ids);
+        List<TJsSh> tJsShes = jsShMapper.selectByXqIds(ids);
+        for (TJsSh tJsShe : tJsShes) {
+            tJsShe.setAssistanceStatus(2);
+            tJsShe.setReleaseAssistanceStatus(2);
         }
-
+        if (!jsShAdminService.updateBatchById(tJsShes)) {
+            return false;
+        }
+        return true;
     }
-
-
-
 
 }

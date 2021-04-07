@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Slf4j
@@ -159,7 +160,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
         }
         //活动id
         if(!StringUtils.isBlank(data.getJshdId())){
-            tJsCg.setJshdId(Long.parseLong(data.getJshdId()));
+            tJsCg.setJshdId(Integer.parseInt(data.getJshdId()));
         }
         //发布类型
         tJsCg.setReleaseType("技术成果");
@@ -197,6 +198,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
         TJsCg tJsCgOld = jsCgMapper.selectByName(tJsCg.getCgmc());
         if(tJsCgOld != null){
             tJsCg.setId(tJsCgOld.getId());
+
             try {
                 jsCgMapper.updateById(tJsCg);
                 count++;
@@ -205,12 +207,15 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
             }
         }else{
             try {
-                tJsCg.setCjsj(new Date());
+                //TODO 暂时假数据,管理员userId为1
+                tJsCg.setUserId(1);
+                tJsCg.setCjsj(LocalDate.now());
                 jsCgMapper.insert(tJsCg);
                 Integer id = tJsCg.getId();
                 TJsSh tJsSh = new TJsSh();
                 tJsSh.setLx(1);
                 tJsSh.setCgId(id);
+                tJsSh.setFbshzt(1);
                 tJsSh.setCjsj(new Date());
                 jsShMapper.insert(tJsSh);
                 count++;

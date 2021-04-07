@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -48,19 +50,19 @@ public class TJsHd implements Serializable {
 	/**
  	* 活动开始时间
  	*/
-	private String hdkssj;
+	private Date hdkssj;
 	/**
  	* 活动结束时间
  	*/
-	private String hdssj;
+	private Date hdssj;
 	/**
  	* 活动状态
  	*/
-	private String hdzt;
+	private Integer hdzt;
 	/**
  	* 创建时间
  	*/
-	private String cjsj;
+	private Date cjsj;
 	/**
 	 * 咨询电话
 	 */
