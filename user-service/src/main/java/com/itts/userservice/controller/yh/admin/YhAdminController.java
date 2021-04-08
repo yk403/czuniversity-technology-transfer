@@ -46,10 +46,9 @@ public class YhAdminController {
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "type", required = false) String type) {
 
-        if(StringUtils.isNotBlank(type)){
-            if (!UserTypeEnum.check(type)) {
-                throw new WebException(-1, "参数不合法");
-            }
+        if(StringUtils.isNotBlank(type) && (!UserTypeEnum.check(type))){
+
+                throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         PageInfo<Yh> byPage = yhService.findByPage(pageNum, pageSize, type);
