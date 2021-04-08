@@ -9,6 +9,7 @@ import com.itts.userservice.model.cz.Cz;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.vo.JgglVO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ import java.util.List;
  * @author fl
  * @since 2021-03-30
  */
+@Api(tags = "机构管理")
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL+"/jggl")
 public class JgglController {

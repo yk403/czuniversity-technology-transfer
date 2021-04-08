@@ -8,6 +8,7 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.YhVO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Author：lym
  * @Date: 2021/3/29
  */
+@Api(tags = "用户")
 @RequestMapping(SystemConstant.BASE_URL + "/v1/yh")
 @RestController
 public class YhController {
