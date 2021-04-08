@@ -44,21 +44,15 @@ public class YhServiceImpl implements YhService {
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<Yh> findByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<Yh> findByPage(Integer pageNum, Integer pageSize, String type) {
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Yh> query = new QueryWrapper<>();
         query.eq("sfsc", false);
-        List<Yh> list = yhMapper.selectList(query);
-        PageInfo<Yh> page = new PageInfo<>(list);
-        return page;
-    }
 
-    @Override
-    public PageInfo<Yh> findInByPage(Integer pageNum, Integer pageSize, String type) {
-        PageHelper.startPage(pageNum, pageSize);
-        QueryWrapper<Yh> query = new QueryWrapper<>();
-        query.eq("sfsc", false)
-             .eq("yhlx",type);
+        if(StringUtils.isNotBlank(type)){
+            query.eq("yhlx", type);
+        }
+
         List<Yh> list = yhMapper.selectList(query);
         PageInfo<Yh> page = new PageInfo<>(list);
         return page;

@@ -21,12 +21,7 @@ public interface YhService {
     /**
      * 查询列表
      */
-    PageInfo<Yh> findByPage(Integer pageNum, Integer pageSize);
-
-    /**
-     * 查询列表
-     */
-    PageInfo<Yh> findInByPage(Integer pageNum, Integer pageSize, String type);
+    PageInfo<Yh> findByPage(Integer pageNum, Integer pageSize, String type);
 
     /**
      * 获取详情
