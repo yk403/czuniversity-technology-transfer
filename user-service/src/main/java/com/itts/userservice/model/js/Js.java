@@ -46,10 +46,7 @@ public class Js implements Serializable {
      */
     private String xtlx;
 
-    /**
-     * 是否是内部角色
-     */
-    private Boolean sfnb;
+
 
     /**
      * 是否为默认角色

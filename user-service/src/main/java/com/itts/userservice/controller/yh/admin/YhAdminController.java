@@ -6,6 +6,7 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.userservice.enmus.UserTypeEnum;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.yh.YhService;
 import io.swagger.annotations.Api;
@@ -43,6 +44,25 @@ public class YhAdminController {
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         PageInfo<Yh> byPage = yhService.findByPage(pageNum, pageSize);
+        return ResponseUtil.success(byPage);
+    }
+    /**
+     * 获取列表 - 分页
+     *
+     * @param pageNum pageSize
+     * @author fl
+     */
+    @GetMapping("/get/by/type/")
+    @ApiOperation(value = "获取类型用户列表")
+    public ResponseUtil findInByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                     @RequestParam(value = "type") String type) {
+
+        if(!UserTypeEnum.check(type)){
+            throw new WebException(-1, "参数不合法");
+        }
+
+        PageInfo<Yh> byPage = yhService.findInByPage(pageNum, pageSize, type);
         return ResponseUtil.success(byPage);
     }
 

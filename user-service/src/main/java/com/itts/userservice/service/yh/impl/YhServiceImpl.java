@@ -53,6 +53,17 @@ public class YhServiceImpl implements YhService {
         return page;
     }
 
+    @Override
+    public PageInfo<Yh> findInByPage(Integer pageNum, Integer pageSize, String type) {
+        PageHelper.startPage(pageNum, pageSize);
+        QueryWrapper<Yh> query = new QueryWrapper<>();
+        query.eq("sfsc", false)
+             .eq("yhlx",type);
+        List<Yh> list = yhMapper.selectList(query);
+        PageInfo<Yh> page = new PageInfo<>(list);
+        return page;
+    }
+
     /**
      * 获取详情
      */

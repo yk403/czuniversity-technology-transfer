@@ -14,6 +14,7 @@
         <result column="yhlx" property="yhlx"/>
         <result column="yhjb" property="yhjb"/>
         <result column="jg_id" property="jgId"/>
+        <result column="yhyx" property="yhyx"/>
         <result column="sfsc" property="sfsc"/>
         <result column="cjsj" property="cjsj"/>
         <result column="cjr" property="cjr"/>
@@ -24,7 +25,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id
-        , yhm, mm, yhbh, zsxm, lxdh, yhtx, yhlx, yhjb, jg_id, sfsc, cjsj, cjr, gxsj, gxr
+        , yhm, mm, yhbh, zsxm, lxdh, yhtx, yhlx, yhjb, jg_id, yhyx, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
     <!-- 角色列表，包含菜单fl-->

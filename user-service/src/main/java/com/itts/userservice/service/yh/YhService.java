@@ -24,6 +24,11 @@ public interface YhService {
     PageInfo<Yh> findByPage(Integer pageNum, Integer pageSize);
 
     /**
+     * 查询列表
+     */
+    PageInfo<Yh> findInByPage(Integer pageNum, Integer pageSize, String type);
+
+    /**
      * 获取详情
      */
     Yh get(Long id);

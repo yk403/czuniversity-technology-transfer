@@ -77,6 +77,11 @@ public class Yh implements Serializable {
     private Long jgId;
 
     /**
+     * 用户邮箱
+     */
+    private String yhyx;
+
+    /**
      * 是否删除
      */
     private Boolean sfsc;
