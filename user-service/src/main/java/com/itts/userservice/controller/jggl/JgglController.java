@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Api(tags = "机构管理")
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL+"/jggl")
+@RequestMapping(SystemConstant.ADMIN_BASE_URL+"/v1/jggl")
 public class JgglController {
 
     @Resource
