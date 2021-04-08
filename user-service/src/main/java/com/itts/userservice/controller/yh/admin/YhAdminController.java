@@ -11,6 +11,7 @@ import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.yh.YhService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,27 +43,16 @@ public class YhAdminController {
     @GetMapping("/list/")
     @ApiOperation(value = "获取列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        PageInfo<Yh> byPage = yhService.findByPage(pageNum, pageSize);
-        return ResponseUtil.success(byPage);
-    }
-    /**
-     * 获取列表 - 分页
-     *
-     * @param pageNum pageSize
-     * @author fl
-     */
-    @GetMapping("/get/by/type/")
-    @ApiOperation(value = "获取类型用户列表")
-    public ResponseUtil findInByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                     @RequestParam(value = "type") String type) {
+                                   @RequestParam(value = "type", required = false) String type) {
 
-        if(!UserTypeEnum.check(type)){
-            throw new WebException(-1, "参数不合法");
+        if(StringUtils.isNotBlank(type)){
+            if (!UserTypeEnum.check(type)) {
+                throw new WebException(-1, "参数不合法");
+            }
         }
 
-        PageInfo<Yh> byPage = yhService.findInByPage(pageNum, pageSize, type);
+        PageInfo<Yh> byPage = yhService.findByPage(pageNum, pageSize, type);
         return ResponseUtil.success(byPage);
     }
 
