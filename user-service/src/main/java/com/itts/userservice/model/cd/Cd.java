@@ -15,15 +15,15 @@ import java.util.Date;
  * 菜单表
  * </p>
  *
- * @author lym
- * @since 2021-03-30
+ * @author liuyingming
+ * @since 2021-04-09
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_cd")
 public class Cd implements Serializable {
 
-    private static final long serialVersionUID = -6639264334061316784L;
+    private static final long serialVersionUID = 7412803256182919847L;
 
     /**
      * 主键ID
@@ -60,6 +60,22 @@ public class Cd implements Serializable {
      * 菜单地址
      */
     private String cddz;
+
+    /**
+     * 系统类型：
+     * technology_transaction_portal - 技术交易门户；
+     * technology_transaction_backstage_management - 技术交易后台管理；
+     * talent_training_portal - 人才培养门户；
+     * talent_training_backstage_management - 人才培养后台管理
+     *
+     * @see com.itts.common.enums.SystemTypeEnum
+     */
+    private String xtlx;
+
+    /**
+     * 模块类型：front - 门户; admin - 后台管理
+     */
+    private String mklx;
 
     /**
      * 是否删除

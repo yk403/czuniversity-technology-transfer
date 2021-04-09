@@ -42,11 +42,15 @@ public class Js implements Serializable {
     private String jsbm;
 
     /**
-     * 系统类型：TECHNOLOGY_TRANSACTION_PORTAL - 技术交易门户；TALENT_TRAINING_PORTAL - 人才培养门户
+     * 系统类型：
+     * technology_transaction_portal - 技术交易门户；
+     * technology_transaction_backstage_management - 技术交易后台管理；
+     * talent_training_portal - 人才培养门户；
+     * talent_training_backstage_management - 人才培养后台管理
+     *
+     * @see com.itts.common.enums.SystemTypeEnum
      */
     private String xtlx;
-
-
 
     /**
      * 是否为默认角色
