@@ -54,9 +54,10 @@ public class YhAdminController {
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "type", required = false) String type,
                                    @RequestParam(value = "groupId", required = false) Long groupId) {
+        Jggl group = null;
 
         if (groupId != null) {
-            Jggl group = jgglService.get(groupId);
+            group = jgglService.get(groupId);
             if (group == null) {
 
                 log.error("【用户管理 - 后台管理】查询用户列表，机构不存在，机构ID: ", groupId);
@@ -70,7 +71,7 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        PageInfo<YhDTO> byPage = yhService.findByPage(pageNum, pageSize, type, groupId);
+        PageInfo<YhDTO> byPage = yhService.findByPage(pageNum, pageSize, type, group);
         return ResponseUtil.success(byPage);
     }
 

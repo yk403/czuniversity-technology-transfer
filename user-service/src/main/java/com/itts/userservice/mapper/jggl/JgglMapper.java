@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author fl
@@ -34,5 +34,13 @@ public interface JgglMapper extends BaseMapper<Jggl> {
      * 查询机构
      */
     List<JgglVO> selectStringJggl(@Param("name") String string);
+
+    /**
+     * 通过机构编码获取该机构及下属机构信息
+     */
+    @Select("SELECT * " +
+            "FROM t_jggl " +
+            "WHERE cj LIKE CONCAT('%', #{code}, '%')")
+    List<Jggl> findThisAndChildByCode(@Param("code") String code);
 
 }

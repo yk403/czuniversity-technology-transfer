@@ -4,12 +4,13 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import com.itts.common.constant.RedisConstant;
 import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.dto.YhDTO;
+import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.mapper.yh.YhMapper;
+import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.YhVO;
@@ -18,12 +19,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -41,32 +42,22 @@ public class YhServiceImpl implements YhService {
     private YhMapper yhMapper;
 
     @Resource
+    private JgglMapper jgglMapper;
+
+    @Resource
     private RedisTemplate redisTemplate;
 
     /**
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<YhDTO> findByPage(Integer pageNum, Integer pageSize, String type, Long groupId) {
+    public PageInfo<YhDTO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group) {
 
-        List<Long> groupIds = Lists.newArrayList();
-        groupIds.add(1L);
-        groupIds.add(2L);
-        //TODO 通过机构code查询当前机构下的所有机构
+        //通过编号获取该机构及机构下所有机构的ID
+        List<Long> groupIds = jgglMapper.findThisAndChildByCode(group.getJgbm()).stream().map(Jggl::getId).collect(Collectors.toList());
 
         PageHelper.startPage(pageNum, pageSize);
-        /*QueryWrapper<Yh> query = new QueryWrapper<>();
-        query.eq("sfsc", false);
 
-        if(StringUtils.isNotBlank(type)){
-            query.eq("yhlx", type);
-        }
-
-        if(!CollectionUtils.isEmpty(groupIds)){
-            query.in("jg_id", groupIds);
-        }
-
-        List<Yh> list = yhMapper.selectList(query);*/
         List<YhDTO> list = yhMapper.findByTypeAndGroupId(type, groupIds);
         PageInfo<YhDTO> page = new PageInfo<>(list);
         return page;
@@ -161,7 +152,7 @@ public class YhServiceImpl implements YhService {
 
             if (StringUtils.isNotBlank(systemType)) {
 
-                redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId+ ":" + systemType, JSONUtil.toJsonStr(yhVO), RedisConstant.USER_MENU_EXPIRE_DATE, TimeUnit.DAYS);
+                redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId + ":" + systemType, JSONUtil.toJsonStr(yhVO), RedisConstant.USER_MENU_EXPIRE_DATE, TimeUnit.DAYS);
             } else {
                 redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId, JSONUtil.toJsonStr(yhVO), RedisConstant.USER_MENU_EXPIRE_DATE, TimeUnit.DAYS);
             }

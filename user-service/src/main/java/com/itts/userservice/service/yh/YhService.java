@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.dto.YhDTO;
+import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.vo.YhVO;
 
@@ -22,7 +23,7 @@ public interface YhService {
     /**
      * 查询列表
      */
-    PageInfo<YhDTO> findByPage(Integer pageNum, Integer pageSize, String type, Long groupId);
+    PageInfo<YhDTO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group);
 
     /**
      * 获取详情
