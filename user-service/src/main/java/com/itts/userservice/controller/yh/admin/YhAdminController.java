@@ -58,6 +58,7 @@ public class YhAdminController {
 
         if (groupId != null) {
             group = jgglService.get(groupId);
+
             if (group == null) {
 
                 log.error("【用户管理 - 后台管理】查询用户列表，机构不存在，机构ID: ", groupId);

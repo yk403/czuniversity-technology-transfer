@@ -53,8 +53,12 @@ public class YhServiceImpl implements YhService {
     @Override
     public PageInfo<YhDTO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group) {
 
-        //通过编号获取该机构及机构下所有机构的ID
-        List<Long> groupIds = jgglMapper.findThisAndChildByCode(group.getJgbm()).stream().map(Jggl::getId).collect(Collectors.toList());
+        List<Long> groupIds = null;
+
+        if(group != null){
+            //通过编号获取该机构及机构下所有机构的ID
+            groupIds = jgglMapper.findThisAndChildByCode(group.getJgbm()).stream().map(Jggl::getId).collect(Collectors.toList());
+        }
 
         PageHelper.startPage(pageNum, pageSize);
 
