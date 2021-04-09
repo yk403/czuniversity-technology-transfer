@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.itts.common.constant.RedisConstant;
 import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
@@ -13,6 +14,7 @@ import com.itts.userservice.mapper.yh.YhMapper;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.yh.YhService;
+import com.itts.userservice.vo.YhListVO;
 import com.itts.userservice.vo.YhVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -51,11 +53,11 @@ public class YhServiceImpl implements YhService {
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<YhDTO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group) {
+    public PageInfo<YhListVO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group) {
 
         List<Long> groupIds = null;
 
-        if(group != null){
+        if (group != null) {
             //通过编号获取该机构及机构下所有机构的ID
             groupIds = jgglMapper.findThisAndChildByCode(group.getJgbm()).stream().map(Jggl::getId).collect(Collectors.toList());
         }
@@ -63,7 +65,9 @@ public class YhServiceImpl implements YhService {
         PageHelper.startPage(pageNum, pageSize);
 
         List<YhDTO> list = yhMapper.findByTypeAndGroupId(type, groupIds);
-        PageInfo<YhDTO> page = new PageInfo<>(list);
+        List<YhListVO> yhListVOs = this.yhDTO2YhVO(list);
+
+        PageInfo<YhListVO> page = new PageInfo<>(yhListVOs);
         return page;
     }
 
@@ -177,5 +181,31 @@ public class YhServiceImpl implements YhService {
             }
         });
         return treeList;
+    }
+
+    /**
+     * 列表 - 将用户dto转vo
+     */
+    private List<YhListVO> yhDTO2YhVO(List<YhDTO> yhDTOs) {
+
+        List<YhListVO> yhListVOs = Lists.newArrayList();
+
+        yhDTOs.forEach(yhDTO -> {
+
+            YhListVO yhListVO = new YhListVO();
+            BeanUtils.copyProperties(yhDTO, yhListVO);
+
+            StringBuilder builder = new StringBuilder();
+
+            yhDTO.getYhjsmc().forEach(yhjsmc -> {
+                builder.append(yhjsmc).append(",");
+            });
+
+            yhListVO.setYhjsmc(builder.substring(0, builder.length() - 1));
+
+            yhListVOs.add(yhListVO);
+        });
+
+        return yhListVOs;
     }
 }

@@ -12,6 +12,7 @@ import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.service.yh.YhService;
+import com.itts.userservice.vo.YhListVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +73,7 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        PageInfo<YhDTO> byPage = yhService.findByPage(pageNum, pageSize, type, group);
+        PageInfo<YhListVO> byPage = yhService.findByPage(pageNum, pageSize, type, group);
         return ResponseUtil.success(byPage);
     }
 
