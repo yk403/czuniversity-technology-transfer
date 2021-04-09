@@ -39,13 +39,17 @@ public interface YhService {
     /**
      * 新增
      */
-    Yh add(Yh Yh);
+    Boolean addYhAndJsmc(Yh Yh,Long jsid);
 
     /**
      * 更新
      */
     Yh update(Yh Yh);
 
+    /**
+     * 级联更新
+     */
+    Yh updateByYhAndJsmc(Yh Yh,Long jsid);
     /**
      * 查询角色菜单目录
      * @param

@@ -10,9 +10,13 @@ import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.mapper.jggl.JgglMapper;
+import com.itts.userservice.mapper.js.JsMapper;
+import com.itts.userservice.mapper.yh.YhJsGlMapper;
 import com.itts.userservice.mapper.yh.YhMapper;
 import com.itts.userservice.model.jggl.Jggl;
+import com.itts.userservice.model.js.Js;
 import com.itts.userservice.model.yh.Yh;
+import com.itts.userservice.model.yh.YhJsGl;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.YhListVO;
 import com.itts.userservice.vo.YhVO;
@@ -21,6 +25,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -48,7 +53,11 @@ public class YhServiceImpl implements YhService {
 
     @Resource
     private RedisTemplate redisTemplate;
+    @Resource
+    private JsMapper jsMapper;
 
+    @Resource
+    private YhJsGlMapper yhJsGlMapper;
     /**
      * 获取列表 - 分页
      */
@@ -99,12 +108,24 @@ public class YhServiceImpl implements YhService {
     }
 
     /**
-     * 新增
+     * 级联新增
      */
     @Override
-    public Yh add(Yh Yh) {
-        yhMapper.insert(Yh);
-        return Yh;
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean addYhAndJsmc(Yh Yh,Long jsid) {
+        Long id1 = Yh.getId();
+        Yh yh = yhMapper.selectById(id1);
+        if(yh==null){
+            yhMapper.insert(Yh);
+        }
+
+        //新增用户角色关联表
+        Long yhid = Yh.getId();
+        YhJsGl yhJsGl = new YhJsGl();
+        yhJsGl.setYhId(yhid);
+        yhJsGl.setJsId(jsid);
+        yhJsGlMapper.insert(yhJsGl);
+        return true;
     }
 
     /**
@@ -113,6 +134,21 @@ public class YhServiceImpl implements YhService {
     @Override
     public Yh update(Yh Yh) {
         yhMapper.updateById(Yh);
+        return Yh;
+    }
+    /**
+     * 级联更新
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Yh updateByYhAndJsmc(Yh Yh,Long jsid) {
+        yhMapper.updateById(Yh);
+        //新增用户角色关联表
+        Long yhid = Yh.getId();
+        YhJsGl yhJsGl = new YhJsGl();
+        yhJsGl.setYhId(yhid);
+        yhJsGl.setJsId(jsid);
+        yhJsGlMapper.insert(yhJsGl);
         return Yh;
     }
 

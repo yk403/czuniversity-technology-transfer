@@ -1,6 +1,7 @@
 package com.itts.userservice.controller.yh.admin;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
@@ -8,9 +9,12 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.enmus.UserTypeEnum;
+import com.itts.userservice.mapper.yh.YhJsGlMapper;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
+import com.itts.userservice.model.yh.YhJsGl;
 import com.itts.userservice.service.jggl.JgglService;
+import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.YhListVO;
 import io.swagger.annotations.Api;
@@ -19,9 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -43,6 +50,11 @@ public class YhAdminController {
     @Autowired
     private JgglService jgglService;
 
+    @Autowired
+    private JsService jsService;
+
+    @Resource
+    private YhJsGlMapper yhJsGlMapper;
     /**
      * 获取列表 - 分页
      *
@@ -97,11 +109,19 @@ public class YhAdminController {
      */
     @PostMapping("/add/")
     @ApiOperation(value = "新增")
-    public ResponseUtil add(@RequestBody Yh Yh) throws WebException {
+    public ResponseUtil add(@RequestBody Yh Yh,@RequestBody List<Long> jsidlist) throws WebException {
         //检查参数是否合法
         checkRequest(Yh);
-        Yh add = yhService.add(Yh);
-        return ResponseUtil.success(add);
+        //检查参数是否合法
+        if (jsidlist == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        jsidlist.forEach(jsid ->{
+            Boolean flag = yhService.addYhAndJsmc(Yh, jsid);
+        });
+
+        return ResponseUtil.success();
     }
 
     /**
@@ -111,7 +131,8 @@ public class YhAdminController {
      */
     @ApiOperation(value = "更新")
     @PutMapping("/update/{id}")
-    public ResponseUtil update(@PathVariable("id") Long id, @RequestBody Yh Yh) throws WebException {
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseUtil update(@PathVariable("id") Long id, @RequestBody Yh Yh,@RequestBody List<Long> jsidlist) throws WebException {
         //检查参数是否合法
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
@@ -125,8 +146,20 @@ public class YhAdminController {
         checkRequest(Yh);
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
         BeanUtils.copyProperties(Yh, Yh1, "id", "chsj", "cjr");
-        yhService.update(Yh1);
-        return ResponseUtil.success(Yh1);
+        //逻辑删除此用户的所有角色
+        Long yhid = Yh.getId();
+        QueryWrapper<YhJsGl> QueryWrapper = new QueryWrapper<>();
+        QueryWrapper.eq("yh_id",yhid);
+        List<YhJsGl> yhJsGls = yhJsGlMapper.selectList(QueryWrapper);
+        yhJsGls.forEach(YhJsGl->{
+            YhJsGl.setSfsc(true);
+            YhJsGl.setGxsj(new Date());
+            yhJsGlMapper.updateById(YhJsGl);
+        });
+        jsidlist.forEach(jsid ->{
+            yhService.updateByYhAndJsmc(Yh1,jsid);
+        });
+        return ResponseUtil.success();
 
     }
 
