@@ -211,5 +211,9 @@ public class TJsCg implements Serializable {
 	 * 交易类型
 	 */
 	private Integer jylx;
+	/**
+	 * 活动状态(0:未开始;1:进行中;2已结束)
+	 */
+	private Integer hdzt;
 
 }

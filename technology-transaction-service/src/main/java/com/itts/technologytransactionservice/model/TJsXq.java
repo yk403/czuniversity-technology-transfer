@@ -195,5 +195,12 @@ public class TJsXq implements Serializable {
 	 * 受理协办发布状态（1 未发布 2 已发布）
 	 */
 	private Integer releaseAssistanceStatus;
+	/*
+	发布审核备注
+	 */
 	private String fbshbz;
+	/**
+	 * 活动状态(0:未开始;1:进行中;2已结束)
+	 */
+	private Integer hdzt;
 }
