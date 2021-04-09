@@ -26,7 +26,8 @@
     <!-- 查询当前菜单的操作 -->
     <select id="findcdcz" resultType="com.itts.userservice.dto.CzDTO">
         select cz.id as id,cz.czmc as name,cz.czbm as code
-        from t_cz cz left join t_js_cd_cz_gl cdcz on cdcz.cz_id =cz.id
+        from t_cz cz
+            left join t_js_cd_cz_gl cdcz on cdcz.cz_id =cz.id
         where cdcz.js_id=#{jsid} and cdcz.cd_id=#{cdid}
     </select>
 </mapper>

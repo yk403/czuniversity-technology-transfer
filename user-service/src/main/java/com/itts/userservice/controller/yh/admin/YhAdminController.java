@@ -6,16 +6,20 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.enmus.UserTypeEnum;
+import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
+import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.service.yh.YhService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -29,10 +33,14 @@ import java.util.Date;
 @Api(tags = "用户后台管理")
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/yh")
+@Slf4j
 public class YhAdminController {
 
-    @Resource
+    @Autowired
     private YhService yhService;
+
+    @Autowired
+    private JgglService jgglService;
 
     /**
      * 获取列表 - 分页
@@ -44,14 +52,25 @@ public class YhAdminController {
     @ApiOperation(value = "获取列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                   @RequestParam(value = "type", required = false) String type) {
+                                   @RequestParam(value = "type", required = false) String type,
+                                   @RequestParam(value = "groupId", required = false) Long groupId) {
 
-        if(StringUtils.isNotBlank(type) && (!UserTypeEnum.check(type))){
+        if (groupId != null) {
+            Jggl group = jgglService.get(groupId);
+            if (group == null) {
 
-                throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+                log.error("【用户管理 - 后台管理】查询用户列表，机构不存在，机构ID: ", groupId);
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            }
         }
 
-        PageInfo<Yh> byPage = yhService.findByPage(pageNum, pageSize, type);
+        if (StringUtils.isNotBlank(type) && (!UserTypeEnum.check(type))) {
+
+            log.error("【用户管理 - 后台管理】查询用户列表，请求参数不合法: ", type);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        PageInfo<YhDTO> byPage = yhService.findByPage(pageNum, pageSize, type, groupId);
         return ResponseUtil.success(byPage);
     }
 

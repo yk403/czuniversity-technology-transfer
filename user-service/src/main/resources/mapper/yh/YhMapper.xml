@@ -28,6 +28,29 @@
         , yhm, mm, yhbh, zsxm, lxdh, yhtx, yhlx, yhjb, jg_id, yhyx, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
+    <!-- 通用查询映射结果 -->
+    <resultMap id="YhDTOResultMap" type="com.itts.userservice.dto.YhDTO">
+        <id column="id" property="id"/>
+        <result column="yhm" property="yhm"/>
+        <result column="mm" property="mm"/>
+        <result column="yhbh" property="yhbh"/>
+        <result column="zsxm" property="zsxm"/>
+        <result column="lxdh" property="lxdh"/>
+        <result column="yhtx" property="yhtx"/>
+        <result column="yhlx" property="yhlx"/>
+        <result column="yhjb" property="yhjb"/>
+        <result column="jg_id" property="jgId"/>
+        <result column="yhyx" property="yhyx"/>
+        <result column="sfsc" property="sfsc"/>
+        <result column="cjsj" property="cjsj"/>
+        <result column="cjr" property="cjr"/>
+        <result column="gxsj" property="gxsj"/>
+        <result column="gxr" property="gxr"/>
+        <collection property="yhjsmc" ofType="java.lang.String">
+            <result column="jsmc"></result>
+        </collection>
+    </resultMap>
+
     <!-- 角色列表，包含菜单fl-->
     <resultMap id="JsDTOMap" type="com.itts.userservice.dto.JsDTO">
         <id column="jsid" property="id"/>
@@ -42,24 +65,42 @@
         </collection>
     </resultMap>
 
+
     <!-- 角色列表，包含菜单fl-->
     <select id="findByUserId" parameterType="Long" resultMap="JsDTOMap">
-        SELECT js.id      as jsid,
-               js.jsmc    as jsmc,
-               js.jsbm    as jsbm,
-               cd.id      as id,
-               cd.cdmc    as name,
-               cd.fjcd_id as parentId,
-               cd.cddz    as url,
-               cd.cj      as level
+        SELECT js.id as jsid,
+        js.jsmc as jsmc,
+        js.jsbm as jsbm,
+        cd.id as id,
+        cd.cdmc as name,
+        cd.fjcd_id as parentId,
+        cd.cddz as url,
+        cd.cj as level
         FROM t_yh yh
-                 LEFT JOIN t_yh_js_gl ysgl ON yh.id = ysgl.yh_id
-                 LEFT JOIN t_js js ON ysgl.js_id = js.id
-                 LEFT JOIN t_js_cd_gl jcg ON jcg.js_id = js.id
-                 LEFT JOIN t_cd cd on jcg.cd_id = cd.id
+        LEFT JOIN t_yh_js_gl ysgl ON yh.id = ysgl.yh_id
+        LEFT JOIN t_js js ON ysgl.js_id = js.id
+        LEFT JOIN t_js_cd_gl jcg ON jcg.js_id = js.id
+        LEFT JOIN t_cd cd on jcg.cd_id = cd.id
         where yh.id = #{userId}
-          <if test="systemType != null and systemType != ''">
-              AND js.xtlx = #{systemType}
-          </if>
+        <if test="systemType != null and systemType != ''">
+            AND js.xtlx = #{systemType}
+        </if>
+    </select>
+
+    <select id="findByTypeAndGroupId" resultMap="YhDTOResultMap">
+        SELECT yh.*, js.jsmc
+        FROM t_yh yh
+                 LEFT JOIN t_yh_js_gl yhjsgl ON yh.id = yhjsgl.yh_id
+                 LEFT JOIN t_js js ON yhjsgl.js_id = js.id
+        WHERE yh.sfsc = false
+        <if test="type != null and type != ''">
+            AND yh.yhlx =#{type}
+        </if>
+        <if test="groupIds != null and groupIds.size > 0">
+            AND  yh.jg_id IN
+            <foreach collection="groupIds" item="groupId" separator="," open="(" close=")">
+               #{groupId}
+            </foreach>
+        </if>
     </select>
 </mapper>
