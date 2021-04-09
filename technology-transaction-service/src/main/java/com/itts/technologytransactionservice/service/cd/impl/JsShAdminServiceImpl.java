@@ -94,6 +94,42 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 		return true;
 	}
 
+	@Override
+	public Boolean assistanceAuditXq(Map<String, Object> params, Integer assistanceStatus) {
+		TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
+		Object slxbbz = params.get("slxbbz");
+		if (assistanceStatus != 2 && slxbbz == null) {
+			return false;
+		} else if (slxbbz != null) {
+			tJsSh.setSlxbbz(params.get("slxbbz").toString());
+		} else if (assistanceStatus == 2) {
+			tJsSh.setReleaseAssistanceStatus(2);
+		}
+		tJsSh.setAssistanceStatus(assistanceStatus);
+		if (!jsShAdminService.updateById(tJsSh)) {
+			throw new ServiceException("发布审核需求操作失败!");
+		}
+		return true;
+	}
+
+	@Override
+	public Boolean assistanceAuditCg(Map<String, Object> params, Integer assistanceStatus) {
+		TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
+		Object slxbbz = params.get("slxbbz");
+		if (assistanceStatus != 2 && slxbbz == null) {
+			return false;
+		} else if (slxbbz != null) {
+			tJsSh.setSlxbbz(params.get("slxbbz").toString());
+		} else if (assistanceStatus == 2) {
+			tJsSh.setReleaseAssistanceStatus(2);
+		}
+		tJsSh.setAssistanceStatus(assistanceStatus);
+		if (!jsShAdminService.updateById(tJsSh)) {
+			throw new ServiceException("发布审核需求操作失败!");
+		}
+		return true;
+	}
+
 	/**
 	 * 根据id批量发布成果
 	 * @param ids

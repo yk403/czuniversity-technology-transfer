@@ -11,6 +11,7 @@
 			<if test="map.type == 1"> and xq.user_id = #{map.userId} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
+			<if test="map.jshdId != null and map.jshdId != ''"> and xq.jshd_id = #{map.jshdId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
 			<if test="map.xqId != null and map.xqId != ''"> and sh.xq_id = #{map.xqId} </if>
 			<if test="map.xqmc != null and map.xqmc != ''"> and xq.xqmc like concat('%',#{map.xqmc},'%') </if>
@@ -33,7 +34,7 @@
 	</select>
 	<select id="PageByTJsFb" resultType="com.itts.technologytransactionservice.model.TJsFb">
 		SELECT
-		a.id AS id,a.xqmc as name,a.release_type as releaseType,b.mc as lyName,a.hzjg,a.dz,d.cjsj as applyTime
+		a.id AS id,a.xqmc as name,a.release_type as releaseType,b.mc as lyName,a.hzjg,a.dz,d.cjsj as applyTime,d.jylx as jylx,a.xqtp as tp
 		FROM
 		t_js_xq a
 		LEFT JOIN t_js_ly b ON (a.ly_id = b.id)
@@ -45,7 +46,7 @@
 		</where>
 		UNION
 		SELECT
-		e.id AS id,e.cgmc as name,e.release_type as releaseType,b.mc as lyName,e.hzjg,e.dz,d.cjsj as applyTime
+		e.id AS id,e.cgmc as name,e.release_type as releaseType,b.mc as lyName,e.hzjg,e.dz,d.cjsj as applyTime,d.jylx as jylx,e.cgtp as tp
 		FROM
 		t_js_cg e
 		LEFT JOIN t_js_ly b ON (e.ly_id = b.id)
