@@ -1,23 +1,57 @@
 package com.itts.common.utils;
 
+import lombok.Getter;
 import org.csource.common.NameValuePair;
 import org.csource.fastdfs.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
+@Component
 public class FastDFSClient {
     private static Logger logger = LoggerFactory.getLogger(FastDFSClient.class);
+/*    private static String confFilePath;
+    @Value("${dictionary.confFilePath}")
+    public void setConfFilePath(String confFilePath) {
+        FastDFSClient.confFilePath = confFilePath;
+    }
+    public static String getConfFilePath(){
+        return confFilePath;
+    }*/
+    //获取application-local.yml文件中的属性配置
+    public static Object getCommonYml(Object key){
+        Resource resource = new ClassPathResource("/application.yml");
+        Properties properties = null;
+        try {
+            YamlPropertiesFactoryBean yamlFactory = new YamlPropertiesFactoryBean();
+            yamlFactory.setResources(resource);
+            properties =  yamlFactory.getObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return properties.get(key);
+    }
     /**
      * ClientGlobal init 方法会读取配置文件，并初始化对应属性
      */
     static{
         try{
-            String fdfsClientConfigFilePath = new ClassPathResource("fdfs_client.conf").getFile().getAbsolutePath();
+            //获取配置文件中自定义的fastdfs_config.path值
+            //String filePath=(String)g/AchievementsetCommonYml("dictionary.confFilePath");
+            //System.out.println("测试打印"+filePath);
+            String fdfsClientConfigFilePath = FastDFSClient.class.getClassLoader().getResource("classpath:fdfs_client.conf").getPath();
             logger.info("Fast DFS configuration file path:" + fdfsClientConfigFilePath);
             ClientGlobal.init(fdfsClientConfigFilePath);
         }catch (Exception e) {

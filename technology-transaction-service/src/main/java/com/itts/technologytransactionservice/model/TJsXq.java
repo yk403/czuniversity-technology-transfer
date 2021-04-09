@@ -152,6 +152,10 @@ public class TJsXq implements Serializable {
 	 */
 	private String agreement;
 	/**
+	 * 协议名称
+	 */
+	private String agreementName;
+	/**
 	 * 保证金
 	 */
 	private String bond;
@@ -191,4 +195,5 @@ public class TJsXq implements Serializable {
 	 * 受理协办发布状态（1 未发布 2 已发布）
 	 */
 	private Integer releaseAssistanceStatus;
+	private String fbshbz;
 }
