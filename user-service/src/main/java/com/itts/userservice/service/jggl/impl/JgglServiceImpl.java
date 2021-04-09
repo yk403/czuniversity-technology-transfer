@@ -73,7 +73,7 @@ public class JgglServiceImpl implements JgglService {
     private List<JgglVO> buildJgglVOTree(List<JgglVO> jgglVOS,String fatherCode){
         List<JgglVO> treeList = new ArrayList<>();
         jgglVOS.forEach(jgglVO -> {
-            if(jgglVO.getFatherCode().equals(fatherCode)){
+            if(jgglVO.getFjbm().equals(fatherCode)){
                 jgglVO.setJgglVOList(buildJgglVOTree(jgglVOS,jgglVO.getJgbm()));
                 treeList.add(jgglVO);
             }

@@ -1,32 +1,34 @@
 package com.itts.userservice.model.jggl;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
- * @author fl
- * @since 2021-03-30
+ * @author liuyingming
+ * @since 2021-04-09
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_jggl")
 public class Jggl implements Serializable {
 
+    private static final long serialVersionUID = -3816105986737417996L;
 
-    private static final long serialVersionUID = -5373003775770802085L;
     /**
      * 主键ID
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -40,9 +42,9 @@ public class Jggl implements Serializable {
     private String jgbm;
 
     /**
-     * 机构类别ID
+     * 机构类别code
      */
-    private String jglbCode;
+    private String jglbbm;
 
     /**
      * 机构类别
@@ -52,10 +54,10 @@ public class Jggl implements Serializable {
     /**
      * 父机构code
      */
-    private String fatherCode;
+    private String fjbm;
 
     /**
-     * 菜单code层级, 以“-”分隔
+     * 菜单层级, 以“-”分隔
      */
     private String cj;
 
@@ -67,6 +69,7 @@ public class Jggl implements Serializable {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
@@ -77,6 +80,7 @@ public class Jggl implements Serializable {
     /**
      * 更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**

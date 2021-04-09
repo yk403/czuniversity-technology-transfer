@@ -7,9 +7,9 @@
         <id column="id" property="id" />
         <result column="jgmc" property="jgmc" />
         <result column="jgbm" property="jgbm" />
-        <result column="jglb_code" property="jglbCode" />
+        <result column="jglbbm" property="jglbbm" />
         <result column="jglb" property="jglb" />
-        <result column="father_code" property="fatherCode" />
+        <result column="fjbm" property="fjbm" />
         <result column="cj" property="cj" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
@@ -20,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, jgmc, jgbm, jglb_code, jglb, father_code, cj, sfsc, cjsj, cjr, gxsj, gxr
+        id, jgmc, jgbm, jglbbm, jglb, fjbm, cj, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="selectByName" resultMap="BaseResultMap">
@@ -31,17 +31,12 @@
     </select>
 
     <select id="selectJggl" resultType="com.itts.userservice.vo.JgglVO">
-        select jgmc as jgmc,
-               jgbm as jgbm,
-               father_code as fatherCode,
-               cj as cj
+        select *
         from t_jggl
     </select>
-    <select id="selectStringJggl" parameterType="String" resultType="com.itts.userservice.vo.JgglVO">
-        select jgmc as jgmc,
-               jgbm as jgbm,
-               father_code as fatherCode,
-               cj as cj
+
+    <select id="selectStringJggl" resultType="com.itts.userservice.vo.JgglVO">
+        select *
         from t_jggl
         where jgmc like concat('%',#{name},'%')
     </select>

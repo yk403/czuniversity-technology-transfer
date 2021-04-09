@@ -50,7 +50,7 @@ public class JgglListener extends AnalysisEventListener<JgglDTO> {
         }
         //机构类别code
         if(!StringUtils.isBlank(data.getJglbCode())){
-            jggl.setJglbCode(data.getJglbCode());
+            jggl.setJglbbm(data.getJglbCode());
         }
         //机构类别
         if(!StringUtils.isBlank(data.getJglb())){
@@ -58,7 +58,7 @@ public class JgglListener extends AnalysisEventListener<JgglDTO> {
         }
         //父机构code
         if (!StringUtils.isBlank(data.getFatherCode())){
-            jggl.setFatherCode(data.getFatherCode());
+            jggl.setFjbm(data.getFatherCode());
         }
         //菜单code层级, 以“-”分隔
         if(!StringUtils.isBlank(data.getCj())){
