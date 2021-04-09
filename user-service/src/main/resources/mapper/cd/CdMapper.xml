@@ -11,6 +11,8 @@
         <result column="fjcd_id" property="fjcdId" />
         <result column="cj" property="cj" />
         <result column="cddz" property="cddz" />
+        <result column="xtlx" property="xtlx" />
+        <result column="mklx" property="mklx" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
@@ -20,7 +22,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, cdmc, cdbm, cdtb, fjcd_id, cj, cddz, sfsc, cjsj, cjr, gxsj, gxr
+        id, cdmc, cdbm, cdtb, fjcd_id, cj, cddz, xtlx, mklx, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>
