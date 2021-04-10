@@ -110,6 +110,21 @@ public class JgglController {
         return ResponseUtil.success();
     }
     /**
+     * 批量删除
+     */
+    @ApiOperation(value = "批量删除")
+    @DeleteMapping("/deletemore/")
+    public ResponseUtil deletemore(@RequestBody List<Long> ids) throws WebException {
+        ids.forEach(id->{
+            Jggl jggl = jgglService.get(id);
+            jggl.setSfsc(false);
+            jggl.setGxsj(new Date());
+            jgglService.update(jggl);
+        });
+
+        return ResponseUtil.success();
+    }
+    /**
      * 校验参数是否合法
      */
     private void checkPequest(Jggl jggl) throws WebException {

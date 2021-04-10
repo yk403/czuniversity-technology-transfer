@@ -190,6 +190,30 @@ public class YhAdminController {
 
         return ResponseUtil.success();
     }
+    /**
+     * 批量删除
+     *
+     * @author fl
+     */
+    @ApiOperation(value = "批量删除")
+    @DeleteMapping("/deletemore/")
+    public ResponseUtil deletemore(@RequestBody List<Long> ids) throws WebException {
+        //检查参数是否为空
+        if (ids == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        ids.forEach(id->{
+            Yh Yh = yhService.get(id);
+            //设置删除状态，更新删除时间
+            Yh.setSfsc(true);
+            Yh.setGxsj(new Date());
+            //更新
+            yhService.update(Yh);
+        });
+
+
+        return ResponseUtil.success();
+    }
 
     /**
      * 校验参数是否合法
