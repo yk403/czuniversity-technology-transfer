@@ -215,5 +215,9 @@ public class TJsCg implements Serializable {
 	 * 活动状态(0:未开始;1:进行中;2已结束)
 	 */
 	private Integer hdzt;
+	/*
+受理协办备注
+*/
+	private String slxbbz;
 
 }

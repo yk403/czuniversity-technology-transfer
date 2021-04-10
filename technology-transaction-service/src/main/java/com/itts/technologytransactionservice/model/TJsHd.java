@@ -3,9 +3,11 @@ package com.itts.technologytransactionservice.model;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -50,10 +52,12 @@ public class TJsHd implements Serializable {
 	/**
  	* 活动开始时间
  	*/
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date hdkssj;
 	/**
  	* 活动结束时间
  	*/
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date hdssj;
 	/**
  	* 活动状态

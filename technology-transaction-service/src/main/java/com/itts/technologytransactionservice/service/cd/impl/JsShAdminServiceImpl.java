@@ -58,9 +58,11 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 		Object fbshbz = params.get("fbshbz");
 		if (fbshzt != 2 && fbshbz == null) {
 			return false;
-		} else if (fbshbz != null) {
+		}
+		if (fbshbz != null) {
 			tJsSh.setFbshbz(params.get("fbshbz").toString());
-		} else if (fbshzt == 2) {
+		}
+		if (fbshzt == 2) {
 			tJsSh.setReleaseStatus(2);
 		}
 		tJsSh.setFbshzt(fbshzt);
@@ -82,9 +84,11 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 		Object fbshbz = params.get("fbshbz");
 		if (fbshzt != 2 && fbshbz == null) {
 			return false;
-		} else if (fbshbz != null) {
+		}
+		if (fbshbz != null) {
 			tJsSh.setFbshbz(params.get("fbshbz").toString());
-		} else if (fbshzt == 2) {
+		}
+		if (fbshzt == 2) {
 			tJsSh.setReleaseStatus(2);
 		}
 		tJsSh.setFbshzt(fbshzt);
@@ -100,9 +104,11 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 		Object slxbbz = params.get("slxbbz");
 		if (assistanceStatus != 2 && slxbbz == null) {
 			return false;
-		} else if (slxbbz != null) {
+		}
+		if (slxbbz != null) {
 			tJsSh.setSlxbbz(params.get("slxbbz").toString());
-		} else if (assistanceStatus == 2) {
+		}
+		if (assistanceStatus == 2) {
 			tJsSh.setReleaseAssistanceStatus(2);
 		}
 		tJsSh.setAssistanceStatus(assistanceStatus);
@@ -118,9 +124,11 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 		Object slxbbz = params.get("slxbbz");
 		if (assistanceStatus != 2 && slxbbz == null) {
 			return false;
-		} else if (slxbbz != null) {
+		}
+		if (slxbbz != null) {
 			tJsSh.setSlxbbz(params.get("slxbbz").toString());
-		} else if (assistanceStatus == 2) {
+		}
+		if (assistanceStatus == 2) {
 			tJsSh.setReleaseAssistanceStatus(2);
 		}
 		tJsSh.setAssistanceStatus(assistanceStatus);

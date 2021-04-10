@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsXqMapper">
 
 	<select id="findJsCg" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,xqmc,sjhm,agreement,agreementName,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz
+		select xq.id as id,xqmc,sjhm,agreement,agreementName,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id)
 		<where>
 		    xq.is_delete = 0
@@ -22,6 +22,8 @@
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
 			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 			<if test="map.type == 0"> and xq.user_id != #{map.userId} </if>
+			 <!-- 检索所有关联活动为空的技术需求-->
+			<if test="map.addActivity == 0"> and xq.jshd_id IS NULL </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">
@@ -43,6 +45,7 @@
 		<where>
 		    a.is_delete = 0
 			<if test="map.name != null and map.name != ''"> and a.xqmc = #{map.name} </if>
+			<if test="map.jylx != null and map.jylx != ''"> and d.jylx = #{map.jylx} </if>
 		</where>
 		UNION
 		SELECT
@@ -54,6 +57,7 @@
 		<where>
 		    e.is_delete = 0
 			<if test="map.name != null and map.name != ''"> and e.cgmc = #{map.name} </if>
+			<if test="map.jylx != null and map.jylx != ''"> and d.jylx = #{map.jylx} </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">
@@ -66,7 +70,7 @@
 	</select>
 
 	<select id="findJsXqFront" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,xqmc,sjhm,agreement,agreementName,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,sh.assistance_status,sh.release_assistance_status,sh.fbshbz,xq.remarks,sh.jylx,hd.hdzt
+		select xq.id as id,xqmc,sjhm,agreement,agreementName,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,sh.assistance_status,sh.release_assistance_status,sh.fbshbz,xq.remarks,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id) left join t_js_hd hd on(xq.jshd_id=hd.id)
 		<where>
 			xq.is_delete = 0
