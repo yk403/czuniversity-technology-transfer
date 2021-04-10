@@ -92,7 +92,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         loginUser.setUserLevel(user.getYhjb());
 
         //⽣成Token, 并存入redis
-        String token = JwtUtil.getJwtToken(JSONUtil.toJsonStr(loginUser), 1000L * 60 * 15);
+        String token = JwtUtil.getJwtToken(JSONUtil.toJsonStr(loginUser), 1000L * 60 * 15*24);
 
         redisTemplate.opsForValue().set(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + token, token, RedisConstant.EXPIRE_DATE, TimeUnit.MILLISECONDS);
 
