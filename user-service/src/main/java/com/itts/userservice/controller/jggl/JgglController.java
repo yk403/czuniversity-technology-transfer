@@ -81,6 +81,14 @@ public class JgglController {
     @ApiOperation(value = "新增")
     public ResponseUtil add(@RequestBody Jggl jggl)throws WebException{
         checkPequest(jggl);
+        //获取父级机构的层级
+        String fjbm = jggl.getFjbm();
+        Jggl jggl1 = jgglService.selectByJgbm(fjbm);
+        String cj = jggl1.getCj();
+        //生成层级
+        String jgbm = jggl.getJgbm();
+        cj=cj+jgbm;
+        jggl.setCj(cj);
         Jggl add = jgglService.add(jggl);
         return ResponseUtil.success(add);
     }
