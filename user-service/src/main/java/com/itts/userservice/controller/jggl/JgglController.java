@@ -13,6 +13,7 @@ import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.vo.JgglVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,6 +71,10 @@ public class JgglController {
     public ResponseUtil getlist(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                 @RequestParam(required = false) String jgbm){
+
+        if(StringUtils.isBlank(jgbm)){
+            jgbm = "";
+        }
 
         PageInfo<Jggl> byPage = jgglService.findByPage(pageNum, pageSize, jgbm);
         return ResponseUtil.success(byPage);
