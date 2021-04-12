@@ -1,7 +1,9 @@
-package com.itts.common.utils;
+package com.itts.technologytransactionservice.utils;
 
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.FastDFSClient;
+import com.itts.common.utils.FastDFSFile;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;

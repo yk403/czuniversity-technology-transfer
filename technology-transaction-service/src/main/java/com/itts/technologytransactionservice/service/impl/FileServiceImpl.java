@@ -1,18 +1,14 @@
 package com.itts.technologytransactionservice.service.impl;
 
 
-import com.itts.common.utils.FileUtil;
+
 import com.itts.technologytransactionservice.service.FileService;
+import com.itts.technologytransactionservice.utils.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
-
-import static com.itts.common.constant.UrlConstant.PROXY_PASS;
-import static com.itts.common.constant.UrlConstant.SERVER_NAME;
-import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ERROR;
 
 /**
  * @Author: Austin
