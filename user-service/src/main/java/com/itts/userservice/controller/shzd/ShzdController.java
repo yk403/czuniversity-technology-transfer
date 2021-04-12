@@ -7,6 +7,7 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.model.shzd.Shzd;
 import com.itts.userservice.service.shzd.ShzdService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +25,7 @@ import java.util.List;
  * @author fl
  * @since 2021-03-31
  */
+@Api(tags = "数字字典")
 @Slf4j
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/shzd")

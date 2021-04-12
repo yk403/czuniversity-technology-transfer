@@ -23,6 +23,7 @@ public interface JsShAdminService extends IService<TJsSh> {
     Boolean auditCg(Map<String, Object> params, Integer fbshzt);
 
 	Boolean auditXq(Map<String, Object> params, Integer fbshzt);
-
+	Boolean assistanceAuditXq(Map<String, Object> params, Integer assistanceStatus);
+	Boolean assistanceAuditCg(Map<String, Object> params, Integer assistanceStatus);
 	List<TJsSh> selectByCgIds(List<Integer> ids);
 }

@@ -58,9 +58,11 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 		Object fbshbz = params.get("fbshbz");
 		if (fbshzt != 2 && fbshbz == null) {
 			return false;
-		} else if (fbshbz != null) {
+		}
+		if (fbshbz != null) {
 			tJsSh.setFbshbz(params.get("fbshbz").toString());
-		} else if (fbshzt == 2) {
+		}
+		if (fbshzt == 2) {
 			tJsSh.setReleaseStatus(2);
 		}
 		tJsSh.setFbshzt(fbshzt);
@@ -82,12 +84,54 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
 		Object fbshbz = params.get("fbshbz");
 		if (fbshzt != 2 && fbshbz == null) {
 			return false;
-		} else if (fbshbz != null) {
+		}
+		if (fbshbz != null) {
 			tJsSh.setFbshbz(params.get("fbshbz").toString());
-		} else if (fbshzt == 2) {
+		}
+		if (fbshzt == 2) {
 			tJsSh.setReleaseStatus(2);
 		}
 		tJsSh.setFbshzt(fbshzt);
+		if (!jsShAdminService.updateById(tJsSh)) {
+			throw new ServiceException("发布审核需求操作失败!");
+		}
+		return true;
+	}
+
+	@Override
+	public Boolean assistanceAuditXq(Map<String, Object> params, Integer assistanceStatus) {
+		TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
+		Object slxbbz = params.get("slxbbz");
+		if (assistanceStatus != 2 && slxbbz == null) {
+			return false;
+		}
+		if (slxbbz != null) {
+			tJsSh.setSlxbbz(params.get("slxbbz").toString());
+		}
+		if (assistanceStatus == 2) {
+			tJsSh.setReleaseAssistanceStatus(2);
+		}
+		tJsSh.setAssistanceStatus(assistanceStatus);
+		if (!jsShAdminService.updateById(tJsSh)) {
+			throw new ServiceException("发布审核需求操作失败!");
+		}
+		return true;
+	}
+
+	@Override
+	public Boolean assistanceAuditCg(Map<String, Object> params, Integer assistanceStatus) {
+		TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
+		Object slxbbz = params.get("slxbbz");
+		if (assistanceStatus != 2 && slxbbz == null) {
+			return false;
+		}
+		if (slxbbz != null) {
+			tJsSh.setSlxbbz(params.get("slxbbz").toString());
+		}
+		if (assistanceStatus == 2) {
+			tJsSh.setReleaseAssistanceStatus(2);
+		}
+		tJsSh.setAssistanceStatus(assistanceStatus);
 		if (!jsShAdminService.updateById(tJsSh)) {
 			throw new ServiceException("发布审核需求操作失败!");
 		}

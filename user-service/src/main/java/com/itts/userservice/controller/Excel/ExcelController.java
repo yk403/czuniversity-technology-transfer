@@ -5,6 +5,7 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.service.Excel.ExcelService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
+@Api(tags = "Excel导入")
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/userService/excel")
 @Slf4j

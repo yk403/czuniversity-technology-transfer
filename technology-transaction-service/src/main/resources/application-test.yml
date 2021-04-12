@@ -79,3 +79,6 @@ mybatis-plus:
 logging:
   level:
     root: INFO
+#设置文件上传静态变量
+dictionary:
+  confFilePath: classpath:fdfs_client.conf

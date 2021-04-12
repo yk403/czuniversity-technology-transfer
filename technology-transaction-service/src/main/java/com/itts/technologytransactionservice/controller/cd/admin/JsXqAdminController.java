@@ -51,13 +51,20 @@ public class JsXqAdminController extends BaseController {
     @PostMapping("/page")
     public ResponseUtil findJsXq(@RequestBody Map<String, Object> params) {
         //前端传输标识type(0：审批管理;1：信息采集)
-       /* if (params.get("type") == null) {
-            Integer type = Integer.valueOf(params.get("type").toString());
-            if (type != 0 && type != 1) {
-                throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-            }
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }*/
+        //TODO 从ThreadLocal中获取用户id 暂时是假数据,1表示管理员
+        params.put("userId",1);
+        //查询用户录入成功信息列表
+        PageInfo<TJsXq> page = jsXqAdminService.findJsXq(params);
+        return ResponseUtil.success(page);
+    }
+    /**
+     * 分页条件查询需求(前后台)
+     * @param params
+     * @return
+     */
+    @PostMapping("/pageAll")
+    public ResponseUtil findJsXqAll(@RequestBody Map<String, Object> params) {
+        //前端传输标识type(0：审批管理;1：信息采集)
         //查询用户录入成功信息列表
         PageInfo<TJsXq> page = jsXqAdminService.findJsXq(params);
         return ResponseUtil.success(page);
@@ -94,7 +101,7 @@ public class JsXqAdminController extends BaseController {
         if (!jsXqAdminService.saveXq(tJsXq)) {
             return ResponseUtil.error(NAME_EXIST_ERROR);
         }
-        return ResponseUtil.success("新增需求信息成功!");
+        return ResponseUtil.success("添加成功!");
     }
 
     /**
@@ -141,7 +148,7 @@ public class JsXqAdminController extends BaseController {
         if (!jsXqAdminService.assistanceIssueBatch(ids)) {
             throw new WebException(UPDATE_FAIL);
         }
-        return ResponseUtil.success("受理协办需求招标下发成功!");
+        return ResponseUtil.success("下发成功!");
     }
 
     /**

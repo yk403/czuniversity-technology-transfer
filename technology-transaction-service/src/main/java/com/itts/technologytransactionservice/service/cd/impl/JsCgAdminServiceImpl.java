@@ -181,6 +181,8 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         log.info("【技术交易 - 技术拍卖挂牌受理批量下发,id:{}!】",ids);
         List<TJsSh> tJsShes = jsShMapper.selectByCgIds(ids);
         for (TJsSh tJsShe : tJsShes) {
+            tJsShe.setFbshzt(2);
+            tJsShe.setReleaseStatus(2);
             tJsShe.setAssistanceStatus(2);
             tJsShe.setReleaseAssistanceStatus(2);
         }
