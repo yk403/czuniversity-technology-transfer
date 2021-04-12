@@ -41,4 +41,19 @@ public class ShzdDTO implements Serializable {
      */
     @ExcelProperty(value = "字典层级",index = 3)
     private String zdcj;
+    /**
+     * 系统类型
+     */
+    @ExcelProperty(value = "系统类型",index = 4)
+    private String xtlb;
+    /**
+     * 模块类型:front - 门户;admin - 后台管理
+     */
+    @ExcelProperty(value = "模块类型:front - 门户;admin - 后台管理",index = 5)
+    private String mklx;
+    /**
+     * 所属模块: group_manage-机构管理
+     */
+    @ExcelProperty(value = "所属模块: group_manage-机构管理",index = 6)
+    private String ssmk;
 }

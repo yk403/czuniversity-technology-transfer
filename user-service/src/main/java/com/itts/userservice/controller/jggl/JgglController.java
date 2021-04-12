@@ -1,6 +1,7 @@
 package com.itts.userservice.controller.jggl;
 
 
+import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
@@ -57,9 +58,21 @@ public class JgglController {
      */
     @GetMapping("/treeList/")
     @ApiOperation(value = "获取机构树")
-    public ResponseUtil findJgglVO(){
-        List<JgglVO> jgglVO = jgglService.findJgglVO();
+    public ResponseUtil findJgglVO(@RequestParam(required = false) String jgbm){
+        List<JgglVO> jgglVO = jgglService.findJgglVO(jgbm);
         return ResponseUtil.success(jgglVO);
+    }
+    /**
+     * 获取机构列表
+     */
+    @GetMapping("/getlist/")
+    @ApiOperation(value = "获取机构列表")
+    public ResponseUtil getlist(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                @RequestParam String jgbm){
+
+        PageInfo<Jggl> byPage = jgglService.findByPage(pageNum, pageSize, jgbm);
+        return ResponseUtil.success(byPage);
     }
     /**
      * 查询机构编码是否重复
@@ -150,7 +163,7 @@ public class JgglController {
         if(jggl==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        jggl.setSfsc(false);
+        jggl.setSfsc(true);
         jggl.setGxsj(new Date());
         jgglService.update(jggl);
         return ResponseUtil.success();
@@ -163,7 +176,7 @@ public class JgglController {
     public ResponseUtil deletemore(@RequestBody List<Long> ids) throws WebException {
         ids.forEach(id->{
             Jggl jggl = jgglService.get(id);
-            jggl.setSfsc(false);
+            jggl.setSfsc(true);
             jggl.setGxsj(new Date());
             jgglService.update(jggl);
         });

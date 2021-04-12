@@ -9,6 +9,9 @@
         <result column="zdbm" property="zdbm" />
         <result column="fjzd_code" property="fjzdCode" />
         <result column="zdcj" property="zdcj" />
+        <result column="xtlb" property="xtlb" />
+        <result column="mklx" property="mklx" />
+        <result column="ssmk" property="ssmk" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
@@ -18,7 +21,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, zdmc, zdbm, fjzd_code, zdcj, sfsc, cjsj, cjr, gxsj, gxr
+        id, zdmc, zdbm, fjzd_code, zdcj,xtlb,mklx,ssmk, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="selectByName" resultMap="BaseResultMap">
@@ -33,7 +36,10 @@
                zdbm as zdbm,
                fjzd_code as fjzdCode,
                zdcj as zdcj,
-               cjsj ad cjsj
+               xtlb as xtlb,
+               mklx as mklx,
+               ssmk as ssmk,
+               cjsj as cjsj
         from t_shzd
     </select>
 </mapper>

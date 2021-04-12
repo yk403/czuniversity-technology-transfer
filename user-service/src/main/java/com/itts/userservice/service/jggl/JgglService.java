@@ -20,13 +20,13 @@ public interface JgglService  {
     /**
      * 获取列表 - 分页
      */
-    PageInfo<Jggl> findByPage(Integer pageNum,Integer pageSize);
+    PageInfo<Jggl> findByPage(Integer pageNum,Integer pageSize,String jgbm);
 
     /**
      * 获取机构管理树
      * @return
      */
-    List<JgglVO> findJgglVO();
+    List<JgglVO> findJgglVO(String jgbm);
     /**
      * 获取关键字机构管理树
      * @return

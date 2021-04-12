@@ -50,6 +50,18 @@ public class Shzd implements Serializable {
     private String zdcj;
 
     /**
+     * 系统类型：technology_transaction_portal - 技术交易门户；tech
+     */
+    private String xtlx;
+    /**
+     * 模块类型:front - 门户;admin - 后台管理
+     */
+    private String mklx;
+    /**
+     * 所属模块: group_manage-机构管理
+     */
+    private String ssmk;
+    /**
      * 是否删除
      */
     private Boolean sfsc;

@@ -48,6 +48,15 @@ public class ShzdListener extends AnalysisEventListener<ShzdDTO> {
         if(!StringUtils.isBlank(data.getZdcj())){
             shzd.setZdcj(data.getZdcj());
         }
+        if(!StringUtils.isBlank(data.getXtlb())){
+            shzd.setXtlx(data.getXtlb());
+        }
+        if(!StringUtils.isBlank(data.getMklx())){
+            shzd.setMklx(data.getMklx());
+        }
+        if(!StringUtils.isBlank(data.getSsmk())){
+            shzd.setSsmk(data.getXtlb());
+        }
         save(shzd);
     }
 

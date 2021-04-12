@@ -16,6 +16,9 @@ public class ShzdVO implements Serializable {
     private String zdbm;
     private String fjzdCode;
     private String zdcj;
+    private String xtlb;
+    private String mklx;
+    private String ssmk;
     private Date cjsj;
     private List<ShzdVO> shzdVOList;
 }
