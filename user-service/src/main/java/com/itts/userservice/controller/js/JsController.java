@@ -67,8 +67,9 @@ public class JsController {
      * 更新
      */
     @ApiOperation(value = "更新")
-    @PutMapping("/update/{id}")
-    public ResponseUtil update(@PathVariable("id")Long id,@RequestBody Js Js){
+    @PutMapping("/update/")
+    public ResponseUtil update(@RequestBody Js Js){
+        Long id = Js.getId();
         //检查参数是否合法
         if(id==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);

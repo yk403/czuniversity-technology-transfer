@@ -134,9 +134,10 @@ public class YhAdminController {
      * @author fl
      */
     @ApiOperation(value = "更新")
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/")
     @Transactional(rollbackFor = Exception.class)
-    public ResponseUtil update(@PathVariable("id") Long id, @RequestBody AddYhRequest addYhRequest) throws WebException {
+    public ResponseUtil update(@RequestBody AddYhRequest addYhRequest) throws WebException {
+        Long id = addYhRequest.getId();
         //检查参数是否合法
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);

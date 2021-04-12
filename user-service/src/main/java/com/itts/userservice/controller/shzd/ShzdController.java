@@ -59,8 +59,9 @@ public class ShzdController {
      * 更新
      */
     @ApiOperation(value = "更新")
-    @PutMapping("/update/{id}")
-    public ResponseUtil update(@PathVariable("id") Long id, @RequestBody Shzd shzd) throws WebException {
+    @PutMapping("/update/")
+    public ResponseUtil update(@RequestBody Shzd shzd) throws WebException {
+        Long id = shzd.getId();
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }

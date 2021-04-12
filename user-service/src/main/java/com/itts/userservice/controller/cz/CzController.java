@@ -84,8 +84,9 @@ public class CzController {
      * @author FULI
      */
     @ApiOperation(value = "更新")
-    @PutMapping("/update/{id}")
-    public ResponseUtil update(@PathVariable("id") Long id, @RequestBody Cz tCz) throws WebException {
+    @PutMapping("/update/")
+    public ResponseUtil update(@RequestBody Cz tCz) throws WebException {
+        Long id = tCz.getId();
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }

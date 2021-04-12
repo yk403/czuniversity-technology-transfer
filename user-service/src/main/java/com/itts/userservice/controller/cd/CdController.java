@@ -73,8 +73,9 @@ public class CdController {
      * 更新
      */
     @ApiOperation(value = "更新")
-    @PutMapping("/update/{id}")
-    public ResponseUtil update(@PathVariable("id") Long id, @RequestBody Cd cd) {
+    @PutMapping("/update/")
+    public ResponseUtil update(@RequestBody Cd cd) {
+        Long id = cd.getId();
         //检查参数是否合法
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
