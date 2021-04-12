@@ -1,7 +1,7 @@
-package com.itts.userservice.service.shzd;
+package com.itts.userservice.service.sjzd;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.model.shzd.Shzd;
+import com.itts.userservice.model.sjzd.Sjzd;
 
 /**
  * <p>
@@ -11,26 +11,26 @@ import com.itts.userservice.model.shzd.Shzd;
  * @author fl
  * @since 2021-03-31
  */
-public interface ShzdService {
+public interface SjzdService {
 
     /**
      * 获取列表 - 分页
      */
-    PageInfo<Shzd> findByPage(Integer pageNum, Integer pageSize);
+    PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize);
     /**
      * 获取通过id
      */
-    Shzd get(Long id);
+    Sjzd get(Long id);
     /**
      * 查询，通过名称或编码
      */
-    Shzd selectByString(String string);
+    Sjzd selectByString(String string);
     /**
      * 新增
      */
-    Shzd add(Shzd shzd);
+    Sjzd add(Sjzd sjzd);
     /**
      * 更新
      */
-    Shzd update(Shzd shzd);
+    Sjzd update(Sjzd sjzd);
 }

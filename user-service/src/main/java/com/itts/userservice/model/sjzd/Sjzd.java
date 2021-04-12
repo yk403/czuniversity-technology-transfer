@@ -1,4 +1,4 @@
-package com.itts.userservice.model.shzd;
+package com.itts.userservice.model.sjzd;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -18,8 +18,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_shzd")
-public class Shzd implements Serializable {
+@TableName("t_sjzd")
+public class Sjzd implements Serializable {
 
 
     private static final long serialVersionUID = -635139985468084264L;
@@ -42,7 +42,7 @@ public class Shzd implements Serializable {
     /**
      * 父级字段code, 如果是顶级则为000
      */
-    private String fjzdCode;
+    private String fjzdbm;
 
     /**
      * 字典层级, 以“-”分隔
