@@ -26,6 +26,9 @@ public class SjzdServiceImpl implements SjzdService {
 
     @Resource
     private SjzdMapper sjzdMapper;
+    /**
+     * 获取列表
+     */
     @Override
     public PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
@@ -34,6 +37,20 @@ public class SjzdServiceImpl implements SjzdService {
         List<Sjzd> sjzds = sjzdMapper.selectList(objectQueryWrapper);
         PageInfo<Sjzd> shzdPageInfo = new PageInfo<>(sjzds);
         return shzdPageInfo;
+    }
+
+    /**
+     * 获取指定模块列表
+     */
+    @Override
+    public PageInfo<Sjzd> findAppointByPage(Integer pageNum, Integer pageSize, String ssmk) {
+        PageHelper.startPage(pageNum,pageSize);
+        QueryWrapper<Sjzd> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.eq("sfsc",false)
+                            .eq("ssmk",ssmk);
+        List<Sjzd> sjzds = sjzdMapper.selectList(objectQueryWrapper);
+        PageInfo<Sjzd> shzdPageInfo = new PageInfo<>(sjzds);
+        return null;
     }
 
     @Override

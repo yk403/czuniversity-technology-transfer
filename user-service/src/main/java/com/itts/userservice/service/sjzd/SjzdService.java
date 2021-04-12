@@ -18,6 +18,11 @@ public interface SjzdService {
      */
     PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize);
     /**
+     * 获取列表 - 分页
+     */
+    PageInfo<Sjzd> findAppointByPage(Integer pageNum, Integer pageSize,String ssmk);
+
+    /**
      * 获取通过id
      */
     Sjzd get(Long id);

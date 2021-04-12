@@ -1,6 +1,7 @@
 package com.itts.userservice.controller.sjzd;
 
 
+import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
@@ -44,6 +45,27 @@ public class SjzdController {
         return ResponseUtil.success(sjzd);
     }
 
+    /**
+     * 获取列表
+     */
+    @GetMapping("/getlist/")
+    @ApiOperation(value = "获取列表")
+    public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        PageInfo<Sjzd> byPage = sjzdService.findByPage(pageNum, pageSize);
+        return ResponseUtil.success(byPage);
+    }
+    /**
+     * 获取指定模块列表
+     */
+    @GetMapping("/getappointlist/")
+    @ApiOperation(value = "获取指定模块列表")
+    public ResponseUtil getAppointList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                       @RequestParam String ssmk) {
+        PageInfo<Sjzd> byPage = sjzdService.findAppointByPage(pageNum, pageSize,ssmk);
+        return ResponseUtil.success(byPage);
+    }
     /**
      * 新增
      */
