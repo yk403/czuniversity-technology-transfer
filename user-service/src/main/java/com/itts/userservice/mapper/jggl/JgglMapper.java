@@ -40,7 +40,7 @@ public interface JgglMapper extends BaseMapper<Jggl> {
      */
     @Select("SELECT * " +
             "FROM t_jggl " +
-            "WHERE cj LIKE CONCAT('%', #{code}, '%')")
+            "WHERE sfsc = false AND cj LIKE CONCAT('%', #{code}, '%')")
     List<Jggl> findThisAndChildByCode(@Param("code") String code);
 
 }
