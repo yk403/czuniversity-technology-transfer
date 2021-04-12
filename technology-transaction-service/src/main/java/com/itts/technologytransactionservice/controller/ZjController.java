@@ -38,8 +38,7 @@ public class ZjController extends BaseController {
     public R page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        IPage<TZj> tZjIPage = zjService.page(query);
-        return success(tZjIPage);
+        return success(zjService.page(query));
     }
 
     /**
@@ -49,8 +48,7 @@ public class ZjController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") Long id) {
-        TZj tZj = zjService.getById(id);
-        return success(tZj);
+        return success(zjService.getById(id));
     }
 
     /**
@@ -58,8 +56,7 @@ public class ZjController extends BaseController {
      */
     @PostMapping("/save")
     public R save(@RequestBody TZj tZj) {
-        boolean result = zjService.save(tZj);
-        return save(result);
+        return save(zjService.save(tZj));
     }
 
     /**
@@ -67,8 +64,7 @@ public class ZjController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TZj tZj) {
-        boolean result = zjService.updateById(tZj);
-        return update(result);
+        return update(zjService.updateById(tZj));
     }
 
     /**
@@ -76,8 +72,7 @@ public class ZjController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") Long id) {
-        boolean result = zjService.removeById(id);
-        return remove(result);
+        return remove(zjService.removeById(id));
     }
 
     /**
@@ -85,8 +80,7 @@ public class ZjController extends BaseController {
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<Long> ids){
-        boolean result = zjService.removeByIds(ids);
-        return  remove(result);
+        return  remove(zjService.removeByIds(ids));
     }
 
 }

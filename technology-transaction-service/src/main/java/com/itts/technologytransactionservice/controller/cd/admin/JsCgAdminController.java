@@ -2,20 +2,16 @@ package com.itts.technologytransactionservice.controller.cd.admin;
 
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.github.pagehelper.PageInfo;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.controller.BaseController;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.service.cd.JsCgAdminService;
-import com.itts.technologytransactionservice.service.cd.JsShAdminService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,10 +31,6 @@ public class JsCgAdminController extends BaseController {
     @Autowired
     private JsCgAdminService jsCgAdminService;
 
-
-    @Autowired
-    private JsShAdminService JsShAdminService;
-
     /**
      * 分页条件查询成果(后台管理)
      * @param params
@@ -47,16 +39,7 @@ public class JsCgAdminController extends BaseController {
     @PostMapping("/page")
     public ResponseUtil findJsCg(@RequestBody Map<String, Object> params) {
         //前端传输标识type(0：审批管理;1：信息采集)
-        /*if (params.get("type") == null) {
-            Integer type = Integer.valueOf(params.get("type").toString());
-            if (type != 0 && type != 1) {
-                throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-            }
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }*/
-        //查询用户录入成功信息列表
-        PageInfo<TJsCg> page = jsCgAdminService.findJsCg(params);
-        return ResponseUtil.success(page);
+        return ResponseUtil.success(jsCgAdminService.findJsCg(params));
     }
 
     /**
@@ -147,10 +130,7 @@ public class JsCgAdminController extends BaseController {
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<String> ids){
-
         return  remove(jsCgAdminService.removeByIdsCg(ids));
     }
-
-
 
 }

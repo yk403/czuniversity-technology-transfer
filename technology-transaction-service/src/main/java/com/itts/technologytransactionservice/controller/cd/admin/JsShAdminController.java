@@ -42,8 +42,7 @@ public class JsShAdminController extends BaseController {
     public R page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        IPage<TJsSh> tJsShIPage = JsShAdminService.page(query);
-        return success(tJsShIPage);
+        return success(JsShAdminService.page(query));
     }
 
     /**
@@ -53,8 +52,7 @@ public class JsShAdminController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
-        TJsSh tJsSh = JsShAdminService.getById(id);
-        return success(tJsSh);
+        return success(JsShAdminService.getById(id));
     }
 
     /**
@@ -62,8 +60,7 @@ public class JsShAdminController extends BaseController {
      */
     @PostMapping("/save")
     public R save(@RequestBody TJsSh tJsSh) {
-        boolean result = JsShAdminService.save(tJsSh);
-        return save(result);
+        return save(JsShAdminService.save(tJsSh));
     }
 
     /**
@@ -71,8 +68,7 @@ public class JsShAdminController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsSh tJsSh) {
-        boolean result = JsShAdminService.updateById(tJsSh);
-        return update(result);
+        return update(JsShAdminService.updateById(tJsSh));
     }
 
     /**
@@ -80,8 +76,7 @@ public class JsShAdminController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") Long id) {
-        boolean result = JsShAdminService.removeById(id);
-        return remove(result);
+        return remove(JsShAdminService.removeById(id));
     }
 
     /**
@@ -89,8 +84,7 @@ public class JsShAdminController extends BaseController {
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<Long> ids){
-        boolean result = JsShAdminService.removeByIds(ids);
-        return  remove(result);
+        return  remove(JsShAdminService.removeByIds(ids));
     }
 
     /**

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 
 
@@ -28,6 +27,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
 @Api(value = "JsLyController", tags = "技术领域管理")
 @RestController
 public class JsLyController extends BaseController {
+
     @Autowired
     private JsLyService jsLyService;
 
@@ -40,8 +40,7 @@ public class JsLyController extends BaseController {
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        PageInfo<TJsLy> page = jsLyService.page(query);
-        return ResponseUtil.success(page);
+        return ResponseUtil.success(jsLyService.page(query));
     }
 
     /**
@@ -51,9 +50,7 @@ public class JsLyController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
-        long l = Long.parseLong(id);
-        TJsLy tJsLy = jsLyService.getById(l);
-        return success(tJsLy);
+        return success(jsLyService.getById(Long.parseLong(id)));
     }
 
     /**
@@ -61,8 +58,7 @@ public class JsLyController extends BaseController {
      */
     @PostMapping("/save")
     public R save(@RequestBody TJsLy tJsLy) {
-        boolean result = jsLyService.save(tJsLy);
-        return save(result);
+        return save(jsLyService.save(tJsLy));
     }
 
     /**
@@ -70,8 +66,7 @@ public class JsLyController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsLy tJsLy) {
-        boolean result = jsLyService.updateById(tJsLy);
-        return update(result);
+        return update(jsLyService.updateById(tJsLy));
     }
 
     /**
@@ -79,9 +74,7 @@ public class JsLyController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") String id) {
-        long l = Long.parseLong(id);
-        boolean result = jsLyService.removeById(l);
-        return remove(result);
+        return remove(jsLyService.removeById(Long.parseLong(id)));
     }
 
     /**
@@ -90,15 +83,10 @@ public class JsLyController extends BaseController {
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<String> ids){
         ArrayList<Long> longs = new ArrayList<>();
-        for (String id:
-                ids) {
-            long l = Long.parseLong(id);
-            longs.add(l);
+        for (String id: ids) {
+            longs.add(Long.parseLong(id));
         }
-        boolean result = jsLyService.removeByIds(longs);
-        return  remove(result);
+        return  remove(jsLyService.removeByIds(longs));
     }
-
-
 
 }

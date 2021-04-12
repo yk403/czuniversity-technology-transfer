@@ -40,9 +40,6 @@ public class JsXqAdminController extends BaseController {
     @Autowired
     private JsXqAdminService jsXqAdminService;
 
-    @Autowired
-    private JsShAdminService JsShAdminService;
-
     /**
      * 分页条件查询需求(后台管理)
      * @param params
@@ -51,11 +48,7 @@ public class JsXqAdminController extends BaseController {
     @PostMapping("/page")
     public ResponseUtil findJsXq(@RequestBody Map<String, Object> params) {
         //前端传输标识type(0：审批管理;1：信息采集)
-        //TODO 从ThreadLocal中获取用户id 暂时是假数据,1表示管理员
-        params.put("userId",1);
-        //查询用户录入成功信息列表
-        PageInfo<TJsXq> page = jsXqAdminService.findJsXq(params);
-        return ResponseUtil.success(page);
+        return ResponseUtil.success(jsXqAdminService.findJsXq(params));
     }
     /**
      * 分页条件查询需求(前后台)
@@ -65,9 +58,7 @@ public class JsXqAdminController extends BaseController {
     @PostMapping("/pageAll")
     public ResponseUtil findJsXqAll(@RequestBody Map<String, Object> params) {
         //前端传输标识type(0：审批管理;1：信息采集)
-        //查询用户录入成功信息列表
-        PageInfo<TJsXq> page = jsXqAdminService.findJsXq(params);
-        return ResponseUtil.success(page);
+        return ResponseUtil.success(jsXqAdminService.findJsXq(params));
     }
 
     /**
@@ -161,8 +152,7 @@ public class JsXqAdminController extends BaseController {
     public ResponseUtil PageByTJsFb(@RequestBody Map<String, Object> params) {
         //查询邻域类别审核状态列表数据
         Query query = new Query(params);
-        PageInfo<TJsFb> page = jsXqAdminService.PageByTJsFb(query);
-        return ResponseUtil.success(page);
+        return ResponseUtil.success(jsXqAdminService.PageByTJsFb(query));
     }
 
     /**
@@ -173,15 +163,10 @@ public class JsXqAdminController extends BaseController {
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<String> ids) {
         ArrayList<Long> longs = new ArrayList<>();
-        for (String id :
-                ids) {
-            long l = Long.parseLong(id);
-            longs.add(l);
+        for (String id : ids) {
+            longs.add(Long.parseLong(id));
         }
-        boolean result = jsXqAdminService.removeByIds(longs);
-        return remove(result);
+        return remove(jsXqAdminService.removeByIds(longs));
     }
-
-
 
 }

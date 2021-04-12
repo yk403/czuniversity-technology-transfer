@@ -33,8 +33,6 @@ public class JsCgController extends BaseController {
     private JsCgService jsCgService;
 
     @Autowired
-    private JsShService jsShService;
-    @Autowired
     private JsCgAdminService jsCgAdminService;
 
     /**

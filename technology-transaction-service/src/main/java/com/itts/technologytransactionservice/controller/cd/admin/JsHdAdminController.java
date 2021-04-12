@@ -1,7 +1,6 @@
 package com.itts.technologytransactionservice.controller.cd.admin;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
-import static com.itts.common.constant.SystemConstant.BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
@@ -44,8 +42,7 @@ public class JsHdAdminController extends BaseController {
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        PageInfo<TJsHd> page = jsHdService.page(query);
-        return ResponseUtil.success(page);
+        return ResponseUtil.success(jsHdService.page(query));
     }
 
     /**
@@ -55,8 +52,7 @@ public class JsHdAdminController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") Long id) {
-        TJsHd tJsHd = jsHdService.getById(id);
-        return success(tJsHd);
+        return success(jsHdService.getById(id));
     }
 
     /**
@@ -78,8 +74,7 @@ public class JsHdAdminController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsHd tJsHd) {
-        boolean result = jsHdService.updateById(tJsHd);
-        return update(result);
+        return update(jsHdService.updateById(tJsHd));
     }
 
     /**
@@ -87,8 +82,7 @@ public class JsHdAdminController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") Long id) {
-        boolean result = jsHdService.removeById(id);
-        return remove(result);
+        return remove(jsHdService.removeById(id));
     }
 
     /**
@@ -96,8 +90,7 @@ public class JsHdAdminController extends BaseController {
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<Long> ids){
-        boolean result = jsHdService.removeByIds(ids);
-        return  remove(result);
+        return  remove(jsHdService.removeByIds(ids));
     }
 
     /**

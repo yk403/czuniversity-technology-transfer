@@ -38,8 +38,7 @@ public class JsHdController extends BaseController {
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        PageInfo<TJsHd> page = jsHdService.page(query);
-        return ResponseUtil.success(page);
+        return ResponseUtil.success(jsHdService.page(query));
     }
 
     /**
@@ -49,8 +48,7 @@ public class JsHdController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") Long id) {
-        TJsHd tJsHd = jsHdService.getById(id);
-        return success(tJsHd);
+        return success(jsHdService.getById(id));
     }
 
     /**
@@ -58,8 +56,7 @@ public class JsHdController extends BaseController {
      */
     @PostMapping("/save")
     public R save(@RequestBody TJsHd tJsHd) {
-        boolean result = jsHdService.save(tJsHd);
-        return save(result);
+        return save(jsHdService.save(tJsHd));
     }
 
     /**
@@ -67,8 +64,7 @@ public class JsHdController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsHd tJsHd) {
-        boolean result = jsHdService.updateById(tJsHd);
-        return update(result);
+        return update(jsHdService.updateById(tJsHd));
     }
 
     /**
@@ -76,8 +72,7 @@ public class JsHdController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") Long id) {
-        boolean result = jsHdService.removeById(id);
-        return remove(result);
+        return remove(jsHdService.removeById(id));
     }
 
     /**
@@ -85,8 +80,7 @@ public class JsHdController extends BaseController {
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<Long> ids){
-        boolean result = jsHdService.removeByIds(ids);
-        return  remove(result);
+        return  remove(jsHdService.removeByIds(ids));
     }
 
 }
