@@ -83,4 +83,8 @@ public class TJsHd implements Serializable {
 	 * 活动发布状态
 	 */
 	private Integer hdfbzt;
+	/**
+	 * 报名人数
+	 */
+	private Integer bmrs;
 }
