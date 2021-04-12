@@ -72,7 +72,9 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
         }
         //成果完成时间
         if(!StringUtils.isBlank(data.getCgwcsj())){
-            tJsCg.setCgwcsj(data.getCgwcsj());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date parse = simpleDateFormat.parse(data.getCgwcsj());
+            tJsCg.setCgwcsj(parse);
         }
         //资助情况
         if(!StringUtils.isBlank(data.getZzqk())){

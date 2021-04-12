@@ -96,7 +96,7 @@
 				order by ${map.sort} ${map.order}
 			</when>
 			<otherwise>
-				order by id asc
+				order by id desc
 			</otherwise>
 		</choose>
 	</select>
