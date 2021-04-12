@@ -225,6 +225,12 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
             log.error("发布审核状态未通过,无法申请拍卖挂牌!");
             return false;
         }
+        TJsXq xq = new TJsXq();
+        xq.setId(Integer.valueOf(params.get("id").toString()));
+        xq.setXqxq(params.get("xqxq").toString());
+        xq.setJszb(params.get("jszb").toString());
+        xq.setRemarks(params.get("remarks").toString());
+        jsXqMapper.updateTJsXq(xq);
         tJsSh.setAssistanceStatus(1);
         tJsSh.setJylx(jylx);
         tJsSh.setReleaseAssistanceStatus(1);

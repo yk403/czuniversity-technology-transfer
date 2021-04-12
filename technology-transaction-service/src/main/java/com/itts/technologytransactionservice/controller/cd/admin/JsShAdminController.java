@@ -126,5 +126,37 @@ public class JsShAdminController extends BaseController {
         }
         return ResponseUtil.success("审核需求完成!");
     }
+    /**
+     * 招标审核需求(1待审核;2通过;3整改;4拒绝)
+     * @param params
+     * @return
+     */
+    @RequestMapping("/assistanceAuditXq")
+    public ResponseUtil assistanceAuditXq(@RequestBody Map<String, Object> params) {
+        Integer assistanceStatus = Integer.parseInt(params.get("assistanceStatus").toString());
+        if (assistanceStatus != 2 && assistanceStatus != 3 && assistanceStatus != 4){
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (!JsShAdminService.assistanceAuditXq(params,assistanceStatus)) {
+            throw new WebException(AUDIT_MSG_ISEMPTY);
+        }
+        return ResponseUtil.success("审核需求完成!");
+    }
+    /**
+     * 拍卖挂牌审核成果(1待审核;2通过;3整改;4拒绝)
+     * @param params
+     * @return
+     */
+    @RequestMapping("/assistanceAuditCg")
+    public ResponseUtil assistanceAuditCg(@RequestBody Map<String, Object> params) {
+        Integer assistanceStatus = Integer.parseInt(params.get("assistanceStatus").toString());
+        if (assistanceStatus != 2 && assistanceStatus != 3 && assistanceStatus != 4){
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (!JsShAdminService.assistanceAuditCg(params,assistanceStatus)) {
+            throw new WebException(AUDIT_MSG_ISEMPTY);
+        }
+        return ResponseUtil.success("审核成果完成!");
+    }
 
 }

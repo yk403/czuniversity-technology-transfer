@@ -42,5 +42,13 @@ public class TJsFb implements Serializable {
      * 提交时间
      */
     private String applyTime;
+    /*
+   交易类型（0：拍卖；1：招标；2：挂牌）
+     */
+    private String jylx;
+    /*
+    需求成果图片
+     */
+    private String tp;
 
 }

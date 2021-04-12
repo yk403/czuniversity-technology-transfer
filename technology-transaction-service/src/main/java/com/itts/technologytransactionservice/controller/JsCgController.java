@@ -148,7 +148,7 @@ public class JsCgController extends BaseController {
         if (fbshzt != 1 ){
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(jsCgService.auditCg(params,fbshzt));
+        return ResponseUtil.success("申请审核成功",jsCgService.auditCg(params,fbshzt));
     }
 
     /**

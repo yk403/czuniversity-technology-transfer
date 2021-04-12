@@ -36,7 +36,7 @@ public interface JsXqMapper extends BaseMapper<TJsXq> {
 	 * 更新技术需求
 	 * @param tJsXq
 	 */
-    void updateTJsXq(TJsXq tJsXq);
+    boolean updateTJsXq(TJsXq tJsXq);
 
 
 	/**
