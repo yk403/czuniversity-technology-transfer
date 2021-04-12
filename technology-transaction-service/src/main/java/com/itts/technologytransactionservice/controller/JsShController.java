@@ -28,6 +28,7 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_
 @Api(value = "JsShController", tags = "技术审核管理")
 @RestController
 public class JsShController extends BaseController {
+
     @Autowired
     private JsShService jsShService;
 
@@ -40,8 +41,7 @@ public class JsShController extends BaseController {
     public R page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        IPage<TJsSh> tJsShIPage = jsShService.page(query);
-        return success(tJsShIPage);
+        return success(jsShService.page(query));
     }
 
     /**
@@ -51,8 +51,7 @@ public class JsShController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
-        TJsSh tJsSh = jsShService.getById(id);
-        return success(tJsSh);
+        return success(jsShService.getById(id));
     }
 
     /**
@@ -60,8 +59,7 @@ public class JsShController extends BaseController {
      */
     @PostMapping("/save")
     public R save(@RequestBody TJsSh tJsSh) {
-        boolean result = jsShService.save(tJsSh);
-        return save(result);
+        return save(jsShService.save(tJsSh));
     }
 
     /**
@@ -69,8 +67,7 @@ public class JsShController extends BaseController {
      */
     @PutMapping("/update")
     public R update(@RequestBody TJsSh tJsSh) {
-        boolean result = jsShService.updateById(tJsSh);
-        return update(result);
+        return update(jsShService.updateById(tJsSh));
     }
 
     /**
@@ -78,8 +75,7 @@ public class JsShController extends BaseController {
      */
     @PutMapping("/remove")
     public R remove(@RequestParam(value = "cgId",required = false) Integer cgId,@RequestParam(value = "xqId",required = false)Integer xqId) {
-        boolean result = jsShService.deleteById(cgId,xqId);
-        return remove(result);
+        return remove(jsShService.deleteById(cgId,xqId));
     }
 
     /**
@@ -87,8 +83,7 @@ public class JsShController extends BaseController {
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<Long> ids){
-        boolean result = jsShService.removeByIds(ids);
-        return  remove(result);
+        return  remove(jsShService.removeByIds(ids));
     }
 
     /**

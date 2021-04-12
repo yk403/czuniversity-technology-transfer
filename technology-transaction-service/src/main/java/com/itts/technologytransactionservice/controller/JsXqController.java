@@ -6,7 +6,6 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsXq;
 import com.itts.technologytransactionservice.service.JsShService;
@@ -15,7 +14,6 @@ import com.itts.technologytransactionservice.service.cd.JsXqAdminService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -40,8 +38,6 @@ public class JsXqController extends BaseController {
     private JsXqService jsXqService;
     @Autowired
     private JsXqAdminService jsXqAdminService;
-    @Autowired
-    private JsShService jsShService;
 
     /**
      * 分页条件查询需求(前台)
@@ -50,8 +46,7 @@ public class JsXqController extends BaseController {
      */
     @PostMapping("/page")
     public ResponseUtil findJsXqFront(@RequestBody Map<String, Object> params) {
-        PageInfo<TJsXq> page = jsXqService.findJsXqFront(params);
-        return ResponseUtil.success(page);
+        return ResponseUtil.success(jsXqService.findJsXqFront(params));
     }
 
     /**
@@ -82,8 +77,7 @@ public class JsXqController extends BaseController {
      */
     @GetMapping("/getByName/{xqmc}")
     public R getByName(@PathVariable("xqmc") String xqmc) {
-        TJsXq tJsXq = jsXqService.selectByName(xqmc);
-        return success(tJsXq);
+        return success(jsXqService.selectByName(xqmc));
     }
 
     /**
@@ -92,8 +86,7 @@ public class JsXqController extends BaseController {
     @PostMapping("/save")
     @Transactional
     public R save(@RequestBody TJsXq tJsXq) throws Exception {
-        boolean result = jsXqService.saveXq(tJsXq);
-        return save(result);
+        return save(jsXqService.saveXq(tJsXq));
     }
 
     /**
@@ -101,8 +94,7 @@ public class JsXqController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsXq tJsXq) {
-        boolean result = jsXqService.updateTJsXq(tJsXq);
-        return update(result);
+        return update(jsXqService.updateTJsXq(tJsXq));
     }
 
     /**
@@ -157,8 +149,7 @@ public class JsXqController extends BaseController {
     public ResponseUtil PageByTJsFb(@RequestBody Map<String, Object> params) {
         //查询邻域类别审核状态列表数据
         Query query = new Query(params);
-        PageInfo<TJsFb> page = jsXqService.PageByTJsFb(query);
-        return ResponseUtil.success(page);
+        return ResponseUtil.success(jsXqService.PageByTJsFb(query));
     }
 
 
@@ -170,13 +161,10 @@ public class JsXqController extends BaseController {
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<String> ids) {
         ArrayList<Long> longs = new ArrayList<>();
-        for (String id :
-                ids) {
-            long l = Long.parseLong(id);
-            longs.add(l);
+        for (String id : ids) {
+            longs.add(Long.parseLong(id));
         }
-        boolean result = jsXqService.removeByIds(longs);
-        return remove(result);
+        return remove(jsXqService.removeByIds(longs));
     }
 
     /**
@@ -204,8 +192,7 @@ public class JsXqController extends BaseController {
      */
     @PostMapping("/assistanceDisPass")
     public R assistanceDisPass(@RequestBody Map<String, Object> params) {
-        boolean result = jsXqService.assistanceDisPassById(params);
-        return update(result);
+        return update(jsXqService.assistanceDisPassById(params));
     }
 
     /**
@@ -217,10 +204,7 @@ public class JsXqController extends BaseController {
         for (String id : ids) {
             list.add(Integer.valueOf(id));
         }
-        boolean result = jsXqService.assistanceIssueBatch(list);
-        return remove(result);
+        return remove(jsXqService.assistanceIssueBatch(list));
     }
-
-
 
 }

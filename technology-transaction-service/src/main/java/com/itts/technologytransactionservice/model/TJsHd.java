@@ -40,7 +40,7 @@ public class TJsHd implements Serializable {
 	/**
  	* 活动类型
  	*/
-	private String hdlx;
+	private Integer hdlx;
 	/**
  	* 活动简介
  	*/

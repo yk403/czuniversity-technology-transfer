@@ -38,8 +38,7 @@ public class JsLyAdminController extends BaseController {
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        PageInfo<TJsLy> page = jsLyAdminService.page(query);
-        return ResponseUtil.success(page);
+        return ResponseUtil.success(jsLyAdminService.page(query));
     }
 
     /**
@@ -49,9 +48,7 @@ public class JsLyAdminController extends BaseController {
      */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
-        long l = Long.parseLong(id);
-        TJsLy tJsLy = jsLyAdminService.getById(l);
-        return success(tJsLy);
+        return success(jsLyAdminService.getById(Long.parseLong(id)));
     }
 
     /**
@@ -59,8 +56,7 @@ public class JsLyAdminController extends BaseController {
      */
     @PostMapping("/save")
     public R save(@RequestBody TJsLy tJsLy) {
-        boolean result = jsLyAdminService.save(tJsLy);
-        return save(result);
+        return save(jsLyAdminService.save(tJsLy));
     }
 
     /**
@@ -68,8 +64,7 @@ public class JsLyAdminController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsLy tJsLy) {
-        boolean result = jsLyAdminService.updateById(tJsLy);
-        return update(result);
+        return update(jsLyAdminService.updateById(tJsLy));
     }
 
     /**
@@ -77,9 +72,7 @@ public class JsLyAdminController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") String id) {
-        long l = Long.parseLong(id);
-        boolean result = jsLyAdminService.removeById(l);
-        return remove(result);
+        return remove(jsLyAdminService.removeById(Long.parseLong(id)));
     }
 
     /**
@@ -88,12 +81,9 @@ public class JsLyAdminController extends BaseController {
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<String> ids){
         ArrayList<Long> longs = new ArrayList<>();
-        for (String id:
-                ids) {
-            long l = Long.parseLong(id);
-            longs.add(l);
+        for (String id: ids) {
+            longs.add(Long.parseLong(id));
         }
-        boolean result = jsLyAdminService.removeByIds(longs);
-        return  remove(result);
+        return  remove(jsLyAdminService.removeByIds(longs));
     }
 }

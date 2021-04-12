@@ -26,6 +26,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
 @Api(value = "JsLbController", tags = "技术类别管理")
 @RestController
 public class JsLbController extends BaseController {
+
     @Autowired
     private JsLbService jsLbService;
 
@@ -38,8 +39,7 @@ public class JsLbController extends BaseController {
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        PageInfo<TJsLb> page = jsLbService.page(query);
-        return ResponseUtil.success(page);
+        return ResponseUtil.success(jsLbService.page(query));
     }
 
     /**
@@ -49,9 +49,7 @@ public class JsLbController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
-        long l = Long.parseLong(id);
-        TJsLb tJsLb = jsLbService.getById(l);
-        return success(tJsLb);
+        return success(jsLbService.getById(Long.parseLong(id)));
     }
 
     /**
@@ -59,8 +57,7 @@ public class JsLbController extends BaseController {
      */
     @PostMapping("/save")
     public R save(@RequestBody TJsLb tJsLb) {
-        boolean result = jsLbService.save(tJsLb);
-        return save(result);
+        return save(jsLbService.save(tJsLb));
     }
 
     /**
@@ -68,8 +65,7 @@ public class JsLbController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsLb tJsLb) {
-        boolean result = jsLbService.updateById(tJsLb);
-        return update(result);
+        return update(jsLbService.updateById(tJsLb));
     }
 
     /**
@@ -77,9 +73,7 @@ public class JsLbController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") String id) {
-        long l = Long.parseLong(id);
-        boolean result = jsLbService.removeById(l);
-        return remove(result);
+        return remove(jsLbService.removeById(Long.parseLong(id)));
     }
 
     /**
@@ -88,15 +82,10 @@ public class JsLbController extends BaseController {
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<String> ids){
         ArrayList<Long> longs = new ArrayList<>();
-        for (String id:
-                ids) {
-            long l = Long.parseLong(id);
-            longs.add(l);
+        for (String id: ids) {
+            longs.add(Long.parseLong(id));
         }
-        boolean result = jsLbService.removeByIds(longs);
-        return  remove(result);
+        return  remove(jsLbService.removeByIds(longs));
     }
-
-
 
 }

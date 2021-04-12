@@ -37,8 +37,7 @@ public class QyController extends BaseController {
     public R page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        IPage<TQy> tQyIPage = qyService.page(query);
-        return success(tQyIPage);
+        return success(qyService.page(query));
     }
 
     /**
@@ -48,8 +47,7 @@ public class QyController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") Long id) {
-        TQy tQy = qyService.getById(id);
-        return success(tQy);
+        return success(qyService.getById(id));
     }
 
     /**
@@ -57,8 +55,7 @@ public class QyController extends BaseController {
      */
     @PostMapping("/save")
     public R save(@RequestBody TQy tQy) {
-        boolean result = qyService.save(tQy);
-        return save(result);
+        return save(qyService.save(tQy));
     }
 
     /**
@@ -66,8 +63,7 @@ public class QyController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TQy tQy) {
-        boolean result = qyService.updateById(tQy);
-        return update(result);
+        return update(qyService.updateById(tQy));
     }
 
     /**
@@ -75,8 +71,7 @@ public class QyController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") Long id) {
-        boolean result = qyService.removeById(id);
-        return remove(result);
+        return remove(qyService.removeById(id));
     }
 
     /**
@@ -84,8 +79,7 @@ public class QyController extends BaseController {
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<Long> ids){
-        boolean result = qyService.removeByIds(ids);
-        return  remove(result);
+        return  remove(qyService.removeByIds(ids));
     }
 
 }

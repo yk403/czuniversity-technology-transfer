@@ -26,6 +26,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
 @Api(value = "JsJjController", tags = "技术经纪人管理")
 @RestController
 public class JsJjController extends BaseController {
+
     @Autowired
     private JsJjService jsJjService;
 
@@ -38,8 +39,7 @@ public class JsJjController extends BaseController {
     public R page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        IPage<TJsJj> tJsJjIPage = jsJjService.page(query);
-        return success(tJsJjIPage);
+        return success(jsJjService.page(query));
     }
 
     /**
@@ -49,8 +49,7 @@ public class JsJjController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") Long id) {
-        TJsJj tJsJj = jsJjService.getById(id);
-        return success(tJsJj);
+        return success(jsJjService.getById(id));
     }
 
     /**
@@ -58,8 +57,7 @@ public class JsJjController extends BaseController {
      */
     @PostMapping("/save")
     public R save(@RequestBody TJsJj tJsJj) {
-        boolean result = jsJjService.save(tJsJj);
-        return save(result);
+        return save(jsJjService.save(tJsJj));
     }
 
     /**
@@ -67,8 +65,7 @@ public class JsJjController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsJj tJsJj) {
-        boolean result = jsJjService.updateById(tJsJj);
-        return update(result);
+        return update(jsJjService.updateById(tJsJj));
     }
 
     /**
@@ -76,8 +73,7 @@ public class JsJjController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") Long id) {
-        boolean result = jsJjService.removeById(id);
-        return remove(result);
+        return remove(jsJjService.removeById(id));
     }
 
     /**
@@ -85,8 +81,7 @@ public class JsJjController extends BaseController {
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<Long> ids){
-        boolean result = jsJjService.removeByIds(ids);
-        return  remove(result);
+        return  remove(jsJjService.removeByIds(ids));
     }
 
 }

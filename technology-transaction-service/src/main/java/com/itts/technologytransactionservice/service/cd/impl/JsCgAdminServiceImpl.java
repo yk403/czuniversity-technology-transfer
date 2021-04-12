@@ -1,6 +1,5 @@
 package com.itts.technologytransactionservice.service.cd.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,8 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.itts.common.enums.ErrorCodeEnum.ISSUE_BATCH_FAIL;
-
 /**
  * @Author: Austin
  * @Data: 2021/3/26
@@ -43,10 +40,8 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     @Autowired
     private JsShAdminService jsShAdminService;
 
-
 	@Autowired
 	private JsShMapper jsShMapper;
-
 
     /**
      * 分页查询成果(后台管理)
@@ -122,7 +117,6 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         tJsCg.setUserId(1);
         tJsCg.setReleaseType("技术成果");
         tJsCg.setCjsj(LocalDate.now());
-
         TJsSh tJsSh = new TJsSh();
         Integer jylx = tJsCg.getJylx();
         if (jylx == null) {
@@ -215,7 +209,6 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         }
 		return true;
 	}
-
 
 }
 

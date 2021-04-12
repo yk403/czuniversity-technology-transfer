@@ -22,7 +22,7 @@ import java.util.Map;
 @Repository
 public interface JsXqMapper extends BaseMapper<TJsXq> {
 
-	List<TJsXq> findJsCg(@Param("map") Map map);
+	List<TJsXq> findJsXq(@Param("map") Map map);
 
 	@Select("select * from t_js_xq where id = #{id} and is_delete = 0")
 	TJsXq getById(Integer id);
