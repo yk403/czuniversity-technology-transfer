@@ -7,6 +7,7 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.model.cz.Cz;
 import com.itts.userservice.model.jggl.Jggl;
+import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.vo.JgglVO;
 import io.swagger.annotations.Api;
@@ -60,6 +61,18 @@ public class JgglController {
         List<JgglVO> jgglVO = jgglService.findJgglVO();
         return ResponseUtil.success(jgglVO);
     }
+    /**
+     * 获取详情
+     *
+     * @param id
+     * @author fl
+     */
+    @GetMapping("/get/{id}")
+    @ApiOperation(value = "获取详情")
+    public ResponseUtil get(@PathVariable("id") Long id) {
+        Jggl jggl = jgglService.get(id);
+        return ResponseUtil.success(jggl);
+    }
 
     /**
      * 新增
@@ -75,8 +88,9 @@ public class JgglController {
      * 更新
      */
      @ApiOperation(value="更新")
-     @PutMapping("/update/{id}")
-     public ResponseUtil update(@PathVariable("id")Long id,@RequestBody Jggl jggl)throws WebException{
+     @PutMapping("/update/")
+     public ResponseUtil update(@RequestBody Jggl jggl)throws WebException{
+         Long id = jggl.getId();
          if(id==null){
              throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
          }
