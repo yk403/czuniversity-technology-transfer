@@ -87,7 +87,7 @@ public class JgglController {
         String cj = jggl1.getCj();
         //生成层级
         String jgbm = jggl.getJgbm();
-        cj=cj+jgbm;
+        cj=cj+"-"+jgbm;
         jggl.setCj(cj);
         Jggl add = jgglService.add(jggl);
         return ResponseUtil.success(add);
@@ -108,6 +108,14 @@ public class JgglController {
              throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
          }
          checkPequest(jggl);
+         //获取父级机构的层级
+         String fjbm = jggl.getFjbm();
+         Jggl jggl2 = jgglService.selectByJgbm(fjbm);
+         String cj = jggl2.getCj();
+         //生成层级
+         String jgbm = jggl.getJgbm();
+         cj=cj+"-"+jgbm;
+         jggl.setCj(cj);
          BeanUtils.copyProperties(jggl,jggl1,"id", "cjsj", "cjr");
          jgglService.update(jggl1);
          return ResponseUtil.success(jggl1);
