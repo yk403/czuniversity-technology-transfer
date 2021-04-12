@@ -119,7 +119,7 @@ public class CzController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         //设置删除状态，更新删除时间
-        tCz.setSfsc(false);
+        tCz.setSfsc(true);
         tCz.setGxsj(new Date());
         czService.update(tCz);
         return ResponseUtil.success();

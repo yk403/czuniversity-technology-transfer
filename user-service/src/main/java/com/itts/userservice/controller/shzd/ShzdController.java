@@ -89,7 +89,7 @@ public class ShzdController {
         if (shzd == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        shzd.setSfsc(false);
+        shzd.setSfsc(true);
         shzd.setGxsj(new Date());
         shzdService.update(shzd);
         return ResponseUtil.success();
@@ -110,7 +110,7 @@ public class ShzdController {
             if (shzd == null) {
                 log.error("【数据字典-批量删除】数据字典不存在");
             }
-            shzd.setSfsc(false);
+            shzd.setSfsc(true);
             shzd.setGxsj(new Date());
             shzdService.update(shzd);
         }
