@@ -72,10 +72,6 @@ public class JgglController {
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                 @RequestParam(required = false) String jgbm){
 
-        if(StringUtils.isBlank(jgbm)){
-            jgbm = "";
-        }
-
         PageInfo<Jggl> byPage = jgglService.findByPage(pageNum, pageSize, jgbm);
         return ResponseUtil.success(byPage);
     }

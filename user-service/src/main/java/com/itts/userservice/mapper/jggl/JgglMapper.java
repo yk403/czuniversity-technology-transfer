@@ -38,9 +38,14 @@ public interface JgglMapper extends BaseMapper<Jggl> {
     /**
      * 通过机构编码获取该机构及下属机构信息
      */
-    @Select("SELECT * " +
+    @Select({"<script>",
+            "SELECT * " +
             "FROM t_jggl " +
-            "WHERE sfsc = false AND cj LIKE CONCAT('%', #{code}, '%')")
+            "WHERE sfsc = false " +
+            "<if test=\" code != null and code != ''\">" +
+                "AND cj LIKE CONCAT('%', #{code}, '%')" +
+            "</if>",
+    "</script>"})
     List<Jggl> findThisAndChildByCode(@Param("code") String code);
 
 }
