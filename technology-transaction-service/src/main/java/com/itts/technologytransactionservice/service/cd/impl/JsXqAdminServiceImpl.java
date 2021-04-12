@@ -57,7 +57,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         log.info("【技术交易 - 分页查询需求(后台审批管理)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<TJsXq> list = jsXqMapper.findJsCg(query);
+        List<TJsXq> list = jsXqMapper.findJsXq(query);
         return new PageInfo<>(list);
     }
 
