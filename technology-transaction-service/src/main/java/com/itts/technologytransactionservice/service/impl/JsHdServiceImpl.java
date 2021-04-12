@@ -3,7 +3,6 @@ package com.itts.technologytransactionservice.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
@@ -13,7 +12,6 @@ import com.itts.technologytransactionservice.model.JsHdDTO;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsHd;
 import com.itts.technologytransactionservice.model.TJsXq;
-import com.itts.technologytransactionservice.service.JsCgService;
 import com.itts.technologytransactionservice.service.JsHdService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -25,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-import static com.itts.common.enums.ErrorCodeEnum.INSERT_FAIL;
 import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 
 /**
