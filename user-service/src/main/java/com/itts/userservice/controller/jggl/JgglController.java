@@ -62,6 +62,22 @@ public class JgglController {
         return ResponseUtil.success(jgglVO);
     }
     /**
+     * 查询机构编码是否重复
+     *
+     */
+    @GetMapping("/checkjgbm/")
+    @ApiOperation(value = "查询机构编码是否重复")
+    public ResponseUtil checkJgglbm(@RequestParam String jgbm){
+        if(jgbm==null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        //机构不重复，返回否
+        if(jgglService.selectByJgbm(jgbm)==null){
+            return ResponseUtil.success(false);
+        }
+        return ResponseUtil.success(true);
+    }
+    /**
      * 获取详情
      *
      * @param id
