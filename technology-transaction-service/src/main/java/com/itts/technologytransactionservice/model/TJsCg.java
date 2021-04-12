@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -54,7 +55,8 @@ public class TJsCg implements Serializable {
 	/**
  	* 成果完成时间
  	*/
-	private String cgwcsj;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	private Date cgwcsj;
 	/**
  	* 资助情况
  	*/
