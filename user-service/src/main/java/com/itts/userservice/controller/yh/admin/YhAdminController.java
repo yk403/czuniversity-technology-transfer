@@ -13,6 +13,7 @@ import com.itts.userservice.mapper.yh.YhJsGlMapper;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.model.yh.YhJsGl;
+import com.itts.userservice.request.AddYhRequest;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.service.yh.YhService;
@@ -109,10 +110,13 @@ public class YhAdminController {
      */
     @PostMapping("/add/")
     @ApiOperation(value = "新增")
-    public ResponseUtil add(@RequestBody Yh Yh,@RequestBody List<Long> jsidlist) throws WebException {
+    public ResponseUtil add(@RequestBody AddYhRequest addYhRequest) throws WebException {
         //检查参数是否合法
+        Yh Yh = new Yh();
+        BeanUtils.copyProperties(addYhRequest,Yh);
         checkRequest(Yh);
         //检查参数是否合法
+        List<Long> jsidlist = addYhRequest.getJsidlist();
         if (jsidlist == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
@@ -121,7 +125,7 @@ public class YhAdminController {
             Boolean flag = yhService.addYhAndJsmc(Yh, jsid);
         });
 
-        return ResponseUtil.success();
+        return ResponseUtil.success(addYhRequest);
     }
 
     /**
@@ -132,7 +136,7 @@ public class YhAdminController {
     @ApiOperation(value = "更新")
     @PutMapping("/update/{id}")
     @Transactional(rollbackFor = Exception.class)
-    public ResponseUtil update(@PathVariable("id") Long id, @RequestBody Yh Yh,@RequestBody List<Long> jsidlist) throws WebException {
+    public ResponseUtil update(@PathVariable("id") Long id, @RequestBody AddYhRequest addYhRequest) throws WebException {
         //检查参数是否合法
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
@@ -142,6 +146,8 @@ public class YhAdminController {
         if (Yh1 == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
+        Yh Yh = new Yh();
+        BeanUtils.copyProperties(addYhRequest,Yh);
         //检查参数是否合法
         checkRequest(Yh);
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
@@ -151,6 +157,8 @@ public class YhAdminController {
         QueryWrapper<YhJsGl> QueryWrapper = new QueryWrapper<>();
         QueryWrapper.eq("yh_id",yhid);
         List<YhJsGl> yhJsGls = yhJsGlMapper.selectList(QueryWrapper);
+
+        List<Long> jsidlist = addYhRequest.getJsidlist();
         yhJsGls.forEach(YhJsGl->{
             YhJsGl.setSfsc(true);
             YhJsGl.setGxsj(new Date());
