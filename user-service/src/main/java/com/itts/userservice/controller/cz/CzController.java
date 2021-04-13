@@ -2,6 +2,7 @@ package com.itts.userservice.controller.cz;
 
 
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
@@ -11,6 +12,8 @@ import com.itts.userservice.model.cz.Cz;
 import com.itts.userservice.service.cz.CzService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,16 +37,16 @@ public class CzController {
     @Resource
     private CzService czService;
 
-
     /**
      * 查询当前菜单的操作
+     *
      * @param id
      * @param cdid
      * @return
      */
     @GetMapping("/czlist/{id}/{cdid}")
     @ApiOperation(value = "获取操作列表")
-    public ResponseUtil findcz(@PathVariable("id") Long id,@PathVariable("cdid") Long cdid){
+    public ResponseUtil findcz(@PathVariable("id") Long id, @PathVariable("cdid") Long cdid) {
         List<CzDTO> cz = czService.findCz(id, cdid);
         return ResponseUtil.success(cz);
     }
@@ -53,13 +56,14 @@ public class CzController {
      *
      * @param pageNum pageSize
      * @author fl
-     *
      */
     @GetMapping("/list/")
     @ApiOperation(value = "获取列表")
-    public ResponseUtil find(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        PageInfo<Cz> byPage = czService.findByPage(pageNum, pageSize);
+    public ResponseUtil find(@ApiParam("当前页数") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                             @ApiParam("每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                             @ApiParam("操作名称") @RequestParam(value = "name", required = false) String name) {
+
+        PageInfo<Cz> byPage = czService.findByPage(pageNum, pageSize, name);
         return ResponseUtil.success(byPage);
     }
 
@@ -70,11 +74,26 @@ public class CzController {
      */
     @PostMapping("/add/")
     @ApiOperation(value = "新增")
-    public ResponseUtil add(@RequestBody Cz tCz) throws WebException {
+    public ResponseUtil add(@RequestBody Cz cz) throws WebException {
+
         //检查参数是否合法
-        checkPequest(tCz);
+        checkRequest(cz);
+
+        //获取当前登录用户信息
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser != null) {
+            cz.setCjr(loginUser.getUserId());
+            cz.setGxr(loginUser.getUserId());
+        }
+
+        //设置创建时间、更新时间
+        Date now = new Date();
+        cz.setCjsj(now);
+        cz.setGxsj(now);
+
         //检查数据库中是否存在要更新的数据
-        Cz add = czService.add(tCz);
+        Cz add = czService.add(cz);
+
         return ResponseUtil.success(add);
     }
 
@@ -85,21 +104,31 @@ public class CzController {
      */
     @ApiOperation(value = "更新")
     @PutMapping("/update/")
-    public ResponseUtil update(@RequestBody Cz tCz) throws WebException {
-        Long id = tCz.getId();
-        if (id == null) {
+    public ResponseUtil update(@RequestBody Cz cz) throws WebException {
+
+        checkRequest(cz);
+
+        if (cz.getId() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+
         //检查数据库中是否存在要更新的数据
-        Cz tCz1 = czService.get(id);
-        if (tCz1 == null) {
+        Cz old = czService.get(cz.getId());
+        if (old == null) {
             throw new WebException((ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR));
         }
-        checkPequest(tCz);
+
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
-        BeanUtils.copyProperties(tCz, tCz1, "id", "cjsj", "cjr");
-        czService.update(tCz1);
-        return ResponseUtil.success(tCz1);
+        BeanUtils.copyProperties(cz, old, "id", "cjsj", "cjr");
+        old.setGxsj(new Date());
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser != null) {
+            old.setGxr(loginUser.getUserId());
+        }
+
+        czService.update(old);
+        return ResponseUtil.success(old);
     }
 
     /**
@@ -110,31 +139,54 @@ public class CzController {
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete/{id}")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
+
         //检查参数是否为空
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        Cz tCz = czService.get(id);
-        if (tCz == null) {
+
+        Cz cz = czService.get(id);
+        if (cz == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
+
         //设置删除状态，更新删除时间
-        tCz.setSfsc(true);
-        tCz.setGxsj(new Date());
-        czService.update(tCz);
+        cz.setSfsc(true);
+        cz.setGxsj(new Date());
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser != null) {
+            cz.setGxr(loginUser.getUserId());
+        }
+
+        czService.update(cz);
         return ResponseUtil.success();
     }
 
     /**
      * 校验参数是否合法
      */
-    private void checkPequest(Cz tCz) throws WebException {
+    private void checkRequest(Cz cz) throws WebException {
+
         //如果参数为空，抛出异常
-        if (tCz == null) {
+        if (cz == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(cz.getCzmc())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(cz.getCzbm())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(cz.getXtlx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(cz.getMklx())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
-
-
 }
 

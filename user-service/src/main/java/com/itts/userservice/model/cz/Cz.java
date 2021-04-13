@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,8 +21,9 @@ import java.util.Date;
  * @since 2021-04-09
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
 @TableName("t_cz")
+@ApiModel("操作对象")
+@EqualsAndHashCode(callSuper = false)
 public class Cz implements Serializable {
 
     private static final long serialVersionUID = 2063157661520960391L;
@@ -34,11 +37,13 @@ public class Cz implements Serializable {
     /**
      * 操作名称
      */
+    @ApiModelProperty("操作名称")
     private String czmc;
 
     /**
      * 操作编码
      */
+    @ApiModelProperty("操作编码")
     private String czbm;
 
     /**
@@ -50,39 +55,50 @@ public class Cz implements Serializable {
      *
      * @see com.itts.common.enums.SystemTypeEnum
      */
+    @ApiModelProperty("所属系统类型：\n" +
+            "echnology_transaction_portal - 技术交易门户；\n" +
+            "technology_transaction_backstage_management - 技术交易后台管理；\n" +
+            "talent_training_portal - 人才培养门户；\n" +
+            "talent_training_backstage_management - 人才培养后台管理")
     private String xtlx;
 
     /**
      * 模块类型:front - 门户; admin - 后台管理
      */
+    @ApiModelProperty("模块类型:\n" +
+            "front - 门户; \n" +
+            "admin - 后台管理")
     private String mklx;
 
     /**
      * 是否删除
      */
+    @ApiModelProperty("是否删除")
     private Boolean sfsc;
 
     /**
      * 创建时间
      */
+    @ApiModelProperty("创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
      * 创建人
      */
+    @ApiModelProperty("创建人")
     private Long cjr;
 
     /**
      * 更新时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @ApiModelProperty("更新时间")
     private Date gxsj;
 
     /**
      * 更新人
      */
+    @ApiModelProperty("更新人")
     private Long gxr;
-
-
 }

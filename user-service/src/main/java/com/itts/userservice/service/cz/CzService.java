@@ -18,7 +18,7 @@ public interface CzService {
     /**
      * 查询列表
      */
-    PageInfo<Cz> findByPage(Integer pageNum, Integer pageSize);
+    PageInfo<Cz> findByPage(Integer pageNum, Integer pageSize, String name);
 
     /**
      * 获取详情

@@ -13,6 +13,7 @@ import com.itts.userservice.model.cz.Cz;
 import com.itts.userservice.model.yh.YhJsGl;
 import com.itts.userservice.service.cz.CzService;
 import com.itts.userservice.mapper.cz.CzMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -47,12 +48,20 @@ public class CzServiceImpl implements CzService {
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<Cz> findByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<Cz> findByPage(Integer pageNum, Integer pageSize, String name) {
+
         PageHelper.startPage(pageNum,pageSize);
-        QueryWrapper<Cz> objectQueryWrapper = new QueryWrapper<>();
+
+        QueryWrapper<Cz> query = new QueryWrapper<>();
         //过滤
-        objectQueryWrapper.eq("sfsc",false);
-        List<Cz> Czs = czMapper.selectList(objectQueryWrapper);
+        query.eq("sfsc",false);
+        if(StringUtils.isNotBlank(name)){
+
+            query.like("czmc", name);
+        }
+
+        List<Cz> Czs = czMapper.selectList(query);
+
         PageInfo<Cz> tCzPageInfo = new PageInfo<>(Czs);
         return tCzPageInfo;
     }
