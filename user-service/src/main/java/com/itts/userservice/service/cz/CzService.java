@@ -18,7 +18,7 @@ public interface CzService {
     /**
      * 查询列表
      */
-    PageInfo<Cz> findByPage(Integer pageNum, Integer pageSize, String name);
+    PageInfo<Cz> findByPage(Integer pageNum, Integer pageSize, String name, String systemType, String modelType);
 
     /**
      * 获取详情
@@ -28,12 +28,12 @@ public interface CzService {
     /**
      * 新增
      */
-    Cz add(Cz Cz);
+    Cz add(Cz cz);
 
     /**
      * 更新
      */
-    Cz update(Cz Cz);
+    Cz update(Cz cz);
 
     /**
      * 查询操作按钮

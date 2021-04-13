@@ -2,7 +2,6 @@ package com.itts.userservice.controller.cz;
 
 
 import com.github.pagehelper.PageInfo;
-import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
@@ -18,7 +17,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,10 +59,34 @@ public class CzController {
     @ApiOperation(value = "获取列表")
     public ResponseUtil find(@ApiParam("当前页数") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                              @ApiParam("每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                             @ApiParam("操作名称") @RequestParam(value = "name", required = false) String name) {
+                             @ApiParam("操作名称") @RequestParam(value = "name", required = false) String name,
+                             @ApiParam("系统类型") @RequestParam(value = "systemType", required = false) String systemType,
+                             @ApiParam("模块类型") @RequestParam(value = "modelType", required = false) String modelType) {
 
-        PageInfo<Cz> byPage = czService.findByPage(pageNum, pageSize, name);
+        PageInfo<Cz> byPage = czService.findByPage(pageNum, pageSize, name, systemType, modelType);
         return ResponseUtil.success(byPage);
+    }
+
+    /**
+     * 获取详情
+     *
+     * @param
+     * @return
+     * @author liuyingming
+     */
+    @GetMapping("/get/{id}")
+    @ApiOperation(value = "获取详情")
+    public ResponseUtil get(@PathVariable("id") Long id) {
+
+        if (id == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        Cz cz = czService.get(id);
+        if (cz.getSfsc()) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+        return ResponseUtil.success(cz);
     }
 
     /**
@@ -79,21 +101,7 @@ public class CzController {
         //检查参数是否合法
         checkRequest(cz);
 
-        //获取当前登录用户信息
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        if (loginUser != null) {
-            cz.setCjr(loginUser.getUserId());
-            cz.setGxr(loginUser.getUserId());
-        }
-
-        //设置创建时间、更新时间
-        Date now = new Date();
-        cz.setCjsj(now);
-        cz.setGxsj(now);
-
-        //检查数据库中是否存在要更新的数据
         Cz add = czService.add(cz);
-
         return ResponseUtil.success(add);
     }
 
@@ -120,12 +128,6 @@ public class CzController {
 
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
         BeanUtils.copyProperties(cz, old, "id", "cjsj", "cjr");
-        old.setGxsj(new Date());
-
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        if (loginUser != null) {
-            old.setGxr(loginUser.getUserId());
-        }
 
         czService.update(old);
         return ResponseUtil.success(old);
@@ -150,13 +152,8 @@ public class CzController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        //设置删除状态，更新删除时间
+        //设置删除状态
         cz.setSfsc(true);
-        cz.setGxsj(new Date());
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        if (loginUser != null) {
-            cz.setGxr(loginUser.getUserId());
-        }
 
         czService.update(cz);
         return ResponseUtil.success();
