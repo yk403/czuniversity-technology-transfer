@@ -9,6 +9,7 @@ import com.itts.userservice.mapper.js.JsMapper;
 import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.model.js.Js;
 import com.itts.userservice.service.cd.CdService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -36,12 +37,26 @@ public class CdServiceImpl implements CdService {
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<Cd> findByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<Cd> findByPage(Integer pageNum, Integer pageSize, String name, String systemType, String modelType) {
+
         PageHelper.startPage(pageNum,pageSize);
-        QueryWrapper<Cd> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.eq("sfsc",false);
-        List<Cd> cd = cdMapper.selectList(objectQueryWrapper);
+
+        QueryWrapper<Cd> query = new QueryWrapper<>();
+
+        query.eq("sfsc",false);
+        if(StringUtils.isNotBlank(name)){
+            query.like("cdmc", name);
+        }
+        if(StringUtils.isNotBlank(systemType)){
+            query.eq("xtlx", systemType);
+        }
+        if(StringUtils.isNotBlank(modelType)){
+            query.eq("mklx", modelType);
+        }
+
+        List<Cd> cd = cdMapper.selectList(query);
         PageInfo<Cd> tJsPageInfo = new PageInfo<>(cd);
+
         return tJsPageInfo;
     }
 
@@ -50,6 +65,7 @@ public class CdServiceImpl implements CdService {
      */
     @Override
     public Cd get(Long id) {
+
         Cd cd = cdMapper.selectById(id);
         return cd;
     }

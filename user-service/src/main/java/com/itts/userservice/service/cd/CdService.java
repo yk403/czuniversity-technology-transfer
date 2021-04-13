@@ -16,7 +16,7 @@ public interface CdService {
     /**
      * 查询列表
      */
-    PageInfo<Cd> findByPage(Integer pageNum, Integer pageSize);
+    PageInfo<Cd> findByPage(Integer pageNum, Integer pageSize, String name, String systemType, String modelType);
 
     /**
      * 获取详情
