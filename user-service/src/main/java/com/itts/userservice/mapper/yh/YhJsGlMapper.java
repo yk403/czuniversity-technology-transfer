@@ -17,8 +17,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface YhJsGlMapper extends BaseMapper<YhJsGl> {
 
-    @Update("UPDATE t_yh_js_gl" +
-            "SET sfsc = true" +
+    @Update("UPDATE t_yh_js_gl " +
+            "SET sfsc = true " +
             "WHERE yh_id = #{userId}")
     void deleteByUserId(@Param("userId") Long userId);
 }
