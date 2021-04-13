@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -125,6 +126,8 @@ public class YhServiceImpl implements YhService {
         YhJsGl yhJsGl = new YhJsGl();
         yhJsGl.setYhId(yhid);
         yhJsGl.setJsId(jsid);
+        yhJsGl.setGxsj(new Date());
+        yhJsGl.setCjsj(new Date());
         yhJsGlMapper.insert(yhJsGl);
         return true;
     }
