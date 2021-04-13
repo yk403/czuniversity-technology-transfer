@@ -130,7 +130,8 @@ public class JgglController {
             cj = cj + "-" + jgbm;
             jggl.setCj(cj);
         }
-
+        jggl.setGxsj(new Date());
+        jggl.setCjsj(new Date());
         Jggl add = jgglService.add(jggl);
         return ResponseUtil.success(add);
     }
@@ -173,7 +174,7 @@ public class JgglController {
 
             jggl.setCj(jggl.getJgbm());
         }
-
+        group.setGxsj(new Date());
         jgglService.update(group);
 
         return ResponseUtil.success(group);

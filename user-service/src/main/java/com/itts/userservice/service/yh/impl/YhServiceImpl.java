@@ -118,6 +118,8 @@ public class YhServiceImpl implements YhService {
         Long id1 = Yh.getId();
         Yh yh = yhMapper.selectById(id1);
         if (yh == null) {
+            Yh.setCjsj(new Date());
+            Yh.setGxsj(new Date());
             yhMapper.insert(Yh);
         }
 

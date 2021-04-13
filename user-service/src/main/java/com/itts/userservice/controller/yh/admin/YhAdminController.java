@@ -111,10 +111,13 @@ public class YhAdminController {
     @PostMapping("/add/")
     @ApiOperation(value = "新增")
     public ResponseUtil add(@RequestBody AddYhRequest addYhRequest) throws WebException {
+
+        checkRequest(addYhRequest);
+
         //检查参数是否合法
         Yh Yh = new Yh();
         BeanUtils.copyProperties(addYhRequest,Yh);
-        checkRequest(Yh);
+
         //检查参数是否合法
         List<Long> jsidlist = addYhRequest.getJsidlist();
         if (jsidlist == null) {
@@ -137,6 +140,10 @@ public class YhAdminController {
     @PutMapping("/update/")
     @Transactional(rollbackFor = Exception.class)
     public ResponseUtil update(@RequestBody AddYhRequest addYhRequest) throws WebException {
+
+        //检查参数是否合法
+        checkRequest(addYhRequest);
+
         Long id = addYhRequest.getId();
         //检查参数是否合法
         if (id == null) {
@@ -149,8 +156,7 @@ public class YhAdminController {
         }
         Yh Yh = new Yh();
         BeanUtils.copyProperties(addYhRequest,Yh);
-        //检查参数是否合法
-        checkRequest(Yh);
+
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
         BeanUtils.copyProperties(Yh, Yh1, "id", "chsj", "cjr");
         //逻辑删除此用户的所有角色
@@ -227,9 +233,22 @@ public class YhAdminController {
     /**
      * 校验参数是否合法
      */
-    private void checkRequest(Yh Yh) throws WebException {
+    private void checkRequest(AddYhRequest yh) throws WebException {
         //如果参数为空，抛出异常
-        if (Yh == null) {
+        if (yh == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if(yh.getYhlx()==null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if(yh.getYhm()==null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if(yh.getMm()==null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if(yh.getZsxm()==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
