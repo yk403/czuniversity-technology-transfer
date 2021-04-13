@@ -180,13 +180,13 @@ public class YhAdminController {
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete/{id}")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
+
         //检查参数是否为空
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         Yh Yh = yhService.get(id);
-
         if (Yh == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }

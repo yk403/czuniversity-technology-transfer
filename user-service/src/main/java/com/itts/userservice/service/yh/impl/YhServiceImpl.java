@@ -133,9 +133,12 @@ public class YhServiceImpl implements YhService {
      * 更新
      */
     @Override
-    public Yh update(Yh Yh) {
-        yhMapper.updateById(Yh);
-        return Yh;
+    public Yh update(Yh yh) {
+
+        yhMapper.updateById(yh);
+        yhJsGlMapper.deleteByUserId(yh.getId());
+
+        return yh;
     }
 
     /**
