@@ -87,4 +87,8 @@ public class TJsHd implements Serializable {
 	 * 报名人数
 	 */
 	private Integer bmrs;
+	/**
+	 * 删除状态(0:未删除;1:用户删除;2:管理员删除)
+	 */
+	private Integer isDelete;
 }

@@ -7,7 +7,6 @@ import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.service.JsCgService;
-import com.itts.technologytransactionservice.service.JsShService;
 import com.itts.technologytransactionservice.service.cd.JsCgAdminService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -9,6 +9,7 @@ import com.itts.technologytransactionservice.controller.BaseController;
 import com.itts.technologytransactionservice.model.JsHdDTO;
 import com.itts.technologytransactionservice.model.TJsHd;
 import com.itts.technologytransactionservice.service.JsHdService;
+import com.itts.technologytransactionservice.service.cd.JsHdAdminService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 @RestController
 public class JsHdAdminController extends BaseController {
     @Autowired
-    private JsHdService jsHdService;
+    private JsHdAdminService jsHdAdminService;
 
     /**
     * 分页查询
@@ -42,7 +43,7 @@ public class JsHdAdminController extends BaseController {
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-        return ResponseUtil.success(jsHdService.page(query));
+        return ResponseUtil.success(jsHdAdminService.page(query));
     }
 
     /**
@@ -52,7 +53,7 @@ public class JsHdAdminController extends BaseController {
     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") Long id) {
-        return success(jsHdService.getById(id));
+        return success(jsHdAdminService.getById(id));
     }
 
     /**
@@ -63,7 +64,7 @@ public class JsHdAdminController extends BaseController {
         if (jsHdDTO.getHdlx() != 0 && jsHdDTO.getHdlx() != 1 && jsHdDTO.getHdlx() != 2) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (!jsHdService.add(jsHdDTO)) {
+        if (!jsHdAdminService.add(jsHdDTO)) {
             throw new WebException(INSERT_FAIL);
         }
         return ResponseUtil.success("新增技术活动成功!");
@@ -74,15 +75,15 @@ public class JsHdAdminController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsHd tJsHd) {
-        return update(jsHdService.updateById(tJsHd));
+        return update(jsHdAdminService.updateById(tJsHd));
     }
 
     /**
      * 删除
      */
     @GetMapping("/remove/{id}")
-    public R remove(@PathVariable("id") Long id) {
-        return remove(jsHdService.removeById(id));
+    public R remove(@PathVariable("id") Integer id) {
+        return remove(jsHdAdminService.removeByIdHd(id));
     }
 
     /**
@@ -90,7 +91,7 @@ public class JsHdAdminController extends BaseController {
      */
     @PostMapping("/removeBatch")
     public R removeBatch(@RequestBody List<Long> ids){
-        return  remove(jsHdService.removeByIds(ids));
+        return  remove(jsHdAdminService.removeByIds(ids));
     }
 
     /**
@@ -99,7 +100,7 @@ public class JsHdAdminController extends BaseController {
      */
     @PutMapping("/issueBatch")
     public ResponseUtil issueBatch(@RequestBody List<Integer> ids) {
-        if (!jsHdService.issueBatch(ids)) {
+        if (!jsHdAdminService.issueBatch(ids)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("批量发布活动成功!");

@@ -71,8 +71,8 @@ public class JsHdController extends BaseController {
      * 删除
      */
     @GetMapping("/remove/{id}")
-    public R remove(@PathVariable("id") Long id) {
-        return remove(jsHdService.removeById(id));
+    public R remove(@PathVariable("id") Integer id) {
+        return remove(jsHdService.removeByIdHd(id));
     }
 
     /**

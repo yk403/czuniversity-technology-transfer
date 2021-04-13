@@ -148,10 +148,10 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         TJsSh tJsSh = jsShMapper.selectByXqId(id);
         TJsXq tJsXq = new TJsXq();
         tJsXq.setId(id);
-        tJsXq.setIsDelete(1);
+        tJsXq.setIsDelete(2);
         jsXqMapper.updateById(tJsXq);
         if (tJsSh.getId() != null) {
-            tJsSh.setIsDelete(1);
+            tJsSh.setIsDelete(2);
             if (!jsShAdminService.updateById(tJsSh)) {
                 throw new ServiceException("删除成果信息失败!");
             }

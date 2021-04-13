@@ -82,10 +82,10 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         TJsSh tJsSh = jsShMapper.selectByCgId(id);
         TJsCg tJsCg = new TJsCg();
         tJsCg.setId(id);
-        tJsCg.setIsDelete(1);
+        tJsCg.setIsDelete(2);
         jsCgMapper.updateById(tJsCg);
         if (tJsSh.getId() != null) {
-            tJsSh.setIsDelete(1);
+            tJsSh.setIsDelete(2);
             if (!jsShAdminService.updateById(tJsSh)) {
                 throw new ServiceException("删除成果信息失败!");
             }

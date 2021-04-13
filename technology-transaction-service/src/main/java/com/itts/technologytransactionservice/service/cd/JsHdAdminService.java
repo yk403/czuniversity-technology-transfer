@@ -1,6 +1,5 @@
-package com.itts.technologytransactionservice.service;
+package com.itts.technologytransactionservice.service.cd;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
@@ -15,7 +14,7 @@ import java.util.List;
  * @Data: 2021/3/26
  * @Description: 技术活动管理接口
  */
-public interface JsHdService extends IService<TJsHd> {
+public interface JsHdAdminService extends IService<TJsHd> {
 
 	PageInfo page(Query query);
 

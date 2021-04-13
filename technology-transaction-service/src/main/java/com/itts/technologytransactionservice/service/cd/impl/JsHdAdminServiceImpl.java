@@ -1,4 +1,4 @@
-package com.itts.technologytransactionservice.service.impl;
+package com.itts.technologytransactionservice.service.cd.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -12,7 +12,7 @@ import com.itts.technologytransactionservice.model.JsHdDTO;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsHd;
 import com.itts.technologytransactionservice.model.TJsXq;
-import com.itts.technologytransactionservice.service.JsHdService;
+import com.itts.technologytransactionservice.service.cd.JsHdAdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 @Primary
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements JsHdService {
+public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements JsHdAdminService {
 	@Autowired
 	private JsHdMapper jsHdMapper;
 
@@ -45,7 +45,7 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 	private JsXqMapper jsXqMapper;
 
 	@Autowired
-	private JsHdService jsHdService;
+	private JsHdAdminService jsHdAdminService;
 	
 	@Override
 	public PageInfo page(Query query) {
@@ -68,7 +68,7 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 		List<Integer> ids = jsHdDTO.getIds();
 		jsHdDTO.setCjsj(new Date());
 		BeanUtils.copyProperties(jsHdDTO,tJsHd);
-		if (!jsHdService.save(tJsHd)) {
+		if (!jsHdAdminService.save(tJsHd)) {
 			return false;
 		}
 		if (hdlx == 0 || hdlx == 2) {
@@ -112,7 +112,7 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 	public boolean removeByIdHd(Integer id) {
 		TJsHd tJsHd = new TJsHd();
 		tJsHd.setId(id);
-		tJsHd.setIsDelete(1);
+		tJsHd.setIsDelete(2);
 		jsHdMapper.updateById(tJsHd);
 		return true;
 	}
