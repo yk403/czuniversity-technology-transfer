@@ -66,6 +66,9 @@ public class CdController {
         }
 
         Cd cd = cdService.get(id);
+        if(cd.getSfsc()){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
         return ResponseUtil.success(cd);
     }
 
@@ -77,26 +80,6 @@ public class CdController {
     public ResponseUtil add(@RequestBody Cd cd) throws WebException {
 
         checkRequst(cd);
-
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        if (loginUser != null) {
-            cd.setCjr(loginUser.getUserId());
-            cd.setGxr(loginUser.getUserId());
-        }
-
-        Date now = new Date();
-        cd.setCjsj(now);
-        cd.setGxsj(now);
-
-        //设置层级
-        if (cd.getFjcdId() == 0L) {
-            cd.setCj(cd.getCdbm());
-        } else {
-
-            Cd fjcd = cdService.get(cd.getFjcdId());
-            cd.setCj(fjcd.getCj() + "-" + cd.getCdbm());
-        }
-
         Cd add = cdService.add(cd);
 
         return ResponseUtil.success(add);
@@ -126,21 +109,6 @@ public class CdController {
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
         BeanUtils.copyProperties(cd, old, "id", "chsj", "cjr");
 
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        if (loginUser != null) {
-            old.setGxr(loginUser.getUserId());
-        }
-        old.setGxsj(new Date());
-
-        //设置层级
-        if (cd.getFjcdId() == 0L) {
-            old.setCj(cd.getCdbm());
-        } else {
-
-            Cd fjcd = cdService.get(cd.getFjcdId());
-            old.setCj(fjcd.getCj() + "-" + cd.getCdbm());
-        }
-
         cdService.update(old);
         return ResponseUtil.success(old);
     }
@@ -160,14 +128,9 @@ public class CdController {
         if (cd == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        //设置删除状态，更新删除时间
-        cd.setSfsc(true);
-        cd.setCjsj(new Date());
 
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        if (loginUser != null) {
-            cd.setGxr(loginUser.getUserId());
-        }
+        //设置删除状态
+        cd.setSfsc(true);
 
         cdService.update(cd);
         return ResponseUtil.success();

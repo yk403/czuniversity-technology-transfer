@@ -4,10 +4,10 @@ package com.itts.userservice.service.cd.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.SystemConstant;
 import com.itts.userservice.mapper.cd.CdMapper;
-import com.itts.userservice.mapper.js.JsMapper;
 import com.itts.userservice.model.cd.Cd;
-import com.itts.userservice.model.js.Js;
 import com.itts.userservice.service.cd.CdService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,24 +34,25 @@ public class CdServiceImpl implements CdService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
     /**
      * 获取列表 - 分页
      */
     @Override
     public PageInfo<Cd> findByPage(Integer pageNum, Integer pageSize, String name, String systemType, String modelType) {
 
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
 
         QueryWrapper<Cd> query = new QueryWrapper<>();
 
-        query.eq("sfsc",false);
-        if(StringUtils.isNotBlank(name)){
+        query.eq("sfsc", false);
+        if (StringUtils.isNotBlank(name)) {
             query.like("cdmc", name);
         }
-        if(StringUtils.isNotBlank(systemType)){
+        if (StringUtils.isNotBlank(systemType)) {
             query.eq("xtlx", systemType);
         }
-        if(StringUtils.isNotBlank(modelType)){
+        if (StringUtils.isNotBlank(modelType)) {
             query.eq("mklx", modelType);
         }
 
@@ -75,6 +77,26 @@ public class CdServiceImpl implements CdService {
      */
     @Override
     public Cd add(Cd cd) {
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser != null) {
+            cd.setCjr(loginUser.getUserId());
+            cd.setGxr(loginUser.getUserId());
+        }
+
+        Date now = new Date();
+        cd.setCjsj(now);
+        cd.setGxsj(now);
+
+        //设置层级
+        if (cd.getFjcdId() == 0L) {
+            cd.setCj(cd.getCdbm());
+        } else {
+
+            Cd fjcd = cdMapper.selectById(cd.getFjcdId());
+            cd.setCj(fjcd.getCj() + "-" + cd.getCdbm());
+        }
+
         cdMapper.insert(cd);
         return cd;
     }
@@ -84,6 +106,22 @@ public class CdServiceImpl implements CdService {
      */
     @Override
     public Cd update(Cd cd) {
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser != null) {
+            cd.setGxr(loginUser.getUserId());
+        }
+        cd.setGxsj(new Date());
+
+        //设置层级
+        if (cd.getFjcdId() == 0L) {
+            cd.setCj(cd.getCdbm());
+        } else {
+
+            Cd fjcd = cdMapper.selectById(cd.getFjcdId());
+            cd.setCj(fjcd.getCj() + "-" + cd.getCdbm());
+        }
+
         cdMapper.updateById(cd);
         return cd;
     }
