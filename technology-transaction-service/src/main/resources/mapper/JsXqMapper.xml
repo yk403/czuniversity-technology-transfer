@@ -46,7 +46,7 @@
 		    a.is_delete = 0
 			<if test="map.name != null and map.name != ''"> and a.xqmc = #{map.name} </if>
 			<if test="map.jylx != null and map.jylx != ''"> and d.jylx = #{map.jylx} </if>
-			<if test="map.lyId != null and map.lyId != ''"> and a.ly_id = #{lyId} </if>
+			<if test="map.lyId != null and map.lyId != ''"> and a.ly_id = #{map.lyId} </if>
 		</where>
 		UNION
 		SELECT
@@ -57,7 +57,7 @@
 		LEFT JOIN t_js_sh d ON (e.id = d.xq_id)
 		<where>
 		    e.is_delete = 0
-			<if test="map.lyId != null and map.lyId != ''"> and e.ly_id = #{lyId} </if>
+			<if test="map.lyId != null and map.lyId != ''"> and e.ly_id = #{map.lyId} </if>
 			<if test="map.name != null and map.name != ''"> and e.cgmc = #{map.name} </if>
 			<if test="map.jylx != null and map.jylx != ''"> and d.jylx = #{map.jylx} </if>
 		</where>
