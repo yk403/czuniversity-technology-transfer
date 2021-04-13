@@ -88,7 +88,7 @@
     </select>
 
     <select id="findByTypeAndGroupId" resultMap="YhDTOResultMap">
-        SELECT yh.*, js.jsmc
+        SELECT DISTINCT(yh.id) AS did, yh.*, js.jsmc
         FROM t_yh yh
                  LEFT JOIN t_yh_js_gl yhjsgl ON yh.id = yhjsgl.yh_id
                  LEFT JOIN t_js js ON yhjsgl.js_id = js.id

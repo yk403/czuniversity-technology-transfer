@@ -14,7 +14,6 @@ import com.itts.userservice.mapper.js.JsMapper;
 import com.itts.userservice.mapper.yh.YhJsGlMapper;
 import com.itts.userservice.mapper.yh.YhMapper;
 import com.itts.userservice.model.jggl.Jggl;
-import com.itts.userservice.model.js.Js;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.model.yh.YhJsGl;
 import com.itts.userservice.service.yh.YhService;
@@ -58,6 +57,7 @@ public class YhServiceImpl implements YhService {
 
     @Resource
     private YhJsGlMapper yhJsGlMapper;
+
     /**
      * 获取列表 - 分页
      */
@@ -76,7 +76,8 @@ public class YhServiceImpl implements YhService {
         List<YhDTO> list = yhMapper.findByTypeAndGroupId(type, groupIds);
         List<YhListVO> yhListVOs = this.yhDTO2YhVO(list);
 
-        PageInfo<YhListVO> page = new PageInfo<>(yhListVOs);
+        PageInfo<YhListVO> page = new PageInfo(list);
+        page.setList(yhListVOs);
         return page;
     }
 
@@ -112,10 +113,10 @@ public class YhServiceImpl implements YhService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean addYhAndJsmc(Yh Yh,Long jsid) {
+    public Boolean addYhAndJsmc(Yh Yh, Long jsid) {
         Long id1 = Yh.getId();
         Yh yh = yhMapper.selectById(id1);
-        if(yh==null){
+        if (yh == null) {
             yhMapper.insert(Yh);
         }
 
@@ -136,12 +137,13 @@ public class YhServiceImpl implements YhService {
         yhMapper.updateById(Yh);
         return Yh;
     }
+
     /**
      * 级联更新
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Yh updateByYhAndJsmc(Yh Yh,Long jsid) {
+    public Yh updateByYhAndJsmc(Yh Yh, Long jsid) {
         yhMapper.updateById(Yh);
         //新增用户角色关联表
         Long yhid = Yh.getId();
