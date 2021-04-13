@@ -34,6 +34,11 @@ public interface CdService {
     /**
      * 更新
      */
-    Cd update(Cd cd);
+    Cd update(AddCdRequest cd, Cd old);
+
+    /**
+    *删除
+    */
+    void delete(Cd id);
 
 }

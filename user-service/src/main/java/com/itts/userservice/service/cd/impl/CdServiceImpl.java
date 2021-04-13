@@ -25,6 +25,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -94,7 +95,7 @@ public class CdServiceImpl implements CdService {
     public GetCdAndCzDTO get(Long id) {
 
         Cd cd = cdMapper.selectById(id);
-        if(cd == null){
+        if (cd == null) {
             return null;
         }
 
@@ -134,25 +135,14 @@ public class CdServiceImpl implements CdService {
 
         cdMapper.insert(cd);
 
-        //甚至菜单与操作关联信息
-        if (!CollectionUtils.isEmpty(cd.getCzIds())) {
+        Long userId = null;
 
-            cd.getCzIds().forEach(czId -> {
-
-                CdCzGl cdCzGl = new CdCzGl();
-
-                if (loginUser != null) {
-                    cdCzGl.setCjr(loginUser.getUserId());
-                    cdCzGl.setGxr(loginUser.getUserId());
-                }
-                cdCzGl.setCjsj(now);
-                cdCzGl.setGxsj(now);
-                cdCzGl.setCdId(cd.getId());
-                cdCzGl.setCzId(czId);
-
-                cdCzGlMapper.insert(cdCzGl);
-            });
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
         }
+
+        //甚至菜单与操作关联信息
+        addCdCzGl(cd.getId(), cd.getCzIds(), userId, now);
 
         return cd;
     }
@@ -161,24 +151,120 @@ public class CdServiceImpl implements CdService {
      * 更新
      */
     @Override
-    public Cd update(Cd cd) {
+    public Cd update(AddCdRequest cd, Cd old) {
+
+        //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
+        BeanUtils.copyProperties(cd, old, "id", "chsj", "cjr");
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser != null) {
+            old.setGxr(loginUser.getUserId());
+        }
+
+        Date now = new Date();
+        old.setGxsj(now);
+
+        //设置层级
+        if (old.getFjcdId() == 0L) {
+            old.setCj(old.getCdbm());
+        } else {
+
+            Cd fjcd = cdMapper.selectById(old.getFjcdId());
+            old.setCj(fjcd.getCj() + "-" + old.getCdbm());
+        }
+
+        cdMapper.updateById(old);
+
+        //更新菜单的操作关联
+        List<GetCdCzGlDTO> oldCzs = cdCzGlMapper.getCdCzGlByCdId(old.getId());
+
+        Long userId = null;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        }
+
+        if (CollectionUtils.isEmpty(oldCzs)) {
+
+            addCdCzGl(old.getId(), cd.getCzIds(), userId, now);
+        } else {
+
+            //要被删除的操作ID
+            List<Long> oldCzIds = oldCzs.stream().map(GetCdCzGlDTO::getId).collect(Collectors.toList());
+            //要被新增的操作ID
+            List<Long> addCzIds = Lists.newArrayList();
+
+            cd.getCzIds().forEach(czId -> {
+                if (oldCzIds.contains(czId)) {
+
+                    oldCzIds.remove(czId);
+                } else {
+
+                    addCzIds.add(czId);
+                }
+            });
+
+            //删除菜单操作关联
+            deleteCdCzGl(cd.getId(), oldCzIds, userId);
+
+            //添加菜单操作关联
+            addCdCzGl(cd.getId(), addCzIds, userId, now);
+        }
+        return old;
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void delete(Cd cd) {
+
+        //设置删除状态
+        cd.setSfsc(true);
+        cd.setGxsj(new Date());
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser != null) {
             cd.setGxr(loginUser.getUserId());
         }
-        cd.setGxsj(new Date());
-
-        //设置层级
-        if (cd.getFjcdId() == 0L) {
-            cd.setCj(cd.getCdbm());
-        } else {
-
-            Cd fjcd = cdMapper.selectById(cd.getFjcdId());
-            cd.setCj(fjcd.getCj() + "-" + cd.getCdbm());
-        }
 
         cdMapper.updateById(cd);
-        return cd;
+    }
+
+    /**
+     * 添加菜单操作关联
+     */
+    private void addCdCzGl(Long cdId, List<Long> czIds, Long userId, Date now) {
+
+        if (CollectionUtils.isEmpty(czIds)) {
+            return;
+        }
+
+        czIds.forEach(czId -> {
+
+            CdCzGl cdCzGl = new CdCzGl();
+
+            cdCzGl.setCjr(userId);
+            cdCzGl.setGxr(userId);
+            cdCzGl.setCjsj(now);
+            cdCzGl.setGxsj(now);
+            cdCzGl.setCdId(cdId);
+            cdCzGl.setCzId(czId);
+
+            cdCzGlMapper.insert(cdCzGl);
+        });
+    }
+
+    /**
+     * 删除菜单操作关联
+     */
+    private void deleteCdCzGl(Long cdId, List<Long> czIds, Long userId) {
+
+        if (CollectionUtils.isEmpty(czIds)) {
+            return;
+        }
+
+        czIds.forEach(czId -> {
+            cdCzGlMapper.deleteCdCzGlByCdIdAndCzId(cdId, czId, userId);
+        });
     }
 }

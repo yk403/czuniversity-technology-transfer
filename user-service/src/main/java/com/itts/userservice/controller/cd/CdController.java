@@ -14,7 +14,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,7 +78,7 @@ public class CdController {
     @PostMapping("/add/")
     public ResponseUtil add(@RequestBody AddCdRequest cd) throws WebException {
 
-        checkRequst(cd);
+        checkRequest(cd);
         Cd add = cdService.add(cd);
 
         return ResponseUtil.success(add);
@@ -90,9 +89,9 @@ public class CdController {
      */
     @ApiOperation(value = "更新")
     @PutMapping("/update/")
-    public ResponseUtil update(@RequestBody Cd cd) {
+    public ResponseUtil update(@RequestBody AddCdRequest cd) {
 
-        checkRequst(cd);
+        checkRequest(cd);
 
         Long id = cd.getId();
         //检查参数是否合法
@@ -106,10 +105,7 @@ public class CdController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
-        BeanUtils.copyProperties(cd, old, "id", "chsj", "cjr");
-
-        cdService.update(old);
+        cdService.update(cd, old);
         return ResponseUtil.success(old);
     }
 
@@ -129,17 +125,14 @@ public class CdController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        //设置删除状态
-        cd.setSfsc(true);
-
-        cdService.update(cd);
+        cdService.delete(cd);
         return ResponseUtil.success();
     }
 
     /**
      * 校验参数
      */
-    private void checkRequst(Cd cd) throws WebException {
+    private void checkRequest(Cd cd) throws WebException {
 
         if (cd == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
