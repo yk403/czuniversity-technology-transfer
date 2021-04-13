@@ -6,24 +6,23 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.userservice.model.cz.Cz;
+import com.itts.userservice.common.UserServiceCommon;
 import com.itts.userservice.model.jggl.Jggl;
-import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.vo.JgglVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author fl
@@ -31,38 +30,40 @@ import java.util.List;
  */
 @Api(tags = "机构管理")
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL+"/v1/jggl")
+@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/jggl")
 public class JgglController {
 
     @Resource
     private JgglService jgglService;
+
     /**
      * 查询机构，通过名称和编码
      */
     @GetMapping("/queryMechanism/{string}")
-    @ApiOperation(value="通过名称和编码查询机构")
-    public ResponseUtil getBynameandcode(@PathVariable("string") String string) throws WebException{
+    @ApiOperation(value = "通过名称和编码查询机构")
+    public ResponseUtil getBynameandcode(@PathVariable("string") String string) throws WebException {
         Jggl jggl = jgglService.selectByJgbm(string);
-        if(jggl==null){
+        if (jggl == null) {
             Jggl jggl1 = jgglService.selectByJgmc(string);
-            if(jggl1==null){
+            if (jggl1 == null) {
                 throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-            }else{
+            } else {
                 return ResponseUtil.success(jggl1);
             }
         }
         return ResponseUtil.success(jggl);
     }
+
     /**
      * 获取机构树
-     *
      */
     @GetMapping("/treeList/")
     @ApiOperation(value = "获取机构树")
-    public ResponseUtil findJgglVO(@RequestParam(required = false) String jgbm){
+    public ResponseUtil findJgglVO(@RequestParam(required = false) String jgbm) {
         List<JgglVO> jgglVO = jgglService.findJgglVO(jgbm);
         return ResponseUtil.success(jgglVO);
     }
+
     /**
      * 获取机构列表
      */
@@ -70,27 +71,28 @@ public class JgglController {
     @ApiOperation(value = "获取机构列表")
     public ResponseUtil getlist(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                @RequestParam(required = false) String jgbm){
+                                @RequestParam(required = false) String jgbm) {
 
         PageInfo<Jggl> byPage = jgglService.findByPage(pageNum, pageSize, jgbm);
         return ResponseUtil.success(byPage);
     }
+
     /**
      * 查询机构编码是否重复
-     *
      */
     @GetMapping("/checkjgbm/")
     @ApiOperation(value = "查询机构编码是否重复")
-    public ResponseUtil checkJgglbm(@RequestParam String jgbm){
-        if(jgbm==null){
+    public ResponseUtil checkJgglbm(@RequestParam String jgbm) {
+        if (jgbm == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //机构不重复，返回否
-        if(jgglService.selectByJgbm(jgbm)==null){
+        if (jgglService.selectByJgbm(jgbm) == null) {
             return ResponseUtil.success(false);
         }
         return ResponseUtil.success(true);
     }
+
     /**
      * 获取详情
      *
@@ -109,47 +111,74 @@ public class JgglController {
      */
     @PostMapping("/add/")
     @ApiOperation(value = "新增")
-    public ResponseUtil add(@RequestBody Jggl jggl)throws WebException{
+    public ResponseUtil add(@RequestBody Jggl jggl) throws WebException {
+
         checkPequest(jggl);
-        //获取父级机构的层级
-        String fjbm = jggl.getFjbm();
-        Jggl jggl1 = jgglService.selectByJgbm(fjbm);
-        String cj = jggl1.getCj();
-        //生成层级
-        String jgbm = jggl.getJgbm();
-        cj=cj+"-"+jgbm;
-        jggl.setCj(cj);
+
+        if (Objects.equals(jggl.getFjbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
+
+            jggl.setCj(jggl.getJgbm());
+        } else {
+
+            //获取父级机构的层级
+            Jggl jggl1 = jgglService.selectByJgbm(jggl.getFjbm());
+
+            String cj = jggl1.getCj();
+
+            //生成层级
+            String jgbm = jggl.getJgbm();
+            cj = cj + "-" + jgbm;
+            jggl.setCj(cj);
+        }
+
         Jggl add = jgglService.add(jggl);
         return ResponseUtil.success(add);
     }
+
     /**
      * 更新
      */
-     @ApiOperation(value="更新")
-     @PutMapping("/update/")
-     public ResponseUtil update(@RequestBody Jggl jggl)throws WebException{
-         Long id = jggl.getId();
-         if(id==null){
-             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-         }
-         //检查数据库中是否存在要更新的数据
-         Jggl jggl1 = jgglService.get(id);
-         if (jggl1==null){
-             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-         }
-         checkPequest(jggl);
-         //获取父级机构的层级
-         String fjbm = jggl.getFjbm();
-         Jggl jggl2 = jgglService.selectByJgbm(fjbm);
-         String cj = jggl2.getCj();
-         //生成层级
-         String jgbm = jggl.getJgbm();
-         cj=cj+"-"+jgbm;
-         jggl.setCj(cj);
-         BeanUtils.copyProperties(jggl,jggl1,"id", "cjsj", "cjr");
-         jgglService.update(jggl1);
-         return ResponseUtil.success(jggl1);
-     }
+    @ApiOperation(value = "更新")
+    @PutMapping("/update/")
+    public ResponseUtil update(@RequestBody Jggl jggl) throws WebException {
+
+        checkPequest(jggl);
+
+        Long id = jggl.getId();
+
+        if (id == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        //检查数据库中是否存在要更新的数据
+        Jggl group = jgglService.get(id);
+        if (group == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        //获取父级机构的层级
+        String fjbm = jggl.getFjbm();
+
+        BeanUtils.copyProperties(jggl, group, "id", "cjsj", "cjr");
+
+        if (!Objects.equals(fjbm, UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
+
+            Jggl fatherGroup = jgglService.selectByJgbm(fjbm);
+            String cj = fatherGroup.getCj();
+            //生成层级
+            cj = cj + "-" + jggl.getJgbm();
+            jggl.setCj(cj);
+
+        } else {
+
+            jggl.setCj(jggl.getJgbm());
+        }
+
+        jgglService.update(group);
+
+        return ResponseUtil.success(group);
+    }
+
     /**
      * 删除
      */
@@ -161,7 +190,7 @@ public class JgglController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         Jggl jggl = jgglService.get(id);
-        if(jggl==null){
+        if (jggl == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         jggl.setSfsc(true);
@@ -169,13 +198,14 @@ public class JgglController {
         jgglService.update(jggl);
         return ResponseUtil.success();
     }
+
     /**
      * 批量删除
      */
     @ApiOperation(value = "批量删除")
     @DeleteMapping("/deletemore/")
     public ResponseUtil deletemore(@RequestBody List<Long> ids) throws WebException {
-        ids.forEach(id->{
+        ids.forEach(id -> {
             Jggl jggl = jgglService.get(id);
             jggl.setSfsc(true);
             jggl.setGxsj(new Date());
@@ -184,12 +214,22 @@ public class JgglController {
 
         return ResponseUtil.success();
     }
+
     /**
      * 校验参数是否合法
      */
     private void checkPequest(Jggl jggl) throws WebException {
         //如果参数为空，抛出异常
         if (jggl == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (jggl.getJgbm() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (jggl.getFjbm() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (jggl.getJgmc() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
