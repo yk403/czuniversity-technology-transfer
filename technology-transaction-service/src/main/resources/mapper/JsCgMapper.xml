@@ -74,7 +74,7 @@
 	</choose>
 </select>
 	<select id="findJsCg" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,user_id,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,lb.mc as lbName,sh.fbshbz,sh.slxbbz as slxbbz
+		select cg.id as id,user_id,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,lb.mc as lbName,sh.fbshbz,sh.slxbbz as slxbbz
 		from t_js_cg cg left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lb lb on(cg.lb_id=lb.id)
 		<where>
 			cg.is_delete = 0
