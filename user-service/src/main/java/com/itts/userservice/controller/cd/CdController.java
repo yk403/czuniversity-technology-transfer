@@ -2,12 +2,13 @@ package com.itts.userservice.controller.cd;
 
 
 import com.github.pagehelper.PageInfo;
-import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.userservice.dto.GetCdAndCzDTO;
 import com.itts.userservice.model.cd.Cd;
+import com.itts.userservice.request.AddCdRequest;
 import com.itts.userservice.service.cd.CdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +19,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
 
 /**
  * <p>
@@ -50,8 +50,8 @@ public class CdController {
                              @ApiParam("系统类型") @RequestParam(value = "systemType", required = false) String systemType,
                              @ApiParam("模块类型") @RequestParam(value = "modelType", required = false) String modelType) {
 
-        PageInfo<Cd> byPage = cdService.findByPage(pageNum, pageSize, name, systemType, modelType);
-        return ResponseUtil.success(byPage);
+        PageInfo<GetCdAndCzDTO> pageInfo = cdService.findByPage(pageNum, pageSize, name, systemType, modelType);
+        return ResponseUtil.success(pageInfo);
     }
 
     /**
@@ -65,8 +65,8 @@ public class CdController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        Cd cd = cdService.get(id);
-        if(cd.getSfsc()){
+        GetCdAndCzDTO cd = cdService.get(id);
+        if (cd == null || cd.getSfsc()) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         return ResponseUtil.success(cd);
@@ -77,7 +77,7 @@ public class CdController {
      */
     @ApiOperation(value = "新增")
     @PostMapping("/add/")
-    public ResponseUtil add(@RequestBody Cd cd) throws WebException {
+    public ResponseUtil add(@RequestBody AddCdRequest cd) throws WebException {
 
         checkRequst(cd);
         Cd add = cdService.add(cd);

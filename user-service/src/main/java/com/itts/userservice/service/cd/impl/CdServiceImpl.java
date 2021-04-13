@@ -4,15 +4,23 @@ package com.itts.userservice.service.cd.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.userservice.dto.GetCdAndCzDTO;
+import com.itts.userservice.dto.GetCdCzGlDTO;
+import com.itts.userservice.mapper.cd.CdCzGlMapper;
 import com.itts.userservice.mapper.cd.CdMapper;
 import com.itts.userservice.model.cd.Cd;
+import com.itts.userservice.model.cd.CdCzGl;
+import com.itts.userservice.request.AddCdRequest;
 import com.itts.userservice.service.cd.CdService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -33,13 +41,16 @@ public class CdServiceImpl implements CdService {
     private CdMapper cdMapper;
 
     @Autowired
+    private CdCzGlMapper cdCzGlMapper;
+
+    @Autowired
     private RedisTemplate redisTemplate;
 
     /**
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<Cd> findByPage(Integer pageNum, Integer pageSize, String name, String systemType, String modelType) {
+    public PageInfo<GetCdAndCzDTO> findByPage(Integer pageNum, Integer pageSize, String name, String systemType, String modelType) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -56,27 +67,51 @@ public class CdServiceImpl implements CdService {
             query.eq("mklx", modelType);
         }
 
-        List<Cd> cd = cdMapper.selectList(query);
-        PageInfo<Cd> tJsPageInfo = new PageInfo<>(cd);
+        List<Cd> cds = cdMapper.selectList(query);
+        PageInfo<GetCdAndCzDTO> pageInfo = new PageInfo(cds);
 
-        return tJsPageInfo;
+        //查询菜单拥有的操作
+        List<GetCdAndCzDTO> dtos = Lists.newArrayList();
+        cds.forEach(cd -> {
+
+            GetCdAndCzDTO dto = new GetCdAndCzDTO();
+            BeanUtils.copyProperties(cd, dto);
+
+            List<GetCdCzGlDTO> czs = cdCzGlMapper.getCdCzGlByCdId(cd.getId());
+            dto.setCzs(czs);
+
+            dtos.add(dto);
+        });
+
+        pageInfo.setList(dtos);
+        return pageInfo;
     }
 
     /**
      * 获取详情
      */
     @Override
-    public Cd get(Long id) {
+    public GetCdAndCzDTO get(Long id) {
 
         Cd cd = cdMapper.selectById(id);
-        return cd;
+        if(cd == null){
+            return null;
+        }
+
+        List<GetCdCzGlDTO> czs = cdCzGlMapper.getCdCzGlByCdId(id);
+
+        GetCdAndCzDTO dto = new GetCdAndCzDTO();
+        BeanUtils.copyProperties(cd, dto);
+
+        dto.setCzs(czs);
+        return dto;
     }
 
     /**
      * 新增
      */
     @Override
-    public Cd add(Cd cd) {
+    public Cd add(AddCdRequest cd) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser != null) {
@@ -98,6 +133,27 @@ public class CdServiceImpl implements CdService {
         }
 
         cdMapper.insert(cd);
+
+        //甚至菜单与操作关联信息
+        if (!CollectionUtils.isEmpty(cd.getCzIds())) {
+
+            cd.getCzIds().forEach(czId -> {
+
+                CdCzGl cdCzGl = new CdCzGl();
+
+                if (loginUser != null) {
+                    cdCzGl.setCjr(loginUser.getUserId());
+                    cdCzGl.setGxr(loginUser.getUserId());
+                }
+                cdCzGl.setCjsj(now);
+                cdCzGl.setGxsj(now);
+                cdCzGl.setCdId(cd.getId());
+                cdCzGl.setCzId(czId);
+
+                cdCzGlMapper.insert(cdCzGl);
+            });
+        }
+
         return cd;
     }
 
