@@ -130,7 +130,7 @@ public class JgglController {
 
             //生成层级
             String jgbm = jggl.getJgbm();
-            cj = cj + "-" + jgbm+"-";
+            cj = cj + jgbm+"-";
             jggl.setCj(cj);
         }
         jggl.setGxsj(new Date());
@@ -170,7 +170,7 @@ public class JgglController {
             Jggl fatherGroup = jgglService.selectByJgbm(fjbm);
             String cj = fatherGroup.getCj();
             //生成层级
-            cj = cj + "-" + jggl.getJgbm()+"-";
+            cj = cj + jggl.getJgbm()+"-";
             jggl.setCj(cj);
 
         } else {
