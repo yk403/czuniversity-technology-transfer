@@ -88,8 +88,11 @@ public class CdServiceImpl implements CdService {
         return pageInfo;
     }
 
+    /**
+     * 通过名称和编码获取列表
+     */
     @Override
-    public PageInfo<GetCdAndCzDTO> findByNameorCodePage(Integer pageNum, Integer pageSize, String parameter, String systemType, String modelType) {
+    public PageInfo<GetCdAndCzDTO> findByNameOrCodePage(Integer pageNum, Integer pageSize, String parameter, String systemType, String modelType) {
 
         List<Cd> cds;
         PageHelper.startPage(pageNum, pageSize);
@@ -108,7 +111,7 @@ public class CdServiceImpl implements CdService {
         }
 
         cds = cdMapper.selectList(oldquery);
-        if(cds==null){
+        if (cds == null) {
             PageHelper.startPage(pageNum, pageSize);
 
             QueryWrapper<Cd> query = new QueryWrapper<>();
@@ -125,7 +128,7 @@ public class CdServiceImpl implements CdService {
             }
 
             cds = cdMapper.selectList(query);
-            if(cds==null){
+            if (cds == null) {
                 return null;
             }
         }
