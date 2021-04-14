@@ -200,15 +200,15 @@ public class JgglController {
         if (jggl == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        //删除机构及其子级机构
-        String jgbm = jggl.getJgbm();
-        List<Jggl> thisAndChildByCode = jgglMapper.findThisAndChildByCode(jgbm);
-        thisAndChildByCode.forEach(Jggl ->{
-            Jggl.setSfsc(true);
-            Jggl.setGxsj(new Date());
-            jgglService.update(Jggl);
-        });
-
+        //查询机构是否有子机构
+        String cj = jggl.getCj();
+        List<Jggl> thisAndChildByCode = jgglMapper.findThisAndChildByCode(cj);
+        if(thisAndChildByCode!=null){
+            return ResponseUtil.error(ErrorCodeEnum.USER_DELETE_GROUP_HAVE_CHILD_ERROR);
+        }
+            jggl.setSfsc(true);
+            jggl.setGxsj(new Date());
+            jgglService.update(jggl);
         return ResponseUtil.success();
     }
 
