@@ -203,7 +203,7 @@ public class JgglController {
         thisAndChildByCode.forEach(Jggl ->{
             Jggl.setSfsc(true);
             Jggl.setGxsj(new Date());
-            jgglService.update(jggl);
+            jgglService.update(Jggl);
         });
 
         return ResponseUtil.success();
@@ -211,7 +211,7 @@ public class JgglController {
 
     /**
      * 批量删除
-     */
+     *//*
     @ApiOperation(value = "批量删除")
     @DeleteMapping("/deletemore/")
     public ResponseUtil deletemore(@RequestBody List<Long> ids) throws WebException {
@@ -223,7 +223,7 @@ public class JgglController {
         });
 
         return ResponseUtil.success();
-    }
+    }*/
 
     /**
      * 校验参数是否合法
