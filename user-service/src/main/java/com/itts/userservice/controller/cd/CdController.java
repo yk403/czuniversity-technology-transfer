@@ -53,14 +53,15 @@ public class CdController {
         PageInfo<GetCdAndCzDTO> pageInfo = cdService.findByPage(pageNum, pageSize, name, systemType, modelType);
         return ResponseUtil.success(pageInfo);
     }
+
     /**
      * 通过名称和编码获取列表
      */
     @ApiOperation(value = "通过名称和编码获取列表")
-    @GetMapping("/getlistBynameorcode/")
-    public ResponseUtil findBynameorcode(@ApiParam("当前页数") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+    @GetMapping("/get/list/by/name/code/")
+    public ResponseUtil findByNameOrCode(@ApiParam("当前页数") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                              @ApiParam("每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                             @ApiParam("菜单名称或菜单编码") @RequestParam(value = "qurey") String parameter,
+                             @ApiParam("菜单名称或菜单编码") @RequestParam(value = "query") String parameter,
                              @ApiParam("系统类型") @RequestParam(value = "systemType", required = false) String systemType,
                              @ApiParam("模块类型") @RequestParam(value = "modelType", required = false) String modelType) {
         if(parameter==null){
