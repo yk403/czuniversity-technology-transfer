@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -123,6 +124,12 @@ public class CdController {
         Cd cd = cdService.get(id);
         if (cd == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        //判断当前菜单下是否有子级
+        Long count = cdService.countByParentId(id);
+        if(count > 0){
+            throw new WebException(ErrorCodeEnum.USER_DELETE_MENU_HAVE_CHILD_ERROR);
         }
 
         cdService.delete(cd);

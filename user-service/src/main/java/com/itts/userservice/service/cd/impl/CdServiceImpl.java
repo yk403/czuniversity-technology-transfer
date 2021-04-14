@@ -89,6 +89,26 @@ public class CdServiceImpl implements CdService {
     }
 
     /**
+     * 通过父级菜单ID获取其子级信息
+     */
+    @Override
+    public List<Cd> findByParentId(Long parentId) {
+
+        List<Cd> cds = cdMapper.findByParentId(parentId);
+        return cds;
+    }
+
+    /**
+     * 通过父级菜单ID获取其子级数量
+     */
+    @Override
+    public Long countByParentId(Long parentId) {
+
+        Long count = cdMapper.countByParentId(parentId);
+        return count;
+    }
+
+    /**
      * 获取详情
      */
     @Override
