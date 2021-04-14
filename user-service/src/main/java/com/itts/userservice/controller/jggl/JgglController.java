@@ -7,6 +7,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.common.UserServiceCommon;
+import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.vo.JgglVO;
@@ -36,6 +37,8 @@ public class JgglController {
     @Resource
     private JgglService jgglService;
 
+    @Resource
+    private JgglMapper jgglMapper;
     /**
      * 查询机构，通过名称和编码
      */
@@ -117,7 +120,7 @@ public class JgglController {
 
         if (Objects.equals(jggl.getFjbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
 
-            jggl.setCj(jggl.getJgbm());
+            jggl.setCj("-"+jggl.getJgbm()+"-");
         } else {
 
             //获取父级机构的层级
@@ -127,7 +130,7 @@ public class JgglController {
 
             //生成层级
             String jgbm = jggl.getJgbm();
-            cj = cj + "-" + jgbm;
+            cj = cj + "-" + jgbm+"-";
             jggl.setCj(cj);
         }
         jggl.setGxsj(new Date());
@@ -167,12 +170,12 @@ public class JgglController {
             Jggl fatherGroup = jgglService.selectByJgbm(fjbm);
             String cj = fatherGroup.getCj();
             //生成层级
-            cj = cj + "-" + jggl.getJgbm();
+            cj = cj + "-" + jggl.getJgbm()+"-";
             jggl.setCj(cj);
 
         } else {
 
-            jggl.setCj(jggl.getJgbm());
+            jggl.setCj("-"+jggl.getJgbm()+"-");
         }
         group.setGxsj(new Date());
         jgglService.update(group);
@@ -194,9 +197,15 @@ public class JgglController {
         if (jggl == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        jggl.setSfsc(true);
-        jggl.setGxsj(new Date());
-        jgglService.update(jggl);
+        //删除机构及其子级机构
+        String jgbm = jggl.getJgbm();
+        List<Jggl> thisAndChildByCode = jgglMapper.findThisAndChildByCode(jgbm);
+        thisAndChildByCode.forEach(Jggl ->{
+            Jggl.setSfsc(true);
+            Jggl.setGxsj(new Date());
+            jgglService.update(jggl);
+        });
+
         return ResponseUtil.success();
     }
 

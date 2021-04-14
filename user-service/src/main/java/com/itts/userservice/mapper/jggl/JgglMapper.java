@@ -43,7 +43,7 @@ public interface JgglMapper extends BaseMapper<Jggl> {
             "FROM t_jggl " +
             "WHERE sfsc = false " +
             "<if test=\" code != null and code != ''\">" +
-                "AND cj LIKE CONCAT('%', #{code}, '%')" +
+                "AND cj LIKE CONCAT('%-', #{code}, '-%')" +
             "</if>",
     "</script>"})
     List<Jggl> findThisAndChildByCode(@Param("code") String code);
