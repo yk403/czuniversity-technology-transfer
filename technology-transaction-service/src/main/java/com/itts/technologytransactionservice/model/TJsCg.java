@@ -221,5 +221,9 @@ public class TJsCg implements Serializable {
 受理协办备注
 */
 	private String slxbbz;
+	/**
+	 * 协议
+	 */
+	private String agreementName;
 
 }

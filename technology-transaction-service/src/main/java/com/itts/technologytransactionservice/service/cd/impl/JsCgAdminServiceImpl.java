@@ -125,6 +125,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
             tJsSh.setJylx(jylx);
             tJsSh.setReleaseAssistanceStatus(1);
         }
+        tJsCg.setJylx(null);
         log.info("【技术交易 - 新增成果信息:{},交易类型:{}】", tJsCg,jylx);
         save(tJsCg);
         tJsSh.setLx(1);
