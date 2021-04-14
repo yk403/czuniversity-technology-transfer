@@ -117,10 +117,13 @@ public class JgglController {
     public ResponseUtil add(@RequestBody Jggl jggl) throws WebException {
 
         checkPequest(jggl);
+        if(jgglService.selectByJgmc(jggl.getJgbm())!=null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_FIND_ERROR);
+        }
 
         if (Objects.equals(jggl.getFjbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
 
-            jggl.setCj("-"+jggl.getJgbm()+"-");
+            jggl.setCj(jggl.getJgbm());
         } else {
 
             //获取父级机构的层级
@@ -130,7 +133,7 @@ public class JgglController {
 
             //生成层级
             String jgbm = jggl.getJgbm();
-            cj = cj + jgbm+"-";
+            cj = cj + "-"+jgbm;
             jggl.setCj(cj);
         }
         jggl.setGxsj(new Date());
@@ -170,12 +173,12 @@ public class JgglController {
             Jggl fatherGroup = jgglService.selectByJgbm(fjbm);
             String cj = fatherGroup.getCj();
             //生成层级
-            cj = cj + jggl.getJgbm()+"-";
+            cj = cj +"-"+ jggl.getJgbm();
             jggl.setCj(cj);
 
         } else {
 
-            jggl.setCj("-"+jggl.getJgbm()+"-");
+            jggl.setCj(jggl.getJgbm());
         }
         group.setGxsj(new Date());
         jgglService.update(group);

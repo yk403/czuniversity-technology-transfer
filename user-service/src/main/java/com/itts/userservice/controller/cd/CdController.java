@@ -59,7 +59,7 @@ public class CdController {
     @GetMapping("/getlistBynameorcode/")
     public ResponseUtil findBynameorcode(@ApiParam("当前页数") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                              @ApiParam("每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                             @ApiParam("菜单名称或菜单编码") @RequestParam(value = "qurey", required = false) String parameter,
+                             @ApiParam("菜单名称或菜单编码") @RequestParam(value = "qurey") String parameter,
                              @ApiParam("系统类型") @RequestParam(value = "systemType", required = false) String systemType,
                              @ApiParam("模块类型") @RequestParam(value = "modelType", required = false) String modelType) {
         if(parameter==null){
