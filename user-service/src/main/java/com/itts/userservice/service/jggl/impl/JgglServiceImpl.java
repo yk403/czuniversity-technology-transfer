@@ -88,7 +88,10 @@ public class JgglServiceImpl implements JgglService {
 
     @Override
     public Jggl get(Long id) {
-        Jggl jggl = jgglMapper.selectById(id);
+        QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
+        jgglQueryWrapper.eq("sfsc",false)
+        .eq("id",id);
+        Jggl jggl = jgglMapper.selectOne(jgglQueryWrapper);
         return jggl;
     }
 
