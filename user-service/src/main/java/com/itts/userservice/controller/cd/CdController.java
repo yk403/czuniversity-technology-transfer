@@ -67,7 +67,7 @@ public class CdController {
         if(parameter==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        PageInfo<GetCdAndCzDTO> pageInfo = cdService.findByNameorCodePage(pageNum, pageSize, parameter, systemType, modelType);
+        PageInfo<GetCdAndCzDTO> pageInfo = cdService.findByNameOrCodePage(pageNum, pageSize, parameter, systemType, modelType);
         return ResponseUtil.success(pageInfo);
     }
 
