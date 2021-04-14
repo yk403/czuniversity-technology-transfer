@@ -51,7 +51,7 @@ public class CdServiceImpl implements CdService {
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<GetCdAndCzDTO> findByPage(Integer pageNum, Integer pageSize, String name, String systemType, String modelType) {
+    public PageInfo<GetCdAndCzDTO> findByPage(Integer pageNum, Integer pageSize, String name,String code, String systemType, String modelType) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -60,6 +60,9 @@ public class CdServiceImpl implements CdService {
         query.eq("sfsc", false);
         if (StringUtils.isNotBlank(name)) {
             query.like("cdmc", name);
+        }
+        if (StringUtils.isNotBlank(code)) {
+            query.like("cdbm", code);
         }
         if (StringUtils.isNotBlank(systemType)) {
             query.eq("xtlx", systemType);

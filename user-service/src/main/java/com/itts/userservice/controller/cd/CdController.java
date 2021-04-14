@@ -46,12 +46,14 @@ public class CdController {
     public ResponseUtil find(@ApiParam("当前页数") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                              @ApiParam("每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                              @ApiParam("菜单名称") @RequestParam(value = "name", required = false) String name,
+                             @ApiParam("菜单编码")@RequestParam(value = "code",required = false)String code,
                              @ApiParam("系统类型") @RequestParam(value = "systemType", required = false) String systemType,
                              @ApiParam("模块类型") @RequestParam(value = "modelType", required = false) String modelType) {
 
-        PageInfo<GetCdAndCzDTO> pageInfo = cdService.findByPage(pageNum, pageSize, name, systemType, modelType);
+        PageInfo<GetCdAndCzDTO> pageInfo = cdService.findByPage(pageNum, pageSize, name,code, systemType, modelType);
         return ResponseUtil.success(pageInfo);
     }
+
 
     /**
      * 获取详情
