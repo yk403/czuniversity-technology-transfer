@@ -39,6 +39,8 @@ public class JgglServiceImpl implements JgglService {
      */
     @Override
     public PageInfo<Jggl> findByPage(Integer pageNum, Integer pageSize,String jgbm) {
+        String cj = jgglMapper.selectByCode(jgbm).getCj();
+        jgbm=cj;
         PageHelper.startPage(pageNum,pageSize);
         List<Jggl> list = jgglMapper.findThisAndChildByCode(jgbm);
         PageInfo<Jggl> pageInfo = new PageInfo<>(list);
@@ -88,7 +90,10 @@ public class JgglServiceImpl implements JgglService {
 
     @Override
     public Jggl get(Long id) {
-        Jggl jggl = jgglMapper.selectById(id);
+        QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
+        jgglQueryWrapper.eq("sfsc",false)
+        .eq("id",id);
+        Jggl jggl = jgglMapper.selectOne(jgglQueryWrapper);
         return jggl;
     }
 

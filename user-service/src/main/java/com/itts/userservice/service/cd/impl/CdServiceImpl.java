@@ -88,6 +88,66 @@ public class CdServiceImpl implements CdService {
         return pageInfo;
     }
 
+    @Override
+    public PageInfo<GetCdAndCzDTO> findByNameorCodePage(Integer pageNum, Integer pageSize, String parameter, String systemType, String modelType) {
+
+        List<Cd> cds;
+        PageHelper.startPage(pageNum, pageSize);
+
+        QueryWrapper<Cd> oldquery = new QueryWrapper<>();
+
+        oldquery.eq("sfsc", false);
+        if (StringUtils.isNotBlank(parameter)) {
+            oldquery.like("cdmc", parameter);
+        }
+        if (StringUtils.isNotBlank(systemType)) {
+            oldquery.eq("xtlx", systemType);
+        }
+        if (StringUtils.isNotBlank(modelType)) {
+            oldquery.eq("mklx", modelType);
+        }
+
+        cds = cdMapper.selectList(oldquery);
+        if(cds==null){
+            PageHelper.startPage(pageNum, pageSize);
+
+            QueryWrapper<Cd> query = new QueryWrapper<>();
+
+            query.eq("sfsc", false);
+            if (StringUtils.isNotBlank(parameter)) {
+                query.like("cdbm", parameter);
+            }
+            if (StringUtils.isNotBlank(systemType)) {
+                query.eq("xtlx", systemType);
+            }
+            if (StringUtils.isNotBlank(modelType)) {
+                query.eq("mklx", modelType);
+            }
+
+            cds = cdMapper.selectList(query);
+            if(cds==null){
+                return null;
+            }
+        }
+        PageInfo<GetCdAndCzDTO> pageInfo = new PageInfo(cds);
+
+        //查询菜单拥有的操作
+        List<GetCdAndCzDTO> dtos = Lists.newArrayList();
+        cds.forEach(cd -> {
+
+            GetCdAndCzDTO dto = new GetCdAndCzDTO();
+            BeanUtils.copyProperties(cd, dto);
+
+            List<GetCdCzGlDTO> czs = cdCzGlMapper.getCdCzGlByCdId(cd.getId());
+            dto.setCzs(czs);
+
+            dtos.add(dto);
+        });
+
+        pageInfo.setList(dtos);
+        return pageInfo;
+    }
+
     /**
      * 通过父级菜单ID获取其子级信息
      */

@@ -20,8 +20,9 @@ public interface CdService {
     /**
      * 查询列表
      */
-    PageInfo<GetCdAndCzDTO> findByPage(Integer pageNum, Integer pageSize, String name, String systemType, String modelType);
+    PageInfo<GetCdAndCzDTO> findByPage(Integer pageNum, Integer pageSize, String name,String systemType, String modelType);
 
+    PageInfo<GetCdAndCzDTO> findByNameorCodePage(Integer pageNum, Integer pageSize, String qurey, String systemType, String modelType);
     /**
      * 通过父级菜单ID获取其子级信息
      */
