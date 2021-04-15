@@ -113,10 +113,6 @@ public class CdServiceImpl implements CdService {
             //去除当前菜单
             children.remove(cd);
 
-            /*if (CollectionUtils.isEmpty(children)) {
-                continue;
-            }*/
-
             //递归组装树状
             combineMenusToTree(vo, children);
         }
@@ -420,15 +416,18 @@ public class CdServiceImpl implements CdService {
         Iterator<Cd> cdIterator = children.iterator();
 
         while(cdIterator.hasNext()){
+
             Cd child = cdIterator.next();
+
             if (Objects.equals(cd.getId(), child.getFjcdId())) {
 
                 CdTreeVO childVO = new CdTreeVO();
                 BeanUtils.copyProperties(child, childVO);
+                childrenVOs.add(childVO);
 
+                //将当前子级菜单从列表中删除
                 cdIterator.remove();
 
-                childrenVOs.add(childVO);
                 combineMenusToTree(childVO, children);
             }
         }
