@@ -2,6 +2,8 @@ package com.itts.userservice.service.js;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.userservice.model.js.Js;
+import com.itts.userservice.request.AddJsCdRequest;
+import com.itts.userservice.request.AddJsRequest;
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ public interface JsService {
     /**
      * 新增
      */
-    Js add(Js Js);
+    Js add(AddJsRequest request);
 
     /**
      * 更新
