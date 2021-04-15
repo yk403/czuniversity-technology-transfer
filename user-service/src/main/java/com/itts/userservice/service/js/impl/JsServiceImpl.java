@@ -139,6 +139,7 @@ public class JsServiceImpl implements JsService {
 
         for (GetJsCdGlVO cd : cds) {
 
+            //获取当前角色当前菜单下的角色菜单操作关联
             List<JsCdCzGl> jsCdCzGls = jsCdCzGlMapper.getByJsIdAndCdId(id, cd.getId());
 
             if (CollectionUtils.isEmpty(jsCdCzGls)) {
@@ -149,12 +150,13 @@ public class JsServiceImpl implements JsService {
             //循环遍历，组装数据
             for (JsCdCzGl jsCdCzGl : jsCdCzGls) {
 
-                GetJsCdCzGlVO jsCdCzGlVO = new GetJsCdCzGlVO();
                 Cz cz = czMap.get(jsCdCzGl.getId());
-                if (cz != null) {
-                    BeanUtils.copyProperties(cz, jsCdCzGlVO);
+                if (cz == null) {
+                    continue;
                 }
 
+                GetJsCdCzGlVO jsCdCzGlVO = new GetJsCdCzGlVO();
+                BeanUtils.copyProperties(cz, jsCdCzGlVO);
                 jsCdCzGlVOs.add(jsCdCzGlVO);
             }
 
