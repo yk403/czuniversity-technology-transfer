@@ -37,13 +37,13 @@ public class Cd implements Serializable {
     /**
      * 菜单名称
      */
-    @ApiModelProperty("菜单名称")
+    @ApiModelProperty(value = "菜单名称",required = true)
     private String cdmc;
 
     /**
      * 菜单编码
      */
-    @ApiModelProperty("菜单编码")
+    @ApiModelProperty(value = "菜单编码", required = true)
     private String cdbm;
 
     /**
@@ -55,7 +55,7 @@ public class Cd implements Serializable {
     /**
      * 父级菜单ID
      */
-    @ApiModelProperty("父级菜单ID")
+    @ApiModelProperty(value = "父级菜单ID", required = true)
     private Long fjcdId;
 
     /**

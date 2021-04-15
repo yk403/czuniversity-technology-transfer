@@ -15,6 +15,7 @@ import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.model.cd.CdCzGl;
 import com.itts.userservice.request.AddCdRequest;
 import com.itts.userservice.service.cd.CdService;
+import com.itts.userservice.vo.CdTreeVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,9 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -86,6 +89,49 @@ public class CdServiceImpl implements CdService {
 
         pageInfo.setList(dtos);
         return pageInfo;
+    }
+
+    /**
+     * 通过ID获取当前菜单及其子菜单（树形）
+     */
+    @Override
+    public List<CdTreeVO> findByTree(List<Cd> cds) {
+
+        List<CdTreeVO> vos = Lists.newArrayList();
+
+        //循环遍历菜单获取其子级，并组装树状
+        for (Cd cd : cds) {
+
+            //设置父级菜单信息
+            CdTreeVO vo = new CdTreeVO();
+            BeanUtils.copyProperties(cd, vo);
+            vos.add(vo);
+
+            //获取当前菜单及所有子菜单
+            List<Cd> children = findThisAndAllChildrenByCode(cd.getCdbm());
+
+            //去除当前菜单
+            children.remove(cd);
+
+            /*if (CollectionUtils.isEmpty(children)) {
+                continue;
+            }*/
+
+            //递归组装树状
+            combineMenusToTree(vo, children);
+        }
+
+        return vos;
+    }
+
+    /**
+     * 通过菜单编码获取当前菜单和所有子菜单
+     */
+    @Override
+    public List<Cd> findThisAndAllChildrenByCode(String code) {
+
+        List<Cd> cds = cdMapper.findThisAndAllChildrenByCode(code);
+        return cds;
     }
 
     /**
@@ -172,10 +218,19 @@ public class CdServiceImpl implements CdService {
     }
 
     /**
-     * 获取详情
+     * 通过ID获取详情
      */
     @Override
-    public GetCdAndCzDTO get(Long id) {
+    public Cd getById(Long id) {
+        Cd cd = cdMapper.selectById(id);
+        return cd;
+    }
+
+    /**
+     * 通过ID获取菜单、菜单关联操作
+     */
+    @Override
+    public GetCdAndCzDTO getCdAndCzById(Long id) {
 
         Cd cd = cdMapper.selectById(id);
         if (cd == null) {
@@ -349,5 +404,36 @@ public class CdServiceImpl implements CdService {
         czIds.forEach(czId -> {
             cdCzGlMapper.deleteCdCzGlByCdIdAndCzId(cdId, czId, userId);
         });
+    }
+
+    /**
+     * 组装菜单树形数据
+     */
+    private CdTreeVO combineMenusToTree(CdTreeVO cd, List<Cd> children) {
+
+        if(CollectionUtils.isEmpty(children)){
+            return cd;
+        }
+
+        List<CdTreeVO> childrenVOs = Lists.newArrayList();
+
+        Iterator<Cd> cdIterator = children.iterator();
+
+        while(cdIterator.hasNext()){
+            Cd child = cdIterator.next();
+            if (Objects.equals(cd.getId(), child.getFjcdId())) {
+
+                CdTreeVO childVO = new CdTreeVO();
+                BeanUtils.copyProperties(child, childVO);
+
+                cdIterator.remove();
+
+                childrenVOs.add(childVO);
+                combineMenusToTree(childVO, children);
+            }
+        }
+
+        cd.setChildCds(childrenVOs);
+        return cd;
     }
 }

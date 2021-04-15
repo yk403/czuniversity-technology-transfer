@@ -27,6 +27,12 @@ public interface CdMapper extends BaseMapper<Cd> {
     List<Cd> findByParentId(@Param("parentId") Long parentId);
 
     /**
+     * 通过菜单编码获取当前菜单和所有子菜单
+     */
+    @Select("SELECT * FROM t_cd WHERE cj LIKE CONCAT(#{code}, '%')")
+    List<Cd> findThisAndAllChildrenByCode(@Param("code") String code);
+
+    /**
      * 通过父级ID获取所有子级数量
      */
     @Select("SELECT COUNT(id) " +

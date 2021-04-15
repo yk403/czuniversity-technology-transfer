@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.userservice.dto.GetCdAndCzDTO;
 import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.request.AddCdRequest;
+import com.itts.userservice.vo.CdTreeVO;
 
 import java.util.List;
 
@@ -20,11 +21,21 @@ public interface CdService {
     /**
      * 查询列表
      */
-    PageInfo<GetCdAndCzDTO> findByPage(Integer pageNum, Integer pageSize, String name,String systemType, String modelType);
+    PageInfo<GetCdAndCzDTO> findByPage(Integer pageNum, Integer pageSize, String name, String systemType, String modelType);
 
     /**
-    *通过名称和编码获取列表
-    */
+     * 通过ID获取当前菜单及其子菜单（树形）
+     */
+    List<CdTreeVO> findByTree(List<Cd> cds);
+
+    /**
+     * 通过菜单编码获取当前菜单和所有子菜单
+     */
+    List<Cd> findThisAndAllChildrenByCode(String code);
+
+    /**
+     * 通过名称和编码获取列表
+     */
     PageInfo<GetCdAndCzDTO> findByNameOrCodePage(Integer pageNum, Integer pageSize, String qurey, String systemType, String modelType);
 
     /**
@@ -38,9 +49,14 @@ public interface CdService {
     Long countByParentId(Long parentId);
 
     /**
-     * 获取详情
+     * 通过ID获取详情
      */
-    GetCdAndCzDTO get(Long id);
+    Cd getById(Long id);
+
+    /**
+     * 通过ID获取菜单、菜单关联操作
+     */
+    GetCdAndCzDTO getCdAndCzById(Long id);
 
     /**
      * 新增

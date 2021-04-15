@@ -2,6 +2,7 @@ package com.itts.userservice.controller.cd;
 
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
@@ -10,11 +11,13 @@ import com.itts.userservice.dto.GetCdAndCzDTO;
 import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.request.AddCdRequest;
 import com.itts.userservice.service.cd.CdService;
+import com.itts.userservice.vo.CdTreeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -55,16 +58,42 @@ public class CdController {
     }
 
     /**
+     * 通过ID获取当前菜单及其子菜单（树形）
+     */
+    @GetMapping("/tree/")
+    @ApiOperation(value = "通过ID获取当前菜单及其子菜单（树形）")
+    public ResponseUtil findByTree(@RequestParam(value = "id", required = false) Long id) {
+
+        List<Cd> cds = Lists.newArrayList();
+
+        if (id == null) {
+
+            cds = cdService.findByParentId(0L);
+        } else {
+
+            Cd cd = cdService.getById(id);
+            cds.add(cd);
+        }
+
+        if (CollectionUtils.isEmpty(cds)) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        List<CdTreeVO> tree = cdService.findByTree(cds);
+        return ResponseUtil.success(tree);
+    }
+
+    /**
      * 通过名称和编码获取列表
      */
     @ApiOperation(value = "通过名称和编码获取列表")
     @GetMapping("/get/list/by/name/code/")
     public ResponseUtil findByNameOrCode(@ApiParam("当前页数") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                             @ApiParam("每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                             @ApiParam("菜单名称或菜单编码") @RequestParam(value = "query") String parameter,
-                             @ApiParam("系统类型") @RequestParam(value = "systemType", required = false) String systemType,
-                             @ApiParam("模块类型") @RequestParam(value = "modelType", required = false) String modelType) {
-        if(parameter==null){
+                                         @ApiParam("每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                         @ApiParam("菜单名称或菜单编码") @RequestParam(value = "query") String parameter,
+                                         @ApiParam("系统类型") @RequestParam(value = "systemType", required = false) String systemType,
+                                         @ApiParam("模块类型") @RequestParam(value = "modelType", required = false) String modelType) {
+        if (parameter == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         PageInfo<GetCdAndCzDTO> pageInfo = cdService.findByNameOrCodePage(pageNum, pageSize, parameter, systemType, modelType);
@@ -82,7 +111,7 @@ public class CdController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        GetCdAndCzDTO cd = cdService.get(id);
+        GetCdAndCzDTO cd = cdService.getCdAndCzById(id);
         if (cd == null || cd.getSfsc()) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
@@ -118,7 +147,7 @@ public class CdController {
         }
 
         //检查数据库中是否存在要更新的数据
-        Cd old = cdService.get(id);
+        Cd old = cdService.getById(id);
         if (old == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
@@ -138,14 +167,14 @@ public class CdController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        Cd cd = cdService.get(id);
+        Cd cd = cdService.getById(id);
         if (cd == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
         //判断当前菜单下是否有子级
         Long count = cdService.countByParentId(id);
-        if(count > 0){
+        if (count > 0) {
             throw new WebException(ErrorCodeEnum.USER_DELETE_MENU_HAVE_CHILD_ERROR);
         }
 
