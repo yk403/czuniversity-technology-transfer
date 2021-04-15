@@ -39,7 +39,7 @@
     <select id="selectStringJggl" resultType="com.itts.userservice.vo.JgglVO">
         select *
         from t_jggl
-        where jgmc like concat('%',#{name},'%')
+        where jgmc like concat('%',#{name},'%') and sfsc = false
     </select>
 
 

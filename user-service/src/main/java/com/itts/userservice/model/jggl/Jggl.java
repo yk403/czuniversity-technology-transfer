@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -34,21 +35,25 @@ public class Jggl implements Serializable {
     /**
      * 机构名称
      */
+    @ApiModelProperty(value = "父级字段code",required = true)
     private String jgmc;
 
     /**
      * 机构编码
      */
+    @ApiModelProperty(value = "父级字段code",required = true)
     private String jgbm;
 
     /**
      * 机构类别code
      */
+    @ApiModelProperty(value = "父级字段code",required = true)
     private String jglbbm;
 
     /**
      * 机构类别
      */
+    @ApiModelProperty(value = "父级字段code",required = true)
     private String jglb;
 
     /**

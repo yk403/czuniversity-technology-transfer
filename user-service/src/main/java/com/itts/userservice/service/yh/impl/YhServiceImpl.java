@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -243,11 +244,13 @@ public class YhServiceImpl implements YhService {
 
             StringBuilder builder = new StringBuilder();
 
-            yhDTO.getYhjsmc().forEach(yhjsmc -> {
-                builder.append(yhjsmc).append(",");
-            });
+            if(!CollectionUtils.isEmpty(yhDTO.getYhjsmc())){
+                yhDTO.getYhjsmc().forEach(yhjsmc -> {
+                    builder.append(yhjsmc).append(",");
+                });
 
-            yhListVO.setYhjsmc(builder.substring(0, builder.length() - 1));
+                yhListVO.setYhjsmc(builder.substring(0, builder.length() - 1));
+            }
 
             yhListVOs.add(yhListVO);
         });

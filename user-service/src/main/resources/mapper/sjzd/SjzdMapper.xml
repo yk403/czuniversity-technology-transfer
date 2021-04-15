@@ -25,10 +25,10 @@
     </sql>
 
     <select id="selectByName" resultMap="BaseResultMap">
-        select * from t_sjzd where zdmc= #{zdmc}
+        select * from t_sjzd where zdmc= #{zdmc} and sfsc =false
     </select>
     <select id="selectByCode" resultMap="BaseResultMap">
-        select * from t_sjzd where zdbm= #{zdbm}
+        select * from t_sjzd where zdbm= #{zdbm} and sfsc = false
     </select>
 
     <select id="selectSjzd" resultType="com.itts.userservice.vo.SjzdVO">
@@ -41,5 +41,6 @@
                ssmk as ssmk,
                cjsj as cjsj
         from t_sjzd
+        where sfsc = false
     </select>
 </mapper>

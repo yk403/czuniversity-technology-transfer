@@ -249,12 +249,15 @@ public class CdServiceImpl implements CdService {
     public Cd add(AddCdRequest cd) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
+
+        Long userId = null;
         if (loginUser != null) {
-            cd.setCjr(loginUser.getUserId());
-            cd.setGxr(loginUser.getUserId());
+            userId = loginUser.getUserId();
         }
 
         Date now = new Date();
+        cd.setCjr(userId);
+        cd.setGxr(userId);
         cd.setCjsj(now);
         cd.setGxsj(now);
 
@@ -268,12 +271,6 @@ public class CdServiceImpl implements CdService {
         }
 
         cdMapper.insert(cd);
-
-        Long userId = null;
-
-        if (loginUser != null) {
-            userId = loginUser.getUserId();
-        }
 
         //甚至菜单与操作关联信息
         addCdCzGl(cd.getId(), cd.getCzIds(), userId, now);

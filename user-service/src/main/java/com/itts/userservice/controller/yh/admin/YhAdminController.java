@@ -158,7 +158,7 @@ public class YhAdminController {
         BeanUtils.copyProperties(addYhRequest,Yh);
 
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
-        BeanUtils.copyProperties(Yh, Yh1, "id", "chsj", "cjr");
+        BeanUtils.copyProperties(Yh, Yh1, "id","yhjb", "chsj", "cjr");
         //逻辑删除此用户的所有角色
         Long yhid = Yh.getId();
         QueryWrapper<YhJsGl> QueryWrapper = new QueryWrapper<>();

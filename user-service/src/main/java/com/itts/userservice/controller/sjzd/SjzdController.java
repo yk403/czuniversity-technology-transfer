@@ -29,7 +29,7 @@ import java.util.List;
 @Api(tags = "数字字典")
 @Slf4j
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/sjzd")
+@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/sjzd")
 public class SjzdController {
 
     @Resource
@@ -62,7 +62,7 @@ public class SjzdController {
     @ApiOperation(value = "获取指定模块列表")
     public ResponseUtil getAppointList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                       @RequestParam String ssmk) {
+                                       @RequestParam(value = "ssmk") String ssmk) {
         PageInfo<Sjzd> byPage = sjzdService.findAppointByPage(pageNum, pageSize,ssmk);
         return ResponseUtil.success(byPage);
     }

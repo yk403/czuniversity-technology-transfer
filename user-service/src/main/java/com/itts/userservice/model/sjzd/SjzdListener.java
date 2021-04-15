@@ -49,7 +49,7 @@ public class SjzdListener extends AnalysisEventListener<SjzdDTO> {
             sjzd.setZdcj(data.getZdcj());
         }
         if(!StringUtils.isBlank(data.getXtlb())){
-            sjzd.setXtlx(data.getXtlb());
+            sjzd.setXtlb(data.getXtlb());
         }
         if(!StringUtils.isBlank(data.getMklx())){
             sjzd.setMklx(data.getMklx());

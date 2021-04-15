@@ -57,7 +57,7 @@ public class Sjzd implements Serializable {
     /**
      * 系统类型：technology_transaction_portal - 技术交易门户；tech
      */
-    private String xtlx;
+    private String xtlb;
     /**
      * 模块类型:front - 门户;admin - 后台管理
      */
