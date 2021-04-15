@@ -133,8 +133,10 @@ public class JsServiceImpl implements JsService {
 
         vo.setJsCdGls(cds);
 
+        QueryWrapper query = new QueryWrapper();
+        query.eq("sfsc", false);
         //获取所有操作
-        List<Cz> allCz = czMapper.selectList(null);
+        List<Cz> allCz = czMapper.selectList(query);
         Map<Long, Cz> czMap = allCz.stream().collect(Collectors.toMap(Cz::getId, cz -> cz));
 
         for (GetJsCdGlVO cd : cds) {
