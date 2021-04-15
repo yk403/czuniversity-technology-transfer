@@ -21,7 +21,7 @@ public interface JsService {
     /**
      * 查询列表
      */
-    PageInfo<Js> findByPage(Integer pageNum, Integer pageSize);
+    PageInfo<Js> findByPage(Integer pageNum, Integer pageSize, String name, String systemType);
 
     /**
      * 通过系统类型是否为默认角色获取角色信息

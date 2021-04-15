@@ -14,6 +14,7 @@ import com.itts.userservice.model.js.JsCdGl;
 import com.itts.userservice.request.AddJsCdRequest;
 import com.itts.userservice.request.AddJsRequest;
 import com.itts.userservice.service.js.JsService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -49,12 +50,22 @@ public class JsServiceImpl implements JsService {
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<Js> findByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<Js> findByPage(Integer pageNum, Integer pageSize, String name, String systemType) {
+
         PageHelper.startPage(pageNum, pageSize);
-        QueryWrapper<Js> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.eq("sfsc", false);
-        List<Js> js = jsMapper.selectList(objectQueryWrapper);
+
+        QueryWrapper<Js> query = new QueryWrapper<>();
+        query.eq("sfsc", false);
+        if (StringUtils.isNotBlank(name)) {
+            query.like("jsmc", name);
+        }
+        if (StringUtils.isNotBlank(systemType)) {
+            query.eq("xtlx", systemType);
+        }
+
+        List<Js> js = jsMapper.selectList(query);
         PageInfo<Js> tJsPageInfo = new PageInfo<>(js);
+
         return tJsPageInfo;
     }
 

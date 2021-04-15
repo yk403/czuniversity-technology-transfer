@@ -11,6 +11,7 @@ import com.itts.userservice.request.AddJsRequest;
 import com.itts.userservice.service.js.JsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -39,9 +40,12 @@ public class JsController {
      */
     @ApiOperation(value = "获取列表")
     @GetMapping("/list/")
-    public ResponseUtil find(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        PageInfo<Js> byPage = jsService.findByPage(pageNum, pageSize);
+    public ResponseUtil find(@ApiParam("当前页数") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                             @ApiParam("当前页数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                             @ApiParam("角色名称") @RequestParam(value = "name", required = false) String name,
+                             @ApiParam("系统类型") @RequestParam(value = "systemType", required = false) String systemType) {
+
+        PageInfo<Js> byPage = jsService.findByPage(pageNum, pageSize, name, systemType);
         return ResponseUtil.success(byPage);
     }
 

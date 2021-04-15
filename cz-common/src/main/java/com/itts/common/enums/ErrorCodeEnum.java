@@ -22,6 +22,9 @@ public enum ErrorCodeEnum {
     SYSTEM_NOT_FIND_ERROR(-400002, "数据不存在"),
     SYSTEM_UPLOAD_ERROR(-400003, "导入失败"),
     SYSTEM_FIND_ERROR(-400004, "数据已存在"),
+    SYSTEM_REQUEST_METHOD_ERROR(-40005, "请求方式错误"),
+    SYSTEM_REQUEST_PARAMS_TYPE_ERROR(-40006, "请求参数类型或请求参数格式错误"),
+    SYSTEM_ERROR(-40007, "系统异常，请联系管理员"),
     //====================      系统错误提示  END     ====================
 
     //====================      技术交易服务错误提示（服务码410）      ====================
