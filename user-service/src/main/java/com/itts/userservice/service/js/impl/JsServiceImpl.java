@@ -3,17 +3,23 @@ package com.itts.userservice.service.js.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.userservice.mapper.cz.CzMapper;
 import com.itts.userservice.mapper.js.JsCdCzGlMapper;
 import com.itts.userservice.mapper.js.JsCdGlMapper;
 import com.itts.userservice.mapper.js.JsMapper;
+import com.itts.userservice.model.cz.Cz;
 import com.itts.userservice.model.js.Js;
 import com.itts.userservice.model.js.JsCdCzGl;
 import com.itts.userservice.model.js.JsCdGl;
 import com.itts.userservice.request.AddJsCdRequest;
 import com.itts.userservice.request.AddJsRequest;
 import com.itts.userservice.service.js.JsService;
+import com.itts.userservice.vo.GetJsCdCzGlVO;
+import com.itts.userservice.vo.GetJsCdGlVO;
+import com.itts.userservice.vo.GetJsVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Primary;
@@ -23,6 +29,8 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -45,6 +53,9 @@ public class JsServiceImpl implements JsService {
 
     @Resource
     private JsCdCzGlMapper jsCdCzGlMapper;
+
+    @Resource
+    private CzMapper czMapper;
 
     /**
      * 获取列表 - 分页
@@ -97,6 +108,60 @@ public class JsServiceImpl implements JsService {
     public Js get(Long id) {
         Js Js = jsMapper.selectById(id);
         return Js;
+    }
+
+    /**
+     * 通过ID获取角色菜单操作关联信息
+     */
+    @Override
+    public GetJsVO getJsCdCzGl(Long id) {
+
+        Js js = get(id);
+        if (js == null) {
+            return null;
+        }
+
+        //设置角色相关信息
+        GetJsVO vo = new GetJsVO();
+        BeanUtils.copyProperties(js, vo);
+
+        //获取当前角色拥有的菜单信息
+        List<GetJsCdGlVO> cds = jsCdGlMapper.getJsCdGlByJsId(id);
+        if (CollectionUtils.isEmpty(cds)) {
+            return vo;
+        }
+
+        vo.setJsCdGls(cds);
+
+        //获取所有操作
+        List<Cz> allCz = czMapper.selectList(null);
+        Map<Long, Cz> czMap = allCz.stream().collect(Collectors.toMap(Cz::getId, cz -> cz));
+
+        for (GetJsCdGlVO cd : cds) {
+
+            List<JsCdCzGl> jsCdCzGls = jsCdCzGlMapper.getByJsIdAndCdId(id, cd.getId());
+
+            if (CollectionUtils.isEmpty(jsCdCzGls)) {
+                continue;
+            }
+
+            List<GetJsCdCzGlVO> jsCdCzGlVOs = Lists.newArrayList();
+            //循环遍历，组装数据
+            for (JsCdCzGl jsCdCzGl : jsCdCzGls) {
+
+                GetJsCdCzGlVO jsCdCzGlVO = new GetJsCdCzGlVO();
+                Cz cz = czMap.get(jsCdCzGl.getId());
+                if (cz != null) {
+                    BeanUtils.copyProperties(cz, jsCdCzGlVO);
+                }
+
+                jsCdCzGlVOs.add(jsCdCzGlVO);
+            }
+
+            cd.setJsCdCzGls(jsCdCzGlVOs);
+        }
+
+        return vo;
     }
 
     /**

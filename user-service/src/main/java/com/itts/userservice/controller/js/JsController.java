@@ -9,6 +9,7 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.model.js.Js;
 import com.itts.userservice.request.AddJsRequest;
 import com.itts.userservice.service.js.JsService;
+import com.itts.userservice.vo.GetJsVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -55,8 +56,22 @@ public class JsController {
     @GetMapping("/get/{id}")
     @ApiOperation(value = "获取详情")
     public ResponseUtil get(@PathVariable("id") Long id) {
-        Js Js = jsService.get(id);
-        return ResponseUtil.success(Js);
+
+        if (id == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        GetJsVO js = jsService.getJsCdCzGl(id);
+
+        if (js == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (js.getSfsc()) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        return ResponseUtil.success(js);
     }
 
     /**
@@ -65,7 +80,9 @@ public class JsController {
     @ApiOperation(value = "新增")
     @PostMapping("/add/")
     public ResponseUtil add(@RequestBody AddJsRequest Js) throws WebException {
+
         checkRequst(Js);
+
         Js add = jsService.add(Js);
         return ResponseUtil.success(add);
     }
@@ -76,6 +93,7 @@ public class JsController {
     @ApiOperation(value = "更新")
     @PutMapping("/update/")
     public ResponseUtil update(@RequestBody Js Js) {
+
         Long id = Js.getId();
         //检查参数是否合法
         if (id == null) {

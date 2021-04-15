@@ -2,8 +2,8 @@ package com.itts.userservice.service.js;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.userservice.model.js.Js;
-import com.itts.userservice.request.AddJsCdRequest;
 import com.itts.userservice.request.AddJsRequest;
+import com.itts.userservice.vo.GetJsVO;
 
 import java.util.List;
 
@@ -37,6 +37,11 @@ public interface JsService {
      * 获取详情
      */
     Js get(Long id);
+
+    /**
+     * 通过ID获取角色菜单操作关联信息
+     */
+    GetJsVO getJsCdCzGl(Long id);
 
     /**
      * 新增
