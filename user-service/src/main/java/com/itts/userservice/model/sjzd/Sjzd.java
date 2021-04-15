@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -32,16 +34,19 @@ public class Sjzd implements Serializable {
     /**
      * 字典名称
      */
+    @ApiModelProperty(value = "字典名称",required = true)
     private String zdmc;
 
     /**
      * 字典编码
      */
+    @ApiModelProperty(value = "字典编码",required = true)
     private String zdbm;
 
     /**
      * 父级字段code, 如果是顶级则为000
      */
+    @ApiModelProperty(value = "父级字段code",required = true)
     private String fjzdbm;
 
     /**

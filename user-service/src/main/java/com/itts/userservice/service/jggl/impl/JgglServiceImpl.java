@@ -39,8 +39,10 @@ public class JgglServiceImpl implements JgglService {
      */
     @Override
     public PageInfo<Jggl> findByPage(Integer pageNum, Integer pageSize,String jgbm) {
-        String cj = jgglMapper.selectByCode(jgbm).getCj();
-        jgbm=cj;
+        if(jgbm!=null){
+            String cj = jgglMapper.selectByCode(jgbm).getCj();
+            jgbm=cj;
+        }
         PageHelper.startPage(pageNum,pageSize);
         List<Jggl> list = jgglMapper.findThisAndChildByCode(jgbm);
         PageInfo<Jggl> pageInfo = new PageInfo<>(list);
