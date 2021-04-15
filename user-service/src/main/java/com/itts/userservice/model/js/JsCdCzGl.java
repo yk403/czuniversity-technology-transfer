@@ -14,19 +14,19 @@ import java.util.Date;
 
 /**
  * <p>
- * 角色菜单关联表
+ * 角色菜单操作关联表
  * </p>
  *
- * @author fl
- * @since 2021-03-24
+ * @author liuyingming
+ * @since 2021-04-15
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_js_cd_gl")
-@ApiModel("角色菜单关联对象")
-public class JsCdGl implements Serializable {
+@TableName("t_js_cd_cz_gl")
+@ApiModel("角色菜单操作管理管理对象")
+public class JsCdCzGl implements Serializable {
 
-    private static final long serialVersionUID = 4442108911293553197L;
+    private static final long serialVersionUID = -8252763264630317005L;
 
     /**
      * 主键ID
@@ -45,6 +45,12 @@ public class JsCdGl implements Serializable {
      */
     @ApiModelProperty(value = "菜单ID", required = true)
     private Long cdId;
+
+    /**
+     * 操作ID
+     */
+    @ApiModelProperty(value = "菜单ID", required = true)
+    private Long czId;
 
     /**
      * 是否删除
@@ -77,6 +83,4 @@ public class JsCdGl implements Serializable {
      */
     @ApiModelProperty(value = "更新人")
     private Long gxr;
-
-
 }
