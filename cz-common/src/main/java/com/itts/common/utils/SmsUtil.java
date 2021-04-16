@@ -56,7 +56,7 @@ public class SmsUtil {
         request.putQueryParameter("TemplateCode", templateCode);
         // 设置短信验证码
         String code = getCode();
-        request.putQueryParameter("TemplateParam", "{\"code\":" + code +"}");
+        request.putQueryParameter("TemplateParam", "{\"code\":" + code + "}");
         try {
             CommonResponse response = client.getCommonResponse(request);
             System.out.println(response.getData());
@@ -76,6 +76,6 @@ public class SmsUtil {
      * 获取 6 位验证码
      */
     public String getCode() {
-        return String.valueOf((int)((Math.random()*9+1)*100000));
+        return String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
     }
 }

@@ -22,7 +22,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
  * @Description: 技术活动管理
  */
 
-@RequestMapping(BASE_URL+"/v1/JsHd")
+@RequestMapping(BASE_URL + "/v1/JsHd")
 @Api(value = "JsHdController", tags = "技术活动管理")
 @RestController
 public class JsHdController extends BaseController {
@@ -30,10 +30,11 @@ public class JsHdController extends BaseController {
     private JsHdService jsHdService;
 
     /**
-    * 分页查询
-    * @param params
-    * @return
-    */
+     * 分页查询
+     *
+     * @param params
+     * @return
+     */
     @PostMapping("/page")
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
         //查询列表数据
@@ -42,10 +43,11 @@ public class JsHdController extends BaseController {
     }
 
     /**
-    * 根据ID查询
-    * @param id
-    * @return
-    */
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") Long id) {
         return success(jsHdService.getById(id));
@@ -79,8 +81,8 @@ public class JsHdController extends BaseController {
      * 批量删除
      */
     @PostMapping("/removeBatch")
-    public R removeBatch(@RequestBody List<Long> ids){
-        return  remove(jsHdService.removeByIds(ids));
+    public R removeBatch(@RequestBody List<Long> ids) {
+        return remove(jsHdService.removeByIds(ids));
     }
 
 }

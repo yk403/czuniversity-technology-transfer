@@ -11,14 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
  * @author xp
  * @email 15161575502@163.com
  * @date 2021-02-20 17:05:41
  */
 @Repository
 public interface ZjMapper extends BaseMapper<TZj> {
-	
-	List<TZj> list(IPage<TZj> page, @Param("map") Map map);
+
+    List<TZj> list(IPage<TZj> page, @Param("map") Map map);
 
 }

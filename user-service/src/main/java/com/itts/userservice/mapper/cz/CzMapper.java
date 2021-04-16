@@ -19,9 +19,10 @@ public interface CzMapper extends BaseMapper<Cz> {
 
     /**
      * 查询当前菜单的操作
+     *
      * @param jsid
      * @param cdid
      * @return
      */
-    List<CzDTO> findcdcz(@Param("jsid") Long jsid,@Param("cdid") Long cdid);
+    List<CzDTO> findcdcz(@Param("jsid") Long jsid, @Param("cdid") Long cdid);
 }

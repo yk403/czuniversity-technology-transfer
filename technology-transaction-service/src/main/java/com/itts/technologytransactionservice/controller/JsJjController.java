@@ -22,7 +22,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
  * @Description: 技术经纪人管理
  */
 
-@RequestMapping(BASE_URL+"/v1/JsJi")
+@RequestMapping(BASE_URL + "/v1/JsJi")
 @Api(value = "JsJjController", tags = "技术经纪人管理")
 @RestController
 public class JsJjController extends BaseController {
@@ -31,10 +31,11 @@ public class JsJjController extends BaseController {
     private JsJjService jsJjService;
 
     /**
-    * 分页查询
-    * @param params
-    * @return
-    */
+     * 分页查询
+     *
+     * @param params
+     * @return
+     */
     @PostMapping("/page")
     public R page(@RequestBody Map<String, Object> params) {
         //查询列表数据
@@ -43,10 +44,11 @@ public class JsJjController extends BaseController {
     }
 
     /**
-    * 根据ID查询
-    * @param id
-    * @return
-    */
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") Long id) {
         return success(jsJjService.getById(id));
@@ -80,8 +82,8 @@ public class JsJjController extends BaseController {
      * 批量删除
      */
     @PostMapping("/removeBatch")
-    public R removeBatch(@RequestBody List<Long> ids){
-        return  remove(jsJjService.removeByIds(ids));
+    public R removeBatch(@RequestBody List<Long> ids) {
+        return remove(jsJjService.removeByIds(ids));
     }
 
 }

@@ -28,6 +28,7 @@ import java.util.List;
 public class JsLbAdminServiceImpl extends ServiceImpl<JsLbMapper, TJsLb> implements JsLbAdminService {
     @Autowired
     private JsLbMapper jsLbMapper;
+
     @Override
     public PageInfo page(Query query) {
         PageHelper.startPage(query.getPageNum(), query.getPageSize());

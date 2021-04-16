@@ -37,13 +37,14 @@ public class CzController {
 
     /**
      * 查询当前菜单的操作
+     *
      * @param id
      * @param cdid
      * @return
      */
     @GetMapping("/czlist/{id}/{cdid}")
     @ApiOperation(value = "获取操作列表")
-    public ResponseUtil findcz(@PathVariable("id") Long id,@PathVariable("cdid") Long cdid){
+    public ResponseUtil findcz(@PathVariable("id") Long id, @PathVariable("cdid") Long cdid) {
         List<CzDTO> cz = czService.findCz(id, cdid);
         return ResponseUtil.success(cz);
     }
@@ -53,7 +54,6 @@ public class CzController {
      *
      * @param pageNum pageSize
      * @author fl
-     *
      */
     @GetMapping("/list/")
     @ApiOperation(value = "获取列表")

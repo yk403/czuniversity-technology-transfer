@@ -17,15 +17,15 @@ import java.util.List;
 @Service
 @Primary
 public class ZjServiceImpl extends ServiceImpl<ZjMapper, TZj> implements ZjService {
-	@Autowired
-	private ZjMapper zjMapper;
-	
-	@Override
-	public IPage page(Query query) {
-		Page<TZj> p = new Page<>(query.getPageNum(), query.getPageSize());
-		List<TZj> list = zjMapper.list(p,query);
-		p.setRecords(list);
-		return p;
-	}
-	
+    @Autowired
+    private ZjMapper zjMapper;
+
+    @Override
+    public IPage page(Query query) {
+        Page<TZj> p = new Page<>(query.getPageNum(), query.getPageSize());
+        List<TZj> list = zjMapper.list(p, query);
+        p.setRecords(list);
+        return p;
+    }
+
 }

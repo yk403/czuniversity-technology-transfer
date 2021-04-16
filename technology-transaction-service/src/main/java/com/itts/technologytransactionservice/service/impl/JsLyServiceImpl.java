@@ -17,15 +17,15 @@ import java.util.List;
 @Service
 @Primary
 public class JsLyServiceImpl extends ServiceImpl<JsLyMapper, TJsLy> implements JsLyService {
-	@Autowired
-	private JsLyMapper jsLyMapper;
-	
-	@Override
-	public PageInfo page(Query query) {
-		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		List<TJsLy> list = jsLyMapper.list(query);
-		PageInfo<TJsLy> page = new PageInfo<>(list);
-		return page;
-	}
-	
+    @Autowired
+    private JsLyMapper jsLyMapper;
+
+    @Override
+    public PageInfo page(Query query) {
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsLy> list = jsLyMapper.list(query);
+        PageInfo<TJsLy> page = new PageInfo<>(list);
+        return page;
+    }
+
 }

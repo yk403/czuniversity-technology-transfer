@@ -21,20 +21,22 @@ import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ISEMPTY_ERROR;
  * @Description: 技术成果管理
  */
 @RestController
-@RequestMapping(BASE_URL+"/v1/File")
+@RequestMapping(BASE_URL + "/v1/File")
 public class FileController {
     @Autowired
     private FileService fileService;
+
     /**
      * 文件上传
+     *
      * @param file
      * @return
      */
     @PostMapping("/upload")
     public ResponseUtil fileUpload(@RequestParam MultipartFile file) {
-        if(file.isEmpty()){
+        if (file.isEmpty()) {
             throw new WebException(UPLOAD_FAIL_ISEMPTY_ERROR);
         }
-        return ResponseUtil.success("上传成功",fileService.fileUpload(file));
+        return ResponseUtil.success("上传成功", fileService.fileUpload(file));
     }
 }

@@ -16,16 +16,16 @@ import java.util.List;
 
 @Service
 @Primary
-public class QyServiceImpl extends ServiceImpl<QyMapper,TQy> implements QyService {
-	@Autowired
-	private QyMapper qyMapper;
-	
-	@Override
-	public IPage page(Query query) {
-		Page<TQy> p = new Page<>(query.getPageNum(), query.getPageSize());
-		List<TQy> list = qyMapper.list(p,query);
-		p.setRecords(list);
-		return p;
-	}
-	
+public class QyServiceImpl extends ServiceImpl<QyMapper, TQy> implements QyService {
+    @Autowired
+    private QyMapper qyMapper;
+
+    @Override
+    public IPage page(Query query) {
+        Page<TQy> p = new Page<>(query.getPageNum(), query.getPageSize());
+        List<TQy> list = qyMapper.list(p, query);
+        p.setRecords(list);
+        return p;
+    }
+
 }

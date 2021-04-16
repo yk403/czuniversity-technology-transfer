@@ -43,22 +43,22 @@
 
     <!-- 角色列表，包含菜单fl-->
     <select id="findByUserId" parameterType="Long" resultMap="JsDTOMap">
-        SELECT js.id      as jsid,
-               js.jsmc    as jsmc,
-               js.jsbm    as jsbm,
-               cd.id      as id,
-               cd.cdmc    as name,
-               cd.fjcd_id as parentId,
-               cd.cddz    as url,
-               cd.cj      as level
+        SELECT js.id as jsid,
+        js.jsmc as jsmc,
+        js.jsbm as jsbm,
+        cd.id as id,
+        cd.cdmc as name,
+        cd.fjcd_id as parentId,
+        cd.cddz as url,
+        cd.cj as level
         FROM t_yh yh
-                 LEFT JOIN t_yh_js_gl ysgl ON yh.id = ysgl.yh_id
-                 LEFT JOIN t_js js ON ysgl.js_id = js.id
-                 LEFT JOIN t_js_cd_gl jcg ON jcg.js_id = js.id
-                 LEFT JOIN t_cd cd on jcg.cd_id = cd.id
+        LEFT JOIN t_yh_js_gl ysgl ON yh.id = ysgl.yh_id
+        LEFT JOIN t_js js ON ysgl.js_id = js.id
+        LEFT JOIN t_js_cd_gl jcg ON jcg.js_id = js.id
+        LEFT JOIN t_cd cd on jcg.cd_id = cd.id
         where yh.id = #{userId}
-          <if test="systemType != null and systemType != ''">
-              AND js.xtlx = #{systemType}
-          </if>
+        <if test="systemType != null and systemType != ''">
+            AND js.xtlx = #{systemType}
+        </if>
     </select>
 </mapper>

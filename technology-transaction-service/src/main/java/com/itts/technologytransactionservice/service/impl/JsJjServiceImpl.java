@@ -16,16 +16,16 @@ import java.util.List;
 
 @Service
 @Primary
-public class JsJjServiceImpl extends ServiceImpl<JsJjMapper,TJsJj> implements JsJjService {
-	@Autowired
-	private JsJjMapper jsJjMapper;
-	
-	@Override
-	public IPage page(Query query) {
-		Page<TJsJj> p = new Page<>(query.getPageNum(), query.getPageSize());
-		List<TJsJj> list = jsJjMapper.list(p,query);
-		p.setRecords(list);
-		return p;
-	}
-	
+public class JsJjServiceImpl extends ServiceImpl<JsJjMapper, TJsJj> implements JsJjService {
+    @Autowired
+    private JsJjMapper jsJjMapper;
+
+    @Override
+    public IPage page(Query query) {
+        Page<TJsJj> p = new Page<>(query.getPageNum(), query.getPageSize());
+        List<TJsJj> list = jsJjMapper.list(p, query);
+        p.setRecords(list);
+        return p;
+    }
+
 }

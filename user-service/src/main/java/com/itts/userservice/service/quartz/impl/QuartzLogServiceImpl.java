@@ -38,7 +38,7 @@ public class QuartzLogServiceImpl extends ServiceImpl<QuartzLogMapper, QuartzLog
     public void download(List<QuartzLog> quartzLogs, HttpServletResponse response) throws IOException {
         List<Map<String, Object>> list = new ArrayList<>();
         for (QuartzLog quartzLog : quartzLogs) {
-            Map<String,Object> map = new LinkedHashMap<>();
+            Map<String, Object> map = new LinkedHashMap<>();
             map.put("任务名称", quartzLog.getJobName());
             map.put("Bean名称", quartzLog.getBeanName());
             map.put("执行方法", quartzLog.getMethodName());

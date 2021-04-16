@@ -28,7 +28,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
 
     private StringBuilder result = new StringBuilder();
 
-    private Integer count= 0;
+    private Integer count = 0;
     @Autowired
     private JsShMapper jsShMapper;
     @Autowired
@@ -41,7 +41,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
     public static CgListener cgListener;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         cgListener = this;
     }
 
@@ -50,118 +50,118 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
     @Override
     public void invoke(TJsCgDto data, AnalysisContext analysisContext) {
         ReadRowHolder rrh = analysisContext.readRowHolder();
-        int rowIndex = rrh.getRowIndex()+1;
-        log.info("解析第"+rowIndex+"行数据:{}", JSON.toJSONString(data));
+        int rowIndex = rrh.getRowIndex() + 1;
+        log.info("解析第" + rowIndex + "行数据:{}", JSON.toJSONString(data));
 //        log.info("解析到一条数据:{}", JSON.toJSONString(data));
         TJsCg tJsCg = new TJsCg();
         //成果权属人
-        if(!StringUtils.isBlank(data.getCgqsr())){
+        if (!StringUtils.isBlank(data.getCgqsr())) {
             tJsCg.setCgqsr(data.getCgqsr());
         }
         //权属人联系电话
-        if(!StringUtils.isBlank(data.getQsrlxdh())){
+        if (!StringUtils.isBlank(data.getQsrlxdh())) {
             tJsCg.setQsrlxdh(data.getQsrlxdh());
         }
         //成果名称
-        if(!StringUtils.isBlank(data.getCgmc())){
+        if (!StringUtils.isBlank(data.getCgmc())) {
             tJsCg.setCgmc(data.getCgmc());
         }
         //关键词
-        if(!StringUtils.isBlank(data.getGjc())){
+        if (!StringUtils.isBlank(data.getGjc())) {
             tJsCg.setGjc(data.getGjc());
         }
         //成果完成时间
-        if(!StringUtils.isBlank(data.getCgwcsj())){
+        if (!StringUtils.isBlank(data.getCgwcsj())) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date parse = simpleDateFormat.parse(data.getCgwcsj());
             tJsCg.setCgwcsj(parse);
         }
         //资助情况
-        if(!StringUtils.isBlank(data.getZzqk())){
+        if (!StringUtils.isBlank(data.getZzqk())) {
             tJsCg.setZzqk(data.getZzqk());
         }
         //成果应用领域
-        if(!StringUtils.isBlank(data.getLyId())){
+        if (!StringUtils.isBlank(data.getLyId())) {
             tJsCg.setLyId(Long.parseLong(data.getLyId()));
         }
         //成果获得方式
-        if(!StringUtils.isBlank(data.getCghqfs())){
+        if (!StringUtils.isBlank(data.getCghqfs())) {
             tJsCg.setCghqfs(data.getCghqfs());
         }
         //技术成熟度
-        if(!StringUtils.isBlank(data.getJscsd())){
+        if (!StringUtils.isBlank(data.getJscsd())) {
             tJsCg.setJscsd(data.getJscsd());
         }
         //获奖情况
-        if(!StringUtils.isBlank(data.getHjqk())){
+        if (!StringUtils.isBlank(data.getHjqk())) {
             tJsCg.setHjqk(data.getHjqk());
         }
         //合作价格
-        if(!StringUtils.isBlank(data.getHzjg())){
+        if (!StringUtils.isBlank(data.getHzjg())) {
             tJsCg.setHzjg(data.getHzjg());
         }
         //合作方式
-        if(!StringUtils.isBlank(data.getHzfs())){
+        if (!StringUtils.isBlank(data.getHzfs())) {
             tJsCg.setHzfs(data.getHzfs());
         }
         //单位名称
-        if(!StringUtils.isBlank(data.getDwmc())){
+        if (!StringUtils.isBlank(data.getDwmc())) {
             tJsCg.setDwmc(data.getDwmc());
         }
         //地址
-        if(!StringUtils.isBlank(data.getDz())){
+        if (!StringUtils.isBlank(data.getDz())) {
             tJsCg.setDz(data.getDz());
         }
         //法人
-        if(!StringUtils.isBlank(data.getFr())){
+        if (!StringUtils.isBlank(data.getFr())) {
             tJsCg.setFr(data.getFr());
         }
         //联系人
-        if(!StringUtils.isBlank(data.getContracts())){
+        if (!StringUtils.isBlank(data.getContracts())) {
             tJsCg.setContracts(data.getContracts());
         }
         //手机号码
-        if(!StringUtils.isBlank(data.getSjhm())){
+        if (!StringUtils.isBlank(data.getSjhm())) {
             tJsCg.setContracts(data.getContracts());
         }
         //座机
-        if(!StringUtils.isBlank(data.getZj())){
+        if (!StringUtils.isBlank(data.getZj())) {
             tJsCg.setZj(data.getZj());
         }
         //电子邮箱
-        if(!StringUtils.isBlank(data.getDzyx())){
+        if (!StringUtils.isBlank(data.getDzyx())) {
             tJsCg.setDzyx(data.getDzyx());
         }
         //知识产权形式
-        if(!StringUtils.isBlank(data.getZscqxs())){
+        if (!StringUtils.isBlank(data.getZscqxs())) {
             tJsCg.setZscqxs(data.getZscqxs());
         }
         //成果简介
-        if(!StringUtils.isBlank(data.getCgjs())){
+        if (!StringUtils.isBlank(data.getCgjs())) {
             tJsCg.setCgjs(data.getCgjs());
         }
         //技术指标
-        if(!StringUtils.isBlank(data.getJszb())){
+        if (!StringUtils.isBlank(data.getJszb())) {
             tJsCg.setJszb(data.getJszb());
         }
         //商业分析
-        if(!StringUtils.isBlank(data.getSyfx())){
+        if (!StringUtils.isBlank(data.getSyfx())) {
             tJsCg.setSyfx(data.getSyfx());
         }
         //成果图片
-        if(!StringUtils.isBlank(data.getCgtp())){
+        if (!StringUtils.isBlank(data.getCgtp())) {
             tJsCg.setCgtp(data.getCgtp());
         }
         //成果视频
-        if(!StringUtils.isBlank(data.getCgsp())){
+        if (!StringUtils.isBlank(data.getCgsp())) {
             tJsCg.setCgsp(data.getCgsp());
         }
         //备注
-        if(!StringUtils.isBlank(data.getBz())){
+        if (!StringUtils.isBlank(data.getBz())) {
             tJsCg.setBz(data.getBz());
         }
         //活动id
-        if(!StringUtils.isBlank(data.getJshdId())){
+        if (!StringUtils.isBlank(data.getJshdId())) {
             tJsCg.setJshdId(Integer.parseInt(data.getJshdId()));
         }
         //发布类型
@@ -198,16 +198,16 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
 
     private void save(TJsCg tJsCg) {
         TJsCg tJsCgOld = jsCgMapper.selectByName(tJsCg.getCgmc());
-        if(tJsCgOld != null){
+        if (tJsCgOld != null) {
             tJsCg.setId(tJsCgOld.getId());
 
             try {
                 jsCgMapper.updateById(tJsCg);
                 count++;
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.info(e.getMessage());
             }
-        }else{
+        } else {
             try {
                 //TODO 暂时假数据,管理员userId为1
                 tJsCg.setUserId(1);
@@ -221,13 +221,13 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
                 tJsSh.setCjsj(new Date());
                 jsShMapper.insert(tJsSh);
                 count++;
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.info(e.getMessage());
             }
         }
     }
 
-    public String  getResult(){
+    public String getResult() {
         return result.toString();
     }
 }

@@ -40,6 +40,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
 
     /**
      * 分页条件查询需求(前台)
+     *
      * @param params
      * @return
      */
@@ -91,6 +92,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
 
     /**
      * 根据需求id删除需求信息
+     *
      * @param id
      * @return
      */
@@ -184,6 +186,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
 
     /**
      * 分页条件查询需求(个人详情)
+     *
      * @param params
      * @return
      */
@@ -191,7 +194,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     public PageInfo<TJsXq> findJsXqUser(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询需求(个人详情)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据
-        params.put("userId",2);
+        params.put("userId", 2);
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsXq> list = jsXqMapper.findJsXqFront(query);
@@ -200,6 +203,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
 
     /**
      * 个人发布审核需求申请(0待提交;1待审核;2通过;3整改;4拒绝)
+     *
      * @param params
      * @return
      */
@@ -215,11 +219,12 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
 
     /**
      * 已发布的需求申请招标(受理协办)
+     *
      * @param params
      * @return
      */
     @Override
-    public boolean assistanceUpdateTJsXq(Map<String, Object> params,Integer jylx) {
+    public boolean assistanceUpdateTJsXq(Map<String, Object> params, Integer jylx) {
         TJsSh tJsSh = jsShService.selectByXqId(Integer.valueOf(params.get("id").toString()));
         if (tJsSh.getFbshzt() != 2) {
             log.error("发布审核状态未通过,无法申请拍卖挂牌!");

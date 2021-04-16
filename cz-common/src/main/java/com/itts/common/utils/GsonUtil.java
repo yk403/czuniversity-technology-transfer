@@ -13,8 +13,8 @@ public class GsonUtil {
      */
     public static String toJson(Object object) {
         if (object instanceof Integer || object instanceof Short || object instanceof Byte
-            || object instanceof Long || object instanceof Character || object instanceof Boolean
-            || object instanceof Double || object instanceof String || object instanceof Float) {
+                || object instanceof Long || object instanceof Character || object instanceof Boolean
+                || object instanceof Double || object instanceof String || object instanceof Float) {
             return String.valueOf(object);
         }
         return GSON.toJson(object);

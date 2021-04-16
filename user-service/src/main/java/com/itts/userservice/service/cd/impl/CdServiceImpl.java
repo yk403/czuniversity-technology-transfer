@@ -32,14 +32,15 @@ public class CdServiceImpl implements CdService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
     /**
      * 获取列表 - 分页
      */
     @Override
     public PageInfo<Cd> findByPage(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Cd> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.eq("sfsc",false);
+        objectQueryWrapper.eq("sfsc", false);
         List<Cd> cd = cdMapper.selectList(objectQueryWrapper);
         PageInfo<Cd> tJsPageInfo = new PageInfo<>(cd);
         return tJsPageInfo;

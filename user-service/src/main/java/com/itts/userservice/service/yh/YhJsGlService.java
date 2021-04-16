@@ -11,6 +11,4 @@ package com.itts.userservice.service.yh;
 public interface YhJsGlService {
 
 
-
-
 }

@@ -102,6 +102,7 @@ public class RedisUtil {
     /* ================================ common ================================== */
 
     /* ================================ string ================================== */
+
     /**
      * string set 操作，设置 key-value
      */
@@ -148,6 +149,7 @@ public class RedisUtil {
     /* ================================ string ================================== */
 
     /* ================================ hash ================================== */
+
     /**
      * hash set 操作，设置 一个 field - value
      */
@@ -235,6 +237,7 @@ public class RedisUtil {
     /* ================================ hash ================================== */
 
     /* ================================ list ================================== */
+
     /**
      * list left push 操作，设置一个 value
      */
@@ -523,7 +526,7 @@ public class RedisUtil {
     /**
      * zset zrevrange 操作，返回指定下标范围的 value - score （升序）
      */
-    public Set<ZSetOperations.TypedTuple<Object>> zreverseRangeWithScores (String key, long start, long end) {
+    public Set<ZSetOperations.TypedTuple<Object>> zreverseRangeWithScores(String key, long start, long end) {
         return StringUtils.isNotEmpty(key) ? zSetOperations.reverseRangeWithScores(key, start, end) : null;
     }
 

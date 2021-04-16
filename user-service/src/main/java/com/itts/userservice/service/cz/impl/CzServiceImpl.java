@@ -48,10 +48,10 @@ public class CzServiceImpl implements CzService {
      */
     @Override
     public PageInfo<Cz> findByPage(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Cz> objectQueryWrapper = new QueryWrapper<>();
         //过滤
-        objectQueryWrapper.eq("sfsc",false);
+        objectQueryWrapper.eq("sfsc", false);
         List<Cz> Czs = czMapper.selectList(objectQueryWrapper);
         PageInfo<Cz> tCzPageInfo = new PageInfo<>(Czs);
         return tCzPageInfo;
@@ -84,28 +84,28 @@ public class CzServiceImpl implements CzService {
     }
 
 
-
     /**
      * 查询当前菜单的操作
+     *
      * @param id
      * @param cdid
      * @return
      */
     @Override
-    public List<CzDTO> findCz(Long id, Long cdid){
+    public List<CzDTO> findCz(Long id, Long cdid) {
         //获取缓存中的操作
         Object json = redisTemplate.opsForValue().get(RedisConstant.USERSERVICE_MENUS_OPERTION + id);
         JSONArray jsonArry = JSONUtil.parseArray(json);
         List<CzDTO> czDTOList = JSONUtil.toList(jsonArry, CzDTO.class);
-        if(czDTOList==null){
+        if (czDTOList == null) {
             //查询角色id
             YhJsGl yhJsGl = yhJsGlMapper.selectById(id);
             Long jsid = yhJsGl.getJsId();
             //根据角色id和菜单id查出操作
             List<CzDTO> findcdcz = czMapper.findcdcz(jsid, cdid);
-            czDTOList=findcdcz;
+            czDTOList = findcdcz;
             //缓存中没有数据则存入操作
-            redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS_OPERTION+id,czDTOList);
+            redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS_OPERTION + id, czDTOList);
         }
         return czDTOList;
     }

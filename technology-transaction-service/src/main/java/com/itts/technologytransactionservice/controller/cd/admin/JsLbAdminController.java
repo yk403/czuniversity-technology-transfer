@@ -23,7 +23,7 @@ import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
  * @Version: 1.0.0
  * @Description: 技术类别后台管理
  */
-@RequestMapping(ADMIN_BASE_URL+"/v1/JsLb")
+@RequestMapping(ADMIN_BASE_URL + "/v1/JsLb")
 @Api(value = "JsLbAdminController", tags = "技术类别后台管理")
 @RestController
 public class JsLbAdminController extends BaseController {
@@ -32,6 +32,7 @@ public class JsLbAdminController extends BaseController {
 
     /**
      * 分页查询
+     *
      * @param params
      * @return
      */
@@ -44,6 +45,7 @@ public class JsLbAdminController extends BaseController {
 
     /**
      * 根据ID查询
+     *
      * @param id
      * @return
      */
@@ -80,11 +82,11 @@ public class JsLbAdminController extends BaseController {
      * 批量删除
      */
     @PostMapping("/removeBatch")
-    public R removeBatch(@RequestBody List<String> ids){
+    public R removeBatch(@RequestBody List<String> ids) {
         ArrayList<Long> longs = new ArrayList<>();
-        for (String id: ids) {
+        for (String id : ids) {
             longs.add(Long.parseLong(id));
         }
-        return  remove(jsLbAdminService.removeByIds(longs));
+        return remove(jsLbAdminService.removeByIds(longs));
     }
 }

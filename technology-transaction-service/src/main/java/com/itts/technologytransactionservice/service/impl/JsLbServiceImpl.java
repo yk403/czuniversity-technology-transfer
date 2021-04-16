@@ -17,15 +17,15 @@ import java.util.List;
 @Service
 @Primary
 public class JsLbServiceImpl extends ServiceImpl<JsLbMapper, TJsLb> implements JsLbService {
-	@Autowired
-	private JsLbMapper jsLbMapper;
-	
-	@Override
-	public PageInfo page(Query query) {
-		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		List<TJsLb> list = jsLbMapper.list(query);
-		PageInfo<TJsLb> page = new PageInfo<>(list);
-		return page;
-	}
-	
+    @Autowired
+    private JsLbMapper jsLbMapper;
+
+    @Override
+    public PageInfo page(Query query) {
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsLb> list = jsLbMapper.list(query);
+        PageInfo<TJsLb> page = new PageInfo<>(list);
+        return page;
+    }
+
 }

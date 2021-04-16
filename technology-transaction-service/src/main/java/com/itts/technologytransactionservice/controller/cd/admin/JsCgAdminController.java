@@ -24,7 +24,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  * @Data: 2021/3/26
  * @Description: 技术成果后台管理
  */
-@RequestMapping(ADMIN_BASE_URL+"/v1/JsCg")
+@RequestMapping(ADMIN_BASE_URL + "/v1/JsCg")
 @Api(value = "JsCgAdminController", tags = "技术成果后台管理")
 @RestController
 public class JsCgAdminController extends BaseController {
@@ -33,6 +33,7 @@ public class JsCgAdminController extends BaseController {
 
     /**
      * 分页条件查询成果(后台管理)
+     *
      * @param params
      * @return
      */
@@ -43,17 +44,19 @@ public class JsCgAdminController extends BaseController {
     }
 
     /**
-    * 根据成果id查询详细信息
-    * @param id
-    * @return
-    */
+     * 根据成果id查询详细信息
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/getById/{id}")
     public ResponseUtil findById(@PathVariable("id") Integer id) {
-        return ResponseUtil.success("查询成果详细信息成功!",jsCgAdminService.getById(id));
+        return ResponseUtil.success("查询成果详细信息成功!", jsCgAdminService.getById(id));
     }
 
     /**
      * 根据成果名称查询详细信息
+     *
      * @param cgmc
      * @return
      */
@@ -98,11 +101,12 @@ public class JsCgAdminController extends BaseController {
 
     /**
      * 根据id批量发布成果
+     *
      * @param ids
      * @return
      */
     @PutMapping("/issueBatch")
-    public ResponseUtil issueBatch(@RequestBody List<Integer> ids){
+    public ResponseUtil issueBatch(@RequestBody List<Integer> ids) {
         if (CollectionUtils.isEmpty(ids)) {
             throw new WebException(REQUEST_PARAMS_ISEMPTY);
         }
@@ -114,23 +118,24 @@ public class JsCgAdminController extends BaseController {
 
     /**
      * 受理协办成果拍卖挂牌下发
+     *
      * @param ids
      * @return
      */
     @PostMapping("/assistanceIssueBatch")
-    public ResponseUtil assistanceIssueBatch(@RequestBody List<Integer> ids){
+    public ResponseUtil assistanceIssueBatch(@RequestBody List<Integer> ids) {
         if (!jsCgAdminService.assistanceIssueBatch(ids)) {
             throw new WebException(UPDATE_FAIL);
         }
-        return  ResponseUtil.success("受理协办成果拍卖挂牌下发成功!");
+        return ResponseUtil.success("受理协办成果拍卖挂牌下发成功!");
     }
 
     /**
      * 批量删除
      */
     @PostMapping("/removeBatch")
-    public R removeBatch(@RequestBody List<String> ids){
-        return  remove(jsCgAdminService.removeByIdsCg(ids));
+    public R removeBatch(@RequestBody List<String> ids) {
+        return remove(jsCgAdminService.removeByIdsCg(ids));
     }
 
 }

@@ -10,14 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
  * @author xp
  * @email 15161575502@163.com
  * @date 2021-02-22 11:14:18
  */
 @Repository
 public interface JsLbMapper extends BaseMapper<TJsLb> {
-	
-	List<TJsLb> list(@Param("map") Map map);
+
+    List<TJsLb> list(@Param("map") Map map);
 
 }

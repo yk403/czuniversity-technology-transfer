@@ -1,7 +1,6 @@
 package com.itts.userservice.vo;
 
 
-
 import com.itts.userservice.dto.JsDTO;
 
 import lombok.Data;

@@ -22,10 +22,12 @@ public interface CdService {
      * 获取详情
      */
     Cd get(Long id);
+
     /**
      * 新增
      */
     Cd add(Cd cd);
+
     /**
      * 更新
      */

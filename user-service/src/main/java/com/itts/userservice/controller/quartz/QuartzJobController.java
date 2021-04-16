@@ -51,7 +51,7 @@ public class QuartzJobController {
      * @return
      */
     @ApiOperation(value = "查询定时任务", notes = "查询定时任务")
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
 //    @GetMapping("/list")
     public Object getJobs(Long pageSize, Long pageNum, QuartzJob quartzJob, @RequestParam(value = "createTimeList", required = false) List<Date> createTimeList) {
         if (pageNum == null) {
@@ -83,7 +83,7 @@ public class QuartzJobController {
      * @throws IOException
      */
     @ApiOperation(value = "导出任务数据", notes = "导出任务数据")
-    @RequestMapping(value = "/download",method = RequestMethod.GET)
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
 //    @GetMapping("/download")
     public void download(HttpServletResponse response, QuartzJob quartzJob) throws IOException {
         QueryWrapper<QuartzJob> quartzJobQueryWrapper = new QueryWrapper<>(quartzJob);
@@ -99,7 +99,7 @@ public class QuartzJobController {
      * @throws IOException
      */
     @ApiOperation(value = "导出日志数据", notes = "导出日志数据")
-    @RequestMapping(value = "/downloadLog",method = RequestMethod.GET)
+    @RequestMapping(value = "/downloadLog", method = RequestMethod.GET)
 //    @GetMapping("/downloadLog")
     public void downloadLog(HttpServletResponse response, QuartzLog quartzLog) throws IOException {
         QueryWrapper<QuartzLog> quartzJobQueryWrapper = new QueryWrapper<>(quartzLog);
@@ -113,7 +113,7 @@ public class QuartzJobController {
      * @return
      */
     @ApiOperation(value = "查询任务执行日志", notes = "查询任务执行日志")
-    @RequestMapping(value = "/logs",method = RequestMethod.GET)
+    @RequestMapping(value = "/logs", method = RequestMethod.GET)
 //    @GetMapping("/logs")
     public Object getJobLogs(QuartzLog quartzLog, Long pageNum, Long pageSize, @RequestParam(value = "createTimeList", required = false) List<Date> createTimeList) {
         if (pageNum == null) {
@@ -138,7 +138,7 @@ public class QuartzJobController {
      * @return
      */
     @ApiOperation(value = "新增定时任务", notes = "新增定时任务")
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
 //    @PostMapping("/add")
     public R create(@Validated @RequestBody QuartzJob quartzJob) {
         if (quartzJob.getId() != null) {
@@ -149,7 +149,7 @@ public class QuartzJobController {
 
 
     @ApiOperation(value = "修改", notes = "修改")
-    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
 //    @PostMapping("/update")
     public R update(@RequestBody QuartzJob quartzJob) {
         return quartzJobService.update(quartzJob);
@@ -163,7 +163,7 @@ public class QuartzJobController {
      * @return
      */
     @ApiOperation(value = "更改定时任务状态", notes = "更改定时任务状态")
-    @RequestMapping(value = "/updateIsPause",method = RequestMethod.GET)
+    @RequestMapping(value = "/updateIsPause", method = RequestMethod.GET)
 //    @GetMapping("/updateIsPause")
     public R updateIsPause(Long id) {
         quartzJobService.updateIsPause(quartzJobService.getById(id));
@@ -177,7 +177,7 @@ public class QuartzJobController {
      * @return
      */
     @ApiOperation(value = "立即执行定时任务", notes = "立即执行定时任务")
-    @RequestMapping(value = "/execution",method = RequestMethod.GET)
+    @RequestMapping(value = "/execution", method = RequestMethod.GET)
 //    @GetMapping("/execution")
     public R execution(Long id) {
         return quartzJobService.execution(quartzJobService.getById(id));
@@ -190,7 +190,7 @@ public class QuartzJobController {
      * @return
      */
     @ApiOperation(value = "删除定时任务", notes = "删除定时任务")
-    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
 //    @PostMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
         quartzJobService.delete(Arrays.asList(ids));

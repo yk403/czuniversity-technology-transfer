@@ -12,33 +12,32 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
  * @author xp
  * @email 15161575502@163.com
  * @date 2021-02-22 11:13:04
  */
 @Repository
 public interface JsShMapper extends BaseMapper<TJsSh> {
-	
-	List<TJsSh> list(IPage<TJsSh> page, @Param("map") Map map);
 
-	int save(@Param("id") Long id);
+    List<TJsSh> list(IPage<TJsSh> page, @Param("map") Map map);
 
-	@Select("select * from t_js_sh where cg_id = #{cgId}")
-	TJsSh selectByCgId(@Param("cgId") Integer cgId);
+    int save(@Param("id") Long id);
 
-	List<TJsSh> selectBycgxqIds(@Param("cgxqIds") Integer[] cgxqIds);
+    @Select("select * from t_js_sh where cg_id = #{cgId}")
+    TJsSh selectByCgId(@Param("cgId") Integer cgId);
 
-	void updateJsSh(@Param("cgId") Integer cgId, @Param("xqId") Integer xqId);
+    List<TJsSh> selectBycgxqIds(@Param("cgxqIds") Integer[] cgxqIds);
 
-	@Select("select * from t_js_sh where xq_id = #{xqId}")
-	TJsSh selectByXqId(Integer xqId);
+    void updateJsSh(@Param("cgId") Integer cgId, @Param("xqId") Integer xqId);
 
-	List<TJsSh> selectBycgIds(@Param("cgIds")Integer[] cgIds);
+    @Select("select * from t_js_sh where xq_id = #{xqId}")
+    TJsSh selectByXqId(Integer xqId);
 
-	List<TJsSh> selectByxqIds(@Param("xqIds")Integer[] xqIds);
+    List<TJsSh> selectBycgIds(@Param("cgIds") Integer[] cgIds);
 
-	List<TJsSh> selectByCgIds(@Param("cgIds")List<Integer> cgIds);
+    List<TJsSh> selectByxqIds(@Param("xqIds") Integer[] xqIds);
 
-	List<TJsSh> selectByXqIds(@Param("xqIds")List<Integer> xqIds);
+    List<TJsSh> selectByCgIds(@Param("cgIds") List<Integer> cgIds);
+
+    List<TJsSh> selectByXqIds(@Param("xqIds") List<Integer> xqIds);
 }

@@ -8,14 +8,12 @@ import com.itts.technologytransactionservice.model.TJsLb;
 
 
 /**
- * 
- * 
  * @author xp
  * @email 15161575502@163.com
  * @date 2021-02-22 11:14:18
  */
 public interface JsLbService extends IService<TJsLb> {
 
-	PageInfo page(Query query);
+    PageInfo page(Query query);
 
 }

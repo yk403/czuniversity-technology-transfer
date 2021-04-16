@@ -40,11 +40,12 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     @Autowired
     private JsShAdminService jsShAdminService;
 
-	@Autowired
-	private JsShMapper jsShMapper;
+    @Autowired
+    private JsShMapper jsShMapper;
 
     /**
      * 分页查询成果(后台管理)
+     *
      * @param params
      * @return
      */
@@ -53,7 +54,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         log.info("【技术交易 - 分页查询成果(后台审批管理)】");
         //前端传输标识type(0：审批管理;1：信息采集)
         //TODO 从ThreadLocal中获取管理员id 暂时是假数据
-        params.put("userId",1);
+        params.put("userId", 1);
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsCg> list = jsCgMapper.findJsCg(query);
@@ -62,23 +63,25 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
 
     /**
      * 根据成果id查询详细信息
+     *
      * @param id
      * @return
      */
     @Override
     public TJsCg getById(Integer id) {
-        log.info("【技术交易 - 根据成果id:{}查询详细信息】",id);
+        log.info("【技术交易 - 根据成果id:{}查询详细信息】", id);
         return jsCgMapper.getById(id);
     }
 
     /**
      * 根据成果id删除成果信息及审核信息
+     *
      * @param id
      * @return
      */
     @Override
     public boolean removeByCgId(Integer id) {
-        log.info("【技术交易 - 根据id:{}删除成果信息】",id);
+        log.info("【技术交易 - 根据id:{}删除成果信息】", id);
         TJsSh tJsSh = jsShMapper.selectByCgId(id);
         TJsCg tJsCg = new TJsCg();
         tJsCg.setId(id);
@@ -95,12 +98,13 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
 
     /**
      * 根据成果名称查询详细信息
+     *
      * @param name
      * @return
      */
     @Override
     public TJsCg selectByName(String name) {
-        log.info("【技术交易 - 根据成果名称:{}查询详细信息】",name);
+        log.info("【技术交易 - 根据成果名称:{}查询详细信息】", name);
         return jsCgMapper.selectByName(name);
     }
 
@@ -126,7 +130,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
             tJsSh.setReleaseAssistanceStatus(1);
         }
         tJsCg.setJylx(null);
-        log.info("【技术交易 - 新增成果信息:{},交易类型:{}】", tJsCg,jylx);
+        log.info("【技术交易 - 新增成果信息:{},交易类型:{}】", tJsCg, jylx);
         save(tJsCg);
         tJsSh.setLx(1);
         tJsSh.setCgId(tJsCg.getId());
@@ -140,18 +144,19 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
      */
     @Override
     public void updateTJsCg(TJsCg tJsCg) {
-        log.info("【技术交易 - 修改成果信息:{}】",tJsCg);
+        log.info("【技术交易 - 修改成果信息:{}】", tJsCg);
         jsCgMapper.updateTJsCg(tJsCg);
     }
 
     /**
      * 根据id批量发布成果
+     *
      * @param ids
      * @return
      */
     @Override
     public boolean issueBatch(List<Integer> ids) {
-        log.info("【技术交易 - 根据id:{}批量发布成果】",ids);
+        log.info("【技术交易 - 根据id:{}批量发布成果】", ids);
         List<TJsSh> tJsShes = jsShMapper.selectByCgIds(ids);
         for (TJsSh tJsSh : tJsShes) {
             if (tJsSh.getFbshzt() == 1) {
@@ -166,14 +171,15 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         return true;
     }
 
-	/**
-	 * 技术拍卖挂牌受理批量下发
-	 * @param ids
-	 * @return
-	 */
+    /**
+     * 技术拍卖挂牌受理批量下发
+     *
+     * @param ids
+     * @return
+     */
     @Override
     public boolean assistanceIssueBatch(List<Integer> ids) {
-        log.info("【技术交易 - 技术拍卖挂牌受理批量下发,id:{}!】",ids);
+        log.info("【技术交易 - 技术拍卖挂牌受理批量下发,id:{}!】", ids);
         List<TJsSh> tJsShes = jsShMapper.selectByCgIds(ids);
         for (TJsSh tJsShe : tJsShes) {
             tJsShe.setFbshzt(2);
@@ -187,13 +193,14 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         return true;
     }
 
-	/**
-	 * 批量删除成果
-	 * @param ids
-	 * @return
-	 */
-	@Override
-	public boolean removeByIdsCg(List<String> ids) {
+    /**
+     * 批量删除成果
+     *
+     * @param ids
+     * @return
+     */
+    @Override
+    public boolean removeByIdsCg(List<String> ids) {
         List<Integer> list = new ArrayList<>();
         for (String id : ids) {
             Integer i = Integer.valueOf(id);
@@ -202,14 +209,14 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
             tJsCg.setId(i);
             tJsCg.setIsDelete(1);
             jsCgMapper.updateTJsCg(tJsCg);
-		}
-		List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(list);
+        }
+        List<TJsSh> tJsShes = jsShAdminService.selectBycgxqIds(list);
         for (TJsSh tJsSh : tJsShes) {
             tJsSh.setIsDelete(1);
             jsShMapper.updateById(tJsSh);
         }
-		return true;
-	}
+        return true;
+    }
 
 }
 

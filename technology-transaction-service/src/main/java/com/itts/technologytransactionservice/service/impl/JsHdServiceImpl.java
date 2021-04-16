@@ -34,79 +34,81 @@ import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 @Primary
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements JsHdService {
-	@Autowired
-	private JsHdMapper jsHdMapper;
+public class JsHdServiceImpl extends ServiceImpl<JsHdMapper, TJsHd> implements JsHdService {
+    @Autowired
+    private JsHdMapper jsHdMapper;
 
-	@Autowired
-	private JsCgMapper jsCgMapper;
+    @Autowired
+    private JsCgMapper jsCgMapper;
 
-	@Autowired
-	private JsXqMapper jsXqMapper;
+    @Autowired
+    private JsXqMapper jsXqMapper;
 
-	@Autowired
-	private JsHdService jsHdService;
-	
-	@Override
-	public PageInfo page(Query query) {
-		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		List<TJsHd> list = jsHdMapper.list(query);
-		PageInfo<TJsHd> page = new PageInfo<>(list);
-		return page;
-	}
+    @Autowired
+    private JsHdService jsHdService;
 
-	/**
-	 * 新增技术活动
-	 * @param jsHdDTO
-	 * @return
-	 */
-	@Override
-	public boolean add(JsHdDTO jsHdDTO) {
-		log.info("【技术交易 - 新增技术活动:{}】",jsHdDTO);
-		TJsHd tJsHd = new TJsHd();
-		Integer hdlx = jsHdDTO.getHdlx();
-		List<Integer> ids = jsHdDTO.getIds();
-		jsHdDTO.setCjsj(new Date());
-		BeanUtils.copyProperties(jsHdDTO,tJsHd);
-		if (!jsHdService.save(tJsHd)) {
-			return false;
-		}
-		if (hdlx == 0 || hdlx == 2) {
-			for (Integer id : ids) {
-				TJsCg tJsCg = jsCgMapper.getById(id);
-				tJsCg.setJshdId(tJsHd.getId());
-				jsCgMapper.updateTJsCg(tJsCg);
-			}
-		} else if (hdlx == 1) {
-			for (Integer id : ids) {
-				TJsXq tJsXq = jsXqMapper.getById(id);
-				tJsXq.setJshdId(tJsHd.getId());
-				jsXqMapper.updateTJsXq(tJsXq);
-			}
-		}
-		return true;
-	}
+    @Override
+    public PageInfo page(Query query) {
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsHd> list = jsHdMapper.list(query);
+        PageInfo<TJsHd> page = new PageInfo<>(list);
+        return page;
+    }
 
-	/**
-	 * 批量发布活动
-	 * @param ids
-	 * @return
-	 */
-	@Override
-	public boolean issueBatch(List<Integer> ids) {
-		log.info("【技术交易 - 批量发布活动,ids:{}】",ids);
-		List<TJsHd> tJsHds = jsHdMapper.selectBatchIds(ids);
-		for (TJsHd tJsHd : tJsHds) {
-			tJsHd.setHdfbzt(1);
-			try {
-				jsHdMapper.updateById(tJsHd);
-			} catch (Exception e) {
-				log.error("更新失败!",e);
-				throw new ServiceException(UPDATE_FAIL);
-			}
-		}
-		return true;
-	}
+    /**
+     * 新增技术活动
+     *
+     * @param jsHdDTO
+     * @return
+     */
+    @Override
+    public boolean add(JsHdDTO jsHdDTO) {
+        log.info("【技术交易 - 新增技术活动:{}】", jsHdDTO);
+        TJsHd tJsHd = new TJsHd();
+        Integer hdlx = jsHdDTO.getHdlx();
+        List<Integer> ids = jsHdDTO.getIds();
+        jsHdDTO.setCjsj(new Date());
+        BeanUtils.copyProperties(jsHdDTO, tJsHd);
+        if (!jsHdService.save(tJsHd)) {
+            return false;
+        }
+        if (hdlx == 0 || hdlx == 2) {
+            for (Integer id : ids) {
+                TJsCg tJsCg = jsCgMapper.getById(id);
+                tJsCg.setJshdId(tJsHd.getId());
+                jsCgMapper.updateTJsCg(tJsCg);
+            }
+        } else if (hdlx == 1) {
+            for (Integer id : ids) {
+                TJsXq tJsXq = jsXqMapper.getById(id);
+                tJsXq.setJshdId(tJsHd.getId());
+                jsXqMapper.updateTJsXq(tJsXq);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 批量发布活动
+     *
+     * @param ids
+     * @return
+     */
+    @Override
+    public boolean issueBatch(List<Integer> ids) {
+        log.info("【技术交易 - 批量发布活动,ids:{}】", ids);
+        List<TJsHd> tJsHds = jsHdMapper.selectBatchIds(ids);
+        for (TJsHd tJsHd : tJsHds) {
+            tJsHd.setHdfbzt(1);
+            try {
+                jsHdMapper.updateById(tJsHd);
+            } catch (Exception e) {
+                log.error("更新失败!", e);
+                throw new ServiceException(UPDATE_FAIL);
+            }
+        }
+        return true;
+    }
 
 	@Override
 	public boolean removeByIdHd(Integer id) {

@@ -3,37 +3,39 @@
 
 <mapper namespace="com.itts.technologytransactionservice.mapper.QyMapper">
 
-	<select id="list" resultType="com.itts.technologytransactionservice.model.TQy">
-		select `id`,`dwmc`,`dwdm`,`zcsj`,`frxm`,`lxrxm`,`lxrdh`,`zjh`,`dzyx`,`qyzclx`,`qyzz`,`zjgm`,`sfqy`,`gjxmsl`,`cjxmsl`,`sjxmsl`,`xmzje`,`cpjj`,`gjjsjj` from t_qy
-        <where>  
-		  		  <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
-		  		  <if test="map.dwmc != null and map.dwmc != ''"> and dwmc = #{map.dwmc} </if>
-		  		  <if test="map.dwdm != null and map.dwdm != ''"> and dwdm = #{map.dwdm} </if>
-		  		  <if test="map.zcsj != null and map.zcsj != ''"> and zcsj = #{map.zcsj} </if>
-		  		  <if test="map.frxm != null and map.frxm != ''"> and frxm = #{map.frxm} </if>
-		  		  <if test="map.lxrxm != null and map.lxrxm != ''"> and lxrxm = #{map.lxrxm} </if>
-		  		  <if test="map.lxrdh != null and map.lxrdh != ''"> and lxrdh = #{map.lxrdh} </if>
-		  		  <if test="map.zjh != null and map.zjh != ''"> and zjh = #{map.zjh} </if>
-		  		  <if test="map.dzyx != null and map.dzyx != ''"> and dzyx = #{map.dzyx} </if>
-		  		  <if test="map.qyzclx != null and map.qyzclx != ''"> and qyzclx = #{map.qyzclx} </if>
-		  		  <if test="map.qyzz != null and map.qyzz != ''"> and qyzz = #{map.qyzz} </if>
-		  		  <if test="map.zjgm != null and map.zjgm != ''"> and zjgm = #{map.zjgm} </if>
-		  		  <if test="map.sfqy != null and map.sfqy != ''"> and sfqy = #{map.sfqy} </if>
-		  		  <if test="map.gjxmsl != null and map.gjxmsl != ''"> and gjxmsl = #{map.gjxmsl} </if>
-		  		  <if test="map.cjxmsl != null and map.cjxmsl != ''"> and cjxmsl = #{map.cjxmsl} </if>
-		  		  <if test="map.sjxmsl != null and map.sjxmsl != ''"> and sjxmsl = #{map.sjxmsl} </if>
-		  		  <if test="map.xmzje != null and map.xmzje != ''"> and xmzje = #{map.xmzje} </if>
-		  		  <if test="map.cpjj != null and map.cpjj != ''"> and cpjj = #{map.cpjj} </if>
-		  		  <if test="map.gjjsjj != null and map.gjjsjj != ''"> and gjjsjj = #{map.gjjsjj} </if>
-		  		</where>
+    <select id="list" resultType="com.itts.technologytransactionservice.model.TQy">
+        select
+        `id`,`dwmc`,`dwdm`,`zcsj`,`frxm`,`lxrxm`,`lxrdh`,`zjh`,`dzyx`,`qyzclx`,`qyzz`,`zjgm`,`sfqy`,`gjxmsl`,`cjxmsl`,`sjxmsl`,`xmzje`,`cpjj`,`gjjsjj`
+        from t_qy
+        <where>
+            <if test="map.id != null and map.id != ''">and id = #{map.id}</if>
+            <if test="map.dwmc != null and map.dwmc != ''">and dwmc = #{map.dwmc}</if>
+            <if test="map.dwdm != null and map.dwdm != ''">and dwdm = #{map.dwdm}</if>
+            <if test="map.zcsj != null and map.zcsj != ''">and zcsj = #{map.zcsj}</if>
+            <if test="map.frxm != null and map.frxm != ''">and frxm = #{map.frxm}</if>
+            <if test="map.lxrxm != null and map.lxrxm != ''">and lxrxm = #{map.lxrxm}</if>
+            <if test="map.lxrdh != null and map.lxrdh != ''">and lxrdh = #{map.lxrdh}</if>
+            <if test="map.zjh != null and map.zjh != ''">and zjh = #{map.zjh}</if>
+            <if test="map.dzyx != null and map.dzyx != ''">and dzyx = #{map.dzyx}</if>
+            <if test="map.qyzclx != null and map.qyzclx != ''">and qyzclx = #{map.qyzclx}</if>
+            <if test="map.qyzz != null and map.qyzz != ''">and qyzz = #{map.qyzz}</if>
+            <if test="map.zjgm != null and map.zjgm != ''">and zjgm = #{map.zjgm}</if>
+            <if test="map.sfqy != null and map.sfqy != ''">and sfqy = #{map.sfqy}</if>
+            <if test="map.gjxmsl != null and map.gjxmsl != ''">and gjxmsl = #{map.gjxmsl}</if>
+            <if test="map.cjxmsl != null and map.cjxmsl != ''">and cjxmsl = #{map.cjxmsl}</if>
+            <if test="map.sjxmsl != null and map.sjxmsl != ''">and sjxmsl = #{map.sjxmsl}</if>
+            <if test="map.xmzje != null and map.xmzje != ''">and xmzje = #{map.xmzje}</if>
+            <if test="map.cpjj != null and map.cpjj != ''">and cpjj = #{map.cpjj}</if>
+            <if test="map.gjjsjj != null and map.gjjsjj != ''">and gjjsjj = #{map.gjjsjj}</if>
+        </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
                 order by ${map.sort} ${map.order}
             </when>
-			<otherwise>
+            <otherwise>
                 order by id desc
-			</otherwise>
+            </otherwise>
         </choose>
-	</select>
+    </select>
 
 </mapper>

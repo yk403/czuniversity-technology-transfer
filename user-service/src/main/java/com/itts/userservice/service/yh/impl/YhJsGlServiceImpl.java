@@ -24,8 +24,4 @@ public class YhJsGlServiceImpl implements YhJsGlService {
     private YhJsGlMapper yhJsGlMapper;
 
 
-
-
-
-
 }

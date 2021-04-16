@@ -4,17 +4,17 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.userservice.model.js.Js">
-        <id column="id" property="id" />
-        <result column="jsmc" property="jsmc" />
-        <result column="jsbm" property="jsbm" />
-        <result column="xtlx" property="xtlx" />
-        <result column="sfnb" property="sfnb" />
-        <result column="sfmr" property="sfmr" />
-        <result column="sfsc" property="sfsc" />
-        <result column="cjsj" property="cjsj" />
-        <result column="cjr" property="cjr" />
-        <result column="gxsj" property="gxsj" />
-        <result column="gxr" property="gxr" />
+        <id column="id" property="id"/>
+        <result column="jsmc" property="jsmc"/>
+        <result column="jsbm" property="jsbm"/>
+        <result column="xtlx" property="xtlx"/>
+        <result column="sfnb" property="sfnb"/>
+        <result column="sfmr" property="sfmr"/>
+        <result column="sfsc" property="sfsc"/>
+        <result column="cjsj" property="cjsj"/>
+        <result column="cjr" property="cjr"/>
+        <result column="gxsj" property="gxsj"/>
+        <result column="gxr" property="gxr"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

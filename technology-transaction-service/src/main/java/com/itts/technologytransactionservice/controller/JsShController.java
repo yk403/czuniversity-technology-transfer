@@ -24,7 +24,7 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_
  * @Description: 技术审核管理
  */
 
-@RequestMapping(BASE_URL+"/v1/JsSh")
+@RequestMapping(BASE_URL + "/v1/JsSh")
 @Api(value = "JsShController", tags = "技术审核管理")
 @RestController
 public class JsShController extends BaseController {
@@ -33,10 +33,11 @@ public class JsShController extends BaseController {
     private JsShService jsShService;
 
     /**
-    * 分页查询
-    * @param params
-    * @return
-    */
+     * 分页查询
+     *
+     * @param params
+     * @return
+     */
     @PostMapping("/page")
     public R page(@RequestBody Map<String, Object> params) {
         //查询列表数据
@@ -45,10 +46,11 @@ public class JsShController extends BaseController {
     }
 
     /**
-    * 根据ID查询
-    * @param id
-    * @return
-    */
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
         return success(jsShService.getById(id));
@@ -74,20 +76,21 @@ public class JsShController extends BaseController {
      * 删除成果或需求
      */
     @PutMapping("/remove")
-    public R remove(@RequestParam(value = "cgId",required = false) Integer cgId,@RequestParam(value = "xqId",required = false)Integer xqId) {
-        return remove(jsShService.deleteById(cgId,xqId));
+    public R remove(@RequestParam(value = "cgId", required = false) Integer cgId, @RequestParam(value = "xqId", required = false) Integer xqId) {
+        return remove(jsShService.deleteById(cgId, xqId));
     }
 
     /**
      * 批量删除
      */
     @PostMapping("/removeBatch")
-    public R removeBatch(@RequestBody List<Long> ids){
-        return  remove(jsShService.removeByIds(ids));
+    public R removeBatch(@RequestBody List<Long> ids) {
+        return remove(jsShService.removeByIds(ids));
     }
 
     /**
      * 发布审核成果(0待提交;1待审核;2通过;3整改;4拒绝)
+     *
      * @param params
      * @return
      */
@@ -95,24 +98,25 @@ public class JsShController extends BaseController {
     public ResponseUtil auditCg(@RequestBody Map<String, Object> params) {
         Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
 
-        if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4){
+        if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(jsShService.auditCg(params,fbshzt));
+        return ResponseUtil.success(jsShService.auditCg(params, fbshzt));
     }
 
     /**
      * 发布审核需求(0待提交;1待审核;2通过;3整改;4拒绝)
+     *
      * @param params
      * @return
      */
     @RequestMapping("/auditXq")
     public ResponseUtil auditXq(@RequestBody Map<String, Object> params) {
         Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
-        if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4){
+        if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(jsShService.auditXq(params,fbshzt));
+        return ResponseUtil.success(jsShService.auditXq(params, fbshzt));
     }
 
 }

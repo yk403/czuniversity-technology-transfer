@@ -28,125 +28,128 @@ import java.util.Map;
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
 public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> implements JsShAdminService {
-	@Autowired
-	private JsShMapper jsShMapper;
-	@Autowired
-	private JsShAdminService jsShAdminService;
+    @Autowired
+    private JsShMapper jsShMapper;
+    @Autowired
+    private JsShAdminService jsShAdminService;
 
-	@Override
-	public IPage page(Query query) {
-		Page<TJsSh> p = new Page<>(query.getPageNum(), query.getPageSize());
-		List<TJsSh> list = jsShMapper.list(p,query);
-		p.setRecords(list);
-		return p;
-	}
+    @Override
+    public IPage page(Query query) {
+        Page<TJsSh> p = new Page<>(query.getPageNum(), query.getPageSize());
+        List<TJsSh> list = jsShMapper.list(p, query);
+        p.setRecords(list);
+        return p;
+    }
 
-	public List<TJsSh> selectBycgxqIds(List<Integer> cgxqIds) {
-		Integer[] objects = cgxqIds.toArray(new Integer[cgxqIds.size()]);
-		return jsShMapper.selectBycgxqIds(objects);
-	}
+    public List<TJsSh> selectBycgxqIds(List<Integer> cgxqIds) {
+        Integer[] objects = cgxqIds.toArray(new Integer[cgxqIds.size()]);
+        return jsShMapper.selectBycgxqIds(objects);
+    }
 
-	/**
-	 * 发布审核成果(0待提交;1待审核;2通过;3整改;4拒绝)
-	 * @param params
-	 * @param fbshzt
-	 * @return
-	 */
-	@Override
-	public Boolean auditCg(Map<String, Object> params, Integer fbshzt) {
-		TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
-		Object fbshbz = params.get("fbshbz");
-		if (fbshzt != 2 && fbshbz == null) {
-			return false;
-		}
-		if (fbshbz != null) {
-			tJsSh.setFbshbz(params.get("fbshbz").toString());
-		}
-		if (fbshzt == 2) {
-			tJsSh.setReleaseStatus(2);
-		}
-		tJsSh.setFbshzt(fbshzt);
-		if (!jsShAdminService.updateById(tJsSh)) {
-			throw new ServiceException("发布审核成果操作失败!");
-		}
-		return true;
-	}
+    /**
+     * 发布审核成果(0待提交;1待审核;2通过;3整改;4拒绝)
+     *
+     * @param params
+     * @param fbshzt
+     * @return
+     */
+    @Override
+    public Boolean auditCg(Map<String, Object> params, Integer fbshzt) {
+        TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
+        Object fbshbz = params.get("fbshbz");
+        if (fbshzt != 2 && fbshbz == null) {
+            return false;
+        }
+        if (fbshbz != null) {
+            tJsSh.setFbshbz(params.get("fbshbz").toString());
+        }
+        if (fbshzt == 2) {
+            tJsSh.setReleaseStatus(2);
+        }
+        tJsSh.setFbshzt(fbshzt);
+        if (!jsShAdminService.updateById(tJsSh)) {
+            throw new ServiceException("发布审核成果操作失败!");
+        }
+        return true;
+    }
 
-	/**
-	 * 发布审核需求(0待提交;1待审核;2通过;3整改;4拒绝)
-	 * @param params
-	 * @param fbshzt
-	 * @return
-	 */
-	@Override
-	public Boolean auditXq(Map<String, Object> params, Integer fbshzt) {
-		TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
-		Object fbshbz = params.get("fbshbz");
-		if (fbshzt != 2 && fbshbz == null) {
-			return false;
-		}
-		if (fbshbz != null) {
-			tJsSh.setFbshbz(params.get("fbshbz").toString());
-		}
-		if (fbshzt == 2) {
-			tJsSh.setReleaseStatus(2);
-		}
-		tJsSh.setFbshzt(fbshzt);
-		if (!jsShAdminService.updateById(tJsSh)) {
-			throw new ServiceException("发布审核需求操作失败!");
-		}
-		return true;
-	}
+    /**
+     * 发布审核需求(0待提交;1待审核;2通过;3整改;4拒绝)
+     *
+     * @param params
+     * @param fbshzt
+     * @return
+     */
+    @Override
+    public Boolean auditXq(Map<String, Object> params, Integer fbshzt) {
+        TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
+        Object fbshbz = params.get("fbshbz");
+        if (fbshzt != 2 && fbshbz == null) {
+            return false;
+        }
+        if (fbshbz != null) {
+            tJsSh.setFbshbz(params.get("fbshbz").toString());
+        }
+        if (fbshzt == 2) {
+            tJsSh.setReleaseStatus(2);
+        }
+        tJsSh.setFbshzt(fbshzt);
+        if (!jsShAdminService.updateById(tJsSh)) {
+            throw new ServiceException("发布审核需求操作失败!");
+        }
+        return true;
+    }
 
-	@Override
-	public Boolean assistanceAuditXq(Map<String, Object> params, Integer assistanceStatus) {
-		TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
-		Object slxbbz = params.get("slxbbz");
-		if (assistanceStatus != 2 && slxbbz == null) {
-			return false;
-		}
-		if (slxbbz != null) {
-			tJsSh.setSlxbbz(params.get("slxbbz").toString());
-		}
-		if (assistanceStatus == 2) {
-			tJsSh.setReleaseAssistanceStatus(2);
-		}
-		tJsSh.setAssistanceStatus(assistanceStatus);
-		if (!jsShAdminService.updateById(tJsSh)) {
-			throw new ServiceException("发布审核需求操作失败!");
-		}
-		return true;
-	}
+    @Override
+    public Boolean assistanceAuditXq(Map<String, Object> params, Integer assistanceStatus) {
+        TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
+        Object slxbbz = params.get("slxbbz");
+        if (assistanceStatus != 2 && slxbbz == null) {
+            return false;
+        }
+        if (slxbbz != null) {
+            tJsSh.setSlxbbz(params.get("slxbbz").toString());
+        }
+        if (assistanceStatus == 2) {
+            tJsSh.setReleaseAssistanceStatus(2);
+        }
+        tJsSh.setAssistanceStatus(assistanceStatus);
+        if (!jsShAdminService.updateById(tJsSh)) {
+            throw new ServiceException("发布审核需求操作失败!");
+        }
+        return true;
+    }
 
-	@Override
-	public Boolean assistanceAuditCg(Map<String, Object> params, Integer assistanceStatus) {
-		TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
-		Object slxbbz = params.get("slxbbz");
-		if (assistanceStatus != 2 && slxbbz == null) {
-			return false;
-		}
-		if (slxbbz != null) {
-			tJsSh.setSlxbbz(params.get("slxbbz").toString());
-		}
-		if (assistanceStatus == 2) {
-			tJsSh.setReleaseAssistanceStatus(2);
-		}
-		tJsSh.setAssistanceStatus(assistanceStatus);
-		if (!jsShAdminService.updateById(tJsSh)) {
-			throw new ServiceException("发布审核需求操作失败!");
-		}
-		return true;
-	}
+    @Override
+    public Boolean assistanceAuditCg(Map<String, Object> params, Integer assistanceStatus) {
+        TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
+        Object slxbbz = params.get("slxbbz");
+        if (assistanceStatus != 2 && slxbbz == null) {
+            return false;
+        }
+        if (slxbbz != null) {
+            tJsSh.setSlxbbz(params.get("slxbbz").toString());
+        }
+        if (assistanceStatus == 2) {
+            tJsSh.setReleaseAssistanceStatus(2);
+        }
+        tJsSh.setAssistanceStatus(assistanceStatus);
+        if (!jsShAdminService.updateById(tJsSh)) {
+            throw new ServiceException("发布审核需求操作失败!");
+        }
+        return true;
+    }
 
-	/**
-	 * 根据id批量发布成果
-	 * @param ids
-	 * @return
-	 */
-	@Override
-	public List<TJsSh> selectByCgIds(List<Integer> ids) {
-		List<TJsSh> tJsShes = jsShMapper.selectByCgIds(ids);
-		return tJsShes;
-	}
+    /**
+     * 根据id批量发布成果
+     *
+     * @param ids
+     * @return
+     */
+    @Override
+    public List<TJsSh> selectByCgIds(List<Integer> ids) {
+        List<TJsSh> tJsShes = jsShMapper.selectByCgIds(ids);
+        return tJsShes;
+    }
 
 }
