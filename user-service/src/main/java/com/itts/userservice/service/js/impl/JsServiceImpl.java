@@ -337,11 +337,26 @@ public class JsServiceImpl implements JsService {
             jsCdGlMapper.insert(jsCdGl);
         }
 
+        //获取当前角色下关联的角色菜单操作关联
+        List<JsCdCzGl> allJsCdCzGls = jsCdCzGlMapper.getByJsId(js.getId());
+        if(CollectionUtils.isEmpty(allJsCdCzGls)){
+            return js;
+        }
+
         //比较设置角色菜单操作关联
         for (GetJsCdGlVO jsCdGl : jsCdGls) {
 
-            //之前的角色菜单操作关联
-            List<JsCdCzGl> oldJsCdCzGls = jsCdCzGlMapper.getByJsIdAndCdId(js.getId(), jsCdGl.getId());
+            //获取当前角色、菜单下之前所有角色菜单操作关联
+            List<JsCdCzGl> oldJsCdCzGls = Lists.newArrayList();
+            for (JsCdCzGl allJsCdCzGl : allJsCdCzGls) {
+
+                if (Objects.equals(allJsCdCzGl.getCdId(), jsCdGl)) {
+
+                    allJsCdCzGls.remove(allJsCdCzGl);
+                    oldJsCdCzGls.add(allJsCdCzGl);
+                }
+            }
+
             if (CollectionUtils.isEmpty(oldJsCdCzGls)) {
                 continue;
             }

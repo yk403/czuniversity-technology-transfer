@@ -25,4 +25,12 @@ public interface JsCdCzGlMapper extends BaseMapper<JsCdCzGl> {
             "WHERE js_id = #{jsId} AND cd_id = #{cdId}")
     List<JsCdCzGl> getByJsIdAndCdId(@Param("jsId") Long jsId, @Param("cdId") Long cdId);
 
+    /**
+    *通过角色ID获取
+    */
+    @Select("SELECT * " +
+            "FROM t_js_cd_cz_gl " +
+            "WHERE js_id = #{jsId}")
+    List<JsCdCzGl> getByJsId(@Param("jsId") Long jsId);
+
 }
