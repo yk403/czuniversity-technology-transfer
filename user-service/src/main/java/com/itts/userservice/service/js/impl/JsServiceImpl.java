@@ -259,12 +259,12 @@ public class JsServiceImpl implements JsService {
         //设置删除状态，更新删除时间
         js.setSfsc(true);
         js.setCjsj(new Date());
-        if(loginUser!= null){
+        if (loginUser != null) {
             js.setGxr(loginUser.getUserId());
         }
         update(js);
 
-        deleteJsCdCzGlByJsIdAndCdIdAndCzIds(js.getId(), null,null);
+        deleteJsCdCzGlByJsIdAndCdIdAndCzIds(js.getId(), null, null);
         deleteJsCdGlByJsIdAndCdIds(js.getId(), null);
     }
 
@@ -317,7 +317,7 @@ public class JsServiceImpl implements JsService {
         });
 
         //删除角色菜单关联
-        if(!CollectionUtils.isEmpty(oldCdIds)){
+        if (!CollectionUtils.isEmpty(oldCdIds)) {
             deleteJsCdGlByJsIdAndCdIds(js.getId(), oldCdIds);
         }
 
@@ -373,7 +373,7 @@ public class JsServiceImpl implements JsService {
             });
 
             //删除角色菜单操作关联
-            if(jsCdGl != null && !CollectionUtils.isEmpty(oldCzIds)){
+            if (jsCdGl != null && !CollectionUtils.isEmpty(oldCzIds)) {
                 deleteJsCdCzGlByJsIdAndCdIdAndCzIds(js.getId(), jsCdGl.getId(), oldCzIds);
             }
 

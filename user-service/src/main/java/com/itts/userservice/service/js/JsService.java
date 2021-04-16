@@ -54,8 +54,8 @@ public interface JsService {
     Js update(Js js);
 
     /**
-    *删除
-    */
+     * 删除
+     */
     void delete(Js js);
 
     /**
