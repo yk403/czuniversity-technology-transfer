@@ -1,6 +1,7 @@
 package com.itts.technologytransactionservice.model;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -59,11 +60,12 @@ public class TJsSh implements Serializable {
 	/**
  	* 创建时间
  	*/
-	@TableField(fill= FieldFill.INSERT)
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date cjsj;
 	/**
  	* 更新时间
  	*/
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date gxsj;
 	/**
 	 * 发布状态 1 未发布 2已发布

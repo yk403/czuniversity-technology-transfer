@@ -100,11 +100,13 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             tJsCg.setUserId(2);
             tJsCg.setReleaseType("技术成果");
             tJsCg.setCjsj(LocalDate.now());
+            tJsCg.setGxsj(new Date());
             log.info("【技术交易 - 新增成果信息】",tJsCg);
             save(tJsCg);
             TJsSh tJsSh = new TJsSh();
             tJsSh.setLx(1);
             tJsSh.setCjsj(new Date());
+            tJsSh.setGxsj(new Date());
             tJsSh.setCgId(tJsCg.getId());
             jsShService.save(tJsSh);
             return true;
@@ -125,6 +127,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         TJsCg tJsCg = new TJsCg();
         tJsCg.setId(id);
         tJsCg.setIsDelete(1);
+        tJsCg.setGxsj(new Date());
         jsCgMapper.updateTJsCg(tJsCg);
         if (tJsSh.getId() != null) {
             tJsSh.setIsDelete(1);
@@ -194,6 +197,19 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             log.error("发布审核状态未通过,无法申请拍卖挂牌!");
             return false;
         }
+        TJsCg cg= new TJsCg();
+        cg.setId(Integer.valueOf(params.get("id").toString()));
+        cg.setBz(params.get("bz").toString());
+        cg.setCghqfs(params.get("cghqfs").toString());
+        cg.setCgjs(params.get("cgjs").toString());
+        cg.setHjqk(params.get("hjqk").toString());
+        cg.setJscsd(params.get("jscsd").toString());
+        cg.setJszb(params.get("jszb").toString());
+        cg.setSyfx(params.get("syfx").toString());
+        cg.setZscqxs(params.get("zscqxs").toString());
+        cg.setZzqk(params.get("zzqk").toString());
+        cg.setGxsj(new Date());
+        jsCgMapper.updateTJsCg(cg);
         tJsSh.setAssistanceStatus(1);
         tJsSh.setJylx(jylx);
         tJsSh.setReleaseAssistanceStatus(1);
@@ -213,6 +229,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     public boolean auditCg(Map<String, Object> params, Integer fbshzt) {
         TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
         tJsSh.setFbshzt(fbshzt);
+        tJsSh.setGxsj(new Date());
         if (!jsShService.updateById(tJsSh)) {
             throw new ServiceException("发布审核成果申请失败!");
         }

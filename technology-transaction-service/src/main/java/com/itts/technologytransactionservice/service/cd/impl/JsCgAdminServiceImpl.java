@@ -117,6 +117,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         tJsCg.setUserId(1);
         tJsCg.setReleaseType("技术成果");
         tJsCg.setCjsj(LocalDate.now());
+        tJsCg.setGxsj(new Date());
         TJsSh tJsSh = new TJsSh();
         Integer jylx = tJsCg.getJylx();
         if (jylx == null) {
@@ -131,6 +132,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         tJsSh.setLx(1);
         tJsSh.setCgId(tJsCg.getId());
         tJsSh.setCjsj(new Date());
+        tJsSh.setGxsj(new Date());
         jsShAdminService.save(tJsSh);
         return true;
     }

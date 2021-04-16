@@ -67,6 +67,7 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 		Integer hdlx = jsHdDTO.getHdlx();
 		List<Integer> ids = jsHdDTO.getIds();
 		jsHdDTO.setCjsj(new Date());
+		jsHdDTO.setGxsj(new Date());
 		BeanUtils.copyProperties(jsHdDTO,tJsHd);
 		if (!jsHdAdminService.save(tJsHd)) {
 			return false;

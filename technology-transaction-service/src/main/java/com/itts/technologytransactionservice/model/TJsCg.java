@@ -204,6 +204,7 @@ public class TJsCg implements Serializable {
 	/**
 	 * 更新时间
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date gxsj;
 	/**
 	 * 发布审核备注
@@ -225,5 +226,17 @@ public class TJsCg implements Serializable {
 	 * 协议
 	 */
 	private String agreementName;
+	/**
+	 * 成果视频名称
+	 */
+	private String cgspmc;
+	/**
+	 * 成果附件
+	 */
+	private String cgfj;
+	/**
+	 * 成果附件名称
+	 */
+	private String cgfjmc;
 
 }

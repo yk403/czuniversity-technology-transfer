@@ -212,6 +212,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
                 //TODO 暂时假数据,管理员userId为1
                 tJsCg.setUserId(1);
                 tJsCg.setCjsj(LocalDate.now());
+                tJsCg.setGxsj(new Date());
                 jsCgMapper.insert(tJsCg);
                 Integer id = tJsCg.getId();
                 TJsSh tJsSh = new TJsSh();
@@ -219,6 +220,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
                 tJsSh.setCgId(id);
                 tJsSh.setFbshzt(1);
                 tJsSh.setCjsj(new Date());
+                tJsSh.setGxsj(new Date());
                 jsShMapper.insert(tJsSh);
                 count++;
             }catch (Exception e){

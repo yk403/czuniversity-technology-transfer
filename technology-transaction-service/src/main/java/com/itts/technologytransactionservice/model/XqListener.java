@@ -181,6 +181,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
                 //TODO 暂时假数据,管理员userId为1
                 tJsXq.setUserId(1);
                 tJsXq.setCjsj(LocalDate.now());
+                tJsXq.setGxsj(new Date());
                 jsXqMapper.insert(tJsXq);
                 Integer id = tJsXq.getId();
                 TJsSh tJsSh = new TJsSh();
@@ -188,6 +189,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
                 tJsSh.setXqId(id);
                 tJsSh.setFbshzt(1);
                 tJsSh.setCjsj(new Date());
+                tJsSh.setGxsj(new Date());
                 jsShMapper.insert(tJsSh);
                 count++;
             }catch (Exception e){

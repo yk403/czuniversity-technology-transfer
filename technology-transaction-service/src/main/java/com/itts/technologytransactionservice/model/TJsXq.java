@@ -1,6 +1,7 @@
 package com.itts.technologytransactionservice.model;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -182,6 +183,7 @@ public class TJsXq implements Serializable {
 	/**
 	 * 更新时间
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date gxsj;
 	/**
 	 * 手机号码
@@ -207,4 +209,16 @@ public class TJsXq implements Serializable {
 受理协办备注
  */
 	private String slxbbz;
+	/**
+	 * 需求视频名称
+	 */
+	private String xqspmc;
+	/**
+	 * 需求附件
+	 */
+	private String xqfj;
+	/**
+	 * 需求附件名称
+	 */
+	private String xqfjmc;
 }

@@ -66,6 +66,7 @@ public class TJsHd implements Serializable {
 	/**
  	* 创建时间
  	*/
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date cjsj;
 	/**
 	 * 咨询电话
@@ -91,4 +92,9 @@ public class TJsHd implements Serializable {
 	 * 删除状态(0:未删除;1:用户删除;2:管理员删除)
 	 */
 	private Integer isDelete;
+	/**
+	 * 创建时间
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	private Date gxsj;
 }

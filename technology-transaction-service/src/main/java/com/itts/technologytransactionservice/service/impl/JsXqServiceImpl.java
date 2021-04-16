@@ -78,10 +78,12 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
             tJsXq.setUserId(2);
             tJsXq.setReleaseType("技术需求");
             tJsXq.setCjsj(LocalDate.now());
+            tJsXq.setGxsj(new Date());
             save(tJsXq);
             TJsSh tJsSh = new TJsSh();
             tJsSh.setLx(2);
             tJsSh.setCjsj(new Date());
+            tJsSh.setGxsj(new Date());
             tJsSh.setXqId(tJsXq.getId());
             jsShService.save(tJsSh);
             return true;

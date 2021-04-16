@@ -55,6 +55,7 @@ public class JsHdDTO {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date cjsj;
     /**
      * 咨询电话
@@ -73,4 +74,9 @@ public class JsHdDTO {
      * 成果需求id集合
      */
     private List<Integer> ids;
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date gxsj;
 }

@@ -67,6 +67,7 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 		Integer hdlx = jsHdDTO.getHdlx();
 		List<Integer> ids = jsHdDTO.getIds();
 		jsHdDTO.setCjsj(new Date());
+		jsHdDTO.setGxsj(new Date());
 		BeanUtils.copyProperties(jsHdDTO,tJsHd);
 		if (!jsHdService.save(tJsHd)) {
 			return false;
