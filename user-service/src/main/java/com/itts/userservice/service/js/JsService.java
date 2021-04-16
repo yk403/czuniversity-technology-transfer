@@ -51,5 +51,25 @@ public interface JsService {
     /**
      * 更新
      */
-    Js update(Js Js);
+    Js update(Js js);
+
+    /**
+    *删除
+    */
+    void delete(Js js);
+
+    /**
+     * 更新 - 更新角色、角色菜单关联、角色菜单操作关联
+     */
+    Js updateJsCdCzGl(AddJsRequest js);
+
+    /**
+     * 通过角色ID和菜单ID删除角色菜单关联
+     */
+    void deleteJsCdGlByJsIdAndCdIds(Long jsId, List<Long> cdIds);
+
+    /**
+     * 通过角色ID和菜单ID和操作ID删除角色菜单操作关联
+     */
+    void deleteJsCdCzGlByJsIdAndCdIdAndCzIds(Long jsId, Long cdId, List<Long> czIds);
 }

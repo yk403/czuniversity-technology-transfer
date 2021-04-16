@@ -14,7 +14,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -79,11 +78,11 @@ public class JsController {
      */
     @ApiOperation(value = "新增")
     @PostMapping("/add/")
-    public ResponseUtil add(@RequestBody AddJsRequest Js) throws WebException {
+    public ResponseUtil add(@RequestBody AddJsRequest js) throws WebException {
 
-        checkRequst(Js);
+        checkRequst(js);
 
-        Js add = jsService.add(Js);
+        Js add = jsService.add(js);
         return ResponseUtil.success(add);
     }
 
@@ -92,23 +91,24 @@ public class JsController {
      */
     @ApiOperation(value = "更新")
     @PutMapping("/update/")
-    public ResponseUtil update(@RequestBody Js Js) {
+    public ResponseUtil update(@RequestBody AddJsRequest request) {
 
-        Long id = Js.getId();
+        Long id = request.getId();
         //检查参数是否合法
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+
+        checkRequst(request);
+
         //检查数据库中是否存在要更新的数据
-        Js Js1 = jsService.get(id);
-        if (Js1 == null) {
+        Js old = jsService.get(id);
+        if (old == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        checkRequst(Js);
-        //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
-        BeanUtils.copyProperties(Js, Js1, "id", "chsj", "cjr");
-        jsService.update(Js1);
-        return ResponseUtil.success(Js1);
+
+        Js js = jsService.updateJsCdCzGl(request);
+        return ResponseUtil.success(js);
     }
 
     /**
@@ -117,17 +117,18 @@ public class JsController {
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete/{id}")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
+
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        Js Js = jsService.get(id);
-        if (Js == null) {
+
+        Js js = jsService.get(id);
+        if (js == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        //设置删除状态，更新删除时间
-        Js.setSfsc(true);
-        Js.setCjsj(new Date());
-        jsService.update(Js);
+
+        jsService.delete(js);
+
         return ResponseUtil.success();
     }
 
