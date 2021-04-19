@@ -57,7 +57,7 @@
 		FROM
 		t_js_cg e
 		LEFT JOIN t_js_ly b ON (e.ly_id = b.id)
-		LEFT JOIN t_js_sh d ON (e.id = d.xq_id)
+		LEFT JOIN t_js_sh d ON (e.id = d.cg_id)
 		<where>
 		    e.is_delete = 0
 			<if test="map.lyId != null and map.lyId != ''"> and e.ly_id = #{map.lyId} </if>

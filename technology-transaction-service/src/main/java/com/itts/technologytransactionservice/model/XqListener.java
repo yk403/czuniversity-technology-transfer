@@ -180,7 +180,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
             try {
                 //TODO 暂时假数据,管理员userId为1
                 tJsXq.setUserId(1);
-                tJsXq.setCjsj(LocalDate.now());
+                tJsXq.setCjsj(new Date());
                 tJsXq.setGxsj(new Date());
                 jsXqMapper.insert(tJsXq);
                 Integer id = tJsXq.getId();

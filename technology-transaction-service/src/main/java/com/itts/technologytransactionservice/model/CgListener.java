@@ -211,7 +211,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
             try {
                 //TODO 暂时假数据,管理员userId为1
                 tJsCg.setUserId(1);
-                tJsCg.setCjsj(LocalDate.now());
+                tJsCg.setCjsj(new Date());
                 tJsCg.setGxsj(new Date());
                 jsCgMapper.insert(tJsCg);
                 Integer id = tJsCg.getId();

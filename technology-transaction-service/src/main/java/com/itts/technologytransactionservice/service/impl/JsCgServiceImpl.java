@@ -99,7 +99,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
             tJsCg.setUserId(2);
             tJsCg.setReleaseType("技术成果");
-            tJsCg.setCjsj(LocalDate.now());
+            tJsCg.setCjsj(new Date());
             tJsCg.setGxsj(new Date());
             log.info("【技术交易 - 新增成果信息】",tJsCg);
             save(tJsCg);
