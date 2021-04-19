@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsCgMapper">
 
 	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select `id`,`agreement`,`agreementName`,`cgqsr`,`zzjgdm`,`qsrlxdh`,`cgmc`,`gjc`,`cgwcsj`,`zzqk`,`ly_id`,`cghqfs`,`jscsd`,`hjqk`,`hzjg`,`hzfs`,`dwmc`,`dz`,`fr`,`contracts`,`zj`,`dzyx`,`zscqxs`,`cgjs`,`jszb`,`syfx`,`cgtp`,`cgsp`,`bz`,`jshd_id` from t_js_cg a
+		select `id`,`agreement`,`cgspmc`,`cgfj`,`cgfjmc`,`agreementName`,`cgqsr`,`zzjgdm`,`qsrlxdh`,`cgmc`,`gjc`,`cgwcsj`,`zzqk`,`ly_id`,`cghqfs`,`jscsd`,`hjqk`,`hzjg`,`hzfs`,`dwmc`,`dz`,`fr`,`contracts`,`zj`,`dzyx`,`zscqxs`,`cgjs`,`jszb`,`syfx`,`cgtp`,`cgsp`,`bz`,`jshd_id` from t_js_cg a
         <where>
           a.is_delete = 0
 		  		  <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
@@ -32,6 +32,9 @@
 		  		  <if test="map.syfx != null and map.syfx != ''"> and syfx = #{map.syfx} </if>
 		  		  <if test="map.cgtp != null and map.cgtp != ''"> and cgtp = #{map.cgtp} </if>
 		  		  <if test="map.cgsp != null and map.cgsp != ''"> and cgsp = #{map.cgsp} </if>
+				<if test="map.cgspmc != null and map.cgspmc != ''"> and cgspmc = #{map.cgspmc} </if>
+				<if test="map.cgfj != null and map.cgfj != ''"> and cgfj = #{map.cgfj} </if>
+				<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cgfjmc = #{map.cgfjmc} </if>
 		  		  <if test="map.bz != null and map.bz != ''"> and bz = #{map.bz} </if>
 		  		  <if test="map.jshdId != null and map.jshdId != ''"> and jshd_id = #{map.jshdId} </if>
 		  		</where>
@@ -46,7 +49,7 @@
 	</select>
 
 	<select id="findJsCgFront" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,cgqsr,agreement,agreementName,zzjgdm,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz
+		select cg.id as id,cgspmc,cgfj,cgfjmc,cgqsr,agreement,agreementName,zzjgdm,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz
 		from t_js_cg cg left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lb d on(cg.lb_id=d.id) left join t_js_hd hd on(cg.jshd_id=hd.id)
 		<where>
 			cg.is_delete = 0
@@ -58,6 +61,8 @@
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
 			<if test="map.xqId != null and map.xqId != ''"> and sh.xq_id = #{map.xqId} </if>
 			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc = concat('%',#{map.cgmc},'%') </if>
+			<if test="map.cgspmc != null and map.cgspmc != ''"> and cg.cgspmc = concat('%',#{map.cgspmc},'%') </if>
+			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
 			<if test="map.jylx != null and map.jylx != ''"> and sh.jylx = #{map.jylx} </if>
@@ -74,7 +79,7 @@
 	</choose>
 </select>
 	<select id="findJsCg" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,user_id,agreement,agreementName,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,lb.mc as lbName,sh.fbshbz,sh.slxbbz as slxbbz
+		select cg.id as id,cgspmc,cgfj,cgfjmc,user_id,agreement,agreementName,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,lb.mc as lbName,sh.fbshbz,sh.slxbbz as slxbbz
 		from t_js_cg cg left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lb lb on(cg.lb_id=lb.id)
 		<where>
 			cg.is_delete != 2
@@ -83,6 +88,8 @@
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
 			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',#{map.cgmc},'%') </if>
+			<if test="map.cgspmc != null and map.cgspmc != ''"> and cg.cgspmc = concat('%',#{map.cgspmc},'%') </if>
+			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
 			<if test="map.fbshzt != null and map.fbshzt != ''"> and sh.fbshzt = #{map.fbshzt} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
@@ -128,6 +135,9 @@
 			<if test="syfx != null">syfx = #{syfx},</if>
 			<if test="cgtp != null">cgtp = #{cgtp},</if>
 			<if test="cgsp != null">cgsp = #{cgsp},</if>
+			<if test="cgspmc != null">cgspmc = #{cgspmc},</if>
+			<if test="cgfj != null">cgfj = #{cgfj},</if>
+			<if test="cgfjmc != null">cgfjmc = #{cgfjmc},</if>
 			<if test="bz != null">bz = #{bz},</if>
 			<if test="jshdId != null">jshd_id = #{jshdId},</if>
 			<if test="isDelete != null">is_delete = #{isDelete},</if>
@@ -136,6 +146,8 @@
 			<if test="dz != null">dz = #{dz},</if>
 			<if test="agreement != null">agreement = #{agreement},</if>
 			<if test="agreementName != null">agreementName = #{agreementName}</if>
+			<if test="cjsj != null">cjsj = #{cjsj}</if>
+			<if test="gxsj != null">gxsj = #{gxsj}</if>
 		</set>
 		where id = #{id}
 	</update>

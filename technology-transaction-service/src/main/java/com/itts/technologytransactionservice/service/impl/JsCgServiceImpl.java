@@ -37,13 +37,12 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     @Autowired
     private JsShService jsShService;
 
-    @Autowired
-    private JsShMapper jsShMapper;
+	@Autowired
+	private JsShMapper jsShMapper;
 
 
     /**
      * 分页条件查询成果(前台)
-     *
      * @param params
      * @return
      */
@@ -58,7 +57,6 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 
     /**
      * 分页条件查询成果(个人详情)
-     *
      * @param params
      * @return
      */
@@ -66,7 +64,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     public PageInfo<TJsCg> findJsCgUser(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询成果(个人详情)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据
-        params.put("userId", 2);
+        params.put("userId",2);
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsCg> list = jsCgMapper.findJsCgFront(query);
@@ -75,19 +73,17 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 
     /**
      * 根据成果名称查询
-     *
      * @param name
      * @return
      */
     @Override
     public TJsCg selectByName(String name) {
-        log.info("【技术交易 - 根据成果名称:{}查询详细信息】", name);
+        log.info("【技术交易 - 根据成果名称:{}查询详细信息】",name);
         return jsCgMapper.selectByName(name);
     }
 
     /**
-     * 新增成果信息
-     *
+     *新增成果信息
      * @param tJsCg
      * @return
      */
@@ -104,11 +100,13 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             tJsCg.setUserId(2);
             tJsCg.setReleaseType("技术成果");
             tJsCg.setCjsj(LocalDate.now());
-            log.info("【技术交易 - 新增成果信息】", tJsCg);
+            tJsCg.setGxsj(new Date());
+            log.info("【技术交易 - 新增成果信息】",tJsCg);
             save(tJsCg);
             TJsSh tJsSh = new TJsSh();
             tJsSh.setLx(1);
             tJsSh.setCjsj(new Date());
+            tJsSh.setGxsj(new Date());
             tJsSh.setCgId(tJsCg.getId());
             jsShService.save(tJsSh);
             return true;
@@ -116,19 +114,20 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     }
 
 
-    /**
-     * 删除成果
-     *
-     * @param id
-     * @return
-     */
-    @Override
+
+	/**
+	 * 删除成果
+	 * @param id
+	 * @return
+	 */
+	@Override
     public boolean removeByIdCg(Integer id) {
-        log.info("【技术交易 - 根据id:{}删除成果】", id);
+	    log.info("【技术交易 - 根据id:{}删除成果】",id);
         TJsSh tJsSh = jsShService.selectByCgId(id);
         TJsCg tJsCg = new TJsCg();
         tJsCg.setId(id);
         tJsCg.setIsDelete(1);
+        tJsCg.setGxsj(new Date());
         jsCgMapper.updateTJsCg(tJsCg);
         if (tJsSh.getId() != null) {
             tJsSh.setIsDelete(1);
@@ -166,8 +165,8 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             List<TJsSh> tJsShes = jsShService.selectBycgIds(ids);
             for (TJsSh tJsShe : tJsShes) {
                 if (tJsShe.getFbshzt() == 2) {
-                    tJsShe.setReleaseStatus(2);
-                }
+					tJsShe.setReleaseStatus(2);
+				}
             }
             jsShService.updateBatchById(tJsShes);
             return true;
@@ -176,7 +175,6 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 
     /**
      * 修改成果信息
-     *
      * @param tJsCg
      * @return
      */
@@ -189,17 +187,29 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 
     /**
      * 已发布的成果申请拍卖挂牌(受理协办)
-     *
      * @param params
      * @return
      */
     @Override
-    public boolean assistanceUpdateTJsCg(Map<String, Object> params, Integer jylx) {
+    public boolean assistanceUpdateTJsCg(Map<String, Object> params,Integer jylx) {
         TJsSh tJsSh = jsShService.selectByCgId(Integer.valueOf(params.get("id").toString()));
         if (tJsSh.getFbshzt() != 2) {
             log.error("发布审核状态未通过,无法申请拍卖挂牌!");
             return false;
         }
+        TJsCg cg= new TJsCg();
+        cg.setId(Integer.valueOf(params.get("id").toString()));
+        cg.setBz(params.get("bz").toString());
+        cg.setCghqfs(params.get("cghqfs").toString());
+        cg.setCgjs(params.get("cgjs").toString());
+        cg.setHjqk(params.get("hjqk").toString());
+        cg.setJscsd(params.get("jscsd").toString());
+        cg.setJszb(params.get("jszb").toString());
+        cg.setSyfx(params.get("syfx").toString());
+        cg.setZscqxs(params.get("zscqxs").toString());
+        cg.setZzqk(params.get("zzqk").toString());
+        cg.setGxsj(new Date());
+        jsCgMapper.updateTJsCg(cg);
         tJsSh.setAssistanceStatus(1);
         tJsSh.setJylx(jylx);
         tJsSh.setReleaseAssistanceStatus(1);
@@ -212,7 +222,6 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 
     /**
      * 个人发布审核成果申请(0待提交;1待审核;2通过;3整改;4拒绝)
-     *
      * @param params
      * @return
      */
@@ -220,6 +229,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     public boolean auditCg(Map<String, Object> params, Integer fbshzt) {
         TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
         tJsSh.setFbshzt(fbshzt);
+        tJsSh.setGxsj(new Date());
         if (!jsShService.updateById(tJsSh)) {
             throw new ServiceException("发布审核成果申请失败!");
         }
@@ -255,13 +265,12 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         }
     }
 
-    /**
-     * 技术转让受理批量下发
-     *
-     * @param ids
-     * @return
-     */
-    @Override
+	/**
+	 * 技术转让受理批量下发
+	 * @param ids
+	 * @return
+	 */
+	@Override
     public boolean assistanceIssueBatch(List<Integer> ids) {
         if (CollectionUtils.isEmpty(ids)) {
             return false;
@@ -276,13 +285,12 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     }
 
     /**
-     * 批量删除成果
-     *
-     * @param ids
-     * @return
-     */
-    @Override
-    public boolean removeByIdsCg(List<String> ids) {
+	 * 批量删除成果
+	 * @param ids
+	 * @return
+	 */
+	@Override
+	public boolean removeByIdsCg(List<String> ids) {
         List<Integer> list = new ArrayList<>();
         for (String id : ids) {
             Integer i = Integer.valueOf(id);
@@ -291,14 +299,15 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             tJsCg.setId(i);
             tJsCg.setIsDelete(1);
             jsCgMapper.updateTJsCg(tJsCg);
-        }
-        List<TJsSh> tJsShes = jsShService.selectBycgxqIds(list);
+		}
+		List<TJsSh> tJsShes = jsShService.selectBycgxqIds(list);
         for (TJsSh tJsSh : tJsShes) {
             tJsSh.setIsDelete(1);
             jsShMapper.updateById(tJsSh);
         }
-        return true;
-    }
+		return true;
+	}
+
 
 
 }

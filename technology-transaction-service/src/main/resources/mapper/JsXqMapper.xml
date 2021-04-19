@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsXqMapper">
 
 	<select id="findJsXq" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,xqmc,sjhm,zzjgdm,agreement,agreementName,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz
+		select xq.id as id,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreementName,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id)
 		<where>
 		<!--后台能查询0或者1的数据 -->
@@ -16,6 +16,8 @@
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
 			<if test="map.xqId != null and map.xqId != ''"> and sh.xq_id = #{map.xqId} </if>
 			<if test="map.xqmc != null and map.xqmc != ''"> and xq.xqmc like concat('%',#{map.xqmc},'%') </if>
+			<if test="map.xqspmc != null and map.xqspmc != ''"> and xq.xqspmc = concat('%',#{map.xqspmc},'%') </if>
+			<if test="map.xqfjmc != null and map.xqfjmc != ''"> and xq.xqfjmc = concat('%',#{map.xqfjmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and xq.cjsj = #{map.cjsj} </if>
 			<if test="map.fbshzt != null and map.fbshzt != ''"> and sh.fbshzt = #{map.fbshzt} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and d.release_status = #{map.releaseStatus} </if>
@@ -73,7 +75,7 @@
 	</select>
 
 	<select id="findJsXqFront" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,xqmc,sjhm,agreement,agreementName,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,sh.assistance_status,sh.release_assistance_status,sh.fbshbz,xq.remarks,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz
+		select xq.id as id,xqmc,xqfj,xqfjmc,xqspmc,sjhm,agreement,agreementName,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,sh.assistance_status,sh.release_assistance_status,sh.fbshbz,xq.remarks,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id) left join t_js_hd hd on(xq.jshd_id=hd.id)
 		<where>
 			xq.is_delete = 0
@@ -85,6 +87,8 @@
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
 			<if test="map.xqId != null and map.xqId != ''"> and sh.xq_id = #{map.xqId} </if>
 			<if test="map.xqmc != null and map.xqmc != ''"> and xq.xqmc = concat('%',#{map.xqmc},'%') </if>
+			<if test="map.xqspmc != null and map.xqspmc != ''"> and xq.xqspmc = concat('%',#{map.xqspmc},'%') </if>
+			<if test="map.xqfjmc != null and map.xqfjmc != ''"> and xq.xqfjmc = concat('%',#{map.xqfjmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and xq.cjsj = #{map.cjsj} </if>
 			<if test="map.jylx != null and map.jylx != ''"> and sh.jylx = #{map.jylx} </if>
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
@@ -117,6 +121,9 @@
 			<if test="jszb != null">jszb = #{jszb},</if>
 			<if test="xqtp != null">xqtp = #{xqtp},</if>
 			<if test="xqsp != null">xqsp = #{xqsp},</if>
+			<if test="xqspmc != null">xqspmc = #{xqspmc},</if>
+			<if test="xqfj != null">xqfj = #{xqfj},</if>
+			<if test="xqfjmc != null">xqfjmc = #{xqfjmc},</if>
 			<if test="dwmc != null">dwmc = #{dwmc},</if>
 			<if test="fr != null">fr = #{fr},</if>
 			<if test="lxrdh != null">lxrdh = #{lxrdh},</if>
@@ -133,6 +140,8 @@
 			<if test="bond != null">bond = #{bond},</if>
 			<if test="introduction != null">introduction = #{introduction},</if>
 			<if test="remarks != null">remarks = #{remarks}</if>
+			<if test="cjsj != null">cjsj = #{cjsj}</if>
+			<if test="gxsj != null">gxsj = #{gxsj}</if>
 		</set>
 		where id = #{id}
 	</update>

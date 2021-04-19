@@ -111,6 +111,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         tJsXq.setUserId(1);
         tJsXq.setReleaseType("技术需求");
         tJsXq.setCjsj(LocalDate.now());
+        tJsXq.setGxsj(new Date());
         TJsSh tJsSh = new TJsSh();
         Integer jylx = tJsXq.getJylx();
         if (jylx == null) {
@@ -125,6 +126,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         tJsSh.setLx(2);
         tJsSh.setXqId(tJsXq.getId());
         tJsSh.setCjsj(new Date());
+        tJsSh.setGxsj(new Date());
         jsShAdminService.save(tJsSh);
         return true;
     }
