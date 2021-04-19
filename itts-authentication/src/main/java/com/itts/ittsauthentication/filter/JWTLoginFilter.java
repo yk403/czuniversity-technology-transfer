@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.RedisConstant;
 import com.itts.common.utils.common.JwtUtil;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.ittsauthentication.bean.AuthoritionUser;
 import com.itts.ittsauthentication.bean.LoginUserInfo;
 import com.itts.ittsauthentication.mapper.AuthoritionUserMapper;
@@ -101,6 +102,6 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         resultMap.put("user", authResult.getName());
         resultMap.put("token", token);
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().print(JSONUtil.toJsonStr(resultMap));
+        response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.success(resultMap)));
     }
 }
