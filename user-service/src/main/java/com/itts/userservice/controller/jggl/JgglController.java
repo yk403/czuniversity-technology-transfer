@@ -163,7 +163,9 @@ public class JgglController {
         if (group == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-
+        String cjold = group.getCj();
+        //获取当前机构的所有子机构
+        List<Jggl> list = jgglService.getList(cjold);
         //获取父级机构的层级
         String fjbm = jggl.getFjbm();
 
@@ -174,10 +176,26 @@ public class JgglController {
             Jggl fatherGroup = jgglService.selectByJgbm(fjbm);
             String cj = fatherGroup.getCj();
             //生成层级
+
+            if(list!=null){
+                list.forEach(Jggl ->{
+                    Jggl.setCj(Jggl.getCj().replace(cjold, jggl.getCj()));
+                    jgglService.update(Jggl);
+                });
+            }
+
+
             cj = cj +"-"+ jggl.getJgbm();
             jggl.setCj(cj);
 
+
         } else {
+            if(list!=null){
+                list.forEach(Jggl ->{
+                    Jggl.setCj(Jggl.getCj().replace(cjold, jggl.getJgbm()));
+                    jgglService.update(Jggl);
+                });
+            }
 
             jggl.setCj(jggl.getJgbm());
         }

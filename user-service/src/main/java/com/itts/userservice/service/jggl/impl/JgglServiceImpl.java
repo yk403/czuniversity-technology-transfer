@@ -99,6 +99,15 @@ public class JgglServiceImpl implements JgglService {
         return jggl;
     }
 
+    @Override
+    public List<Jggl> getList(String cj) {
+        QueryWrapper<Jggl> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.likeLeft("cj",cj)
+                .eq("sfsc",false);
+        List<Jggl> jggls = jgglMapper.selectList(objectQueryWrapper);
+        return jggls;
+    }
+
     /**
      * 查询，通过机构名称
      */

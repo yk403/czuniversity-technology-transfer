@@ -36,6 +36,13 @@ public interface JgglService  {
      * 获取通过id
      */
     Jggl get(Long id);
+
+    /**
+     * 通过层级获取子机构
+     * @param cj
+     * @return
+     */
+    List<Jggl> getList(String cj);
     /**
      * 查询，通过机构名称
      */
