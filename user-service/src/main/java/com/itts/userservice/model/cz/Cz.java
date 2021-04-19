@@ -18,15 +18,15 @@ import java.util.Date;
  * </p>
  *
  * @author liuyingming
- * @since 2021-04-09
+ * @since 2021-04-19
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @TableName("t_cz")
 @ApiModel("操作对象")
-@EqualsAndHashCode(callSuper = false)
 public class Cz implements Serializable {
 
-    private static final long serialVersionUID = 2063157661520960391L;
+    private static final long serialVersionUID = -4828901699563254750L;
 
     /**
      * 主键ID
@@ -45,30 +45,6 @@ public class Cz implements Serializable {
      */
     @ApiModelProperty("操作编码")
     private String czbm;
-
-    /**
-     * 系统类型：
-     * technology_transaction_portal - 技术交易门户；
-     * technology_transaction_backstage_management - 技术交易后台管理；
-     * talent_training_portal - 人才培养门户；
-     * talent_training_backstage_management - 人才培养后台管理
-     *
-     * @see com.itts.common.enums.SystemTypeEnum
-     */
-    @ApiModelProperty("所属系统类型：\n" +
-            "echnology_transaction_portal - 技术交易门户；\n" +
-            "technology_transaction_backstage_management - 技术交易后台管理；\n" +
-            "talent_training_portal - 人才培养门户；\n" +
-            "talent_training_backstage_management - 人才培养后台管理")
-    private String xtlx;
-
-    /**
-     * 模块类型:front - 门户; admin - 后台管理
-     */
-    @ApiModelProperty("模块类型:\n" +
-            "front - 门户; \n" +
-            "admin - 后台管理")
-    private String mklx;
 
     /**
      * 是否删除
@@ -92,8 +68,8 @@ public class Cz implements Serializable {
     /**
      * 更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty("更新时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**
@@ -101,4 +77,6 @@ public class Cz implements Serializable {
      */
     @ApiModelProperty("更新人")
     private Long gxr;
+
+
 }

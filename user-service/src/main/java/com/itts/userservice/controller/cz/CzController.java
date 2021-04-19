@@ -176,14 +176,6 @@ public class CzController {
         if (StringUtils.isBlank(cz.getCzbm())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-
-        if (StringUtils.isBlank(cz.getXtlx())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-
-        if (StringUtils.isBlank(cz.getMklx())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
     }
 }
 

@@ -1,16 +1,19 @@
 package com.itts.userservice.model.js;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+
+import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
@@ -18,15 +21,15 @@ import java.util.Date;
  * </p>
  *
  * @author liuyingming
- * @since 2021-04-15
+ * @since 2021-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_js_cd_cz_gl")
-@ApiModel("角色菜单操作管理管理对象")
+@ApiModel("角色菜单操作关联对象")
 public class JsCdCzGl implements Serializable {
 
-    private static final long serialVersionUID = -8252763264630317005L;
+    private static final long serialVersionUID = 5763714179566557051L;
 
     /**
      * 主键ID
@@ -37,50 +40,44 @@ public class JsCdCzGl implements Serializable {
     /**
      * 角色ID
      */
-    @ApiModelProperty(value = "角色ID", required = true)
+    @ApiModelProperty("角色ID")
     private Long jsId;
 
     /**
      * 菜单ID
      */
-    @ApiModelProperty(value = "菜单ID", required = true)
+    @ApiModelProperty("菜单ID")
     private Long cdId;
 
     /**
      * 操作ID
      */
-    @ApiModelProperty(value = "菜单ID", required = true)
+    @ApiModelProperty("操作ID")
     private Long czId;
-
-    /**
-     * 是否删除
-     */
-    @ApiModelProperty(value = "是否删除")
-    private Boolean sfsc;
 
     /**
      * 创建时间
      */
+    @ApiModelProperty("创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @ApiModelProperty(value = "创建时间")
     private Date cjsj;
 
     /**
      * 创建人
      */
-    @ApiModelProperty(value = "创建人")
+    @ApiModelProperty("创建人")
     private Long cjr;
 
     /**
      * 更新时间
      */
+    @ApiModelProperty("更新时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @ApiModelProperty(value = "更新时间")
     private Date gxsj;
 
     /**
      * 更新人
      */
-    @ApiModelProperty(value = "更新人")
+    @ApiModelProperty("更新人")
     private Long gxr;
 }

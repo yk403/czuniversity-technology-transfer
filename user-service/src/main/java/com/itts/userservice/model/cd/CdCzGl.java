@@ -18,7 +18,7 @@ import java.util.Date;
  * </p>
  *
  * @author liuyingming
- * @since 2021-04-13
+ * @since 2021-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,7 +26,7 @@ import java.util.Date;
 @ApiModel("菜单操作关联对象")
 public class CdCzGl implements Serializable {
 
-    private static final long serialVersionUID = -8655403136426295159L;
+    private static final long serialVersionUID = -1631505371291955996L;
 
     /**
      * 主键ID
@@ -47,16 +47,10 @@ public class CdCzGl implements Serializable {
     private Long czId;
 
     /**
-     * 是否删除
-     */
-    @ApiModelProperty("是否删除")
-    private Boolean sfsc;
-
-    /**
      * 创建时间
      */
     @ApiModelProperty("创建时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:ss:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
@@ -69,7 +63,7 @@ public class CdCzGl implements Serializable {
      * 更新时间
      */
     @ApiModelProperty("更新时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:ss:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**
@@ -77,4 +71,6 @@ public class CdCzGl implements Serializable {
      */
     @ApiModelProperty("更新人")
     private Long gxr;
+
+
 }

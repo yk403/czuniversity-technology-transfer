@@ -8,7 +8,6 @@
         <result column="js_id" property="jsId"/>
         <result column="cd_id" property="cdId"/>
         <result column="cz_id" property="czId"/>
-        <result column="sfsc" property="sfsc"/>
         <result column="cjsj" property="cjsj"/>
         <result column="cjr" property="cjr"/>
         <result column="gxsj" property="gxsj"/>
@@ -17,7 +16,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, js_id, cd_id, cz_id, sfsc, cjsj, cjr, gxsj, gxr
+        id, js_id, cd_id, cz_id, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>
