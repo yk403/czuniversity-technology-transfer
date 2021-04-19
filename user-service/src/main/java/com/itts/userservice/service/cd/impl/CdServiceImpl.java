@@ -335,7 +335,7 @@ public class CdServiceImpl implements CdService {
             });
 
             //删除菜单操作关联
-            deleteCdCzGl(cd.getId(), oldCzIds, userId);
+            deleteCdCzGl(cd.getId(), oldCzIds);
 
             //添加菜单操作关联
             addCdCzGl(cd.getId(), addCzIds, userId, now);
@@ -388,15 +388,17 @@ public class CdServiceImpl implements CdService {
     /**
      * 删除菜单操作关联
      */
-    private void deleteCdCzGl(Long cdId, List<Long> czIds, Long userId) {
+    private void deleteCdCzGl(Long cdId, List<Long> czIds) {
 
         if (CollectionUtils.isEmpty(czIds)) {
             return;
         }
 
-        czIds.forEach(czId -> {
-            cdCzGlMapper.deleteCdCzGlByCdIdAndCzId(cdId, czId, userId);
-        });
+        QueryWrapper query = new QueryWrapper();
+        query.eq("cd_id", cdId);
+        query.in("cz_id", czIds);
+
+        cdCzGlMapper.delete(query);
     }
 
     /**
@@ -404,7 +406,7 @@ public class CdServiceImpl implements CdService {
      */
     private CdTreeVO combineMenusToTree(CdTreeVO cd, List<Cd> children) {
 
-        if(CollectionUtils.isEmpty(children)){
+        if (CollectionUtils.isEmpty(children)) {
             return cd;
         }
 
@@ -412,7 +414,7 @@ public class CdServiceImpl implements CdService {
 
         Iterator<Cd> cdIterator = children.iterator();
 
-        while(cdIterator.hasNext()){
+        while (cdIterator.hasNext()) {
 
             Cd child = cdIterator.next();
 

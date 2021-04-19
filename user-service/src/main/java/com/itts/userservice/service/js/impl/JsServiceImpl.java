@@ -83,16 +83,16 @@ public class JsServiceImpl implements JsService {
     /**
      * 通过系统类型是否为默认角色获取角色信息
      *
-     * @param systemType  系统类型
+     * @param userType  用户类型
      * @param defaultFlag 是否为默认角色
      * @return
      * @author liuyingming
      */
     @Override
-    public List<Js> findBySystemTypeAndDefault(String systemType, Boolean defaultFlag) {
+    public List<Js> findByUserTypeAndDefault(String userType, Boolean defaultFlag) {
 
         QueryWrapper query = new QueryWrapper();
-        query.eq("xtlx", systemType);
+        query.eq("yhjslx", userType);
         query.eq("sfmr", defaultFlag);
         query.eq("sfsc", false);
 

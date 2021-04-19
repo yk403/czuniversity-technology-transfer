@@ -29,7 +29,7 @@ import lombok.EqualsAndHashCode;
 @ApiModel("角色对象")
 public class Js implements Serializable {
 
-    private static final long serialVersionUID = 6573650915205699585L;
+    private static final long serialVersionUID = -409494400980209645L;
 
     /**
      * 主键ID
@@ -54,6 +54,12 @@ public class Js implements Serializable {
      */
     @ApiModelProperty("是否为默认角色")
     private Boolean sfmr;
+
+    /**
+     * 用户角色类型： in - 内部用户角色； out - 外部用户角色
+     */
+    @ApiModelProperty("用户角色类型： in - 内部用户角色； out - 外部用户角色")
+    private String yhjslx;
 
     /**
      * 是否删除
@@ -86,4 +92,6 @@ public class Js implements Serializable {
      */
     @ApiModelProperty("更新人")
     private Long gxr;
+
+
 }

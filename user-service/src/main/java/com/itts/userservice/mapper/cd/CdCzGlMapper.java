@@ -23,15 +23,7 @@ public interface CdCzGlMapper extends BaseMapper<CdCzGl> {
 
     @Select("SELECT tc.id, tc.czbm, tc.czmc FROM t_cz tc " +
             "LEFT JOIN t_cd_cz_gl tccg on tc.id = tccg.cz_id " +
-            "WHERE tccg.sfsc = false " +
-            "AND tc.sfsc = false " +
+            "WHERE tc.sfsc = false " +
             "AND tccg.cd_id = #{cdId}")
     List<GetCdCzGlDTO> getCdCzGlByCdId(@Param("cdId") Long cdId);
-
-    @Update("UPDATE t_cd_cz_gl " +
-            "SET gxsj = NOW(), gxr = #{gxr}, sfsc = true " +
-            "WHERE cd_id = #{cdId} " +
-            "  AND cz_id = #{czId} ")
-    void deleteCdCzGlByCdIdAndCzId(@Param("cdId") Long cdId, @Param("czId") Long czId, @Param("gxr") Long gxr);
-
 }
