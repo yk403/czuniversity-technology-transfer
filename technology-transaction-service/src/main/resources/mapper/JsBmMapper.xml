@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itts.technologytransactionservice.mapper.JsBmMapper">
+
+    <select id="list" resultType="com.itts.technologytransactionservice.model.TJsBm">
+        select id,dwmc,dz,fr,cjsj,gxsj,jgdm,lxr,sjhm,gszz,bzj,sjfa,zbwj,is_delete,hd_id
+        from t_js_bm bm left join t_js_hd hd on( bm.hd_id = hd.id )
+        <where>
+            bm.is_delete == 0
+            <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
+            <if test="map.dwmc != null and map.dwmc != ''"> and dwmc = #{map.dwmc} </if>
+            <if test="map.dz != null and map.dz != ''"> and dz = #{map.dz} </if>
+            <if test="map.fr != null and map.fr != ''"> and fr = #{map.fr} </if>
+            <if test="map.jgdm != null and map.jgdm != ''"> and jgdm = #{map.jgdm} </if>
+            <if test="map.lxr != null and map.lxr != ''"> and lxr = #{map.lxr} </if>
+            <if test="map.sjhm != null and map.sjhm != ''"> and sjhm = #{map.sjhm} </if>
+            <if test="map.gszz != null and map.gszz != ''"> and gszz = #{map.gszz} </if>
+            <if test="map.bzj != null and map.bzj != ''"> and bzj = #{map.bzj} </if>
+            <if test="map.sjfa != null and map.sjfa != ''"> and sjfa = #{map.sjfa} </if>
+            <if test="map.zbwj != null and map.zbwj != ''"> and zbwj = #{map.zbwj} </if>
+            <if test="map.hdId != null and map.hdId != ''"> and hd_id = #{map.hdId} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id asc
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

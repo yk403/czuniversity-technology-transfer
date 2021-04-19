@@ -7,7 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication(scanBasePackages = {"com.itts.technologytransactionservice",
-        "com.itts.common.exception", "com.itts.common.utils", "com.itts.common.config", "com.itts.common.websocket"})
+        "com.itts.common.exception", "com.itts.common.utils", "com.itts.common.config", "com.itts.common.websocket", "com.itts.common.handler"})
 @MapperScan("com.itts.technologytransactionservice.mapper")
 @EnableDiscoveryClient
 @EnableFeignClients

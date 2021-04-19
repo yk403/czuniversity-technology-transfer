@@ -200,10 +200,13 @@ public class TJsCg implements Serializable {
 	/**
 	 * 创建时间
 	 */
-	private LocalDate cjsj;
+	@TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	private Date cjsj;
 	/**
 	 * 更新时间
 	 */
+	@TableField(value = "gxsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date gxsj;
 	/**

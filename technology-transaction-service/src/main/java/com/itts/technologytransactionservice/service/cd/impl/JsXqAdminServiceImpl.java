@@ -107,7 +107,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
         tJsXq.setUserId(1);
         tJsXq.setReleaseType("技术需求");
-        tJsXq.setCjsj(LocalDate.now());
+        tJsXq.setCjsj(new Date());
         tJsXq.setGxsj(new Date());
         TJsSh tJsSh = new TJsSh();
         Integer jylx = tJsXq.getJylx();
