@@ -1,6 +1,7 @@
 package com.itts.userservice.controller.jggl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
@@ -201,9 +202,12 @@ public class JgglController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         //查询机构是否有子机构
-        String cj = jggl.getCj();
-        List<Jggl> thisAndChildByCode = jgglMapper.findThisAndChildByCode(cj);
-        if(thisAndChildByCode!=null){
+        String jgbm = jggl.getJgbm();
+        QueryWrapper<Jggl> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.eq("fjbm",jgbm)
+        .eq("sfsc",false);
+        Jggl jggl1 = jgglMapper.selectOne(objectQueryWrapper);
+        if(jggl1!=null){
             return ResponseUtil.error(ErrorCodeEnum.USER_DELETE_GROUP_HAVE_CHILD_ERROR);
         }
             jggl.setSfsc(true);
@@ -236,9 +240,7 @@ public class JgglController {
         if (jggl == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (jggl.getJgbm() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
+
         if (jggl.getFjbm() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
