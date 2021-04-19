@@ -37,13 +37,13 @@ public class Cz implements Serializable {
     /**
      * 操作名称
      */
-    @ApiModelProperty("操作名称")
+    @ApiModelProperty(value = "操作名称", required = true)
     private String czmc;
 
     /**
      * 操作编码
      */
-    @ApiModelProperty("操作编码")
+    @ApiModelProperty(value = "操作编码", required = true)
     private String czbm;
 
     /**

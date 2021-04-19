@@ -40,25 +40,25 @@ public class Js implements Serializable {
     /**
      * 角色名称
      */
-    @ApiModelProperty("角色名称")
+    @ApiModelProperty(value = "角色名称", required = true)
     private String jsmc;
 
     /**
      * 角色编码
      */
-    @ApiModelProperty("角色编码")
+    @ApiModelProperty(value = "角色编码",required = true)
     private String jsbm;
 
     /**
      * 是否为默认角色
      */
-    @ApiModelProperty("是否为默认角色")
+    @ApiModelProperty(value = "是否为默认角色",required = true)
     private Boolean sfmr;
 
     /**
      * 用户角色类型： in - 内部用户角色； out - 外部用户角色
      */
-    @ApiModelProperty("用户角色类型： in - 内部用户角色； out - 外部用户角色")
+    @ApiModelProperty(value = "用户角色类型： in - 内部用户角色； out - 外部用户角色", required = true)
     private String yhjslx;
 
     /**

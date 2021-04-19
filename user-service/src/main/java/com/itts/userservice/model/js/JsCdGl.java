@@ -40,13 +40,13 @@ public class JsCdGl implements Serializable {
     /**
      * 角色ID
      */
-    @ApiModelProperty("角色ID")
+    @ApiModelProperty(value = "角色ID", required = true)
     private Long jsId;
 
     /**
      * 菜单ID
      */
-    @ApiModelProperty("菜单ID")
+    @ApiModelProperty(value = "菜单ID", required = true)
     private Long cdId;
 
     /**

@@ -37,13 +37,13 @@ public class CdCzGl implements Serializable {
     /**
      * 菜单ID
      */
-    @ApiModelProperty("菜单ID")
+    @ApiModelProperty(value = "菜单ID", required = true)
     private Long cdId;
 
     /**
      * 操作ID
      */
-    @ApiModelProperty("操作ID")
+    @ApiModelProperty(value = "操作ID", required = true)
     private Long czId;
 
     /**
