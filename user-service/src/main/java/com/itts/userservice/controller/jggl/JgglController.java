@@ -179,6 +179,9 @@ public class JgglController {
 
             if(list!=null){
                 list.forEach(Jggl ->{
+                    if(cjold==Jggl.getCj()){
+                        return;
+                    }
                     Jggl.setCj(Jggl.getCj().replace(cjold, jggl.getCj()));
                     jgglService.update(Jggl);
                 });
@@ -192,6 +195,9 @@ public class JgglController {
         } else {
             if(list!=null){
                 list.forEach(Jggl ->{
+                    if(cjold==Jggl.getCj()){
+                        return;
+                    }
                     Jggl.setCj(Jggl.getCj().replace(cjold, jggl.getJgbm()));
                     jgglService.update(Jggl);
                 });
