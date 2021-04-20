@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.userservice.mapper.sjb.SjbMapper">
+
+    <select id="findTables" resultType="com.itts.userservice.model.sjb.Sjb">
+        SELECT TABLE_NAME AS tableName,TABLE_COMMENT AS tableComment
+        FROM INFORMATION_SCHEMA.TABLES
+        WHERE TABLE_SCHEMA = 'technologyTransaction'
+          AND TABLE_NAME LIKE CONCAT('t_', '%')
+          <if test="name != null and name !=''">
+              AND TABLE_COMMENT LIKE CONCAT('%', #{name}, '%')
+          </if>
+    </select>
+
+    <select id="getTableDetails" resultType="com.itts.userservice.model.sjb.Bzd">
+        SELECT COLUMN_NAME AS columnName, COLUMN_DEFAULT AS columnDefault, IS_NULLABLE AS nullValueFlag, DATA_TYPE AS dataType,
+               CHARACTER_MAXIMUM_LENGTH AS columnLength, COLUMN_TYPE AS columnType, COLUMN_KEY AS columnKey, EXTRA AS extra, COLUMN_COMMENT AS columnComment
+        FROM information_schema.columns
+        WHERE table_schema = 'technologyTransaction'
+          AND  table_name = #{tableName};
+    </select>
+
+</mapper>

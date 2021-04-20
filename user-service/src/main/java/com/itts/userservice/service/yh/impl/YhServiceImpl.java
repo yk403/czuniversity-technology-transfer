@@ -4,23 +4,36 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.itts.common.constant.RedisConstant;
 import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
+import com.itts.userservice.dto.YhDTO;
+import com.itts.userservice.mapper.jggl.JgglMapper;
+import com.itts.userservice.mapper.js.JsMapper;
+import com.itts.userservice.mapper.yh.YhJsGlMapper;
 import com.itts.userservice.mapper.yh.YhMapper;
+import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
+import com.itts.userservice.model.yh.YhJsGl;
 import com.itts.userservice.service.yh.YhService;
+import com.itts.userservice.vo.YhListVO;
 import com.itts.userservice.vo.YhVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -38,18 +51,36 @@ public class YhServiceImpl implements YhService {
     private YhMapper yhMapper;
 
     @Resource
+    private JgglMapper jgglMapper;
+
+    @Resource
     private RedisTemplate redisTemplate;
+    @Resource
+    private JsMapper jsMapper;
+
+    @Resource
+    private YhJsGlMapper yhJsGlMapper;
 
     /**
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<Yh> findByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<YhListVO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group) {
+
+        List<Long> groupIds = null;
+
+        if (group != null) {
+            //通过编号获取该机构及机构下所有机构的ID
+            groupIds = jgglMapper.findThisAndChildByCode(group.getJgbm()).stream().map(Jggl::getId).collect(Collectors.toList());
+        }
+
         PageHelper.startPage(pageNum, pageSize);
-        QueryWrapper<Yh> query = new QueryWrapper<>();
-        query.eq("sfsc", false);
-        List<Yh> list = yhMapper.selectList(query);
-        PageInfo<Yh> page = new PageInfo<>(list);
+
+        List<YhDTO> list = yhMapper.findByTypeAndGroupId(type, groupIds);
+        List<YhListVO> yhListVOs = this.yhDTO2YhVO(list);
+
+        PageInfo<YhListVO> page = new PageInfo(list);
+        page.setList(yhListVOs);
         return page;
     }
 
@@ -81,20 +112,56 @@ public class YhServiceImpl implements YhService {
     }
 
     /**
-     * 新增
+     * 级联新增
      */
     @Override
-    public Yh add(Yh Yh) {
-        yhMapper.insert(Yh);
-        return Yh;
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean addYhAndJsmc(Yh Yh, Long jsid) {
+        Long id1 = Yh.getId();
+        Yh yh = yhMapper.selectById(id1);
+        if (yh == null) {
+            Yh.setMm(new BCryptPasswordEncoder().encode(Yh.getMm()));
+            Yh.setCjsj(new Date());
+            Yh.setGxsj(new Date());
+            yhMapper.insert(Yh);
+        }
+
+        //新增用户角色关联表
+        Long yhid = Yh.getId();
+        YhJsGl yhJsGl = new YhJsGl();
+        yhJsGl.setYhId(yhid);
+        yhJsGl.setJsId(jsid);
+        yhJsGl.setGxsj(new Date());
+        yhJsGl.setCjsj(new Date());
+        yhJsGlMapper.insert(yhJsGl);
+        return true;
     }
 
     /**
      * 更新
      */
     @Override
-    public Yh update(Yh Yh) {
+    public Yh update(Yh yh) {
+
+        yhMapper.updateById(yh);
+        yhJsGlMapper.deleteByUserId(yh.getId());
+
+        return yh;
+    }
+
+    /**
+     * 级联更新
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Yh updateByYhAndJsmc(Yh Yh, Long jsid) {
         yhMapper.updateById(Yh);
+        //新增用户角色关联表
+        Long yhid = Yh.getId();
+        YhJsGl yhJsGl = new YhJsGl();
+        yhJsGl.setYhId(yhid);
+        yhJsGl.setJsId(jsid);
+        yhJsGlMapper.insert(yhJsGl);
         return Yh;
     }
 
@@ -142,7 +209,7 @@ public class YhServiceImpl implements YhService {
 
             if (StringUtils.isNotBlank(systemType)) {
 
-                redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId+ ":" + systemType, JSONUtil.toJsonStr(yhVO), RedisConstant.USER_MENU_EXPIRE_DATE, TimeUnit.DAYS);
+                redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId + ":" + systemType, JSONUtil.toJsonStr(yhVO), RedisConstant.USER_MENU_EXPIRE_DATE, TimeUnit.DAYS);
             } else {
                 redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS + userId, JSONUtil.toJsonStr(yhVO), RedisConstant.USER_MENU_EXPIRE_DATE, TimeUnit.DAYS);
             }
@@ -163,5 +230,33 @@ public class YhServiceImpl implements YhService {
             }
         });
         return treeList;
+    }
+
+    /**
+     * 列表 - 将用户dto转vo
+     */
+    private List<YhListVO> yhDTO2YhVO(List<YhDTO> yhDTOs) {
+
+        List<YhListVO> yhListVOs = Lists.newArrayList();
+
+        yhDTOs.forEach(yhDTO -> {
+
+            YhListVO yhListVO = new YhListVO();
+            BeanUtils.copyProperties(yhDTO, yhListVO);
+
+            StringBuilder builder = new StringBuilder();
+
+            if(!CollectionUtils.isEmpty(yhDTO.getYhjsmc())){
+                yhDTO.getYhjsmc().forEach(yhjsmc -> {
+                    builder.append(yhjsmc).append(",");
+                });
+
+                yhListVO.setYhjsmc(builder.substring(0, builder.length() - 1));
+            }
+
+            yhListVOs.add(yhListVO);
+        });
+
+        return yhListVOs;
     }
 }

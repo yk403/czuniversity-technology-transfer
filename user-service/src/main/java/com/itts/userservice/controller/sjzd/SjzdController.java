@@ -1,12 +1,13 @@
-package com.itts.userservice.controller.shzd;
+package com.itts.userservice.controller.sjzd;
 
 
+import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.userservice.model.shzd.Shzd;
-import com.itts.userservice.service.shzd.ShzdService;
+import com.itts.userservice.model.sjzd.Sjzd;
+import com.itts.userservice.service.sjzd.SjzdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +29,11 @@ import java.util.List;
 @Api(tags = "数字字典")
 @Slf4j
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/shzd")
-public class ShzdController {
+@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/sjzd")
+public class SjzdController {
 
     @Resource
-    private ShzdService shzdService;
+    private SjzdService sjzdService;
 
     /**
      * 通过名称或编码查询
@@ -40,18 +41,39 @@ public class ShzdController {
     @GetMapping("/queryDictionary/{string}")
     @ApiOperation(value = "通过名称或编码查询")
     public ResponseUtil getByNameAndCode(@PathVariable("string") String string) throws WebException {
-        Shzd shzd = shzdService.selectByString(string);
-        return ResponseUtil.success(shzd);
+        Sjzd sjzd = sjzdService.selectByString(string);
+        return ResponseUtil.success(sjzd);
     }
 
+    /**
+     * 获取列表
+     */
+    @GetMapping("/getlist/")
+    @ApiOperation(value = "获取列表")
+    public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        PageInfo<Sjzd> byPage = sjzdService.findByPage(pageNum, pageSize);
+        return ResponseUtil.success(byPage);
+    }
+    /**
+     * 获取指定模块列表
+     */
+    @GetMapping("/getappointlist/")
+    @ApiOperation(value = "获取指定模块列表")
+    public ResponseUtil getAppointList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                       @RequestParam(value = "ssmk") String ssmk) {
+        PageInfo<Sjzd> byPage = sjzdService.findAppointByPage(pageNum, pageSize,ssmk);
+        return ResponseUtil.success(byPage);
+    }
     /**
      * 新增
      */
     @PostMapping("/add/")
     @ApiOperation(value = "新增")
-    public ResponseUtil add(@RequestBody Shzd shzd) throws WebException {
-        checkPequest(shzd);
-        Shzd add = shzdService.add(shzd);
+    public ResponseUtil add(@RequestBody Sjzd sjzd) throws WebException {
+        checkPequest(sjzd);
+        Sjzd add = sjzdService.add(sjzd);
         return ResponseUtil.success(add);
     }
 
@@ -59,19 +81,20 @@ public class ShzdController {
      * 更新
      */
     @ApiOperation(value = "更新")
-    @PutMapping("/update/{id}")
-    public ResponseUtil update(@PathVariable("id") Long id, @RequestBody Shzd shzd) throws WebException {
+    @PutMapping("/update/")
+    public ResponseUtil update(@RequestBody Sjzd sjzd) throws WebException {
+        Long id = sjzd.getId();
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        Shzd shzd1 = shzdService.get(id);
-        if (shzd1 == null) {
+        Sjzd sjzd1 = sjzdService.get(id);
+        if (sjzd1 == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        checkPequest(shzd);
-        BeanUtils.copyProperties(shzd, shzd1, "id", "cjsj", "cjr");
-        shzdService.update(shzd1);
-        return ResponseUtil.success(shzd1);
+        checkPequest(sjzd);
+        BeanUtils.copyProperties(sjzd, sjzd1, "id", "cjsj", "cjr");
+        sjzdService.update(sjzd1);
+        return ResponseUtil.success(sjzd1);
     }
 
     /**
@@ -84,13 +107,13 @@ public class ShzdController {
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        Shzd shzd = shzdService.get(id);
-        if (shzd == null) {
+        Sjzd sjzd = sjzdService.get(id);
+        if (sjzd == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        shzd.setSfsc(false);
-        shzd.setGxsj(new Date());
-        shzdService.update(shzd);
+        sjzd.setSfsc(true);
+        sjzd.setGxsj(new Date());
+        sjzdService.update(sjzd);
         return ResponseUtil.success();
     }
 
@@ -105,13 +128,13 @@ public class ShzdController {
         }
 
         for (int i = 0; i < ids.size(); i++) {
-            Shzd shzd = shzdService.get(ids.get(i));
-            if (shzd == null) {
+            Sjzd sjzd = sjzdService.get(ids.get(i));
+            if (sjzd == null) {
                 log.error("【数据字典-批量删除】数据字典不存在");
             }
-            shzd.setSfsc(false);
-            shzd.setGxsj(new Date());
-            shzdService.update(shzd);
+            sjzd.setSfsc(true);
+            sjzd.setGxsj(new Date());
+            sjzdService.update(sjzd);
         }
         return ResponseUtil.success();
     }
@@ -119,9 +142,9 @@ public class ShzdController {
     /**
      * 校验参数是否合法
      */
-    private void checkPequest(Shzd shzd) throws WebException {
+    private void checkPequest(Sjzd sjzd) throws WebException {
         //如果参数为空，抛出异常
-        if (shzd == null) {
+        if (sjzd == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }

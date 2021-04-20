@@ -3,12 +3,14 @@ package com.itts.userservice.service.jggl.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.userservice.common.UserServiceCommon;
 import com.itts.userservice.dto.JgglDTO;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.service.jggl.JgglService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.userservice.vo.JgglVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,20 +32,21 @@ public class JgglServiceImpl implements JgglService {
     private JgglMapper jgglMapper;
 
     /**
-     * 获取分页
+     * 获取指定分页
      * @param pageNum
      * @param pageSize
      * @return
      */
     @Override
-    public PageInfo<Jggl> findByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<Jggl> findByPage(Integer pageNum, Integer pageSize,String jgbm) {
+        if(jgbm!=null){
+            String cj = jgglMapper.selectByCode(jgbm).getCj();
+            jgbm=cj;
+        }
         PageHelper.startPage(pageNum,pageSize);
-        QueryWrapper<Jggl> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.eq("sfsc",false);
-
-        List<Jggl> jggls = jgglMapper.selectList(objectQueryWrapper);
-        PageInfo<Jggl> jgglPageInfo = new PageInfo<>(jggls);
-        return jgglPageInfo;
+        List<Jggl> list = jgglMapper.findThisAndChildByCode(jgbm);
+        PageInfo<Jggl> pageInfo = new PageInfo<>(list);
+        return pageInfo;
     }
 
     /**
@@ -51,11 +54,17 @@ public class JgglServiceImpl implements JgglService {
      * @return
      */
     @Override
-    public List<JgglVO> findJgglVO() {
+    public List<JgglVO> findJgglVO(String jgbm) {
+
+        if(StringUtils.isBlank(jgbm)){
+            jgbm = UserServiceCommon.GROUP_SUPER_PARENT_CODE;
+        }
+
         //获取所有机构
         List<JgglVO> jgglVOS = jgglMapper.selectJggl();
+
         //获取机构树
-        List<JgglVO> jgglVOList=buildJgglVOTree(jgglVOS,"000");
+        List<JgglVO> jgglVOList=buildJgglVOTree(jgglVOS,jgbm);
         return jgglVOList;
     }
     /**
@@ -73,7 +82,7 @@ public class JgglServiceImpl implements JgglService {
     private List<JgglVO> buildJgglVOTree(List<JgglVO> jgglVOS,String fatherCode){
         List<JgglVO> treeList = new ArrayList<>();
         jgglVOS.forEach(jgglVO -> {
-            if(jgglVO.getFatherCode().equals(fatherCode)){
+            if(jgglVO.getFjbm().equals(fatherCode)){
                 jgglVO.setJgglVOList(buildJgglVOTree(jgglVOS,jgglVO.getJgbm()));
                 treeList.add(jgglVO);
             }
@@ -83,8 +92,20 @@ public class JgglServiceImpl implements JgglService {
 
     @Override
     public Jggl get(Long id) {
-        Jggl jggl = jgglMapper.selectById(id);
+        QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
+        jgglQueryWrapper.eq("sfsc",false)
+        .eq("id",id);
+        Jggl jggl = jgglMapper.selectOne(jgglQueryWrapper);
         return jggl;
+    }
+
+    @Override
+    public List<Jggl> getList(String cj) {
+        QueryWrapper<Jggl> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.likeLeft("cj",cj)
+                .eq("sfsc",false);
+        List<Jggl> jggls = jgglMapper.selectList(objectQueryWrapper);
+        return jggls;
     }
 
     /**

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 @Api(tags = "Excel导入")
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/userService/excel")
+@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/userService/excel")
 @Slf4j
 public class ExcelController {
     @Autowired

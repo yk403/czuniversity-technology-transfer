@@ -13,6 +13,11 @@ public class RedisConstant {
     public static final Long EXPIRE_DATE = 1000L * 60 * 15;
 
     /**
+     * token默认过去时间
+     */
+    public static final Long TOKEN_EXPIRE_DATE = 1000L * 60 * 60 * 24 * 7;
+
+    /**
      * 用户菜单缓存过期时间(3天)
      */
     public static final Long USER_MENU_EXPIRE_DATE = 3L;

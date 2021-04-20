@@ -1,11 +1,11 @@
-package com.itts.userservice.model.shzd;
+package com.itts.userservice.model.sjzd;
 
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
-import com.itts.userservice.dto.ShzdDTO;
-import com.itts.userservice.mapper.shzd.ShzdMapper;
+import com.itts.userservice.dto.SjzdDTO;
+import com.itts.userservice.mapper.sjzd.SjzdMapper;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -18,37 +18,46 @@ import javax.annotation.Resource;
 @Slf4j
 @Data
 @Component
-public class ShzdListener extends AnalysisEventListener<ShzdDTO> {
+public class SjzdListener extends AnalysisEventListener<SjzdDTO> {
     private StringBuilder result=new StringBuilder();
     private Integer count=0;
     @Resource
-    private ShzdMapper shzdMapper;
-    public static ShzdListener shzdListener;
+    private SjzdMapper sjzdMapper;
+    public static SjzdListener sjzdListener;
 
     @PostConstruct
     public void init(){
-        shzdListener=this;
+        sjzdListener =this;
     }
     @SneakyThrows
     @Override
-    public void invoke(ShzdDTO data, AnalysisContext context) {
+    public void invoke(SjzdDTO data, AnalysisContext context) {
         ReadRowHolder readRowHolder = context.readRowHolder();
         int rowIndex=readRowHolder.getRowIndex()+1;
         log.info("解析第"+rowIndex+"行数据：{}", JSON.toJSONString(data));
-        Shzd shzd = new Shzd();
+        Sjzd sjzd = new Sjzd();
         if(!StringUtils.isBlank(data.getZdmc())){
-            shzd.setZdmc(data.getZdmc());
+            sjzd.setZdmc(data.getZdmc());
         }
         if(!StringUtils.isBlank(data.getZdbm())){
-            shzd.setZdbm(data.getZdbm());
+            sjzd.setZdbm(data.getZdbm());
         }
-        if(!StringUtils.isBlank(data.getFjzdCode())){
-            shzd.setFjzdCode(data.getFjzdCode());
+        if(!StringUtils.isBlank(data.getFjzdbm())){
+            sjzd.setFjzdbm(data.getFjzdbm());
         }
         if(!StringUtils.isBlank(data.getZdcj())){
-            shzd.setZdcj(data.getZdcj());
+            sjzd.setZdcj(data.getZdcj());
         }
-        save(shzd);
+        if(!StringUtils.isBlank(data.getXtlb())){
+            sjzd.setXtlb(data.getXtlb());
+        }
+        if(!StringUtils.isBlank(data.getMklx())){
+            sjzd.setMklx(data.getMklx());
+        }
+        if(!StringUtils.isBlank(data.getSsmk())){
+            sjzd.setSsmk(data.getXtlb());
+        }
+        save(sjzd);
     }
 
     @Override
@@ -63,18 +72,18 @@ public class ShzdListener extends AnalysisEventListener<ShzdDTO> {
         System.out.println("helloTwo");
         throw exception;
     }
-    private void save(Shzd shzd){
-        Shzd shzd1 = shzdMapper.selectByCode(shzd.getZdbm());
-        if(shzd1!=null){
-            shzd.setId(shzd1.getId());
+    private void save(Sjzd sjzd){
+        Sjzd sjzd1 = sjzdMapper.selectByCode(sjzd.getZdbm());
+        if(sjzd1 !=null){
+            sjzd.setId(sjzd1.getId());
             try {
-                shzdMapper.updateById(shzd);
+                sjzdMapper.updateById(sjzd);
                 count++;
             }catch (Exception e){
                 log.info(e.getMessage());
             }
         }else{
-            shzdMapper.insert(shzd);
+            sjzdMapper.insert(sjzd);
             count++;
         }
     }

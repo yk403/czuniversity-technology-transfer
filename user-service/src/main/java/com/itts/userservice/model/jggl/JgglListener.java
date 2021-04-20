@@ -49,16 +49,16 @@ public class JgglListener extends AnalysisEventListener<JgglDTO> {
             jggl.setJgbm(data.getJgbm());
         }
         //机构类别code
-        if(!StringUtils.isBlank(data.getJglbCode())){
-            jggl.setJglbCode(data.getJglbCode());
+        if(!StringUtils.isBlank(data.getJglbbm())){
+            jggl.setJglbbm(data.getJglbbm());
         }
         //机构类别
         if(!StringUtils.isBlank(data.getJglb())){
             jggl.setJglb(data.getJglb());
         }
         //父机构code
-        if (!StringUtils.isBlank(data.getFatherCode())){
-            jggl.setFatherCode(data.getFatherCode());
+        if (!StringUtils.isBlank(data.getFjbm())){
+            jggl.setFjbm(data.getFjbm());
         }
         //菜单code层级, 以“-”分隔
         if(!StringUtils.isBlank(data.getCj())){

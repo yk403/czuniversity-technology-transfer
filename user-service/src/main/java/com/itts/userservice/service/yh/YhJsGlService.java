@@ -1,5 +1,7 @@
 package com.itts.userservice.service.yh;
 
+import com.itts.userservice.model.yh.YhJsGl;
+
 /**
  * <p>
  * 用户角色关联表 服务类

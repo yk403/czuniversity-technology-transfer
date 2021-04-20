@@ -45,6 +45,11 @@ public class YhVO implements Serializable {
     private String lxdh;
 
     /**
+     * 用户邮箱
+     */
+    private String yhyx;
+
+    /**
      * 用户类型
      */
     private String yhlx;
