@@ -14,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
  * <p>
@@ -108,8 +108,8 @@ public class KcController {
      * @return
      * @throws WebException
      */
-    @ApiOperation(value = "删除课程")
     @DeleteMapping("/delete/{id}")
+    @ApiOperation(value = "删除课程")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
         //检查参数是否为空
         if (id == null) {
@@ -126,6 +126,19 @@ public class KcController {
         return ResponseUtil.success("删除课程成功!");
     }
 
+    /**
+     * 课程批量下发
+     * @param ids
+     * @return
+     */
+    @PutMapping("/update/issueBatch")
+    @ApiOperation(value = "课程批量下发")
+    public ResponseUtil issueBatch(@RequestBody List<Long> ids) {
+        if (!kcService.issueBatch(ids)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("课程统一下发成功!");
+    }
     /**
      * 校验参数
      */

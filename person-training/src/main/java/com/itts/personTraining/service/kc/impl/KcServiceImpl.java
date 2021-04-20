@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.jcajce.BCFKSStoreParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -32,6 +33,7 @@ import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
  */
 @Service
 @Slf4j
+@Transactional
 public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcService {
 
     @Resource
@@ -72,6 +74,21 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         kcQueryWrapper.eq("sczt",false)
                       .eq("id",id);
         return kcMapper.selectOne(kcQueryWrapper);
+    }
+
+    /**
+     * 课程批量下发
+     * @param ids
+     * @return
+     */
+    @Override
+    public boolean issueBatch(List<Long> ids) {
+        log.info("【人才培养 - 课程批量下发,ids:{}】",ids);
+        List<Kc> kcs = kcMapper.selectBatchIds(ids);
+        for (Kc kc : kcs) {
+            kc.setXfzt(true);
+        }
+        return kcService.updateBatchById(kcs);
     }
 
     /**

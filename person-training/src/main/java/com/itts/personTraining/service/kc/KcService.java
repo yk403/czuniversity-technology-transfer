@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.model.kc.Kc;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 课程表 服务类
@@ -38,4 +40,12 @@ public interface KcService extends IService<Kc> {
     boolean update(Kc kc);
 
     Kc get(Long id);
+
+    /**
+     * 课程批量下发
+     * @param ids
+     * @return
+     */
+    boolean issueBatch(List<Long> ids);
+
 }
