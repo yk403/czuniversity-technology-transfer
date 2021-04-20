@@ -29,7 +29,7 @@ public interface SjzdService {
     /**
      * 查询，通过名称或编码
      */
-    Sjzd selectByString(String string);
+    Sjzd selectByString(Integer pageNum, Integer pageSize,String string,String ssmk);
     /**
      * 新增
      */
