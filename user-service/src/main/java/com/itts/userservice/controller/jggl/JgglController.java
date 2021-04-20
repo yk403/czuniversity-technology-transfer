@@ -168,13 +168,14 @@ public class JgglController {
         List<Jggl> list = jgglService.getList(cjold);
         //获取父级机构的层级
         String fjbm = jggl.getFjbm();
+        Jggl fatherGroup = jgglService.selectByJgbm(fjbm);
+        String cj = fatherGroup.getCj();
 
         BeanUtils.copyProperties(jggl, group, "id", "cjsj", "cjr");
 
         if (!Objects.equals(fjbm, UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
 
-            Jggl fatherGroup = jgglService.selectByJgbm(fjbm);
-            String cj = fatherGroup.getCj();
+
             //生成层级
 
             if(list!=null){
@@ -182,7 +183,7 @@ public class JgglController {
                     if(cjold==Jggl.getCj()){
                         return;
                     }
-                    Jggl.setCj(Jggl.getCj().replace(cjold, jggl.getCj()));
+                    Jggl.setCj(Jggl.getCj().replace(cjold, fatherGroup.getCj()));
                     jgglService.update(Jggl);
                 });
             }
@@ -198,7 +199,7 @@ public class JgglController {
                     if(cjold==Jggl.getCj()){
                         return;
                     }
-                    Jggl.setCj(Jggl.getCj().replace(cjold, jggl.getJgbm()));
+                    Jggl.setCj(Jggl.getCj().replace(cjold, fatherGroup.getCj()));
                     jgglService.update(Jggl);
                 });
             }

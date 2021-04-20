@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -119,6 +120,7 @@ public class YhServiceImpl implements YhService {
         Long id1 = Yh.getId();
         Yh yh = yhMapper.selectById(id1);
         if (yh == null) {
+            Yh.setMm(new BCryptPasswordEncoder().encode(Yh.getMm()));
             Yh.setCjsj(new Date());
             Yh.setGxsj(new Date());
             yhMapper.insert(Yh);
