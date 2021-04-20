@@ -18,7 +18,7 @@ import java.util.List;
  * 批次表 服务实现类
  * </p>
  *
- * @author Austin
+ * @author FL
  * @since 2021-04-20
  */
 @Service
@@ -50,6 +50,12 @@ public class PcServiceImpl implements PcService {
     }
 
     @Override
+    public List<Pc> getList(List<Long> ids) {
+        List<Pc> pcs = pcMapper.selectPcList(ids);
+        return pcs;
+    }
+
+    @Override
     public Pc add(Pc pc) {
         pc.setCjsj(new Date());
         pc.setGxsj(new Date());
@@ -62,5 +68,11 @@ public class PcServiceImpl implements PcService {
         pc.setGxsj(new Date());
         int i = pcMapper.updateById(pc);
         return pc;
+    }
+
+    @Override
+    public Boolean updateBatch(List<Long> ids) {
+        Boolean aBoolean = pcMapper.updatePcList(ids);
+        return aBoolean;
     }
 }

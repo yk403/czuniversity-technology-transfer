@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -87,6 +88,15 @@ public class PcController {
     /**
      * 批量删除
      */
+    @ApiOperation(value = "批量删除")
+    @DeleteMapping("/deleteBatch/")
+    public ResponseUtil deleteBatch(@RequestBody List ids)throws WebException{
+        if(ids==null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        Boolean aBoolean = pcService.updateBatch(ids);
+        return ResponseUtil.success(aBoolean);
+    }
     /**
      * 校验参数是否合法
      */

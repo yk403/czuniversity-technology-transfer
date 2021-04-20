@@ -21,4 +21,22 @@
         id, pcmc, pch, pclx, sczt, pcnf, cjsj, cjr, gxsj, gxr
     </sql>
 
+    <select id="selectPcList">
+        select * from t_pc
+        where sczt = false
+        and id in
+        <foreach collection="list" open="(" close=")" separator="," item="ids">
+             #{ids}
+        </foreach>
+
+    </select>
+
+    <update id="updatePcList"  parameterType="java.util.List">
+        update sczt =true
+        from t_pc
+        where id in
+        <foreach collection="list" open="(" close=")" separator="," item="ids">
+            #{ids}
+        </foreach>
+    </update>
 </mapper>
