@@ -8,9 +8,11 @@ import com.itts.common.exception.WebException;
 import com.itts.userservice.model.sjzd.Sjzd;
 import com.itts.userservice.mapper.sjzd.SjzdMapper;
 import com.itts.userservice.service.sjzd.SjzdService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -59,24 +61,27 @@ public class SjzdServiceImpl implements SjzdService {
         return sjzd;
     }
 
-    /**
-     * 通过名称或编码查询
-     * @param string
-     * @return
-     */
     @Override
-    public Sjzd selectByString(String string) {
-        Sjzd sjzd = sjzdMapper.selectByCode(string);
-        if(sjzd ==null){
-            Sjzd sjzd1 = sjzdMapper.selectByName(string);
-            if(sjzd1 ==null){
-                throw new WebException((ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR));
-            }else{
-                return sjzd1;
-            }
-        }
-        return sjzd;
+    public Sjzd selectByString(Integer pageNum, Integer pageSize, String string, String ssmk) {
+        PageHelper.startPage(pageNum,pageSize);
+        QueryWrapper<Sjzd> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.eq("sfsc",false)
+                .eq("ssmk",ssmk)
+        .eq("zdmc",string);
+        List<Sjzd> sjzds = sjzdMapper.selectList(objectQueryWrapper);
+        PageHelper.startPage(pageNum,pageSize);
+        QueryWrapper<Sjzd> QueryWrapper = new QueryWrapper<>();
+        QueryWrapper.eq("sfsc",false)
+                .eq("ssmk",ssmk)
+                .eq("zdbm",string);
+        List<Sjzd> sjzdList = sjzdMapper.selectList(objectQueryWrapper);
+        sjzds.remove(sjzdList);
+        sjzds.addAll(sjzdList);
+        PageInfo<Sjzd> shzdPageInfo = new PageInfo<>(sjzds);
+        return null;
     }
+
+
 
     @Override
     public Sjzd add(Sjzd sjzd) {
