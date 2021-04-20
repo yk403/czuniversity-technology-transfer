@@ -3,7 +3,7 @@
 <mapper namespace="com.itts.personTraining.mapper.SzMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.Sz">
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.sz.Sz">
         <id column="id" property="id" />
         <result column="dsbh" property="dsbh" />
         <result column="dsxm" property="dsxm" />

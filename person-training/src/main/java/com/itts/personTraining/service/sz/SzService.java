@@ -1,6 +1,6 @@
 package com.itts.personTraining.service.sz;
 
-import com.itts.personTraining.model.Sz;
+import com.itts.personTraining.model.sz.Sz;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

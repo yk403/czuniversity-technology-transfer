@@ -1,6 +1,6 @@
 package com.itts.personTraining.mapper.sz;
 
-import com.itts.personTraining.model.Sz;
+import com.itts.personTraining.model.sz.Sz;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
