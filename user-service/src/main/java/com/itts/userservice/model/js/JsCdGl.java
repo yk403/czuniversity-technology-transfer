@@ -1,29 +1,35 @@
 package com.itts.userservice.model.js;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.baomidou.mybatisplus.annotation.IdType;
+
+import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serializable;
-import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * <p>
  * 角色菜单关联表
  * </p>
  *
- * @author fl
- * @since 2021-03-24
+ * @author liuyingming
+ * @since 2021-04-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_js_cd_gl")
+@ApiModel("角色菜单关联对象")
 public class JsCdGl implements Serializable {
 
-    private static final long serialVersionUID = 4442108911293553197L;
+    private static final long serialVersionUID = 4003552737366481443L;
 
     /**
      * 主键ID
@@ -34,39 +40,38 @@ public class JsCdGl implements Serializable {
     /**
      * 角色ID
      */
+    @ApiModelProperty(value = "角色ID", required = true)
     private Long jsId;
 
     /**
      * 菜单ID
      */
+    @ApiModelProperty(value = "菜单ID", required = true)
     private Long cdId;
-
-    /**
-     * 是否删除
-     */
-    private Boolean sfsc;
 
     /**
      * 创建时间
      */
+    @ApiModelProperty("创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
      * 创建人
      */
+    @ApiModelProperty("创建人")
     private Long cjr;
 
     /**
      * 更新时间
      */
+    @ApiModelProperty("更新时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**
      * 更新人
      */
+    @ApiModelProperty("更新人")
     private Long gxr;
-
-
 }

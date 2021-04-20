@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -34,47 +35,62 @@ public class Yh implements Serializable {
     /**
      * 用户名
      */
+    @ApiModelProperty(value = "用户名",required = true)
     private String yhm;
 
     /**
      * 密码
      */
+    @ApiModelProperty(value = "密码",required = true)
     private String mm;
 
     /**
      * 用户编号
      */
+    @ApiModelProperty(value = "用户编号",required = true)
     private String yhbh;
 
     /**
      * 真实姓名
      */
+    @ApiModelProperty(value = "真实姓名",required = true)
     private String zsxm;
 
     /**
      * 联系电话
      */
+    @ApiModelProperty(value = "联系电话",required = true)
     private String lxdh;
 
     /**
      * 用户头像
      */
+    @ApiModelProperty(value = "用户头像",required = true)
     private String yhtx;
 
     /**
      * 用户类型
      */
+    @ApiModelProperty(value = "用户类型",required = true)
     private String yhlx;
 
     /**
      * 用户级别
      */
+    @ApiModelProperty(value = "用户级别",required = true)
     private String yhjb;
 
     /**
      * 机构ID
      */
+    @ApiModelProperty(value = "机构ID",required = true)
     private Long jgId;
+
+    /**
+     * 用户邮箱
+     */
+    @ApiModelProperty(value = "用户邮箱",required = true)
+    private String yhyx;
 
     /**
      * 是否删除

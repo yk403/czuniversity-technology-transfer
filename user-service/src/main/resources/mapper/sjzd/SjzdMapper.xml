@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itts.userservice.mapper.shzd.ShzdMapper">
+<mapper namespace="com.itts.userservice.mapper.sjzd.SjzdMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.itts.userservice.model.shzd.Shzd">
+    <resultMap id="BaseResultMap" type="com.itts.userservice.model.sjzd.Sjzd">
         <id column="id" property="id" />
         <result column="zdmc" property="zdmc" />
         <result column="zdbm" property="zdbm" />
-        <result column="fjzd_code" property="fjzdCode" />
+        <result column="fjzdbm" property="fjzdbm" />
         <result column="zdcj" property="zdcj" />
+        <result column="xtlb" property="xtlb" />
+        <result column="mklx" property="mklx" />
+        <result column="ssmk" property="ssmk" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
@@ -18,22 +21,26 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, zdmc, zdbm, fjzd_code, zdcj, sfsc, cjsj, cjr, gxsj, gxr
+        id, zdmc, zdbm, fjzdbm, zdcj,xtlb,mklx,ssmk, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="selectByName" resultMap="BaseResultMap">
-        select * from t_shzd where zdmc= #{zdmc}
+        select * from t_sjzd where zdmc= #{zdmc} and sfsc =false
     </select>
     <select id="selectByCode" resultMap="BaseResultMap">
-        select * from t_shzd where zdbm= #{zdbm}
+        select * from t_sjzd where zdbm= #{zdbm} and sfsc = false
     </select>
 
-    <select id="selectShzd" resultType="com.itts.userservice.vo.ShzdVO">
+    <select id="selectSjzd" resultType="com.itts.userservice.vo.SjzdVO">
         select zdmc as zdmc,
                zdbm as zdbm,
-               fjzd_code as fjzdCode,
+               fjzdbm as fjzdbm,
                zdcj as zdcj,
-               cjsj ad cjsj
-        from t_shzd
+               xtlb as xtlb,
+               mklx as mklx,
+               ssmk as ssmk,
+               cjsj as cjsj
+        from t_sjzd
+        where sfsc = false
     </select>
 </mapper>

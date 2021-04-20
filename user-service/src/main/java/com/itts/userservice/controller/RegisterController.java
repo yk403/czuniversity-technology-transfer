@@ -60,7 +60,7 @@ public class RegisterController {
         }
 
         //获取门户系统默认角色
-        List<Js> jsList = jsService.findBySystemTypeAndDefault(request.getSystemType(), true);
+        List<Js> jsList = jsService.findByUserTypeAndDefault(request.getUserType(), true);
         if (CollectionUtils.isEmpty(jsList)) {
             throw new WebException(ErrorCodeEnum.REGISTER_DEFAULT_ROLE_NOT_FIND_ERROR);
         }
@@ -88,7 +88,7 @@ public class RegisterController {
             throw new WebException(ErrorCodeEnum.REGISTER_USERNAME_PARAMS_ILLEGAL_ERROR);
         }
 
-        if (StringUtils.isBlank(request.getSystemType())) {
+        if (StringUtils.isBlank(request.getUserType())) {
             throw new WebException(ErrorCodeEnum.REGISTER_SYSTEM_TYPE_PARAMS_ILLEGAL_ERROR);
         }
     }

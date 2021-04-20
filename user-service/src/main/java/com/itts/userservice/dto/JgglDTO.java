@@ -35,7 +35,7 @@ public class JgglDTO implements Serializable {
      * 机构类别code
      */
     @ExcelProperty(value = "机构类别code",index = 2)
-    private String jglbCode;
+    private String jglbbm;
 
     /**
      * 机构类别
@@ -47,7 +47,7 @@ public class JgglDTO implements Serializable {
      * 父机构code
      */
     @ExcelProperty(value = "父机构code",index = 4)
-    private String fatherCode;
+    private String fjbm;
 
     /**
      * 菜单code层级, 以“-”分隔

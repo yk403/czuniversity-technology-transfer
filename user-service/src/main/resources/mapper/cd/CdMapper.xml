@@ -4,23 +4,25 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.userservice.model.cd.Cd">
-        <id column="id" property="id" />
-        <result column="cdmc" property="cdmc" />
-        <result column="cdbm" property="cdbm" />
-        <result column="cdtb" property="cdtb" />
-        <result column="fjcd_id" property="fjcdId" />
-        <result column="cj" property="cj" />
-        <result column="cddz" property="cddz" />
-        <result column="sfsc" property="sfsc" />
-        <result column="cjsj" property="cjsj" />
-        <result column="cjr" property="cjr" />
-        <result column="gxsj" property="gxsj" />
-        <result column="gxr" property="gxr" />
+        <id column="id" property="id"/>
+        <result column="cdmc" property="cdmc"/>
+        <result column="cdbm" property="cdbm"/>
+        <result column="cdtb" property="cdtb"/>
+        <result column="fjcd_id" property="fjcdId"/>
+        <result column="cj" property="cj"/>
+        <result column="cddz" property="cddz"/>
+        <result column="xtlx" property="xtlx"/>
+        <result column="mklx" property="mklx"/>
+        <result column="sfsc" property="sfsc"/>
+        <result column="cjsj" property="cjsj"/>
+        <result column="cjr" property="cjr"/>
+        <result column="gxsj" property="gxsj"/>
+        <result column="gxr" property="gxr"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, cdmc, cdbm, cdtb, fjcd_id, cj, cddz, sfsc, cjsj, cjr, gxsj, gxr
+        id
+        , cdmc, cdbm, cdtb, fjcd_id, cj, cddz, xtlx, mklx, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
-
 </mapper>
