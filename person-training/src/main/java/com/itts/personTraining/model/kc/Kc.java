@@ -95,6 +95,36 @@ public class Kc implements Serializable {
     private String skfs;
 
     /**
+     * 教学讲义
+     */
+    private String jxjy;
+
+    /**
+     * 教材附件
+     */
+    private String jcfj;
+
+    /**
+     * 课件
+     */
+    private String kj;
+
+    /**
+     * 讲案
+     */
+    private String ja;
+
+    /**
+     * 课件视频
+     */
+    private String kjsp;
+
+    /**
+     * 视频
+     */
+    private String sp;
+
+    /**
      * 是否必修(0:否;1:是)
      */
     private Boolean sfbx;
