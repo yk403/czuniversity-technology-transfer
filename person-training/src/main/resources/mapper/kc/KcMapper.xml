@@ -3,7 +3,7 @@
 <mapper namespace="com.itts.personTraining.kc.mapper.KcMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.itts.personTraining.kc.model.Kc">
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.kc.Kc">
         <id column="id" property="id" />
         <result column="js_id" property="jsId" />
         <result column="lb" property="lb" />

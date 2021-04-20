@@ -1,6 +1,6 @@
 package com.itts.personTraining.service.pc.impl;
 
-import com.itts.personTraining.model.Pc;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.service.pc.PcService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

@@ -1,6 +1,6 @@
 package com.itts.personTraining.mapper.xs;
 
-import com.itts.personTraining.model.Xs;
+import com.itts.personTraining.model.xs.Xs;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

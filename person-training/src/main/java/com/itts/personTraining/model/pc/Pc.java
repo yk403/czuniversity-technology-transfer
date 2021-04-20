@@ -1,4 +1,4 @@
-package com.itts.personTraining.model;
+package com.itts.personTraining.model.pc;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;

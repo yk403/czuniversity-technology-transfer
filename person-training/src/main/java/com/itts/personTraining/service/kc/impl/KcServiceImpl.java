@@ -1,6 +1,6 @@
 package com.itts.personTraining.service.kc.impl;
 
-import com.itts.personTraining.model.Kc;
+import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.service.kc.KcService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

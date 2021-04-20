@@ -3,7 +3,7 @@
 <mapper namespace="com.itts.personTraining.mapper.XsMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.Xs">
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.xs.Xs">
         <id column="id" property="id" />
         <result column="xh" property="xh" />
         <result column="xm" property="xm" />
