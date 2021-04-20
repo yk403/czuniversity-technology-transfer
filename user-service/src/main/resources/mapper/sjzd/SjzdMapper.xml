@@ -23,7 +23,9 @@
     <sql id="Base_Column_List">
         id, zdmc, zdbm, fjzdbm, zdcj,xtlb,mklx,ssmk, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
-
+    <select id="selectByCode" resultMap="BaseResultMap">
+        select * from t_sjzd where zdbm= #{zdbm} and sfsc = false
+    </select>
 
 
     <select id="selectSjzd" resultType="com.itts.userservice.vo.SjzdVO">
