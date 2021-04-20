@@ -4,10 +4,10 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsBmMapper">
 
     <select id="list" resultType="com.itts.technologytransactionservice.model.TJsBm">
-        select id,dwmc,dz,fr,cjsj,gxsj,jgdm,lxr,sjhm,gszz,bzj,sjfa,zbwj,is_delete,hd_id
+        select bm.id,dwmc,dz,fr,bm.cjsj,bm.gxsj,jgdm,lxr,sjhm,gszz,bzj,sjfa,zbwj,bm.is_delete,hd_id,hd.hdmc as hdmc,shzt,hdlx,hdzt
         from t_js_bm bm left join t_js_hd hd on( bm.hd_id = hd.id )
         <where>
-            bm.is_delete == 0
+            bm.is_delete = 0
             <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
             <if test="map.dwmc != null and map.dwmc != ''"> and dwmc = #{map.dwmc} </if>
             <if test="map.dz != null and map.dz != ''"> and dz = #{map.dz} </if>
@@ -19,14 +19,18 @@
             <if test="map.bzj != null and map.bzj != ''"> and bzj = #{map.bzj} </if>
             <if test="map.sjfa != null and map.sjfa != ''"> and sjfa = #{map.sjfa} </if>
             <if test="map.zbwj != null and map.zbwj != ''"> and zbwj = #{map.zbwj} </if>
+            <if test="map.shzt != null and map.shzt != ''"> and shzt = #{map.shzt} </if>
             <if test="map.hdId != null and map.hdId != ''"> and hd_id = #{map.hdId} </if>
+            <if test="map.hdmc != null and map.hdmc != ''"> and hd.hdmc = #{map.hdmc} </if>
+            <if test="map.hdzt != null and map.hdzt != ''"> and hd.hdzt = #{map.hdzt} </if>
+            <if test="map.hdlx != null and map.hdlx != ''"> and hd.hdlx = #{map.hdlx} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
                 order by ${map.sort} ${map.order}
             </when>
             <otherwise>
-                order by id asc
+                order by id desc
             </otherwise>
         </choose>
     </select>

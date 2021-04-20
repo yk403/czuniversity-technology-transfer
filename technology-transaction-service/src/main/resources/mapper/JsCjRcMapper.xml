@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itts.technologytransactionservice.mapper.JsCjRcMapper">
+
+    <select id="list" resultType="com.itts.technologytransactionservice.model.TJsCjRc">
+    select rc.id,rc.cjsj,rc.gxsj,jjsj,jjje,bm_id,cg_id,xq_id,ppmc,cjf,is_delete
+    from t_js_cj_rc rc
+        <if test="map.type == 0">left join t_js_xq xq on( xq.id = rc.xq_id )</if>
+        <if test="map.type == 1">left join t_js_cg cg on( cg.id = rc.cg_id )</if>
+    <where>
+        rc.is_delete = 0
+        <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
+        <if test="map.jjsj != null and map.jjsj != ''"> and jjsj = #{map.jjsj} </if>
+        <if test="map.jjje != null and map.jjje != ''"> and jjje = #{map.jjje} </if>
+        <if test="map.bmId != null and map.bmId != ''"> and bm_id = #{map.bmId} </if>
+        <if test="map.cgId != null and map.cgId != ''"> and cg_id = #{map.cgId} </if>
+        <if test="map.xqId != null and map.xqId != ''"> and xq_id = #{map.xqId} </if>
+        <if test="map.ppmc != null and map.ppmc != ''"> and ppmc = #{map.ppmc} </if>
+        <if test="map.cjf != null and map.cjf != ''"> and cjf = #{map.cjf} </if>
+    </where>
+    <choose>
+        <when test="map.sort != null and map.sort.trim() != ''">
+            order by ${map.sort} ${map.order}
+        </when>
+        <otherwise>
+            order by id desc
+        </otherwise>
+    </choose>
+</select>
+
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itts.technologytransactionservice.mapper.JsLcKzMapper">
+
+    <select id="list" resultType="com.itts.technologytransactionservice.model.TJsLcKz">
+    select kz.id,kz.cjsj,kz.gxsj,lcsj,kz.hdzt,dqzgjg,fdjg,jjjgzt,lcdj,cg_id,xq_id
+    from t_js_lc_kz kz
+        <if test="map.type == 0">left join t_js_xq xq on( xq.id = kz.xq_id )</if>
+        <if test="map.type == 1">left join t_js_cg cg on( cg.id = kz.cg_id )</if>
+    <where>
+        kz.is_delete = 0
+        <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
+        <if test="map.cjsj != null and map.cjsj != ''"> and cjsj = #{map.cjsj} </if>
+        <if test="map.gxsj != null and map.gxsj != ''"> and gxsj = #{map.gxsj} </if>
+        <if test="map.lcsj != null and map.lcsj != ''"> and lcsj = #{map.lcsj} </if>
+        <if test="map.hdzt != null and map.hdzt != ''"> and hdzt = #{map.hdzt} </if>
+        <if test="map.xqId != null and map.xqId != ''"> and xq_id = #{map.xqId} </if>
+        <if test="map.cgId != null and map.cgId != ''"> and cg_id = #{map.cgId} </if>
+        <if test="map.lcdj != null and map.lcdj != ''"> and lcdj = #{map.lcdj} </if>
+        <if test="map.jjjgzt != null and map.jjjgzt != ''"> and jjjgzt = #{map.jjjgzt} </if>
+        <if test="map.fdjg != null and map.fdjg != ''"> and fdjg = #{map.fdjg} </if>
+        <if test="map.dqzgjg != null and map.dqzgjg != ''"> and dqzgjg = #{map.dqzgjg} </if>
+    </where>
+    <choose>
+        <when test="map.sort != null and map.sort.trim() != ''">
+            order by ${map.sort} ${map.order}
+        </when>
+        <otherwise>
+            order by id desc
+        </otherwise>
+    </choose>
+</select>
+
+</mapper>
