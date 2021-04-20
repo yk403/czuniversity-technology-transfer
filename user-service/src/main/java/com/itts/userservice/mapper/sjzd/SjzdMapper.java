@@ -16,8 +16,7 @@ import java.util.List;
  */
 public interface SjzdMapper extends BaseMapper<Sjzd> {
 
-    Sjzd selectByName(String zdmc);
-    Sjzd selectByCode(String zdbm);
+    List<Sjzd> selectByNameOrCode(String string,String ssmk);
 
     List<SjzdVO> selectSjzd();
 }

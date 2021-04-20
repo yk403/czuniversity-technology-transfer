@@ -63,21 +63,10 @@ public class SjzdServiceImpl implements SjzdService {
 
     @Override
     public PageInfo<Sjzd> selectByString(Integer pageNum, Integer pageSize, String string, String ssmk) {
+
         PageHelper.startPage(pageNum,pageSize);
-        QueryWrapper<Sjzd> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.eq("sfsc",false)
-                .eq("ssmk",ssmk)
-        .eq("zdmc",string);
-        List<Sjzd> sjzds = sjzdMapper.selectList(objectQueryWrapper);
-        PageHelper.startPage(pageNum,pageSize);
-        QueryWrapper<Sjzd> QueryWrapper = new QueryWrapper<>();
-        QueryWrapper.eq("sfsc",false)
-                .eq("ssmk",ssmk)
-                .eq("zdbm",string);
-        List<Sjzd> sjzdList = sjzdMapper.selectList(objectQueryWrapper);
-        sjzds.remove(sjzdList);
-        sjzds.addAll(sjzdList);
-        PageInfo<Sjzd> shzdPageInfo = new PageInfo<>(sjzds);
+        List<Sjzd> sjzdList = sjzdMapper.selectByNameOrCode(string, ssmk);
+        PageInfo<Sjzd> shzdPageInfo = new PageInfo<>(sjzdList);
         return shzdPageInfo;
     }
 
