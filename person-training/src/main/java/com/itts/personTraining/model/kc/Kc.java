@@ -1,9 +1,8 @@
 package com.itts.personTraining.model.kc;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,7 +25,7 @@ public class Kc implements Serializable {
     /**
      * 主键
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -135,6 +134,11 @@ public class Kc implements Serializable {
     private String bz;
 
     /**
+     * 下发状态(0:未下发;1:已下发)
+     */
+    private Boolean xfzt;
+
+    /**
      * 删除状态(0:未删除;1已删除)
      */
     private Boolean sczt;
@@ -142,6 +146,7 @@ public class Kc implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行
     private Date cjsj;
 
     /**
@@ -152,6 +157,7 @@ public class Kc implements Serializable {
     /**
      * 更新时间
      */
+    @TableField(value = "gxsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
     private Date gxsj;
 
     /**
