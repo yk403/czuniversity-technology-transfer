@@ -3,6 +3,7 @@ package com.itts.personTraining.service.pc.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.service.pc.PcService;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
 
 /**
  * <p>
@@ -57,15 +60,20 @@ public class PcServiceImpl implements PcService {
 
     @Override
     public Pc add(Pc pc) {
+        LoginUser loginUser = threadLocal.get();
         pc.setCjsj(new Date());
         pc.setGxsj(new Date());
+        pc.setCjr(loginUser.getUserId());
+        pc.setGxr(loginUser.getUserId());
         int insert = pcMapper.insert(pc);
         return pc;
     }
 
     @Override
     public Pc update(Pc pc) {
+        LoginUser loginUser = threadLocal.get();
         pc.setGxsj(new Date());
+        pc.setGxr(loginUser.getUserId());
         int i = pcMapper.updateById(pc);
         return pc;
     }
