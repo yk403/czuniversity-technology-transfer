@@ -38,10 +38,12 @@ public class SjzdController {
     /**
      * 通过名称或编码查询
      */
-    @GetMapping("/queryDictionary/{string}")
+    @GetMapping("/queryDictionary/")
     @ApiOperation(value = "通过名称或编码查询")
-    public ResponseUtil getByNameAndCode(@PathVariable("string") String string) throws WebException {
-        Sjzd sjzd = sjzdService.selectByString(string);
+    public ResponseUtil getByNameAndCode(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                         @RequestParam("string") String string,@RequestParam String ssmk) throws WebException {
+        Sjzd sjzd = sjzdService.selectByString(pageNum,pageSize,string,ssmk);
         return ResponseUtil.success(sjzd);
     }
 
