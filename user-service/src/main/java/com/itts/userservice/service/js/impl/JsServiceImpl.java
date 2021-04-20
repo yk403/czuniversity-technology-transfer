@@ -193,16 +193,16 @@ public class JsServiceImpl implements JsService {
 
         jsMapper.insert(js);
 
-        if (!CollectionUtils.isEmpty(request.getMenuAndOptionIds())) {
+        if (!CollectionUtils.isEmpty(request.getCdCzIds())) {
 
-            List<AddJsCdRequest> menuAndOptions = request.getMenuAndOptionIds();
+            List<AddJsCdRequest> menuAndOptions = request.getCdCzIds();
 
             for (AddJsCdRequest menuAndOption : menuAndOptions) {
 
                 //设置角色菜单关联
                 JsCdGl jsCdGl = new JsCdGl();
 
-                jsCdGl.setCdId(menuAndOption.getMenuId());
+                jsCdGl.setCdId(menuAndOption.getCdIds());
                 jsCdGl.setJsId(js.getId());
 
                 jsCdGl.setCjr(userId);
@@ -213,16 +213,16 @@ public class JsServiceImpl implements JsService {
                 jsCdGlMapper.insert(jsCdGl);
 
                 //设置角色菜单操作关联
-                if (CollectionUtils.isEmpty(menuAndOption.getOptionIds())) {
+                if (CollectionUtils.isEmpty(menuAndOption.getCzIds())) {
                     continue;
                 }
 
-                List<Long> optionIds = menuAndOption.getOptionIds();
+                List<Long> optionIds = menuAndOption.getCzIds();
                 for (Long optionId : optionIds) {
 
                     JsCdCzGl jsCdCzGl = new JsCdCzGl();
 
-                    jsCdCzGl.setCdId(menuAndOption.getMenuId());
+                    jsCdCzGl.setCdId(menuAndOption.getCdIds());
                     jsCdCzGl.setJsId(js.getId());
                     jsCdCzGl.setCzId(optionId);
 
@@ -291,7 +291,7 @@ public class JsServiceImpl implements JsService {
 
         jsMapper.updateById(js);
 
-        if (CollectionUtils.isEmpty(request.getMenuAndOptionIds())) {
+        if (CollectionUtils.isEmpty(request.getCdCzIds())) {
             return js;
         }
 
@@ -300,7 +300,7 @@ public class JsServiceImpl implements JsService {
         List<Long> oldCdIds = jsCdGls.stream().map(GetJsCdGlVO::getId).collect(Collectors.toList());
 
         //获取要更新的角色菜单关联信息
-        List<Long> newCdIds = request.getMenuAndOptionIds().stream().map(AddJsCdRequest::getMenuId).collect(Collectors.toList());
+        List<Long> newCdIds = request.getCdCzIds().stream().map(AddJsCdRequest::getCdIds).collect(Collectors.toList());
 
         //需要新增的角色菜单关联
         List<Long> addCdIds = Lists.newArrayList();
@@ -369,10 +369,10 @@ public class JsServiceImpl implements JsService {
             List<Long> addCzIds = Lists.newArrayList();
 
             //判断新的角色菜单关联是否有更新
-            for (AddJsCdRequest menuAndOptionId : request.getMenuAndOptionIds()) {
+            for (AddJsCdRequest menuAndOptionId : request.getCdCzIds()) {
 
-                if (Objects.equals(jsCdGl.getId(), menuAndOptionId.getMenuId())) {
-                    newCzIds = menuAndOptionId.getOptionIds();
+                if (Objects.equals(jsCdGl.getId(), menuAndOptionId.getCdIds())) {
+                    newCzIds = menuAndOptionId.getCzIds();
                 }
             }
 
