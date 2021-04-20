@@ -43,7 +43,7 @@ public class SjzdController {
     public ResponseUtil getByNameAndCode(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                          @RequestParam("string") String string,@RequestParam String ssmk) throws WebException {
-        Sjzd sjzd = sjzdService.selectByString(pageNum,pageSize,string,ssmk);
+        PageInfo<Sjzd> sjzd = sjzdService.selectByString(pageNum,pageSize,string,ssmk);
         return ResponseUtil.success(sjzd);
     }
 

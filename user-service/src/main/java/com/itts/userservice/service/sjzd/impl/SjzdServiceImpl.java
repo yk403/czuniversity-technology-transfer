@@ -62,7 +62,7 @@ public class SjzdServiceImpl implements SjzdService {
     }
 
     @Override
-    public Sjzd selectByString(Integer pageNum, Integer pageSize, String string, String ssmk) {
+    public PageInfo<Sjzd> selectByString(Integer pageNum, Integer pageSize, String string, String ssmk) {
         PageHelper.startPage(pageNum,pageSize);
         QueryWrapper<Sjzd> objectQueryWrapper = new QueryWrapper<>();
         objectQueryWrapper.eq("sfsc",false)
@@ -78,7 +78,7 @@ public class SjzdServiceImpl implements SjzdService {
         sjzds.remove(sjzdList);
         sjzds.addAll(sjzdList);
         PageInfo<Sjzd> shzdPageInfo = new PageInfo<>(sjzds);
-        return null;
+        return shzdPageInfo;
     }
 
 
