@@ -39,6 +39,11 @@ public interface KcService extends IService<Kc> {
      */
     boolean update(Kc kc);
 
+    /**
+     * 根据id查询课程信息
+     * @param id
+     * @return
+     */
     Kc get(Long id);
 
     /**

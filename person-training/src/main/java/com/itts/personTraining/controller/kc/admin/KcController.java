@@ -74,7 +74,9 @@ public class KcController {
     public ResponseUtil add(@RequestBody Kc kc) throws WebException {
         //检查参数是否合法
         checkRequest(kc);
-        kcService.add(kc);
+        if (!kcService.add(kc)) {
+            throw new WebException(INSERT_FAIL);
+        }
         return ResponseUtil.success("新增课程成功!");
     }
 
@@ -97,7 +99,9 @@ public class KcController {
         if (kcService.getById(id) == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        kcService.update(kc);
+        if (!kcService.update(kc)) {
+            throw new WebException(UPDATE_FAIL);
+        }
         return ResponseUtil.success("更新课程成功!");
 
     }
@@ -122,7 +126,9 @@ public class KcController {
         //设置删除状态
         kc.setSczt(true);
         //更新删除状态
-        kcService.update(kc);
+        if (!kcService.update(kc)) {
+            throw new WebException(DELETE_FAIL);
+        }
         return ResponseUtil.success("删除课程成功!");
     }
 

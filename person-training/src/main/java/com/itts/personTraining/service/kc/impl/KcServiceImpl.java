@@ -99,10 +99,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     @Override
     public boolean add(Kc kc) {
         log.info("【人才培养 - 新增课程:{}】",kc);
-        if (!kcService.save(kc)) {
-            throw new ServiceException(INSERT_FAIL);
-        }
-        return true;
+        return kcService.save(kc);
     }
 
     /**
@@ -113,10 +110,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     @Override
     public boolean update(Kc kc) {
         log.info("【人才培养 - 更新课程:{}】",kc);
-        if (!kcService.updateById(kc)) {
-            throw new ServiceException(UPDATE_FAIL);
-        }
-        return true;
+        return kcService.updateById(kc);
     }
 
 

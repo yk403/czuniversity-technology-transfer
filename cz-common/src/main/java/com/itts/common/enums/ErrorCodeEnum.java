@@ -34,6 +34,7 @@ public enum ErrorCodeEnum {
     AUDIT_MSG_ISEMPTY(-45007, "审核意见不可为空!"),
     UPDATE_FAIL(-45008, "更新失败"),
     INSERT_FAIL(-45009, "新增失败"),
+    DELETE_FAIL(-45010, "删除失败"),
     //====================      技术交易服务错误提示  END     ====================
 
 
