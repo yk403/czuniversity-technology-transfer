@@ -20,11 +20,11 @@ public class AddJsCdRequest implements Serializable {
      * 菜单ID
      */
     @ApiModelProperty(value = "菜单ID")
-    private Long menuId;
+    private Long cdIds;
 
     /**
      * 操作ID集合
      */
     @ApiModelProperty(value = "操作ID集合")
-    private List<Long> optionIds;
+    private List<Long> czIds;
 }

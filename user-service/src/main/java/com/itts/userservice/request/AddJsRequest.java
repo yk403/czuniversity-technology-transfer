@@ -21,6 +21,6 @@ public class AddJsRequest extends Js implements Serializable {
      * 菜单、操作ID集合
      */
     @ApiModelProperty("菜单、操作ID集合")
-    private List<AddJsCdRequest> menuAndOptionIds;
+    private List<AddJsCdRequest> cdCzIds;
 
 }
