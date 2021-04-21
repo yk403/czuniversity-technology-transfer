@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.config;
 
+import com.itts.common.constant.MQConstant;
 import com.itts.technologytransactionservice.controller.test.bid.BidController;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +24,7 @@ public class MyRedisConfig {
                                                    MessageListenerAdapter listenerAdapter) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(listenerAdapter, new PatternTopic("test"));
+        container.addMessageListener(listenerAdapter, new PatternTopic(MQConstant.TECHNOLOGY_TRANSACTION_BID_CHANNEL));
         return container;
     }
 
