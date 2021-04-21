@@ -18,9 +18,9 @@ public class Test {
     @GetMapping("/")
     public ResponseUtil test() throws UnknownHostException {
 
-        InetAddress ip4 = Inet4Address.getLocalHost();
-        System.out.println(ip4.getHostAddress());
+        InetAddress addr = InetAddress.getLocalHost();
+        System.out.println(addr);
 
-        return ResponseUtil.success(ip4);
+        return ResponseUtil.success(addr);
     }
 }
