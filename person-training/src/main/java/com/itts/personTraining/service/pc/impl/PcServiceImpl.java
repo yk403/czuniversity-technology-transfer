@@ -40,12 +40,17 @@ public class PcServiceImpl implements PcService {
     public PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
-        pcQueryWrapper.eq("sfsc",false);
+        pcQueryWrapper.eq("sczt",false);
         List<Pc> pcs = pcMapper.selectList(pcQueryWrapper);
         PageInfo<Pc> pcPageInfo = new PageInfo<>(pcs);
         return pcPageInfo;
     }
 
+    /**
+     * 通过id获取详情
+     * @param id
+     * @return
+     */
     @Override
     public Pc get(Long id) {
         Pc pc = pcMapper.selectById(id);
@@ -58,6 +63,11 @@ public class PcServiceImpl implements PcService {
         return pcs;
     }
 
+    /**
+     * 新增
+     * @param pc
+     * @return
+     */
     @Override
     public Pc add(Pc pc) {
         LoginUser loginUser = threadLocal.get();
@@ -73,6 +83,11 @@ public class PcServiceImpl implements PcService {
         return pc;
     }
 
+    /**
+     * 更新
+     * @param pc
+     * @return
+     */
     @Override
     public Pc update(Pc pc) {
         LoginUser loginUser = threadLocal.get();
@@ -86,6 +101,11 @@ public class PcServiceImpl implements PcService {
         return pc;
     }
 
+    /**
+     * 批量更新
+     * @param ids
+     * @return
+     */
     @Override
     public Boolean updateBatch(List<Long> ids) {
         Boolean aBoolean = pcMapper.updatePcList(ids);

@@ -42,7 +42,7 @@ public class PcController {
         return ResponseUtil.success(byPage);
     }
 
-    @GetMapping("get/{id}")
+    @GetMapping("/get/{id}")
     @ApiOperation(value = "获取详情")
     public ResponseUtil getByOne(@PathVariable("id")Long id){
         Pc pc = pcService.get(id);
