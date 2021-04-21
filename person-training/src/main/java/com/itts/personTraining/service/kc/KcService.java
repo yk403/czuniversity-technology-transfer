@@ -53,4 +53,10 @@ public interface KcService extends IService<Kc> {
      */
     boolean issueBatch(List<Long> ids);
 
+    /**
+     * 删除课程
+     * @param kc
+     * @return
+     */
+    boolean delete(Kc kc);
 }

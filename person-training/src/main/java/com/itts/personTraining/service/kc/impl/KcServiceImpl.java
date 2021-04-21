@@ -92,6 +92,18 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     }
 
     /**
+     * 删除课程
+     * @param kc
+     * @return
+     */
+    @Override
+    public boolean delete(Kc kc) {
+        //设置删除状态
+        kc.setSczt(true);
+        return kcService.updateById(kc);
+    }
+
+    /**
      * 新增课程
      * @param kc
      * @return

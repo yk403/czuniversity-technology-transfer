@@ -1,9 +1,8 @@
 package com.itts.personTraining.model.xs;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,6 +27,16 @@ public class Xs implements Serializable {
      */
       @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
+    /**
+     * 师资ID
+     */
+    private Long szId;
+
+    /**
+     * 批次Id
+     */
+    private Long pcId;
 
     /**
      * 学号
@@ -250,6 +259,46 @@ public class Xs implements Serializable {
     private String zsjj;
 
     /**
+     * 入学日期
+     */
+    private Date rxrq;
+
+    /**
+     * 学制
+     */
+    private Integer xzTwo;
+
+    /**
+     * 准考证号
+     */
+    private Long zkzh;
+
+    /**
+     * 联系电话(手机)
+     */
+    private String lxdh;
+
+    /**
+     * 家庭地址
+     */
+    private String jtdz;
+
+    /**
+     * 备注
+     */
+    private String bz;
+
+    /**
+     * 专业代码
+     */
+    private String zydm;
+
+    /**
+     * 专业
+     */
+    private String zy;
+
+    /**
      * 删除状态（0：未删除；1：已删除）
      */
     private Boolean sczt;
@@ -257,6 +306,7 @@ public class Xs implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行
     private Date cjsj;
 
     /**
@@ -267,6 +317,7 @@ public class Xs implements Serializable {
     /**
      * 更新时间
      */
+    @TableField(value = "gxsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
     private Date gxsj;
 
     /**
@@ -274,5 +325,9 @@ public class Xs implements Serializable {
      */
     private Long gxr;
 
+    /**
+     * 教育形式
+     */
+    private String jyxs;
 
 }

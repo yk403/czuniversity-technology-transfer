@@ -1,19 +1,14 @@
 package com.itts.personTraining.controller.kc.admin;
 
-
-import com.github.pagehelper.PageInfo;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.service.kc.KcService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
@@ -31,6 +26,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 @Api(value = "KcController", tags = "课程后台管理")
 @RequestMapping(ADMIN_BASE_URL + "/v1/kc")
 public class KcController {
+
     @Autowired
     private KcService kcService;
 
@@ -96,7 +92,7 @@ public class KcController {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //检查数据库中是否存在要更新的数据
-        if (kcService.getById(id) == null) {
+        if (kcService.get(id) == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         if (!kcService.update(kc)) {
@@ -119,14 +115,12 @@ public class KcController {
         if (id == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        Kc kc = kcService.getById(id);
+        Kc kc = kcService.get(id);
         if (kc == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        //设置删除状态
-        kc.setSczt(true);
         //更新删除状态
-        if (!kcService.update(kc)) {
+        if (!kcService.delete(kc)) {
             throw new WebException(DELETE_FAIL);
         }
         return ResponseUtil.success("删除课程成功!");
