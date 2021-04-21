@@ -74,7 +74,7 @@ public class JsCjRcController extends BaseController {
     public R save(@RequestBody TJsCjRc tJsCjRc) throws IOException {
         tJsCjRc.setJjsj(new Date());
         boolean saveflag = jsCjRcService.save(tJsCjRc);
-        //bidController.sendMessage("保存成功，调用刷新页面方法");
+        bidController.onMessage("保存成功，调用刷新页面方法");
         return save(saveflag);
     }
 
