@@ -1,9 +1,8 @@
 package com.itts.personTraining.model.pyjh;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -77,6 +76,7 @@ public class PyJh implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行
     private Date cjsj;
 
     /**
@@ -87,6 +87,7 @@ public class PyJh implements Serializable {
     /**
      * 更新时间
      */
+    @TableField(value = "gxsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
     private Date gxsj;
 
     /**

@@ -53,8 +53,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                       .eq(pcId != null,"pc_id", pcId)
                       .eq(xslbId != null,"xslb_id", xslbId)
                       .eq(StringUtils.isNotBlank(jyxs),"jyxs", jyxs);
-        List<Xs> Xss = xsMapper.selectList(xsQueryWrapper);
-        return new PageInfo<>(Xss);
+        List<Xs> xss = xsMapper.selectList(xsQueryWrapper);
+        return new PageInfo<>(xss);
     }
 
     /**
