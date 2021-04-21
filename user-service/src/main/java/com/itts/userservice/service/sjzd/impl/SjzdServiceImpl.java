@@ -3,6 +3,7 @@ package com.itts.userservice.service.sjzd.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.userservice.model.sjzd.Sjzd;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
 
 /**
  * <p>
@@ -55,12 +59,25 @@ public class SjzdServiceImpl implements SjzdService {
         return shzdPageInfo;
     }
 
+    /**
+     * 获取通过id
+     * @param id
+     * @return
+     */
     @Override
     public Sjzd get(Long id) {
         Sjzd sjzd = sjzdMapper.selectById(id);
         return sjzd;
     }
 
+    /**
+     * 查询通过名称或编码
+     * @param pageNum
+     * @param pageSize
+     * @param string
+     * @param ssmk
+     * @return
+     */
     @Override
     public PageInfo<Sjzd> selectByString(Integer pageNum, Integer pageSize, String string, String ssmk) {
 
@@ -71,15 +88,34 @@ public class SjzdServiceImpl implements SjzdService {
     }
 
 
-
+    /**
+     * 添加
+     * @param sjzd
+     * @return
+     */
     @Override
     public Sjzd add(Sjzd sjzd) {
+        LoginUser loginUser = threadLocal.get();
+        //新增时设置更新时间和更新人
+        sjzd.setCjsj(new Date());
+        sjzd.setCjr(loginUser.getUserId());
+        sjzd.setGxsj(new Date());
+        sjzd.setGxr(loginUser.getUserId());
         sjzdMapper.insert(sjzd);
         return sjzd;
     }
 
+    /**
+     * 更新
+     * @param sjzd
+     * @return
+     */
     @Override
     public Sjzd update(Sjzd sjzd) {
+        LoginUser loginUser = threadLocal.get();
+        //更新时设置更新时间和更新人
+        sjzd.setGxsj(new Date());
+        sjzd.setGxr(loginUser.getUserId());
         sjzdMapper.updateById(sjzd);
         return sjzd;
     }
