@@ -29,13 +29,28 @@ public class ExcelController {
     @Autowired
     private ExcelService excelService;
     /**
-     * 机构导入
+     * 学员导入
      */
     @PostMapping("/importXs")
     @ApiOperation(value = "学员导入")
-    public ResponseUtil importJggl(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true)Integer headRowNumber){
+    public ResponseUtil importXs(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true)Integer headRowNumber){
         try{
             return excelService.importXs(file, headRowNumber);
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);
+        }
+    }
+
+    /**
+     * 师资导入
+     */
+    @PostMapping("/importSz")
+    @ApiOperation(value = "师资导入")
+    public ResponseUtil importSz(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true)Integer headRowNumber){
+        try{
+            return excelService.importSz(file, headRowNumber);
         }catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());

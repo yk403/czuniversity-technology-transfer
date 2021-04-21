@@ -2,9 +2,11 @@ package com.itts.personTraining.service.excel.impl;
 
 import com.alibaba.excel.EasyExcel;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.dto.SzDTO;
 import com.itts.personTraining.dto.XsDTO;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
+import com.itts.personTraining.model.sz.SzListener;
 import com.itts.personTraining.model.xs.XsListener;
 import com.itts.personTraining.service.excel.ExcelService;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,25 @@ public class ExcelServiceImpl implements ExcelService {
         try{
             EasyExcel.read(file.getInputStream(), XsDTO.class,xsListener).headRowNumber(headRowNumber).sheet().doRead();
             return ResponseUtil.success(xsListener.getResult());
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);
+        }
+    }
+
+    /**
+     * 导入师资Excel
+     * @param file
+     * @param headRowNumber
+     * @return
+     */
+    @Override
+    public ResponseUtil importSz(MultipartFile file, Integer headRowNumber) {
+        SzListener szListener = new SzListener();
+        szListener.setSzMapper(szMapper);
+        try{
+            EasyExcel.read(file.getInputStream(), SzDTO.class,szListener).headRowNumber(headRowNumber).sheet().doRead();
+            return ResponseUtil.success(szListener.getResult());
         } catch (IOException e) {
             log.error(e.getMessage());
             return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);

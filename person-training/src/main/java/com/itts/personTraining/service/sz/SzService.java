@@ -53,4 +53,10 @@ public interface SzService extends IService<Sz> {
      */
     boolean delete(Sz sz);
 
+    /**
+     * 根据导师编号查询导师信息
+     * @param dsbh
+     * @return
+     */
+    Sz selectByDsbh(String dsbh);
 }

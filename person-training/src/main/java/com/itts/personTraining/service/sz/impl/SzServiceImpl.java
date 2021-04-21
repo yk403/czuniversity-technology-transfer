@@ -112,4 +112,18 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         return szService.updateById(sz);
     }
 
+    /**
+     * 根据导师编号查询导师信息
+     * @param dsbh
+     * @return
+     */
+    @Override
+    public Sz selectByDsbh(String dsbh) {
+        log.info("【人才培养 - 根据导师编号:{}查询师资信息】",dsbh);
+        QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
+        szQueryWrapper.eq("sczt",false)
+                      .eq("dsbh",dsbh);
+        return szMapper.selectOne(szQueryWrapper);
+    }
+
 }
