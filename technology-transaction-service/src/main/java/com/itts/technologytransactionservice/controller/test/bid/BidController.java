@@ -68,10 +68,10 @@ public class BidController {
         }
 
         //判断当前用户是否在当前这个服务，如果不在则使用MQ进行处理， 保证用户可接收到消息
-        if (SessionPool.sessions.get("1") != null && SessionPool.sessions.get("1").isOpen()) {
+        if ((SessionPool.sessions.get("1") != null && SessionPool.sessions.get("1").isOpen()) || ((SessionPool.sessions.get("2") != null && SessionPool.sessions.get("2").isOpen()))) {
 
             sendMessage(message);
-        } else {
+        }else{
 
             rabbitTemplate.convertAndSend(MQConstant.TECHNOLOGY_TRANSACTION_BID_EXCHANGE, "itts.technology.transaction.bid", message);
         }
