@@ -96,11 +96,15 @@ public class SjzdServiceImpl implements SjzdService {
     @Override
     public Sjzd add(Sjzd sjzd) {
         LoginUser loginUser = threadLocal.get();
+        Long userId=null;
+        if(loginUser!=null){
+            userId = loginUser.getUserId();
+        }
         //新增时设置更新时间和更新人
         sjzd.setCjsj(new Date());
-        sjzd.setCjr(loginUser.getUserId());
+        sjzd.setCjr(userId);
         sjzd.setGxsj(new Date());
-        sjzd.setGxr(loginUser.getUserId());
+        sjzd.setGxr(userId);
         sjzdMapper.insert(sjzd);
         return sjzd;
     }
@@ -113,9 +117,13 @@ public class SjzdServiceImpl implements SjzdService {
     @Override
     public Sjzd update(Sjzd sjzd) {
         LoginUser loginUser = threadLocal.get();
+        Long userId=null;
+        if(loginUser!=null){
+            userId = loginUser.getUserId();
+        }
         //更新时设置更新时间和更新人
         sjzd.setGxsj(new Date());
-        sjzd.setGxr(loginUser.getUserId());
+        sjzd.setGxr(userId);
         sjzdMapper.updateById(sjzd);
         return sjzd;
     }
