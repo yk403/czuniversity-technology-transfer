@@ -61,10 +61,14 @@ public class PcServiceImpl implements PcService {
     @Override
     public Pc add(Pc pc) {
         LoginUser loginUser = threadLocal.get();
+        Long userId=null;
+        if(loginUser!=null){
+            userId = loginUser.getUserId();
+        }
         pc.setCjsj(new Date());
         pc.setGxsj(new Date());
-        pc.setCjr(loginUser.getUserId());
-        pc.setGxr(loginUser.getUserId());
+        pc.setCjr(userId);
+        pc.setGxr(userId);
         int insert = pcMapper.insert(pc);
         return pc;
     }
@@ -72,8 +76,12 @@ public class PcServiceImpl implements PcService {
     @Override
     public Pc update(Pc pc) {
         LoginUser loginUser = threadLocal.get();
+        Long userId=null;
+        if(loginUser!=null){
+            userId = loginUser.getUserId();
+        }
         pc.setGxsj(new Date());
-        pc.setGxr(loginUser.getUserId());
+        pc.setGxr(userId);
         int i = pcMapper.updateById(pc);
         return pc;
     }
