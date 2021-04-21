@@ -19,8 +19,10 @@ public class Test {
     public ResponseUtil test() throws UnknownHostException {
 
         InetAddress addr = InetAddress.getLocalHost();
+
+        String hostname = addr.getHostName();
         System.out.println(addr);
 
-        return ResponseUtil.success(addr);
+        return ResponseUtil.success(addr +"-------"+hostname);
     }
 }
