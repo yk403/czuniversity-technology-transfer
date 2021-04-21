@@ -41,7 +41,7 @@ public class Xs implements Serializable {
     /**
      * 学号
      */
-    private Long xh;
+    private String xh;
 
     /**
      * 姓名
@@ -66,7 +66,7 @@ public class Xs implements Serializable {
     /**
      * 学生类别ID	postgraduate - 研究生;	broker - 经纪人
      */
-    private Long xslbId;
+    private String xslbId;
 
     /**
      * 学生类别名称
@@ -96,7 +96,7 @@ public class Xs implements Serializable {
     /**
      * 培养类别ID
      */
-    private Long pylbId;
+    private String pylbId;
 
     /**
      * 培养类别名称
@@ -156,7 +156,7 @@ public class Xs implements Serializable {
     /**
      * 学制
      */
-    private Boolean xz;
+    private String xz;
 
     /**
      * 学习地点
@@ -246,7 +246,7 @@ public class Xs implements Serializable {
     /**
      * 培养单位码
      */
-    private Integer pydwm;
+    private String pydwm;
 
     /**
      * 培养单位
@@ -266,12 +266,12 @@ public class Xs implements Serializable {
     /**
      * 学制
      */
-    private Integer xzTwo;
+    private String xzTwo;
 
     /**
      * 准考证号
      */
-    private Long zkzh;
+    private String zkzh;
 
     /**
      * 联系电话(手机)

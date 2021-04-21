@@ -45,13 +45,13 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      * @return
      */
     @Override
-    public PageInfo<Xs> findByPage(Integer pageNum, Integer pageSize, Long pcId, Long xslbId, String jyxs) {
+    public PageInfo<Xs> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbId, String jyxs) {
         log.info("【人才培养 - 分页条件查询学员列表,批次id:{},学生类别id:{},教育形式:{}】",pcId,xslbId,jyxs);
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
         xsQueryWrapper.eq("sczt",false)
                       .eq(pcId != null,"pc_id", pcId)
-                      .eq(xslbId != null,"xslb_id", xslbId)
+                      .eq(StringUtils.isNotBlank(xslbId),"xslb_id", xslbId)
                       .eq(StringUtils.isNotBlank(jyxs),"jyxs", jyxs);
         List<Xs> xss = xsMapper.selectList(xsQueryWrapper);
         return new PageInfo<>(xss);
@@ -107,5 +107,19 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         //设置删除状态
         xs.setSczt(true);
         return xsService.updateById(xs);
+    }
+
+    /**
+     * 根据学号查询学员信息
+     * @param xh
+     * @return
+     */
+    @Override
+    public Xs selectByXh(String xh) {
+        log.info("【人才培养 - 根据学号:{}查询学员信息】",xh);
+        QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
+        xsQueryWrapper.eq("sczt",false)
+                .eq("xh",xh);
+        return xsMapper.selectOne(xsQueryWrapper);
     }
 }

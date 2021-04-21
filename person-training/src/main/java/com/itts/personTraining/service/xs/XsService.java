@@ -22,7 +22,7 @@ public interface XsService extends IService<Xs> {
      * @param jyxs
      * @return
      */
-    PageInfo<Xs> findByPage(Integer pageNum, Integer pageSize, Long pcId, Long xslbId, String jyxs);
+    PageInfo<Xs> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbId, String jyxs);
 
     /**
      * 根据id查询学员信息
@@ -51,4 +51,11 @@ public interface XsService extends IService<Xs> {
      * @return
      */
     boolean delete(Xs xs);
+
+    /**
+     * 根据学号查询学员信息
+     * @param xh
+     * @return
+     */
+    Xs selectByXh(String xh);
 }
