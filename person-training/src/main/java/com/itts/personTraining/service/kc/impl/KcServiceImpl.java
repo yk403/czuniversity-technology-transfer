@@ -98,6 +98,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
      */
     @Override
     public boolean delete(Kc kc) {
+        log.info("【人才培养 - 删除课程:{}】",kc);
         //设置删除状态
         kc.setSczt(true);
         return kcService.updateById(kc);

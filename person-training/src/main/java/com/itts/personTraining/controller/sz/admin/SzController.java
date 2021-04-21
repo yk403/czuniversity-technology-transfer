@@ -25,7 +25,7 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_
  */
 @RestController
 @Api(value = "SzController", tags = "师资后台管理")
-@RequestMapping(ADMIN_BASE_URL + "/sz")
+@RequestMapping(ADMIN_BASE_URL + "/v1/sz")
 public class SzController {
     
     @Autowired

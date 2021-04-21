@@ -59,6 +59,11 @@ public class PyJh implements Serializable {
     private String jxdg;
 
     /**
+     * 学生类别名称
+     */
+    private String xslbmc;
+
+    /**
      * 删除状态(0:未删除;1已删除)
      */
     private Boolean sczt;

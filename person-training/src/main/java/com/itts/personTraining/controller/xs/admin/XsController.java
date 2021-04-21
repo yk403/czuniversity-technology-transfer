@@ -22,8 +22,8 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  * @since 2021-04-20
  */
 @RestController
-@Api(value = "XsController", tags = "学生后台管理")
 @RequestMapping(ADMIN_BASE_URL + "/v1/xs")
+@Api(value = "XsController", tags = "学生后台管理")
 public class XsController {
 
     @Autowired
