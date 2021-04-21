@@ -16,4 +16,9 @@ public class MQConstant {
      * 技术交易叫价消息交换机
      */
     public static final String TECHNOLOGY_TRANSACTION_BID_EXCHANGE = "itts_technology_transaction_bid_exchange";
+
+    /**
+     * 技术交易叫价消息信道
+     */
+    public static final String TECHNOLOGY_TRANSACTION_BID_CHANNEL = "itts_technology_transaction_bid_channel";
 }
