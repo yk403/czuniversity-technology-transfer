@@ -9,6 +9,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -28,6 +29,9 @@ public class BidController {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * websocket建立链接
@@ -68,13 +72,15 @@ public class BidController {
         }
 
         //判断当前用户是否在当前这个服务，如果不在则使用MQ进行处理， 保证用户可接收到消息
-        if ((SessionPool.sessions.get("1") != null && SessionPool.sessions.get("1").isOpen()) || ((SessionPool.sessions.get("2") != null && SessionPool.sessions.get("2").isOpen()))) {
+       /* if ((SessionPool.sessions.get("1") != null && SessionPool.sessions.get("1").isOpen()) || ((SessionPool.sessions.get("2") != null && SessionPool.sessions.get("2").isOpen()))) {
 
             sendMessage(message);
         }else{
 
             rabbitTemplate.convertAndSend(MQConstant.TECHNOLOGY_TRANSACTION_BID_EXCHANGE, "itts.technology.transaction.bid", message);
-        }
+        }*/
+
+        redisTemplate.convertAndSend("test", message);
 
         //sendInfo(message);
     }
@@ -98,8 +104,8 @@ public class BidController {
     /**
     *监听MQ消息，回复前端
     */
-    @RabbitListener(queues = "itts_technology_transaction_bid_queue")
-    public void receive(String msg, Message message) throws IOException {
+    //@RabbitListener(queues = "itts_technology_transaction_bid_queue")
+    public void receiveMessage(String msg) throws IOException {
 
         System.out.println("mq中的消息："+ msg);
 
