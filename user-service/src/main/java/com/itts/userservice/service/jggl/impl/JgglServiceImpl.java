@@ -130,6 +130,14 @@ public class JgglServiceImpl implements JgglService {
         return jggl;
     }
 
+    @Override
+    public PageInfo<Jggl> selectByString(Integer pageNum, Integer pageSize, String string) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Jggl> jggls = jgglMapper.selectByString(string);
+        PageInfo<Jggl> pageInfo = new PageInfo<>(jggls);
+        return pageInfo;
+    }
+
     /**
      * 新增
      *

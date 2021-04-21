@@ -51,6 +51,7 @@ public interface JgglService  {
      * 查询，通过机构代码
      */
     Jggl selectByJgbm(String jgbm);
+    PageInfo<Jggl> selectByString(Integer pageNum,Integer pageSize,String string);
     /**
      * 新增
      *

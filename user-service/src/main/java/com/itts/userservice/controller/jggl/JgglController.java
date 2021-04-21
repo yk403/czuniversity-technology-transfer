@@ -43,19 +43,16 @@ public class JgglController {
     /**
      * 查询机构，通过名称和编码
      */
-    @GetMapping("/queryMechanism/{string}")
+    @GetMapping("/queryMechanism/")
     @ApiOperation(value = "通过名称和编码查询机构")
-    public ResponseUtil getBynameandcode(@PathVariable("string") String string) throws WebException {
-        Jggl jggl = jgglService.selectByJgbm(string);
-        if (jggl == null) {
-            Jggl jggl1 = jgglService.selectByJgmc(string);
-            if (jggl1 == null) {
-                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-            } else {
-                return ResponseUtil.success(jggl1);
-            }
+    public ResponseUtil getBynameandcode(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam("string") String string) throws WebException {
+        if(string==null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(jggl);
+        PageInfo<Jggl> jggls = jgglService.selectByString(pageNum, pageSize, string);
+        return ResponseUtil.success(jggls);
     }
 
     /**
