@@ -40,7 +40,7 @@ public class PcServiceImpl implements PcService {
     public PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
-        pcQueryWrapper.eq("sczt",false);
+        pcQueryWrapper.eq("sfsc",false);
         List<Pc> pcs = pcMapper.selectList(pcQueryWrapper);
         PageInfo<Pc> pcPageInfo = new PageInfo<>(pcs);
         return pcPageInfo;

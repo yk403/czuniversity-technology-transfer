@@ -81,7 +81,7 @@ public class PcController {
         if(pc==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        pc.setSczt(true);
+        pc.setSfsc(true);
         Pc update = pcService.update(pc);
         return ResponseUtil.success(update);
     }

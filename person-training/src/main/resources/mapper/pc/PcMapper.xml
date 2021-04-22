@@ -8,7 +8,7 @@
         <result column="pcmc" property="pcmc" />
         <result column="pch" property="pch" />
         <result column="pclx" property="pclx" />
-        <result column="sczt" property="sczt" />
+        <result column="sfsc" property="sfsc" />
         <result column="pcnf" property="pcnf" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
@@ -18,12 +18,12 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pcmc, pch, pclx, sczt, pcnf, cjsj, cjr, gxsj, gxr
+        id, pcmc, pch, pclx, sfsc, pcnf, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="selectPcList">
         select * from t_pc
-        where sczt = false
+        where sfsc = false
         and id in
         <foreach collection="list" open="(" close=")" separator="," item="ids">
              #{ids}
@@ -32,7 +32,7 @@
     </select>
 
     <update id="updatePcList"  parameterType="java.util.List">
-        update sczt =true
+        update sfsc =true
         from t_pc
         where id in
         <foreach collection="list" open="(" close=")" separator="," item="ids">
