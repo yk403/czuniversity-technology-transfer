@@ -31,7 +31,7 @@ public class Xxjs implements Serializable {
     /**
      * 教学楼名称
      */
-    private String mc;
+    private String jxlmc;
 
     /**
      * 教室编号

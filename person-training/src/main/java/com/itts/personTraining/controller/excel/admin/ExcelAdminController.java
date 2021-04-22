@@ -1,4 +1,4 @@
-package com.itts.personTraining.controller.excel;
+package com.itts.personTraining.controller.excel.admin;
 
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.service.excel.ExcelService;
@@ -25,7 +25,7 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_UPLOAD_ERROR;
 @RestController
 @RequestMapping(ADMIN_BASE_URL + "/personTrainingService/excel")
 @Slf4j
-public class ExcelController {
+public class ExcelAdminController {
     @Autowired
     private ExcelService excelService;
     /**

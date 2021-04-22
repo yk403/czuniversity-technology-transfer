@@ -74,9 +74,14 @@ public class Pk implements Serializable {
     private Long xxjsId;
 
     /**
-     * 教室名称
+     * 教学楼名称
      */
-    private String jsmc;
+    private String jxlmc;
+
+    /**
+     * 教室编号
+     */
+    private String jsbh;
 
     /**
      * 是否下发(0:未下发;1:已下发)
@@ -89,14 +94,14 @@ public class Pk implements Serializable {
     private String kcdm;
 
     /**
-     * 授课老师名称
+     * 授课老师姓名
      */
-    private String sklsmc;
+    private String dsxm;
 
     /**
      * 授课老师编号
      */
-    private String sklsbh;
+    private String dsbh;
 
     /**
      * 是否删除(0:未删除;1已删除)

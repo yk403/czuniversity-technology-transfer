@@ -24,7 +24,7 @@ public interface XxjsService extends IService<Xxjs> {
      * @param mc
      * @return
      */
-    PageInfo<Xxjs> findByPage(Integer pageNum, Integer pageSize, String mc);
+    PageInfo<Xxjs> findByPage(Integer pageNum, Integer pageSize, String jxlmc);
 
     /**
      * 根据id查询学校教室详情

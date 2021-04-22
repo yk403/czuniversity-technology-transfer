@@ -42,8 +42,8 @@ public class XxjsAdminController {
     @ApiOperation(value = "获取列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                   @RequestParam(value = "mc", required = false) String mc) {
-        return ResponseUtil.success(xxjsService.findByPage(pageNum, pageSize, mc));
+                                   @RequestParam(value = "jxlmc", required = false) String jxlmc) {
+        return ResponseUtil.success(xxjsService.findByPage(pageNum, pageSize, jxlmc));
     }
 
     /**

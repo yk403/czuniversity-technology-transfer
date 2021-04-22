@@ -39,16 +39,16 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
      * 查询学校教室列表
      * @param pageNum
      * @param pageSize
-     * @param mc
+     * @param jxlmc
      * @return
      */
     @Override
-    public PageInfo<Xxjs> findByPage(Integer pageNum, Integer pageSize, String mc) {
-        log.info("【人才培养 - 查询学校教室列表,教学楼名称:{}】",mc);
+    public PageInfo<Xxjs> findByPage(Integer pageNum, Integer pageSize, String jxlmc) {
+        log.info("【人才培养 - 查询学校教室列表,教学楼名称:{}】",jxlmc);
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
         xxjsQueryWrapper.eq("sfsc",false)
-                      .eq(StringUtils.isNotBlank(mc), "mc", mc);
+                      .eq(StringUtils.isNotBlank(jxlmc), "jxlmc", jxlmc);
         List<Xxjs> xxjs = xxjsMapper.selectList(xxjsQueryWrapper);
         PageInfo<Xxjs> PageInfo = new PageInfo<>(xxjs);
         return PageInfo;
@@ -115,7 +115,7 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
         xxjsQueryWrapper.eq("sfsc",false);
         List<Xxjs> xxjsList = xxjsMapper.selectList(xxjsQueryWrapper);
         for (Xxjs xxjs1 : xxjsList) {
-            if (xxjs1.getMc().equals(xxjs.getMc()) && xxjs1.getJsbh().equals(xxjs.getJsbh())) {
+            if (xxjs1.getJxlmc().equals(xxjs.getJxlmc()) && xxjs1.getJsbh().equals(xxjs.getJsbh())) {
                 return false;
             }
         }
