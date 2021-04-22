@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Austin
@@ -73,7 +74,7 @@ public class JsHdDTO {
     /**
      * 成果需求id集合
      */
-    private List<Integer> ids;
+    private List<Map<String,Integer>> ids;
     /**
      * 创建时间
      */

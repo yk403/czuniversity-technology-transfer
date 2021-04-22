@@ -108,5 +108,8 @@ public class TJsBm implements Serializable {
      * 活动类型
      */
     private String hdlx;
-
+    /**
+     * 机构代码
+     */
+    private String jgdm;
 }

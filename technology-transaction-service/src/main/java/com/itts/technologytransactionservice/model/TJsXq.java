@@ -30,7 +30,10 @@ public class TJsXq implements Serializable {
  	*/
 	@TableId(value = "id",type = IdType.AUTO)
 	private Integer id;
-
+	/**
+	 * index(排序使用)
+	 */
+	private Integer index;
 	/**
 	 * 技术需求id
 	 */
