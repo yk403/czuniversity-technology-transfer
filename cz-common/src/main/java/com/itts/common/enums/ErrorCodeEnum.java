@@ -55,7 +55,8 @@ public enum ErrorCodeEnum {
 
     //====================      人次培养服务错误提示（服务码450）      ====================
     STUDENT_NUMBER_EXISTS_ERROR(-45000, "学员学号已存在!"),
-    TEACHER_NUMBER_EXISTS_ERROR(-45000, "导师编号已存在!"),
+    TEACHER_NUMBER_EXISTS_ERROR(-45001, "导师编号已存在!"),
+    TEACHING_BUILDING_EXISTS_ERROR(-45002, "教学楼教室已存在!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

@@ -1,7 +1,11 @@
 package com.itts.personTraining.service.xxjs;
 
+import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xxjs.Xxjs;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +16,48 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2021-04-22
  */
 public interface XxjsService extends IService<Xxjs> {
+
+    /**
+     * 查询学校教室列表
+     * @param pageNum
+     * @param pageSize
+     * @param mc
+     * @return
+     */
+    PageInfo<Xxjs> findByPage(Integer pageNum, Integer pageSize, String mc);
+
+    /**
+     * 根据id查询学校教室详情
+     * @param id
+     * @return
+     */
+    Xxjs get(Long id);
+
+    /**
+     * 新增学校教室
+     * @param xxjs
+     * @return
+     */
+    boolean add(Xxjs xxjs);
+
+    /**
+     * 更新学校教室
+     * @param xxjs
+     * @return
+     */
+    boolean update(Xxjs xxjs);
+
+    /**
+     * 删除学校教室
+     * @param xxjs
+     * @return
+     */
+    boolean delete(Xxjs xxjs);
+
+    /**
+     * 查询学校教室是否存在
+     * @return
+     */
+    boolean selectExists(Xxjs xxjs);
 
 }
