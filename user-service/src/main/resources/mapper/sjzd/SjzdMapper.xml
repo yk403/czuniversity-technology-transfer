@@ -41,7 +41,7 @@
         where sfsc = false
     </select>
     <!--查询通过名字或者编码-->
-    <select id="selectByNameOrCode">
+    <select id="selectByNameOrCode" resultType="com.itts.userservice.model.sjzd.Sjzd">
         select *
         from t_sjzd
         where (zdmc= #{string} or zdbm= #{string}) and sfsc =false and ssmk =#{ssmk}

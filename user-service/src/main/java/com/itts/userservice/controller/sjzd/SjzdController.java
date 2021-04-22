@@ -42,7 +42,7 @@ public class SjzdController {
     @ApiOperation(value = "通过名称或编码查询")
     public ResponseUtil getByNameAndCode(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                         @RequestParam("string") String string,@RequestParam String ssmk) throws WebException {
+                                         @RequestParam(value = "string") String string,@RequestParam(value = "ssmk") String ssmk) throws WebException {
         PageInfo<Sjzd> sjzd = sjzdService.selectByString(pageNum,pageSize,string,ssmk);
         return ResponseUtil.success(sjzd);
     }
