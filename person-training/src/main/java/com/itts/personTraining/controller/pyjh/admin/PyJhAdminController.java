@@ -28,7 +28,7 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_
 @RestController
 @RequestMapping(ADMIN_BASE_URL + "/v1/pyJh")
 @Api(value = "PyJhController", tags = "培养计划后台管理")
-public class PyJhController {
+public class PyJhAdminController {
 
     @Autowired
     private PyJhService pyJhService;

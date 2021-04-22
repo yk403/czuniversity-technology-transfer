@@ -26,7 +26,7 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_
 @RestController
 @Api(value = "SzController", tags = "师资后台管理")
 @RequestMapping(ADMIN_BASE_URL + "/v1/sz")
-public class SzController {
+public class SzAdminController {
     
     @Autowired
     private SzService szService;
@@ -134,6 +134,9 @@ public class SzController {
     private void checkRequest(Sz sz) throws WebException {
         if (sz == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (szService.selectByDsbh(sz.getDsbh()) != null) {
+            throw new WebException(TEACHER_NUMBER_EXISTS_ERROR);
         }
     }
 

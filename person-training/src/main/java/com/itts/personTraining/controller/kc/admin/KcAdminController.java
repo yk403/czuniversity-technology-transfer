@@ -25,7 +25,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 @RestController
 @Api(value = "KcController", tags = "课程后台管理")
 @RequestMapping(ADMIN_BASE_URL + "/v1/kc")
-public class KcController {
+public class KcAdminController {
 
     @Autowired
     private KcService kcService;

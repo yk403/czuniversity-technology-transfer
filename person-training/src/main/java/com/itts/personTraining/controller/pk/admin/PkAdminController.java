@@ -17,7 +17,7 @@ import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
  */
 @RestController
 @RequestMapping(ADMIN_BASE_URL + "/v1/pk")
-public class PkController {
+public class PkAdminController {
 
 }
 

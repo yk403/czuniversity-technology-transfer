@@ -29,7 +29,7 @@ import java.util.List;
 @Api(tags = "批次管理")
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL+"/v1/pc")
-public class PcController {
+public class PcAdminController {
 
     @Resource
     private PcService pcService;

@@ -24,17 +24,17 @@ public enum ErrorCodeEnum {
     //====================      系统错误提示  END     ====================
 
     //====================      技术交易服务错误提示（服务码410）      ====================
-    UPLOAD_FAIL_ERROR(-450001, "文件上传失败"),
-    UPLOAD_FAIL_ISEMPTY_ERROR(-450002, "文件上传不可为空"),
-    NAME_EXIST_ERROR(-45000, "名称已存在"),
-    DELETE_ERROR(-45003, "删除失败!"),
-    MSG_AUDIT_FAIL(-45004, "信息审核未通过,无法申请招拍挂!"),
-    REQUEST_PARAMS_ISEMPTY(-45005, "请求参数不可为空!"),
-    ISSUE_BATCH_FAIL(-45006, "批量发布失败!"),
-    AUDIT_MSG_ISEMPTY(-45007, "审核意见不可为空!"),
-    UPDATE_FAIL(-45008, "更新失败"),
-    INSERT_FAIL(-45009, "新增失败"),
-    DELETE_FAIL(-45010, "删除失败"),
+    UPLOAD_FAIL_ERROR(-410001, "文件上传失败"),
+    UPLOAD_FAIL_ISEMPTY_ERROR(-410002, "文件上传不可为空"),
+    NAME_EXIST_ERROR(-41000, "名称已存在"),
+    DELETE_ERROR(-41003, "删除失败!"),
+    MSG_AUDIT_FAIL(-41004, "信息审核未通过,无法申请招拍挂!"),
+    REQUEST_PARAMS_ISEMPTY(-41005, "请求参数不可为空!"),
+    ISSUE_BATCH_FAIL(-41006, "批量发布失败!"),
+    AUDIT_MSG_ISEMPTY(-41007, "审核意见不可为空!"),
+    UPDATE_FAIL(-41008, "更新失败"),
+    INSERT_FAIL(-41009, "新增失败"),
+    DELETE_FAIL(-41010, "删除失败"),
     //====================      技术交易服务错误提示  END     ====================
 
 
@@ -52,6 +52,11 @@ public enum ErrorCodeEnum {
     REGISTER_USERNAME_EXISTS_ERROR(-430007, "用户注册账号已存在"),
     REGISTER_DEFAULT_ROLE_NOT_FIND_ERROR(-430008, "用户注册默认角色不存在"),
     //====================       登录、登出、注册错误提示END     ====================
+
+    //====================      人次培养服务错误提示（服务码450）      ====================
+    STUDENT_NUMBER_EXISTS_ERROR(-45000, "学员学号已存在!"),
+    TEACHER_NUMBER_EXISTS_ERROR(-45000, "导师编号已存在!"),
+    //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
     USER_NOT_FIND_ERROR(-440001, "用户不存在");

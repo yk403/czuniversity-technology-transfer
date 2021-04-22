@@ -24,7 +24,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 @RestController
 @RequestMapping(ADMIN_BASE_URL + "/v1/xs")
 @Api(value = "XsController", tags = "学生后台管理")
-public class XsController {
+public class XsAdminController {
 
     @Autowired
     private XsService xsService;
@@ -132,6 +132,9 @@ public class XsController {
     private void checkRequest(Xs xs) throws WebException {
         if (xs == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (xsService.selectByXh(xs.getXh()) != null) {
+            throw new WebException(STUDENT_NUMBER_EXISTS_ERROR);
         }
     }
 

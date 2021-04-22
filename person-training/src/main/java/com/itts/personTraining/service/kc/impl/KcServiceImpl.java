@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.INSERT_FAIL;
 import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 
