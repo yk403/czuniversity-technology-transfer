@@ -29,6 +29,11 @@ public class Pk implements Serializable {
     private Long id;
 
     /**
+     * 批次ID
+     */
+    private Long pcId;
+
+    /**
      * 排课名称
      */
     private String pkmc;
@@ -37,6 +42,16 @@ public class Pk implements Serializable {
      * 课程名称
      */
     private String kcmc;
+
+    /**
+     * 上课起始年月
+     */
+    private String skqsny;
+
+    /**
+     * 上课结束年月
+     */
+    private String skjsny;
 
     /**
      * 上课时间段
@@ -49,6 +64,16 @@ public class Pk implements Serializable {
     private String xqs;
 
     /**
+     * 第几周
+     */
+    private String djz;
+
+    /**
+     * 教室ID
+     */
+    private Long xxjsId;
+
+    /**
      * 教室名称
      */
     private String jsmc;
@@ -59,9 +84,9 @@ public class Pk implements Serializable {
     private Boolean sfxf;
 
     /**
-     * 课程编码
+     * 课程代码
      */
-    private String kcbm;
+    private String kcdm;
 
     /**
      * 授课老师名称
@@ -69,9 +94,9 @@ public class Pk implements Serializable {
     private String sklsmc;
 
     /**
-     * 授课老师编码
+     * 授课老师编号
      */
-    private String sklsbm;
+    private String sklsbh;
 
     /**
      * 是否删除(0:未删除;1已删除)

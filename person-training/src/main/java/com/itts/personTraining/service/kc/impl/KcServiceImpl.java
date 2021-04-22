@@ -87,7 +87,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         log.info("【人才培养 - 课程批量下发,ids:{}】",ids);
         List<Kc> kcs = kcMapper.selectBatchIds(ids);
         for (Kc kc : kcs) {
-            kc.setXfzt(true);
+            kc.setSfxf(true);
         }
         return kcService.updateBatchById(kcs);
     }

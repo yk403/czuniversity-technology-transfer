@@ -118,7 +118,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         log.info("【人才培养 - 培养计划批量下发,ids:{}】",ids);
         List<PyJh> pyJhs = pyJhMapper.selectBatchIds(ids);
         for (PyJh pyJh : pyJhs) {
-            pyJh.setXfzt(true);
+            pyJh.setSfxf(true);
         }
         return pyJhService.updateBatchById(pyJhs);
     }

@@ -39,9 +39,9 @@ public class PyJh implements Serializable {
     private String xymc;
 
     /**
-     * 下发状态(0:未下发;1:已下发)
+     * 是否下发(0:否;1:是)
      */
-    private Boolean xfzt;
+    private Boolean sfxf;
 
     /**
      * 培养方案

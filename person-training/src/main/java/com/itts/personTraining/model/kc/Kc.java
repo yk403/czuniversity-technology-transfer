@@ -134,9 +134,9 @@ public class Kc implements Serializable {
     private String bz;
 
     /**
-     * 下发状态(0:未下发;1:已下发)
+     * 是否下发(0:否;1:是)
      */
-    private Boolean xfzt;
+    private Boolean sfxf;
 
     /**
      * 是否删除(0:未删除;1已删除)
