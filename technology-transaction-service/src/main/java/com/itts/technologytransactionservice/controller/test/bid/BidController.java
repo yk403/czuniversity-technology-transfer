@@ -2,10 +2,16 @@ package com.itts.technologytransactionservice.controller.test.bid;
 
 import com.itts.common.bean.SessionPool;
 import com.itts.common.config.EndpointConfig;
+import com.itts.common.config.RabbitMQConfig;
 import com.itts.common.constant.MQConstant;
 import com.itts.common.constant.SystemConstant;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.ExchangeTypes;
+import org.springframework.amqp.rabbit.annotation.Exchange;
+import org.springframework.amqp.rabbit.annotation.Queue;
+import org.springframework.amqp.rabbit.annotation.QueueBinding;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -26,7 +32,7 @@ import java.io.IOException;
 public class BidController {
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private AmqpTemplate amqpTemplate;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -69,7 +75,9 @@ public class BidController {
             return;
         }
 
-        redisTemplate.convertAndSend(MQConstant.TECHNOLOGY_TRANSACTION_BID_CHANNEL, message);
+        //redisTemplate.convertAndSend(MQConstant.TECHNOLOGY_TRANSACTION_BID_CHANNEL, message);
+
+        amqpTemplate.convertAndSend(MQConstant.TECHNOLOGY_TRANSACTION_BID_EXCHANGE, MQConstant.TECHNOLOGY_TRANSACTION_BID_ROUTING_KEY, message);
     }
 
     /**
@@ -92,10 +100,19 @@ public class BidController {
      * 监听MQ消息，回复前端
      */
     //@RabbitListener(queues = "itts_technology_transaction_bid_queue")
-    public void receiveMessage(String msg) throws IOException {
+   /* public void receiveMessage(String msg) throws IOException {
 
         System.out.println("mq中的消息：" + msg);
 
+        sendMessage(msg);
+    }*/
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue,
+            exchange = @Exchange(value = MQConstant.TECHNOLOGY_TRANSACTION_BID_EXCHANGE, type = ExchangeTypes.TOPIC),
+            key = MQConstant.TECHNOLOGY_TRANSACTION_BID_ROUTING_KEY
+    ))
+    public void receive(String msg) throws IOException {
         sendMessage(msg);
     }
 }
