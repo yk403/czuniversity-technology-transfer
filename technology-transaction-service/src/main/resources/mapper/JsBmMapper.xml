@@ -4,10 +4,11 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsBmMapper">
 
     <select id="list" resultType="com.itts.technologytransactionservice.model.TJsBm">
-        select bm.id,dwmc,dz,fr,bm.cjsj,bm.gxsj,jgdm,lxr,sjhm,gszz,bzj,sjfa,zbwj,bm.is_delete,hd_id,hd.hdmc as hdmc,shzt,hdlx,hdzt
+        select bm.id,dwmc,dz,fr,bm.cjsj,bm.gxsj,jgdm,lxr,sjhm,gszz,bzj,sjfa,zbwj,bm.is_delete,hd_id,hd.hdmc as hdmc,shzt,hdlx,hdzt,user_id
         from t_js_bm bm left join t_js_hd hd on( bm.hd_id = hd.id )
         <where>
             bm.is_delete = 0
+            <if test="map.userId != null and map.userId != ''"> and user_id = #{map.userId} </if>
             <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
             <if test="map.dwmc != null and map.dwmc != ''"> and dwmc = #{map.dwmc} </if>
             <if test="map.dz != null and map.dz != ''"> and dz = #{map.dz} </if>

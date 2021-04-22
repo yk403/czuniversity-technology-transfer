@@ -2,7 +2,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848
+        server-addr: 172.21.25.8:18848
   # 配置数据源
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -53,18 +53,11 @@ spring:
         min-idle: 0
   # Zipkin配置
   zipkin:
-    base-url: http://localhost:9411/ #zipkin server的请求地址
+    base-url: http://172.21.25.8:19411/ #zipkin server的请求地址
     discovery-client-enabled: false #让nacos把它当成一个URL， 而不要当做服务名
   sleuth:
     sampler:
       probability: 1.0 #采样的百分比
-  #rabbitMQ
-  rabbitmq:
-    host: 172.21.25.6
-    port: 5672
-    virtual-host: /dev
-    password: root
-    username: root
 pagehelper:
   reasonable: true
   support-methods-arguments: true
@@ -79,6 +72,3 @@ mybatis-plus:
 logging:
   level:
     root: INFO
-#设置文件上传静态变量
-dictionary:
-  confFilePath: fdfs_client.conf

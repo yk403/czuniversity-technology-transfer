@@ -1,0 +1,43 @@
+# 配置端口号
+server:
+  port: 11070
+task:
+  pool:
+    # 核心线程池大小
+    core-pool-size: 10
+    # 最大线程数
+    max-pool-size: 30
+    # 活跃时间
+    keep-alive-seconds: 60
+    # 队列容量
+    queue-capacity: 50
+# 阿里云配置信息
+aliyun:
+  # common 配置信息
+  accessKeyId: LTAI4GEWZbLZocBzXKYEfmmq
+  accessKeySecret: rZLsruKxWex2qGYVA3UsuBgW5B3uJQ
+  # OSS 相关配置信息
+  endPoint: http://oss-cn-beijing.aliyuncs.com
+  bucketName: admin-vue-template
+  domain: http://admin-vue-template.oss-cn-beijing.aliyuncs.com
+  # SMS 短信服务
+  regionId: cn-hangzhou
+  signName: 后台管理系统
+  templateCode: SMS_194050461
+spring:
+  application:
+    name: user-service
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: test
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: /mapper/*Mapper.xml
+  typeAliasesPackage: com.itts
+#分页pageHelper
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true

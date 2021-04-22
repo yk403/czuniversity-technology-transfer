@@ -33,7 +33,7 @@ spring:
   # Redis 配置
   redis:
     # Redis 服务器地址
-    host: 172.21.25.8
+    host: 127.0.0.1
     # 连接端口号
     port: 6379
     # 数据库索引（0 - 15）
@@ -58,13 +58,6 @@ spring:
   sleuth:
     sampler:
       probability: 1.0 #采样的百分比
-  #rabbitMQ
-  rabbitmq:
-    host: 172.21.25.6
-    port: 5672
-    virtual-host: /dev
-    password: root
-    username: root
 pagehelper:
   reasonable: true
   support-methods-arguments: true
@@ -79,6 +72,3 @@ mybatis-plus:
 logging:
   level:
     root: INFO
-#设置文件上传静态变量
-dictionary:
-  confFilePath: fdfs_client.conf

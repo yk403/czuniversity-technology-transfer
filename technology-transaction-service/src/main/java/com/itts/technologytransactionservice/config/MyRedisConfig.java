@@ -31,7 +31,7 @@ public class MyRedisConfig {
     /**
      * 绑定消息监听者和接收监听的方法,必须要注入这个监听器，不然会报错
      */
-   /* @Bean
+    /*@Bean
     public MessageListenerAdapter listenerAdapter(){
         return new MessageListenerAdapter(new BidController(),"receiveMessage");
     }*/
