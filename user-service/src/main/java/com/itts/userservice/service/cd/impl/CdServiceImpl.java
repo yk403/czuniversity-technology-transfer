@@ -136,43 +136,12 @@ public class CdServiceImpl implements CdService {
     @Override
     public PageInfo<GetCdAndCzDTO> findByNameOrCodePage(Integer pageNum, Integer pageSize, String parameter, String systemType, String modelType) {
 
-        List<Cd> cds;
+
         PageHelper.startPage(pageNum, pageSize);
 
-        QueryWrapper<Cd> oldquery = new QueryWrapper<>();
-
-        oldquery.eq("sfsc", false);
-        if (StringUtils.isNotBlank(parameter)) {
-            oldquery.like("cdmc", parameter);
-        }
-        if (StringUtils.isNotBlank(systemType)) {
-            oldquery.eq("xtlx", systemType);
-        }
-        if (StringUtils.isNotBlank(modelType)) {
-            oldquery.eq("mklx", modelType);
-        }
-
-        cds = cdMapper.selectList(oldquery);
-        if (cds == null) {
-            PageHelper.startPage(pageNum, pageSize);
-
-            QueryWrapper<Cd> query = new QueryWrapper<>();
-
-            query.eq("sfsc", false);
-            if (StringUtils.isNotBlank(parameter)) {
-                query.like("cdbm", parameter);
-            }
-            if (StringUtils.isNotBlank(systemType)) {
-                query.eq("xtlx", systemType);
-            }
-            if (StringUtils.isNotBlank(modelType)) {
-                query.eq("mklx", modelType);
-            }
-
-            cds = cdMapper.selectList(query);
-            if (cds == null) {
-                return null;
-            }
+        List<Cd> cds = cdMapper.selectByParameterList(parameter, systemType, modelType);
+        if(cds==null){
+            return null;
         }
         PageInfo<GetCdAndCzDTO> pageInfo = new PageInfo(cds);
 

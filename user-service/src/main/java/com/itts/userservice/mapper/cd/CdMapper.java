@@ -39,4 +39,6 @@ public interface CdMapper extends BaseMapper<Cd> {
             "FROM t_cd " +
             "WHERE fjcd_id = #{parentId}")
     Long countByParentId(@Param("parentId") Long parentId);
+
+    List<Cd> selectByParameterList(@Param("parameter")String parameter,@Param("systemType") String systemType,@Param("modelType") String modelType);
 }
