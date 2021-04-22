@@ -412,7 +412,7 @@ public class CdServiceImpl implements CdService {
 
         List<CdTreeVO> childrenVOs = Lists.newArrayList();
 
-        children.forEach(child ->{
+        /*children.forEach(child ->{
             if (Objects.equals(cd.getId(), child.getFjcdId())) {
 
                 CdTreeVO childVO = new CdTreeVO();
@@ -421,9 +421,9 @@ public class CdServiceImpl implements CdService {
 
                 combineMenusToTree(childVO, children);
             }
-        });
+        });*/
 
-        /*Iterator<Cd> cdIterator = children.iterator();
+        Iterator<Cd> cdIterator = children.iterator();
 
         while (cdIterator.hasNext()) {
 
@@ -440,7 +440,7 @@ public class CdServiceImpl implements CdService {
 
                 combineMenusToTree(childVO, children);
             }
-        }*/
+        }
 
         cd.setChildCds(childrenVOs);
         return cd;
