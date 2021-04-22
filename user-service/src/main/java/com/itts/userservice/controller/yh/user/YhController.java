@@ -1,19 +1,28 @@
 package com.itts.userservice.controller.yh.user;
 
+import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.model.yh.Yh;
+import com.itts.userservice.service.js.JsService;
+import com.itts.userservice.service.yh.YhJsGlService;
 import com.itts.userservice.service.yh.YhService;
+import com.itts.userservice.vo.GetJsVO;
 import com.itts.userservice.vo.YhVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
 
 /**
  * @Description：
@@ -27,6 +36,10 @@ public class YhController {
 
     @Autowired
     private YhService yhService;
+    @Autowired
+    private YhJsGlService yhJsGlService;
+    @Autowired
+    private JsService jsService;
 
     /**
      * 获取用户信息
@@ -40,7 +53,7 @@ public class YhController {
     public ResponseUtil get() {
 
         //获取登录信息
-        LoginUser loginUser = SystemConstant.threadLocal.get();
+        LoginUser loginUser = threadLocal.get();
 
         Yh yh = yhService.get(loginUser.getUserId());
 
@@ -64,9 +77,24 @@ public class YhController {
     public ResponseUtil findMenus() {
 
         //获取登录用户信息
-        LoginUser loginUser = SystemConstant.threadLocal.get();
+        LoginUser loginUser = threadLocal.get();
 
         YhVO yhVO = yhService.findMenusByUserID(loginUser.getUserId(), loginUser.getSystemType());
         return ResponseUtil.success(yhVO);
+    }
+    /**
+     * 获取用户菜单操作信息
+     */
+    @GetMapping("/menus/operation/")
+    @ApiOperation(value = "获取用户菜单操作信息")
+    public ResponseUtil findMenusAndOperation(){
+        Long id = threadLocal.get().getUserId();
+        List<Long> longs = yhJsGlService.fingByYhid(id);
+
+        GetJsVO jsCdCzGl = null;
+        for(Long jsId:longs){
+            jsCdCzGl = jsService.getJsCdCzGl(jsId);
+        }
+        return ResponseUtil.success(jsCdCzGl);
     }
 }

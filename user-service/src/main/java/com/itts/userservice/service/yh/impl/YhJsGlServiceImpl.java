@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -31,6 +32,13 @@ public class YhJsGlServiceImpl implements YhJsGlService {
     private JsMapper jsMapper;
 
 
-
-
+    @Override
+    public List<Long> fingByYhid(Long id) {
+        QueryWrapper<YhJsGl> QueryWrapper = new QueryWrapper<>();
+        QueryWrapper.eq("yh_id",id)
+                .eq("sfsc",false);
+        List<YhJsGl> yhJsGls = yhJsGlMapper.selectList(QueryWrapper);
+        List<Long> collect = yhJsGls.stream().map(YhJsGl::getJsId).collect(Collectors.toList());
+        return collect;
+    }
 }

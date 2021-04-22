@@ -5,10 +5,13 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.dto.JgglDTO;
 import com.itts.userservice.dto.SjzdDTO;
+import com.itts.userservice.dto.YhExcelDTO;
 import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.mapper.sjzd.SjzdMapper;
+import com.itts.userservice.mapper.yh.YhMapper;
 import com.itts.userservice.model.jggl.JgglListener;
 import com.itts.userservice.model.sjzd.SjzdListener;
+import com.itts.userservice.model.yh.YhListener;
 import com.itts.userservice.service.Excel.ExcelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
@@ -27,6 +30,8 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Resource
     private SjzdMapper sjzdMapper;
+    @Resource
+    private YhMapper yhMapper;
     /**
      * 导入机构Excel
      * @param file
@@ -53,7 +58,7 @@ public class ExcelServiceImpl implements ExcelService {
      * @return
      */
     @Override
-    public ResponseUtil importShzd(MultipartFile file, Integer headRowNumber) {
+    public ResponseUtil importSjzd(MultipartFile file, Integer headRowNumber) {
         SjzdListener sjzdListener = new SjzdListener();
         sjzdListener.setSjzdMapper(sjzdMapper);
         try{
@@ -65,5 +70,24 @@ public class ExcelServiceImpl implements ExcelService {
         }
 
 
+    }
+
+    /**
+     * 用户导入
+     * @param file
+     * @param headRowNumber
+     * @return
+     */
+    @Override
+    public ResponseUtil importYh(MultipartFile file, Integer headRowNumber) {
+        YhListener yhListener = new YhListener();
+        yhListener.setYhMapper(yhMapper);
+        try{
+            EasyExcel.read(file.getInputStream(), YhExcelDTO.class, yhListener).headRowNumber(headRowNumber).sheet().doRead();
+            return ResponseUtil.success(yhListener.getResult());
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            return ResponseUtil.error(ErrorCodeEnum.SYSTEM_UPLOAD_ERROR);
+        }
     }
 }
