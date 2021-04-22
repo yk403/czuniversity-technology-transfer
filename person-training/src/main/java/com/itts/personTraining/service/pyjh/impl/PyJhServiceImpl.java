@@ -49,15 +49,14 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         log.info("【人才培养 - 分页条件查询培养计划列表,学生类别名称:{},培养方案/培养计划/教学大纲:{},批次id:{}】",xslbmc,name,pcId);
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<PyJh> pyJhQueryWrapper = new QueryWrapper<>();
-        pyJhQueryWrapper.eq("sczt",false)
+        pyJhQueryWrapper.eq("sfsc",false)
                 .eq(pcId != null,"pc_id",pcId)
                 .eq(StringUtils.isNotBlank(xslbmc),"xslbmc",xslbmc)
                 .like(StringUtils.isNotBlank(name), "pyfa", name)
                 .or().like(StringUtils.isNotBlank(name), "pyjh", name)
                 .or().like(StringUtils.isNotBlank(name), "jxdg", name);
         List<PyJh> pyJhs = pyJhMapper.selectList(pyJhQueryWrapper);
-        PageInfo<PyJh> PageInfo = new PageInfo<>(pyJhs);
-        return PageInfo;
+        return new PageInfo<>(pyJhs);
     }
 
     /**
@@ -69,7 +68,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     public PyJh get(Long id) {
         log.info("【人才培养 - 根据id:{}查询培养计划】",id);
         QueryWrapper<PyJh> pyJhQueryWrapper = new QueryWrapper<>();
-        pyJhQueryWrapper.eq("sczt",false)
+        pyJhQueryWrapper.eq("sfsc",false)
                 .eq("id",id);
         return pyJhMapper.selectOne(pyJhQueryWrapper);
     }
@@ -105,7 +104,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     public boolean delete(PyJh pyJh) {
         log.info("【人才培养 - 删除培养计划:{}】",pyJh);
         //设置删除状态
-        pyJh.setSczt(true);
+        pyJh.setSfsc(true);
         return pyJhService.updateById(pyJh);
     }
 

@@ -52,7 +52,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         log.info("【人才培养 - 分页条件查询师资列表,导师姓名:{},导师类别:{},行业领域:{}】",dsxm,dslb,hyly);
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
-        szQueryWrapper.eq("sczt",false)
+        szQueryWrapper.eq("sfsc",false)
                       .eq(StringUtils.isNotBlank(dsxm),"dsxm", dsxm)
                       .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
                       .eq(StringUtils.isNotBlank(hyly),"hyly", hyly);
@@ -69,7 +69,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
     public Sz get(Long id) {
         log.info("【人才培养 - 根据id:{}查询师资信息】",id);
         QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
-        szQueryWrapper.eq("sczt",false)
+        szQueryWrapper.eq("sfsc",false)
                       .eq("id",id);
         return szMapper.selectOne(szQueryWrapper);
     }
@@ -108,7 +108,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
     public boolean delete(Sz sz) {
         log.info("【人才培养 - 删除师资:{}】",sz);
         //设置删除状态
-        sz.setSczt(true);
+        sz.setSfsc(true);
         return szService.updateById(sz);
     }
 
@@ -121,7 +121,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
     public Sz selectByDsbh(String dsbh) {
         log.info("【人才培养 - 根据导师编号:{}查询师资信息】",dsbh);
         QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
-        szQueryWrapper.eq("sczt",false)
+        szQueryWrapper.eq("sfsc",false)
                       .eq("dsbh",dsbh);
         return szMapper.selectOne(szQueryWrapper);
     }

@@ -54,7 +54,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Kc> kcQueryWrapper = new QueryWrapper<>();
         kcQueryWrapper.eq(StringUtils.isNotBlank(kclx),"kclx", kclx)
-                      .eq("sczt",false)
+                      .eq("sfsc",false)
                       .like(StringUtils.isNotBlank(name), "kcmc", name)
                       .or().like(StringUtils.isNotBlank(name), "kcdm", name);
         List<Kc> kcs = kcMapper.selectList(kcQueryWrapper);
@@ -71,7 +71,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     public Kc get(Long id) {
         log.info("【人才培养 - 根据id:{}查询课程信息】",id);
         QueryWrapper<Kc> kcQueryWrapper = new QueryWrapper<>();
-        kcQueryWrapper.eq("sczt",false)
+        kcQueryWrapper.eq("sfsc",false)
                       .eq("id",id);
         return kcMapper.selectOne(kcQueryWrapper);
     }
@@ -100,7 +100,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     public boolean delete(Kc kc) {
         log.info("【人才培养 - 删除课程:{}】",kc);
         //设置删除状态
-        kc.setSczt(true);
+        kc.setSfsc(true);
         return kcService.updateById(kc);
     }
 

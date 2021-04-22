@@ -44,7 +44,7 @@ public class Pc implements Serializable {
     private String pclx;
 
     /**
-     * 删除状态（0：未删除；1：已删除）
+     * 是否删除(0:未删除;1已删除)
      */
     private Boolean sfsc;
 

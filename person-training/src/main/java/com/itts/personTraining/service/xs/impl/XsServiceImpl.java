@@ -49,7 +49,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         log.info("【人才培养 - 分页条件查询学员列表,批次id:{},学生类别id:{},教育形式:{}】",pcId,xslbId,jyxs);
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
-        xsQueryWrapper.eq("sczt",false)
+        xsQueryWrapper.eq("sfsc",false)
                       .eq(pcId != null,"pc_id", pcId)
                       .eq(StringUtils.isNotBlank(xslbId),"xslb_id", xslbId)
                       .eq(StringUtils.isNotBlank(jyxs),"jyxs", jyxs);
@@ -66,7 +66,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     public Xs get(Long id) {
         log.info("【人才培养 - 根据id:{}查询学员信息】",id);
         QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
-        xsQueryWrapper.eq("sczt",false)
+        xsQueryWrapper.eq("sfsc",false)
                       .eq("id",id);
         return xsMapper.selectOne(xsQueryWrapper);
     }
@@ -105,7 +105,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     public boolean delete(Xs xs) {
         log.info("【人才培养 - 删除学员:{}】",xs);
         //设置删除状态
-        xs.setSczt(true);
+        xs.setSfsc(true);
         return xsService.updateById(xs);
     }
 
@@ -118,7 +118,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     public Xs selectByXh(String xh) {
         log.info("【人才培养 - 根据学号:{}查询学员信息】",xh);
         QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
-        xsQueryWrapper.eq("sczt",false)
+        xsQueryWrapper.eq("sfsc",false)
                 .eq("xh",xh);
         return xsMapper.selectOne(xsQueryWrapper);
     }

@@ -74,9 +74,9 @@ public class Pk implements Serializable {
     private String sklsbm;
 
     /**
-     * 删除状态(0:未删除;1已删除)
+     * 是否删除(0:未删除;1已删除)
      */
-    private Boolean sczt;
+    private Boolean sfsc;
 
     /**
      * 创建时间
