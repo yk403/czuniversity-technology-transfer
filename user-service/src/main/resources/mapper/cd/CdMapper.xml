@@ -25,4 +25,12 @@
         id
         , cdmc, cdbm, cdtb, fjcd_id, cj, cddz, xtlx, mklx, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
+    <select id="selectByParameterList" resultType="com.itts.userservice.model.cd.Cd">
+        select *
+        from t_cd
+        where sfsc =false
+        <if test="systemType !=null and systemType !=''">and xtlx= #{systemType}</if>
+        <if test="modelType !=null and modelType !=''">and mklx = #{modelType}</if>
+        and (cdmc = #{parameter} or cdbm=#{parameter})
+    </select>
 </mapper>
