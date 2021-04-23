@@ -50,11 +50,11 @@ public class CdController {
      */
     @ApiOperation(value = "获取列表")
     @GetMapping("/list/")
-    public ResponseUtil find(@ApiParam("当前页数") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                             @ApiParam("每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                             @ApiParam("菜单名称") @RequestParam(value = "name", required = false) String name,
-                             @ApiParam("系统类型") @RequestParam(value = "systemType", required = false) String systemType,
-                             @ApiParam("模块类型") @RequestParam(value = "modelType", required = false) String modelType) {
+    public ResponseUtil find(@ApiParam(value = "当前页数") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                             @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                             @ApiParam(value = "菜单名称") @RequestParam(value = "name", required = false) String name,
+                             @ApiParam(value = "系统类型") @RequestParam(value = "systemType", required = false) String systemType,
+                             @ApiParam(value = "模块类型") @RequestParam(value = "modelType", required = false) String modelType) {
 
         PageInfo<GetCdAndCzDTO> pageInfo = cdService.findByPage(pageNum, pageSize, name, systemType, modelType);
         return ResponseUtil.success(pageInfo);
@@ -65,8 +65,8 @@ public class CdController {
      */
     @GetMapping("/tree/")
     @ApiOperation(value = "通过ID获取当前菜单及其子菜单（树形）")
-    public ResponseUtil findByTree(@ApiParam("菜单ID(可不填写，默认查询所有)") @RequestParam(value = "id", required = false) Long id,
-                                   @ApiParam("类型(不填写查询所有)：in - 内部系统；out - 外部系统") @RequestParam(value = "type", required = false) String type) {
+    public ResponseUtil findByTree(@ApiParam(value = "菜单ID(可不填写，默认查询所有)") @RequestParam(value = "id", required = false) Long id,
+                                   @ApiParam(value = "类型(不填写查询所有)：in - 内部系统；out - 外部系统") @RequestParam(value = "type", required = false) String type) {
 
         List<Cd> cds = Lists.newArrayList();
 
