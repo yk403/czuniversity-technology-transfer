@@ -14,7 +14,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
 
 
 @RestController
-@RequestMapping(BASE_URL+"/v1/sys/excel")
+@RequestMapping(BASE_URL + "/v1/sys/excel")
 //@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/excel")
 @Slf4j
 public class ExcelController extends BaseController {
@@ -23,7 +23,7 @@ public class ExcelController extends BaseController {
     @Autowired
     private ExcelService excelService;
 
-/*    *//**
+    /*    *//**
      * 企业导入
      * @param file
      * @param headRowNumber
@@ -41,17 +41,19 @@ public class ExcelController extends BaseController {
             return R.error();
         }
     }*/
+
     /**
      * 需求导入
+     *
      * @param file
      * @param headRowNumber
      * @return
      */
     @PostMapping("/importXq")
-    public R importXq(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber){
+    public R importXq(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber) {
 
         try {
-            return  excelService.importXq(file,headRowNumber);
+            return excelService.importXq(file, headRowNumber);
 //            EasyExcel.read(file.getInputStream(), StaffDO.class, new UploadDataListener(uploadDAO)).sheet().doRead();
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,17 +61,19 @@ public class ExcelController extends BaseController {
             return R.error();
         }
     }
+
     /**
      * 成果导入
+     *
      * @param file
      * @param headRowNumber
      * @return
      */
     @PostMapping("/importCg")
-    public R importCg(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber){
+    public R importCg(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber) {
 
         try {
-            return  excelService.importCg(file,headRowNumber);
+            return excelService.importCg(file, headRowNumber);
 //            EasyExcel.read(file.getInputStream(), StaffDO.class, new UploadDataListener(uploadDAO)).sheet().doRead();
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,12 +81,6 @@ public class ExcelController extends BaseController {
             return R.error();
         }
     }
-
-
-
-
-
-
 
 
 }

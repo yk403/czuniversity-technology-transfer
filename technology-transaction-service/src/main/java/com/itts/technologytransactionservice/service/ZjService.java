@@ -7,14 +7,12 @@ import com.itts.technologytransactionservice.model.TZj;
 
 
 /**
- * 
- * 
  * @author xp
  * @email 15161575502@163.com
  * @date 2021-02-20 17:05:41
  */
 public interface ZjService extends IService<TZj> {
 
-	IPage page(Query query);
+    IPage page(Query query);
 
 }

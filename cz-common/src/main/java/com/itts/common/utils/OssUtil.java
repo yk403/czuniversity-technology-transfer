@@ -64,7 +64,7 @@ public class OssUtil {
     /**
      * 上传文件，自定义 前后缀
      */
-    public String uploadSuffix(byte[] data, String prefix ,String suffix) {
+    public String uploadSuffix(byte[] data, String prefix, String suffix) {
         return upload(data, getPath(prefix, suffix));
     }
 

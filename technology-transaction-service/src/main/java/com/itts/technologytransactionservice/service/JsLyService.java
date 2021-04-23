@@ -8,14 +8,12 @@ import com.itts.technologytransactionservice.model.TJsLy;
 
 
 /**
- * 
- * 
  * @author xp
  * @email 15161575502@163.com
  * @date 2021-02-22 11:11:25
  */
 public interface JsLyService extends IService<TJsLy> {
 
-	PageInfo page(Query query);
+    PageInfo page(Query query);
 
 }

@@ -18,8 +18,9 @@ import java.util.List;
 public interface IQuartzLogService extends IService<QuartzLog> {
     /**
      * 导出定时任务日志
+     *
      * @param quartzLogs 待导出的数据
-     * @param response /
+     * @param response   /
      * @throws IOException /
      */
     void download(List<QuartzLog> quartzLogs, HttpServletResponse response) throws IOException;

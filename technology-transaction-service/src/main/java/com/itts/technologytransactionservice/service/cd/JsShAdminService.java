@@ -16,14 +16,17 @@ import java.util.Map;
  */
 public interface JsShAdminService extends IService<TJsSh> {
 
-	IPage page(Query query);
+    IPage page(Query query);
 
-	List<TJsSh> selectBycgxqIds(List<Integer> cgxqIds);
+    List<TJsSh> selectBycgxqIds(List<Integer> cgxqIds);
 
     Boolean auditCg(Map<String, Object> params, Integer fbshzt);
 
-	Boolean auditXq(Map<String, Object> params, Integer fbshzt);
-	Boolean assistanceAuditXq(Map<String, Object> params, Integer assistanceStatus);
-	Boolean assistanceAuditCg(Map<String, Object> params, Integer assistanceStatus);
-	List<TJsSh> selectByCgIds(List<Integer> ids);
+    Boolean auditXq(Map<String, Object> params, Integer fbshzt);
+
+    Boolean assistanceAuditXq(Map<String, Object> params, Integer assistanceStatus);
+
+    Boolean assistanceAuditCg(Map<String, Object> params, Integer assistanceStatus);
+
+    List<TJsSh> selectByCgIds(List<Integer> ids);
 }

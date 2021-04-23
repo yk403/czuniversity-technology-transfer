@@ -3,21 +3,21 @@
 
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsLbMapper">
 
-	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsLb">
-		select `id`,`mc`,`bh`,`xq` from t_js_lb
-        <where>  
-		  		  <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
-		  		  <if test="map.mc != null and map.mc != ''"> and mc = #{map.mc} </if>
-		  		  <if test="map.bh != null and map.bh != ''"> and bh = #{map.bh} </if>
-		  		</where>
+    <select id="list" resultType="com.itts.technologytransactionservice.model.TJsLb">
+        select `id`,`mc`,`bh`,`xq` from t_js_lb
+        <where>
+            <if test="map.id != null and map.id != ''">and id = #{map.id}</if>
+            <if test="map.mc != null and map.mc != ''">and mc = #{map.mc}</if>
+            <if test="map.bh != null and map.bh != ''">and bh = #{map.bh}</if>
+        </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
                 order by ${map.sort} ${map.order}
             </when>
-			<otherwise>
+            <otherwise>
                 order by id asc
-			</otherwise>
+            </otherwise>
         </choose>
-	</select>
+    </select>
 
 </mapper>

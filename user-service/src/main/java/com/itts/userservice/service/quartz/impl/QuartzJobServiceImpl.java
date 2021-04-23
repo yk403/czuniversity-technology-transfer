@@ -46,7 +46,7 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
     @CacheEvict(allEntries = true)
     @Transactional(rollbackFor = Exception.class)
     public R create(QuartzJob resources) {
-        if (!CronExpression.isValidExpression(resources.getCronExpression())){
+        if (!CronExpression.isValidExpression(resources.getCronExpression())) {
             return R.error("cron表达式格式错误");
         }
         resources.setCreateTime(new Date());
@@ -61,7 +61,7 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
      */
     @Override
     public void updateIsPause(QuartzJob quartzJob) {
-        if(quartzJob.getId().equals(1L)){
+        if (quartzJob.getId().equals(1L)) {
             throw new BadRequestException("该任务不可操作");
         }
         if (quartzJob.getIsPause()) {
@@ -78,14 +78,14 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
      * 导出定时任务
      *
      * @param quartzJobs 待导出的数据
-     * @param response /
+     * @param response   /
      * @throws IOException /
      */
     @Override
     public void download(List<QuartzJob> quartzJobs, HttpServletResponse response) throws IOException {
         List<Map<String, Object>> list = new ArrayList<>();
         for (QuartzJob quartzJob : quartzJobs) {
-            Map<String,Object> map = new LinkedHashMap<>();
+            Map<String, Object> map = new LinkedHashMap<>();
             map.put("任务名称", quartzJob.getJobName());
             map.put("Bean名称", quartzJob.getBeanName());
             map.put("执行方法", quartzJob.getMethodName());
@@ -106,7 +106,7 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
      */
     @Override
     public R execution(QuartzJob quartzJob) {
-        if(quartzJob.getId().equals(1L)){
+        if (quartzJob.getId().equals(1L)) {
             return R.error("该任务不可操作");
 //            throw new BadRequestException("该任务不可操作");
         }
@@ -122,7 +122,7 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
     @Override
     public void delete(List<Long> ids) {
         for (Long id : ids) {
-            if(id.equals(1L)){
+            if (id.equals(1L)) {
                 throw new BadRequestException("更新访客记录不可删除，你可以在后台代码中取消该限制");
             }
             QuartzJob quartzJob = getById(id);
@@ -138,10 +138,10 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
      */
     @Override
     public R update(QuartzJob quartzJob) {
-        if(quartzJob.getId().equals(1L)){
+        if (quartzJob.getId().equals(1L)) {
             return R.error("该任务不可操作");
         }
-        if (!org.quartz.CronExpression.isValidExpression(quartzJob.getCronExpression())){
+        if (!org.quartz.CronExpression.isValidExpression(quartzJob.getCronExpression())) {
             return R.error("cron表达式格式错误");
         }
         int num = quartzJobMapper.updateById(quartzJob);

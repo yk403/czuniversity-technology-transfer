@@ -22,7 +22,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
  * @Description: 专家管理
  */
 
-@RequestMapping(BASE_URL+"/v1/Zj")
+@RequestMapping(BASE_URL + "/v1/Zj")
 @Api(value = "ZjController", tags = "专家管理")
 @RestController
 public class ZjController extends BaseController {
@@ -30,10 +30,11 @@ public class ZjController extends BaseController {
     private ZjService zjService;
 
     /**
-    * 分页查询
-    * @param params
-    * @return
-    */
+     * 分页查询
+     *
+     * @param params
+     * @return
+     */
     @PostMapping("/page")
     public R page(@RequestBody Map<String, Object> params) {
         //查询列表数据
@@ -42,10 +43,11 @@ public class ZjController extends BaseController {
     }
 
     /**
-    * 根据ID查询
-    * @param id
-    * @return
-    */
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") Long id) {
         return success(zjService.getById(id));
@@ -79,8 +81,8 @@ public class ZjController extends BaseController {
      * 批量删除
      */
     @PostMapping("/removeBatch")
-    public R removeBatch(@RequestBody List<Long> ids){
-        return  remove(zjService.removeByIds(ids));
+    public R removeBatch(@RequestBody List<Long> ids) {
+        return remove(zjService.removeByIds(ids));
     }
 
 }

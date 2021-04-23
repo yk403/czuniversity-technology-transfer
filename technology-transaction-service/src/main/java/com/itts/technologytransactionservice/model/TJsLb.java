@@ -10,8 +10,6 @@ import java.io.Serializable;
 
 
 /**
- * 
- * 
  * @author xp
  * @email 15161575502@163.com
  * @date 2021-02-22 11:14:18
@@ -21,24 +19,24 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @TableName("t_js_lb")
 public class TJsLb implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	/**
- 	* 技术类别主键
- 	*/
-	@TableId(value = "id")
-	private Long id;
-	/**
- 	* 名称
- 	*/
-	private String mc;
-	/**
- 	* 编号
- 	*/
-	private String bh;
-	/**
-	 * 详情
-	 */
-	private String xq;
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 技术类别主键
+     */
+    @TableId(value = "id")
+    private Long id;
+    /**
+     * 名称
+     */
+    private String mc;
+    /**
+     * 编号
+     */
+    private String bh;
+    /**
+     * 详情
+     */
+    private String xq;
 
 }

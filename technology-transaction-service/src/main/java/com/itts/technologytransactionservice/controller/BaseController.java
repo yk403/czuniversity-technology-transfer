@@ -25,7 +25,7 @@ public class BaseController {
         return R.error(code, msg);
     }
 
-    public R fail(){
+    public R fail() {
         return R.error();
     }
 
@@ -40,8 +40,6 @@ public class BaseController {
     public R remove(boolean b) {
         return b ? success("删除成功") : fail(500, "删除失败");
     }
-
-
 
 
 }

@@ -26,7 +26,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
 
     private StringBuilder result = new StringBuilder();
 
-    private Integer count= 0;
+    private Integer count = 0;
 
     @Autowired
     private JsXqMapper jsXqMapper;
@@ -36,7 +36,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
     public static XqListener xqListener;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         xqListener = this;
     }
 
@@ -45,92 +45,92 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
     @Override
     public void invoke(TJsXqDto data, AnalysisContext analysisContext) {
         ReadRowHolder rrh = analysisContext.readRowHolder();
-        int rowIndex = rrh.getRowIndex()+1;
-        log.info("解析第"+rowIndex+"行数据:{}", JSON.toJSONString(data));
+        int rowIndex = rrh.getRowIndex() + 1;
+        log.info("解析第" + rowIndex + "行数据:{}", JSON.toJSONString(data));
 //        log.info("解析到一条数据:{}", JSON.toJSONString(data));
         TJsXq tJsXq = new TJsXq();
         //技术需求名称
-        if(!StringUtils.isBlank(data.getXqmc())){
+        if (!StringUtils.isBlank(data.getXqmc())) {
             tJsXq.setXqmc(data.getXqmc());
         }
         //关键字
-        if(!StringUtils.isBlank(data.getGjz())){
+        if (!StringUtils.isBlank(data.getGjz())) {
             tJsXq.setGjz(data.getGjz());
         }
         //有效期
-        if(!StringUtils.isBlank(data.getYxq())){
+        if (!StringUtils.isBlank(data.getYxq())) {
             tJsXq.setYxq(data.getYxq());
         }
         //需求领域
-        if(!StringUtils.isBlank(data.getLyId())){
+        if (!StringUtils.isBlank(data.getLyId())) {
             tJsXq.setLyId(data.getLyId());
         }
         //技术需求类别
-        if(!StringUtils.isBlank(data.getLbId())){
+        if (!StringUtils.isBlank(data.getLbId())) {
             tJsXq.setLbId(data.getLbId());
         }
         //合作方式
-        if(!StringUtils.isBlank(data.getHzfs())){
+        if (!StringUtils.isBlank(data.getHzfs())) {
             tJsXq.setHzfs(data.getHzfs());
         }
         //合作价格
-        if(!StringUtils.isBlank(data.getHzjg())){
+        if (!StringUtils.isBlank(data.getHzjg())) {
             tJsXq.setHzjg(data.getHzjg());
         }
         //意向合作单位
-        if(!StringUtils.isBlank(data.getYxhzdw())){
+        if (!StringUtils.isBlank(data.getYxhzdw())) {
             tJsXq.setYxhzdw(data.getYxhzdw());
         }
         //意向合作专家
-        if(!StringUtils.isBlank(data.getYxhzzj())){
+        if (!StringUtils.isBlank(data.getYxhzzj())) {
             tJsXq.setYxhzzj(data.getYxhzzj());
         }
         //技术需求详情
-        if(!StringUtils.isBlank(data.getXqxq())){
+        if (!StringUtils.isBlank(data.getXqxq())) {
             tJsXq.setXqxq(data.getXqxq());
         }
         //技术指标
-        if(!StringUtils.isBlank(data.getJszb())){
+        if (!StringUtils.isBlank(data.getJszb())) {
             tJsXq.setJszb(data.getJszb());
         }
         //需求图片
-        if(!StringUtils.isBlank(data.getXqtp())){
+        if (!StringUtils.isBlank(data.getXqtp())) {
             tJsXq.setXqtp(data.getXqtp());
         }
         //需求视频
-        if(!StringUtils.isBlank(data.getXqsp())){
+        if (!StringUtils.isBlank(data.getXqsp())) {
             tJsXq.setXqsp(data.getXqsp());
         }
         //单位名称
-        if(!StringUtils.isBlank(data.getDwmc())){
+        if (!StringUtils.isBlank(data.getDwmc())) {
             tJsXq.setDwmc(data.getDwmc());
         }
         //地址
-        if(!StringUtils.isBlank(data.getDz())){
+        if (!StringUtils.isBlank(data.getDz())) {
             tJsXq.setDz(data.getDz());
         }
         //法人
-        if(!StringUtils.isBlank(data.getFr())){
+        if (!StringUtils.isBlank(data.getFr())) {
             tJsXq.setFr(data.getFr());
         }
         //联系人
-        if(!StringUtils.isBlank(data.getContracts())){
+        if (!StringUtils.isBlank(data.getContracts())) {
             tJsXq.setContracts(data.getContracts());
         }
         //联系人电话
-        if(!StringUtils.isBlank(data.getLxrdh())){
+        if (!StringUtils.isBlank(data.getLxrdh())) {
             tJsXq.setLxrdh(data.getLxrdh());
         }
         //座机
-        if(!StringUtils.isBlank(data.getZj())){
+        if (!StringUtils.isBlank(data.getZj())) {
             tJsXq.setZj(data.getZj());
         }
         //电子邮箱
-        if(!StringUtils.isBlank(data.getDzyx())){
+        if (!StringUtils.isBlank(data.getDzyx())) {
             tJsXq.setDzyx(data.getDzyx());
         }
         //活动id
-        if(!StringUtils.isBlank(data.getJshdId())){
+        if (!StringUtils.isBlank(data.getJshdId())) {
             tJsXq.setJshdId(Integer.parseInt(data.getJshdId()));
         }
         //发布类型
@@ -167,16 +167,16 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
 
     private void save(TJsXq tJsXq) {
         TJsXq tJsXqOld = jsXqMapper.selectByName(tJsXq.getXqmc());
-        if(tJsXqOld != null){
+        if (tJsXqOld != null) {
             tJsXq.setId(tJsXqOld.getId());
 
             try {
                 jsXqMapper.updateById(tJsXq);
                 count++;
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.info(e.getMessage());
             }
-        }else{
+        } else {
             try {
                 //TODO 暂时假数据,管理员userId为1
                 tJsXq.setUserId(1);
@@ -192,13 +192,13 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
                 tJsSh.setGxsj(new Date());
                 jsShMapper.insert(tJsSh);
                 count++;
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.info(e.getMessage());
             }
         }
     }
 
-    public String  getResult(){
+    public String getResult() {
         return result.toString();
     }
 }

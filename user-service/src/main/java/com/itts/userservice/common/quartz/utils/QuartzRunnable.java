@@ -9,35 +9,36 @@ import java.util.concurrent.Callable;
 
 /**
  * 执行定时任务
+ *
  * @author /
  */
 @Slf4j
 public class QuartzRunnable implements Callable {
 
-	private Object target;
-	private Method method;
-	private String params;
+    private Object target;
+    private Method method;
+    private String params;
 
-	public QuartzRunnable(String beanName, String methodName, String params)
-			throws NoSuchMethodException, SecurityException {
-		this.target = SpringContextHolder.getBean(beanName);
-		this.params = params;
+    public QuartzRunnable(String beanName, String methodName, String params)
+            throws NoSuchMethodException, SecurityException {
+        this.target = SpringContextHolder.getBean(beanName);
+        this.params = params;
 
-		if (StringUtils.isNotBlank(params)) {
-			this.method = target.getClass().getDeclaredMethod(methodName, String.class);
-		} else {
-			this.method = target.getClass().getDeclaredMethod(methodName);
-		}
-	}
+        if (StringUtils.isNotBlank(params)) {
+            this.method = target.getClass().getDeclaredMethod(methodName, String.class);
+        } else {
+            this.method = target.getClass().getDeclaredMethod(methodName);
+        }
+    }
 
-	@Override
-	public Object call() throws Exception {
-		ReflectionUtils.makeAccessible(method);
-		if (StringUtils.isNotBlank(params)) {
-			method.invoke(target, params);
-		} else {
-			method.invoke(target);
-		}
-		return null;
-	}
+    @Override
+    public Object call() throws Exception {
+        ReflectionUtils.makeAccessible(method);
+        if (StringUtils.isNotBlank(params)) {
+            method.invoke(target, params);
+        } else {
+            method.invoke(target);
+        }
+        return null;
+    }
 }

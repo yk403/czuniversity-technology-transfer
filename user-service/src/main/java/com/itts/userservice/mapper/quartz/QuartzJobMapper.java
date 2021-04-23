@@ -18,6 +18,7 @@ import java.util.List;
 public interface QuartzJobMapper extends BaseMapper<QuartzJob> {
     /**
      * 查询启用的任务
+     *
      * @return List
      */
     List<QuartzJob> findByIsPauseIsFalse();

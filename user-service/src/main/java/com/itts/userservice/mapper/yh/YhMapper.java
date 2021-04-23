@@ -23,6 +23,7 @@ public interface YhMapper extends BaseMapper<Yh> {
 
     /**
      * 查询菜单目录
+     *
      * @param id
      * @return
      */

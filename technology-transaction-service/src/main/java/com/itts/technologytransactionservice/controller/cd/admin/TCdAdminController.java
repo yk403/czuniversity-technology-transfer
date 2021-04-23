@@ -56,7 +56,7 @@ public class TCdAdminController {
      */
     @GetMapping("/get/{id}")
     @ApiOperation(value = "获取详情")
-    public  ResponseUtil get(@PathVariable("id") Long id) {
+    public ResponseUtil get(@PathVariable("id") Long id) {
 
         TCd result = service.get(id);
 

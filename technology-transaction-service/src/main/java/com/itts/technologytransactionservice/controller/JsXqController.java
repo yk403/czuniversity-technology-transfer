@@ -30,7 +30,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  * @Description: 技术需求管理
  */
 
-@RequestMapping(BASE_URL+"/v1/JsXq")
+@RequestMapping(BASE_URL + "/v1/JsXq")
 @Api(value = "JsXqController", tags = "技术需求管理")
 @RestController
 public class JsXqController extends BaseController {
@@ -41,6 +41,7 @@ public class JsXqController extends BaseController {
 
     /**
      * 分页条件查询需求(前台)
+     *
      * @param params
      * @return
      */
@@ -51,6 +52,7 @@ public class JsXqController extends BaseController {
 
     /**
      * 分页条件查询成果(个人详情)(type: 0 采集 type: 1 发布 type:2 招拍挂)
+     *
      * @param params
      * @return
      */
@@ -62,6 +64,7 @@ public class JsXqController extends BaseController {
 
     /**
      * 根据ID查询需求信息
+     *
      * @param id
      * @return
      */
@@ -72,6 +75,7 @@ public class JsXqController extends BaseController {
 
     /**
      * 根据Name查询
+     *
      * @param xqmc
      * @return
      */
@@ -102,11 +106,12 @@ public class JsXqController extends BaseController {
      */
     @GetMapping("/remove/{id}")
     public R remove(@PathVariable("id") String id) {
-        return remove( jsXqService.removeByIdXq(Integer.valueOf(id)));
+        return remove(jsXqService.removeByIdXq(Integer.valueOf(id)));
     }
 
     /**
      * 已发布的需求招标申请(受理协办)
+     *
      * @param params
      * @return
      */
@@ -119,7 +124,7 @@ public class JsXqController extends BaseController {
         if (jylx != 1) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (!jsXqService.assistanceUpdateTJsXq(params,jylx)) {
+        if (!jsXqService.assistanceUpdateTJsXq(params, jylx)) {
             throw new WebException(MSG_AUDIT_FAIL);
         }
         return ResponseUtil.success("需求招标申请!");
@@ -127,16 +132,17 @@ public class JsXqController extends BaseController {
 
     /**
      * 个人发布审核需求申请(0待提交;1待审核;2通过;3整改;4拒绝)
+     *
      * @param params
      * @return
      */
     @PutMapping("/auditXq")
     public ResponseUtil auditXq(@RequestBody Map<String, Object> params) {
         Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
-        if (fbshzt != 1 ){
+        if (fbshzt != 1) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(jsXqService.auditXq(params,fbshzt));
+        return ResponseUtil.success(jsXqService.auditXq(params, fbshzt));
     }
 
     /**
@@ -155,6 +161,7 @@ public class JsXqController extends BaseController {
 
     /**
      * 批量删除
+     *
      * @param ids
      * @return
      */

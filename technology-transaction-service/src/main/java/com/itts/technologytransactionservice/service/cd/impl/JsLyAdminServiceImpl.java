@@ -28,6 +28,7 @@ import java.util.List;
 public class JsLyAdminServiceImpl extends ServiceImpl<JsLyMapper, TJsLy> implements JsLyAdminService {
     @Autowired
     private JsLyMapper jsLyMapper;
+
     @Override
     public PageInfo page(Query query) {
         PageHelper.startPage(query.getPageNum(), query.getPageSize());

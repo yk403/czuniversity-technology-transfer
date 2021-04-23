@@ -16,6 +16,7 @@ public class FileManager implements FileManagerConfig {
     private static TrackerServer trackerServer;
     private static StorageServer storageServer;
     private static StorageClient storageClient;
+
     static {
         // Initialize Fast DFS Client configurations
         try {
@@ -27,11 +28,11 @@ public class FileManager implements FileManagerConfig {
             trackerClient = new TrackerClient();
             trackerServer = trackerClient.getConnection();
             storageClient = new StorageClient(trackerServer, storageServer);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("", e);
         }
     }
+
     public static String upload(FastDFSFile file) {
         logger.info("File Name: " + file.getName() + "File Length: " + file.getContent().length);
         NameValuePair[] meta_list = new NameValuePair[3];
@@ -42,19 +43,17 @@ public class FileManager implements FileManagerConfig {
         String[] uploadResults = null;
         try {
             uploadResults = storageClient.upload_file(file.getContent(), file.getExt(), meta_list);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             logger.error("IO Exception when uploadind the file: " + file.getName(), e);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Non IO Exception when uploadind the file: " + file.getName(), e);
         }
         logger.info("upload_file time used: " + (System.currentTimeMillis() - startTime) + " ms");
         if (uploadResults == null) {
             logger.error("upload file fail, error code: " + storageClient.getErrorCode());
         }
-        String groupName     = uploadResults[0];
-        String remoteFileName  = uploadResults[1];
+        String groupName = uploadResults[0];
+        String remoteFileName = uploadResults[1];
         String fileAbsolutePath = PROTOCOL + trackerServer.getInetSocketAddress().getHostName()
                 + SEPARAT
                 + TRACKER_NGNIX_PORT
@@ -62,28 +61,30 @@ public class FileManager implements FileManagerConfig {
                 + groupName
                 + SEPARATOR
                 + remoteFileName;
-        logger.info( "upload file successfully!!! " +"group_name: " + groupName + ", remoteFileName:"
+        logger.info("upload file successfully!!! " + "group_name: " + groupName + ", remoteFileName:"
                 + " " + remoteFileName);
         return fileAbsolutePath;
     }
+
     public static FileInfo getFile(String groupName, String remoteFileName) {
         try {
             return storageClient.get_file_info(groupName, remoteFileName);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             logger.error("IO Exception: Get File from Fast DFS failed", e);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Non IO Exception: Get File from Fast DFS failed", e);
         }
         return null;
     }
+
     public static void deleteFile(String groupName, String remoteFileName) throws Exception {
         storageClient.delete_file(groupName, remoteFileName);
     }
+
     public static StorageServer[] getStoreStorages(String groupName) throws IOException {
         return trackerClient.getStoreStorages(trackerServer, groupName);
     }
+
     public static ServerInfo[] getFetchStorages(String groupName, String remoteFileName) throws IOException {
         return trackerClient.getFetchStorages(trackerServer, groupName, remoteFileName);
     }

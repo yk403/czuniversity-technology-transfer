@@ -21,7 +21,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
  * @Description: 企业管理
  */
 
-@RequestMapping(BASE_URL+"/v1/Qy")
+@RequestMapping(BASE_URL + "/v1/Qy")
 @Api(value = "QyController", tags = "企业管理")
 @RestController
 public class QyController extends BaseController {
@@ -29,10 +29,11 @@ public class QyController extends BaseController {
     private QyService qyService;
 
     /**
-    * 分页查询
-    * @param params
-    * @return
-    */
+     * 分页查询
+     *
+     * @param params
+     * @return
+     */
     @PostMapping("/page")
     public R page(@RequestBody Map<String, Object> params) {
         //查询列表数据
@@ -41,10 +42,11 @@ public class QyController extends BaseController {
     }
 
     /**
-    * 根据ID查询
-    * @param id
-    * @return
-    */
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") Long id) {
         return success(qyService.getById(id));
@@ -78,8 +80,8 @@ public class QyController extends BaseController {
      * 批量删除
      */
     @PostMapping("/removeBatch")
-    public R removeBatch(@RequestBody List<Long> ids){
-        return  remove(qyService.removeByIds(ids));
+    public R removeBatch(@RequestBody List<Long> ids) {
+        return remove(qyService.removeByIds(ids));
     }
 
 }

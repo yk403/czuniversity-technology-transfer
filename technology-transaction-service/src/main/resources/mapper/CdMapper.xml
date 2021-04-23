@@ -4,9 +4,9 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.technologytransactionservice.model.TCd">
-        <id column="id" property="id" />
-        <result column="cdmc" property="cdmc" />
-        <result column="cdbm" property="cdbm" />
+        <id column="id" property="id"/>
+        <result column="cdmc" property="cdmc"/>
+        <result column="cdbm" property="cdbm"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

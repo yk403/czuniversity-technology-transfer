@@ -24,10 +24,10 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="BackOss对象", description="文件上传")
+@ApiModel(value = "BackOss对象", description = "文件上传")
 public class BackOss implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "文件 ID")
     @TableId(value = "id", type = IdType.ASSIGN_ID)

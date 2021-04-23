@@ -54,7 +54,6 @@ public class CdServiceImpl implements CdService {
 
     @Autowired
     private RedisTemplate redisTemplate;
-
     /**
      * 获取列表 - 分页
      */

@@ -23,14 +23,16 @@ import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
  * @Version: 1.0.0
  * @Description: 技术领域后台管理
  */
-@RequestMapping(ADMIN_BASE_URL+"/v1/JsLy")
+@RequestMapping(ADMIN_BASE_URL + "/v1/JsLy")
 @Api(value = "JsLyAdminController", tags = "技术领域后台管理")
 @RestController
 public class JsLyAdminController extends BaseController {
     @Autowired
     private JsLyAdminService jsLyAdminService;
+
     /**
      * (前台)分页查询
+     *
      * @param params
      * @return
      */
@@ -43,6 +45,7 @@ public class JsLyAdminController extends BaseController {
 
     /**
      * 根据ID查询
+     *
      * @param id
      * @return
      */
@@ -79,11 +82,11 @@ public class JsLyAdminController extends BaseController {
      * 批量删除
      */
     @PostMapping("/removeBatch")
-    public R removeBatch(@RequestBody List<String> ids){
+    public R removeBatch(@RequestBody List<String> ids) {
         ArrayList<Long> longs = new ArrayList<>();
-        for (String id: ids) {
+        for (String id : ids) {
             longs.add(Long.parseLong(id));
         }
-        return  remove(jsLyAdminService.removeByIds(longs));
+        return remove(jsLyAdminService.removeByIds(longs));
     }
 }

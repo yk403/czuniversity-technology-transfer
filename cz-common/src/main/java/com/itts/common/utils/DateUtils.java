@@ -29,6 +29,17 @@ public class DateUtils {
         return date;
     }
 
+    /**
+     * Date转String
+     * @param date
+     * @return
+     */
+    public static String toString(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(SUBJECT_DATE);
+        String format = simpleDateFormat.format(date);
+        return format;
+    }
+
     public static boolean isBetween(String startStr, String endStr) throws ParseException {
         Date now = new Date();
         Date start = DateUtils.format(startStr, DATE_TIME_PATTERN);

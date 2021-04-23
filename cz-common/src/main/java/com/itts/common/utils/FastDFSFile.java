@@ -5,8 +5,8 @@ public class FastDFSFile implements FileManagerConfig {
     private String name;
     private byte[] content;
     private String ext;
-    private String height ;
-    private String width ;
+    private String height;
+    private String width;
     private String author;
     private String md5;
 
@@ -19,12 +19,14 @@ public class FastDFSFile implements FileManagerConfig {
         this.author = author;
         this.md5 = md5;
     }
+
     public FastDFSFile(String name, byte[] content, String ext) {
         super();
         this.name = name;
         this.content = content;
         this.ext = ext;
     }
+
     public String getName() {
         return name;
     }

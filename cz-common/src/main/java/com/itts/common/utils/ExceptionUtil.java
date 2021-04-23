@@ -13,12 +13,12 @@ import java.io.StringWriter;
 public class ExceptionUtil {
     public static String getMessage(Exception e) {
         String message = null;
-        try(StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {
+        try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {
             e.printStackTrace(pw);
             pw.flush();
             sw.flush();
             message = sw.toString();
-        }catch (IOException io) {
+        } catch (IOException io) {
             io.printStackTrace();
             log.error(io.getMessage());
         }

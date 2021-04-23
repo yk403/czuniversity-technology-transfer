@@ -75,7 +75,7 @@ public class JsShServiceImpl extends ServiceImpl<JsShMapper, TJsSh> implements J
     @Override
     public Boolean auditCg(Map<String, Object> params, Integer fbshzt) {
         TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
-        if(params.containsKey("fbshbz") && params.get("fbshbz") != null){
+        if (params.containsKey("fbshbz") && params.get("fbshbz") != null) {
             tJsSh.setFbshbz(params.get("fbshbz").toString());
         }
         tJsSh.setFbshzt(fbshzt);
@@ -95,7 +95,7 @@ public class JsShServiceImpl extends ServiceImpl<JsShMapper, TJsSh> implements J
     @Override
     public Boolean auditXq(Map<String, Object> params, Integer fbshzt) {
         TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
-        if(params.containsKey("fbshbz") && params.get("fbshbz") != null){
+        if (params.containsKey("fbshbz") && params.get("fbshbz") != null) {
             tJsSh.setFbshbz(params.get("fbshbz").toString());
         }
         tJsSh.setFbshzt(fbshzt);
@@ -107,6 +107,7 @@ public class JsShServiceImpl extends ServiceImpl<JsShMapper, TJsSh> implements J
 
     /**
      * 成果批量下发
+     *
      * @param cgIds
      * @return
      */
@@ -118,6 +119,7 @@ public class JsShServiceImpl extends ServiceImpl<JsShMapper, TJsSh> implements J
 
     /**
      * 需求批量下发
+     *
      * @param xqIds
      * @return
      */

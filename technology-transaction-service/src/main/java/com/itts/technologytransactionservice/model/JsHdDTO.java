@@ -21,7 +21,7 @@ public class JsHdDTO {
     /**
      * 主键
      */
-    @TableId(value = "id",type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     /**
      * 活动名称

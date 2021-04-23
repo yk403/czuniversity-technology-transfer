@@ -10,14 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
  * @author xp
  * @email 15161575502@163.com
  * @date 2021-02-22 11:11:25
  */
 @Repository
 public interface JsLyMapper extends BaseMapper<TJsLy> {
-	
-	List<TJsLy> list( @Param("map") Map map);
+
+    List<TJsLy> list(@Param("map") Map map);
 
 }

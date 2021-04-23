@@ -35,7 +35,7 @@ public interface YhService {
     Yh get(Long id);
 
     /**
-     *通过用户名获取用户信息
+     * 通过用户名获取用户信息
      */
     Yh getByUserName(String userName);
 
@@ -55,6 +55,7 @@ public interface YhService {
     Yh updateByYhAndJsmc(Yh Yh,Long jsid);
     /**
      * 查询角色菜单目录
+     *
      * @param
      * @return
      */

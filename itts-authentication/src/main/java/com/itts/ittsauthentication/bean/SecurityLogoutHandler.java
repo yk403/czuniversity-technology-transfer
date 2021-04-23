@@ -28,7 +28,7 @@ public class SecurityLogoutHandler implements LogoutSuccessHandler {
 
     private RedisTemplate redisTemplate;
 
-    public SecurityLogoutHandler(RedisTemplate redisTemplate){
+    public SecurityLogoutHandler(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
 
     }
@@ -38,7 +38,7 @@ public class SecurityLogoutHandler implements LogoutSuccessHandler {
 
         String token = request.getHeader(SystemConstant.TOKEN_PREFIX);
 
-        if(StringUtils.isNotBlank(token)){
+        if (StringUtils.isNotBlank(token)) {
             redisTemplate.delete(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + token);
         }
 

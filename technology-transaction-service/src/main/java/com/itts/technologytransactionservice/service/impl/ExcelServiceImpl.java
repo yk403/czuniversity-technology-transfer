@@ -29,6 +29,7 @@ public class ExcelServiceImpl implements ExcelService {
     private JsCgMapper jsCgMapper;
     @Autowired
     private JsShMapper jsShMapper;
+
     @Override
     public R importXq(MultipartFile file, Integer headRowNumber) {
         XqListener xqListener = new XqListener();
@@ -42,6 +43,7 @@ public class ExcelServiceImpl implements ExcelService {
             return R.error();
         }
     }
+
     @Override
     public R importCg(MultipartFile file, Integer headRowNumber) {
         CgListener cgListener = new CgListener();
@@ -55,7 +57,6 @@ public class ExcelServiceImpl implements ExcelService {
             return R.error();
         }
     }
-
 
 
 }

@@ -9,7 +9,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: ZMHY@mysql
-    url:  jdbc:mysql://122.112.243.126:3306/technologyTransaction?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+    url: jdbc:mysql://122.112.243.126:3306/technologyTransaction?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
     initialSize: 1
     minIdle: 3
     maxActive: 20

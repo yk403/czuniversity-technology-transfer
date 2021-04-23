@@ -15,7 +15,7 @@ import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 
 
 @RestController
-@RequestMapping(ADMIN_BASE_URL+"/v1/sys/excel")
+@RequestMapping(ADMIN_BASE_URL + "/v1/sys/excel")
 //@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/excel")
 @Slf4j
 public class ExcelAdminController extends BaseController {
@@ -24,7 +24,7 @@ public class ExcelAdminController extends BaseController {
     @Autowired
     private ExcelAdminService excelAdminService;
 
-/*    *//**
+    /*    *//**
      * 企业导入
      * @param file
      * @param headRowNumber
@@ -42,17 +42,19 @@ public class ExcelAdminController extends BaseController {
             return R.error();
         }
     }*/
+
     /**
      * 需求导入
+     *
      * @param file
      * @param headRowNumber
      * @return
      */
     @PostMapping("/importxq")
-    public R importXq(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber){
+    public R importXq(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber) {
 
         try {
-            return  excelAdminService.importXq(file,headRowNumber);
+            return excelAdminService.importXq(file, headRowNumber);
 //            EasyExcel.read(file.getInputStream(), StaffDO.class, new UploadDataListener(uploadDAO)).sheet().doRead();
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,17 +62,19 @@ public class ExcelAdminController extends BaseController {
             return R.error();
         }
     }
+
     /**
      * 成果导入
+     *
      * @param file
      * @param headRowNumber
      * @return
      */
     @PostMapping("/importcg")
-    public R importCg(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber){
+    public R importCg(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber) {
 
         try {
-            return  excelAdminService.importCg(file,headRowNumber);
+            return excelAdminService.importCg(file, headRowNumber);
 //            EasyExcel.read(file.getInputStream(), StaffDO.class, new UploadDataListener(uploadDAO)).sheet().doRead();
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,12 +82,6 @@ public class ExcelAdminController extends BaseController {
             return R.error();
         }
     }
-
-
-
-
-
-
 
 
 }

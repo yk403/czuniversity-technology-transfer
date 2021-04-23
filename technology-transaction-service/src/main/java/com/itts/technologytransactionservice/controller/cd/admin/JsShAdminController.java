@@ -26,7 +26,7 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_
  * @Description: 技术审核后台管理
  */
 
-@RequestMapping(ADMIN_BASE_URL+"/v1/JsSh")
+@RequestMapping(ADMIN_BASE_URL + "/v1/JsSh")
 @Api(value = "JsShController", tags = "技术审核后台管理")
 @RestController
 public class JsShAdminController extends BaseController {
@@ -34,10 +34,11 @@ public class JsShAdminController extends BaseController {
     private JsShAdminService JsShAdminService;
 
     /**
-    * 分页查询
-    * @param params
-    * @return
-    */
+     * 分页查询
+     *
+     * @param params
+     * @return
+     */
     @PostMapping("/page")
     public R page(@RequestBody Map<String, Object> params) {
         //查询列表数据
@@ -46,10 +47,11 @@ public class JsShAdminController extends BaseController {
     }
 
     /**
-    * 根据ID查询
-    * @param id
-    * @return
-    */
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
         return success(JsShAdminService.getById(id));
@@ -83,22 +85,23 @@ public class JsShAdminController extends BaseController {
      * 批量删除
      */
     @PostMapping("/removeBatch")
-    public R removeBatch(@RequestBody List<Long> ids){
-        return  remove(JsShAdminService.removeByIds(ids));
+    public R removeBatch(@RequestBody List<Long> ids) {
+        return remove(JsShAdminService.removeByIds(ids));
     }
 
     /**
      * 发布审核成果(1待审核;2通过;3整改;4拒绝)
+     *
      * @param params
      * @return
      */
     @RequestMapping("/auditCg")
     public ResponseUtil auditCg(@RequestBody Map<String, Object> params) {
         Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
-        if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4){
+        if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (!JsShAdminService.auditCg(params,fbshzt)) {
+        if (!JsShAdminService.auditCg(params, fbshzt)) {
             throw new WebException(AUDIT_MSG_ISEMPTY);
         }
         return ResponseUtil.success("审核成果完成!");
@@ -106,48 +109,53 @@ public class JsShAdminController extends BaseController {
 
     /**
      * 发布审核需求(1待审核;2通过;3整改;4拒绝)
+     *
      * @param params
      * @return
      */
     @RequestMapping("/auditXq")
     public ResponseUtil auditXq(@RequestBody Map<String, Object> params) {
         Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
-        if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4){
+        if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (!JsShAdminService.auditXq(params,fbshzt)) {
+        if (!JsShAdminService.auditXq(params, fbshzt)) {
             throw new WebException(AUDIT_MSG_ISEMPTY);
         }
         return ResponseUtil.success("审核需求完成!");
     }
+
     /**
      * 招标审核需求(1待审核;2通过;3整改;4拒绝)
+     *
      * @param params
      * @return
      */
     @RequestMapping("/assistanceAuditXq")
     public ResponseUtil assistanceAuditXq(@RequestBody Map<String, Object> params) {
         Integer assistanceStatus = Integer.parseInt(params.get("assistanceStatus").toString());
-        if (assistanceStatus != 2 && assistanceStatus != 3 && assistanceStatus != 4){
+        if (assistanceStatus != 2 && assistanceStatus != 3 && assistanceStatus != 4) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (!JsShAdminService.assistanceAuditXq(params,assistanceStatus)) {
+        if (!JsShAdminService.assistanceAuditXq(params, assistanceStatus)) {
             throw new WebException(AUDIT_MSG_ISEMPTY);
         }
         return ResponseUtil.success("审核需求完成!");
     }
+
     /**
      * 拍卖挂牌审核成果(1待审核;2通过;3整改;4拒绝)
+     *
      * @param params
      * @return
      */
     @RequestMapping("/assistanceAuditCg")
     public ResponseUtil assistanceAuditCg(@RequestBody Map<String, Object> params) {
         Integer assistanceStatus = Integer.parseInt(params.get("assistanceStatus").toString());
-        if (assistanceStatus != 2 && assistanceStatus != 3 && assistanceStatus != 4){
+        if (assistanceStatus != 2 && assistanceStatus != 3 && assistanceStatus != 4) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (!JsShAdminService.assistanceAuditCg(params,assistanceStatus)) {
+        if (!JsShAdminService.assistanceAuditCg(params, assistanceStatus)) {
             throw new WebException(AUDIT_MSG_ISEMPTY);
         }
         return ResponseUtil.success("审核成果完成!");

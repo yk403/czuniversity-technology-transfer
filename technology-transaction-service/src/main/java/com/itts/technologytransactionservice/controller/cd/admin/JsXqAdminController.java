@@ -33,7 +33,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  * @Description: 技术需求后台管理
  */
 
-@RequestMapping(ADMIN_BASE_URL+"/v1/JsXq")
+@RequestMapping(ADMIN_BASE_URL + "/v1/JsXq")
 @Api(value = "JsXqAdminController", tags = "技术需求后台管理")
 @RestController
 public class JsXqAdminController extends BaseController {
@@ -42,6 +42,7 @@ public class JsXqAdminController extends BaseController {
 
     /**
      * 分页条件查询需求(后台管理)
+     *
      * @param params
      * @return
      */
@@ -50,8 +51,10 @@ public class JsXqAdminController extends BaseController {
         //前端传输标识type(0：审批管理;1：信息采集)
         return ResponseUtil.success(jsXqAdminService.findJsXq(params));
     }
+
     /**
      * 分页条件查询需求(前后台)
+     *
      * @param params
      * @return
      */
@@ -63,22 +66,24 @@ public class JsXqAdminController extends BaseController {
 
     /**
      * 根据需求id查询详细信息
+     *
      * @param id
      * @return
      */
     @GetMapping("/getById/{id}")
     public ResponseUtil getById(@PathVariable("id") Integer id) {
-        return ResponseUtil.success("查询需求详细信息成功!",jsXqAdminService.getById(id));
+        return ResponseUtil.success("查询需求详细信息成功!", jsXqAdminService.getById(id));
     }
 
     /**
      * 根据需求名称查询详细信息
+     *
      * @param xqmc
      * @return
      */
     @GetMapping("/getByName/{xqmc}")
     public ResponseUtil getByName(@PathVariable("xqmc") String xqmc) {
-        return ResponseUtil.success("查询需求详细信息成功!",jsXqAdminService.selectByName(xqmc));
+        return ResponseUtil.success("查询需求详细信息成功!", jsXqAdminService.selectByName(xqmc));
     }
 
     /**
@@ -117,6 +122,7 @@ public class JsXqAdminController extends BaseController {
 
     /**
      * 根据id批量发布需求
+     *
      * @param ids
      * @return
      */
@@ -157,6 +163,7 @@ public class JsXqAdminController extends BaseController {
 
     /**
      * 批量删除
+     *
      * @param ids
      * @return
      */

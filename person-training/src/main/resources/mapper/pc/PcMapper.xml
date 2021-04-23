@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personTraining.mapper.PcMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.pc.Pc">
+        <id column="id" property="id" />
+        <result column="pcmc" property="pcmc" />
+        <result column="pch" property="pch" />
+        <result column="pclx" property="pclx" />
+        <result column="sfsc" property="sfsc" />
+        <result column="pcnf" property="pcnf" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, pcmc, pch, pclx, sfsc, pcnf, cjsj, cjr, gxsj, gxr
+    </sql>
+
+    <select id="selectPcList">
+        select * from t_pc
+        where sfsc = false
+        and id in
+        <foreach collection="list" open="(" close=")" separator="," item="ids">
+             #{ids}
+        </foreach>
+
+    </select>
+
+    <update id="updatePcList"  parameterType="java.util.List">
+        update sfsc =true
+        from t_pc
+        where id in
+        <foreach collection="list" open="(" close=")" separator="," item="ids">
+            #{ids}
+        </foreach>
+    </update>
+</mapper>

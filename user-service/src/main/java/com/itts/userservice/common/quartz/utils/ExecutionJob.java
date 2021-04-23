@@ -18,6 +18,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 参考人人开源，https://gitee.com/renrenio/renren-security
+ *
  * @author /
  * @date 2019-01-07
  */
@@ -30,7 +31,9 @@ public class ExecutionJob extends QuartzJobBean {
     IQuartzJobService quartzJobService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    /** 该处仅供参考 */
+    /**
+     * 该处仅供参考
+     */
     private final static ThreadPoolExecutor EXECUTOR = ThreadPoolExecutorUtil.getPoll();
 
     @Override

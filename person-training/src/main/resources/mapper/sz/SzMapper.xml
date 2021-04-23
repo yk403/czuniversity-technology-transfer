@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personTraining.mapper.SzMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.sz.Sz">
+        <id column="id" property="id" />
+        <result column="dsbh" property="dsbh" />
+        <result column="dsxm" property="dsxm" />
+        <result column="xb" property="xb" />
+        <result column="sfzh" property="sfzh" />
+        <result column="jg" property="jg" />
+        <result column="csrq" property="csrq" />
+        <result column="mz" property="mz" />
+        <result column="zzmm" property="zzmm" />
+        <result column="whcd" property="whcd" />
+        <result column="yx" property="yx" />
+        <result column="gbzw" property="gbzw" />
+        <result column="cszy_one" property="cszyOne" />
+        <result column="cszy_two" property="cszyTwo" />
+        <result column="cszy_three" property="cszyThree" />
+        <result column="jszc" property="jszc" />
+        <result column="dwdh" property="dwdh" />
+        <result column="zzdh" property="zzdh" />
+        <result column="hxwsj" property="hxwsj" />
+        <result column="hxlyx" property="hxlyx" />
+        <result column="hxlsj" property="hxlsj" />
+        <result column="sxzy" property="sxzy" />
+        <result column="zgxl" property="zgxl" />
+        <result column="pzsdny" property="pzsdny" />
+        <result column="pzbdny" property="pzbdny" />
+        <result column="dssqsny" property="dssqsny" />
+        <result column="dbsqsny" property="dbsqsny" />
+        <result column="zgzt" property="zgzt" />
+        <result column="dslb" property="dslb" />
+        <result column="sczt" property="sczt" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, dsbh, dsxm, xb, sfzh, jg, csrq, mz, zzmm, whcd, yx, gbzw, cszy_one, cszy_two, cszy_three, jszc, dwdh, zzdh, hxwsj, hxlyx, hxlsj, sxzy, zgxl, pzsdny, pzbdny, dssqsny, dbsqsny, zgzt, dslb, sczt, cjsj, cjr, gxsj, gxr
+    </sql>
+
+</mapper>

@@ -4,21 +4,20 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.userservice.model.cz.Cz">
-        <id column="id" property="id" />
-        <result column="czmc" property="czmc" />
-        <result column="czbm" property="czbm" />
-        <result column="sfsc" property="sfsc" />
-        <result column="cjsj" property="cjsj" />
-        <result column="cjr" property="cjr" />
-        <result column="gxsj" property="gxsj" />
-        <result column="gxr" property="gxr" />
+        <id column="id" property="id"/>
+        <result column="czmc" property="czmc"/>
+        <result column="czbm" property="czbm"/>
+        <result column="sfsc" property="sfsc"/>
+        <result column="cjsj" property="cjsj"/>
+        <result column="cjr" property="cjr"/>
+        <result column="gxsj" property="gxsj"/>
+        <result column="gxr" property="gxr"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, czmc, czbm, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
-
 
 
     <!-- 查询当前菜单的操作 -->

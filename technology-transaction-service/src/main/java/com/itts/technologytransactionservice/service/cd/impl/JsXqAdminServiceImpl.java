@@ -46,9 +46,9 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     private JsShMapper jsShMapper;
 
 
-
     /**
      * 分页查询需求(后台管理)
+     *
      * @param params
      * @return
      */
@@ -56,7 +56,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     public PageInfo<TJsXq> findJsXq(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询需求(后台审批管理)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据,1表示管理员
-        params.put("userId",1);
+        params.put("userId", 1);
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsXq> list = jsXqMapper.findJsXq(query);
@@ -65,23 +65,25 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
 
     /**
      * 根据需求id查询详细信息
+     *
      * @param id
      * @return
      */
     @Override
     public TJsXq getById(Integer id) {
-        log.info("【技术交易 - 根据需求id:{}查询详细信息】",id);
+        log.info("【技术交易 - 根据需求id:{}查询详细信息】", id);
         return jsXqMapper.getById(id);
     }
 
     /**
      * 根据需求名称查询需求详细信息
+     *
      * @param name
      * @return
      */
     @Override
     public TJsXq selectByName(String name) {
-        log.info("【技术交易 - 根据需求名称:{}查询详细信息】",name);
+        log.info("【技术交易 - 根据需求名称:{}查询详细信息】", name);
         return jsXqMapper.selectByName(name);
     }
 
@@ -95,6 +97,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
 
     /**
      * 新增需求信息
+     *
      * @param tJsXq
      * @return
      */
@@ -130,6 +133,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
 
     /**
      * 更新需求信息
+     *
      * @param tJsXq
      * @return
      */
@@ -141,12 +145,13 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
 
     /**
      * 根据需求id删除需求信息
+     *
      * @param id
      * @return
      */
     @Override
     public boolean removeByXqId(Integer id) {
-        log.info("【技术交易 - 根据id:{}删除需求信息】",id);
+        log.info("【技术交易 - 根据id:{}删除需求信息】", id);
         TJsSh tJsSh = jsShMapper.selectByXqId(id);
         TJsXq tJsXq = new TJsXq();
         tJsXq.setId(id);
@@ -163,12 +168,13 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
 
     /**
      * 根据id批量发布需求
+     *
      * @param ids
      * @return
      */
     @Override
     public boolean issueBatch(List<Integer> ids) {
-        log.info("【技术交易 - 根据id:{}批量发布需求】",ids);
+        log.info("【技术交易 - 根据id:{}批量发布需求】", ids);
         List<TJsSh> tJsShes = jsShMapper.selectByXqIds(ids);
         for (TJsSh tJsSh : tJsShes) {
             if (tJsSh.getFbshzt() == 1) {
@@ -188,7 +194,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
      */
     @Override
     public boolean assistanceIssueBatch(List<Integer> ids) {
-        log.info("【技术交易 - 技术招标受理批量下发,id:{}】",ids);
+        log.info("【技术交易 - 技术招标受理批量下发,id:{}】", ids);
         List<TJsSh> tJsShes = jsShMapper.selectByXqIds(ids);
         for (TJsSh tJsShe : tJsShes) {
             tJsShe.setFbshzt(2);

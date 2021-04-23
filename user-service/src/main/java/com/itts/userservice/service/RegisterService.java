@@ -16,7 +16,7 @@ public interface RegisterService {
      * 注册用户
      *
      * @param request 用户注册信息
-     * @param js 用户注册默认角色
+     * @param js      用户注册默认角色
      * @return
      * @author liuyingming
      */

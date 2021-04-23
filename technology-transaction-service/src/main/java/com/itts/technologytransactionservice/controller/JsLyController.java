@@ -23,7 +23,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
  * @Description: 技术领域管理
  */
 
-@RequestMapping(BASE_URL+"/v1/JsLy")
+@RequestMapping(BASE_URL + "/v1/JsLy")
 @Api(value = "JsLyController", tags = "技术领域管理")
 @RestController
 public class JsLyController extends BaseController {
@@ -32,10 +32,11 @@ public class JsLyController extends BaseController {
     private JsLyService jsLyService;
 
     /**
-    * (前台)分页查询
-    * @param params
-    * @return
-    */
+     * (前台)分页查询
+     *
+     * @param params
+     * @return
+     */
     @PostMapping("/page")
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
         //查询列表数据
@@ -44,10 +45,11 @@ public class JsLyController extends BaseController {
     }
 
     /**
-    * 根据ID查询
-    * @param id
-    * @return
-    */
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/getById/{id}")
     public R getById(@PathVariable("id") String id) {
         return success(jsLyService.getById(Long.parseLong(id)));
@@ -81,12 +83,12 @@ public class JsLyController extends BaseController {
      * 批量删除
      */
     @PostMapping("/removeBatch")
-    public R removeBatch(@RequestBody List<String> ids){
+    public R removeBatch(@RequestBody List<String> ids) {
         ArrayList<Long> longs = new ArrayList<>();
-        for (String id: ids) {
+        for (String id : ids) {
             longs.add(Long.parseLong(id));
         }
-        return  remove(jsLyService.removeByIds(longs));
+        return remove(jsLyService.removeByIds(longs));
     }
 
 }
