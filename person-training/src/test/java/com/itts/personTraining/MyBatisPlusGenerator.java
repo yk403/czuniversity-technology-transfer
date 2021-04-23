@@ -63,10 +63,10 @@ public class MyBatisPlusGenerator {
                 //使用restcontroller注解
                 .setRestControllerStyle(true)
                 // 生成的表, 支持多表一起生成，以数组形式填写
-                .setInclude("t_xxjs");
+                .setInclude("t_xy");
         //4. 包名策略配置
         PackageConfig pkConfig = new PackageConfig();
-        pkConfig.setParent("com.itts.personTraining.xxjs")
+        pkConfig.setParent("com.itts.personTraining.xy")
                 .setMapper("mapper")
                 .setService("service")
                 .setController("controller")
