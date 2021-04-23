@@ -44,14 +44,14 @@ public class Pk implements Serializable {
     private String kcmc;
 
     /**
-     * 上课起始年月
+     * 上课起始年月日
      */
-    private String skqsny;
+    private String skqsnyr;
 
     /**
-     * 上课结束年月
+     * 上课结束年月日
      */
-    private String skjsny;
+    private String skjsnyr;
 
     /**
      * 上课时间段
@@ -62,11 +62,6 @@ public class Pk implements Serializable {
      * 星期数
      */
     private String xqs;
-
-    /**
-     * 第几周
-     */
-    private String djz;
 
     /**
      * 教室ID

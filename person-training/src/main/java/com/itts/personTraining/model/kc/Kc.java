@@ -29,9 +29,19 @@ public class Kc implements Serializable {
     private Long id;
 
     /**
-     * 教师ID
+     * 师资ID
      */
-    private Long jsId;
+    private Long szId;
+
+    /**
+     * 学院ID
+     */
+    private Long xyId;
+
+    /**
+     * 学院名称
+     */
+    private String xymc;
 
     /**
      * 类别:	compulsory - 必修课;	internship_training - 实习实训
@@ -46,7 +56,7 @@ public class Kc implements Serializable {
     /**
      * 教师姓名
      */
-    private String jsxm;
+    private String dsxm;
 
     /**
      * 知识模块名称

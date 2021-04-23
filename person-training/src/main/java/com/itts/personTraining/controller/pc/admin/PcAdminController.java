@@ -26,9 +26,9 @@ import java.util.List;
  * @author FL
  * @since 2021-04-20
  */
-@Api(tags = "批次管理")
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL+"/v1/pc")
+@Api(value = "PcAdminController", tags = "批次后台管理")
 public class PcAdminController {
 
     @Resource

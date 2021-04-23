@@ -198,11 +198,11 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         if(!StringUtils.isBlank(data.getBz())){
             xs.setBz(data.getBz());
         }
-        if(!StringUtils.isBlank(data.getZydm())){
-            xs.setZydm(data.getZydm());
+        if(!StringUtils.isBlank(data.getYzydm())){
+            xs.setYzydm(data.getYzydm());
         }
-        if(!StringUtils.isBlank(data.getZy())){
-            xs.setZy(data.getZy());
+        if(!StringUtils.isBlank(data.getYzy())){
+            xs.setYzy(data.getYzy());
         }
         if(!StringUtils.isBlank(data.getJyxs())){
             xs.setJyxs(data.getJyxs());

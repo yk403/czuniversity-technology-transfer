@@ -280,13 +280,13 @@ public class XsDTO implements Serializable {
     /**
      * 专业代码
      */
-    @ExcelProperty(value = "专业代码", index = 50)
-    private String zydm;
+    @ExcelProperty(value = "原专业代码", index = 50)
+    private String yzydm;
     /**
      * 专业
      */
-    @ExcelProperty(value = "专业", index = 51)
-    private String zy;
+    @ExcelProperty(value = "原专业", index = 51)
+    private String yzy;
     /**
      * 教育形式
      */

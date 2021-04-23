@@ -289,14 +289,24 @@ public class Xs implements Serializable {
     private String bz;
 
     /**
-     * 专业代码
+     * 原专业代码
      */
-    private String zydm;
+    private String yzydm;
 
     /**
-     * 专业
+     * 原专业
      */
-    private String zy;
+    private String yzy;
+
+    /**
+     * 新专业ID
+     */
+    private Long zyId;
+
+    /**
+     * 新专业名称
+     */
+    private String zymc;
 
     /**
      * 是否删除(0:未删除;1已删除)

@@ -23,8 +23,8 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  * @since 2021-04-20
  */
 @RestController
-@Api(value = "KcAdminController", tags = "课程后台管理")
 @RequestMapping(ADMIN_BASE_URL + "/v1/kc")
+@Api(value = "KcAdminController", tags = "课程后台管理")
 public class KcAdminController {
 
     @Autowired
