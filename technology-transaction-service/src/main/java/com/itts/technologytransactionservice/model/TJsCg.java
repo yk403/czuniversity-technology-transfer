@@ -35,7 +35,7 @@ public class TJsCg implements Serializable {
 	/**
 	 * indes(排序使用)
 	 */
-	private Integer indes;
+	private Integer soft;
 	/**
 	 * 用户ID
 	 */
