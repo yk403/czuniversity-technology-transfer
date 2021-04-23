@@ -89,7 +89,27 @@ public class YhAdminController {
         PageInfo<YhListVO> byPage = yhService.findByPage(pageNum, pageSize, type, group);
         return ResponseUtil.success(byPage);
     }
-
+    /**
+     * 获取指定列表 - 分页
+     *
+     * @param pageNum pageSize
+     * @author fl
+     */
+    @GetMapping("/getlist/")
+    @ApiOperation(value = "获取列表")
+    public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                   @RequestParam(value = "type") String type,
+                                   @RequestParam(value = "string")String string){
+        if(StringUtils.isBlank(type)){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if(string==null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        PageInfo<YhDTO> yhPageInfo = yhService.selectByString(pageNum, pageSize, type, string);
+        return ResponseUtil.success(yhPageInfo);
+    }
     /**
      * 获取详情
      *

@@ -24,7 +24,7 @@ public class ExcelController {
     /**
      * 机构导入
      */
-    @PostMapping("/importJggl")
+    @PostMapping("/importJggl/")
     @ApiOperation(value = "机构导入")
     public ResponseUtil importJggl(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true)Integer headRowNumber){
         try{
@@ -38,11 +38,25 @@ public class ExcelController {
     /**
      * 字典导入
      */
-    @PostMapping("/importShzd")
+    @PostMapping("/importSjzd/")
     @ApiOperation(value = "字典导入")
-    public ResponseUtil importShzd(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true)Integer headRowNumber){
+    public ResponseUtil importSjzd(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true)Integer headRowNumber){
         try{
-            return excelService.importShzd(file, headRowNumber);
+            return excelService.importSjzd(file, headRowNumber);
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            return ResponseUtil.error(ErrorCodeEnum.SYSTEM_UPLOAD_ERROR);
+        }
+    }
+    /**
+     * 用户导入
+     */
+    @PostMapping("/importYh/")
+    @ApiOperation(value = "用户导入")
+    public ResponseUtil importYh(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true)Integer headRowNumber){
+        try{
+            return excelService.importYh(file, headRowNumber);
         }catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());

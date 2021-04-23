@@ -29,6 +29,11 @@
     <select id="selectByCode" resultMap="BaseResultMap">
         select * from t_jggl where jgbm= #{jgbm} and sfsc = false
     </select>
+    <select id="selectByString" resultMap="BaseResultMap">
+        select * from t_jggl
+        where (jgmc = #{string} or jgbm =#{string})
+        and sfsc =false
+    </select>
 
     <select id="selectJggl" resultType="com.itts.userservice.vo.JgglVO">
         select *

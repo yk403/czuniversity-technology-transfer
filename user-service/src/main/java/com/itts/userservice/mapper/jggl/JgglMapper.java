@@ -25,6 +25,7 @@ public interface JgglMapper extends BaseMapper<Jggl> {
 
     Jggl selectByCode(String jgbm);
 
+    List<Jggl> selectByString(String string);
     /**
      * 查询机构
      */

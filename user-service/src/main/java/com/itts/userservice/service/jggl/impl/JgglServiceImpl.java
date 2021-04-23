@@ -3,6 +3,7 @@ package com.itts.userservice.service.jggl.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.userservice.common.UserServiceCommon;
 import com.itts.userservice.dto.JgglDTO;
 import com.itts.userservice.model.jggl.Jggl;
@@ -15,7 +16,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
 
 /**
  * <p>
@@ -39,7 +43,7 @@ public class JgglServiceImpl implements JgglService {
      */
     @Override
     public PageInfo<Jggl> findByPage(Integer pageNum, Integer pageSize,String jgbm) {
-        if(jgbm!=null){
+        if(!StringUtils.isBlank(jgbm)){
             String cj = jgglMapper.selectByCode(jgbm).getCj();
             jgbm=cj;
         }
@@ -126,12 +130,27 @@ public class JgglServiceImpl implements JgglService {
         return jggl;
     }
 
+    @Override
+    public PageInfo<Jggl> selectByString(Integer pageNum, Integer pageSize, String string) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Jggl> jggls = jgglMapper.selectByString(string);
+        PageInfo<Jggl> pageInfo = new PageInfo<>(jggls);
+        return pageInfo;
+    }
+
     /**
      * 新增
      *
      */
     @Override
     public Jggl add(Jggl jggl) {
+        LoginUser loginUser = threadLocal.get();
+        if(loginUser.getUserId()!=null){
+            jggl.setCjr(loginUser.getUserId());
+            jggl.setGxr(loginUser.getUserId());
+        }
+        jggl.setCjsj(new Date());
+        jggl.setGxsj(new Date());
         jgglMapper.insert(jggl);
         return jggl;
     }
@@ -141,6 +160,11 @@ public class JgglServiceImpl implements JgglService {
      */
     @Override
     public Jggl update(Jggl jggl) {
+        LoginUser loginUser = threadLocal.get();
+        if(loginUser.getUserId()!=null){
+            jggl.setGxr(loginUser.getUserId());
+        }
+        jggl.setGxsj(new Date());
         jgglMapper.updateById(jggl);
         return jggl;
     }

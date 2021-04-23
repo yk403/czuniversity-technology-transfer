@@ -21,15 +21,24 @@ public interface CdMapper extends BaseMapper<Cd> {
     /**
      * 通过父级ID获取所有子级菜单
      */
-    @Select("SELECT * " +
-            "FROM t_cd " +
-            "WHERE fjcd_id = #{parentId}")
-    List<Cd> findByParentId(@Param("parentId") Long parentId);
+    @Select({"<script>",
+            "SELECT * " +
+                    "FROM t_cd " +
+                    "WHERE sfsc = false" +
+                    "<if test=\"parentId != null\"> " +
+                    "   AND fjcd_id = #{parentId} " +
+                    "</if>" +
+                    "<if test=\"systemType != null and systemType != ''\"> " +
+                    "   AND xtlx = #{systemType}" +
+                    "</if>",
+            " </script> "
+    })
+    List<Cd> findByParentId(@Param("parentId") Long parentId, @Param("systemType") String systemType);
 
     /**
      * 通过菜单编码获取当前菜单和所有子菜单
      */
-    @Select("SELECT * FROM t_cd WHERE cj LIKE CONCAT(#{code}, '%')")
+    @Select("SELECT * FROM t_cd WHERE sfsc = false AND cj LIKE CONCAT(#{code}, '%')")
     List<Cd> findThisAndAllChildrenByCode(@Param("code") String code);
 
     /**
@@ -37,6 +46,9 @@ public interface CdMapper extends BaseMapper<Cd> {
      */
     @Select("SELECT COUNT(id) " +
             "FROM t_cd " +
-            "WHERE fjcd_id = #{parentId}")
+            "WHERE sfsc = false " +
+            "AND fjcd_id = #{parentId}")
     Long countByParentId(@Param("parentId") Long parentId);
+
+    List<Cd> selectByParameterList(@Param("parameter")String parameter,@Param("systemType") String systemType,@Param("modelType") String modelType);
 }

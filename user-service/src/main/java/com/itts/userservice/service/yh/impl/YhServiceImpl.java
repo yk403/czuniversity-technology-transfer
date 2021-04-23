@@ -84,6 +84,14 @@ public class YhServiceImpl implements YhService {
         return page;
     }
 
+    @Override
+    public PageInfo<YhDTO> selectByString(Integer pageNum, Integer pageSize, String type, String string) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<YhDTO> byString = yhMapper.findByString(type, string);
+        PageInfo<YhDTO> yhDTOPageInfo = new PageInfo<>(byString);
+        return yhDTOPageInfo;
+    }
+
     /**
      * 获取详情
      */

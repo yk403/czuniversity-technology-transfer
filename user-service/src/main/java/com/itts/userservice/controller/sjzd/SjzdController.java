@@ -42,8 +42,8 @@ public class SjzdController {
     @ApiOperation(value = "通过名称或编码查询")
     public ResponseUtil getByNameAndCode(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                         @RequestParam("string") String string,@RequestParam String ssmk) throws WebException {
-        Sjzd sjzd = sjzdService.selectByString(pageNum,pageSize,string,ssmk);
+                                         @RequestParam(value = "string") String string,@RequestParam(value = "ssmk") String ssmk) throws WebException {
+        PageInfo<Sjzd> sjzd = sjzdService.selectByString(pageNum,pageSize,string,ssmk);
         return ResponseUtil.success(sjzd);
     }
 
@@ -114,7 +114,6 @@ public class SjzdController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         sjzd.setSfsc(true);
-        sjzd.setGxsj(new Date());
         sjzdService.update(sjzd);
         return ResponseUtil.success();
     }
@@ -135,7 +134,6 @@ public class SjzdController {
                 log.error("【数据字典-批量删除】数据字典不存在");
             }
             sjzd.setSfsc(true);
-            sjzd.setGxsj(new Date());
             sjzdService.update(sjzd);
         }
         return ResponseUtil.success();
