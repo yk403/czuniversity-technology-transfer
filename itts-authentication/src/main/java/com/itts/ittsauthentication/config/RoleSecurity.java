@@ -30,13 +30,15 @@ public class RoleSecurity {
 
         String token = request.getHeader(SystemConstant.TOKEN_PREFIX);
 
+        String[] tokenArr = token.split("_");
+
         //验证当前用户token是否有效
-        Object checkToken = redisTemplate.opsForValue().get(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + token);
+        Object checkToken = redisTemplate.opsForValue().get(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + tokenArr[1]);
         if (checkToken == null) {
             return false;
         }
 
-        Claims claims = JwtUtil.getTokenBody(token);
+        Claims claims = JwtUtil.getTokenBody(checkToken.toString());
 
         if(claims == null){
             return false;
