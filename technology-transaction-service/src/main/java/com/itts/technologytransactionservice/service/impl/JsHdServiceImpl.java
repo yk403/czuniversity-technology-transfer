@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 
@@ -65,7 +66,7 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 		log.info("【技术交易 - 新增技术活动:{}】",jsHdDTO);
 		TJsHd tJsHd = new TJsHd();
 		Integer hdlx = jsHdDTO.getHdlx();
-		List<Integer> ids = jsHdDTO.getIds();
+		List<Map<String,Integer>> ids = jsHdDTO.getIds();
 		jsHdDTO.setCjsj(new Date());
 		jsHdDTO.setGxsj(new Date());
 		BeanUtils.copyProperties(jsHdDTO,tJsHd);
@@ -73,15 +74,17 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 			return false;
 		}
 		if (hdlx == 0 || hdlx == 2) {
-			for (Integer id : ids) {
-				TJsCg tJsCg = jsCgMapper.getById(id);
+			for (Map item : ids) {
+				TJsCg tJsCg = jsCgMapper.getById((Integer) item.get("id"));
 				tJsCg.setJshdId(tJsHd.getId());
+				tJsCg.setIndes((Integer) item.get("indes"));
 				jsCgMapper.updateTJsCg(tJsCg);
 			}
 		} else if (hdlx == 1) {
-			for (Integer id : ids) {
-				TJsXq tJsXq = jsXqMapper.getById(id);
+			for (Map item : ids) {
+				TJsXq tJsXq = jsXqMapper.getById((Integer) item.get("id"));
 				tJsXq.setJshdId(tJsHd.getId());
+				tJsXq.setIndes((Integer) item.get("indes"));
 				jsXqMapper.updateTJsXq(tJsXq);
 			}
 		}

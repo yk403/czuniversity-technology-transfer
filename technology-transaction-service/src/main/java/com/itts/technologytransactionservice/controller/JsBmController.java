@@ -40,7 +40,7 @@ public class JsBmController extends BaseController {
     */
     @PostMapping("/page/usr")
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
-        params.put("userId",2);
+        //params.put("userId",2);
         //查询列表数据
         Query query = new Query(params);
         return ResponseUtil.success(jsBmService.page(query));

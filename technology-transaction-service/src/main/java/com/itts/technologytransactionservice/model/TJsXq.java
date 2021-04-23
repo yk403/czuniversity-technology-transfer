@@ -30,7 +30,10 @@ public class TJsXq implements Serializable {
  	*/
 	@TableId(value = "id",type = IdType.AUTO)
 	private Integer id;
-
+	/**
+	 * indes(排序使用)
+	 */
+	private Integer indes;
 	/**
 	 * 技术需求id
 	 */
@@ -224,4 +227,35 @@ public class TJsXq implements Serializable {
 	 * 需求附件名称
 	 */
 	private String xqfjmc;
+	/**
+	 * 招标项目概述
+	 */
+	private String zbxmgs;
+	/**
+	 * 招标项目清单
+	 */
+	private String zbxmqd;
+	/**
+	 * 技术参数
+	 */
+	private String jscs;
+	/**
+	 * 服务内容
+	 */
+	private String fwnr;
+	/**
+	 * 成交价格
+	 */
+	private String cjjg;
+	/**
+	 * 交货日期
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	private Date jhrq;
+	/**
+	 * 验收日期
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	private Date ysrq;
+
 }

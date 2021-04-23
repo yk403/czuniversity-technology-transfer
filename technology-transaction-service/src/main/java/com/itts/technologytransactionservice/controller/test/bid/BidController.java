@@ -2,13 +2,18 @@ package com.itts.technologytransactionservice.controller.test.bid;
 
 import com.itts.common.bean.SessionPool;
 import com.itts.common.config.EndpointConfig;
+import com.itts.common.config.RabbitMQConfig;
 import com.itts.common.constant.MQConstant;
 import com.itts.common.constant.SystemConstant;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.ExchangeTypes;
+import org.springframework.amqp.rabbit.annotation.Exchange;
+import org.springframework.amqp.rabbit.annotation.Queue;
+import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -27,9 +32,10 @@ import java.io.IOException;
 public class BidController {
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private AmqpTemplate amqpTemplate;
 
-    private String userId;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * websocket建立链接
@@ -38,8 +44,6 @@ public class BidController {
     public void onOpen(@PathParam("userId") String userId, Session session) {
 
         SessionPool.open(userId, session);
-
-        this.userId = userId;
 
         System.out.println("open....");
     }
@@ -62,7 +66,7 @@ public class BidController {
     @OnMessage
     public void onMessage(String message) throws IOException {
 
-        System.out.println("接收的消息："+message);
+        System.out.println(message);
 
         //检测心跳
         if (message.equalsIgnoreCase("ping")) {
@@ -71,16 +75,9 @@ public class BidController {
             return;
         }
 
-        //判断当前用户是否在当前这个服务，如果不在则使用MQ进行处理， 保证用户可接收到消息
-        if (SessionPool.sessions.get(userId) != null && SessionPool.sessions.get(userId).isOpen()) {
+        //redisTemplate.convertAndSend(MQConstant.TECHNOLOGY_TRANSACTION_BID_CHANNEL, message);
 
-            sendMessage(message);
-        } else {
-
-            rabbitTemplate.convertAndSend(MQConstant.TECHNOLOGY_TRANSACTION_BID_EXCHANGE, "itts.technology.transaction.bid", message);
-        }
-
-        //sendInfo(message);
+        amqpTemplate.convertAndSend(MQConstant.TECHNOLOGY_TRANSACTION_BID_EXCHANGE, MQConstant.TECHNOLOGY_TRANSACTION_BID_ROUTING_KEY, message);
     }
 
     /**
@@ -100,13 +97,22 @@ public class BidController {
     }
 
     /**
-    *监听MQ消息，回复前端
-    */
-    @RabbitListener(queues = "itts_technology_transaction_bid_queue")
-    public void receive(String msg, Message message) throws IOException {
+     * 监听MQ消息，回复前端
+     */
+    //@RabbitListener(queues = "itts_technology_transaction_bid_queue")
+   /* public void receiveMessage(String msg) throws IOException {
 
-        System.out.println("mq中的消息："+ msg);
+        System.out.println("mq中的消息：" + msg);
 
+        sendMessage(msg);
+    }*/
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue,
+            exchange = @Exchange(value = MQConstant.TECHNOLOGY_TRANSACTION_BID_EXCHANGE, type = ExchangeTypes.TOPIC),
+            key = MQConstant.TECHNOLOGY_TRANSACTION_BID_ROUTING_KEY
+    ))
+    public void receive(String msg) throws IOException {
         sendMessage(msg);
     }
 }

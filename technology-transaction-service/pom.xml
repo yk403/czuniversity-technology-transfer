@@ -28,6 +28,11 @@
             <artifactId>cz-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+<!--        <dependency>
+            <groupId>com.itts</groupId>
+            <artifactId>itts-authentication</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>-->
 
         <!-- mail -->
         <dependency>
