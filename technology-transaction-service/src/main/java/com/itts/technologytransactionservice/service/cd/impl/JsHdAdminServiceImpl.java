@@ -77,7 +77,7 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 			for (Map item : ids) {
 				TJsCg tJsCg = jsCgMapper.getById((Integer) item.get("id"));
 				tJsCg.setJshdId(tJsHd.getId());
-				tJsCg.setIndes((Integer) item.get("indes"));
+				tJsCg.setSoft((Integer) item.get("indes"));
 				jsCgMapper.updateTJsCg(tJsCg);
 			}
 		} else if (hdlx == 1) {
