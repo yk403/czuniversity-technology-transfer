@@ -21,6 +21,10 @@ public enum ErrorCodeEnum {
     SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR(-400001, "请求参数不合法"),
     SYSTEM_NOT_FIND_ERROR(-400002, "数据不存在"),
     SYSTEM_UPLOAD_ERROR(-400003, "导入失败"),
+    SYSTEM_FIND_ERROR(-400004, "数据已存在"),
+    SYSTEM_REQUEST_METHOD_ERROR(-40005, "请求方式错误"),
+    SYSTEM_REQUEST_PARAMS_TYPE_ERROR(-40006, "请求参数类型或请求参数格式错误"),
+    SYSTEM_ERROR(-40007, "系统异常，请联系管理员"),
     //====================      系统错误提示  END     ====================
 
     //====================      技术交易服务错误提示（服务码410）      ====================
@@ -60,7 +64,9 @@ public enum ErrorCodeEnum {
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
-    USER_NOT_FIND_ERROR(-440001, "用户不存在");
+    USER_NOT_FIND_ERROR(-440001, "用户不存在"),
+    USER_DELETE_MENU_HAVE_CHILD_ERROR(-440002, "删除菜单失败，该菜单下有子级菜单"),
+    USER_DELETE_GROUP_HAVE_CHILD_ERROR(-440003, "删除机构失败，该机构下有子级机构");
     //====================       用户服务错误提示END     ====================
 
     /**
