@@ -27,7 +27,7 @@ public class Xy implements Serializable {
      * 主键
      */
       @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 学院名称
