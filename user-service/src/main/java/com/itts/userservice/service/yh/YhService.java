@@ -25,7 +25,10 @@ public interface YhService {
      * 查询列表
      */
     PageInfo<YhListVO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group);
-
+    /**
+     * 查询列表
+     */
+    PageInfo<YhDTO> selectByString(Integer pageNum, Integer pageSize, String type, String string);
     /**
      * 获取详情
      */
