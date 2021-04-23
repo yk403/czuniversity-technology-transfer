@@ -29,6 +29,8 @@ public class BidController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    private String userId;
+
     /**
      * websocket建立链接
      */
@@ -36,6 +38,8 @@ public class BidController {
     public void onOpen(@PathParam("userId") String userId, Session session) {
 
         SessionPool.open(userId, session);
+
+        this.userId = userId;
 
         System.out.println("open....");
     }
@@ -58,7 +62,7 @@ public class BidController {
     @OnMessage
     public void onMessage(String message) throws IOException {
 
-        System.out.println(message);
+        System.out.println("接收的消息："+message);
 
         //检测心跳
         if (message.equalsIgnoreCase("ping")) {
@@ -68,7 +72,7 @@ public class BidController {
         }
 
         //判断当前用户是否在当前这个服务，如果不在则使用MQ进行处理， 保证用户可接收到消息
-        if (SessionPool.sessions.get("1") != null && SessionPool.sessions.get("1").isOpen()) {
+        if (SessionPool.sessions.get(userId) != null && SessionPool.sessions.get(userId).isOpen()) {
 
             sendMessage(message);
         } else {

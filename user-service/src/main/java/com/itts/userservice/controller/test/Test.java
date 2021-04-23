@@ -3,19 +3,26 @@ package com.itts.userservice.controller.test;
 import cn.hutool.json.JSONUtil;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.common.RedisU;
+import com.itts.common.utils.common.ResponseUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/test")
 public class Test {
-    @Resource
-    private RedisU redisU;
 
-    @GetMapping("/test")
-    public Boolean testt(@RequestParam(value = "key")String key,@RequestParam(value = "value")String value) {
-        Boolean set = redisU.set(key, value);
+    @GetMapping("/")
+    public ResponseUtil test() throws UnknownHostException {
 
-        return set;
+        InetAddress addr = InetAddress.getLocalHost();
+
+        String hostname = addr.getHostName();
+        System.out.println(addr);
+
+        return ResponseUtil.success(addr +"-------"+hostname);
     }
 }

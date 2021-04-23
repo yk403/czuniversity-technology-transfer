@@ -11,11 +11,12 @@ import com.itts.userservice.model.cz.Cz;
 import com.itts.userservice.service.cz.CzService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,7 +34,6 @@ public class CzController {
 
     @Resource
     private CzService czService;
-
 
     /**
      * 查询当前菜单的操作
@@ -57,10 +57,36 @@ public class CzController {
      */
     @GetMapping("/list/")
     @ApiOperation(value = "获取列表")
-    public ResponseUtil find(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        PageInfo<Cz> byPage = czService.findByPage(pageNum, pageSize);
+    public ResponseUtil find(@ApiParam("当前页数") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                             @ApiParam("每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                             @ApiParam("操作名称") @RequestParam(value = "name", required = false) String name,
+                             @ApiParam("系统类型") @RequestParam(value = "systemType", required = false) String systemType,
+                             @ApiParam("模块类型") @RequestParam(value = "modelType", required = false) String modelType) {
+
+        PageInfo<Cz> byPage = czService.findByPage(pageNum, pageSize, name, systemType, modelType);
         return ResponseUtil.success(byPage);
+    }
+
+    /**
+     * 获取详情
+     *
+     * @param
+     * @return
+     * @author liuyingming
+     */
+    @GetMapping("/get/{id}")
+    @ApiOperation(value = "获取详情")
+    public ResponseUtil get(@PathVariable("id") Long id) {
+
+        if (id == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        Cz cz = czService.get(id);
+        if (cz.getSfsc()) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+        return ResponseUtil.success(cz);
     }
 
     /**
@@ -70,11 +96,12 @@ public class CzController {
      */
     @PostMapping("/add/")
     @ApiOperation(value = "新增")
-    public ResponseUtil add(@RequestBody Cz tCz) throws WebException {
+    public ResponseUtil add(@RequestBody Cz cz) throws WebException {
+
         //检查参数是否合法
-        checkPequest(tCz);
-        //检查数据库中是否存在要更新的数据
-        Cz add = czService.add(tCz);
+        checkRequest(cz);
+
+        Cz add = czService.add(cz);
         return ResponseUtil.success(add);
     }
 
@@ -84,21 +111,26 @@ public class CzController {
      * @author FULI
      */
     @ApiOperation(value = "更新")
-    @PutMapping("/update/{id}")
-    public ResponseUtil update(@PathVariable("id") Long id, @RequestBody Cz tCz) throws WebException {
-        if (id == null) {
+    @PutMapping("/update/")
+    public ResponseUtil update(@RequestBody Cz cz) throws WebException {
+
+        checkRequest(cz);
+
+        if (cz.getId() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+
         //检查数据库中是否存在要更新的数据
-        Cz tCz1 = czService.get(id);
-        if (tCz1 == null) {
+        Cz old = czService.get(cz.getId());
+        if (old == null) {
             throw new WebException((ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR));
         }
-        checkPequest(tCz);
+
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
-        BeanUtils.copyProperties(tCz, tCz1, "id", "cjsj", "cjr");
-        czService.update(tCz1);
-        return ResponseUtil.success(tCz1);
+        BeanUtils.copyProperties(cz, old, "id", "cjsj", "cjr");
+
+        czService.update(old);
+        return ResponseUtil.success(old);
     }
 
     /**
@@ -109,31 +141,41 @@ public class CzController {
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete/{id}")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
+
         //检查参数是否为空
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        Cz tCz = czService.get(id);
-        if (tCz == null) {
+
+        Cz cz = czService.get(id);
+        if (cz == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        //设置删除状态，更新删除时间
-        tCz.setSfsc(false);
-        tCz.setGxsj(new Date());
-        czService.update(tCz);
+
+        //设置删除状态
+        cz.setSfsc(true);
+
+        czService.update(cz);
         return ResponseUtil.success();
     }
 
     /**
      * 校验参数是否合法
      */
-    private void checkPequest(Cz tCz) throws WebException {
+    private void checkRequest(Cz cz) throws WebException {
+
         //如果参数为空，抛出异常
-        if (tCz == null) {
+        if (cz == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(cz.getCzmc())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(cz.getCzbm())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
-
-
 }
 

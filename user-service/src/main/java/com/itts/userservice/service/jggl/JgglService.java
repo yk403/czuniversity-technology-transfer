@@ -20,13 +20,13 @@ public interface JgglService  {
     /**
      * 获取列表 - 分页
      */
-    PageInfo<Jggl> findByPage(Integer pageNum,Integer pageSize);
+    PageInfo<Jggl> findByPage(Integer pageNum,Integer pageSize,String jgbm);
 
     /**
      * 获取机构管理树
      * @return
      */
-    List<JgglVO> findJgglVO();
+    List<JgglVO> findJgglVO(String jgbm);
     /**
      * 获取关键字机构管理树
      * @return
@@ -36,6 +36,13 @@ public interface JgglService  {
      * 获取通过id
      */
     Jggl get(Long id);
+
+    /**
+     * 通过层级获取子机构
+     * @param cj
+     * @return
+     */
+    List<Jggl> getList(String cj);
     /**
      * 查询，通过机构名称
      */
@@ -44,6 +51,7 @@ public interface JgglService  {
      * 查询，通过机构代码
      */
     Jggl selectByJgbm(String jgbm);
+    PageInfo<Jggl> selectByString(Integer pageNum,Integer pageSize,String string);
     /**
      * 新增
      *

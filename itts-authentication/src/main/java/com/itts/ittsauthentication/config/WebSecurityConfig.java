@@ -41,7 +41,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * ⽩名单，不需要校验
      */
-    private static final String[] AUTH_WHITELIST = {"/api/register/", "/websocket/**"};
+    private static final String[] AUTH_WHITELIST = {
+            "/api/register/", "/websocket/**", "/swagger-resources/**", "/swagger-ui/**",
+            "/v2/api-docs", "/v3/api-docs", "/webjars/**"};
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

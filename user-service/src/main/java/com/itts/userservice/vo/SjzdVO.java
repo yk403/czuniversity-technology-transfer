@@ -10,12 +10,15 @@ import java.util.List;
  * 字典表
  */
 @Data
-public class ShzdVO implements Serializable {
+public class SjzdVO implements Serializable {
     private static final long serialVersionUID = 8640002509739394257L;
     private String zdmc;
     private String zdbm;
-    private String fjzdCode;
+    private String fjzdbm;
     private String zdcj;
+    private String xtlb;
+    private String mklx;
+    private String ssmk;
     private Date cjsj;
-    private List<ShzdVO> shzdVOList;
+    private List<SjzdVO> sjzdVOList;
 }

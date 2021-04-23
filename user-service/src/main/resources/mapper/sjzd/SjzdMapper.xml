@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.userservice.mapper.sjzd.SjzdMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.userservice.model.sjzd.Sjzd">
+        <id column="id" property="id" />
+        <result column="zdmc" property="zdmc" />
+        <result column="zdbm" property="zdbm" />
+        <result column="fjzdbm" property="fjzdbm" />
+        <result column="zdcj" property="zdcj" />
+        <result column="xtlb" property="xtlb" />
+        <result column="mklx" property="mklx" />
+        <result column="ssmk" property="ssmk" />
+        <result column="sfsc" property="sfsc" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, zdmc, zdbm, fjzdbm, zdcj,xtlb,mklx,ssmk, sfsc, cjsj, cjr, gxsj, gxr
+    </sql>
+    <select id="selectByCode" resultMap="BaseResultMap">
+        select * from t_sjzd where zdbm= #{zdbm} and sfsc = false
+    </select>
+
+
+    <select id="selectSjzd" resultType="com.itts.userservice.vo.SjzdVO">
+        select zdmc as zdmc,
+               zdbm as zdbm,
+               fjzdbm as fjzdbm,
+               zdcj as zdcj,
+               xtlb as xtlb,
+               mklx as mklx,
+               ssmk as ssmk,
+               cjsj as cjsj
+        from t_sjzd
+        where sfsc = false
+    </select>
+    <!--查询通过名字或者编码-->
+    <select id="selectByNameOrCode" resultType="com.itts.userservice.model.sjzd.Sjzd">
+        select *
+        from t_sjzd
+        where (zdmc= #{string} or zdbm= #{string}) and sfsc =false and ssmk =#{ssmk}
+    </select>
+</mapper>

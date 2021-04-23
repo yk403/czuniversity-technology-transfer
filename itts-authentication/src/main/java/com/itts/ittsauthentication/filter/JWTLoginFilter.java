@@ -4,7 +4,9 @@ import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.RedisConstant;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.utils.common.JwtUtil;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.ittsauthentication.bean.AuthoritionUser;
 import com.itts.ittsauthentication.bean.LoginUserInfo;
 import com.itts.ittsauthentication.mapper.AuthoritionUserMapper;
@@ -92,15 +94,29 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         loginUser.setUserLevel(user.getYhjb());
 
         //⽣成Token, 并存入redis
-        String token = JwtUtil.getJwtToken(JSONUtil.toJsonStr(loginUser), 1000L * 60 * 15);
+        String token = JwtUtil.getJwtToken(JSONUtil.toJsonStr(loginUser), RedisConstant.TOKEN_EXPIRE_DATE);
 
-        redisTemplate.opsForValue().set(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + token, token, RedisConstant.EXPIRE_DATE, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + token, token, RedisConstant.TOKEN_EXPIRE_DATE, TimeUnit.MILLISECONDS);
 
         //返回数据
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("user", authResult.getName());
         resultMap.put("token", token);
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().print(JSONUtil.toJsonStr(resultMap));
+        response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.success(resultMap)));
+    }
+
+    /**
+     * 如果登录失败，则返回错误提示信息
+     *
+     * @param
+     * @return
+     * @author liuyingming
+     */
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.error(ErrorCodeEnum.LOGIN_USERNAME_PASSWORD_ERROR)));
     }
 }
