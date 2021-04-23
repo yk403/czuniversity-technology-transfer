@@ -33,9 +33,9 @@ public class TJsCg implements Serializable {
 	@TableId(value = "id",type = IdType.AUTO)
 	private Integer id;
 	/**
-	 * index(排序使用)
+	 * indes(排序使用)
 	 */
-	private Integer index;
+	private Integer indes;
 	/**
 	 * 用户ID
 	 */
@@ -245,5 +245,9 @@ public class TJsCg implements Serializable {
 	 * 成果附件名称
 	 */
 	private String cgfjmc;
+	/**
+	 * 成交价格
+	 */
+	private String cjjg;
 
 }

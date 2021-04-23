@@ -10,6 +10,7 @@
             bm.is_delete = 0
             <if test="map.userId != null and map.userId != ''"> and user_id = #{map.userId} </if>
             <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
+            <if test="map.hdId != null and map.hdId != ''"> and hd_id = #{map.hdId} </if>
             <if test="map.dwmc != null and map.dwmc != ''"> and dwmc = #{map.dwmc} </if>
             <if test="map.dz != null and map.dz != ''"> and dz = #{map.dz} </if>
             <if test="map.fr != null and map.fr != ''"> and fr = #{map.fr} </if>
