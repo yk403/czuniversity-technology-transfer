@@ -2,7 +2,6 @@ package com.itts.userservice.service.cz.impl;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -16,7 +15,6 @@ import com.itts.userservice.model.yh.YhJsGl;
 import com.itts.userservice.service.cz.CzService;
 import com.itts.userservice.mapper.cz.CzMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -141,7 +139,7 @@ public class CzServiceImpl implements CzService {
             YhJsGl yhJsGl = yhJsGlMapper.selectById(id);
             Long jsid = yhJsGl.getJsId();
             //根据角色id和菜单id查出操作
-            List<CzDTO> findcdcz = czMapper.findcdcz(jsid, cdid);
+            List<CzDTO> findcdcz = czMapper.findCdCzGlByJsIdAndCdId(jsid, cdid);
             czDTOList=findcdcz;
             //缓存中没有数据则存入操作
             redisTemplate.opsForValue().set(RedisConstant.USERSERVICE_MENUS_OPERTION+id,czDTOList);

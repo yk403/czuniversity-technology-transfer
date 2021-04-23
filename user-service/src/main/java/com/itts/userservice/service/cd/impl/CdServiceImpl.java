@@ -11,8 +11,10 @@ import com.itts.userservice.dto.GetCdAndCzDTO;
 import com.itts.userservice.dto.GetCdCzGlDTO;
 import com.itts.userservice.mapper.cd.CdCzGlMapper;
 import com.itts.userservice.mapper.cd.CdMapper;
+import com.itts.userservice.mapper.cz.CzMapper;
 import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.model.cd.CdCzGl;
+import com.itts.userservice.model.cz.Cz;
 import com.itts.userservice.request.AddCdRequest;
 import com.itts.userservice.service.cd.CdService;
 import com.itts.userservice.vo.CdTreeVO;
@@ -46,6 +48,9 @@ public class CdServiceImpl implements CdService {
 
     @Autowired
     private CdCzGlMapper cdCzGlMapper;
+
+    @Autowired
+    private CzMapper czMapper;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -107,6 +112,12 @@ public class CdServiceImpl implements CdService {
             BeanUtils.copyProperties(cd, vo);
             vos.add(vo);
 
+            //获取当前菜单拥有的操作
+            List<Cz> czs = czMapper.findByCdId(cd.getId());
+            if (!CollectionUtils.isEmpty(czs)) {
+                vo.setCzs(czs);
+            }
+
             //获取当前菜单及所有子菜单
             List<Cd> children = findThisAndAllChildrenByCode(cd.getCdbm());
 
@@ -140,7 +151,7 @@ public class CdServiceImpl implements CdService {
         PageHelper.startPage(pageNum, pageSize);
 
         List<Cd> cds = cdMapper.selectByParameterList(parameter, systemType, modelType);
-        if(cds==null){
+        if (cds == null) {
             return null;
         }
         PageInfo<GetCdAndCzDTO> pageInfo = new PageInfo(cds);
@@ -166,9 +177,9 @@ public class CdServiceImpl implements CdService {
      * 通过父级菜单ID获取其子级信息
      */
     @Override
-    public List<Cd> findByParentId(Long parentId) {
+    public List<Cd> findByParentId(Long parentId, String systemType) {
 
-        List<Cd> cds = cdMapper.findByParentId(parentId);
+        List<Cd> cds = cdMapper.findByParentId(parentId, systemType);
         return cds;
     }
 

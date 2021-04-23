@@ -41,7 +41,7 @@ public interface CdService {
     /**
      * 通过父级菜单ID获取其子级信息
      */
-    List<Cd> findByParentId(Long parentId);
+    List<Cd> findByParentId(Long parentId, String systemType);
 
     /**
      * 通过父级菜单ID获取其子级数量

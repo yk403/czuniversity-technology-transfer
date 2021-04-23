@@ -5,9 +5,11 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.enums.SystemTypeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.dto.GetCdAndCzDTO;
+import com.itts.userservice.enmus.UserTypeEnum;
 import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.request.AddCdRequest;
 import com.itts.userservice.service.cd.CdService;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -62,13 +65,25 @@ public class CdController {
      */
     @GetMapping("/tree/")
     @ApiOperation(value = "通过ID获取当前菜单及其子菜单（树形）")
-    public ResponseUtil findByTree(@RequestParam(value = "id", required = false) Long id) {
+    public ResponseUtil findByTree(@ApiParam("菜单ID(可不填写，默认查询所有)") @RequestParam(value = "id", required = false) Long id,
+                                   @ApiParam("类型(不填写查询所有)：in - 内部系统；out - 外部系统") @RequestParam(value = "type", required = false) String type) {
 
         List<Cd> cds = Lists.newArrayList();
 
+        String systemType = null;
+
+        if (Objects.equals(type, UserTypeEnum.IN_USER.getCode())) {
+            systemType = SystemTypeEnum.TALENT_TRAINING_PORTAL.getKey();
+        }
+
         if (id == null) {
 
-            cds = cdService.findByParentId(0L);
+            if (Objects.equals(type, UserTypeEnum.IN_USER.getCode())) {
+
+                cds = cdService.findByParentId(null, systemType);
+            } else {
+                cds = cdService.findByParentId(0L, systemType);
+            }
         } else {
 
             Cd cd = cdService.getById(id);
