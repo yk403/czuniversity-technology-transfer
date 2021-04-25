@@ -117,7 +117,12 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         if (kcService.updateById(kc)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("kc_id",kc.getId());
-            return xyKcService.removeByMap(map);
+            if (xyKcService.removeByMap(map)) {
+                HashMap<String, Object> map1 = new HashMap<>();
+                map1.put("kc_id",kc.getId());
+                return kcSzService.removeByMap(map1);
+            }
+            return false;
         }
         return false;
     }
