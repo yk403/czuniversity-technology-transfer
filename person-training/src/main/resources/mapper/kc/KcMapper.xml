@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itts.personTraining.kc.mapper.KcMapper">
+<mapper namespace="com.itts.personTraining.mapper.kc.KcMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.kc.Kc">
         <id column="id" property="id" />
-        <result column="js_id" property="jsId" />
         <result column="lb" property="lb" />
         <result column="zsmk_id" property="zsmkId" />
-        <result column="jsxm" property="jsxm" />
         <result column="zsmkmc" property="zsmkmc" />
         <result column="kcmc" property="kcmc" />
         <result column="kcdm" property="kcdm" />
@@ -20,7 +18,7 @@
         <result column="skfs" property="skfs" />
         <result column="sfbx" property="sfbx" />
         <result column="bz" property="bz" />
-        <result column="sczt" property="sczt" />
+        <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
         <result column="gxsj" property="gxsj" />
@@ -32,4 +30,15 @@
         id, js_id, lb, zsmk_id, jsxm, zsmkmc, kcmc, kcdm, kclx, kcxs, kcxf, kkxq, kkxy, skfs, sfbx, bz, sczt, cjsj, cjr, gxsj, gxr
     </sql>
 
+    <select id="findByPage" resultType="com.itts.personTraining.dto.KcDTO">
+        select kc.id as id,txk.id as xyKcId,xy.id as xyId,xymc,lb,zsmk_id as zsmkId,zsmkmc,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfbx,bz,sfxf,kc.cjsj,kc.cjr,kc.gxsj,kc.gxr
+        from t_xy xy left join t_xy_kc txk on(xy.id=txk.xy_id) left join t_kc kc on(kc.id=txk.kc_id)
+        <where>
+            <if test="xyId != null and xyId != ''"> xy.id = #{xyId} </if>
+            <if test="kclx != null and kclx != ''"> and kc.kclx like #{kclx} </if>
+            <if test="name != null and name != ''"> and kc.kcdm like #{name} </if>
+            <if test="name != null and name != ''"> or kc.kcmc like #{name} </if>
+        </where>
+        order by id desc
+    </select>
 </mapper>

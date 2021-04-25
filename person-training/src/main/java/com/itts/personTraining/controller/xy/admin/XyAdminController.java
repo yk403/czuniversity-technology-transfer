@@ -39,7 +39,7 @@ public class XyAdminController {
      * @return
      */
     @GetMapping("/getAll")
-    @ApiOperation(value = "获取详情")
+    @ApiOperation(value = "获取所有学院信息")
     public ResponseUtil getAll() {
         return ResponseUtil.success(xyService.getAll());
     }

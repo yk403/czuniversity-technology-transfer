@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itts.personTraining.pk.mapper.PkMapper">
+<mapper namespace="com.itts.personTraining.mapper.pk.PkMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.pk.Pk">
@@ -9,12 +9,12 @@
         <result column="kcmc" property="kcmc" />
         <result column="sksjd" property="sksjd" />
         <result column="xqs" property="xqs" />
-        <result column="jsmc" property="jsmc" />
+        <result column="jxlmc" property="jxlmc" />
         <result column="sfxf" property="sfxf" />
-        <result column="kcbm" property="kcbm" />
-        <result column="sklsmc" property="sklsmc" />
-        <result column="sklsbm" property="sklsbm" />
-        <result column="sczt" property="sczt" />
+        <result column="kcdm" property="kcdm" />
+        <result column="dsxm" property="dsxm" />
+        <result column="dsbh" property="dsbh" />
+        <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
         <result column="gxsj" property="gxsj" />

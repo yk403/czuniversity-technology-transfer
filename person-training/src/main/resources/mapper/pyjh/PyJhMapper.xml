@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itts.personTraining.mapper.PyJhMapper">
+<mapper namespace="com.itts.personTraining.mapper.pyjh.PyJhMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.pyjh.PyJh">
         <id column="id" property="id" />
         <result column="pc_id" property="pcId" />
         <result column="xymc" property="xymc" />
-        <result column="xfzt" property="xfzt" />
+        <result column="sfxf" property="sfxf" />
         <result column="pyfa" property="pyfa" />
         <result column="pyjh" property="pyjh" />
         <result column="jxdg" property="jxdg" />
-        <result column="sczt" property="sczt" />
+        <result column="sfsc" property="sfsc" />
         <result column="scsj" property="scsj" />
         <result column="xfsj" property="xfsj" />
         <result column="cjsj" property="cjsj" />
