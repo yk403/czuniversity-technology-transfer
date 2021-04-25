@@ -149,15 +149,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             xyKc.setKcId(kc.getId());
             xyKc.setXyId(kcDTO.getXyId());
             if (xyKcService.save(xyKc)) {
-                List<KcSz> kcSzList = new ArrayList<>();
-                List<Long> szIds = kcDTO.getSzIds();
-                for (Long szId : szIds) {
-                    KcSz kcSz = new KcSz();
-                    kcSz.setSzId(szId);
-                    kcSz.setKcId(kc.getId());
-                    kcSzList.add(kcSz);
-                }
-                return kcSzService.saveBatch(kcSzList);
+                return addKcSz(kcDTO, kc);
             }
             return false;
         }
@@ -179,10 +171,35 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             XyKc xyKc = new XyKc();
             xyKc.setKcId(kc.getId());
             xyKc.setXyId(kcDTO.getXyId());
+            if (kcDTO.getSzIds() != null) {
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("kc_id",kcDTO.getId());
+                if (kcSzService.removeByMap(map)) {
+                    return addKcSz(kcDTO, kc);
+                }
+                return false;
+            }
             return xyKcService.save(xyKc);
         }
         return false;
     }
 
+    /**
+     * 新增课程师资关系
+     * @param kcDTO
+     * @param kc
+     * @return
+     */
+    private boolean addKcSz(KcDTO kcDTO, Kc kc) {
+        List<KcSz> kcSzList = new ArrayList<>();
+        List<Long> szIds = kcDTO.getSzIds();
+        for (Long szId : szIds) {
+            KcSz kcSz = new KcSz();
+            kcSz.setSzId(szId);
+            kcSz.setKcId(kc.getId());
+            kcSzList.add(kcSz);
+        }
+        return kcSzService.saveBatch(kcSzList);
+    }
 
 }
