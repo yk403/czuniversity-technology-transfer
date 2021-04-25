@@ -62,6 +62,7 @@ public enum ErrorCodeEnum {
     TEACHER_NUMBER_EXISTS_ERROR(-45001, "导师编号已存在!"),
     TEACHING_BUILDING_EXISTS_ERROR(-45002, "教学楼教室已存在!"),
     INSTITUTE_NAME_EXISTS_ERROR(-45003, "学院名称已存在!"),
+    COURSE_EXISTS_ERROR(-45004, "课程已存在!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

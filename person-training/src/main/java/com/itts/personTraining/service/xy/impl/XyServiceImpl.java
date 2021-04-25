@@ -4,14 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.personTraining.model.pk.Pk;
 import com.itts.personTraining.model.xy.Xy;
 import com.itts.personTraining.mapper.xy.XyMapper;
+import com.itts.personTraining.model.xyKc.XyKc;
 import com.itts.personTraining.service.xy.XyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.personTraining.service.xyKc.XyKcService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,13 +27,15 @@ import java.util.List;
  */
 @Service
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class XyServiceImpl extends ServiceImpl<XyMapper, Xy> implements XyService {
 
     @Resource
     private XyMapper xyMapper;
     @Autowired
     private XyService xyService;
+    @Autowired
+    private XyKcService xyKcService;
     /**
      * 查询所有学院
      * @return
@@ -89,6 +94,11 @@ public class XyServiceImpl extends ServiceImpl<XyMapper, Xy> implements XyServic
         log.info("【人才培养 - 删除学院:{}】",xy);
         //设置删除状态
         xy.setSfsc(true);
-        return xyService.updateById(xy);
+        if (xyService.updateById(xy)) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("xy_id",xy.getId());
+            return xyKcService.removeByMap(map);
+        }
+        return false;
     }
 }

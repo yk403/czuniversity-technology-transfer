@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itts.personTraining.xxjs.mapper.XxjsMapper">
+<mapper namespace="com.itts.personTraining.mapper.xxjs.XxjsMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.xxjs.Xxjs">
         <id column="id" property="id" />
-        <result column="mc" property="mc" />
+        <result column="jxlmc" property="jxlmc" />
         <result column="jsbh" property="jsbh" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />

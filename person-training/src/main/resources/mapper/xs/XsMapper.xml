@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itts.personTraining.mapper.XsMapper">
+<mapper namespace="com.itts.personTraining.mapper.xs.XsMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.xs.Xs">
@@ -49,7 +49,7 @@
         <result column="pydwm" property="pydwm" />
         <result column="pydw" property="pydw" />
         <result column="zsjj" property="zsjj" />
-        <result column="sczt" property="sczt" />
+        <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
         <result column="gxsj" property="gxsj" />

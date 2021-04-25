@@ -1,6 +1,7 @@
 package com.itts.personTraining.service.kc;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.KcDTO;
 import com.itts.personTraining.model.kc.Kc;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -17,27 +18,28 @@ import java.util.List;
 public interface KcService extends IService<Kc> {
 
     /**
-     * 查询列表
+     * 查询课程列表
      * @param pageNum
      * @param pageSize
      * @param kclx
      * @param name
+     * @param xyId
      * @return
      */
-    PageInfo<Kc> findByPage(Integer pageNum, Integer pageSize, String kclx, String name);
+    PageInfo<KcDTO> findByPage(Integer pageNum, Integer pageSize, String kclx, String name, Long xyId);
 
     /**
      * 新增课程
-     * @param kc
+     * @param kcDTO
      */
-    boolean add(Kc kc);
+    boolean add(KcDTO kcDTO);
 
     /**
      * 更新课程
-     * @param kc
+     * @param kcDTO
      * @return
      */
-    boolean update(Kc kc);
+    boolean update(KcDTO kcDTO);
 
     /**
      * 根据id查询课程信息
@@ -59,4 +61,10 @@ public interface KcService extends IService<Kc> {
      * @return
      */
     boolean delete(Kc kc);
+
+    /**
+     * 查询所有课程
+     * @return
+     */
+    List<Kc> getAll();
 }

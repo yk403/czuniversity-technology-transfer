@@ -6,18 +6,24 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.dto.KcDTO;
+import com.itts.personTraining.mapper.xyKc.XyKcMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.mapper.kc.KcMapper;
+import com.itts.personTraining.model.xyKc.XyKc;
 import com.itts.personTraining.service.kc.KcService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.personTraining.service.xyKc.XyKcService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.jcajce.BCFKSStoreParameter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
@@ -34,7 +40,7 @@ import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
  */
 @Service
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcService {
 
     @Resource
@@ -43,6 +49,9 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     @Autowired
     private KcService kcService;
 
+    @Autowired
+    private XyKcService xyKcService;
+
     /**
      * 分页条件查询课程列表
      * @param pageNum
@@ -50,17 +59,11 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
      * @return
      */
     @Override
-    public PageInfo<Kc> findByPage(Integer pageNum, Integer pageSize, String kclx, String name) {
-        log.info("【人才培养 - 分页条件查询课程列表,课程类型:{},课程代码/名称:{}】",kclx,name);
+    public PageInfo<KcDTO> findByPage(Integer pageNum, Integer pageSize, String kclx, String name, Long xyId) {
+        log.info("【人才培养 - 分页条件查询课程列表,课程类型:{},课程代码/名称:{},学院id:{}】",kclx,name,xyId);
         PageHelper.startPage(pageNum, pageSize);
-        QueryWrapper<Kc> kcQueryWrapper = new QueryWrapper<>();
-        kcQueryWrapper.eq(StringUtils.isNotBlank(kclx),"kclx", kclx)
-                      .eq("sfsc",false)
-                      .like(StringUtils.isNotBlank(name), "kcmc", name)
-                      .or().like(StringUtils.isNotBlank(name), "kcdm", name);
-        List<Kc> kcs = kcMapper.selectList(kcQueryWrapper);
-        PageInfo<Kc> PageInfo = new PageInfo<>(kcs);
-        return PageInfo;
+        List<KcDTO> kcDTOS = kcMapper.findByPage(kclx,name,xyId);
+        return new PageInfo<>(kcDTOS);
     }
 
     /**
@@ -102,29 +105,63 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         log.info("【人才培养 - 删除课程:{}】",kc);
         //设置删除状态
         kc.setSfsc(true);
-        return kcService.updateById(kc);
+        if (kcService.updateById(kc)) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("kc_id",kc.getId());
+            return xyKcService.removeByMap(map);
+        }
+        return false;
+    }
+
+    /**
+     * 查询所有课程
+     * @return
+     */
+    @Override
+    public List<Kc> getAll() {
+        log.info("【人才培养 - 查询所有课程信息】");
+        QueryWrapper<Kc> kcQueryWrapper = new QueryWrapper<>();
+        kcQueryWrapper.eq("sfsc",false);
+        return kcMapper.selectList(kcQueryWrapper);
     }
 
     /**
      * 新增课程
-     * @param kc
+     * @param kcDTO
      * @return
      */
     @Override
-    public boolean add(Kc kc) {
-        log.info("【人才培养 - 新增课程:{}】",kc);
-        return kcService.save(kc);
+    public boolean add(KcDTO kcDTO) {
+        log.info("【人才培养 - 新增课程:{}】",kcDTO);
+        Kc kc = new Kc();
+        BeanUtils.copyProperties(kcDTO,kc);
+        if (kcService.save(kc)) {
+            XyKc xyKc = new XyKc();
+            xyKc.setKcId(kc.getId());
+            xyKc.setXyId(kcDTO.getXyId());
+            return xyKcService.save(xyKc);
+        }
+        return false;
     }
 
     /**
      * 更新课程
-     * @param kc
+     * @param kcDTO
      * @return
      */
     @Override
-    public boolean update(Kc kc) {
-        log.info("【人才培养 - 更新课程:{}】",kc);
-        return kcService.updateById(kc);
+    public boolean update(KcDTO kcDTO) {
+        log.info("【人才培养 - 更新课程:{}】",kcDTO);
+        Kc kc = new Kc();
+        BeanUtils.copyProperties(kcDTO,kc);
+        if (kcService.updateById(kc)) {
+            xyKcService.removeById(kcDTO.getXyKcId());
+            XyKc xyKc = new XyKc();
+            xyKc.setKcId(kc.getId());
+            xyKc.setXyId(kcDTO.getXyId());
+            return xyKcService.save(xyKc);
+        }
+        return false;
     }
 
 
