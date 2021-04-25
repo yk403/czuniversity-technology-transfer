@@ -7,12 +7,15 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KcDTO;
+import com.itts.personTraining.mapper.kcSz.KcSzMapper;
 import com.itts.personTraining.mapper.xyKc.XyKcMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.mapper.kc.KcMapper;
+import com.itts.personTraining.model.kcSz.KcSz;
 import com.itts.personTraining.model.xyKc.XyKc;
 import com.itts.personTraining.service.kc.KcService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.personTraining.service.kcSz.KcSzService;
 import com.itts.personTraining.service.xyKc.XyKcService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,6 +55,11 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
 
     @Autowired
     private XyKcService xyKcService;
+
+    @Resource
+    private KcSzMapper kcSzMapper;
+    @Autowired
+    private KcSzService kcSzService;
 
     /**
      * 分页条件查询课程列表
@@ -139,7 +148,18 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             XyKc xyKc = new XyKc();
             xyKc.setKcId(kc.getId());
             xyKc.setXyId(kcDTO.getXyId());
-            return xyKcService.save(xyKc);
+            if (xyKcService.save(xyKc)) {
+                List<KcSz> kcSzList = new ArrayList<>();
+                List<Long> szIds = kcDTO.getSzIds();
+                for (Long szId : szIds) {
+                    KcSz kcSz = new KcSz();
+                    kcSz.setSzId(szId);
+                    kcSz.setKcId(kc.getId());
+                    kcSzList.add(kcSz);
+                }
+                return kcSzService.saveBatch(kcSzList);
+            }
+            return false;
         }
         return false;
     }

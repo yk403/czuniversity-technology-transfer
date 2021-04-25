@@ -31,7 +31,7 @@
     </sql>
 
     <select id="findByPage" resultType="com.itts.personTraining.dto.KcDTO">
-        select kc.id as id,txk.id as xyKcId,xy.id as xyId,xymc,lb,zsmk_id as zsmkId,zsmkmc,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfbx,bz,sfxf,kc.cjsj,kc.cjr,kc.gxsj,kc.gxr
+        select kc.id as id,txk.id as xyKcId,xy.id as xyId,xymc,lb,zsmk_id as zsmkId,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfbx,bz,sfxf,kc.cjsj,kc.cjr,kc.gxsj,kc.gxr
         from t_xy xy left join t_xy_kc txk on(xy.id=txk.xy_id) left join t_kc kc on(kc.id=txk.kc_id)
         <where>
             <if test="xyId != null and xyId != ''"> xy.id = #{xyId} </if>

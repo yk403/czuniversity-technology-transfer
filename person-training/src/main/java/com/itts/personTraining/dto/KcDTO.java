@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Austin
@@ -21,6 +22,11 @@ public class KcDTO {
      * 课程主键id
      */
     private Long id;
+
+    /**
+     * 师资ids
+     */
+    private List<Long> szIds;
 
     /**
      * 学院课程id
@@ -46,16 +52,10 @@ public class KcDTO {
     private String lb;
 
     /**
-     * 知识模块ID
+     * 知识模块ID(1:公共知识模块;2:政策法规模块;3:实务技能模块一;4:实务技能模块二;5:实务技能模块三;6:能力提升模块)
      */
     @ApiModelProperty(value = "知识模块ID", required = true)
     private Long zsmkId;
-
-    /**
-     * 知识模块名称
-     */
-    @ApiModelProperty(value = "知识模块名称", required = true)
-    private String zsmkmc;
 
     /**
      * 课程名称
