@@ -83,6 +83,8 @@ public class XyAdminController {
         }
         if (xy.getXymc() != null) {
             checkRequest(xy);
+        } else {
+            throw new WebException(INSTITUTE_NAME_ISEMPTY_ERROR);
         }
         if (!xyService.update(xy)) {
             throw new WebException(UPDATE_FAIL);

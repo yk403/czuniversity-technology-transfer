@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -31,6 +34,7 @@ public class Sz implements Serializable {
     /**
      * 导师编号
      */
+    @ApiModelProperty(value = "导师编号", required = true)
     private String dsbh;
 
     /**
@@ -56,6 +60,7 @@ public class Sz implements Serializable {
     /**
      * 出生日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date csrq;
 
     /**

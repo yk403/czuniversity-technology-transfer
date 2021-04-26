@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.util.Date;
 import java.io.Serializable;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -37,14 +35,9 @@ public class Kc implements Serializable {
     private String lb;
 
     /**
-     * 知识模块ID
+     * 知识模块ID(1:公共知识模块;2:政策法规模块;3:实务技能模块一;4:实务技能模块二;5:实务技能模块三;6:能力提升模块)
      */
     private Long zsmkId;
-
-    /**
-     * 知识模块名称
-     */
-    private String zsmkmc;
 
     /**
      * 课程名称
