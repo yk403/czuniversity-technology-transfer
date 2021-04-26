@@ -3,6 +3,7 @@ package com.itts.common.utils;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -104,6 +105,12 @@ public class FileUtil {
         }
     }
 
+    /**
+     * 文件上传
+     * @param multipartFile
+     * @return
+     * @throws IOException
+     */
     public static String uploadFile(@RequestParam MultipartFile multipartFile) throws IOException {
         String[] fileAbsolutPath = {};
         String fileName = multipartFile.getOriginalFilename();
@@ -131,5 +138,22 @@ public class FileUtil {
             return path;
         }
         return null;
+    }
+
+    /**
+     * 文件下载
+     * @param fileUrl
+     * @param localFilename
+     * @throws IOException
+     */
+    public static void downFile(String fileUrl, String localFilename) throws IOException {
+        String[] ss = fileUrl.split("/", 4);
+        InputStream inputStream = FastDFSClient.downFile(ss[2], ss[3]);
+        File file = new File(localFilename);
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        fileOutputStream.write(IOUtils.toByteArray(inputStream));
+        inputStream.close();
+        fileOutputStream.close();
+        log.info("【文件下载成功】,path: {}", localFilename);
     }
 }
