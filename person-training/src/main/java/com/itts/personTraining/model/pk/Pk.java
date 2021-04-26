@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -31,71 +33,85 @@ public class Pk implements Serializable {
     /**
      * 批次ID
      */
+    @ApiModelProperty(value = "批次ID", required = true)
     private Long pcId;
 
     /**
      * 排课名称
      */
+    @ApiModelProperty(value = "排课名称", required = true)
     private String pkmc;
 
     /**
      * 课程名称
      */
+    @ApiModelProperty(value = "课程名称", required = true)
     private String kcmc;
 
     /**
      * 上课起始年月日
      */
+    @ApiModelProperty(value = "上课起始年月日", required = true)
     private String skqsnyr;
 
     /**
      * 上课结束年月日
      */
+    @ApiModelProperty(value = "上课结束年月日", required = true)
     private String skjsnyr;
 
     /**
      * 上课时间段
      */
+    @ApiModelProperty(value = "上课时间段", required = true)
     private String sksjd;
 
     /**
      * 星期数
      */
+    @ApiModelProperty(value = "星期数", required = true)
     private String xqs;
 
     /**
      * 教室ID
      */
+    @ApiModelProperty(value = "教室ID", required = true)
     private Long xxjsId;
 
     /**
      * 教学楼名称
      */
+    @ApiModelProperty(value = "教学楼名称", required = true)
     private String jxlmc;
 
     /**
      * 教室编号
      */
+    @ApiModelProperty(value = "教室编号", required = true)
     private String jsbh;
 
     /**
      * 是否下发(0:未下发;1:已下发)
      */
+    @ApiModelProperty(value = "是否下发", required = true)
     private Boolean sfxf;
 
     /**
      * 课程代码
      */
+    @ApiModelProperty(value = "课程代码", required = true)
     private String kcdm;
 
     /**
      * 授课老师姓名
      */
+    @ApiModelProperty(value = "授课老师姓名", required = true)
     private String dsxm;
 
     /**
      * 授课老师编号
      */
+    @ApiModelProperty(value = "授课老师编号", required = true)
     private String dsbh;
 
     /**

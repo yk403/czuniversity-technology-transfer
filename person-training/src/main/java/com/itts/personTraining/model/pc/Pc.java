@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -31,16 +33,19 @@ public class Pc implements Serializable {
     /**
      * 批次名称
      */
+    @ApiModelProperty(value = "批次名称", required = true)
     private String pcmc;
 
     /**
      * 批次号
      */
+    @ApiModelProperty(value = "批次号", required = true)
     private String pch;
 
     /**
      * 批次类型:	postgraduate - 研究生;	broker - 经纪人
      */
+    @ApiModelProperty(value = "批次类型", required = true)
     private String pclx;
 
     /**
@@ -51,6 +56,7 @@ public class Pc implements Serializable {
     /**
      * 批次年份
      */
+    @ApiModelProperty(value = "批次年份", required = true)
     private String pcnf;
 
     /**

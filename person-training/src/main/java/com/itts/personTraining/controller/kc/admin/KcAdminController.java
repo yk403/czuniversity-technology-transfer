@@ -153,6 +153,9 @@ public class KcAdminController {
         if (kcDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+        if(kcDTO.getSzIds() == null) {
+            throw new WebException(TEACHER_ISEMPTY_ERROR);
+        }
         List<Kc> kcList = kcService.getAll();
         for (Kc kc : kcList) {
             if (kc.getKcdm().equals(kcDTO.getKcdm()) || kc.getKcmc().equals(kcDTO.getKcmc())) {
