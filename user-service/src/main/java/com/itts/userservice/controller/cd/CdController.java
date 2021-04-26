@@ -66,36 +66,36 @@ public class CdController {
     @GetMapping("/tree/")
     @ApiOperation(value = "通过ID获取当前菜单及其子菜单（树形）")
     public ResponseUtil findByTree(@ApiParam(value = "菜单ID(可不填写，默认查询所有)") @RequestParam(value = "id", required = false) Long id,
-                                   @ApiParam(value = "类型(不填写查询所有)：in - 内部系统；out - 外部系统") @RequestParam(value = "type", required = false) String type) {
+                                   @ApiParam(value = "类型(不填写查询所有)：in - 内部系统；out - 外部系统") @RequestParam(value = "type", required = false) String systemType) {
 
         List<Cd> cds = Lists.newArrayList();
 
-        String systemType = null;
+        if (StringUtils.isNotBlank(systemType)) {
 
-        if (Objects.equals(type, UserTypeEnum.IN_USER.getCode())) {
-            systemType = SystemTypeEnum.TALENT_TRAINING_PORTAL.getKey();
+            if (Objects.equals(systemType, UserTypeEnum.IN_USER.getCode())) {
+
+                systemType = SystemTypeEnum.TALENT_TRAINING_PORTAL.getKey();
+            } else if (Objects.equals(systemType, UserTypeEnum.OUT_USER.getCode())) {
+
+                systemType = null;
+            }
         }
 
         if (id == null) {
 
-            if (Objects.equals(type, UserTypeEnum.IN_USER.getCode())) {
-
-                cds = cdService.findByParentId(null, systemType);
-            } else {
-                cds = cdService.findByParentId(0L, systemType);
-            }
+            cds = cdService.findByParentId(0L, systemType);
         } else {
 
             Cd cd = cdService.getById(id);
             cds.add(cd);
         }
 
-        if (CollectionUtils.isEmpty(cds)) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        if (!CollectionUtils.isEmpty(cds)) {
+            List<CdTreeVO> tree = cdService.findByTree(cds);
+            return ResponseUtil.success(tree);
         }
 
-        List<CdTreeVO> tree = cdService.findByTree(cds);
-        return ResponseUtil.success(tree);
+        return ResponseUtil.success();
     }
 
     /**
