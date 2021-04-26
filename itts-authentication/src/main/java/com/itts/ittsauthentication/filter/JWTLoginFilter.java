@@ -101,7 +101,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         //返回数据
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("user", authResult.getName());
-        resultMap.put("token", token + "_" + user.getId());
+        resultMap.put("token", token + "&" + user.getId());
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().print(JSONUtil.toJsonStr(ResponseUtil.success(resultMap)));
     }
