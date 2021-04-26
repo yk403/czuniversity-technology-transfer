@@ -97,4 +97,8 @@ public class TJsHd implements Serializable {
 	@TableField(value = "gxsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date gxsj;
+	/**
+	 * 能否报名
+	 */
+	private Integer isBm;
 }

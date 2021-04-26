@@ -3,28 +3,62 @@
 
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsHdMapper">
 
-    <select id="list" resultType="com.itts.technologytransactionservice.model.TJsHd">
-        select `id`,`hdmc`,`hdlx`,`hdjj`,`hdgz`,`hdkssj`,`hdssj`,`hdzt`,`cjsj`,`zxdh`,`hdfzr`,`hdnr`,`hdfbzt`,`bmrs`
-        from t_js_hd
+	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsHd">
+		select hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.bmrs
+		from t_js_hd hd
         <where>
-            <if test="map.id != null and map.id != ''">and id = #{map.id}</if>
-            <if test="map.name != null and map.name != ''">and hdmc = #{map.name}</if>
-            <if test="map.hdlx != null and map.hdlx != ''">and hdlx = #{map.hdlx}</if>
-            <if test="map.hdjj != null and map.hdjj != ''">and hdjj = #{map.hdjj}</if>
-            <if test="map.hdgz != null and map.hdgz != ''">and hdgz = #{map.hdgz}</if>
-            <if test="map.hdkssj != null and map.hdkssj != ''">and hdkssj = #{map.hdkssj}</if>
-            <if test="map.hdssj != null and map.hdssj != ''">and hdssj = #{map.hdssj}</if>
-            <if test="map.hdzt != null and map.hdzt != ''">and hdzt = #{map.hdzt}</if>
-            <if test="map.cjsj != null and map.cjsj != ''">and cjsj = #{map.cjsj}</if>
-        </where>
+		  		  <if test="map.id != null and map.id != ''"> and hd.id = #{map.id} </if>
+		  		  <if test="map.name != null and map.name != ''"> and hd.hdmc = #{map.name} </if>
+		  		  <if test="map.hdlx != null and map.hdlx != ''"> and hd.hdlx = #{map.hdlx} </if>
+		  		  <if test="map.hdjj != null and map.hdjj != ''"> and hd.hdjj = #{map.hdjj} </if>
+		  		  <if test="map.hdgz != null and map.hdgz != ''"> and hd.hdgz = #{map.hdgz} </if>
+		  		  <if test="map.hdkssj != null and map.hdkssj != ''"> and hd.hdkssj = #{map.hdkssj} </if>
+		  		  <if test="map.hdssj != null and map.hdssj != ''"> and hd.hdssj = #{map.hdssj} </if>
+		  		  <if test="map.hdzt != null and map.hdzt != ''"> and hd.hdzt = #{map.hdzt} </if>
+		  		  <if test="map.cjsj != null and map.cjsj != ''"> and hd.cjsj = #{map.cjsj} </if>
+		  		</where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
                 order by ${map.sort} ${map.order}
             </when>
-            <otherwise>
+			<otherwise>
                 order by id desc
-            </otherwise>
+			</otherwise>
         </choose>
-    </select>
+	</select>
+	<select id="listHdBm" resultType="com.itts.technologytransactionservice.model.TJsHd">
+		SELECT	hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.bmrs
+		FROM
+		t_js_hd hd
+		LEFT JOIN (
+		SELECT
+		*
+		FROM
+		t_js_bm bm
+		GROUP BY
+		bm.hd_id,bm.id
+		) bms ON (bms.hd_id = hd.id)
+		<where>
+			hd.is_delete = 0
+			<if test="map.userId != null and map.userId != ''"> and bms.user_id = #{map.userId} </if>
+			<if test="map.id != null and map.id != ''"> and hd.id = #{map.id} </if>
+			<if test="map.name != null and map.name != ''"> and hd.hdmc = #{map.name} </if>
+			<if test="map.hdlx != null and map.hdlx != ''"> and hd.hdlx = #{map.hdlx} </if>
+			<if test="map.hdjj != null and map.hdjj != ''"> and hd.hdjj = #{map.hdjj} </if>
+			<if test="map.hdgz != null and map.hdgz != ''"> and hd.hdgz = #{map.hdgz} </if>
+			<if test="map.hdkssj != null and map.hdkssj != ''"> and hd.hdkssj = #{map.hdkssj} </if>
+			<if test="map.hdssj != null and map.hdssj != ''"> and hd.hdssj = #{map.hdssj} </if>
+			<if test="map.hdzt != null and map.hdzt != ''"> and hd.hdzt = #{map.hdzt} </if>
+			<if test="map.cjsj != null and map.cjsj != ''"> and hd.cjsj = #{map.cjsj} </if>
+		</where>
+		<choose>
+			<when test="map.sort != null and map.sort.trim() != ''">
+				order by ${map.sort} ${map.order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+	</select>
 
 </mapper>

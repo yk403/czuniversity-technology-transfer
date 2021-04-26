@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,38 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 	public PageInfo page(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
 		List<TJsHd> list = jsHdMapper.list(query);
+		PageInfo<TJsHd> page = new PageInfo<>(list);
+		return page;
+	}
+
+	@Override
+	public PageInfo pageFront1(Query query) {
+		PageHelper.startPage(query.getPageNum(), query.getPageSize());
+		List<TJsHd> list = jsHdMapper.list(query);
+		HashMap<String, Object> userMap = new HashMap<>();
+		//门户报名暂定为userId为2
+		userMap.put("userId",2);
+		List<TJsHd> list1 = jsHdMapper.listHdBm(userMap);
+		for (TJsHd item:list1) {
+			for (TJsHd item2:list) {
+				//判断是否已报过名，报过isBm为1，未报过为0
+				if(item.getId().equals(item2.getId())){
+					item2.setIsBm(1);
+				}else{
+					if(item2.getIsBm()!=null) {
+						if (item2.getIsBm() == 1) {
+
+						} else {
+							item2.setIsBm(0);
+						}
+					}else{
+						item2.setIsBm(0);
+					}
+
+				}
+
+			}
+		}
 		PageInfo<TJsHd> page = new PageInfo<>(list);
 		return page;
 	}

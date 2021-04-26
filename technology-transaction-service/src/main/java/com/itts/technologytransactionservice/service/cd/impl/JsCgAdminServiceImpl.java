@@ -1,11 +1,13 @@
 package com.itts.technologytransactionservice.service.cd.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
+import com.itts.technologytransactionservice.mapper.JsHdMapper;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsSh;
@@ -42,10 +44,11 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
 
     @Autowired
     private JsShMapper jsShMapper;
+    @Autowired
+    private JsHdMapper jsHdMapper;
 
     /**
      * 分页查询成果(后台管理)
-     *
      * @param params
      * @return
      */
@@ -74,14 +77,79 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     }
 
     /**
-     * 根据成果id删除成果信息及审核信息
+     * 成果上移下移 上移type为0 下移type为1
      *
+     * @param ids
+     * @return
+     */
+    @Override
+    public boolean cgmove(Integer id,Integer type) {
+        Integer index = 0;
+        //QueryWrapper<TJsCg> queryWrapper = new QueryWrapper<TJsCg>();
+        Map<String, Object> map=new HashMap<>();
+        //创建对象
+        TJsCg tJsCg = getById(id);
+        tJsCg.getSoft();
+        if(type == 0){
+            map.put("jshdId",tJsCg.getJshdId());
+            map.put("soft",tJsCg.getSoft()-1);
+            //queryWrapper.eq("jshd_id",tJsCg.getJshdId());
+            //queryWrapper.eq("soft",tJsCg.getSoft()-1);
+        }
+        if(type == 1){
+            map.put("jshdId",tJsCg.getJshdId());
+            map.put("soft",tJsCg.getSoft()+1);
+        }
+        List<TJsCg> jsCg = jsCgMapper.findJsCg(map);
+        index = jsCg.get(0).getSoft();
+        jsCg.get(0).setSoft(tJsCg.getSoft());
+        tJsCg.setSoft(index);
+        updateTJsCg(jsCg.get(0));
+        updateTJsCg(tJsCg);
+        return true;
+    }
+
+    //置顶置底
+    @Override
+    public boolean topBottom(Integer id, Integer type) {
+        List<TJsCg> tempList=new ArrayList<TJsCg>();
+        TJsCg byId = getById(id);
+        Integer soft=byId.getSoft();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("jshdId",byId.getJshdId());
+        queryMap.put("sort","soft");
+        queryMap.put("order","asc");
+        //按soft顺序查询出当前活动对应的所有成果
+        List<TJsCg> hdJsCg = jsCgMapper.findHdJsCg(queryMap);
+        //置顶
+        if (type == 0) {
+            for(int i=0;i<soft-1;i++){
+                hdJsCg.get(i).setSoft(hdJsCg.get(i).getSoft()+1);
+                tempList.add(hdJsCg.get(i));
+            }
+            byId.setSoft(0);
+            tempList.add(byId);
+        }
+        //置底
+        if (type == 1) {
+            for(int i=byId.getSoft();i<hdJsCg.size();i++){
+                hdJsCg.get(i).setSoft(hdJsCg.get(i).getSoft()-1);
+                tempList.add(hdJsCg.get(i));
+            }
+            byId.setSoft(hdJsCg.size());
+            tempList.add(byId);
+        }
+        return updateBatchById(tempList);
+    }
+
+    /**
+     * 根据成果id删除成果信息及审核信息
      * @param id
      * @return
      */
     @Override
     public boolean removeByCgId(Integer id) {
-        log.info("【技术交易 - 根据id:{}删除成果信息】", id);
+        log.info("【技术交易 - 根据id:{}删除成果信息】",id);
         TJsSh tJsSh = jsShMapper.selectByCgId(id);
         TJsCg tJsCg = new TJsCg();
         tJsCg.setId(id);
@@ -152,7 +220,6 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
 
     /**
      * 根据id批量发布成果
-     *
      * @param ids
      * @return
      */

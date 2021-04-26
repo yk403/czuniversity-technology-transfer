@@ -41,6 +41,17 @@ public class JsHdController extends BaseController {
         Query query = new Query(params);
         return ResponseUtil.success(jsHdService.page(query));
     }
+    /**
+     * 分页查询(前台交易大厅查询)
+     * @param params
+     * @return
+     */
+    @PostMapping("/pageFront1")
+    public ResponseUtil pageFront1(@RequestBody Map<String, Object> params) {
+        //查询列表数据
+        Query query = new Query(params);
+        return ResponseUtil.success(jsHdService.pageFront1(query));
+    }
 
     /**
      * 根据ID查询
