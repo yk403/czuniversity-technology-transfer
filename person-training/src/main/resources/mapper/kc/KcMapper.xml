@@ -7,7 +7,6 @@
         <id column="id" property="id" />
         <result column="lb" property="lb" />
         <result column="zsmk_id" property="zsmkId" />
-        <result column="zsmkmc" property="zsmkmc" />
         <result column="kcmc" property="kcmc" />
         <result column="kcdm" property="kcdm" />
         <result column="kclx" property="kclx" />
@@ -34,7 +33,7 @@
         select kc.id as id,txk.id as xyKcId,xy.id as xyId,xymc,lb,zsmk_id as zsmkId,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfbx,bz,sfxf,kc.cjsj,kc.cjr,kc.gxsj,kc.gxr
         from t_xy xy left join t_xy_kc txk on(xy.id=txk.xy_id) left join t_kc kc on(kc.id=txk.kc_id)
         <where>
-            <if test="xyId != null and xyId != ''"> xy.id = #{xyId} </if>
+            <if test="xyId != null"> xy.id = #{xyId} </if>
             <if test="kclx != null and kclx != ''"> and kc.kclx like #{kclx} </if>
             <if test="name != null and name != ''"> and kc.kcdm like #{name} </if>
             <if test="name != null and name != ''"> or kc.kcmc like #{name} </if>
