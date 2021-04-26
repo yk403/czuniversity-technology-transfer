@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -31,11 +33,13 @@ public class KcSz implements Serializable {
     /**
      * 课程ID
      */
+    @ApiModelProperty(value = "课程ID", required = true)
     private Long kcId;
 
     /**
      * 师资ID
      */
+    @ApiModelProperty(value = "师资ID", required = true)
     private Long szId;
 
 

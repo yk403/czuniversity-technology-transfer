@@ -26,11 +26,13 @@ public class KcDTO {
     /**
      * 师资ids
      */
+    @ApiModelProperty(value = "师资ids", required = true)
     private List<Long> szIds;
 
     /**
      * 学院课程id
      */
+    @ApiModelProperty(value = "学院课程id", required = true)
     private Long xyKcId;
 
     /**
