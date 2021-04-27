@@ -11,6 +11,8 @@ import com.itts.userservice.service.RegisterService;
 import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.RegisterYhVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,6 +31,7 @@ import java.util.List;
  */
 @RequestMapping(SystemConstant.BASE_URL)
 @RestController
+@Api(tags = "注册管理")
 public class RegisterController {
 
     @Autowired
@@ -48,6 +51,7 @@ public class RegisterController {
      * @author liuyingming
      */
     @PostMapping("/register/")
+    @ApiOperation(value = "用户注册")
     public ResponseUtil register(@RequestBody RegisterRequest request) {
 
         checkRegisterRequest(request);
