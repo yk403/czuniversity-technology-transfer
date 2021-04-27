@@ -5,6 +5,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.RedisConstant;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.JwtUtil;
 import com.itts.common.utils.common.ResponseUtil;
 import io.jsonwebtoken.Claims;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * @Description：
@@ -80,6 +82,10 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
         //验证当前用户token是否有效
         Object checkToken = redisTemplate.opsForValue().get(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + tokenArr[1]);
         if (checkToken == null) {
+            return null;
+        }
+
+        if(!Objects.equals(checkToken, tokenArr[0])){
             return null;
         }
 
