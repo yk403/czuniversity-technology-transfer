@@ -62,9 +62,12 @@ public enum ErrorCodeEnum {
     TEACHER_NUMBER_EXISTS_ERROR(-45001, "导师编号已存在!"),
     TEACHING_BUILDING_EXISTS_ERROR(-45002, "教学楼教室已存在!"),
     INSTITUTE_NAME_EXISTS_ERROR(-45003, "学院名称已存在!"),
-    INSTITUTE_NAME_ISEMPTY_ERROR(-45004, "学院名称不可为空!"),
-    COURSE_EXISTS_ERROR(-45005, "课程已存在!"),
-    TEACHER_ISEMPTY_ERROR(-450046, "授课老师不可为空!"),
+    COURSE_EXISTS_ERROR(-45004, "课程已存在!"),
+    DOMAIN_NAME_ISEMPTY_ERROR(-45005, "专业名称已存在!"),
+    INSTITUTE_NAME_ISEMPTY_ERROR(-45006, "学院名称不可为空!"),
+    TEACHER_ISEMPTY_ERROR(-45007, "授课老师不可为空!"),
+    NAME_ISEMPTY_ERROR(-45008, "名称不可为空!"),
+    INSTITUTE_ID_ISEMPTY_ERROR(-45009, "学院ID不可为空!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
