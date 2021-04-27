@@ -18,10 +18,7 @@ import java.util.Date;
  * @date 2021-02-22 09:16:14
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("t_js_cj_rc")
-public class TJsCjRc implements Serializable {
+public class TJsCjRcDto implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 主键id
@@ -73,4 +70,12 @@ public class TJsCjRc implements Serializable {
      * 删除状态(0:未删除;1:已删除)
      */
     private Integer isDelete;
+    /*
+    判断查询的是需求还是成果的出价记录0为需求2委成果
+     */
+    private Integer type;
+    /*
+    活动id
+     */
+    private Integer hdId;
 }

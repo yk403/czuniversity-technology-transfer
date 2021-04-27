@@ -21,5 +21,6 @@ public interface JsHdMapper extends BaseMapper<TJsHd> {
 	
 	List<TJsHd> list(@Param("map") Map map);
 	List<TJsHd> listHdBm(@Param("map") Map map);
+	List<TJsHd> listCount(@Param("map") Map map);
 
 }

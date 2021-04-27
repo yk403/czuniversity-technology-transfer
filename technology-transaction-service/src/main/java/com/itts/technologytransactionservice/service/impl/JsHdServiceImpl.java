@@ -52,7 +52,7 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 	@Override
 	public PageInfo page(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		List<TJsHd> list = jsHdMapper.list(query);
+		List<TJsHd> list = jsHdMapper.listCount(query);
 		PageInfo<TJsHd> page = new PageInfo<>(list);
 		return page;
 	}
@@ -60,11 +60,11 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 	@Override
 	public PageInfo pageFront1(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		List<TJsHd> list = jsHdMapper.list(query);
+		List<TJsHd> list = jsHdMapper.listCount(query);
 		HashMap<String, Object> userMap = new HashMap<>();
 		//门户报名暂定为userId为2
 		userMap.put("userId",2);
-		List<TJsHd> list1 = jsHdMapper.listHdBm(userMap);
+		List<TJsHd> list1 = jsHdMapper.listCount(userMap);
 		for (TJsHd item:list1) {
 			for (TJsHd item2:list) {
 				//判断是否已报过名，报过isBm为1，未报过为0

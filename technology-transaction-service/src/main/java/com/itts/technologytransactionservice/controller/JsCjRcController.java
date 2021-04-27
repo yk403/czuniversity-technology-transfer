@@ -1,22 +1,27 @@
 package com.itts.technologytransactionservice.controller;
 
 
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.controller.test.bid.BidController;
+import com.itts.technologytransactionservice.mapper.JsBmMapper;
 import com.itts.technologytransactionservice.model.TJsBm;
 import com.itts.technologytransactionservice.model.TJsCjRc;
+import com.itts.technologytransactionservice.model.TJsCjRcDto;
 import com.itts.technologytransactionservice.service.JsBmService;
 import com.itts.technologytransactionservice.service.JsCjRcService;
 import io.swagger.annotations.Api;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +38,6 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
 @Api(value = "JsCjRcController", tags = "受让方出价记录表")
 @RestController
 public class JsCjRcController extends BaseController {
-
     @Autowired
     private BidController bidController;
     @Autowired
@@ -71,11 +75,15 @@ public class JsCjRcController extends BaseController {
      * 保存
      */
     @PostMapping("/save")
-    public R save(@RequestBody TJsCjRc tJsCjRc) throws IOException {
-        tJsCjRc.setJjsj(new Date());
-        boolean saveflag = jsCjRcService.save(tJsCjRc);
-        bidController.onMessage("保存成功，调用刷新页面方法");
-        return save(saveflag);
+    public ResponseUtil save(@RequestBody TJsCjRcDto tJsCjRcDto) throws IOException {
+        if(jsCjRcService.saveCjRc(tJsCjRcDto)){
+            bidController.onMessage("保存成功，调用刷新页面方法");
+            return ResponseUtil.success("保存成功");
+        }else{
+            return ResponseUtil.error(400,"错误");
+        }
+
+
     }
 
     /**

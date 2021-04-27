@@ -37,6 +37,7 @@ public class JsHdController extends BaseController {
      */
     @PostMapping("/page")
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
+
         //查询列表数据
         Query query = new Query(params);
         return ResponseUtil.success(jsHdService.page(query));
@@ -69,6 +70,7 @@ public class JsHdController extends BaseController {
      */
     @PostMapping("/save")
     public R save(@RequestBody TJsHd tJsHd) {
+
         return save(jsHdService.save(tJsHd));
     }
 

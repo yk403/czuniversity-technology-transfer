@@ -56,7 +56,7 @@ public class TJsHd implements Serializable {
  	* 活动结束时间
  	*/
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-	private Date hdssj;
+	private Date hdjssj;
 	/**
  	* 活动状态
  	*/
@@ -80,6 +80,14 @@ public class TJsHd implements Serializable {
 	 */
 	private String hdnr;
 	/**
+	 * 活动方式(0:自动;1手动)
+	 */
+	private Integer hdfs;
+	/**
+	 * 活动图片
+	 */
+	private String hdtp;
+	/**
 	 * 活动发布状态
 	 */
 	private Integer hdfbzt;
@@ -97,8 +105,8 @@ public class TJsHd implements Serializable {
 	@TableField(value = "gxsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date gxsj;
-	/**
-	 * 能否报名
+	/*
+	是否报名
 	 */
 	private Integer isBm;
 }
