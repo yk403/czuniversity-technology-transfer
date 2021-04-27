@@ -77,6 +77,10 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
         String token = request.getHeader(SystemConstant.TOKEN_PREFIX);
 
+        if(StringUtils.isBlank(token)){
+            return null;
+        }
+
         String[] tokenArr = token.split("&");
 
         //验证当前用户token是否有效
