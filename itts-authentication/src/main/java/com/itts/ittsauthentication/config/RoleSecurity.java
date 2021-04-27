@@ -30,7 +30,7 @@ public class RoleSecurity {
 
         String token = request.getHeader(SystemConstant.TOKEN_PREFIX);
 
-        String[] tokenArr = token.split("_");
+        String[] tokenArr = token.split("&");
 
         //验证当前用户token是否有效
         Object checkToken = redisTemplate.opsForValue().get(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + tokenArr[1]);

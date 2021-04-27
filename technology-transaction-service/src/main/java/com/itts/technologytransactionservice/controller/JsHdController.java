@@ -37,9 +37,21 @@ public class JsHdController extends BaseController {
      */
     @PostMapping("/page")
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
+
         //查询列表数据
         Query query = new Query(params);
         return ResponseUtil.success(jsHdService.page(query));
+    }
+    /**
+     * 分页查询(前台交易大厅查询)
+     * @param params
+     * @return
+     */
+    @PostMapping("/pageFront1")
+    public ResponseUtil pageFront1(@RequestBody Map<String, Object> params) {
+        //查询列表数据
+        Query query = new Query(params);
+        return ResponseUtil.success(jsHdService.pageFront1(query));
     }
 
     /**
@@ -58,6 +70,7 @@ public class JsHdController extends BaseController {
      */
     @PostMapping("/save")
     public R save(@RequestBody TJsHd tJsHd) {
+
         return save(jsHdService.save(tJsHd));
     }
 

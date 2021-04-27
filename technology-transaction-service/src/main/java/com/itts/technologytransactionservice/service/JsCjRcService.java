@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.TJsBm;
 import com.itts.technologytransactionservice.model.TJsCjRc;
+import com.itts.technologytransactionservice.model.TJsCjRcDto;
 
 import java.util.List;
 
@@ -20,5 +21,6 @@ public interface JsCjRcService extends IService<TJsCjRc> {
 
 	PageInfo page(Query query);
 	boolean removeByIdCjRc(String id);
+	boolean saveCjRc(TJsCjRcDto tJsCjRcDto);
 
 }

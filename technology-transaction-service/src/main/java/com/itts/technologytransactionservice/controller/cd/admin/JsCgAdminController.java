@@ -137,5 +137,25 @@ public class JsCgAdminController extends BaseController {
     public R removeBatch(@RequestBody List<String> ids) {
         return remove(jsCgAdminService.removeByIdsCg(ids));
     }
+    /**
+     * 成果上移下移
+     * @param ids
+     * @return
+     */
+    @GetMapping("/cgmove")
+    public ResponseUtil cgmove(@RequestParam(value = "id") Integer id,@RequestParam(value = "type") Integer type){
 
+        jsCgAdminService.cgmove(id,type);
+        return ResponseUtil.success("成果移动成功!");
+    }
+    /**
+     * 成果置顶置底 置顶ype为0 置底type为1
+     * @param ids
+     * @return
+     */
+    @GetMapping("/topBottom")
+    public ResponseUtil topBottom(@RequestParam(value = "id") Integer id,@RequestParam(value = "type") Integer type){
+        jsCgAdminService.topBottom(id,type);
+        return ResponseUtil.success("成果置顶置底成功!");
+    }
 }

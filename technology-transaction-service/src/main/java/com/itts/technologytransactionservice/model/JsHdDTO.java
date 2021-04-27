@@ -48,7 +48,7 @@ public class JsHdDTO {
      * 活动结束时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date hdssj;
+    private Date hdjssj;
     /**
      * 活动状态
      */
@@ -80,4 +80,16 @@ public class JsHdDTO {
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date gxsj;
+    /**
+     * 活动方式
+     */
+    private Integer hdfs;
+    /**
+     * 活动图片
+     */
+    private Integer hdtp;
+    /*
+是否报名
+ */
+    private Integer isBm;
 }

@@ -17,7 +17,8 @@ import java.util.List;
  */
 public interface JsHdService extends IService<TJsHd> {
 
-    PageInfo page(Query query);
+	PageInfo page(Query query);
+    PageInfo pageFront1(Query query);
 
     boolean add(JsHdDTO jsHdDTO);
 

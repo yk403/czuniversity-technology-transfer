@@ -24,7 +24,6 @@ public interface JsCdGlMapper extends BaseMapper<JsCdGl> {
     @Select("SELECT cd.id, cd.cdmc, cd.cdbm FROM t_cd cd " +
             "JOIN t_js_cd_gl jcg ON cd.id = jcg.cd_id " +
             "WHERE cd.sfsc = false " +
-            "  AND jcg.sfsc = false " +
             "  AND jcg.js_id = #{jsId}")
     List<GetJsCdGlVO> getJsCdGlByJsId(@Param("jsId") Long jsId);
 }
