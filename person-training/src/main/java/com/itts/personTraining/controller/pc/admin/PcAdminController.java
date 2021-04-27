@@ -49,7 +49,7 @@ public class PcAdminController {
         return ResponseUtil.success(pc);
     }
 
-    @GetMapping("/add/")
+    @PostMapping("/add/")
     @ApiOperation(value = "新增")
     public ResponseUtil add(@RequestBody Pc pc)throws WebException{
         checkRequset(pc);
