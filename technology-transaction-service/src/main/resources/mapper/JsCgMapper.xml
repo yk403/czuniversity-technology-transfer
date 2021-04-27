@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsCgMapper">
 
 	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select `id`,`agreement`,`cgspmc`,`cgfj`,`cgfjmc`,`agreementName`,`cgqsr`,`zzjgdm`,`qsrlxdh`,`cgmc`,`gjc`,`cgwcsj`,`zzqk`,`ly_id`,`cghqfs`,`jscsd`,`hjqk`,`hzjg`,`hzfs`,`dwmc`,`dz`,`fr`,`contracts`,`zj`,`dzyx`,`zscqxs`,`cgjs`,`jszb`,`syfx`,`cgtp`,`cgsp`,`bz`,`jshd_id`,`soft`,`cjjg` from t_js_cg a
+		select `id`,`agreement`,`cgspmc`,`cgfj`,`cgfjmc`,`agreement_name`,`cgqsr`,`zzjgdm`,`qsrlxdh`,`cgmc`,`gjc`,`cgwcsj`,`zzqk`,`ly_id`,`cghqfs`,`jscsd`,`hjqk`,`hzjg`,`hzfs`,`dwmc`,`dz`,`fr`,`contracts`,`zj`,`dzyx`,`zscqxs`,`cgjs`,`jszb`,`syfx`,`cgtp`,`cgsp`,`bz`,`jshd_id`,`soft`,`cjjg`,`auction_status` from t_js_cg a
         <where>
           a.is_delete = 0
 		  		  <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
@@ -16,6 +16,7 @@
 		  		  <if test="map.cgwcsj != null and map.cgwcsj != ''"> and cgwcsj = #{map.cgwcsj} </if>
 		  		  <if test="map.zzqk != null and map.zzqk != ''"> and zzqk = #{map.zzqk} </if>
 		  		  <if test="map.lyId != null and map.lyId != ''"> and ly_id = #{map.lyId} </if>
+					<if test="map.auctionStatus != null and map.auctionStatus != ''"> and auction_status = #{map.auctionStatus} </if>
 		  		  <if test="map.cghqfs != null and map.cghqfs != ''"> and cghqfs = #{map.cghqfs} </if>
 		  		  <if test="map.jscsd != null and map.jscsd != ''"> and jscsd = #{map.jscsd} </if>
 		  		  <if test="map.hjqk != null and map.hjqk != ''"> and hjqk = #{map.hjqk} </if>
@@ -50,7 +51,7 @@
 	</select>
 
 	<select id="findJsCgFront" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,cgspmc,cgfj,cgfjmc,cgqsr,agreement,agreementName,zzjgdm,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz,cjjg
+		select cg.id as id,cgspmc,cgfj,cgfjmc,cgqsr,agreement,agreement_name,zzjgdm,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz,cjjg,auction_status
 		from t_js_cg cg left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lb d on(cg.lb_id=d.id) left join t_js_hd hd on(cg.jshd_id=hd.id)
 		<where>
 			cg.is_delete = 0
@@ -58,6 +59,7 @@
 			<if test="map.type == 0"> and sh.fbshzt != 2 </if>
 			<if test="map.type == 1"> and sh.fbshzt = 2 and sh.assistance_status != 2 </if>
 			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
+			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and cg.auction_status = #{map.auctionStatus} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
 			<if test="map.cjjg != null and map.cjjg != ''"> and cg.cjjg = #{map.cjjg} </if>
@@ -83,12 +85,13 @@
 </select>
 
 	<select id="findJsCg" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,cgspmc,cgfj,cgfjmc,user_id,agreement,agreementName,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,lb.mc as lbName,sh.fbshbz,sh.slxbbz as slxbbz,cg.soft,cjjg
+		select cg.id as id,cgspmc,cgfj,cgfjmc,user_id,agreement,agreement_name,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,lb.mc as lbName,sh.fbshbz,sh.slxbbz as slxbbz,cg.soft,cjjg,auction_status
 		from t_js_cg cg left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lb lb on(cg.lb_id=lb.id)
 		<where>
 			cg.is_delete != 2
 			<if test="map.type == 1"> and cg.user_id = #{map.userId} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
+			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and cg.auction_status = #{map.auctionStatus} </if>
 			<if test="map.soft != null and map.soft != ''"> and cg.soft  = #{map.soft} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
@@ -114,6 +117,35 @@
 			</otherwise>
 		</choose>
 	</select>
+	<select id="findHdJsCg" resultType="com.itts.technologytransactionservice.model.TJsCg">
+		select cg.id as id,cgspmc,cgfj,cgfjmc,user_id,agreement,agreement_name,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,cg.cjsj,cg.sjhm,cg.soft,cjjg,auction_status
+		from t_js_cg cg left join t_js_hd hd on (cg.jshd_id = hd.id)
+		<where>
+			cg.is_delete != 2
+			<if test="map.jshdId != null and map.jshdId != ''"> and cg.jshd_id  = #{map.jshdId} </if>
+			<if test="map.type == 1"> and cg.user_id = #{map.userId} </if>
+			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
+			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and cg.auction_status = #{map.auctionStatus} </if>
+			<if test="map.soft != null and map.soft != ''"> and cg.soft  = #{map.soft} </if>
+			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
+			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
+			<if test="map.cjjg != null and map.cjjg != ''"> and cg.cjjg = #{map.cjjg} </if>
+			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',#{map.cgmc},'%') </if>
+			<if test="map.cgspmc != null and map.cgspmc != ''"> and cg.cgspmc = concat('%',#{map.cgspmc},'%') </if>
+			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>
+			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
+			<if test="map.type == 0"> and cg.user_id != #{map.userId} </if>
+			<if test="map.jshdId != null and map.jshdId != ''"> and cg.jshd_id = #{map.jshdId} </if>
+		</where>
+		<choose>
+			<when test="map.sort != null and map.sort.trim() != ''">
+				order by ${map.sort} ${map.order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+	</select>
 
 	<update id="updateTJsCg">
 		update t_js_cg
@@ -125,6 +157,7 @@
 			<if test="cgwcsj != null">cgwcsj = #{cgwcsj},</if>
 			<if test="zzqk != null">zzqk = #{zzqk},</if>
 			<if test="lyId != null">ly_id = #{lyId},</if>
+			<if test="auctionStatus != null">auction_status = #{auctionStatus},</if>
 			<if test="lbId != null">lb_id = #{lbId},</if>
 			<if test="cghqfs != null">cghqfs = #{cghqfs},</if>
 			<if test="jscsd != null">jscsd = #{jscsd},</if>
@@ -152,9 +185,10 @@
 			<if test="sjhm != null">sjhm = #{sjhm},</if>
 			<if test="dz != null">dz = #{dz},</if>
 			<if test="agreement != null">agreement = #{agreement},</if>
-			<if test="agreementName != null">agreementName = #{agreementName},</if>
+			<if test="agreementName != null">agreement_name = #{agreementName},</if>
 			<if test="cjsj != null">cjsj = #{cjsj},</if>
 			<if test="soft != null">soft = #{soft},</if>
+			<if test="auctionStatus != null">auction_status = #{auctionStatus},</if>
 			<if test="cjjg != null">cjjg = #{cjjg},</if>
 			<if test="gxsj != null">gxsj = #{gxsj}</if>
 		</set>

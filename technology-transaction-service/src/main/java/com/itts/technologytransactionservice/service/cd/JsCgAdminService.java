@@ -16,21 +16,24 @@ import java.util.Map;
  */
 public interface JsCgAdminService extends IService<TJsCg> {
 
-    PageInfo findJsCg(Map<String, Object> params);
+	PageInfo findJsCg(Map<String, Object> params);
 
-    TJsCg selectByName(String name);
+	TJsCg selectByName(String name);
 
-    boolean saveCg(TJsCg tJsCg);
+	boolean saveCg(TJsCg tJsCg);
 
-    boolean issueBatch(List<Integer> ids);
+	boolean issueBatch(List<Integer> ids);
 
     void updateTJsCg(TJsCg tJsCg);
 
-    boolean removeByCgId(Integer id);
+	boolean removeByCgId(Integer id);
 
-    boolean assistanceIssueBatch(List<Integer> ids);
+	boolean assistanceIssueBatch(List<Integer> ids);
 
-    boolean removeByIdsCg(List<String> ids);
+	boolean removeByIdsCg(List<String> ids);
 
-    TJsCg getById(Integer id);
+	TJsCg getById(Integer id);
+	boolean cgmove(Integer id,Integer bottom);
+
+	boolean topBottom(Integer id,Integer bottom);
 }

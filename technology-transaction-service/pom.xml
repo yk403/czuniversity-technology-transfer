@@ -23,16 +23,16 @@
     <dependencies>
 
         <!-- 通用模块 -->
-<!--        <dependency>
+        <dependency>
             <groupId>com.itts</groupId>
             <artifactId>cz-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>-->
-        <dependency>
+        </dependency>
+<!--        <dependency>
             <groupId>com.itts</groupId>
             <artifactId>itts-authentication</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
 
         <!-- mail -->
         <dependency>

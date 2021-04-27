@@ -249,5 +249,9 @@ public class TJsCg implements Serializable {
 	 * 成交价格
 	 */
 	private String cjjg;
+	/**
+	 * 招拍挂拍卖状态
+	 */
+	private Integer auctionStatus;
 
 }

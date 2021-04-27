@@ -257,5 +257,9 @@ public class TJsXq implements Serializable {
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date ysrq;
+	/**
+	 * 招拍挂拍卖状态
+	 */
+	private Integer auctionStatus;
 
 }
