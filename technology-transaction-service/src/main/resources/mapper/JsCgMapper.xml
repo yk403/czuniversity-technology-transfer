@@ -16,7 +16,7 @@
 		  		  <if test="map.cgwcsj != null and map.cgwcsj != ''"> and cgwcsj = #{map.cgwcsj} </if>
 		  		  <if test="map.zzqk != null and map.zzqk != ''"> and zzqk = #{map.zzqk} </if>
 		  		  <if test="map.lyId != null and map.lyId != ''"> and ly_id = #{map.lyId} </if>
-					<if test="map.auctionStatus != null and map.auctionStatus != ''"> and auction_status = #{map.auctionStatus} </if>
+					<if test="map.auctionStatus != null"> and auction_status = #{map.auctionStatus} </if>
 		  		  <if test="map.cghqfs != null and map.cghqfs != ''"> and cghqfs = #{map.cghqfs} </if>
 		  		  <if test="map.jscsd != null and map.jscsd != ''"> and jscsd = #{map.jscsd} </if>
 		  		  <if test="map.hjqk != null and map.hjqk != ''"> and hjqk = #{map.hjqk} </if>
@@ -59,7 +59,7 @@
 			<if test="map.type == 0"> and sh.fbshzt != 2 </if>
 			<if test="map.type == 1"> and sh.fbshzt = 2 and sh.assistance_status != 2 </if>
 			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
-			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and cg.auction_status = #{map.auctionStatus} </if>
+			<if test="map.auctionStatus != null"> and cg.auction_status = #{map.auctionStatus} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
 			<if test="map.cjjg != null and map.cjjg != ''"> and cg.cjjg = #{map.cjjg} </if>
@@ -91,7 +91,7 @@
 			cg.is_delete != 2
 			<if test="map.type == 1"> and cg.user_id = #{map.userId} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
-			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and cg.auction_status = #{map.auctionStatus} </if>
+			<if test="map.auctionStatus != null"> and cg.auction_status = #{map.auctionStatus} </if>
 			<if test="map.soft != null and map.soft != ''"> and cg.soft  = #{map.soft} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
@@ -125,7 +125,7 @@
 			<if test="map.jshdId != null and map.jshdId != ''"> and cg.jshd_id  = #{map.jshdId} </if>
 			<if test="map.type == 1"> and cg.user_id = #{map.userId} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
-			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and cg.auction_status = #{map.auctionStatus} </if>
+			<if test="map.auctionStatus != null"> and cg.auction_status = #{map.auctionStatus} </if>
 			<if test="map.soft != null and map.soft != ''"> and cg.soft  = #{map.soft} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>

@@ -34,8 +34,8 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
 	@Override
 	public PageInfo page(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		List<TJsCjRc> list = jsCjRcMapper.list(query);
-		PageInfo<TJsCjRc> page = new PageInfo<>(list);
+		List<TJsCjRcDto> list = jsCjRcMapper.listRcHd(query);
+		PageInfo<TJsCjRcDto> page = new PageInfo<>(list);
 		return page;
 	}
 
@@ -57,7 +57,6 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
 
     @Override
     public boolean saveCjRc(TJsCjRcDto tJsCjRcDto) {
-        tJsCjRcDto.setJjsj(new Date());
         Map<String,Object> map=new HashMap<>();
         map.put("hdId",tJsCjRcDto.getHdId());
         map.put("userId",2);
@@ -66,6 +65,7 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
         BeanUtils.copyProperties(tJsCjRcDto,tJsCjRc);
         if(list.size()==1){
             tJsCjRc.setBmId(list.get(0).getId());
+            tJsCjRc.setCjf(list.get(0).getDwmc());
         }
         return save(tJsCjRc);
     }

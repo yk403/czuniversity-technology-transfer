@@ -3,6 +3,7 @@ package com.itts.technologytransactionservice.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.technologytransactionservice.model.TJsBm;
 import com.itts.technologytransactionservice.model.TJsCjRc;
+import com.itts.technologytransactionservice.model.TJsCjRcDto;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,5 +20,5 @@ import java.util.Map;
 public interface JsCjRcMapper extends BaseMapper<TJsCjRc> {
 	
 	List<TJsCjRc> list(@Param("map") Map map);
-
+	List<TJsCjRcDto> listRcHd(@Param("map") Map map);
 }

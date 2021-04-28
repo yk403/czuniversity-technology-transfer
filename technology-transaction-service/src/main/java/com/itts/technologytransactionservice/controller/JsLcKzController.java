@@ -4,6 +4,7 @@ package com.itts.technologytransactionservice.controller;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.technologytransactionservice.controller.test.bid.BidController;
 import com.itts.technologytransactionservice.model.TJsCjRc;
 import com.itts.technologytransactionservice.model.TJsLcKz;
 import com.itts.technologytransactionservice.service.JsCjRcService;
@@ -12,6 +13,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Map;
 
@@ -28,7 +30,8 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
 @Api(value = "JsLcKzController", tags = "活动流程控制")
 @RestController
 public class JsLcKzController extends BaseController {
-
+    @Autowired
+    private BidController bidController;
     @Autowired
     private JsLcKzService jsLcKzService;
 
@@ -58,16 +61,26 @@ public class JsLcKzController extends BaseController {
      * 保存
      */
     @PostMapping("/save")
-    public R save(@RequestBody TJsLcKz tJsLcKz) {
-        return save(jsLcKzService.save(tJsLcKz));
+    public R save(@RequestBody TJsLcKz tJsLcKz) throws IOException {
+        if(jsLcKzService.save(tJsLcKz)){
+            bidController.onMessage("保存成功，调用刷新活动流程控制状态方法");
+            return save(true);
+        }else{
+            return save(false);
+        }
     }
 
     /**
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody TJsLcKz tJsLcKz) {
-        return update(jsLcKzService.updateById(tJsLcKz));
+    public R update(@RequestBody TJsLcKz tJsLcKz) throws IOException {
+        if (jsLcKzService.updateById(tJsLcKz)){
+            bidController.onMessage("保存成功，调用刷新活动流程控制状态方法");
+            return update(true);
+        }else{
+            return update(false);
+        }
     }
 
     /**

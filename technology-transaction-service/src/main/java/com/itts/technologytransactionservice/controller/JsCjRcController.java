@@ -47,7 +47,7 @@ public class JsCjRcController extends BaseController {
     *websocket监听程序
      */
     private void listenData() throws WebException, IOException {
-        bidController.sendMessage("刷新页面");
+        bidController.sendMessage("刷新出价记录页面");
     }
     /**
     * 分页查询
@@ -72,17 +72,38 @@ public class JsCjRcController extends BaseController {
     }
 
     /**
-     * 保存
+     * 保存(叫价)
      */
     @PostMapping("/save")
     public ResponseUtil save(@RequestBody TJsCjRcDto tJsCjRcDto) throws IOException {
-        if(jsCjRcService.saveCjRc(tJsCjRcDto)){
-            bidController.onMessage("保存成功，调用刷新页面方法");
-            return ResponseUtil.success("保存成功");
-        }else{
-            return ResponseUtil.error(400,"错误");
+        //判断当前时间是否在活动开始时间和结束时间之间，判断成功才可以保存
+        //采用转换时间戳方式比较大小
+        if (tJsCjRcDto.getHdkssj() != null && tJsCjRcDto.getHdkssj() != null) {
+            Date nowDate = new Date();
+            long now = new Date().getTime();
+            long startTime = tJsCjRcDto.getHdkssj().getTime();
+            long endTime = tJsCjRcDto.getHdjssj().getTime();
+            if (startTime < now && now < endTime) {
+                tJsCjRcDto.setJjsj(nowDate);
+                if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
+                    bidController.onMessage("叫价成功，调用刷新出价记录方法");
+                    return ResponseUtil.success("叫价成功");
+                } else {
+                    return ResponseUtil.error(400, "叫价错误");
+                }
+            } else {
+                return ResponseUtil.error(400, "叫价超时");
+            }
         }
-
+        //暂定可以不传时间，等前端完成后注掉
+        Date nowDate = new Date();
+        tJsCjRcDto.setJjsj(nowDate);
+        if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
+            bidController.onMessage("叫价成功，调用刷新出价记录方法");
+            return ResponseUtil.success("叫价成功");
+        } else {
+            return ResponseUtil.error(400, "叫价错误");
+        }
 
     }
 

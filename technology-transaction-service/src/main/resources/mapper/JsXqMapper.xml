@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsXqMapper">
 
 	<select id="findJsXq" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.indes,cjjg,auction_status
+		select xq.id as id,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id)
 		<where>
 		<!--后台能查询0或者1的数据 -->
@@ -12,7 +12,7 @@
 			<if test="map.type == 1"> and xq.user_id = #{map.userId} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and xq.auction_status = #{map.auctionStatus} </if>
-			<if test="map.indes != null and map.indes != ''"> and xq.indes = #{map.indes} </if>
+			<if test="map.soft != null and map.soft != ''"> and xq.soft = #{map.soft} </if>
 			<if test="map.cjjg != null and map.cjjg != ''"> and xq.cjjg = #{map.cjjg} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
 			<if test="map.jshdId != null and map.jshdId != ''"> and xq.jshd_id = #{map.jshdId} </if>
@@ -160,7 +160,7 @@
 			<if test="bond != null">bond = #{bond},</if>
 			<if test="introduction != null">introduction = #{introduction},</if>
 			<if test="remarks != null">remarks = #{remarks},</if>
-			<if test="indes != null">indes = #{indes},</if>
+			<if test="soft != null">soft = #{soft},</if>
 			<if test="cjjg != null">cjjg = #{cjjg},</if>
 			<if test="auctionStatus != null">auction_status = #{auctionStatus},</if>
 			<if test="cjsj != null">cjsj = #{cjsj},</if>
