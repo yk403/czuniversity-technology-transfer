@@ -3,6 +3,8 @@ package com.itts.personTraining.service.sz.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.mapper.sz.SzMapper;
@@ -19,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+
 /**
  * <p>
  * 师资表 服务实现类
@@ -29,7 +34,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzService {
 
     @Resource
@@ -85,6 +90,9 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         if (szMapper.selectById(sz.getId()) != null) {
             return false;
         }
+        Long userId = getUserId();
+        sz.setCjr(userId);
+        sz.setGxr(userId);
         return szService.save(sz);
     }
 
@@ -96,6 +104,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
     @Override
     public boolean update(Sz sz) {
         log.info("【人才培养 - 更新学员:{}】",sz);
+        sz.setGxr(getUserId());
         return szService.updateById(sz);
     }
 
@@ -126,4 +135,18 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         return szMapper.selectOne(szQueryWrapper);
     }
 
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    private Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
+    }
 }

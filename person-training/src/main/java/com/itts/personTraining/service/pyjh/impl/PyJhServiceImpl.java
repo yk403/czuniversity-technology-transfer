@@ -3,6 +3,8 @@ package com.itts.personTraining.service.pyjh.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pyjh.PyJh;
 import com.itts.personTraining.mapper.pyjh.PyJhMapper;
@@ -16,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 /**
  * <p>
@@ -81,6 +86,9 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     @Override
     public boolean add(PyJh pyJh) {
         log.info("【人才培养 - 新增培养计划:{}】",pyJh);
+        Long userId = getUserId();
+        pyJh.setCjr(userId);
+        pyJh.setGxr(userId);
         return pyJhService.save(pyJh);
     }
 
@@ -92,6 +100,8 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     @Override
     public boolean update(PyJh pyJh) {
         log.info("【人才培养 - 更新培养计划:{}】",pyJh);
+        Long userId = getUserId();
+        pyJh.setGxr(userId);
         return pyJhService.updateById(pyJh);
     }
 
@@ -117,10 +127,26 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     public boolean issueBatch(List<Long> ids) {
         log.info("【人才培养 - 培养计划批量下发,ids:{}】",ids);
         List<PyJh> pyJhs = pyJhMapper.selectBatchIds(ids);
+        Long userId = getUserId();
         for (PyJh pyJh : pyJhs) {
             pyJh.setSfxf(true);
+            pyJh.setGxr(userId);
         }
         return pyJhService.updateBatchById(pyJhs);
     }
 
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    private Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
+    }
 }

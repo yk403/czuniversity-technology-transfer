@@ -15,7 +15,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,7 +48,7 @@ public class PcAdminController {
         return ResponseUtil.success(pc);
     }
 
-    @PostMapping("/add/")
+    @PostMapping("/add")
     @ApiOperation(value = "新增")
     public ResponseUtil add(@RequestBody Pc pc)throws WebException{
         checkRequset(pc);
@@ -57,7 +56,7 @@ public class PcAdminController {
         return ResponseUtil.success(add);
     }
     @ApiOperation(value = "更新")
-    @PutMapping("/update/{id}")
+    @PutMapping("/update")
     public ResponseUtil update(@RequestBody Pc pc)throws WebException{
         checkRequset(pc);
         Pc old = pcService.get(pc.getId());

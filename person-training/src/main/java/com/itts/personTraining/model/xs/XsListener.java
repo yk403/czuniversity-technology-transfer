@@ -30,6 +30,7 @@ import java.util.Date;
 public class XsListener extends AnalysisEventListener<XsDTO> {
     private StringBuilder result=new StringBuilder();
     private Integer count=0;
+    private Long pcId;
     @Resource
     private XsMapper xsMapper;
     @Autowired
@@ -206,6 +207,9 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         }
         if(!StringUtils.isBlank(data.getJyxs())){
             xs.setJyxs(data.getJyxs());
+        }
+        if(pcId != null){
+            xs.setPcId(pcId);
         }
         save(xs);
     }

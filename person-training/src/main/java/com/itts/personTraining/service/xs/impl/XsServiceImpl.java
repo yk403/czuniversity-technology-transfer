@@ -3,6 +3,8 @@ package com.itts.personTraining.service.xs.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.mapper.xs.XsMapper;
@@ -16,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 /**
  * <p>
@@ -82,6 +87,9 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         if (xsMapper.selectById(xs.getId()) != null) {
             return false;
         }
+        Long userId = getUserId();
+        xs.setCjr(userId);
+        xs.setGxr(userId);
         return xsService.save(xs);
     }
 
@@ -93,6 +101,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     @Override
     public boolean update(Xs xs) {
         log.info("【人才培养 - 更新学员:{}】",xs);
+        Long userId = getUserId();
+        xs.setGxr(userId);
         return xsService.updateById(xs);
     }
 
@@ -121,5 +131,20 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         xsQueryWrapper.eq("sfsc",false)
                 .eq("xh",xh);
         return xsMapper.selectOne(xsQueryWrapper);
+    }
+
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    private Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
     }
 }
