@@ -32,7 +32,7 @@
         from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_kc kc on(pk.kc_id=kc.id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id)
         <where>
             pk.sfsc = false
-            <if test="id != null"> pk.id = #{id} </if>
+            <if test="id != null"> and pk.id = #{id} </if>
         </where>
     </select>
 
@@ -41,7 +41,7 @@
         from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_kc kc on(pk.kc_id=kc.id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id)
         <where>
             pk.sfsc = false
-            <if test="pcId != null"> pc.id = #{pcId} </if>
+            <if test="pcId != null"> and pc.id = #{pcId} </if>
         </where>
         order by pk.id desc
     </select>

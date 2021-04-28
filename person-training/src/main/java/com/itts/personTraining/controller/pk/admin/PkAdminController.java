@@ -53,7 +53,7 @@ public class PkAdminController {
      * @return
      */
     @GetMapping("/get/{id}")
-    @ApiOperation(value = "获取详情")
+    @ApiOperation(value = "根据id查询排课详情")
     public ResponseUtil get(@PathVariable("id") Long id) {
         return ResponseUtil.success(pkService.get(id));
     }
