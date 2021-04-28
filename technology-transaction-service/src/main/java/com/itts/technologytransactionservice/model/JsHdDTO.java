@@ -42,12 +42,12 @@ public class JsHdDTO {
     /**
      * 活动开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date hdkssj;
     /**
      * 活动结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date hdjssj;
     /**
      * 活动状态
@@ -80,6 +80,11 @@ public class JsHdDTO {
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date gxsj;
+    /**
+     * 活动当前时间(前端倒计时校准时间用)
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date hddqsj;
     /**
      * 活动方式
      */

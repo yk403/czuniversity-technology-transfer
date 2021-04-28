@@ -18,10 +18,7 @@ import java.util.Date;
  * @date 2021-02-22 09:16:14
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("t_js_lc_kz")
-public class TJsLcKz implements Serializable {
+public class TJsLcKzDto implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 主键id
@@ -77,4 +74,12 @@ public class TJsLcKz implements Serializable {
      * 删除状态(0:未删除;1:已删除)
      */
     private Integer isDelete;
+    /**
+     * 更新技术商品(成果需求)的拍卖状态(0：即将开始，1：进行中，2：已完成，3：流拍)
+     */
+    private Integer auctionStatus;
+    /**
+     * 判断关联的技术商品类型是需求还是成果
+     */
+    private Integer type;
 }
