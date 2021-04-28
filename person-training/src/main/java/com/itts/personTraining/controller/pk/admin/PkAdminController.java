@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 
@@ -74,6 +76,26 @@ public class PkAdminController {
     }
 
     /**
+     * 批量新增排课
+     *
+     * @param pks
+     * @return
+     * @throws WebException
+     */
+    @PostMapping("/addList")
+    @ApiOperation(value = "批量新增排课")
+    public ResponseUtil add(@RequestBody List<Pk> pks) throws WebException {
+        //检查参数是否合法
+        for (Pk pk : pks) {
+            checkRequest(pk);
+        }
+        if (!pkService.addList(pks)) {
+            throw new WebException(INSERT_FAIL);
+        }
+        return ResponseUtil.success("新增排课成功!");
+    }
+
+    /**
      * 更新排课
      *
      * @param pk
@@ -129,6 +151,9 @@ public class PkAdminController {
     private void checkRequest(Pk pk) throws WebException {
         if (pk == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (pk.getId() != null) {
+            throw new WebException(SCHEDUING_EXISTS_ERROR);
         }
     }
 }

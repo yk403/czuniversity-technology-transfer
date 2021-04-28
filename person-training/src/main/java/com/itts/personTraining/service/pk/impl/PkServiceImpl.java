@@ -102,4 +102,15 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         return pkService.updateById(pk);
     }
 
+    /**
+     * 批量新增排课
+     * @param pks
+     * @return
+     */
+    @Override
+    public boolean addList(List<Pk> pks) {
+        log.info("【人才培养 - 批量新增排课:{}】",pks);
+        return pkService.saveBatch(pks);
+    }
+
 }

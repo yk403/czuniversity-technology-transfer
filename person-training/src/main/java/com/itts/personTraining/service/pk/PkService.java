@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.model.pk.Pk;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 排课表 服务类
@@ -50,4 +52,11 @@ public interface PkService extends IService<Pk> {
      * @return
      */
     boolean delete(Pk pk);
+
+    /**
+     * 批量新增排课
+     * @param pks
+     * @return
+     */
+    boolean addList(List<Pk> pks);
 }
