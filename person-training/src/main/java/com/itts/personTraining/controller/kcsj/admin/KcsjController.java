@@ -199,12 +199,12 @@ public class KcsjController {
     private Boolean checkSj(Kcsj addKcsj, Kcsj dbKcsj) {
 
         //如果要添加的课程开始时间在已添加的课程时间区间内
-        if (addKcsj.getKssj().compareTo(dbKcsj.getKssj()) >= 0 && addKcsj.getKssj().compareTo(dbKcsj.getJssj()) <= 0) {
+        if (addKcsj.getKssj().compareTo(dbKcsj.getKssj()) >= 0 && addKcsj.getKssj().compareTo(dbKcsj.getJssj()) < 0) {
             return false;
         }
 
         //如果要添加的课程结束时间在已添加的课程时间区间内
-        if (addKcsj.getJssj().compareTo(dbKcsj.getKssj()) >= 0 && addKcsj.getJssj().compareTo(dbKcsj.getJssj()) <= 0) {
+        if (addKcsj.getJssj().compareTo(dbKcsj.getKssj()) >= 0 && addKcsj.getJssj().compareTo(dbKcsj.getJssj()) < 0) {
             return false;
         }
 
