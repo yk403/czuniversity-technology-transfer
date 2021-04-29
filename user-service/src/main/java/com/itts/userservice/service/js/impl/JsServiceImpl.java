@@ -152,7 +152,7 @@ public class JsServiceImpl implements JsService {
             //循环遍历，组装数据
             for (JsCdCzGl jsCdCzGl : jsCdCzGls) {
 
-                Cz cz = czMap.get(jsCdCzGl.getId());
+                Cz cz = czMap.get(jsCdCzGl.getCzId());
                 if (cz == null) {
                     continue;
                 }
