@@ -65,7 +65,7 @@ public class YhServiceImpl implements YhService {
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<YhListVO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group) {
+    public PageInfo<YhListVO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group, String condition) {
 
         List<Long> groupIds = null;
 
@@ -76,7 +76,7 @@ public class YhServiceImpl implements YhService {
 
         PageHelper.startPage(pageNum, pageSize);
 
-        List<YhDTO> list = yhMapper.findByTypeAndGroupId(type, groupIds);
+        List<YhDTO> list = yhMapper.findByTypeAndGroupId(type, groupIds, condition);
         List<YhListVO> yhListVOs = this.yhDTO2YhVO(list);
 
         PageInfo<YhListVO> page = new PageInfo(list);

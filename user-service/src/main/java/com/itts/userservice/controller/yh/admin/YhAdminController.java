@@ -56,6 +56,7 @@ public class YhAdminController {
 
     @Resource
     private YhJsGlMapper yhJsGlMapper;
+
     /**
      * 获取列表 - 分页
      *
@@ -67,7 +68,8 @@ public class YhAdminController {
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "type", required = false) String type,
-                                   @RequestParam(value = "groupId", required = false) Long groupId) {
+                                   @RequestParam(value = "groupId", required = false) Long groupId,
+                                   @RequestParam(value = "condition", required = false) String condition ) {
         Jggl group = null;
 
         if (groupId != null) {
@@ -86,9 +88,10 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        PageInfo<YhListVO> byPage = yhService.findByPage(pageNum, pageSize, type, group);
+        PageInfo<YhListVO> byPage = yhService.findByPage(pageNum, pageSize, type, group, condition);
         return ResponseUtil.success(byPage);
     }
+
     /**
      * 获取指定列表 - 分页
      *
@@ -100,16 +103,17 @@ public class YhAdminController {
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "type") String type,
-                                   @RequestParam(value = "string")String string){
-        if(StringUtils.isBlank(type)){
+                                   @RequestParam(value = "string") String string) {
+        if (StringUtils.isBlank(type)) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if(string==null){
+        if (string == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         PageInfo<YhDTO> yhPageInfo = yhService.selectByString(pageNum, pageSize, type, string);
         return ResponseUtil.success(yhPageInfo);
     }
+
     /**
      * 获取详情
      *
@@ -136,7 +140,7 @@ public class YhAdminController {
 
         //检查参数是否合法
         Yh Yh = new Yh();
-        BeanUtils.copyProperties(addYhRequest,Yh);
+        BeanUtils.copyProperties(addYhRequest, Yh);
 
         //检查参数是否合法
         List<Long> jsidlist = addYhRequest.getJsidlist();
@@ -144,7 +148,7 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        jsidlist.forEach(jsid ->{
+        jsidlist.forEach(jsid -> {
             Boolean flag = yhService.addYhAndJsmc(Yh, jsid);
         });
 
@@ -175,24 +179,24 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         Yh Yh = new Yh();
-        BeanUtils.copyProperties(addYhRequest,Yh);
+        BeanUtils.copyProperties(addYhRequest, Yh);
 
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
-        BeanUtils.copyProperties(Yh, Yh1, "id","yhjb", "chsj", "cjr","mm");
+        BeanUtils.copyProperties(Yh, Yh1, "id", "yhjb", "chsj", "cjr", "mm");
         //逻辑删除此用户的所有角色
         Long yhid = Yh.getId();
         QueryWrapper<YhJsGl> QueryWrapper = new QueryWrapper<>();
-        QueryWrapper.eq("yh_id",yhid);
+        QueryWrapper.eq("yh_id", yhid);
         List<YhJsGl> yhJsGls = yhJsGlMapper.selectList(QueryWrapper);
 
         List<Long> jsidlist = addYhRequest.getJsidlist();
-        yhJsGls.forEach(YhJsGl->{
+        yhJsGls.forEach(YhJsGl -> {
             YhJsGl.setSfsc(true);
             YhJsGl.setGxsj(new Date());
             yhJsGlMapper.updateById(YhJsGl);
         });
-        jsidlist.forEach(jsid ->{
-            yhService.updateByYhAndJsmc(Yh1,jsid);
+        jsidlist.forEach(jsid -> {
+            yhService.updateByYhAndJsmc(Yh1, jsid);
         });
         return ResponseUtil.success();
 
@@ -225,6 +229,7 @@ public class YhAdminController {
 
         return ResponseUtil.success();
     }
+
     /**
      * 批量删除
      *
@@ -237,7 +242,7 @@ public class YhAdminController {
         if (ids == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        ids.forEach(id->{
+        ids.forEach(id -> {
             Yh Yh = yhService.get(id);
             //设置删除状态，更新删除时间
             Yh.setSfsc(true);
@@ -259,16 +264,16 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        if(yh.getYhlx()==null){
+        if (yh.getYhlx() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if(yh.getYhm()==null){
+        if (yh.getYhm() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if(yh.getMm()==null){
+        if (yh.getMm() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if(yh.getZsxm()==null){
+        if (yh.getZsxm() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
