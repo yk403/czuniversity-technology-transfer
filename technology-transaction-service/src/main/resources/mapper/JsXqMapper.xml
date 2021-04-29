@@ -34,7 +34,7 @@
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
 			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 			<if test="map.type == 0"> and xq.user_id != #{map.userId} </if>
-			<if test="map.jshdId != null and map.jshdId != ''"> and xq.jshd_id = #{map.jshdId} </if>
+			<if test="map.jshdId != null"> and xq.jshd_id = #{map.jshdId} </if>
 			 <!-- 检索所有关联活动为空的技术需求-->
 			<if test="map.addActivity == 0"> and xq.jshd_id IS NULL </if>
 		</where>
@@ -58,8 +58,8 @@
 		<where>
 		    a.is_delete = 0
 			<if test="map.name != null and map.name != ''"> and a.xqmc = #{map.name} </if>
-			<if test="map.jylx != null and map.jylx != ''"> and d.jylx = #{map.jylx} </if>
-			<if test="map.lyId != null and map.lyId != ''"> and a.ly_id = #{map.lyId} </if>
+			<if test="map.jylx != null "> and d.jylx = #{map.jylx} </if>
+			<if test="map.lyId != null "> and a.ly_id = #{map.lyId} </if>
 		</where>
 		UNION
 		SELECT
@@ -70,9 +70,9 @@
 		LEFT JOIN t_js_sh d ON (e.id = d.cg_id)
 		<where>
 		    e.is_delete = 0
-			<if test="map.lyId != null and map.lyId != ''"> and e.ly_id = #{map.lyId} </if>
+			<if test="map.lyId != null"> and e.ly_id = #{map.lyId} </if>
 			<if test="map.name != null and map.name != ''"> and e.cgmc = #{map.name} </if>
-			<if test="map.jylx != null and map.jylx != ''"> and d.jylx = #{map.jylx} </if>
+			<if test="map.jylx != null"> and d.jylx = #{map.jylx} </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">
@@ -112,7 +112,7 @@
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
 			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
-			<if test="map.jshdId != null and map.jshdId != ''"> and xq.jshd_id = #{map.jshdId} </if>
+			<if test="map.jshdId != null"> and xq.jshd_id = #{map.jshdId} </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">

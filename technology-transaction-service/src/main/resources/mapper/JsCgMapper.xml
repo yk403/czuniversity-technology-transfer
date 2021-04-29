@@ -38,7 +38,7 @@
 				<if test="map.cgfj != null and map.cgfj != ''"> and cgfj = #{map.cgfj} </if>
 				<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cgfjmc = #{map.cgfjmc} </if>
 		  		  <if test="map.bz != null and map.bz != ''"> and bz = #{map.bz} </if>
-		  		  <if test="map.jshdId != null and map.jshdId != ''"> and jshd_id = #{map.jshdId} </if>
+		  		  <if test="map.jshdId != null"> and jshd_id = #{map.jshdId} </if>
 		  		</where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -69,10 +69,10 @@
 			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
-			<if test="map.jylx != null and map.jylx != ''"> and sh.jylx = #{map.jylx} </if>
+			<if test="map.jylx != null"> and sh.jylx = #{map.jylx} </if>
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
 			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
-			<if test="map.jshdId != null and map.jshdId != ''"> and jshd_id = #{map.jshdId} </if>
+			<if test="map.jshdId != null"> and jshd_id = #{map.jshdId} </if>
 		</where>
 	<choose>
 		<when test="map.sort != null and map.sort.trim() != ''">
@@ -102,11 +102,11 @@
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
 			<if test="map.fbshzt != null and map.fbshzt != ''"> and sh.fbshzt = #{map.fbshzt} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
-			<if test="map.jylx != null and map.jylx != ''"> and sh.jylx = #{map.jylx} </if>
+			<if test="map.jylx != null"> and sh.jylx = #{map.jylx} </if>
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
 			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 			<if test="map.type == 0"> and cg.user_id != #{map.userId} </if>
-			<if test="map.jshdId != null and map.jshdId != ''"> and cg.jshd_id = #{map.jshdId} </if>
+			<if test="map.jshdId != null"> and cg.jshd_id = #{map.jshdId} </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">
@@ -135,7 +135,7 @@
 			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
 			<if test="map.type == 0"> and cg.user_id != #{map.userId} </if>
-			<if test="map.jshdId != null and map.jshdId != ''"> and cg.jshd_id = #{map.jshdId} </if>
+			<if test="map.jshdId != null"> and cg.jshd_id = #{map.jshdId} </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">

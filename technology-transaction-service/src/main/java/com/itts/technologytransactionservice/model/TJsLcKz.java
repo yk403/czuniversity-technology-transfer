@@ -60,7 +60,7 @@ public class TJsLcKz implements Serializable {
     /**
      * 叫价间隔状态
      */
-    private String jjjgzt;
+    private Integer jjjgzt;
     /**
      * 落槌定价
      */

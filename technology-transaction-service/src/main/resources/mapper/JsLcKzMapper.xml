@@ -18,7 +18,7 @@
         <if test="map.xqId != null"> and xq_id = #{map.xqId} </if>
         <if test="map.cgId != null"> and cg_id = #{map.cgId} </if>
         <if test="map.lcdj != null and map.lcdj != ''"> and lcdj = #{map.lcdj} </if>
-        <if test="map.jjjgzt != null and map.jjjgzt != ''"> and jjjgzt = #{map.jjjgzt} </if>
+        <if test="map.jjjgzt != null"> and jjjgzt = #{map.jjjgzt} </if>
         <if test="map.fdjg != null and map.fdjg != ''"> and fdjg = #{map.fdjg} </if>
         <if test="map.dqzgjg != null and map.dqzgjg != ''"> and dqzgjg = #{map.dqzgjg} </if>
     </where>

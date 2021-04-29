@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsHdMapper">
 
 	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsHd">
-		select hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.bmrs,hd.hdfs,hd.hdtp,hd.hddqsj
+		select hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.bmrs,hd.hdfs,hd.hdtp,hd.hddqsj,hd.is_bm
 		from t_js_hd hd
         <where>
 			hd.is_delete = 0
@@ -30,6 +30,7 @@
 		  		  <if test="map.hdzt != null"> and hd.hdzt = #{map.hdzt} </if>
 		  		  <if test="map.cjsj != null and map.cjsj != ''"> and hd.cjsj = #{map.cjsj} </if>
 			      <if test="map.hdfs != null"> and hd.hdfs = #{map.hdfs} </if>
+			      <if test="map.isBm != null"> and hd.is_bm = #{map.isBm} </if>
 		  		</where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -42,7 +43,7 @@
 	</select>
 	<!-- 判断报名人数-->
 	<select id="listCount" resultType="com.itts.technologytransactionservice.model.TJsHd">
-		select hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.hdfs,hd.hdtp,hd.hddqsj,count(DISTINCT bm.id) as bmrs
+		select hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.hdfs,hd.hdtp,hd.hddqsj,count(DISTINCT bm.id) as bmrs,hd.is_bm
 		from t_js_hd hd LEFT JOIN t_js_bm bm on (hd.id = bm.hd_id)
 		<where>
 			hd.is_delete = 0
@@ -57,6 +58,7 @@
 			<if test="map.hdzt != null"> and hd.hdzt = #{map.hdzt} </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and hd.cjsj = #{map.cjsj} </if>
 			<if test="map.hdfs != null"> and hd.hdfs = #{map.hdfs} </if>
+			<if test="map.isBm != null"> and hd.is_bm = #{map.isBm} </if>
 		</where>
 		GROUP BY hd.id
 		<choose>
@@ -69,7 +71,7 @@
 		</choose>
 	</select>
 	<select id="listHdBm" resultType="com.itts.technologytransactionservice.model.TJsHd">
-		SELECT	hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.bmrs,hd.hdfs,hd.hdtp,hd.hddqsj
+		SELECT	hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.bmrs,hd.hdfs,hd.hdtp,hd.hddqsj,hd.is_bm
 		FROM
 		t_js_hd hd
 		LEFT JOIN (
@@ -94,6 +96,7 @@
 			<if test="map.hdzt != null and map.hdzt != ''"> and hd.hdzt = #{map.hdzt} </if>
 			<if test="map.hdfs != null and map.hdfs != ''"> and hd.hdfs = #{map.hdfs} </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and hd.cjsj = #{map.cjsj} </if>
+			<if test="map.isBm != null"> and hd.is_bm = #{map.isBm} </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">
