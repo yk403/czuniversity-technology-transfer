@@ -117,6 +117,7 @@
         <if test="type != null and type != ''">
             AND yh.yhlx =#{type}
         </if>
-        and (yh.yhm = #{string} or yh.yhbh = #{string})
+        and (yh.yhm like concat('%',#{string},'%')  or yh.yhbh like concat('%',#{string},'%') )
+        ORDER BY yh.cjsj DESC
     </select>
 </mapper>
