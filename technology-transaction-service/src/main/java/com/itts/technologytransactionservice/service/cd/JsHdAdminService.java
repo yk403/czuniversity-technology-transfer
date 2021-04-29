@@ -23,4 +23,6 @@ public interface JsHdAdminService extends IService<TJsHd> {
     boolean issueBatch(List<Integer> ids);
 
     boolean removeByIdHd(Integer id);
+
+    boolean updateHd(TJsHd tJsHd);
 }

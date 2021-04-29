@@ -21,7 +21,7 @@ import java.util.Map;
 @Repository
 public interface JsCgMapper extends BaseMapper<TJsCg> {
 	
-	List<TJsCg> list(IPage<TJsCg> page, @Param("map") Map map);
+	List<TJsCg> list( @Param("map") Map map);
 
 	/**
 	 * 分页条件查询

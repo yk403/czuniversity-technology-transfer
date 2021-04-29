@@ -63,7 +63,7 @@ public class JsLcKzController extends BaseController {
     @PostMapping("/save")
     public R save(@RequestBody TJsLcKz tJsLcKz) throws IOException {
         if(jsLcKzService.save(tJsLcKz)){
-            bidController.onMessage("保存成功，调用刷新活动流程控制状态方法");
+            //bidController.onMessage("保存成功，调用刷新活动流程控制状态方法");
             return save(true);
         }else{
             return save(false);
@@ -76,7 +76,7 @@ public class JsLcKzController extends BaseController {
     @RequestMapping("/update")
     public R update(@RequestBody TJsLcKz tJsLcKz) throws IOException {
         if (jsLcKzService.updateById(tJsLcKz)){
-            bidController.onMessage("保存成功，调用刷新活动流程控制状态方法");
+            //bidController.onMessage("保存成功，调用刷新活动流程控制状态方法");
             return update(true);
         }else{
             return update(false);
