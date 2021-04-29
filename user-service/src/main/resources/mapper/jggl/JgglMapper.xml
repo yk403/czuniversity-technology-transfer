@@ -31,7 +31,7 @@
     </select>
     <select id="selectByString" resultMap="BaseResultMap">
         select * from t_jggl
-        where (jgmc = #{string} or jgbm =#{string})
+        where (jgmc LIKE CONCAT('%', #{string}, '%')  or jgbm  LIKE CONCAT('%', #{string}, '%'))
         and sfsc =false
     </select>
 
