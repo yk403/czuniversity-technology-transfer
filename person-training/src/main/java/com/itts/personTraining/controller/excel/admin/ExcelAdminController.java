@@ -33,9 +33,9 @@ public class ExcelAdminController {
      */
     @PostMapping("/importXs")
     @ApiOperation(value = "学员导入")
-    public ResponseUtil importXs(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true)Integer headRowNumber){
+    public ResponseUtil importXs(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true)Integer headRowNumber, @RequestParam(value = "pcId", required = true)Long pcId){
         try{
-            return excelService.importXs(file, headRowNumber);
+            return excelService.importXs(file, headRowNumber, pcId);
         }catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());

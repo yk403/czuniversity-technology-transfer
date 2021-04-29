@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KcDTO;
@@ -31,8 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.INSERT_FAIL;
-import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
  * <p>
@@ -72,6 +72,16 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         log.info("【人才培养 - 分页条件查询课程列表,课程类型:{},课程代码/名称:{},学院id:{}】",kclx,name,xyId);
         PageHelper.startPage(pageNum, pageSize);
         List<KcDTO> kcDTOS = kcMapper.findByPage(kclx,name,xyId);
+        for (KcDTO kcDTO : kcDTOS) {
+            QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
+            kcSzQueryWrapper.eq("kc_id",kcDTO.getId());
+            List<KcSz> kcSzList = kcSzMapper.selectList(kcSzQueryWrapper);
+            List<Long> szIds = new ArrayList<>();
+            for (KcSz kcSz : kcSzList) {
+                szIds.add(kcSz.getSzId());
+            }
+            kcDTO.setSzIds(szIds);
+        }
         return new PageInfo<>(kcDTOS);
     }
 
@@ -147,7 +157,10 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     @Override
     public boolean add(KcDTO kcDTO) {
         log.info("【人才培养 - 新增课程:{}】",kcDTO);
+        Long userId = getUserId();
         Kc kc = new Kc();
+        kc.setCjr(userId);
+        kc.setGxr(userId);
         BeanUtils.copyProperties(kcDTO,kc);
         if (kcService.save(kc)) {
             XyKc xyKc = new XyKc();
@@ -170,6 +183,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     public boolean update(KcDTO kcDTO) {
         log.info("【人才培养 - 更新课程:{}】",kcDTO);
         Kc kc = new Kc();
+        kc.setGxr(getUserId());
         BeanUtils.copyProperties(kcDTO,kc);
         if (kcService.updateById(kc)) {
             xyKcService.removeById(kcDTO.getXyKcId());
@@ -207,4 +221,18 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         return kcSzService.saveBatch(kcSzList);
     }
 
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    private Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
+    }
 }

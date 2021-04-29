@@ -110,14 +110,14 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 			for (Map item : ids) {
 				TJsCg tJsCg = jsCgMapper.getById((Integer) item.get("id"));
 				tJsCg.setJshdId(tJsHd.getId());
-				tJsCg.setSoft((Integer) item.get("indes"));
+				tJsCg.setSoft((Integer) item.get("soft"));
 				jsCgMapper.updateTJsCg(tJsCg);
 			}
 		} else if (hdlx == 1) {
 			for (Map item : ids) {
 				TJsXq tJsXq = jsXqMapper.getById((Integer) item.get("id"));
 				tJsXq.setJshdId(tJsHd.getId());
-				tJsXq.setIndes((Integer) item.get("indes"));
+				tJsXq.setSoft((Integer) item.get("soft"));
 				jsXqMapper.updateTJsXq(tJsXq);
 			}
 		}

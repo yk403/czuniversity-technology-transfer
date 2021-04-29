@@ -1,33 +1,30 @@
-package com.itts.personTraining.model.pk;
+package com.itts.personTraining.dto;
 
-import com.baomidou.mybatisplus.annotation.*;
-
-import java.util.Date;
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.util.Date;
 
 /**
- * <p>
- * 排课表
- * </p>
- *
- * @author Austin
- * @since 2021-04-20
+ * @Author: Austin
+ * @Data: 2021/4/28
+ * @Version: 1.0.0
+ * @Description: 排课DTO
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("t_pk")
-public class Pk implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+@Data
+@ApiModel("排课对象")
+public class PkDTO {
 
     /**
      * 主键
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -61,6 +58,18 @@ public class Pk implements Serializable {
     private String pkmc;
 
     /**
+     * 课程代码
+     */
+    @ApiModelProperty(value = "课程代码")
+    private String kcdm;
+
+    /**
+     * 课程名称
+     */
+    @ApiModelProperty(value = "课程名称")
+    private String kcmc;
+
+    /**
      * 上课起始年月日
      */
     @ApiModelProperty(value = "上课起始年月日", required = true)
@@ -85,9 +94,33 @@ public class Pk implements Serializable {
     private String xqs;
 
     /**
+     * 教学楼名称
+     */
+    @ApiModelProperty(value = "教学楼名称")
+    private String jxlmc;
+
+    /**
+     * 教室编号
+     */
+    @ApiModelProperty(value = "教室编号")
+    private String jsbh;
+
+    /**
+     * 授课老师姓名
+     */
+    @ApiModelProperty(value = "授课老师姓名")
+    private String dsxm;
+
+    /**
+     * 授课老师编号
+     */
+    @ApiModelProperty(value = "授课老师编号")
+    private String dsbh;
+
+    /**
      * 是否下发(0:未下发;1:已下发)
      */
-    @ApiModelProperty(value = "是否下发", required = true)
+    @ApiModelProperty(value = "是否下发")
     private Boolean sfxf;
 
     /**
@@ -116,6 +149,4 @@ public class Pk implements Serializable {
      * 更新人
      */
     private Long gxr;
-
-
 }

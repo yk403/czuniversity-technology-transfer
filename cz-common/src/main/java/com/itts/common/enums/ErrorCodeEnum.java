@@ -68,6 +68,10 @@ public enum ErrorCodeEnum {
     TEACHER_ISEMPTY_ERROR(-45007, "授课老师不可为空!"),
     NAME_ISEMPTY_ERROR(-45008, "名称不可为空!"),
     INSTITUTE_ID_ISEMPTY_ERROR(-45009, "学院ID不可为空!"),
+    GET_THREADLOCAL_ERROR(-45010, "获取当前用户失败!"),
+    SCHEDUING_EXISTS_ERROR(-45011, "排课信息已存在!"),
+    COURSE_TIME_CONFLICT_ERROR(-45012, "课程时间不合法，和其他课程时间冲突"),
+    START_TIME_GREATER_END_TIME_ERROR(-45013, "课程时间不合法，开始时间大于等于结束时间"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

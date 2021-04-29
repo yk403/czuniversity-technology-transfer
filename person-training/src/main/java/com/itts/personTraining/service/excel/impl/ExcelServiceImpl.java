@@ -29,6 +29,9 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_UPLOAD_ERROR;
 @Primary
 @Slf4j
 public class ExcelServiceImpl implements ExcelService {
+
+    private Long pcId;
+
     @Resource
     private XsMapper xsMapper;
     @Resource
@@ -41,9 +44,10 @@ public class ExcelServiceImpl implements ExcelService {
      * @return
      */
     @Override
-    public ResponseUtil importXs(MultipartFile file, Integer headRowNumber) {
+    public ResponseUtil importXs(MultipartFile file, Integer headRowNumber, Long pcId) {
         XsListener xsListener = new XsListener();
         xsListener.setXsMapper(xsMapper);
+        xsListener.setPcId(pcId);
         try{
             EasyExcel.read(file.getInputStream(), XsDTO.class,xsListener).headRowNumber(headRowNumber).sheet().doRead();
             return ResponseUtil.success(xsListener.getResult());

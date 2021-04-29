@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -97,5 +98,13 @@ public class JsHdController extends BaseController {
     public R removeBatch(@RequestBody List<Long> ids) {
         return remove(jsHdService.removeByIds(ids));
     }
-
+    /*
+    交易大厅初始化获取服务器当前时间
+     */
+    @GetMapping("/getCurrentTime")
+    public ResponseUtil getCurrentTime(){
+        TJsHd tJsHd=new TJsHd();
+        tJsHd.setHddqsj(new Date());
+        return ResponseUtil.success(tJsHd.getHddqsj());
+    }
 }

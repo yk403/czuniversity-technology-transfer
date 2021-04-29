@@ -3,6 +3,9 @@ package com.itts.personTraining.service.pk.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.dto.PkDTO;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pk.Pk;
 import com.itts.personTraining.mapper.pk.PkMapper;
@@ -10,12 +13,17 @@ import com.itts.personTraining.service.pk.PkService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 /**
  * <p>
@@ -38,19 +46,15 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
      * 查询排课列表
      * @param pageNum
      * @param pageSize
-     * @param pch
+     * @param pcId
      * @return
      */
     @Override
-    public PageInfo<Pk> findByPage(Integer pageNum, Integer pageSize, String pch) {
-        log.info("【人才培养 - 分页条件查询排课列表,批次号:{}】",pch);
+    public PageInfo<PkDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId) {
+        log.info("【人才培养 - 分页条件查询排课列表,批次id:{}】",pcId);
         PageHelper.startPage(pageNum, pageSize);
-        QueryWrapper<Pk> pkQueryWrapper = new QueryWrapper<>();
-        pkQueryWrapper.eq("sfsc",false)
-                      .eq(StringUtils.isNotBlank(pch),"pch", pch);
-        List<Pk> pks = pkMapper.selectList(pkQueryWrapper);
-        PageInfo<Pk> PageInfo = new PageInfo<>(pks);
-        return PageInfo;
+        List<PkDTO> pkDTOs = pkMapper.findPage(pcId);
+        return new PageInfo<>(pkDTOs);
     }
 
     /**
@@ -59,47 +63,90 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
      * @return
      */
     @Override
-    public Pk get(Long id) {
+    public PkDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询排课信息】",id);
-        QueryWrapper<Pk> pkQueryWrapper = new QueryWrapper<>();
-        pkQueryWrapper.eq("sfsc",false)
-                      .eq("id",id);
-        return pkMapper.selectOne(pkQueryWrapper);
+        return pkMapper.getById(id);
     }
 
     /**
      * 新增排课
-     * @param pk
+     * @param pkDTO
      * @return
      */
     @Override
-    public boolean add(Pk pk) {
-        log.info("【人才培养 - 新增排课:{}】",pk);
+    public boolean add(PkDTO pkDTO) {
+        log.info("【人才培养 - 新增排课:{}】",pkDTO);
+        Long userId = getUserId();
+        pkDTO.setCjr(userId);
+        pkDTO.setGxr(userId);
+        Pk pk = new Pk();
+        BeanUtils.copyProperties(pkDTO,pk);
         return pkService.save(pk);
     }
 
     /**
      * 更新排课
-     * @param pk
+     * @param pkDTO
      * @return
      */
     @Override
-    public boolean update(Pk pk) {
-        log.info("【人才培养 - 更新排课:{}】",pk);
+    public boolean update(PkDTO pkDTO) {
+        log.info("【人才培养 - 更新排课:{}】",pkDTO);
+        Long userId = getUserId();
+        pkDTO.setGxr(userId);
+        Pk pk = new Pk();
+        BeanUtils.copyProperties(pkDTO,pk);
         return pkService.updateById(pk);
     }
 
     /**
      * 删除排课
-     * @param pk
+     * @param pkDTO
      * @return
      */
     @Override
-    public boolean delete(Pk pk) {
-        log.info("【人才培养 - 删除排课:{}】",pk);
+    public boolean delete(PkDTO pkDTO) {
+        log.info("【人才培养 - 删除排课:{}】",pkDTO);
         //设置删除状态
-        pk.setSfsc(true);
+        pkDTO.setSfsc(true);
+        Pk pk = new Pk();
+        BeanUtils.copyProperties(pkDTO,pk);
         return pkService.updateById(pk);
+    }
+
+    /**
+     * 批量新增排课
+     * @param pkDTOs
+     * @return
+     */
+    @Override
+    public boolean addList(List<PkDTO> pkDTOs) {
+        log.info("【人才培养 - 批量新增排课:{}】",pkDTOs);
+        Long userId = getUserId();
+        List<Pk> pks = new ArrayList<>();
+        for (PkDTO pkDTO : pkDTOs) {
+            Pk pk = new Pk();
+            pkDTO.setCjr(userId);
+            pkDTO.setGxr(userId);
+            BeanUtils.copyProperties(pkDTO,pk);
+            pks.add(pk);
+        }
+        return pkService.saveBatch(pks);
+    }
+
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    private Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
     }
 
 }

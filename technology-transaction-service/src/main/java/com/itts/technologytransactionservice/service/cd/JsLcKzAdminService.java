@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.TJsCjRc;
 import com.itts.technologytransactionservice.model.TJsLcKz;
+import com.itts.technologytransactionservice.model.TJsLcKzDto;
 
 
 /**
@@ -18,4 +19,9 @@ public interface JsLcKzAdminService extends IService<TJsLcKz> {
 
 	PageInfo page(Query query);
 	boolean removeByIdLcKz(String id);
+
+    boolean saveLcKz(TJsLcKzDto tJsLcKzDto);
+
+
+	boolean updateLc(TJsLcKzDto tJsLcKzDto);
 }

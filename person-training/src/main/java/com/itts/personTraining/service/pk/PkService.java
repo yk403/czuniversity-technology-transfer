@@ -1,8 +1,11 @@
 package com.itts.personTraining.service.pk;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.PkDTO;
 import com.itts.personTraining.model.pk.Pk;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -18,36 +21,43 @@ public interface PkService extends IService<Pk> {
      * 查询排课列表
      * @param pageNum
      * @param pageSize
-     * @param pch
+     * @param pcId
      * @return
      */
-    PageInfo<Pk> findByPage(Integer pageNum, Integer pageSize, String pch);
+    PageInfo<PkDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId);
 
     /**
      * 根据id查询排课详情
      * @param id
      * @return
      */
-    Pk get(Long id);
+    PkDTO get(Long id);
 
     /**
      * 新增排课
-     * @param pk
+     * @param pkDTO
      * @return
      */
-    boolean add(Pk pk);
+    boolean add(PkDTO pkDTO);
 
     /**
      * 更新排课
-     * @param pk
+     * @param pkDTO
      * @return
      */
-    boolean update(Pk pk);
+    boolean update(PkDTO pkDTO);
 
     /**
      * 删除排课
-     * @param pk
+     * @param pkDTO
      * @return
      */
-    boolean delete(Pk pk);
+    boolean delete(PkDTO pkDTO);
+
+    /**
+     * 批量新增排课
+     * @param pkDTOs
+     * @return
+     */
+    boolean addList(List<PkDTO> pkDTOs);
 }
