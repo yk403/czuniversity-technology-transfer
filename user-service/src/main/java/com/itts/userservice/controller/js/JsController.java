@@ -14,6 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -79,7 +80,7 @@ public class JsController {
     @PostMapping("/add/")
     public ResponseUtil add(@RequestBody AddJsRequest js) throws WebException {
 
-        checkRequst(js);
+        checkRequest(js);
 
         Js add = jsService.add(js);
         return ResponseUtil.success(add);
@@ -98,7 +99,7 @@ public class JsController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        checkRequst(request);
+        checkRequest(request);
 
         //检查数据库中是否存在要更新的数据
         Js old = jsService.get(id);
@@ -134,7 +135,7 @@ public class JsController {
     /**
      * 校验参数
      */
-    private void checkRequst(Js js) throws WebException {
+    private void checkRequest(AddJsRequest js) throws WebException {
 
         if (js == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
@@ -148,7 +149,11 @@ public class JsController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        if(StringUtils.isBlank(js.getYhjslx())){
+        if (StringUtils.isBlank(js.getYhjslx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (CollectionUtils.isEmpty(js.getCdCzIds())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
