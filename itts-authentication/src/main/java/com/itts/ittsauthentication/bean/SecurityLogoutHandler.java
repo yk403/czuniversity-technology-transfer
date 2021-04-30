@@ -3,10 +3,8 @@ package com.itts.ittsauthentication.bean;
 import cn.hutool.json.JSONUtil;
 import com.itts.common.constant.RedisConstant;
 import com.itts.common.constant.SystemConstant;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.utils.common.ResponseUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -39,7 +37,9 @@ public class SecurityLogoutHandler implements LogoutSuccessHandler {
         String token = request.getHeader(SystemConstant.TOKEN_PREFIX);
 
         if (StringUtils.isNotBlank(token)) {
-            redisTemplate.delete(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + token);
+
+            String[] tokenArr = token.split("&");
+            redisTemplate.delete(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + tokenArr[1]);
         }
 
         response.setContentType("application/json;charset=utf-8");
