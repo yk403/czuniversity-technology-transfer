@@ -78,15 +78,14 @@ public class JsCjRcController extends BaseController {
     public ResponseUtil save(@RequestBody TJsCjRcDto tJsCjRcDto) throws IOException {
         //判断当前时间是否在活动开始时间和结束时间之间，判断成功才可以保存
         //采用转换时间戳方式比较大小
-        if (tJsCjRcDto.getHdkssj() != null && tJsCjRcDto.getHdkssj() != null) {
+        if (tJsCjRcDto.getHdkssj() != null) {
             Date nowDate = new Date();
             long now = new Date().getTime();
             long startTime = tJsCjRcDto.getHdkssj().getTime();
-            long endTime = tJsCjRcDto.getHdjssj().getTime();
-            if (startTime < now && now < endTime) {
+            if (startTime < now ) {
                 tJsCjRcDto.setJjsj(nowDate);
                 if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
-                    bidController.onMessage("叫价成功，调用刷新出价记录方法");
+                    //bidController.onMessage("叫价成功，调用刷新出价记录方法");
                     return ResponseUtil.success("叫价成功");
                 } else {
                     return ResponseUtil.error(400, "叫价错误");
@@ -99,7 +98,7 @@ public class JsCjRcController extends BaseController {
         Date nowDate = new Date();
         tJsCjRcDto.setJjsj(nowDate);
         if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
-            bidController.onMessage("叫价成功，调用刷新出价记录方法");
+            //bidController.onMessage("叫价成功，调用刷新出价记录方法");
             return ResponseUtil.success("叫价成功");
         } else {
             return ResponseUtil.error(400, "叫价错误");

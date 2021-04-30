@@ -85,6 +85,13 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 
 			}
 		}
+		for (TJsHd item:list) {
+			//判断是否已报过名，报过isBm为1，未报过为0
+			if(item.getIsBm()==null){
+				item.setIsBm(0);
+			}
+
+		}
 		PageInfo<TJsHd> page = new PageInfo<>(list);
 		return page;
 	}

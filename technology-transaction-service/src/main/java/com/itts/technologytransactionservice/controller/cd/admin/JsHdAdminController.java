@@ -78,7 +78,13 @@ public class JsHdAdminController extends BaseController {
     public R update(@RequestBody TJsHd tJsHd) {
         return update(jsHdAdminService.updateById(tJsHd));
     }
-
+    /**
+     * 结束活动
+     */
+    @RequestMapping("/endHd")
+    public R endHd(@RequestBody TJsHd tJsHd) {
+        return update(jsHdAdminService.updateHd(tJsHd));
+    }
     /**
      * 删除
      */
