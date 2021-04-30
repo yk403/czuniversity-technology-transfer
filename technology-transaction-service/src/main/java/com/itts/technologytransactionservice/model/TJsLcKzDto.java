@@ -82,4 +82,12 @@ public class TJsLcKzDto implements Serializable {
      * 判断关联的技术商品类型是需求还是成果
      */
     private Integer type;
+    /*
+    活动id
+     */
+    private Integer jshdId;
+    /*
+   活动排序值
+     */
+    private Integer soft;
 }

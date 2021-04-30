@@ -63,33 +63,49 @@ public class JsLcKzAdminServiceImpl extends ServiceImpl<JsLcKzMapper, TJsLcKz> i
 	 */
 	@Override
 	public boolean saveLcKz(TJsLcKzDto tJsLcKzDto) {
-			Map<String,Object> map=new HashMap<>();
+			Map<String,Object> map=new HashMap<>();//判断
 		if(tJsLcKzDto.getType() == 0){
-			TJsXq xqbyId = jsXqMapper.getById(tJsLcKzDto.getXqId());
-			xqbyId.setAuctionStatus(tJsLcKzDto.getAuctionStatus());
-			jsXqMapper.updateTJsXq(xqbyId);
-			TJsLcKz tJsLcKz=new TJsLcKz();
-			BeanUtils.copyProperties(tJsLcKzDto,tJsLcKz);
-			map.put("xqId",tJsLcKzDto.getXqId());
-			List<TJsLcKz> list = jsLcKzMapper.list(map);
-			if(list.size() !=0){
+			//TJsXq xqbyId = jsXqMapper.getById(tJsLcKzDto.getXqId());
+			Map<String,Object> xqmap=new HashMap<>();
+			xqmap.put("jshdId",tJsLcKzDto.getJshdId());
+			xqmap.put("soft",tJsLcKzDto.getSoft());
+			List<TJsXq> list1 = jsXqMapper.list(xqmap);
+			if(list1.size()>0){
+				list1.get(0).setAuctionStatus(tJsLcKzDto.getAuctionStatus());
+				jsXqMapper.updateTJsXq(list1.get(0));
+				TJsLcKz tJsLcKz=new TJsLcKz();
+				tJsLcKzDto.setXqId(list1.get(0).getId());
+				tJsLcKzDto.setFdjg("1000");
+				BeanUtils.copyProperties(tJsLcKzDto,tJsLcKz);
+				map.put("xqId",list1.get(0).getId());
+				List<TJsLcKz> list = jsLcKzMapper.list(map);
+				if(list.size() !=0){
 
-			}else{
-				save(tJsLcKz);
+				}else{
+					save(tJsLcKz);
+				}
 			}
 		}
 		if(tJsLcKzDto.getType() == 1){
-			TJsCg cgbyId = jsCgMapper.getById(tJsLcKzDto.getCgId());
-			cgbyId.setAuctionStatus(tJsLcKzDto.getAuctionStatus());
-			jsCgMapper.updateTJsCg(cgbyId);
-			TJsLcKz tJsLcKz=new TJsLcKz();
-			BeanUtils.copyProperties(tJsLcKzDto,tJsLcKz);
-			map.put("cgId",tJsLcKzDto.getCgId());
-			List<TJsLcKz> list = jsLcKzMapper.list(map);
-			if(list.size() !=0){
+			//TJsCg cgbyId = jsCgMapper.getById(tJsLcKzDto.getCgId());
+			Map<String,Object> cgmap=new HashMap<>();
+			cgmap.put("jshdId",tJsLcKzDto.getJshdId());
+			cgmap.put("soft",tJsLcKzDto.getSoft());
+			List<TJsCg> list1 = jsCgMapper.list(cgmap);
+			if(list1.size()>0){
+				list1.get(0).setAuctionStatus(tJsLcKzDto.getAuctionStatus());
+				jsCgMapper.updateTJsCg(list1.get(0));
+				TJsLcKz tJsLcKz=new TJsLcKz();
+				tJsLcKzDto.setCgId(list1.get(0).getId());
+				tJsLcKzDto.setFdjg("1000");
+				BeanUtils.copyProperties(tJsLcKzDto,tJsLcKz);
+				map.put("cgId",list1.get(0).getId());
+				List<TJsLcKz> list = jsLcKzMapper.list(map);
+				if(list.size() !=0){
 
-			}else{
-				save(tJsLcKz);
+				}else{
+					save(tJsLcKz);
+				}
 			}
 		}
 		return true;
