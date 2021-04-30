@@ -92,7 +92,7 @@ public class JsHdDTO {
     /**
      * 活动图片
      */
-    private Integer hdtp;
+    private String hdtp;
     /*
 是否报名
  */
