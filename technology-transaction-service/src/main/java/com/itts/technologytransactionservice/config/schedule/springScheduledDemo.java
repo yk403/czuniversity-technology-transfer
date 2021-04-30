@@ -45,8 +45,10 @@ public class springScheduledDemo {
                         cgmap.put("soft",1);
                         List<TJsCg> list1 = jsCgMapper.list(cgmap);
                         if(list1.size()>0){
-                            list1.get(0).setAuctionStatus(1);
-                            jsCgMapper.updateTJsCg(list1.get(0));
+                            if(list1.get(0).getAuctionStatus()==0){
+                                list1.get(0).setAuctionStatus(1);
+                                jsCgMapper.updateTJsCg(list1.get(0));
+                            }
                         }
                     }
                     if(item.getHdlx()== 1){
@@ -55,8 +57,10 @@ public class springScheduledDemo {
                         xqmap.put("soft",1);
                         List<TJsXq> list1 = jsXqMapper.list(xqmap);
                         if(list1.size()>0){
-                            list1.get(0).setAuctionStatus(1);
-                            jsXqMapper.updateTJsXq(list1.get(0));
+                            if(list1.get(0).getAuctionStatus()==0){
+                                list1.get(0).setAuctionStatus(1);
+                                jsXqMapper.updateTJsXq(list1.get(0));
+                            }
                         }
                     }
 

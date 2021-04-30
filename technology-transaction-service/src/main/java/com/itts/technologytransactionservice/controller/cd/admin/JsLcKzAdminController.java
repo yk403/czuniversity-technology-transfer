@@ -66,7 +66,7 @@ public class JsLcKzAdminController extends BaseController {
     @PostMapping("/save")
     public R save(@RequestBody TJsLcKzDto tJsLcKzDto) throws IOException {
         if(jsLcKzAdminService.saveLcKz(tJsLcKzDto)){
-            //bidController.onMessage("开始成功，调用刷新活动流程控制状态方法");
+            bidController.onMessage("开始成功，调用刷新活动流程控制状态方法");
             return save(true);
         }else{
             return save(false);
@@ -79,7 +79,7 @@ public class JsLcKzAdminController extends BaseController {
     @RequestMapping("/update")
     public R update(@RequestBody TJsLcKz tJsLcKz) throws IOException {
         if(jsLcKzAdminService.updateById(tJsLcKz)){
-            //bidController.onMessage("保存成功，调用刷新活动流程控制状态方法");
+            bidController.onMessage("保存成功，调用刷新活动流程控制状态方法");
             return update(true);
         }
         return update(true);
@@ -90,7 +90,7 @@ public class JsLcKzAdminController extends BaseController {
     @RequestMapping("/lcUpdate")
     public R lcUpdate(@RequestBody TJsLcKzDto tJsLcKzDto) throws IOException {
         if(jsLcKzAdminService.updateLc(tJsLcKzDto)){
-            //bidController.onMessage("落锤成功，调用刷新活动流程控制状态方法");
+            bidController.onMessage("落锤成功，调用刷新活动流程控制状态方法");
             return update(true);
         }
         return update(true);

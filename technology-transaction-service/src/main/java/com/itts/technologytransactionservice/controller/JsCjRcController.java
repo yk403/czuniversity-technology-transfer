@@ -85,7 +85,7 @@ public class JsCjRcController extends BaseController {
             if (startTime < now ) {
                 tJsCjRcDto.setJjsj(nowDate);
                 if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
-                    //bidController.onMessage("叫价成功，调用刷新出价记录方法");
+                    bidController.onMessage("叫价成功，调用刷新出价记录方法");
                     return ResponseUtil.success("叫价成功");
                 } else {
                     return ResponseUtil.error(400, "叫价错误");
@@ -98,7 +98,7 @@ public class JsCjRcController extends BaseController {
         Date nowDate = new Date();
         tJsCjRcDto.setJjsj(nowDate);
         if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
-            //bidController.onMessage("叫价成功，调用刷新出价记录方法");
+            bidController.onMessage("叫价成功，调用刷新出价记录方法");
             return ResponseUtil.success("叫价成功");
         } else {
             return ResponseUtil.error(400, "叫价错误");

@@ -4,9 +4,9 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsCgMapper">
 
 	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select `id`,`agreement`,`cgspmc`,`cgfj`,`cgfjmc`,`agreement_name`,`cgqsr`,`zzjgdm`,`qsrlxdh`,`cgmc`,`gjc`,`cgwcsj`,`zzqk`,`ly_id`,`cghqfs`,`jscsd`,`hjqk`,`hzjg`,`hzfs`,`dwmc`,`dz`,`fr`,`contracts`,`zj`,`dzyx`,`zscqxs`,`cgjs`,`jszb`,`syfx`,`cgtp`,`cgsp`,`bz`,`jshd_id`,`soft`,`cjjg`,`auction_status` from t_js_cg a
+		select `id`,`agreement`,`cgspmc`,`cgfj`,`cgfjmc`,`agreement_name`,`cgqsr`,`zzjgdm`,`qsrlxdh`,`cgmc`,`gjc`,`cgwcsj`,`zzqk`,`ly_id`,`cghqfs`,`jscsd`,`hjqk`,`hzjg`,`hzfs`,`dwmc`,`dz`,`fr`,`contracts`,`zj`,`dzyx`,`zscqxs`,`cgjs`,`jszb`,`syfx`,`cgtp`,`cgsp`,`bz`,`jshd_id`,`soft`,`cjjg`,`auction_status` from t_js_cg cg
         <where>
-          a.is_delete = 0
+          cg.is_delete = 0
 		  		  <if test="map.id != null"> and id = #{map.id} </if>
 			<if test="map.soft != null"> and cg.soft  = #{map.soft} </if>
 			<if test="map.cjjg != null and map.cjjg != ''"> and id = #{map.cjjg} </if>
@@ -108,6 +108,8 @@
 			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 			<if test="map.type == 0"> and cg.user_id != #{map.userId} </if>
 			<if test="map.jshdId != null"> and cg.jshd_id = #{map.jshdId} </if>
+			<!-- 检索所有关联活动为空的技术需求-->
+			<if test="map.addActivity == 0"> and cg.jshd_id IS NULL </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">
