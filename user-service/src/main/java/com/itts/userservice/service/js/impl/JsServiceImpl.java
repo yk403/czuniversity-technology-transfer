@@ -27,10 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -74,6 +71,8 @@ public class JsServiceImpl implements JsService {
             query.eq("xtlx", systemType);
         }
 
+        query.orderByDesc("cjsj");
+
         List<Js> js = jsMapper.selectList(query);
         PageInfo<Js> tJsPageInfo = new PageInfo<>(js);
 
@@ -83,7 +82,7 @@ public class JsServiceImpl implements JsService {
     /**
      * 通过系统类型是否为默认角色获取角色信息
      *
-     * @param userType  用户类型
+     * @param userType    用户类型
      * @param defaultFlag 是否为默认角色
      * @return
      * @author liuyingming
@@ -318,7 +317,13 @@ public class JsServiceImpl implements JsService {
 
         //删除角色菜单关联
         if (!CollectionUtils.isEmpty(oldCdIds)) {
+            //删除角色菜单关联
             deleteJsCdGlByJsIdAndCdIds(js.getId(), oldCdIds);
+
+            //删除角色菜单操作关联
+            for (Long oldCdId : oldCdIds) {
+                deleteJsCdCzGlByJsIdAndCdIdAndCzIds(js.getId(), oldCdId, null);
+            }
         }
 
         //添加新的角色菜单关联
@@ -339,7 +344,7 @@ public class JsServiceImpl implements JsService {
 
         //获取当前角色下关联的角色菜单操作关联
         List<JsCdCzGl> allJsCdCzGls = jsCdCzGlMapper.getByJsId(js.getId());
-        if(CollectionUtils.isEmpty(allJsCdCzGls)){
+        if (CollectionUtils.isEmpty(allJsCdCzGls)) {
             return js;
         }
 
@@ -348,18 +353,31 @@ public class JsServiceImpl implements JsService {
 
             //获取当前角色、菜单下之前所有角色菜单操作关联
             List<JsCdCzGl> oldJsCdCzGls = Lists.newArrayList();
-            for (JsCdCzGl allJsCdCzGl : allJsCdCzGls) {
 
-                if (Objects.equals(allJsCdCzGl.getCdId(), jsCdGl)) {
+            Iterator<JsCdCzGl> allJsCdCzGlsIterator = allJsCdCzGls.iterator();
 
-                    allJsCdCzGls.remove(allJsCdCzGl);
-                    oldJsCdCzGls.add(allJsCdCzGl);
+            while(allJsCdCzGlsIterator.hasNext()){
+
+                JsCdCzGl thisJsCdCzGl = allJsCdCzGlsIterator.next();
+
+                if(Objects.equals(thisJsCdCzGl.getCdId(), jsCdGl.getId())){
+
+                    allJsCdCzGlsIterator.remove();
+                    oldJsCdCzGls.add(thisJsCdCzGl);
                 }
             }
+
+            /*for (JsCdCzGl allJsCdCzGl : allJsCdCzGls) {
+
+                if (Objects.equals(allJsCdCzGl.getCdId(), jsCdGl.getId())) {
+                    oldJsCdCzGls.add(allJsCdCzGl);
+                }
+            }*/
 
             if (CollectionUtils.isEmpty(oldJsCdCzGls)) {
                 continue;
             }
+
             List<Long> oldCzIds = oldJsCdCzGls.stream().map(JsCdCzGl::getCzId).collect(Collectors.toList());
 
             //新的角色菜单操作关联Id

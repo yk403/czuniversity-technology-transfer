@@ -29,6 +29,7 @@ public interface YhMapper extends BaseMapper<Yh> {
      */
     List<JsDTO> findByUserId(@Param("userId") Long id, @Param("systemType") String systemType);
 
-    List<YhDTO> findByTypeAndGroupId(@Param("type") String type, @Param("groupIds") List<Long> groupIds);
+    List<YhDTO> findByTypeAndGroupId(@Param("type") String type, @Param("groupIds") List<Long> groupIds, @Param("condition") String condition);
+
     List<YhDTO> findByString(@Param("type") String type, @Param("string") String string);
 }

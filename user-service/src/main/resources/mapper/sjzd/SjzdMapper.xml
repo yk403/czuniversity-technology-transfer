@@ -44,6 +44,7 @@
     <select id="selectByNameOrCode" resultType="com.itts.userservice.model.sjzd.Sjzd">
         select *
         from t_sjzd
-        where (zdmc= #{string} or zdbm= #{string}) and sfsc =false and ssmk =#{ssmk}
+        where (zdmc like concat('%',#{string},'%') or zdbm like concat('%',#{string},'%')) and sfsc =false and ssmk =#{ssmk}
+        order by cjsj desc
     </select>
 </mapper>
