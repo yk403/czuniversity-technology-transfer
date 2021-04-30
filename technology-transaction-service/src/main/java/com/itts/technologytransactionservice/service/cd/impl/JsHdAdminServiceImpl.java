@@ -121,4 +121,10 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 		return true;
 	}
 
+	@Override
+	public boolean updateHd(TJsHd tJsHd) {
+		tJsHd.setHdjssj(new Date());
+		return updateById(tJsHd);
+	}
+
 }

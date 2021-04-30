@@ -7,7 +7,8 @@
 		select `id`,`agreement`,`cgspmc`,`cgfj`,`cgfjmc`,`agreement_name`,`cgqsr`,`zzjgdm`,`qsrlxdh`,`cgmc`,`gjc`,`cgwcsj`,`zzqk`,`ly_id`,`cghqfs`,`jscsd`,`hjqk`,`hzjg`,`hzfs`,`dwmc`,`dz`,`fr`,`contracts`,`zj`,`dzyx`,`zscqxs`,`cgjs`,`jszb`,`syfx`,`cgtp`,`cgsp`,`bz`,`jshd_id`,`soft`,`cjjg`,`auction_status` from t_js_cg a
         <where>
           a.is_delete = 0
-		  		  <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
+		  		  <if test="map.id != null"> and id = #{map.id} </if>
+			<if test="map.soft != null"> and cg.soft  = #{map.soft} </if>
 			<if test="map.cjjg != null and map.cjjg != ''"> and id = #{map.cjjg} </if>
 		  		  <if test="map.cgqsr != null and map.cgqsr != ''"> and cgqsr = #{map.cgqsr} </if>
 		  		  <if test="map.qsrlxdh != null and map.qsrlxdh != ''"> and qsrlxdh = #{map.qsrlxdh} </if>
@@ -51,7 +52,7 @@
 	</select>
 
 	<select id="findJsCgFront" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,cgspmc,cgfj,cgfjmc,cgqsr,agreement,agreement_name,zzjgdm,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz,cjjg,auction_status
+		select cg.id as id,cgspmc,cgfj,cgfjmc,cgqsr,agreement,agreement_name,zzjgdm,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,d.mc as lbName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz,cjjg,auction_status
 		from t_js_cg cg left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lb d on(cg.lb_id=d.id) left join t_js_hd hd on(cg.jshd_id=hd.id)
 		<where>
 			cg.is_delete = 0
@@ -92,7 +93,7 @@
 			<if test="map.type == 1"> and cg.user_id = #{map.userId} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null"> and cg.auction_status = #{map.auctionStatus} </if>
-			<if test="map.soft != null and map.soft != ''"> and cg.soft  = #{map.soft} </if>
+			<if test="map.soft != null"> and cg.soft  = #{map.soft} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
 			<if test="map.cjjg != null and map.cjjg != ''"> and cg.cjjg = #{map.cjjg} </if>
@@ -126,7 +127,7 @@
 			<if test="map.type == 1"> and cg.user_id = #{map.userId} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null"> and cg.auction_status = #{map.auctionStatus} </if>
-			<if test="map.soft != null and map.soft != ''"> and cg.soft  = #{map.soft} </if>
+			<if test="map.soft != null"> and cg.soft  = #{map.soft} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
 			<if test="map.cjjg != null and map.cjjg != ''"> and cg.cjjg = #{map.cjjg} </if>

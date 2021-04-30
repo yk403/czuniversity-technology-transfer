@@ -37,7 +37,7 @@ public interface JsXqMapper extends BaseMapper<TJsXq> {
      * @param tJsXq
      */
     boolean updateTJsXq(TJsXq tJsXq);
-
+    List<TJsXq> list(@Param("map") Map map);
 
     /**
      * 分页条件查询需求

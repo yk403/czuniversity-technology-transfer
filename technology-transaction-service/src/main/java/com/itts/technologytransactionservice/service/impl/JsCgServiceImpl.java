@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.service.impl;
 
+import com.itts.common.enums.ErrorCodeEnum;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -95,7 +97,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         } else {
             TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc());
             if (tJsCg2 != null) {
-                return false;
+                throw new ServiceException(NAME_REPEAT);
             }
             //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
             tJsCg.setUserId(2);

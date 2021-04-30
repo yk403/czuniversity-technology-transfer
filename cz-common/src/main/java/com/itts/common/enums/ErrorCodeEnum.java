@@ -39,6 +39,7 @@ public enum ErrorCodeEnum {
     UPDATE_FAIL(-41008, "更新失败"),
     INSERT_FAIL(-41009, "新增失败"),
     DELETE_FAIL(-41010, "删除失败"),
+    NAME_REPEAT(-41011, "交易商品名称重复"),
     //====================      技术交易服务错误提示  END     ====================
 
 
