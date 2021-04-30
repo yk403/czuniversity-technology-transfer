@@ -18,27 +18,27 @@ public class RabbitMQConfig {
      *
      * @return
      */
-    @Bean(name = "itts_technology_transaction_bid_exchange")
+    /*@Bean(name = "itts_technology_transaction_bid_exchange")
     public Exchange ittsTechnologyTransactionBidExchange() {
         return ExchangeBuilder.topicExchange(MQConstant.TECHNOLOGY_TRANSACTION_BID_EXCHANGE).durable(true).build();
-    }
+    }*/
 
     /**
      * 队列
      *
      * @return
      */
-    @Bean(name = "itts_technology_transaction_bid_queue")
+   /* @Bean(name = "itts_technology_transaction_bid_queue")
     public Queue ittsTechnologyTransactionBidQueue() {
         return QueueBuilder.durable(MQConstant.TECHNOLOGY_TRANSACTION_BID_QUEUE).build();
-    }
+    }*/
 
     /**
      * 交换机和队列绑定关系
      */
-    @Bean(name = "itts_technology_transaction_binding")
+    /*@Bean(name = "itts_technology_transaction_binding")
     public Binding ittsTechnologyTransactionBinding() {
 
         return BindingBuilder.bind(ittsTechnologyTransactionBidQueue()).to(ittsTechnologyTransactionBidExchange()).with("itts.technology.transaction.#").noargs();
-    }
+    }*/
 }
