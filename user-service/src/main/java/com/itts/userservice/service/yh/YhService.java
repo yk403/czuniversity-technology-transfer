@@ -24,7 +24,7 @@ public interface YhService {
     /**
      * 查询列表
      */
-    PageInfo<YhListVO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group);
+    PageInfo<YhListVO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group, String condition);
     /**
      * 查询列表
      */

@@ -75,6 +75,8 @@ public class CdServiceImpl implements CdService {
             query.eq("mklx", modelType);
         }
 
+        query.orderByDesc("cjsj");
+
         List<Cd> cds = cdMapper.selectList(query);
         PageInfo<GetCdAndCzDTO> pageInfo = new PageInfo(cds);
 

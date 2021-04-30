@@ -67,6 +67,8 @@ public class CzServiceImpl implements CzService {
             query.eq("mklx", modelType);
         }
 
+        query.orderByDesc("cjsj");
+
         List<Cz> Czs = czMapper.selectList(query);
 
         PageInfo<Cz> tCzPageInfo = new PageInfo<>(Czs);

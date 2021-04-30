@@ -102,6 +102,10 @@
                #{groupId}
             </foreach>
         </if>
+        <if test="condition != null and condition != ''">
+            AND (yh.yhm LIKE CONCAT('%', #{condition}, '%') OR yh.zsxm LIKE CONCAT('%', #{condition}, '%') OR  yh.yhbh LIKE CONCAT('%', #{condition}, '%'))
+        </if>
+        ORDER BY yh.cjsj DESC
     </select>
 
     <select id="findByString" resultMap="YhDTOResultMap">
@@ -113,6 +117,7 @@
         <if test="type != null and type != ''">
             AND yh.yhlx =#{type}
         </if>
-        and (yh.yhm = #{string} or yh.yhbh = #{string})
+        and (yh.yhm like concat('%',#{string},'%')  or yh.yhbh like concat('%',#{string},'%') )
+        ORDER BY yh.cjsj DESC
     </select>
 </mapper>

@@ -74,6 +74,8 @@ public class JsServiceImpl implements JsService {
             query.eq("xtlx", systemType);
         }
 
+        query.orderByDesc("cjsj");
+
         List<Js> js = jsMapper.selectList(query);
         PageInfo<Js> tJsPageInfo = new PageInfo<>(js);
 
