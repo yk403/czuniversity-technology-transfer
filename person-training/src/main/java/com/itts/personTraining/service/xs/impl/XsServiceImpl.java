@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.mapper.xs.XsMapper;
@@ -60,6 +61,23 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                       .eq(StringUtils.isNotBlank(jyxs),"jyxs", jyxs);
         List<Xs> xss = xsMapper.selectList(xsQueryWrapper);
         return new PageInfo<>(xss);
+    }
+
+    /**
+     * 查询教务管理列表
+     * @param pageNum
+     * @param pageSize
+     * @param string
+     * @param yx
+     * @param pcId
+     * @return
+     */
+    @Override
+    public PageInfo<JwglDTO> findJwglByPage(Integer pageNum, Integer pageSize, String string, String yx, Long pcId) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<JwglDTO> jwglList = xsMapper.findJwglList(string, yx, pcId);
+        PageInfo<JwglDTO> jwglDTOPageInfo = new PageInfo<>(jwglList);
+        return jwglDTOPageInfo;
     }
 
     /**

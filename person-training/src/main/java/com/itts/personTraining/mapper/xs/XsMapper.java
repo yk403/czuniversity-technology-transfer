@@ -1,7 +1,10 @@
 package com.itts.personTraining.mapper.xs;
 
+import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.model.xs.Xs;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface XsMapper extends BaseMapper<Xs> {
 
+    List<JwglDTO> findJwglList(String string,String yx,Long pcId);
 }

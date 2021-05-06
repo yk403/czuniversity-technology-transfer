@@ -21,7 +21,7 @@
         id, pcmc, pch, pclx, sfsc, pcnf, cjsj, cjr, gxsj, gxr
     </sql>
 
-    <select id="selectPcList">
+    <select id="selectPcList" parameterType="java.util.List">
         select * from t_pc
         where sfsc = false
         and id in
