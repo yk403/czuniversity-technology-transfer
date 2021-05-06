@@ -1,6 +1,8 @@
 package com.itts.personTraining.service.zy.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.model.xy.Xy;
 import com.itts.personTraining.model.zy.Zy;
 import com.itts.personTraining.mapper.zy.ZyMapper;
@@ -14,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 /**
  * <p>
@@ -66,6 +71,9 @@ public class ZyServiceImpl extends ServiceImpl<ZyMapper, Zy> implements ZyServic
     @Override
     public boolean add(Zy zy) {
         log.info("【人才培养 - 新增专业:{}】",zy);
+        Long userId = getUserId();
+        zy.setCjr(userId);
+        zy.setGxr(userId);
         return zyService.save(zy);
     }
 
@@ -91,6 +99,7 @@ public class ZyServiceImpl extends ServiceImpl<ZyMapper, Zy> implements ZyServic
     @Override
     public boolean update(Zy zy) {
         log.info("【人才培养 - 更新专业:{}】",zy);
+        zy.setGxr(getUserId());
         return zyService.updateById(zy);
     }
 
@@ -104,6 +113,22 @@ public class ZyServiceImpl extends ServiceImpl<ZyMapper, Zy> implements ZyServic
         log.info("【人才培养 - 删除专业:{}】",zy);
         //设置删除状态
         zy.setSfsc(true);
+        zy.setGxr(getUserId());
         return zyService.updateById(zy);
+    }
+
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    private Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
     }
 }

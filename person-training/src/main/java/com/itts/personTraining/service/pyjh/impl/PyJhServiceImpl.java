@@ -115,6 +115,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         log.info("【人才培养 - 删除培养计划:{}】",pyJh);
         //设置删除状态
         pyJh.setSfsc(true);
+        pyJh.setGxr(getUserId());
         return pyJhService.updateById(pyJh);
     }
 

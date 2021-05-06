@@ -118,6 +118,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         log.info("【人才培养 - 删除师资:{}】",sz);
         //设置删除状态
         sz.setSfsc(true);
+        sz.setGxr(getUserId());
         return szService.updateById(sz);
     }
 
