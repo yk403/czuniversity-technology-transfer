@@ -1,26 +1,24 @@
-package com.itts.personTraining.model.pc;
+package com.itts.personTraining.model.ks;
 
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
-
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 批次表
+ * 考试表
  * </p>
  *
  * @author Austin
- * @since 2021-04-20
+ * @since 2021-05-06
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_pc")
-public class Pc implements Serializable {
+@TableName("t_ks")
+public class Ks implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,33 +29,49 @@ public class Pc implements Serializable {
     private Long id;
 
     /**
-     * 批次名称
+     * 批次ID
      */
-    @ApiModelProperty(value = "批次名称", required = true)
-    private String pcmc;
+    private Long pcId;
 
     /**
-     * 批次号
+     * 学校教室ID
      */
-    @ApiModelProperty(value = "批次号", required = true)
-    private String pch;
+    private Long xxjsId;
 
     /**
-     * 批次类型:	1 - 研究生;	2 - 经纪人
+     * 课程ID
      */
-    @ApiModelProperty(value = "批次类型", required = true)
-    private String pclx;
+    private Long kcId;
 
     /**
-     * 是否删除(0:未删除;1已删除)
+     * 考试名称
+     */
+    private String ksmc;
+
+    /**
+     * 考试开始时间
+     */
+    private Date kskssj;
+
+    /**
+     * 考试结束时间
+     */
+    private Date ksjssj;
+
+    /**
+     * 考试类型(0:统一考试;1:实训考试;2:证书考试;3:补考)
+     */
+    private Boolean kslx;
+
+    /**
+     * 是否下发(0:否;1:是)
+     */
+    private Boolean sfxf;
+
+    /**
+     * 是否删除(0:否;1:是)
      */
     private Boolean sfsc;
-
-    /**
-     * 批次年份
-     */
-    @ApiModelProperty(value = "批次年份", required = true)
-    private String pcnf;
 
     /**
      * 创建时间
@@ -80,6 +94,11 @@ public class Pc implements Serializable {
      * 更新人
      */
     private Long gxr;
+
+    /**
+     * 下发时间
+     */
+    private Date xfsj;
 
 
 }

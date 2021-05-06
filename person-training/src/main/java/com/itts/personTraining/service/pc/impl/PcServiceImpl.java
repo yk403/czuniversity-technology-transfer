@@ -5,10 +5,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.personTraining.mapper.pc.PcMapper;
+import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.service.pc.PcService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -25,6 +29,8 @@ import static com.itts.common.constant.SystemConstant.threadLocal;
  * @since 2021-04-20
  */
 @Service
+@Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class PcServiceImpl implements PcService {
 
     @Resource
@@ -110,5 +116,19 @@ public class PcServiceImpl implements PcService {
     public Boolean updateBatch(List<Long> ids) {
         Boolean aBoolean = pcMapper.updatePcList(ids);
         return aBoolean;
+    }
+
+    /**
+     * 根据批次类型查询批次信息
+     * @param pclx
+     * @return
+     */
+    @Override
+    public List<Pc> getByPclx(String pclx) {
+        log.info("【人才培养 - 根据批次类型:{}查询批次信息】",pclx);
+        QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
+        pcQueryWrapper.eq("sfsc",false)
+                .eq("pclx",pclx);
+        return pcMapper.selectList(pcQueryWrapper);
     }
 }

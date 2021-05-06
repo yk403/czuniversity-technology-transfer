@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personTraining.mapper.ks.KsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.ks.Ks">
+        <id column="id" property="id" />
+        <result column="pc_id" property="pcId" />
+        <result column="xxjs_id" property="xxjsId" />
+        <result column="kc_id" property="kcId" />
+        <result column="ksmc" property="ksmc" />
+        <result column="kskssj" property="kskssj" />
+        <result column="ksjssj" property="ksjssj" />
+        <result column="kslx" property="kslx" />
+        <result column="sfxf" property="sfxf" />
+        <result column="sfsc" property="sfsc" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+        <result column="xfsj" property="xfsj" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, pc_id, xxjs_id, kc_id, ksmc, kskssj, ksjssj, kslx, sfxf, sfsc, cjsj, cjr, gxsj, gxr, xfsj
+    </sql>
+    <select id="findByPage" resultType="com.itts.personTraining.dto.KsDTO">
+
+    </select>
+    <select id="findById" resultType="com.itts.personTraining.dto.KsDTO">
+        select id,pcId,xxjsId,kcId,kcmc,jxlmc,jsbh,ksmc,kskssj,ksjssj,kslx,sfxf,cjsj
+    </select>
+
+</mapper>

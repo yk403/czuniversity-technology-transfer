@@ -41,4 +41,11 @@ public interface PcService  {
      * 批量更新
      */
     Boolean updateBatch(List<Long> ids);
+
+    /**
+     * 根据批次类型查询批次信息
+     * @param pclx
+     * @return
+     */
+    List<Pc> getByPclx(String pclx);
 }

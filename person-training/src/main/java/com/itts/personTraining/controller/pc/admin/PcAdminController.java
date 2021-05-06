@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
+
 /**
  * <p>
  * 批次表 前端控制器
@@ -48,6 +50,20 @@ public class PcAdminController {
         return ResponseUtil.success(pc);
     }
 
+    /**
+     * 根据批次类型查询批次信息
+     * @param pclx
+     * @return
+     */
+    @GetMapping("/getByPclx/{pclx}")
+    @ApiOperation(value = "根据批次类型查询批次信息")
+    public ResponseUtil getByPclx(@PathVariable("pclx")String pclx){
+        if (pclx == null) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        return ResponseUtil.success(pcService.getByPclx(pclx));
+    }
+
     @PostMapping("/add")
     @ApiOperation(value = "新增")
     public ResponseUtil add(@RequestBody Pc pc)throws WebException{
@@ -74,7 +90,7 @@ public class PcAdminController {
     @DeleteMapping("/delete/{id}")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
         if(id==null){
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         Pc pc = pcService.get(id);
         if(pc==null){
@@ -91,7 +107,7 @@ public class PcAdminController {
     @DeleteMapping("/deleteBatch/")
     public ResponseUtil deleteBatch(@RequestBody List ids)throws WebException{
         if(ids==null){
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         Boolean aBoolean = pcService.updateBatch(ids);
         return ResponseUtil.success(aBoolean);
@@ -101,16 +117,16 @@ public class PcAdminController {
      */
     private void checkRequset(Pc pc)throws WebException{
         if(pc==null){
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         if(pc.getPcmc()==null){
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         if(pc.getPch()==null){
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         if(pc.getPclx()==null){
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
 }
