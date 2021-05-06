@@ -42,9 +42,9 @@ public class SjzdController {
     @ApiOperation(value = "获取列表")
     public ResponseUtil getList(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                @ApiParam(value = "所属模块") @RequestParam(value = "model") String model,
-                                @ApiParam(value = "所属系统") @RequestParam(value = "systemType") String systemType,
-                                @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary") String dictionary) {
+                                @ApiParam(value = "所属模块") @RequestParam(value = "model", required = false) String model,
+                                @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
+                                @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary) {
 
         PageInfo<Sjzd> byPage = sjzdService.findByPage(pageNum, pageSize, model, systemType, dictionary);
         return ResponseUtil.success(byPage);
