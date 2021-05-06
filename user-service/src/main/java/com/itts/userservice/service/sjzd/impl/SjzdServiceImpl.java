@@ -34,17 +34,21 @@ public class SjzdServiceImpl implements SjzdService {
      * 获取列表
      */
     @Override
-    public PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType) {
+    public PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType, String dictionary) {
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Sjzd> objectQueryWrapper = new QueryWrapper<>();
         objectQueryWrapper.eq("sfsc", false);
 
-        if(StringUtils.isNotBlank(model)){
-            objectQueryWrapper.eq("ssmk", model);
+        if (StringUtils.isNotBlank(model)) {
+            objectQueryWrapper.eq("mklx", model);
         }
 
-        if(StringUtils.isNotBlank(systemType)){
+        if (StringUtils.isNotBlank(systemType)) {
             objectQueryWrapper.eq("xtlb", systemType);
+        }
+
+        if (StringUtils.isNotBlank(dictionary)) {
+            objectQueryWrapper.eq("ssmk", dictionary);
         }
 
         objectQueryWrapper.orderByDesc("cjsj");
