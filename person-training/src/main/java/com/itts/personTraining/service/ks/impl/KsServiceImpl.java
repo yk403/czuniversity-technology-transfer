@@ -51,10 +51,6 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     private KsMapper ksMapper;
     @Autowired
     private SzKsService szKsService;
-    @Autowired
-    private KsXsService ksXsService;
-    @Resource
-    private KsXsMapper ksXsMapper;
     @Resource
     private SzKsMapper szKsMapper;
 
@@ -84,11 +80,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     public KsDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询考试详情】",id);
         KsDTO ksDTO = ksMapper.findById(id);
-        List<Long> szIds = szKsMapper.selectByKsId(id);
-        List<Long> szIdList = ksDTO.getSzIds();
-        for (Long szId : szIds) {
-            szIdList.add(szId);
-        }
+        ksDTO.setSzIds(szKsMapper.selectByKsId(id));
         return ksDTO;
     }
 
@@ -145,6 +137,17 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
      */
     @Override
     public boolean delete(KsDTO ksDTO) {
+        log.info("【人才培养 - 删除考试:{}】",ksDTO);
+        //设置删除状态
+        ksDTO.setSfsc(true);
+        ksDTO.setGxr(getUserId());
+        Ks ks = new Ks();
+        BeanUtils.copyProperties(ksDTO,ks);
+        if (ksService.updateById(ks)) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("ks_id",ks.getId());
+            return szKsService.removeByMap(map);
+        }
         return false;
     }
 
