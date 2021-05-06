@@ -50,10 +50,11 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
      * @return
      */
     @Override
-    public PageInfo<PkDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId) {
-        log.info("【人才培养 - 分页条件查询排课列表,批次id:{}】",pcId);
+    public PageInfo<PkDTO> findByPage(Integer pageNum, Integer pageSize,String skqsnyr, String skjsnyr, Long pcId) {
+        log.info("【人才培养 - 分页条件查询排课列表,上课起始年月日:{},上课结束年月日:{},批次id:{}】",skqsnyr,skjsnyr,pcId);
+
         PageHelper.startPage(pageNum, pageSize);
-        List<PkDTO> pkDTOs = pkMapper.findPage(pcId);
+        List<PkDTO> pkDTOs = pkMapper.findPage(skqsnyr,skjsnyr,pcId);
         return new PageInfo<>(pkDTOs);
     }
 

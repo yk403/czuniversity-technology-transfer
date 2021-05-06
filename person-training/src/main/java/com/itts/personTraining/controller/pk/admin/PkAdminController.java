@@ -42,8 +42,13 @@ public class PkAdminController {
     @ApiOperation(value = "获取列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                   @RequestParam(value = "skqsnyr") String skqsnyr,
+                                   @RequestParam(value = "skjsnyr") String skjsnyr,
                                    @RequestParam(value = "pcId", required = false) Long pcId) {
-        return ResponseUtil.success(pkService.findByPage(pageNum, pageSize, pcId));
+        if (skqsnyr.compareTo(skjsnyr) >= 0) {
+            throw new WebException(START_TIME_GREATER_END_TIME_ERROR);
+        }
+        return ResponseUtil.success(pkService.findByPage(pageNum, pageSize, skqsnyr, skjsnyr, pcId));
     }
 
     /**
