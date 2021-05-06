@@ -4,6 +4,7 @@ package com.itts.technologytransactionservice.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.itts.common.utils.Query;
+import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsXq;
 import org.apache.ibatis.annotations.Param;
@@ -22,6 +23,7 @@ import java.util.Map;
 public interface JsXqMapper extends BaseMapper<TJsXq> {
 
     List<TJsXq> findJsXq(@Param("map") Map map);
+    List<TJsXq> findHdJsXq(@Param("map") Map map);
 
     @Select("select * from t_js_xq where id = #{id} and is_delete = 0")
     TJsXq getById(Integer id);
