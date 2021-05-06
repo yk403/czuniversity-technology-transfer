@@ -52,6 +52,12 @@ public class PkDTO {
     private Long xxjsId;
 
     /**
+     * 课程时间ID
+     */
+    @ApiModelProperty(value = "课程时间ID", required = true)
+    private Long kcsjId;
+
+    /**
      * 排课名称
      */
     @ApiModelProperty(value = "排课名称", required = true)
@@ -81,11 +87,6 @@ public class PkDTO {
     @ApiModelProperty(value = "上课结束年月日", required = true)
     private String skjsnyr;
 
-    /**
-     * 上课时间段
-     */
-    @ApiModelProperty(value = "上课时间段", required = true)
-    private String sksjd;
 
     /**
      * 星期数

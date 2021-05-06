@@ -124,6 +124,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         log.info("【人才培养 - 删除课程:{}】",kc);
         //设置删除状态
         kc.setSfsc(true);
+        kc.setGxr(getUserId());
         if (kcService.updateById(kc)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("kc_id",kc.getId());

@@ -1,6 +1,8 @@
 package com.itts.personTraining.service.xy.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.model.pk.Pk;
 import com.itts.personTraining.model.xy.Xy;
 import com.itts.personTraining.mapper.xy.XyMapper;
@@ -16,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 /**
  * <p>
@@ -56,6 +61,9 @@ public class XyServiceImpl extends ServiceImpl<XyMapper, Xy> implements XyServic
     @Override
     public boolean add(Xy xy) {
         log.info("【人才培养 - 新增学院:{}】",xy);
+        Long userId = getUserId();
+        xy.setCjr(userId);
+        xy.setGxr(userId);
         return xyService.save(xy);
     }
 
@@ -81,6 +89,7 @@ public class XyServiceImpl extends ServiceImpl<XyMapper, Xy> implements XyServic
     @Override
     public boolean update(Xy xy) {
         log.info("【人才培养 - 更新学院:{}】",xy);
+        xy.setGxr(getUserId());
         return xyService.updateById(xy);
     }
 
@@ -94,11 +103,27 @@ public class XyServiceImpl extends ServiceImpl<XyMapper, Xy> implements XyServic
         log.info("【人才培养 - 删除学院:{}】",xy);
         //设置删除状态
         xy.setSfsc(true);
+        xy.setGxr(getUserId());
         if (xyService.updateById(xy)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("xy_id",xy.getId());
             return xyKcService.removeByMap(map);
         }
         return false;
+    }
+
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    private Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
     }
 }

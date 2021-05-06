@@ -116,6 +116,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         log.info("【人才培养 - 删除学员:{}】",xs);
         //设置删除状态
         xs.setSfsc(true);
+        xs.setGxr(getUserId());
         return xsService.updateById(xs);
     }
 
