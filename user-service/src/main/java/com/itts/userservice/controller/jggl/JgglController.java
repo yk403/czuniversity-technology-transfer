@@ -167,8 +167,11 @@ public class JgglController {
         String fjbm = jggl.getFjbm();
         Jggl fatherGroup = jgglService.selectByJgbm(fjbm);
         String cj = fatherGroup.getCj();
-
-        BeanUtils.copyProperties(jggl, group, "id", "cjsj", "cjr");
+        if(jggl.getFjbm().equals(jggl.getJgbm())){
+            BeanUtils.copyProperties(jggl, group, "id", "cjsj", "cjr","fjbm");
+        }else {
+            BeanUtils.copyProperties(jggl, group, "id", "cjsj", "cjr");
+        }
 
         if (!Objects.equals(fjbm, UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
 

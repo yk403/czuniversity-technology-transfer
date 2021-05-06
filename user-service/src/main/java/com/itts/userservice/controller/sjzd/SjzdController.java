@@ -10,12 +10,12 @@ import com.itts.userservice.model.sjzd.Sjzd;
 import com.itts.userservice.service.sjzd.SjzdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,38 +36,20 @@ public class SjzdController {
     private SjzdService sjzdService;
 
     /**
-     * 通过名称或编码查询
-     */
-    @GetMapping("/queryDictionary/")
-    @ApiOperation(value = "通过名称或编码查询")
-    public ResponseUtil getByNameAndCode(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                         @RequestParam(value = "string") String string,@RequestParam(value = "ssmk") String ssmk) throws WebException {
-        PageInfo<Sjzd> sjzd = sjzdService.selectByString(pageNum,pageSize,string,ssmk);
-        return ResponseUtil.success(sjzd);
-    }
-
-    /**
      * 获取列表
      */
-    @GetMapping("/getlist/")
+    @GetMapping("/list/")
     @ApiOperation(value = "获取列表")
-    public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        PageInfo<Sjzd> byPage = sjzdService.findByPage(pageNum, pageSize);
+    public ResponseUtil getList(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                @ApiParam(value = "所属模块") @RequestParam(value = "model") String model,
+                                @ApiParam(value = "所属系统") @RequestParam(value = "systemType") String systemType,
+                                @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary") String dictionary) {
+
+        PageInfo<Sjzd> byPage = sjzdService.findByPage(pageNum, pageSize, model, systemType, dictionary);
         return ResponseUtil.success(byPage);
     }
-    /**
-     * 获取指定模块列表
-     */
-    @GetMapping("/getappointlist/")
-    @ApiOperation(value = "获取指定模块列表")
-    public ResponseUtil getAppointList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                       @RequestParam(value = "ssmk") String ssmk) {
-        PageInfo<Sjzd> byPage = sjzdService.findAppointByPage(pageNum, pageSize,ssmk);
-        return ResponseUtil.success(byPage);
-    }
+
     /**
      * 新增
      */
