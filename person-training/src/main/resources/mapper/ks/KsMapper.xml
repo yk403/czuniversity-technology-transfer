@@ -29,7 +29,11 @@
 
     </select>
     <select id="findById" resultType="com.itts.personTraining.dto.KsDTO">
-        select id,pcId,xxjsId,kcId,kcmc,jxlmc,jsbh,ksmc,kskssj,ksjssj,kslx,sfxf,cjsj
+        select ks.id, pc_id, xxjs_id, kc_id, kcmc, jxlmc, jsbh, ksmc, kskssj, ksjssj, kslx, ks.sfxf, ks.cjsj, ks.cjr, ks.gxsj, ks.gxr
+        from t_ks ks left join t_kc kc on(ks.kc_id=kc.id) left join t_xxjs xxjs on(ks.xxjs_id=xxjs.id)
+        <where>
+            ks.sfsc = false and kc.sfsc = false and xxjs.sfsc = false and ks.id = #{id}
+        </where>
     </select>
 
 </mapper>

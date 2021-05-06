@@ -89,11 +89,6 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         for (Long szId : szIds) {
             szIdList.add(szId);
         }
-        List<Long> xsIds = ksXsMapper.selectByKsId(id);
-        List<Long> xsIdList = ksDTO.getXsIds();
-        for (Long xsId : xsIds) {
-            xsIdList.add(xsId);
-        }
         return ksDTO;
     }
 
@@ -116,8 +111,8 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         log.info("【人才培养 - 新增考试:{}】",ksDTO);
         Long userId = getUserId();
         Ks ks = new Ks();
-        ks.setCjr(userId);
-        ks.setGxr(userId);
+        ksDTO.setCjr(userId);
+        ksDTO.setGxr(userId);
         BeanUtils.copyProperties(ksDTO,ks);
         if (ksService.save(ks)) {
             List<Long> szIds = ksDTO.getSzIds();
@@ -128,18 +123,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 szKs.setKsId(ks.getId());
                 szKsList.add(szKs);
             }
-            if (szKsService.saveBatch(szKsList)) {
-                List<Long> xsIds = ksDTO.getXsIds();
-                List<KsXs> ksXsList = new ArrayList<>();
-                for (Long xsId : xsIds) {
-                    KsXs ksXs = new KsXs();
-                    ksXs.setXsId(xsId);
-                    ksXs.setKsId(ks.getId());
-                    ksXsList.add(ksXs);
-                }
-                return ksXsService.saveBatch(ksXsList);
-            }
-            return false;
+            return szKsService.saveBatch(szKsList);
         }
         return false;
     }

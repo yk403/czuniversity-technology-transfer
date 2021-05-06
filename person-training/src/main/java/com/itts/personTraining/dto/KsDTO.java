@@ -57,12 +57,6 @@ public class KsDTO {
     private List<Long> szIds;
 
     /**
-     * 学生ids
-     */
-    @ApiModelProperty(value = "学生ids", required = true)
-    private List<Long> xsIds;
-
-    /**
      * 教学楼名称
      */
     @ApiModelProperty(value = "教学楼名称")
