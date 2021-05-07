@@ -104,7 +104,7 @@ public class SjzdController {
      * 批量删除
      */
     @ApiOperation(value = "批量删除")
-    @DeleteMapping("/deleteBatch")
+    @DeleteMapping("/batch/delete/")
     public ResponseUtil deleteBatch(@RequestBody List<Long> ids) {
         if (ids == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
