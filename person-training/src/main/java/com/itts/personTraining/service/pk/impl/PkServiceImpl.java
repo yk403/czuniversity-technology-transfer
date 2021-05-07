@@ -1,18 +1,14 @@
 package com.itts.personTraining.service.pk.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.PkDTO;
-import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pk.Pk;
 import com.itts.personTraining.mapper.pk.PkMapper;
 import com.itts.personTraining.service.pk.PkService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.utils.DateUtils.getDateAfterNDays;
 
 /**
  * <p>
@@ -52,7 +49,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     @Override
     public Map<String, List<PkDTO>> findPkInfo(String skqsnyr, Long pcId) {
         log.info("【人才培养 - 查询排课信息,上课起始年月日:{},批次id:{}】",skqsnyr,pcId);
-        List<PkDTO> pkDTOs = pkMapper.findPkInfo(skqsnyr,getDateAfterNDays(skqsnyr, 7),pcId);
+        List<PkDTO> pkDTOs = pkMapper.findPkInfo(skqsnyr, getDateAfterNDays(skqsnyr, 7),pcId);
         Map<String, List<PkDTO>> groupByXqs = pkDTOs.stream().collect(Collectors.groupingBy(PkDTO::getXqs));
         //遍历分组
         List<String> xqsList = new ArrayList<>();
@@ -161,22 +158,4 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         return userId;
     }
 
-    /**
-     * 获取给定日期N天后的日期
-     */
-    public String getDateAfterNDays(String dateTime, int days) {
-        Calendar calendar = Calendar.getInstance();
-        String[] dateTimeArray = dateTime.split("-");
-        int year = Integer.parseInt(dateTimeArray[0]);
-        int month = Integer.parseInt(dateTimeArray[1]);
-        int day = Integer.parseInt(dateTimeArray[2]);
-        calendar.set(year, month - 1, day);
-        // 给定时间与1970 年 1 月 1 日的00:00:00.000的差，以毫秒显示
-        long time = calendar.getTimeInMillis();
-        // 用给定的 long值设置此Calendar的当前时间值
-        calendar.setTimeInMillis(time + days * 1000 * 60 * 60 * 24);
-        return calendar.get(Calendar.YEAR)
-                + "-" + (calendar.get(Calendar.MONTH) + 1)
-                + "-" + calendar.get(Calendar.DAY_OF_MONTH);
-    }
 }
