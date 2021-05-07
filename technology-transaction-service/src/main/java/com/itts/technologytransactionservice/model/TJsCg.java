@@ -254,7 +254,7 @@ public class TJsCg implements Serializable {
 	 */
 	private Integer auctionStatus;
 	/**
-	 * 归档清算状态
+	 * 结算状态(0:未结算;1:已结算)
 	 */
 	private Integer jszt;
 }

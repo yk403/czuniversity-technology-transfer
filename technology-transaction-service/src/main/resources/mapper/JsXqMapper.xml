@@ -74,7 +74,7 @@
 			<if test="map.type == 0"> and xq.user_id != #{map.userId} </if>
 			<if test="map.jshdId != null"> and xq.jshd_id = #{map.jshdId} </if>
 			 <!-- 检索所有关联活动为空的技术需求-->
-			<if test="map.addActivity == 0"> and xq.jshd_id IS NULL or xq.auction_status = 3 </if>
+			<if test="map.addActivity == 0"> and (xq.jshd_id IS NULL or xq.auction_status = 3) </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">
