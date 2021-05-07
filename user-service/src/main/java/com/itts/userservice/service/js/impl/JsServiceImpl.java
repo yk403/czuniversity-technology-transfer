@@ -345,20 +345,23 @@ public class JsServiceImpl implements JsService {
 
             //获取新增的菜单要添加的操作列表
             AddJsCdRequest addJsCd = addJsCdMap.get(addCdId);
-            for (Long czId : addJsCd.getCzIds()) {
+            if (!CollectionUtils.isEmpty(addJsCd.getCzIds())) {
 
-                JsCdCzGl jsCdCzGl = new JsCdCzGl();
+                for (Long czId : addJsCd.getCzIds()) {
 
-                jsCdCzGl.setJsId(js.getId());
-                jsCdCzGl.setCdId(addCdId);
-                jsCdCzGl.setCzId(czId);
+                    JsCdCzGl jsCdCzGl = new JsCdCzGl();
 
-                jsCdCzGl.setCjsj(now);
-                jsCdCzGl.setGxsj(now);
-                jsCdCzGl.setCjr(userId);
-                jsCdCzGl.setGxr(userId);
+                    jsCdCzGl.setJsId(js.getId());
+                    jsCdCzGl.setCdId(addCdId);
+                    jsCdCzGl.setCzId(czId);
 
-                jsCdCzGlMapper.insert(jsCdCzGl);
+                    jsCdCzGl.setCjsj(now);
+                    jsCdCzGl.setGxsj(now);
+                    jsCdCzGl.setCjr(userId);
+                    jsCdCzGl.setGxr(userId);
+
+                    jsCdCzGlMapper.insert(jsCdCzGl);
+                }
             }
         }
 
