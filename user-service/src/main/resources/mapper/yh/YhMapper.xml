@@ -92,7 +92,7 @@
         FROM t_yh yh
                  LEFT JOIN t_yh_js_gl yhjsgl ON yh.id = yhjsgl.yh_id
                  LEFT JOIN t_js js ON yhjsgl.js_id = js.id
-        WHERE yh.sfsc = false and yhjsgl.sfsc =false
+        WHERE yh.sfsc = false
         <if test="type != null and type != ''">
             AND yh.yhlx =#{type}
         </if>
