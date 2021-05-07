@@ -21,10 +21,11 @@ public interface KsMapper extends BaseMapper<Ks> {
      * 查询考试列表
      * @param kslx
      * @param pcId
+     * @param pclx
      * @param kcmc
      * @return
      */
-    List<KsDTO> findByPage(@Param("kslx") String kslx, @Param("pcId") Long pcId, @Param("kcmc") String kcmc);
+    List<KsDTO> findByPage(@Param("kslx") String kslx, @Param("pcId") Long pcId, @Param("pclx") String pclx, @Param("kcmc") String kcmc);
 
     /**
      * 根据考试id查询ksDTO

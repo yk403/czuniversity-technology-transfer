@@ -60,15 +60,16 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
      * @param pageSize
      * @param kslx
      * @param pcId
+     * @param pclx
      * @param kcmc
      * @return
      */
     @Override
-    public PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, String kslx, Long pcId, String kcmc) {
-        log.info("【人才培养 - 分页条件查询考试列表,考试类型:{},批次id:{},课程名称:{}】",kslx,pcId,kcmc);
+    public PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, String kslx, Long pcId, String pclx, String kcmc) {
+        log.info("【人才培养 - 分页条件查询考试列表,考试类型:{},批次id:{},批次类型:{},课程名称:{}】",kslx,pcId,pclx,kcmc);
         PageHelper.startPage(pageNum, pageSize);
-        List<KsDTO> ksDTOs = ksMapper.findByPage(kslx,pcId,kcmc);
-        return null;
+        List<KsDTO> ksDTOs = ksMapper.findByPage(kslx,pcId,pclx,kcmc);
+        return new PageInfo<>(ksDTOs);
     }
 
     /**
@@ -84,14 +85,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         return ksDTO;
     }
 
-    /**
-     * 查询所有考试信息
-     * @return
-     */
-    @Override
-    public List<KsDTO> getAll() {
-        return null;
-    }
+
 
     /**
      * 新增考试

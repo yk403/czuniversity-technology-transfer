@@ -43,8 +43,9 @@ public class KsAdminController {
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "kslx", required = false) String kslx,
                                    @RequestParam(value = "pcId", required = false) Long pcId,
+                                   @RequestParam(value = "pclx", required = false) String pclx,
                                    @RequestParam(value = "kcmc", required = false) String kcmc) {
-        return ResponseUtil.success(ksService.findByPage(pageNum, pageSize, kslx, pcId, kcmc));
+        return ResponseUtil.success(ksService.findByPage(pageNum, pageSize, kslx, pcId, pclx, kcmc));
     }
 
     /**
@@ -57,15 +58,6 @@ public class KsAdminController {
     @ApiOperation(value = "根据id查询考试详情")
     public ResponseUtil get(@PathVariable("id") Long id) {
         return ResponseUtil.success(ksService.get(id));
-    }
-
-    /**
-     * 查询所有考试信息
-     */
-    @GetMapping("/getAll")
-    @ApiOperation(value = "查询所有考试信息")
-    public ResponseUtil getAll() {
-        return ResponseUtil.success(ksService.getAll());
     }
 
     /**

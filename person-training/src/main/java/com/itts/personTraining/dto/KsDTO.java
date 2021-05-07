@@ -90,7 +90,7 @@ public class KsDTO {
      * 考试类型(0:统一考试;1:实训考试;2:证书考试;3:补考)
      */
     @ApiModelProperty(value = "试类型(0:统一考试;1:实训考试;2:证书考试;3:补考)", required = true)
-    private Boolean kslx;
+    private Integer kslx;
 
     /**
      * 是否下发(0:否;1:是)
