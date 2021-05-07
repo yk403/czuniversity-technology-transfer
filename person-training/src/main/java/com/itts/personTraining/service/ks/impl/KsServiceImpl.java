@@ -68,8 +68,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     public PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, String kslx, Long pcId, String pclx, String kcmc) {
         log.info("【人才培养 - 分页条件查询考试列表,考试类型:{},批次id:{},批次类型:{},课程名称:{}】",kslx,pcId,pclx,kcmc);
         PageHelper.startPage(pageNum, pageSize);
-        List<KsDTO> ksDTOs = ksMapper.findByPage(kslx,pcId,pclx,kcmc);
-        return new PageInfo<>(ksDTOs);
+        return new PageInfo<>(ksMapper.findByPage(kslx,pcId,pclx,kcmc));
     }
 
     /**
@@ -101,18 +100,12 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         ksDTO.setGxr(userId);
         BeanUtils.copyProperties(ksDTO,ks);
         if (ksService.save(ks)) {
-            List<Long> szIds = ksDTO.getSzIds();
-            List<SzKs> szKsList = new ArrayList<>();
-            for (Long szId : szIds) {
-                SzKs szKs = new SzKs();
-                szKs.setSzId(szId);
-                szKs.setKsId(ks.getId());
-                szKsList.add(szKs);
-            }
-            return szKsService.saveBatch(szKsList);
+            return saveSzKs(ksDTO.getSzIds(), ks);
         }
         return false;
     }
+
+
 
     /**
      * 更新考试
@@ -121,7 +114,22 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
      */
     @Override
     public boolean update(KsDTO ksDTO) {
-
+        log.info("【人才培养 - 更新考试:{}】",ksDTO);
+        Ks ks = new Ks();
+        ksDTO.setGxr(getUserId());
+        BeanUtils.copyProperties(ksDTO,ks);
+        if (ksService.updateById(ks)) {
+            List<Long> szIds = ksDTO.getSzIds();
+            if (szIds != null) {
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("ks_id",ksDTO.getId());
+                if (szKsService.removeByMap(map)) {
+                    return saveSzKs(szIds,ks);
+                }
+                return false;
+            }
+            return false;
+        }
         return false;
     }
 
@@ -174,5 +182,22 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    /**
+     * 新增师资考试
+     * @param szIds
+     * @param ks
+     * @return
+     */
+    private boolean saveSzKs(List<Long> szIds, Ks ks) {
+        List<SzKs> szKsList = new ArrayList<>();
+        for (Long szId : szIds) {
+            SzKs szKs = new SzKs();
+            szKs.setSzId(szId);
+            szKs.setKsId(ks.getId());
+            szKsList.add(szKs);
+        }
+        return szKsService.saveBatch(szKsList);
     }
 }
