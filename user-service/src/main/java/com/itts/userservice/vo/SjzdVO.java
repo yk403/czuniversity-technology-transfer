@@ -14,8 +14,6 @@ public class SjzdVO implements Serializable {
     private static final long serialVersionUID = 8640002509739394257L;
     private String zdmc;
     private String zdbm;
-    private String fjzdbm;
-    private String zdcj;
     private String xtlb;
     private String mklx;
     private String ssmk;
