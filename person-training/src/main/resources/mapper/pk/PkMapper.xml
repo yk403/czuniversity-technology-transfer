@@ -36,7 +36,7 @@
         </where>
     </select>
 
-    <select id="findPage" resultType="com.itts.personTraining.dto.PkDTO">
+    <select id="findPkInfo" resultType="com.itts.personTraining.dto.PkDTO">
         select pk.id as id,pc.id as pcId,kc.id as kcId,sz.id as szId,xxjs.id as xxjsId,kc.kcdm as kcdm,kc.kcmc as kcmc,skqsnyr,skjsnyr,kcsj.id as kcsjId,xqs,xxjs.jxlmc as jxlmc,xxjs.jsbh as jsbh,sz.dsxm as dsxm,dsbh,pk.sfxf as sfxf,pk.cjsj as cjsj,pk.cjr as cjr,pk.gxsj as gxsj,pk.gxr as gxr
         from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_kc kc on(pk.kc_id=kc.id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id) left join t_kcsj kcsj on(pk.kcsj_id=kcsj.id)
         <where>

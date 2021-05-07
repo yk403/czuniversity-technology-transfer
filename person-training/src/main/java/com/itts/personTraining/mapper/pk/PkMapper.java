@@ -19,5 +19,5 @@ public interface PkMapper extends BaseMapper<Pk> {
 
     PkDTO getById(@Param("id") Long id);
 
-    List<PkDTO> findPage(@Param("skqsnyr") String skqsnyr,@Param("skjsnyr") String skjsnyr,@Param("pcId") Long pcId);
+    List<PkDTO> findPkInfo(@Param("skqsnyr") String skqsnyr,@Param("skjsnyr") String skjsnyr,@Param("pcId") Long pcId);
 }

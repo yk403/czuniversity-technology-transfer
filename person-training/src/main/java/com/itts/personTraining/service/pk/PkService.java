@@ -21,11 +21,10 @@ public interface PkService extends IService<Pk> {
     /**
      * 查询排课信息
      * @param skqsnyr
-     * @param skjsnyr
      * @param pcId
      * @return
      */
-    Map<String, List<PkDTO>> findByPage(String skqsnyr, String skjsnyr, Long pcId);
+    Map<String, List<PkDTO>> findPkInfo(String skqsnyr, Long pcId);
 
     /**
      * 根据id查询排课详情

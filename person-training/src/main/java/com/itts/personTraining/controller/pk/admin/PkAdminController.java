@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
@@ -38,13 +39,9 @@ public class PkAdminController {
      */
     @GetMapping("/list")
     @ApiOperation(value = "查询排课信息")
-    public ResponseUtil findByPage(@RequestParam(value = "skqsnyr") String skqsnyr,
-                                   @RequestParam(value = "skjsnyr") String skjsnyr,
+    public ResponseUtil findPkInfo(@RequestParam(value = "skqsnyr") String skqsnyr,
                                    @RequestParam(value = "pcId", required = false) Long pcId) {
-        if (skqsnyr.compareTo(skjsnyr) >= 0) {
-            throw new WebException(START_TIME_GREATER_END_TIME_ERROR);
-        }
-        return ResponseUtil.success(pkService.findByPage(skqsnyr, skjsnyr, pcId));
+        return ResponseUtil.success(pkService.findPkInfo(skqsnyr, pcId));
     }
 
     /**
@@ -150,7 +147,7 @@ public class PkAdminController {
     /**
      * 校验参数
      */
-    private void checkRequest(PkDTO pkDTO) throws WebException {
+    public void checkRequest(PkDTO pkDTO) throws WebException {
         if (pkDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
@@ -158,5 +155,7 @@ public class PkAdminController {
             throw new WebException(SCHEDUING_EXISTS_ERROR);
         }
     }
+
+
 }
 

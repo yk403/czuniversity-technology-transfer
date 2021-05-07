@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
@@ -49,20 +46,18 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     /**
      * 查询排课信息
      * @param skqsnyr
-     * @param skjsnyr
      * @param pcId
      * @return
      */
     @Override
-    public Map<String, List<PkDTO>> findByPage(String skqsnyr, String skjsnyr, Long pcId) {
-        log.info("【人才培养 - 查询排课信息,上课起始年月日:{},上课结束年月日:{},批次id:{}】",skqsnyr,skjsnyr,pcId);
-        List<PkDTO> pkDTOs = pkMapper.findPage(skqsnyr,skjsnyr,pcId);
+    public Map<String, List<PkDTO>> findPkInfo(String skqsnyr, Long pcId) {
+        log.info("【人才培养 - 查询排课信息,上课起始年月日:{},批次id:{}】",skqsnyr,pcId);
+        List<PkDTO> pkDTOs = pkMapper.findPkInfo(skqsnyr,getDateAfterNDays(skqsnyr, 7),pcId);
         Map<String, List<PkDTO>> groupByXqs = pkDTOs.stream().collect(Collectors.groupingBy(PkDTO::getXqs));
         //遍历分组
         List<String> xqsList = new ArrayList<>();
         for (Map.Entry<String, List<PkDTO>> entryPkDTO : groupByXqs.entrySet()) {
-            String xqs = entryPkDTO.getKey();
-            xqsList.add(xqs);
+            xqsList.add(entryPkDTO.getKey());
         }
         for (int i = 1; i < 8; i++) {
             if (xqsList.contains(String.valueOf(i))) {
@@ -155,7 +150,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
      * 获取当前用户id
      * @return
      */
-    private Long getUserId() {
+    public Long getUserId() {
         LoginUser loginUser = threadLocal.get();
         Long userId;
         if (loginUser != null) {
@@ -166,4 +161,22 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         return userId;
     }
 
+    /**
+     * 获取给定日期N天后的日期
+     */
+    public String getDateAfterNDays(String dateTime, int days) {
+        Calendar calendar = Calendar.getInstance();
+        String[] dateTimeArray = dateTime.split("-");
+        int year = Integer.parseInt(dateTimeArray[0]);
+        int month = Integer.parseInt(dateTimeArray[1]);
+        int day = Integer.parseInt(dateTimeArray[2]);
+        calendar.set(year, month - 1, day);
+        // 给定时间与1970 年 1 月 1 日的00:00:00.000的差，以毫秒显示
+        long time = calendar.getTimeInMillis();
+        // 用给定的 long值设置此Calendar的当前时间值
+        calendar.setTimeInMillis(time + days * 1000 * 60 * 60 * 24);
+        return calendar.get(Calendar.YEAR)
+                + "-" + (calendar.get(Calendar.MONTH) + 1)
+                + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+    }
 }
