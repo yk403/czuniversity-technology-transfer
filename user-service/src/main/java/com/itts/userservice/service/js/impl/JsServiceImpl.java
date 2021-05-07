@@ -326,6 +326,8 @@ public class JsServiceImpl implements JsService {
             }
         }
 
+        Map<Long, AddJsCdRequest> addJsCdMap = request.getCdCzIds().stream().collect(Collectors.toMap(AddJsCdRequest::getCdIds, addJsCdRequest -> addJsCdRequest));
+
         //添加新的角色菜单关联
         for (Long addCdId : addCdIds) {
 
@@ -340,6 +342,24 @@ public class JsServiceImpl implements JsService {
             jsCdGl.setGxr(userId);
 
             jsCdGlMapper.insert(jsCdGl);
+
+            //获取新增的菜单要添加的操作列表
+            AddJsCdRequest addJsCd = addJsCdMap.get(addCdId);
+            for (Long czId : addJsCd.getCzIds()) {
+
+                JsCdCzGl jsCdCzGl = new JsCdCzGl();
+
+                jsCdCzGl.setJsId(js.getId());
+                jsCdCzGl.setCdId(addCdId);
+                jsCdCzGl.setCzId(czId);
+
+                jsCdCzGl.setCjsj(now);
+                jsCdCzGl.setGxsj(now);
+                jsCdCzGl.setCjr(userId);
+                jsCdCzGl.setGxr(userId);
+
+                jsCdCzGlMapper.insert(jsCdCzGl);
+            }
         }
 
         //获取当前角色下关联的角色菜单操作关联
