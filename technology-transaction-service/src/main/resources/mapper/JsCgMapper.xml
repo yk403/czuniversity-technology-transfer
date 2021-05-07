@@ -59,6 +59,7 @@
 			<if test="map.userId != null and map.userId != ''"> and cg.user_id = #{map.userId} </if>
 			<if test="map.type == 0"> and sh.fbshzt != 2 </if>
 			<if test="map.type == 1"> and sh.fbshzt = 2 and sh.assistance_status != 2 </if>
+			<if test="map.fbshzt != null"> and sh.fbshzt = #{map.fbshzt} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null"> and cg.auction_status = #{map.auctionStatus} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
@@ -101,7 +102,7 @@
 			<if test="map.cgspmc != null and map.cgspmc != ''"> and cg.cgspmc = concat('%',#{map.cgspmc},'%') </if>
 			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
-			<if test="map.fbshzt != null and map.fbshzt != ''"> and sh.fbshzt = #{map.fbshzt} </if>
+			<if test="map.fbshzt != null"> and sh.fbshzt = #{map.fbshzt} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
 			<if test="map.jylx != null"> and sh.jylx = #{map.jylx} </if>
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
