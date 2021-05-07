@@ -63,4 +63,5 @@ public interface XsService extends IService<Xs> {
      * @return
      */
     Xs selectByXh(String xh);
+    Boolean addKcXs(Long id,Long kcId);
 }

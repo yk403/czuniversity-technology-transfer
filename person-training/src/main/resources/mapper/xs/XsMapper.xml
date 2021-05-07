@@ -154,4 +154,9 @@
         </if>
         order by xs.cjsj desc
     </select>
+
+    <!--新增学生课程关联-->
+    <insert id="addKcList">
+        insert into t_kc_xs(kc_id,xs_id) values(#{id},#{kcId})
+    </insert>
 </mapper>
