@@ -8,6 +8,7 @@ import com.itts.technologytransactionservice.mapper.JsBmMapper;
 import com.itts.technologytransactionservice.mapper.JsCjRcMapper;
 import com.itts.technologytransactionservice.model.TJsBm;
 import com.itts.technologytransactionservice.model.TJsCjRc;
+import com.itts.technologytransactionservice.model.TJsCjRcDto;
 import com.itts.technologytransactionservice.service.JsCjRcService;
 import com.itts.technologytransactionservice.service.cd.JsBmAdminService;
 import com.itts.technologytransactionservice.service.cd.JsCjRcAdminService;
@@ -34,8 +35,8 @@ public class JsCjRcAdminServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> i
 	@Override
 	public PageInfo page(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		List<TJsCjRc> list = jsCjRcMapper.list(query);
-		PageInfo<TJsCjRc> page = new PageInfo<>(list);
+		List<TJsCjRcDto> list = jsCjRcMapper.listRcHd(query);
+		PageInfo<TJsCjRcDto> page = new PageInfo<>(list);
 		return page;
 	}
 

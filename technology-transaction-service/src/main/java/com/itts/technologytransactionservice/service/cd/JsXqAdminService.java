@@ -35,4 +35,7 @@ public interface JsXqAdminService extends IService<TJsXq> {
     boolean assistanceIssueBatch(List<Integer> ids);
 
 
+    boolean xqmove(Integer id, Integer type);
+
+    boolean topBottom(Integer id, Integer type);
 }

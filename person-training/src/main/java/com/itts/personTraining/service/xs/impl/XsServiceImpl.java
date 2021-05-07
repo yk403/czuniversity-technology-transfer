@@ -152,6 +152,12 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         return xsMapper.selectOne(xsQueryWrapper);
     }
 
+    @Override
+    public Boolean addKcXs(Long id, Long kcId) {
+        Boolean aBoolean = xsMapper.addKcList(id, kcId);
+        return aBoolean;
+    }
+
     /**
      * 获取当前用户id
      * @return

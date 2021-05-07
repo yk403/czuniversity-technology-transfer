@@ -161,7 +161,38 @@
 			</otherwise>
 		</choose>
 	</select>
-
+	<select id="findHdJsXq" resultType="com.itts.technologytransactionservice.model.TJsXq">
+		select xq.id as id,xqmc,xqfj,xqfjmc,xqspmc,sjhm,agreement,agreement_name,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,cjjg,auction_status,xq.remarks,xq.soft
+		from t_js_xq xq left join t_js_hd hd on (xq.jshd_id = hd.id)
+		<where>
+			xq.is_delete != 2
+			<if test="map.userId != null and map.userId != ''"> and xq.user_id = #{map.userId} </if>
+			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
+			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and xq.auction_status = #{map.auctionStatus} </if>
+			<if test="map.cjjg != null and map.cjjg != ''"> and xq.cjjg = #{map.cjjg} </if>
+			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
+			<if test="map.xqmc != null and map.xqmc != ''"> and xq.xqmc = concat('%',#{map.xqmc},'%') </if>
+			<if test="map.xqspmc != null and map.xqspmc != ''"> and xq.xqspmc = concat('%',#{map.xqspmc},'%') </if>
+			<if test="map.xqfjmc != null and map.xqfjmc != ''"> and xq.xqfjmc = concat('%',#{map.xqfjmc},'%') </if>
+			<if test="map.cjsj != null and map.cjsj != ''"> and xq.cjsj = #{map.cjsj} </if>
+			<if test="map.zbxmgs != null and map.zbxmgs != ''"> and xq.zbxmgs = #{map.zbxmgs} </if>
+			<if test="map.zbxmqd != null and map.zbxmqd != ''"> and xq.zbxmqd = #{map.zbxmqd} </if>
+			<if test="map.jscs != null and map.jscs != ''"> and xq.jscs = #{map.jscs} </if>
+			<if test="map.fwnr != null and map.fwnr != ''"> and xq.fwnr = #{map.fwnr} </if>
+			<if test="map.jhrq != null and map.jhrq != ''"> and xq.jhrq = #{map.jhrq} </if>
+			<if test="map.ysrq != null and map.ysrq != ''"> and xq.ysrq = #{map.ysrq} </if>
+			<if test="map.jshdId != null"> and xq.jshd_id = #{map.jshdId} </if>
+			<if test="map.soft != null"> and xq.soft  = #{map.soft} </if>
+		</where>
+		<choose>
+			<when test="map.sort != null and map.sort.trim() != ''">
+				order by ${map.sort} ${map.order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+	</select>
 	<update id="updateTJsXq">
 		update t_js_xq
 		<set>
