@@ -8,6 +8,7 @@ import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsXq;
 import io.swagger.models.auth.In;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public interface JsXqService extends IService<TJsXq> {
      * @param params
      * @return
      */
-    boolean assistanceUpdateTJsXq(Map<String, Object> params, Integer jylx);
+    boolean assistanceUpdateTJsXq(Map<String, Object> params, Integer jylx) throws ParseException;
 
     /**
      * 分页条件查询需求(前台)

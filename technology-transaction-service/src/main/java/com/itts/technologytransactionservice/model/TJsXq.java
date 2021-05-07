@@ -265,5 +265,14 @@ public class TJsXq implements Serializable {
 	 * 结算状态(0:未结算;1:已结算)
 	 */
 	private Integer jszt;
-
+    /**
+     * 有效期开始时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date yxqkssj;
+    /**
+     * 有效期结束时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date yxqjssj;
 }

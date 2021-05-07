@@ -20,6 +20,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -226,17 +228,26 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
      * @return
      */
     @Override
-    public boolean assistanceUpdateTJsXq(Map<String, Object> params, Integer jylx) {
+    public boolean assistanceUpdateTJsXq(Map<String, Object> params, Integer jylx) throws ParseException {
         TJsSh tJsSh = jsShService.selectByXqId(Integer.valueOf(params.get("id").toString()));
         if (tJsSh.getFbshzt() != 2) {
             log.error("发布审核状态未通过,无法申请拍卖挂牌!");
             return false;
         }
         TJsXq xq = new TJsXq();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         xq.setId(Integer.valueOf(params.get("id").toString()));
         xq.setXqxq(params.get("xqxq").toString());
         xq.setJszb(params.get("jszb").toString());
         xq.setRemarks(params.get("remarks").toString());
+        xq.setZbxmgs(params.get("zbxmgs").toString());
+        xq.setZbxmqd(params.get("zbxmqd").toString());
+        xq.setXqfj(params.get("xqfj").toString());
+        xq.setXqfjmc(params.get("xqfjmc").toString());
+        xq.setJscs(params.get("jscs").toString());
+        xq.setFwnr(params.get("fwnr").toString());
+        xq.setJhrq(simpleDateFormat.parse(params.get("jhrq").toString()));
+        xq.setYsrq(simpleDateFormat.parse(params.get("ysrq").toString()));
         jsXqMapper.updateTJsXq(xq);
         tJsSh.setAssistanceStatus(1);
         tJsSh.setJylx(jylx);
