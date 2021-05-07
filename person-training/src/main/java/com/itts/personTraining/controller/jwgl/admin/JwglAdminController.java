@@ -25,8 +25,8 @@ public class JwglAdminController {
     @Autowired
     private XsService xsService;
 
-    @Autowired
-    private KcXsService kcXsService;
+    /*@Autowired
+    private KcXsService kcXsService;*/
 
     @GetMapping("/list/")
     @ApiOperation(value = "教务管理列表")
@@ -54,7 +54,7 @@ public class JwglAdminController {
         for (int i = 0; i < kcIdList.size(); i++) {
 
             kcXs.setKcId(kcIdList.get(i));
-            kcXsService.insert(kcXs);
+            //kcXsService.insert(kcXs);
         }
         return ResponseUtil.success(addJwglRequset);
     }

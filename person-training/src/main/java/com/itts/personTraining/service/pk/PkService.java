@@ -6,6 +6,7 @@ import com.itts.personTraining.model.pk.Pk;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -18,15 +19,13 @@ import java.util.List;
 public interface PkService extends IService<Pk> {
 
     /**
-     * 查询排课列表
-     * @param pageNum
-     * @param pageSize
+     * 查询排课信息
      * @param skqsnyr
      * @param skjsnyr
      * @param pcId
      * @return
      */
-    PageInfo<PkDTO> findByPage(Integer pageNum, Integer pageSize, String skqsnyr, String skjsnyr, Long pcId);
+    Map<String, List<PkDTO>> findByPage(String skqsnyr, String skjsnyr, Long pcId);
 
     /**
      * 根据id查询排课详情

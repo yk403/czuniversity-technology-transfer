@@ -21,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
@@ -42,20 +45,33 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     private PkMapper pkMapper;
     @Autowired
     private PkService pkService;
+
     /**
-     * 查询排课列表
-     * @param pageNum
-     * @param pageSize
+     * 查询排课信息
+     * @param skqsnyr
+     * @param skjsnyr
      * @param pcId
      * @return
      */
     @Override
-    public PageInfo<PkDTO> findByPage(Integer pageNum, Integer pageSize,String skqsnyr, String skjsnyr, Long pcId) {
-        log.info("【人才培养 - 分页条件查询排课列表,上课起始年月日:{},上课结束年月日:{},批次id:{}】",skqsnyr,skjsnyr,pcId);
-
-        PageHelper.startPage(pageNum, pageSize);
+    public Map<String, List<PkDTO>> findByPage(String skqsnyr, String skjsnyr, Long pcId) {
+        log.info("【人才培养 - 查询排课信息,上课起始年月日:{},上课结束年月日:{},批次id:{}】",skqsnyr,skjsnyr,pcId);
         List<PkDTO> pkDTOs = pkMapper.findPage(skqsnyr,skjsnyr,pcId);
-        return new PageInfo<>(pkDTOs);
+        Map<String, List<PkDTO>> groupByXqs = pkDTOs.stream().collect(Collectors.groupingBy(PkDTO::getXqs));
+        //遍历分组
+        List<String> xqsList = new ArrayList<>();
+        for (Map.Entry<String, List<PkDTO>> entryPkDTO : groupByXqs.entrySet()) {
+            String xqs = entryPkDTO.getKey();
+            xqsList.add(xqs);
+        }
+        for (int i = 1; i < 8; i++) {
+            if (xqsList.contains(String.valueOf(i))) {
+                continue;
+            } else {
+                groupByXqs.put(String.valueOf(i),null);
+            }
+        }
+        return groupByXqs;
     }
 
     /**
