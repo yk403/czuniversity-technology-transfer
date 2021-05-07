@@ -1,8 +1,8 @@
-package com.itts.personTraining.service.spzb;
+package com.itts.userservice.service.spzb;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
-import com.itts.personTraining.model.spzb.Spzb;
+import com.itts.userservice.model.spzb.Spzb;
 
 /**
  * <p>
