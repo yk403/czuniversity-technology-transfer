@@ -4,14 +4,12 @@ package com.itts.personTraining.controller.pk.admin;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.PkDTO;
-import com.itts.personTraining.model.pk.Pk;
 import com.itts.personTraining.service.pk.PkService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Calendar;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;

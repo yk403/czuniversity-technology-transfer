@@ -32,15 +32,15 @@ public interface PcService  {
      * 新增
      *
      */
-    Pc add(Pc pc);
+    boolean add(Pc pc);
     /**
      * 更新
      */
-    Pc update(Pc pc);
+    boolean update(Pc pc);
     /**
      * 批量更新
      */
-    Boolean updateBatch(List<Long> ids);
+    boolean updateBatch(List<Long> ids);
 
     /**
      * 根据批次类型查询批次信息
@@ -48,4 +48,11 @@ public interface PcService  {
      * @return
      */
     List<Pc> getByPclx(String pclx);
+
+    /**
+     * 删除批次
+     * @param pc
+     * @return
+     */
+    boolean delete(Pc pc);
 }

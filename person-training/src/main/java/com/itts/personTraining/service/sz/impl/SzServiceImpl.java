@@ -5,13 +5,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
-import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.mapper.sz.SzMapper;
-import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.service.sz.SzService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.itts.personTraining.service.xs.XsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
@@ -61,8 +57,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
                       .eq(StringUtils.isNotBlank(dsxm),"dsxm", dsxm)
                       .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
                       .eq(StringUtils.isNotBlank(hyly),"hyly", hyly);
-        List<Sz> szs = szMapper.selectList(szQueryWrapper);
-        return new PageInfo<>(szs);
+        return new PageInfo<>(szMapper.selectList(szQueryWrapper));
     }
 
     /**

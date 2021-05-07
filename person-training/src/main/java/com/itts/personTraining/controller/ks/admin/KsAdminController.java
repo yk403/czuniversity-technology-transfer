@@ -106,6 +106,7 @@ public class KsAdminController {
 
     /**
      * 删除考试
+     *
      * @param id
      * @return
      * @throws WebException
@@ -126,6 +127,7 @@ public class KsAdminController {
 
     /**
      * 考试批量下发
+     *
      * @param ids
      * @return
      */
@@ -137,6 +139,7 @@ public class KsAdminController {
         }
         return ResponseUtil.success("考试统一下发成功!");
     }
+
     /**
      * 校验参数
      */

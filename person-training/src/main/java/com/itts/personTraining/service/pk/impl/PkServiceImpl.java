@@ -42,14 +42,15 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
 
     /**
      * 查询排课信息
+     *
      * @param skqsnyr
      * @param pcId
      * @return
      */
     @Override
     public Map<String, List<PkDTO>> findPkInfo(String skqsnyr, Long pcId) {
-        log.info("【人才培养 - 查询排课信息,上课起始年月日:{},批次id:{}】",skqsnyr,pcId);
-        List<PkDTO> pkDTOs = pkMapper.findPkInfo(skqsnyr, getDateAfterNDays(skqsnyr, 7),pcId);
+        log.info("【人才培养 - 查询排课信息,上课起始年月日:{},批次id:{}】", skqsnyr, pcId);
+        List<PkDTO> pkDTOs = pkMapper.findPkInfo(skqsnyr, getDateAfterNDays(skqsnyr, 7), pcId);
         Map<String, List<PkDTO>> groupByXqs = pkDTOs.stream().collect(Collectors.groupingBy(PkDTO::getXqs));
         //遍历分组
         List<String> xqsList = new ArrayList<>();
@@ -60,7 +61,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
             if (xqsList.contains(String.valueOf(i))) {
                 continue;
             } else {
-                groupByXqs.put(String.valueOf(i),null);
+                groupByXqs.put(String.valueOf(i), null);
             }
         }
         return groupByXqs;
@@ -68,76 +69,82 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
 
     /**
      * 根据id查询排课详情
+     *
      * @param id
      * @return
      */
     @Override
     public PkDTO get(Long id) {
-        log.info("【人才培养 - 根据id:{}查询排课信息】",id);
+        log.info("【人才培养 - 根据id:{}查询排课信息】", id);
         return pkMapper.getById(id);
     }
 
     /**
      * 新增排课
+     *
      * @param pkDTO
      * @return
      */
     @Override
     public boolean add(PkDTO pkDTO) {
-        log.info("【人才培养 - 新增排课:{}】",pkDTO);
+        log.info("【人才培养 - 新增排课:{}】", pkDTO);
         Long userId = getUserId();
         pkDTO.setCjr(userId);
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
-        BeanUtils.copyProperties(pkDTO,pk);
+        BeanUtils.copyProperties(pkDTO, pk);
         return pkService.save(pk);
     }
 
     /**
      * 更新排课
+     *
      * @param pkDTO
      * @return
      */
     @Override
     public boolean update(PkDTO pkDTO) {
-        log.info("【人才培养 - 更新排课:{}】",pkDTO);
+        log.info("【人才培养 - 更新排课:{}】", pkDTO);
         Long userId = getUserId();
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
-        BeanUtils.copyProperties(pkDTO,pk);
+        BeanUtils.copyProperties(pkDTO, pk);
         return pkService.updateById(pk);
     }
 
     /**
      * 删除排课
+     *
      * @param pkDTO
      * @return
      */
     @Override
     public boolean delete(PkDTO pkDTO) {
-        log.info("【人才培养 - 删除排课:{}】",pkDTO);
+        log.info("【人才培养 - 删除排课:{}】", pkDTO);
         //设置删除状态
         pkDTO.setSfsc(true);
+        pkDTO.setGxr(getUserId());
         Pk pk = new Pk();
-        BeanUtils.copyProperties(pkDTO,pk);
+        BeanUtils.copyProperties(pkDTO, pk);
         return pkService.updateById(pk);
     }
 
     /**
      * 批量新增排课
+     *
      * @param pkDTOs
      * @return
      */
     @Override
     public boolean addList(List<PkDTO> pkDTOs) {
-        log.info("【人才培养 - 批量新增排课:{}】",pkDTOs);
+        log.info("【人才培养 - 批量新增排课:{}】", pkDTOs);
         Long userId = getUserId();
         List<Pk> pks = new ArrayList<>();
         for (PkDTO pkDTO : pkDTOs) {
             Pk pk = new Pk();
             pkDTO.setCjr(userId);
             pkDTO.setGxr(userId);
-            BeanUtils.copyProperties(pkDTO,pk);
+            BeanUtils.copyProperties(pkDTO, pk);
             pks.add(pk);
         }
         return pkService.saveBatch(pks);
@@ -145,6 +152,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
 
     /**
      * 获取当前用户id
+     *
      * @return
      */
     public Long getUserId() {

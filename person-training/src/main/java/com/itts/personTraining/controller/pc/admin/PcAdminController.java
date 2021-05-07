@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
  * <p>
@@ -64,24 +64,40 @@ public class PcAdminController {
         return ResponseUtil.success(pcService.getByPclx(pclx));
     }
 
+    /**
+     * 新增批次
+     * @param pc
+     * @return
+     * @throws WebException
+     */
     @PostMapping("/add")
-    @ApiOperation(value = "新增")
+    @ApiOperation(value = "新增批次")
     public ResponseUtil add(@RequestBody Pc pc)throws WebException{
         checkRequset(pc);
-        Pc add = pcService.add(pc);
-        return ResponseUtil.success(add);
+        if (!pcService.add(pc)) {
+            throw new WebException(INSERT_FAIL);
+        }
+        return ResponseUtil.success("新增批次成功!");
     }
-    @ApiOperation(value = "更新")
+
+    /**
+     * 更新批次
+     * @param pc
+     * @return
+     * @throws WebException
+     */
+    @ApiOperation(value = "更新批次")
     @PutMapping("/update")
     public ResponseUtil update(@RequestBody Pc pc)throws WebException{
         checkRequset(pc);
         Pc old = pcService.get(pc.getId());
         if(old==null){
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        BeanUtils.copyProperties(pc,old,"id","cjsj","cjr");
-        pcService.update(old);
-        return ResponseUtil.success(old);
+        if (!pcService.update(pc)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("更新批次成功!");
     }
     /**
      * 删除
@@ -94,11 +110,12 @@ public class PcAdminController {
         }
         Pc pc = pcService.get(id);
         if(pc==null){
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        pc.setSfsc(true);
-        Pc update = pcService.update(pc);
-        return ResponseUtil.success(update);
+        if (!pcService.delete(pc)) {
+            throw new WebException(DELETE_FAIL);
+        }
+        return ResponseUtil.success("删除批次成功!");
     }
     /**
      * 批量删除
@@ -109,8 +126,10 @@ public class PcAdminController {
         if(ids==null){
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        Boolean aBoolean = pcService.updateBatch(ids);
-        return ResponseUtil.success(aBoolean);
+        if (!pcService.updateBatch(ids)) {
+            throw new WebException(DELETE_FAIL);
+        }
+        return ResponseUtil.success("批量删除成功!");
     }
     /**
      * 校验参数是否合法

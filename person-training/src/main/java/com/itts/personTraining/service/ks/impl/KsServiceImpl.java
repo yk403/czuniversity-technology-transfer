@@ -163,7 +163,9 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     public boolean issueBatch(List<Long> ids) {
         log.info("【人才培养 - 考试批量下发,ids:{}】",ids);
         List<Ks> ksList = ksMapper.selectBatchIds(ids);
+        Long userId = getUserId();
         for (Ks ks : ksList) {
+            ks.setGxr(userId);
             ks.setSfxf(true);
         }
         return ksService.updateBatchById(ksList);

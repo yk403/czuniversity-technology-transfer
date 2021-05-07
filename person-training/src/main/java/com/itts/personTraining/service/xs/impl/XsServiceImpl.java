@@ -6,7 +6,6 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.JwglDTO;
-import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.service.xs.XsService;
@@ -59,8 +58,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                       .eq(pcId != null,"pc_id", pcId)
                       .eq(StringUtils.isNotBlank(xslbId),"xslb_id", xslbId)
                       .eq(StringUtils.isNotBlank(jyxs),"jyxs", jyxs);
-        List<Xs> xss = xsMapper.selectList(xsQueryWrapper);
-        return new PageInfo<>(xss);
+        return new PageInfo<>(xsMapper.selectList(xsQueryWrapper));
     }
 
     /**
@@ -74,10 +72,9 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      */
     @Override
     public PageInfo<JwglDTO> findJwglByPage(Integer pageNum, Integer pageSize, String string, String yx, Long pcId) {
+        log.info("【人才培养 - 分页条件查询教务管理列表,编号/姓名:{},院系:{},批次id:{}】",string,yx,pcId);
         PageHelper.startPage(pageNum,pageSize);
-        List<JwglDTO> jwglList = xsMapper.findJwglList(string, yx, pcId);
-        PageInfo<JwglDTO> jwglDTOPageInfo = new PageInfo<>(jwglList);
-        return jwglDTOPageInfo;
+        return new PageInfo<>(xsMapper.findJwglList(string, yx, pcId));
     }
 
     /**
@@ -154,8 +151,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
 
     @Override
     public Boolean addKcXs(Long id, Long kcId) {
-        Boolean aBoolean = xsMapper.addKcList(id, kcId);
-        return aBoolean;
+        return xsMapper.addKcList(id, kcId);
     }
 
     /**
