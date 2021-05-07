@@ -1,4 +1,4 @@
-package com.itts.personTraining.service.spzb.impl;
+package com.itts.userservice.service.spzb.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -6,10 +6,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
-import com.itts.personTraining.enums.VideoEnum;
-import com.itts.personTraining.mapper.spzb.SpzbMapper;
-import com.itts.personTraining.model.spzb.Spzb;
-import com.itts.personTraining.service.spzb.SpzbService;
+import com.itts.userservice.enmus.VideoEnum;
+import com.itts.userservice.mapper.spzb.SpzbMapper;
+import com.itts.userservice.model.spzb.Spzb;
+import com.itts.userservice.service.spzb.SpzbService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

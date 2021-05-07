@@ -175,5 +175,25 @@ public class JsXqAdminController extends BaseController {
         }
         return remove(jsXqAdminService.removeByIds(longs));
     }
+    /**
+     * 成果上移下移
+     * @param ids
+     * @return
+     */
+    @GetMapping("/xqmove")
+    public ResponseUtil xqmove(@RequestParam(value = "id") Integer id,@RequestParam(value = "type") Integer type){
 
+        jsXqAdminService.xqmove(id,type);
+        return ResponseUtil.success("成果移动成功!");
+    }
+    /**
+     * 成果置顶置底 置顶ype为0 置底type为1
+     * @param ids
+     * @return
+     */
+    @GetMapping("/topBottom")
+    public ResponseUtil topBottom(@RequestParam(value = "id") Integer id,@RequestParam(value = "type") Integer type){
+        jsXqAdminService.topBottom(id,type);
+        return ResponseUtil.success("成果置顶置底成功!");
+    }
 }

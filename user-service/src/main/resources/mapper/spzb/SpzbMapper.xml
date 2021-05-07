@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.userservice.mapper.spzb.SpzbMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.userservice.model.spzb.Spzb">
+        <id column="id" property="id"/>
+        <result column="zbspmc" property="zbspmc"/>
+        <result column="zbspjs" property="zbspjs"/>
+        <result column="kssj" property="kssj"/>
+        <result column="jssj" property="jssj"/>
+        <result column="zbmc" property="zbmc"/>
+        <result column="ccdz" property="ccdz"/>
+        <result column="zbspmy" property="zbspmy"/>
+        <result column="splx" property="splx"/>
+        <result column="xm_id" property="xmId"/>
+        <result column="tlym" property="tlym"/>
+        <result column="lzlm" property="lzlm"/>
+        <result column="lzgs" property="lzgs"/>
+        <result column="mz_id" property="mzId"/>
+        <result column="bfdz" property="bfdz"/>
+        <result column="wxdx" property="wxdx"/>
+        <result column="spsc" property="spsc"/>
+        <result column="lzkssj" property="lzkssj"/>
+        <result column="lzjssj" property="lzjssj"/>
+        <result column="spkd" property="spkd"/>
+        <result column="spgd" property="spgd"/>
+        <result column="obsqy" property="obsqy"/>
+        <result column="obst" property="obst"/>
+        <result column="obslj" property="obslj"/>
+        <result column="msxx" property="msxx"/>
+        <result column="sfsc" property="sfsc"/>
+        <result column="cjsj" property="cjsj"/>
+        <result column="cjr" property="cjr"/>
+        <result column="gxsj" property="gxsj"/>
+        <result column="gxr" property="gxr"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , zbspmc, zbspjs, kssj, jssj, zbmc, ccdz, zbspmy, splx, xm_id, tlym, lzlm, lzgs, mz_id, bfdz, wxdx, spsc, lzkssj, lzjssj, spkd, spgd, obsqy, obst, obslj, msxx, sfsc, cjsj, cjr, gxsj, gxr
+    </sql>
+
+</mapper>

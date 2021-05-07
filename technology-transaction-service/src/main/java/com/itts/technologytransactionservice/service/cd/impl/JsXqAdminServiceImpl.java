@@ -21,9 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.itts.common.enums.ErrorCodeEnum.ISSUE_BATCH_FAIL;
 
@@ -206,6 +204,66 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean xqmove(Integer id, Integer type) {
+        Integer index = 0;
+        //QueryWrapper<TJsCg> queryWrapper = new QueryWrapper<TJsCg>();
+        Map<String, Object> map=new HashMap<>();
+        //创建对象
+        TJsXq tJsXq = getById(id);
+        tJsXq.getSoft();
+        if(type == 0){
+            map.put("jshdId",tJsXq.getJshdId());
+            map.put("soft",tJsXq.getSoft()-1);
+            //queryWrapper.eq("jshd_id",tJsCg.getJshdId());
+            //queryWrapper.eq("soft",tJsCg.getSoft()-1);
+        }
+        if(type == 1){
+            map.put("jshdId",tJsXq.getJshdId());
+            map.put("soft",tJsXq.getSoft()+1);
+        }
+        List<TJsXq> jsXq = jsXqMapper.findJsXq(map);
+        index = jsXq.get(0).getSoft();
+        jsXq.get(0).setSoft(tJsXq.getSoft());
+        tJsXq.setSoft(index);
+        updateTJsXq(jsXq.get(0));
+        updateTJsXq(tJsXq);
+        return true;
+    }
+
+    @Override
+    public boolean topBottom(Integer id, Integer type) {
+        List<TJsXq> tempList=new ArrayList<TJsXq>();
+        TJsXq byId = getById(id);
+        Integer soft=byId.getSoft();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("jshdId",byId.getJshdId());
+        queryMap.put("sort","soft");
+        queryMap.put("order","asc");
+        //按soft顺序查询出当前活动对应的所有成果
+        List<TJsXq> hdJsXq = jsXqMapper.findHdJsXq(queryMap);
+        //置顶
+        if (type == 0) {
+            for(int i=0;i<soft-1;i++){
+                hdJsXq.get(i).setSoft(hdJsXq.get(i).getSoft()+1);
+                tempList.add(hdJsXq.get(i));
+            }
+            byId.setSoft(0);
+            tempList.add(byId);
+        }
+        //置底
+        if (type == 1) {
+            for(int i=byId.getSoft();i<hdJsXq.size();i++){
+                hdJsXq.get(i).setSoft(hdJsXq.get(i).getSoft()-1);
+                tempList.add(hdJsXq.get(i));
+            }
+            byId.setSoft(hdJsXq.size());
+            tempList.add(byId);
+        }
+        System.out.println(tempList);
+        return updateBatchById(tempList);
     }
 
 }
