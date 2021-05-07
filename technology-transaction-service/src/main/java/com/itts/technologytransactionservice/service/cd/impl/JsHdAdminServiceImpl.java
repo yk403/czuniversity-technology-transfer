@@ -78,6 +78,7 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 				TJsCg tJsCg = jsCgMapper.getById((Integer) item.get("id"));
 				tJsCg.setJshdId(tJsHd.getId());
 				tJsCg.setSoft((Integer) item.get("soft"));
+				tJsCg.setAuctionStatus(0);
 				jsCgMapper.updateTJsCg(tJsCg);
 			}
 		} else if (hdlx == 1) {
@@ -85,6 +86,7 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 				TJsXq tJsXq = jsXqMapper.getById((Integer) item.get("id"));
 				tJsXq.setJshdId(tJsHd.getId());
 				tJsXq.setSoft((Integer) item.get("soft"));
+				tJsXq.setAuctionStatus(0);
 				jsXqMapper.updateTJsXq(tJsXq);
 			}
 		}
