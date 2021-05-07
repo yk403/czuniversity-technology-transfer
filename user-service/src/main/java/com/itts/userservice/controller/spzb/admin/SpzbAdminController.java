@@ -1,4 +1,4 @@
-package com.itts.personTraining.controller.spzb.admin;
+package com.itts.userservice.controller.spzb.admin;
 
 
 import com.github.pagehelper.PageInfo;
@@ -6,17 +6,14 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.personTraining.enums.VideoEnum;
-import com.itts.personTraining.model.spzb.Spzb;
-import com.itts.personTraining.service.spzb.SpzbService;
+import com.itts.userservice.model.spzb.Spzb;
+import com.itts.userservice.service.spzb.SpzbService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
 
 /**
  * <p>

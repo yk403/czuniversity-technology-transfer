@@ -1,7 +1,7 @@
-package com.itts.personTraining.mapper.spzb;
+package com.itts.userservice.mapper.spzb;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.itts.personTraining.model.spzb.Spzb;
+import com.itts.userservice.model.spzb.Spzb;
 import org.springframework.stereotype.Repository;
 
 /**
