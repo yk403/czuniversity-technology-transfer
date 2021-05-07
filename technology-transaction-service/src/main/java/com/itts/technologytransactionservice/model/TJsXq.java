@@ -261,5 +261,9 @@ public class TJsXq implements Serializable {
 	 * 招拍挂拍卖状态
 	 */
 	private Integer auctionStatus;
+	/**
+	 * 归档清算状态
+	 */
+	private Integer jszt;
 
 }

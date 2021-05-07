@@ -19,7 +19,7 @@
 
     <select id="list" resultType="com.itts.technologytransactionservice.model.TJsSh">
         select
-        `id`,`lx`,`cgxq_id`,`fbshzt`,`hdsqzt`,`fbwtgsm`,`hdsqwtgsm`,`cjsj`,`gxsj`,`release_assistance_status`,`assistance_status`,`assistance_remark`
+        `id`,`lx`,`cgxq_id`,`fbshzt`,`hdsqzt`,`fbwtgsm`,`hdsqwtgsm`,`cjsj`,`gxsj`,`release_assistance_status`,`assistance_status`,`assistance_remark`,`jszt`
         from t_js_sh
         <where>
             <if test="map.id != null and map.id != ''">and id = #{map.id}</if>
