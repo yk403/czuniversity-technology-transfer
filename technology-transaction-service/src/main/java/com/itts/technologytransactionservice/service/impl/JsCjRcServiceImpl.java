@@ -63,7 +63,8 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
         List<TJsBm> list = jsBmMapper.list(map);
         TJsCjRc tJsCjRc=new TJsCjRc();
         BeanUtils.copyProperties(tJsCjRcDto,tJsCjRc);
-        if(list.size()==1){
+        //暂时设定单个活动多个报名信息默认显示最新的那个
+        if(list.size()>0){
             tJsCjRc.setBmId(list.get(0).getId());
             tJsCjRc.setCjf(list.get(0).getDwmc());
         }
