@@ -26,7 +26,7 @@ import java.util.List;
  * @author fl
  * @since 2021-03-31
  */
-@Api(tags = "数字字典")
+@Api(tags = "数据字典")
 @Slf4j
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/sjzd")
