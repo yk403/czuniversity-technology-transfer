@@ -64,7 +64,7 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
     public boolean saveCjRc(TJsCjRcDto tJsCjRcDto) {
         Map<String,Object> map=new HashMap<>();
         map.put("hdId",tJsCjRcDto.getHdId());
-        map.put("userId",Integer.parseInt(String.valueOf(getUserId())));
+        map.put("userId",2);
         List<TJsBm> list = jsBmMapper.list(map);
         TJsCjRc tJsCjRc=new TJsCjRc();
         BeanUtils.copyProperties(tJsCjRcDto,tJsCjRc);
