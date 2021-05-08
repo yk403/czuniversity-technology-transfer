@@ -35,6 +35,9 @@ public class SjzdController {
     @Resource
     private SjzdService sjzdService;
 
+    /**
+     * 获取数据字典模块列表
+     */
     @GetMapping("/models/")
     public ResponseUtil findDictionaryModel(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                             @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
