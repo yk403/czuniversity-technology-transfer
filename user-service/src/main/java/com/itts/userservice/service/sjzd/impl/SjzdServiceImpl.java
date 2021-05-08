@@ -7,7 +7,9 @@ import com.itts.common.bean.LoginUser;
 import com.itts.userservice.mapper.sjzd.SjzdMapper;
 import com.itts.userservice.model.sjzd.Sjzd;
 import com.itts.userservice.service.sjzd.SjzdService;
+import com.itts.userservice.vo.SjzdModelVO;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,6 +31,21 @@ public class SjzdServiceImpl implements SjzdService {
 
     @Resource
     private SjzdMapper sjzdMapper;
+
+    /**
+     * 获取数据字典模块列表
+     */
+    @Override
+    public PageInfo<SjzdModelVO> findDictionaryModel(Integer pageNum, Integer pageSize, String model, String systemType, String condition) {
+
+        PageHelper.startPage(pageNum, pageSize);
+
+        List<SjzdModelVO> sjzdModels = sjzdMapper.findDictionaryModel(model, systemType, condition);
+
+        PageInfo<SjzdModelVO> pageInfo = new PageInfo<>(sjzdModels);
+
+        return pageInfo;
+    }
 
     /**
      * 获取列表
