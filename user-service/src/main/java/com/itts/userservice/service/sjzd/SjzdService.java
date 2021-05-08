@@ -2,6 +2,7 @@ package com.itts.userservice.service.sjzd;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.userservice.model.sjzd.Sjzd;
+import com.itts.userservice.vo.SjzdModelVO;
 
 /**
  * <p>
@@ -12,6 +13,11 @@ import com.itts.userservice.model.sjzd.Sjzd;
  * @since 2021-03-31
  */
 public interface SjzdService {
+
+    /**
+     * 获取数据字典模块列表
+     */
+    PageInfo<SjzdModelVO> findDictionaryModel(Integer pageNum, Integer pageSize, String model, String systemType, String condition);
 
     /**
      * 获取列表 - 分页

@@ -26,7 +26,7 @@ import java.util.List;
  * @author fl
  * @since 2021-03-31
  */
-@Api(tags = "数字字典")
+@Api(tags = "数据字典")
 @Slf4j
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/sjzd")
@@ -36,15 +36,31 @@ public class SjzdController {
     private SjzdService sjzdService;
 
     /**
+     * 获取数据字典模块列表
+     */
+    @GetMapping("/models/")
+    public ResponseUtil findDictionaryModel(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                            @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                            @ApiParam(value = "所属模块") @RequestParam(value = "model", required = false) String model,
+                                            @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
+                                            @ApiParam(value = "筛选条件") @RequestParam(value = "condition", required = false) String condition) {
+
+
+        PageInfo pageInfo = sjzdService.findDictionaryModel(pageNum, pageSize, model, systemType, condition);
+
+        return ResponseUtil.success(pageInfo);
+    }
+
+    /**
      * 获取列表
      */
     @GetMapping("/list/")
     @ApiOperation(value = "获取列表")
-    public ResponseUtil getList(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                @ApiParam(value = "所属模块") @RequestParam(value = "model", required = false) String model,
-                                @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
-                                @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary) {
+    public ResponseUtil list(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                             @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                             @ApiParam(value = "所属模块") @RequestParam(value = "model", required = false) String model,
+                             @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
+                             @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary) {
 
         PageInfo<Sjzd> byPage = sjzdService.findByPage(pageNum, pageSize, model, systemType, dictionary);
         return ResponseUtil.success(byPage);
@@ -104,7 +120,7 @@ public class SjzdController {
      * 批量删除
      */
     @ApiOperation(value = "批量删除")
-    @DeleteMapping("/deleteBatch")
+    @DeleteMapping("/batch/delete/")
     public ResponseUtil deleteBatch(@RequestBody List<Long> ids) {
         if (ids == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);

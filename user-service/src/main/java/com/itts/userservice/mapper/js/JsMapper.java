@@ -1,7 +1,11 @@
 package com.itts.userservice.mapper.js;
 
-import com.itts.userservice.model.js.Js;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itts.userservice.model.js.Js;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface JsMapper extends BaseMapper<Js> {
 
+    @Select("SELECT * " +
+            "FROM t_js js " +
+            "         LEFT JOIN t_yh_js_gl yjg ON js.id = yjg.js_id " +
+            "WHERE yjg.sfsc = false " +
+            "  AND js.sfsc = false " +
+            "  AND yjg.yh_id = #{yhId} ")
+    List<Js> findByYhId(@Param("yhId") Long yhId);
 }

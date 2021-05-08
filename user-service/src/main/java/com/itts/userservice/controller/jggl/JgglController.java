@@ -43,7 +43,7 @@ public class JgglController {
     /**
      * 查询机构，通过名称和编码
      */
-    @GetMapping("/queryMechanism/")
+    @GetMapping("/query/mechanism/")
     @ApiOperation(value = "通过名称和编码查询机构")
     public ResponseUtil getBynameandcode(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -58,7 +58,7 @@ public class JgglController {
     /**
      * 获取机构树
      */
-    @GetMapping("/treeList/")
+    @GetMapping("/tree/")
     @ApiOperation(value = "获取机构树")
     public ResponseUtil findJgglVO(@RequestParam(required = false) String jgbm) {
         List<JgglVO> jgglVO = jgglService.findJgglVO(jgbm);
@@ -68,7 +68,7 @@ public class JgglController {
     /**
      * 获取机构列表
      */
-    @GetMapping("/getlist/")
+    @GetMapping("/list/")
     @ApiOperation(value = "获取机构列表")
     public ResponseUtil getlist(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -78,21 +78,7 @@ public class JgglController {
         return ResponseUtil.success(byPage);
     }
 
-    /**
-     * 查询机构编码是否重复
-     */
-    @GetMapping("/checkjgbm/")
-    @ApiOperation(value = "查询机构编码是否重复")
-    public ResponseUtil checkJgglbm(@RequestParam String jgbm) {
-        if (jgbm == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        //机构不重复，返回否
-        if (jgglService.selectByJgbm(jgbm) == null) {
-            return ResponseUtil.success(false);
-        }
-        return ResponseUtil.success(true);
-    }
+
 
     /**
      * 获取详情
@@ -165,8 +151,16 @@ public class JgglController {
         List<Jggl> list = jgglService.getList(cjold);
         //获取父级机构的层级
         String fjbm = jggl.getFjbm();
-        Jggl fatherGroup = jgglService.selectByJgbm(fjbm);
-        String cj = fatherGroup.getCj();
+        String cj;
+        Jggl fatherGroup;
+        if(fjbm.equals("000")){
+            cj=jggl.getJgbm();
+            fatherGroup=jggl;
+        }else {
+            fatherGroup = jgglService.selectByJgbm(fjbm);
+            cj = fatherGroup.getCj();
+        }
+
         if(jggl.getFjbm().equals(jggl.getJgbm())){
             BeanUtils.copyProperties(jggl, group, "id", "cjsj", "cjr","fjbm");
         }else {
@@ -179,6 +173,7 @@ public class JgglController {
             //生成层级
 
             if(list!=null){
+
                 list.forEach(Jggl ->{
                     if(cjold==Jggl.getCj()){
                         return;
