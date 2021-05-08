@@ -61,7 +61,8 @@ public class JsBmController extends BaseController {
      */
     @PostMapping("/save")
     public R save(@RequestBody TJsBm tJsBm) {
-        return save(jsBmService.save(tJsBm));
+
+        return save(jsBmService.saveBm(tJsBm));
     }
 
     /**

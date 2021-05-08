@@ -3,6 +3,8 @@ package com.itts.technologytransactionservice.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsBmMapper;
 import com.itts.technologytransactionservice.mapper.JsCjRcMapper;
@@ -20,6 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.*;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 
 @Service
@@ -59,7 +64,7 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
     public boolean saveCjRc(TJsCjRcDto tJsCjRcDto) {
         Map<String,Object> map=new HashMap<>();
         map.put("hdId",tJsCjRcDto.getHdId());
-        map.put("userId",2);
+        map.put("userId",Integer.parseInt(String.valueOf(getUserId())));
         List<TJsBm> list = jsBmMapper.list(map);
         TJsCjRc tJsCjRc=new TJsCjRc();
         BeanUtils.copyProperties(tJsCjRcDto,tJsCjRc);
@@ -69,6 +74,20 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             tJsCjRc.setCjf(list.get(0).getDwmc());
         }
         return save(tJsCjRc);
+    }
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    public Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
     }
 
 
