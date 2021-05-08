@@ -129,16 +129,16 @@ public class PcServiceImpl implements PcService {
     }
 
     /**
-     * 根据批次类型查询批次信息
-     * @param pclx
+     * 根据数据字典ID查询批次信息
+     * @param sjzdId
      * @return
      */
     @Override
-    public List<Pc> getByPclx(String pclx) {
-        log.info("【人才培养 - 根据批次类型:{}查询批次信息】",pclx);
+    public List<Pc> getBySjzdId(Long sjzdId) {
+        log.info("【人才培养 - 根据数据字典ID:{}查询批次信息】",sjzdId);
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
         pcQueryWrapper.eq("sfsc",false)
-                .eq("pclx",pclx);
+                .eq("sjzd_id",sjzdId);
         return pcMapper.selectList(pcQueryWrapper);
     }
 

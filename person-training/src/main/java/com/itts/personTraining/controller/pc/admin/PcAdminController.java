@@ -8,10 +8,13 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.service.pc.PcService;
+import com.itts.personTraining.service.sjzd.SjzdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,6 +37,8 @@ public class PcAdminController {
 
     @Resource
     private PcService pcService;
+    @Autowired
+    private SjzdService sjzdService;
 
     @GetMapping("/list/")
     @ApiModelProperty(value = "查询批次列表")
@@ -51,19 +56,39 @@ public class PcAdminController {
     }
 
     /**
-     * 根据批次类型查询批次信息
-     * @param pclx
+     * 根据数据字典ID查询批次信息
+     * @param sjzdId
      * @return
      */
-    @GetMapping("/getByPclx/{pclx}")
+    @GetMapping("/getBySjzdId/{sjzdId}")
     @ApiOperation(value = "根据批次类型查询批次信息")
-    public ResponseUtil getByPclx(@PathVariable("pclx")String pclx){
-        if (pclx == null) {
+    public ResponseUtil getBysjzdId(@PathVariable("sjzdId")Long sjzdId){
+        if (sjzdId == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(pcService.getByPclx(pclx));
+        return ResponseUtil.success(pcService.getBySjzdId(sjzdId));
     }
 
+    /**
+     * 根据字典项类型查询学生类型
+     * @param pageNum
+     * @param pageSize
+     * @param model
+     * @param systemType
+     * @param dictionary
+     * @param token
+     * @return
+     */
+    @GetMapping("/getByDictionary")
+    @ApiOperation(value = "根据字典项类型查询学生类型")
+    public ResponseUtil getList(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                         @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                         @ApiParam(value = "所属模块") @RequestParam(value = "model", required = false) String model,
+                         @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
+                         @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary,
+                         @RequestHeader(name = "token") String token){
+        return ResponseUtil.success(sjzdService.getList(pageNum, pageSize, model, systemType, dictionary, token));
+    };
     /**
      * 新增批次
      * @param pc
@@ -144,7 +169,7 @@ public class PcAdminController {
         if(pc.getPch()==null){
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if(pc.getPclx()==null){
+        if(pc.getSjzdId()==null){
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
