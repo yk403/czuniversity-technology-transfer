@@ -43,11 +43,11 @@ public interface PcService  {
     boolean updateBatch(List<Long> ids);
 
     /**
-     * 根据数据字典ID查询批次信息
-     * @param sjzdId
+     * 根据字典编码查询批次信息
+     * @param zdbm
      * @return
      */
-    List<Pc> getBySjzdId(Long sjzdId);
+    List<Pc> getByZdbm(String zdbm);
 
     /**
      * 删除批次

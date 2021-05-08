@@ -68,17 +68,17 @@ public class PcAdminController {
     }
 
     /**
-     * 根据数据字典ID查询批次信息
-     * @param sjzdId
+     * 根据字典编码查询批次信息
+     * @param zdbm
      * @return
      */
-    @GetMapping("/getBySjzdId/{sjzdId}")
-    @ApiOperation(value = "根据批次类型查询批次信息")
-    public ResponseUtil getBysjzdId(@PathVariable("sjzdId")Long sjzdId){
-        if (sjzdId == null) {
+    @GetMapping("/getByZdbm/{zdbm}")
+    @ApiOperation(value = "根据字典编码查询批次信息")
+    public ResponseUtil getBysjzdId(@PathVariable("zdbm")String zdbm){
+        if (zdbm == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(pcService.getBySjzdId(sjzdId));
+        return ResponseUtil.success(pcService.getByZdbm(zdbm));
     }
 
     /**

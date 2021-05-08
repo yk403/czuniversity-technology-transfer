@@ -146,15 +146,15 @@ public class PcServiceImpl implements PcService {
 
     /**
      * 根据数据字典ID查询批次信息
-     * @param sjzdId
+     * @param zdbm
      * @return
      */
     @Override
-    public List<Pc> getBySjzdId(Long sjzdId) {
-        log.info("【人才培养 - 根据数据字典ID:{}查询批次信息】",sjzdId);
+    public List<Pc> getByZdbm(String zdbm) {
+        log.info("【人才培养 - 根据字典编码:{}查询批次信息】",zdbm);
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
         pcQueryWrapper.eq("sfsc",false)
-                .eq("sjzd_id",sjzdId);
+                .eq("zdbm",zdbm);
         return pcMapper.selectList(pcQueryWrapper);
     }
 
