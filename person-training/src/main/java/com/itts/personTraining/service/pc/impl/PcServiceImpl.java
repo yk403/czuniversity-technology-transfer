@@ -129,6 +129,18 @@ public class PcServiceImpl implements PcService {
     }
 
     /**
+     * 获取所有批次详情
+     * @return
+     */
+    @Override
+    public List<Pc> getAll() {
+        log.info("【人才培养 - 获取所有批次详情】");
+        QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
+        pcQueryWrapper.eq("sfsc",false);
+        return pcMapper.selectList(pcQueryWrapper);
+    }
+
+    /**
      * 根据数据字典ID查询批次信息
      * @param sjzdId
      * @return

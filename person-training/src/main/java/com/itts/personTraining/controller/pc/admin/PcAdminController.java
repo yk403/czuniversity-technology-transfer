@@ -56,6 +56,17 @@ public class PcAdminController {
     }
 
     /**
+     * 获取所有批次详情
+     * @return
+     */
+    @GetMapping("/getAll")
+    @ApiOperation(value = "获取所有批次详情")
+    public ResponseUtil getAll(){
+        List<Pc> pcs = pcService.getAll();
+        return ResponseUtil.success(pcs);
+    }
+
+    /**
      * 根据数据字典ID查询批次信息
      * @param sjzdId
      * @return
@@ -163,14 +174,14 @@ public class PcAdminController {
         if(pc==null){
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if(pc.getPcmc()==null){
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        if(pc.getPch()==null){
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        if(pc.getSjzdId()==null){
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        List<Pc> pcList = pcService.getAll();
+        for (Pc pc1 : pcList) {
+            if (pc1.getPch().equals(pc.getPch())) {
+                throw new WebException(BATCH_NUMBER_EXISTS_ERROR);
+            }
+            if (pc1.getPcmc().equals(pc.getPcmc())) {
+                throw new WebException(BATCH_NAME_EXISTS_ERROR);
+            }
         }
     }
 }

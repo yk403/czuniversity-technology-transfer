@@ -55,4 +55,11 @@ public interface PcService  {
      * @return
      */
     boolean delete(Pc pc);
+
+    /**
+     * 获取所有批次详情
+     * @return
+     */
+    List<Pc> getAll();
+
 }
