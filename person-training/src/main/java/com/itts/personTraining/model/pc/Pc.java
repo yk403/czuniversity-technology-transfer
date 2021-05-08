@@ -43,10 +43,10 @@ public class Pc implements Serializable {
     private String pch;
 
     /**
-     * 数据字典ID
+     * 字典编码
      */
-    @ApiModelProperty(value = "数据字典ID", required = true)
-    private Long sjzdId;
+    @ApiModelProperty(value = "字典编码", required = true)
+    private String zdbm;
 
     /**
      * 是否删除(0:未删除;1已删除)

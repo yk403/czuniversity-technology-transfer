@@ -1,15 +1,18 @@
 package com.itts.personTraining.service.pc.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.service.pc.PcService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.personTraining.service.sjzd.SjzdService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +39,8 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 @Transactional(rollbackFor = Exception.class)
 public class PcServiceImpl implements PcService {
 
+    @Autowired
+    private SjzdService sjzdService;
     @Resource
     private PcMapper pcMapper;
 
@@ -52,8 +57,7 @@ public class PcServiceImpl implements PcService {
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
         pcQueryWrapper.eq("sfsc",false);
         List<Pc> pcs = pcMapper.selectList(pcQueryWrapper);
-        PageInfo<Pc> pcPageInfo = new PageInfo<>(pcs);
-        return pcPageInfo;
+        return new PageInfo<>(pcs);
     }
 
     /**

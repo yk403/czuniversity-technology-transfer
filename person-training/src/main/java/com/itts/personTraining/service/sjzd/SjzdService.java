@@ -4,6 +4,7 @@ import com.itts.common.utils.common.ResponseUtil;
 import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,6 +34,8 @@ public interface SjzdService {
                          @ApiParam(value = "所属模块") @RequestParam(value = "model", required = false) String model,
                          @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
                          @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary,
+                         @ApiParam(value = "字典编码") @RequestParam(value = "zdbm", required = false) String zdbm,
                          @RequestHeader(name = "token") String token);
+
 
 }

@@ -1,9 +1,7 @@
 package com.itts.personTraining.controller.pc.admin;
 
-
 import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.pc.Pc;
@@ -13,7 +11,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,12 +41,16 @@ public class PcAdminController {
     @ApiModelProperty(value = "查询批次列表")
     public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
-        PageInfo<Pc> byPage = pcService.findByPage(pageNum, pageSize);
-        return ResponseUtil.success(byPage);
+        return ResponseUtil.success(pcService.findByPage(pageNum, pageSize));
     }
 
+    /**
+     * 根据id获取批次详情
+     * @param id
+     * @return
+     */
     @GetMapping("/get/{id}")
-    @ApiOperation(value = "获取详情")
+    @ApiOperation(value = "根据id获取批次详情")
     public ResponseUtil getByOne(@PathVariable("id")Long id){
         Pc pc = pcService.get(id);
         return ResponseUtil.success(pc);
@@ -96,10 +97,11 @@ public class PcAdminController {
                          @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                          @ApiParam(value = "所属模块") @RequestParam(value = "model", required = false) String model,
                          @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
-                         @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary,
+                         @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary") String dictionary,
+                         @ApiParam(value = "字典编码") @RequestParam(value = "zdbm", required = false) String zdbm,
                          @RequestHeader(name = "token") String token){
-        return ResponseUtil.success(sjzdService.getList(pageNum, pageSize, model, systemType, dictionary, token));
-    };
+        return ResponseUtil.success(sjzdService.getList(pageNum, pageSize, model, systemType, dictionary, zdbm, token));
+    }
     /**
      * 新增批次
      * @param pc

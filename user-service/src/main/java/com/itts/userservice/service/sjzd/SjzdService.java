@@ -22,7 +22,7 @@ public interface SjzdService {
     /**
      * 获取列表 - 分页
      */
-    PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType, String dictionary);
+    PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType, String dictionary, String zdbm);
 
     /**
      * 获取通过id
