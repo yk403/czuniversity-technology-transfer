@@ -8,11 +8,14 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsBmMapper;
 import com.itts.technologytransactionservice.mapper.JsCjRcMapper;
+import com.itts.technologytransactionservice.mapper.JsLcKzMapper;
 import com.itts.technologytransactionservice.model.TJsBm;
 import com.itts.technologytransactionservice.model.TJsCjRc;
 import com.itts.technologytransactionservice.model.TJsCjRcDto;
+import com.itts.technologytransactionservice.model.TJsLcKz;
 import com.itts.technologytransactionservice.service.JsBmService;
 import com.itts.technologytransactionservice.service.JsCjRcService;
+import com.itts.technologytransactionservice.service.JsLcKzService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,8 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
 	private JsCjRcMapper jsCjRcMapper;
     @Autowired
     private JsBmMapper jsBmMapper;
+    @Autowired
+    private JsLcKzMapper jsLcKzMapper;
 	@Override
 	public PageInfo page(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
@@ -59,12 +64,29 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
         jsCjRcMapper.updateById(tJsCjRc);
         return true;
     }
-
+    //叫价逻辑
     @Override
     public boolean saveCjRc(TJsCjRcDto tJsCjRcDto) {
         Map<String,Object> map=new HashMap<>();
         map.put("hdId",tJsCjRcDto.getHdId());
         map.put("userId",2);
+        //判断是成果活动还是需求活动，并把流程状态控制表当前最高价格置为当前叫价金额
+        if(tJsCjRcDto.getCgId()!=null){
+            Map<String,Object> cjmap=new HashMap<String,Object>();
+            cjmap.put("type",1);
+            cjmap.put("cgId",tJsCjRcDto.getCgId());
+            List<TJsLcKz> list = jsLcKzMapper.list(cjmap);
+            list.get(0).setDqzgjg(tJsCjRcDto.getJjje());
+            jsLcKzMapper.updateById(list.get(0));
+        }
+        if(tJsCjRcDto.getXqId()!=null){
+            Map<String,Object> xqmap=new HashMap<String,Object>();
+            xqmap.put("type",0);
+            xqmap.put("xqId",tJsCjRcDto.getXqId());
+            List<TJsLcKz> list = jsLcKzMapper.list(xqmap);
+            list.get(0).setDqzgjg(tJsCjRcDto.getJjje());
+            jsLcKzMapper.updateById(list.get(0));
+        }
         List<TJsBm> list = jsBmMapper.list(map);
         TJsCjRc tJsCjRc=new TJsCjRc();
         BeanUtils.copyProperties(tJsCjRcDto,tJsCjRc);
