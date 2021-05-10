@@ -63,7 +63,7 @@ public class KcAdminController {
     /**
      * 查询所有课程
      */
-    @GetMapping("/getAll")
+    @GetMapping("/getAll/")
     @ApiOperation(value = "查询所有课程")
     public ResponseUtil getAll() {
         return ResponseUtil.success(kcService.getAll());
