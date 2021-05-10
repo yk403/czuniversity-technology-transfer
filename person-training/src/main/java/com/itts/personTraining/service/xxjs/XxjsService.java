@@ -21,7 +21,7 @@ public interface XxjsService extends IService<Xxjs> {
      * 查询学校教室列表
      * @param pageNum
      * @param pageSize
-     * @param mc
+     * @param jxlmc
      * @return
      */
     PageInfo<Xxjs> findByPage(Integer pageNum, Integer pageSize, String jxlmc);
@@ -60,4 +60,10 @@ public interface XxjsService extends IService<Xxjs> {
      */
     boolean selectExists(Xxjs xxjs);
 
+    /**
+     * 根据教学楼名称查询学校教室
+     * @param jxlmc
+     * @return
+     */
+    List<Xxjs> getByJxlmc(String jxlmc);
 }
