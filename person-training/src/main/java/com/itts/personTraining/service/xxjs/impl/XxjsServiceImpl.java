@@ -144,6 +144,18 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
     }
 
     /**
+     * 查询所有学校教室
+     * @return
+     */
+    @Override
+    public List<Xxjs> getAll() {
+        log.info("【人才培养 - 查询所有学校教室】");
+        QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
+        xxjsQueryWrapper.eq("sfsc",false);
+        return xxjsMapper.selectList(xxjsQueryWrapper);
+    }
+
+    /**
      * 获取当前用户id
      * @return
      */
