@@ -5,7 +5,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
-import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xxjs.Xxjs;
 import com.itts.personTraining.mapper.xxjs.XxjsMapper;
 import com.itts.personTraining.service.xxjs.XxjsService;
@@ -54,9 +53,7 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
         QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
         xxjsQueryWrapper.eq("sfsc",false)
                       .eq(StringUtils.isNotBlank(jxlmc), "jxlmc", jxlmc);
-        List<Xxjs> xxjs = xxjsMapper.selectList(xxjsQueryWrapper);
-        PageInfo<Xxjs> PageInfo = new PageInfo<>(xxjs);
-        return PageInfo;
+        return new PageInfo<>(xxjsMapper.selectList(xxjsQueryWrapper));
     }
 
     /**

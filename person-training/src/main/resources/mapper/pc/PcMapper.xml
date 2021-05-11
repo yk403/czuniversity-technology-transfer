@@ -7,7 +7,7 @@
         <id column="id" property="id" />
         <result column="pcmc" property="pcmc" />
         <result column="pch" property="pch" />
-        <result column="pclx" property="pclx" />
+        <result column="zdbm" property="zdbm" />
         <result column="sfsc" property="sfsc" />
         <result column="pcnf" property="pcnf" />
         <result column="cjsj" property="cjsj" />
@@ -18,10 +18,10 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pcmc, pch, pclx, sfsc, pcnf, cjsj, cjr, gxsj, gxr
+        id, pcmc, pch, zdbm, sfsc, pcnf, cjsj, cjr, gxsj, gxr
     </sql>
 
-    <select id="selectPcList">
+    <select id="selectPcList" parameterType="java.util.List">
         select * from t_pc
         where sfsc = false
         and id in

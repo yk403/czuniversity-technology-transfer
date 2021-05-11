@@ -1,6 +1,7 @@
 package com.itts.personTraining.service.xs;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.model.xs.Xs;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -24,6 +25,10 @@ public interface XsService extends IService<Xs> {
      */
     PageInfo<Xs> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbId, String jyxs);
 
+    /**
+     * 查询教务管理列表
+     */
+    PageInfo<JwglDTO> findJwglByPage(Integer pageNum, Integer pageSize,String string,String yx,Long pcId);
     /**
      * 根据id查询学员信息
      * @param id
@@ -58,4 +63,5 @@ public interface XsService extends IService<Xs> {
      * @return
      */
     Xs selectByXh(String xh);
+    Boolean addKcXs(Long id,Long kcId);
 }

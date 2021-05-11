@@ -148,10 +148,6 @@ public class JsController {
         if (StringUtils.isBlank(js.getJsbm())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-
-        if (StringUtils.isBlank(js.getYhjslx())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
     }
 }
 

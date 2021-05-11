@@ -42,12 +42,6 @@ public class SjzdListener extends AnalysisEventListener<SjzdDTO> {
         if(!StringUtils.isBlank(data.getZdbm())){
             sjzd.setZdbm(data.getZdbm());
         }
-        if(!StringUtils.isBlank(data.getFjzdbm())){
-            sjzd.setFjzdbm(data.getFjzdbm());
-        }
-        if(!StringUtils.isBlank(data.getZdcj())){
-            sjzd.setZdcj(data.getZdcj());
-        }
         if(!StringUtils.isBlank(data.getXtlb())){
             sjzd.setXtlb(data.getXtlb());
         }

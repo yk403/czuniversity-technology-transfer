@@ -5,11 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KcDTO;
 import com.itts.personTraining.mapper.kcSz.KcSzMapper;
-import com.itts.personTraining.mapper.xyKc.XyKcMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.model.kcSz.KcSz;
@@ -19,8 +17,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.kcSz.KcSzService;
 import com.itts.personTraining.service.xyKc.XyKcService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.bouncycastle.jcajce.BCFKSStoreParameter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,13 +45,10 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
 
     @Resource
     private KcMapper kcMapper;
-
     @Autowired
     private KcService kcService;
-
     @Autowired
     private XyKcService xyKcService;
-
     @Resource
     private KcSzMapper kcSzMapper;
     @Autowired
@@ -108,7 +101,9 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     public boolean issueBatch(List<Long> ids) {
         log.info("【人才培养 - 课程批量下发,ids:{}】",ids);
         List<Kc> kcs = kcMapper.selectBatchIds(ids);
+        Long userId = getUserId();
         for (Kc kc : kcs) {
+            kc.setGxr(userId);
             kc.setSfxf(true);
         }
         return kcService.updateBatchById(kcs);

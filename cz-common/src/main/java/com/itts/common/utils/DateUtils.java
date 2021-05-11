@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -148,5 +149,24 @@ public class DateUtils {
         }
         r += "前";
         return r;
+    }
+
+    /**
+     * 获取给定日期N天后的日期
+     */
+    public static String getDateAfterNDays(String dateTime, int days) {
+        Calendar calendar = Calendar.getInstance();
+        String[] dateTimeArray = dateTime.split("-");
+        int year = Integer.parseInt(dateTimeArray[0]);
+        int month = Integer.parseInt(dateTimeArray[1]);
+        int day = Integer.parseInt(dateTimeArray[2]);
+        calendar.set(year, month - 1, day);
+        // 给定时间与1970 年 1 月 1 日的00:00:00.000的差，以毫秒显示
+        long time = calendar.getTimeInMillis();
+        // 用给定的 long值设置此Calendar的当前时间值
+        calendar.setTimeInMillis(time + days * 1000 * 60 * 60 * 24);
+        return calendar.get(Calendar.YEAR)
+                + "-" + (calendar.get(Calendar.MONTH) + 1)
+                + "-" + calendar.get(Calendar.DAY_OF_MONTH);
     }
 }

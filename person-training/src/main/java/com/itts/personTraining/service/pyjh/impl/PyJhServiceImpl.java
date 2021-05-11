@@ -5,7 +5,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
-import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pyjh.PyJh;
 import com.itts.personTraining.mapper.pyjh.PyJhMapper;
 import com.itts.personTraining.service.pyjh.PyJhService;
@@ -60,8 +59,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
                 .like(StringUtils.isNotBlank(name), "pyfa", name)
                 .or().like(StringUtils.isNotBlank(name), "pyjh", name)
                 .or().like(StringUtils.isNotBlank(name), "jxdg", name);
-        List<PyJh> pyJhs = pyJhMapper.selectList(pyJhQueryWrapper);
-        return new PageInfo<>(pyJhs);
+        return new PageInfo<>(pyJhMapper.selectList(pyJhQueryWrapper));
     }
 
     /**

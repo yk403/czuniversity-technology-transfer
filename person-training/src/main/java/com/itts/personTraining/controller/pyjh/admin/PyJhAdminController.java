@@ -4,7 +4,6 @@ package com.itts.personTraining.controller.pyjh.admin;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.pyjh.PyJh;
-import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.service.pyjh.PyJhService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

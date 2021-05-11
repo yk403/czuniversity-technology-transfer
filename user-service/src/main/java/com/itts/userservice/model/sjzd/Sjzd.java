@@ -1,97 +1,110 @@
 package com.itts.userservice.model.sjzd;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * <p>
- * 
+ * 数据字典管理
  * </p>
  *
- * @author fl
- * @since 2021-03-31
+ * @author liuyingming
+ * @since 2021-05-11
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_sjzd")
+@ApiModel(value = "数据字典")
 public class Sjzd implements Serializable {
 
-    private static final long serialVersionUID = -635139985468084264L;
+    private static final long serialVersionUID = 6335645355163761839L;
+
     /**
      * 主键ID
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
      * 字典名称
      */
-    @ApiModelProperty(value = "字典名称",required = true)
+    @ApiModelProperty(value = "字典名称", required = true)
     private String zdmc;
 
     /**
      * 字典编码
      */
-    @ApiModelProperty(value = "字典编码",required = true)
+    @ApiModelProperty(value = "字典编码", required = true)
     private String zdbm;
 
     /**
-     * 父级字段code, 如果是顶级则为000
+     * 系统类型：technology_transaction - 技术交易；talent_training - 人才培养；user - 用户管理
      */
-    @ApiModelProperty(value = "父级字段code",required = true)
-    private String fjzdbm;
-
-    /**
-     * 字典层级, 以“-”分隔
-     */
-    private String zdcj;
-
-    /**
-     * 系统类型：technology_transaction_portal - 技术交易门户；tech
-     */
+    @ApiModelProperty(value = "系统类型：technology_transaction - 技术交易；talent_training - 人才培养；user - 用户管理")
     private String xtlb;
+
     /**
      * 模块类型:front - 门户;admin - 后台管理
      */
+    @ApiModelProperty(value = "模块类型:front - 门户;admin - 后台管理")
     private String mklx;
+
     /**
-     * 所属模块: group_manage-机构管理
+     * 所属模块名称
      */
+    @ApiModelProperty(value = "所属模块名称", required = true)
+    private String ssmkmc;
+
+    /**
+     * 所属模块编码
+     */
+    @ApiModelProperty(value = "所属模块编码", required = true)
     private String ssmk;
+
+    /**
+     * 父级ID
+     */
+    @ApiModelProperty(value = "父级ID")
+    private Long fjId;
+
     /**
      * 是否删除
      */
+    @ApiModelProperty(value = "是否删除")
     private Boolean sfsc;
 
     /**
      * 创建时间
      */
+    @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
      * 创建人
      */
+    @ApiModelProperty(value = "创建人")
     private Long cjr;
 
     /**
      * 更新时间
      */
+    @ApiModelProperty(value = "更新时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**
      * 更新人
      */
+    @ApiModelProperty(value = "更新人")
     private Long gxr;
-
-
 }

@@ -4,7 +4,6 @@ package com.itts.personTraining.controller.pk.admin;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.PkDTO;
-import com.itts.personTraining.model.pk.Pk;
 import com.itts.personTraining.service.pk.PkService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,18 +31,15 @@ public class PkAdminController {
     private PkService pkService;
 
     /**
-     * 查询排课列表
+     * 查询排课信息
      *
-     * @param pageNum
-     * @param pageSize
      * @return
      */
     @GetMapping("/list")
-    @ApiOperation(value = "获取列表")
-    public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+    @ApiOperation(value = "查询排课信息")
+    public ResponseUtil findPkInfo(@RequestParam(value = "skqsnyr") String skqsnyr,
                                    @RequestParam(value = "pcId", required = false) Long pcId) {
-        return ResponseUtil.success(pkService.findByPage(pageNum, pageSize, pcId));
+        return ResponseUtil.success(pkService.findPkInfo(skqsnyr, pcId));
     }
 
     /**
@@ -149,7 +145,7 @@ public class PkAdminController {
     /**
      * 校验参数
      */
-    private void checkRequest(PkDTO pkDTO) throws WebException {
+    public void checkRequest(PkDTO pkDTO) throws WebException {
         if (pkDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
@@ -157,5 +153,7 @@ public class PkAdminController {
             throw new WebException(SCHEDUING_EXISTS_ERROR);
         }
     }
+
+
 }
 

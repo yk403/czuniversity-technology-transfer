@@ -14,6 +14,7 @@ import com.itts.userservice.mapper.js.JsMapper;
 import com.itts.userservice.mapper.yh.YhJsGlMapper;
 import com.itts.userservice.mapper.yh.YhMapper;
 import com.itts.userservice.model.jggl.Jggl;
+import com.itts.userservice.model.js.Js;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.model.yh.YhJsGl;
 import com.itts.userservice.service.yh.YhService;
@@ -76,8 +77,8 @@ public class YhServiceImpl implements YhService {
 
         PageHelper.startPage(pageNum, pageSize);
 
-        List<YhDTO> list = yhMapper.findByTypeAndGroupId(type, groupIds, condition);
-        List<YhListVO> yhListVOs = this.yhDTO2YhVO(list);
+        List<Yh> list = yhMapper.findByTypeAndGroupId(type, groupIds, condition);
+        List<YhListVO> yhListVOs = this.yh2YhVO(list);
 
         PageInfo<YhListVO> page = new PageInfo(list);
         page.setList(yhListVOs);
@@ -243,20 +244,23 @@ public class YhServiceImpl implements YhService {
     /**
      * 列表 - 将用户dto转vo
      */
-    private List<YhListVO> yhDTO2YhVO(List<YhDTO> yhDTOs) {
+    private List<YhListVO> yh2YhVO(List<Yh> yhs) {
 
         List<YhListVO> yhListVOs = Lists.newArrayList();
 
-        yhDTOs.forEach(yhDTO -> {
+        yhs.forEach(yhDTO -> {
 
             YhListVO yhListVO = new YhListVO();
             BeanUtils.copyProperties(yhDTO, yhListVO);
 
+            List<Js> jsList = jsMapper.findByYhId(yhDTO.getId());
+
             StringBuilder builder = new StringBuilder();
 
-            if(!CollectionUtils.isEmpty(yhDTO.getYhjsmc())){
-                yhDTO.getYhjsmc().forEach(yhjsmc -> {
-                    builder.append(yhjsmc).append(",");
+            if(!CollectionUtils.isEmpty(jsList)){
+
+                jsList.forEach(js->{
+                    builder.append(js.getJsmc()).append(",");
                 });
 
                 yhListVO.setYhjsmc(builder.substring(0, builder.length() - 1));
