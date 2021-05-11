@@ -122,6 +122,8 @@ public class SjzdServiceImpl implements SjzdService {
         getSjzdRequest.setMklx(sjzds.get(0).getMklx());
         getSjzdRequest.setSsmkmc(sjzds.get(0).getSsmkmc());
         getSjzdRequest.setSsmk(sjzds.get(0).getSsmk());
+        getSjzdRequest.setFjId(sjzds.get(0).getFjId());
+        getSjzdRequest.setFjmc(sjzds.get(0).getFjmc());
 
         List<GetSjzdItemRequest> getSjzdItemRequests = Lists.newArrayList();
 
@@ -166,11 +168,15 @@ public class SjzdServiceImpl implements SjzdService {
      */
     @Override
     public AddSjzdRequest add(AddSjzdRequest sjzd) {
+
         LoginUser loginUser = threadLocal.get();
+
         Long userId = null;
         if (loginUser != null) {
             userId = loginUser.getUserId();
         }
+
+        Sjzd fjzd = sjzdMapper.selectById(sjzd.getFjId());
 
         Date now = new Date();
 
@@ -183,7 +189,15 @@ public class SjzdServiceImpl implements SjzdService {
 
             addSjzd.setZdmc(sjzdItem.getZdmc());
             addSjzd.setZdbm(sjzdItem.getZdbm());
-            addSjzd.setFjId(sjzdItem.getFjId());
+            addSjzd.setFjId(sjzd.getFjId());
+
+            if(fjzd != null){
+
+                addSjzd.setFjmc(fjzd.getZdmc());
+                addSjzd.setZdbm(fjzd.getZdbm() + sjzdItem.getZdbm());
+            }else{
+                addSjzd.setZdbm(sjzdItem.getZdbm());
+            }
 
             //新增时设置更新时间和更新人
             addSjzd.setCjsj(now);
@@ -206,6 +220,7 @@ public class SjzdServiceImpl implements SjzdService {
     public UpdateSjzdRequest update(UpdateSjzdRequest sjzd) {
 
         LoginUser loginUser = threadLocal.get();
+
         Long userId = null;
         if (loginUser != null) {
             userId = loginUser.getUserId();
@@ -227,6 +242,8 @@ public class SjzdServiceImpl implements SjzdService {
             }
         }
 
+        Sjzd fjzd = sjzdMapper.selectById(sjzd.getFjId());
+
         //增加新的数据字典
         for (UpdateSjzdItemRequest sjzdItem : sjzd.getSjzdItems()) {
 
@@ -236,7 +253,15 @@ public class SjzdServiceImpl implements SjzdService {
 
             addSjzd.setZdmc(sjzdItem.getZdmc());
             addSjzd.setZdbm(sjzdItem.getZdbm());
-            addSjzd.setFjId(sjzdItem.getFjId());
+            addSjzd.setFjId(sjzd.getFjId());
+
+            if(fjzd != null){
+
+                addSjzd.setFjmc(fjzd.getZdmc());
+                addSjzd.setZdbm(fjzd.getZdbm() + sjzdItem.getZdbm());
+            }else{
+                addSjzd.setZdbm(sjzdItem.getZdbm());
+            }
 
             //新增时设置更新时间和更新人
             addSjzd.setCjsj(now);

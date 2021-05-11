@@ -77,6 +77,12 @@ public class Sjzd implements Serializable {
     private Long fjId;
 
     /**
+     * 父级字典名称
+     */
+    @ApiModelProperty(value = "父级字典名称")
+    private String fjmc;
+
+    /**
      * 是否删除
      */
     @ApiModelProperty(value = "是否删除")

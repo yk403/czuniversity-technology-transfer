@@ -30,10 +30,4 @@ public class UpdateSjzdItemRequest {
      */
     @ApiModelProperty(value = "字典编码", required = true)
     private String zdbm;
-
-    /**
-     * 父级ID
-     */
-    @ApiModelProperty(value = "父级ID")
-    private Long fjId;
 }
