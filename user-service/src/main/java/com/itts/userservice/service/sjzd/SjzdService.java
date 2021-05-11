@@ -32,7 +32,7 @@ public interface SjzdService {
     /**
      * 获取列表 - 分页
      */
-    PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType, String dictionary, String zdbm);
+    PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType, String dictionary, String zdbm, Long parentId);
 
     /**
      * 获取通过id
