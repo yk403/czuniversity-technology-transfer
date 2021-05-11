@@ -64,7 +64,7 @@ public class SjzdServiceImpl implements SjzdService {
      * 获取列表
      */
     @Override
-    public PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType, String dictionary, String zdbm) {
+    public PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType, String dictionary, String zdbm, Long parentId) {
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Sjzd> objectQueryWrapper = new QueryWrapper<>();
         objectQueryWrapper.eq("sfsc", false);
@@ -83,6 +83,10 @@ public class SjzdServiceImpl implements SjzdService {
 
         if (StringUtils.isNotBlank(zdbm)) {
             objectQueryWrapper.eq("zdbm", zdbm);
+        }
+
+        if (parentId != null) {
+            objectQueryWrapper.eq("fj_id", parentId);
         }
 
         objectQueryWrapper.orderByDesc("cjsj");
@@ -191,11 +195,11 @@ public class SjzdServiceImpl implements SjzdService {
             addSjzd.setZdbm(sjzdItem.getZdbm());
             addSjzd.setFjId(sjzd.getFjId());
 
-            if(fjzd != null){
+            if (fjzd != null) {
 
                 addSjzd.setFjmc(fjzd.getZdmc());
                 addSjzd.setZdbm(fjzd.getZdbm() + sjzdItem.getZdbm());
-            }else{
+            } else {
                 addSjzd.setZdbm(sjzdItem.getZdbm());
             }
 
@@ -255,11 +259,11 @@ public class SjzdServiceImpl implements SjzdService {
             addSjzd.setZdbm(sjzdItem.getZdbm());
             addSjzd.setFjId(sjzd.getFjId());
 
-            if(fjzd != null){
+            if (fjzd != null) {
 
                 addSjzd.setFjmc(fjzd.getZdmc());
                 addSjzd.setZdbm(fjzd.getZdbm() + sjzdItem.getZdbm());
-            }else{
+            } else {
                 addSjzd.setZdbm(sjzdItem.getZdbm());
             }
 

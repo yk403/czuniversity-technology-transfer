@@ -65,9 +65,10 @@ public class SjzdController {
                              @ApiParam(value = "所属模块") @RequestParam(value = "model", required = false) String model,
                              @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
                              @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary,
-                             @ApiParam(value = "字典编码") @RequestParam(value = "zdbm", required = false) String zdbm) {
+                             @ApiParam(value = "字典编码") @RequestParam(value = "zdbm", required = false) String zdbm,
+                             @ApiParam(value = "父级字典ID") @RequestParam(value = "parentId", required = false) Long parentId) {
 
-        PageInfo<Sjzd> byPage = sjzdService.findByPage(pageNum, pageSize, model, systemType, dictionary,zdbm);
+        PageInfo<Sjzd> byPage = sjzdService.findByPage(pageNum, pageSize, model, systemType, dictionary,zdbm, parentId);
         return ResponseUtil.success(byPage);
     }
 
