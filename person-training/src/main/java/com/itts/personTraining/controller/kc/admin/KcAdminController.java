@@ -43,9 +43,8 @@ public class KcAdminController {
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "kclx", required = false) String kclx,
-                                   @RequestParam(value = "name", required = false) String name,
-                                   @RequestParam(value = "xyId", required = false) Long xyId) {
-        return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name, xyId));
+                                   @RequestParam(value = "name", required = false) String name) {
+        return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name));
     }
 
     /**
@@ -155,6 +154,9 @@ public class KcAdminController {
         }
         if(kcDTO.getSzIds() == null) {
             throw new WebException(TEACHER_ISEMPTY_ERROR);
+        }
+        if (kcDTO.getKcdm() == null) {
+            throw new WebException(TEACH_TYPE_ISEMPTY_ERROR);
         }
         List<Kc> kcList = kcService.getAll();
         for (Kc kc : kcList) {

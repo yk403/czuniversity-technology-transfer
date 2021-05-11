@@ -21,8 +21,7 @@ public interface KcMapper extends BaseMapper<Kc> {
      * 分页条件查询课程信息
      * @param kclx
      * @param name
-     * @param xyId
      * @return
      */
-    List<KcDTO> findByPage(@Param("kclx") String kclx, @Param("name") String name, @Param("xyId") Long xyId);
+    List<KcDTO> findByPage(@Param("kclx") String kclx, @Param("name") String name);
 }

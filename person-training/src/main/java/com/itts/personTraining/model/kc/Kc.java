@@ -30,14 +30,19 @@ public class Kc implements Serializable {
     private Long id;
 
     /**
-     * 类别:	compulsory - 必修课;	internship_training - 实习实训
-     */
-    private String lb;
-
-    /**
      * 知识模块ID(1:公共知识模块;2:政策法规模块;3:实务技能模块一;4:实务技能模块二;5:实务技能模块三;6:能力提升模块)
      */
     private Long zsmkId;
+
+    /**
+     * 字典编码
+     */
+    private String zdbm;
+
+    /**
+     * 课程类型(theory_class：理论课；practical_training：实训课；practice_course：实践课)
+     */
+    private String kclx;
 
     /**
      * 课程名称
@@ -48,11 +53,6 @@ public class Kc implements Serializable {
      * 课程代码
      */
     private String kcdm;
-
-    /**
-     * 课程类型:	original_major - 原专业课程;	technology_transfer - 技术转移专业;	broker - 经纪人课程
-     */
-    private String kclx;
 
     /**
      * 课程学时(如总学时为36学时)

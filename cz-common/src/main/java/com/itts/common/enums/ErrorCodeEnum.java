@@ -77,6 +77,7 @@ public enum ErrorCodeEnum {
     BATCH_NAME_EXISTS_ERROR(-45015, "批次名称已存在!"),
     BATCH_NUMBER_ISEMPTY_ERROR(-45016, "批次号不可为空!"),
     COURSE_ISEMPTY_ERROR(-45017, "课程不可为空!"),
+    TEACH_TYPE_ISEMPTY_ERROR(-45018,"教育类型不可为空!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
