@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
@@ -45,7 +46,7 @@ public class TJsCjRcDto implements Serializable {
     /**
      * 叫价金额
      */
-    private String jjje;
+    private BigDecimal jjje;
     /**
      * 报名id(关联报名表)
      */

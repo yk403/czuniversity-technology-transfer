@@ -13,7 +13,7 @@
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and xq.auction_status = #{map.auctionStatus} </if>
 			<if test="map.soft != null and map.soft != ''"> and xq.soft = #{map.soft} </if>
-			<if test="map.cjjg != null and map.cjjg != ''"> and xq.cjjg = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and xq.cjjg = #{map.cjjg} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
 			<if test="map.jshdId != null and map.jshdId != ''"> and xq.jshd_id = #{map.jshdId} </if>
 			<if test="map.xqmc != null and map.xqmc != ''"> and xq.xqmc like concat('%',#{map.xqmc},'%') </if>
@@ -53,7 +53,7 @@
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and xq.auction_status = #{map.auctionStatus} </if>
 			<if test="map.soft != null and map.soft != ''"> and xq.soft = #{map.soft} </if>
-			<if test="map.cjjg != null and map.cjjg != ''"> and xq.cjjg = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and xq.cjjg = #{map.cjjg} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
 			<if test="map.jshdId != null and map.jshdId != ''"> and xq.jshd_id = #{map.jshdId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
@@ -136,7 +136,7 @@
 			<if test="map.type == 1"> and sh.fbshzt = 2 and sh.assistance_status != 2 </if>
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and xq.auction_status = #{map.auctionStatus} </if>
-			<if test="map.cjjg != null and map.cjjg != ''"> and xq.cjjg = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and xq.cjjg = #{map.cjjg} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
 			<if test="map.xqId != null and map.xqId != ''"> and sh.xq_id = #{map.xqId} </if>
@@ -176,7 +176,7 @@
 			<if test="map.userId != null and map.userId != ''"> and xq.user_id = #{map.userId} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and xq.auction_status = #{map.auctionStatus} </if>
-			<if test="map.cjjg != null and map.cjjg != ''"> and xq.cjjg = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and xq.cjjg = #{map.cjjg} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
 			<if test="map.xqmc != null and map.xqmc != ''"> and xq.xqmc = concat('%',#{map.xqmc},'%') </if>
 			<if test="map.xqspmc != null and map.xqspmc != ''"> and xq.xqspmc = concat('%',#{map.xqspmc},'%') </if>

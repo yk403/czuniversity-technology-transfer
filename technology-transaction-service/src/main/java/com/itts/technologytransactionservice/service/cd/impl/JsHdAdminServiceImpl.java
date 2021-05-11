@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -87,9 +88,9 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
                 if(list2.size()==0){
                     TJsLcKz tJsLcKz=new TJsLcKz();
                     tJsLcKz.setCgId(tJsCg.getId());
-                    tJsLcKz.setFdjg(item.get("fdjg").toString());
-                    tJsLcKz.setDj(item.get("dj").toString());
-					tJsLcKz.setDqzgjg(item.get("dj").toString());
+                    tJsLcKz.setFdjg(new BigDecimal(item.get("fdjg").toString()));
+                    tJsLcKz.setDj(new BigDecimal(item.get("dj").toString()));
+					tJsLcKz.setDqzgjg(new BigDecimal(item.get("dj").toString()));
                     jsLcKzAdminService.save(tJsLcKz);
                 }
 				jsCgMapper.updateTJsCg(tJsCg);
@@ -106,9 +107,9 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
                 if(list2.size()==0){
                     TJsLcKz tJsLcKz=new TJsLcKz();
                     tJsLcKz.setXqId(tJsXq.getId());
-                    tJsLcKz.setFdjg(item.get("fdjg").toString());
-                    tJsLcKz.setDj(item.get("dj").toString());
-					tJsLcKz.setDqzgjg(item.get("dj").toString());
+                    tJsLcKz.setFdjg(new BigDecimal(item.get("fdjg").toString()));
+                    tJsLcKz.setDj(new BigDecimal(item.get("dj").toString()));
+					tJsLcKz.setDqzgjg(new BigDecimal(item.get("dj").toString()));
                     jsLcKzAdminService.save(tJsLcKz);
                 }
 				jsXqMapper.updateTJsXq(tJsXq);

@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -65,7 +66,7 @@ public class TJsXq implements Serializable {
 	/**
  	* 合作价格
  	*/
-	private String hzjg;
+	private BigDecimal hzjg;
 	/**
  	* 意向合作单位
  	*/
@@ -162,7 +163,7 @@ public class TJsXq implements Serializable {
 	/**
 	 * 保证金
 	 */
-	private String bond;
+	private BigDecimal bond;
 	/**
 	 * 需求简介
 	 */
@@ -246,7 +247,7 @@ public class TJsXq implements Serializable {
 	/**
 	 * 成交价格
 	 */
-	private String cjjg;
+	private BigDecimal cjjg;
 	/**
 	 * 交货日期
 	 */

@@ -14,14 +14,14 @@
         <if test="map.cjsj != null and map.cjsj != ''"> and cjsj = #{map.cjsj} </if>
         <if test="map.gxsj != null and map.gxsj != ''"> and gxsj = #{map.gxsj} </if>
         <if test="map.lcsj != null and map.lcsj != ''"> and lcsj = #{map.lcsj} </if>
-        <if test="map.dj != null and map.dj != ''"> and dj = #{map.dj} </if>
+        <if test="map.dj != null"> and dj = #{map.dj} </if>
         <if test="map.hdzt != null and map.hdzt != ''"> and hdzt = #{map.hdzt} </if>
         <if test="map.xqId != null"> and xq_id = #{map.xqId} </if>
         <if test="map.cgId != null"> and cg_id = #{map.cgId} </if>
-        <if test="map.lcdj != null and map.lcdj != ''"> and lcdj = #{map.lcdj} </if>
+        <if test="map.lcdj != null"> and lcdj = #{map.lcdj} </if>
         <if test="map.jjjgzt != null"> and jjjgzt = #{map.jjjgzt} </if>
-        <if test="map.fdjg != null and map.fdjg != ''"> and fdjg = #{map.fdjg} </if>
-        <if test="map.dqzgjg != null and map.dqzgjg != ''"> and dqzgjg = #{map.dqzgjg} </if>
+        <if test="map.fdjg != null"> and fdjg = #{map.fdjg} </if>
+        <if test="map.dqzgjg != null"> and dqzgjg = #{map.dqzgjg} </if>
     </where>
     <choose>
         <when test="map.sort != null and map.sort.trim() != ''">
