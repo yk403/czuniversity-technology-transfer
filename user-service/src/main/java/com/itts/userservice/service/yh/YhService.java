@@ -1,15 +1,11 @@
 package com.itts.userservice.service.yh;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.userservice.dto.JsDTO;
-import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
-import com.itts.userservice.vo.YhListVO;
-import com.itts.userservice.vo.YhVO;
-
-import java.util.List;
+import com.itts.userservice.vo.yh.YhListVO;
+import com.itts.userservice.vo.yh.YhVO;
 
 /**
  * <p>

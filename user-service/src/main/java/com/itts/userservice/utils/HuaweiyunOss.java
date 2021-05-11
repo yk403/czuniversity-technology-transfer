@@ -1,4 +1,4 @@
-package com.itts.common.utils;
+package com.itts.userservice.utils;
 
 
 import com.obs.services.ObsClient;
@@ -110,7 +110,7 @@ public class HuaweiyunOss {
      * @param fileType 文件路径
      * @return
      */
-    public String getDownloadUrl(String fileName, FileType fileType) {
+    public String getDownloadUrl(String fileName, FileType fileType) throws IOException {
         ObsClient obsClient = null;
         obsClient = new ObsClient(ak, sk, endpoint);
         // URL有效期，3600秒.5分钟
@@ -120,6 +120,7 @@ public class HuaweiyunOss {
         request.setBucketName(bucketName);
         request.setObjectKey(objectName);
         TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
+        obsClient.close();
         return response.getSignedUrl();
     }
 

@@ -43,6 +43,12 @@ public class UpdateSjzdRequest implements Serializable {
     private String ssmk;
 
     /**
+     * 父级ID
+     */
+    @ApiModelProperty(value = "父级ID")
+    private Long fjId;
+
+    /**
      * 数据字典子项
      */
     @ApiModelProperty(value = "数据字典子项", required = true)

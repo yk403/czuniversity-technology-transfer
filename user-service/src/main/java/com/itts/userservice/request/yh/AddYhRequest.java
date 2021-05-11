@@ -1,4 +1,4 @@
-package com.itts.userservice.request;
+package com.itts.userservice.request.yh;
 
 import com.itts.userservice.model.yh.Yh;
 import io.swagger.annotations.ApiModelProperty;
