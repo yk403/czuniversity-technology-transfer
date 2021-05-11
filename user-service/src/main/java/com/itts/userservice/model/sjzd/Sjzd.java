@@ -18,7 +18,7 @@ import java.util.Date;
  * </p>
  *
  * @author liuyingming
- * @since 2021-05-07
+ * @since 2021-05-11
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,7 +26,7 @@ import java.util.Date;
 @ApiModel(value = "数据字典")
 public class Sjzd implements Serializable {
 
-    private static final long serialVersionUID = -7900192092861842028L;
+    private static final long serialVersionUID = 6335645355163761839L;
 
     /**
      * 主键ID
@@ -47,9 +47,9 @@ public class Sjzd implements Serializable {
     private String zdbm;
 
     /**
-     * 系统类型：technology_transaction - 技术交易；talent_training - 人才培养
+     * 系统类型：technology_transaction - 技术交易；talent_training - 人才培养；user - 用户管理
      */
-    @ApiModelProperty(value = "系统类型：technology_transaction - 技术交易；talent_training - 人才培养; user - 用户管理", required = true)
+    @ApiModelProperty(value = "系统类型：technology_transaction - 技术交易；talent_training - 人才培养；user - 用户管理")
     private String xtlb;
 
     /**
@@ -71,6 +71,12 @@ public class Sjzd implements Serializable {
     private String ssmk;
 
     /**
+     * 父级ID
+     */
+    @ApiModelProperty(value = "父级ID")
+    private Long fjId;
+
+    /**
      * 是否删除
      */
     @ApiModelProperty(value = "是否删除")
@@ -80,7 +86,6 @@ public class Sjzd implements Serializable {
      * 创建时间
      */
     @ApiModelProperty(value = "创建时间")
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
