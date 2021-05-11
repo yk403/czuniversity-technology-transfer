@@ -2,15 +2,13 @@ package com.itts.userservice.controller.file;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.aliyun.oss.model.PutObjectResult;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
-import com.itts.common.utils.HuaweiyunOss;
+import com.itts.userservice.utils.HuaweiyunOss;
 import com.itts.common.utils.common.ResponseUtil;
 import com.obs.services.exception.ObsException;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +21,6 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Slf4j
 @Api(tags = "文件")

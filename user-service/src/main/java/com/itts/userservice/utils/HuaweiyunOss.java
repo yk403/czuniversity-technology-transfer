@@ -1,4 +1,4 @@
-package com.itts.common.utils;
+package com.itts.userservice.utils;
 
 
 import com.obs.services.ObsClient;
