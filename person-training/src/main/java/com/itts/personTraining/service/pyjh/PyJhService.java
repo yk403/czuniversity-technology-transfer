@@ -1,6 +1,7 @@
 package com.itts.personTraining.service.pyjh;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.PyJhDTO;
 import com.itts.personTraining.model.pyjh.PyJh;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -36,10 +37,10 @@ public interface PyJhService extends IService<PyJh> {
 
     /**
      * 新增培养计划
-     * @param pyJh
+     * @param pyJhDTO
      * @return
      */
-    boolean add(PyJh pyJh);
+    boolean add(PyJhDTO pyJhDTO);
 
     /**
      * 更新培养计划

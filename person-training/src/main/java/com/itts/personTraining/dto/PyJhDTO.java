@@ -1,67 +1,68 @@
-package com.itts.personTraining.model.pyjh;
+package com.itts.personTraining.dto;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.util.Date;
-import java.io.Serializable;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.util.List;
 
 /**
- * <p>
- * 培养计划表
- * </p>
- *
- * @author Austin
- * @since 2021-04-20
+ * @Author: Austin
+ * @Data: 2021/5/11
+ * @Version: 1.0.0
+ * @Description: 培养计划DTO
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("t_py_jh")
-public class PyJh implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@ApiModel("培养计划对象")
+public class PyJhDTO {
+    /**
+     * 培养计划主键
+     */
+    private Long id;
 
     /**
-     * 主键
+     * 课程ids
      */
-      @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private List<Long> kcIds;
 
     /**
      * 批次ID
      */
+    @ApiModelProperty(value = "批次ID", required = true)
     private Long pcId;
 
     /**
      * 是否下发(0:否;1:是)
      */
+    @ApiModelProperty(value = "是否下发(0:否;1:是)", required = true)
     private Boolean sfxf;
 
     /**
      * 培养方案
      */
+    @ApiModelProperty(value = "培养方案", required = true)
     private String pyfa;
 
     /**
      * 培养计划
      */
+    @ApiModelProperty(value = "培养计划", required = true)
     private String pyjh;
 
     /**
      * 教学大纲
      */
+    @ApiModelProperty(value = "教学大纲", required = true)
     private String jxdg;
 
     /**
      * 学生类别名称
      */
+    @ApiModelProperty(value = "学生类别名称", required = true)
     private String xslbmc;
-
-    /**
-     * 是否删除(0:未删除;1已删除)
-     */
-    private Boolean sfsc;
 
     /**
      * 上传时间
@@ -94,6 +95,5 @@ public class PyJh implements Serializable {
      * 更新人
      */
     private Long gxr;
-
 
 }

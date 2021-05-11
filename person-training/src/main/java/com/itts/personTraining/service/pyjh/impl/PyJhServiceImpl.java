@@ -5,17 +5,22 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.dto.PyJhDTO;
+import com.itts.personTraining.model.jhKc.JhKc;
 import com.itts.personTraining.model.pyjh.PyJh;
 import com.itts.personTraining.mapper.pyjh.PyJhMapper;
+import com.itts.personTraining.service.jhKc.JhKcService;
 import com.itts.personTraining.service.pyjh.PyJhService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
@@ -38,6 +43,8 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     private PyJhMapper pyJhMapper;
     @Autowired
     private PyJhService pyJhService;
+    @Autowired
+    private JhKcService jhKcService;
 
     /**
      * 查询培养计划列表
@@ -78,16 +85,30 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
 
     /**
      * 新增培养计划
-     * @param pyJh
+     * @param pyJhDTO
      * @return
      */
     @Override
-    public boolean add(PyJh pyJh) {
-        log.info("【人才培养 - 新增培养计划:{}】",pyJh);
+    public boolean add(PyJhDTO pyJhDTO) {
+        log.info("【人才培养 - 新增培养计划:{}】",pyJhDTO);
+        PyJh pyJh = new PyJh();
         Long userId = getUserId();
-        pyJh.setCjr(userId);
-        pyJh.setGxr(userId);
-        return pyJhService.save(pyJh);
+        pyJhDTO.setCjr(userId);
+        pyJhDTO.setGxr(userId);
+        BeanUtils.copyProperties(pyJhDTO,pyJh);
+        if (pyJhService.save(pyJh)) {
+            List<JhKc> jhKcList = new ArrayList<>();
+            Long jhId = pyJh.getId();
+            List<Long> kcIds = pyJhDTO.getKcIds();
+            for (Long kcId : kcIds) {
+                JhKc jhKc = new JhKc();
+                jhKc.setKcId(kcId);
+                jhKc.setJhId(jhId);
+                jhKcList.add(jhKc);
+            }
+            return jhKcService.saveBatch(jhKcList);
+        }
+        return false;
     }
 
     /**

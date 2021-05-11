@@ -75,6 +75,8 @@ public enum ErrorCodeEnum {
     START_TIME_GREATER_END_TIME_ERROR(-45013, "课程时间不合法，开始时间大于等于结束时间"),
     BATCH_NUMBER_EXISTS_ERROR(-45014, "批次号已存在!"),
     BATCH_NAME_EXISTS_ERROR(-45015, "批次名称已存在!"),
+    BATCH_NUMBER_ISEMPTY_ERROR(-45016, "批次号不可为空!"),
+    COURSE_ISEMPTY_ERROR(-45017, "课程不可为空!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
