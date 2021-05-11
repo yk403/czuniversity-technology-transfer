@@ -6,6 +6,7 @@ import com.itts.userservice.vo.SjzdModelVO;
 import com.itts.userservice.vo.SjzdVO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
@@ -36,6 +37,22 @@ public interface SjzdMapper extends BaseMapper<Sjzd> {
             "GROUP BY ssmk " +
             "</script>")
     List<SjzdModelVO> findDictionaryModel(@Param("model") String model, @Param("systemType") String systemType, @Param("condition") String condition);
+
+    @Select("<script>" +
+            "SELECT * " +
+            "FROM t_sjzd  " +
+            "WHERE sfsc = false " +
+            "   <if test=\"mklx != null and mklx != ''\"> " +
+            "       AND mklx = #{mklx} " +
+            "   </if>" +
+            "   <if test=\"xtlb != null and xtlb != ''\"> " +
+            "       AND xtlb = #{xtlb} " +
+            "   </if>" +
+            "   <if test=\"ssmk != null and ssmk != ''\"> " +
+            "       AND ssmk = #{ssmk} " +
+            "   </if>" +
+            "</script>")
+    List<Sjzd> findBySsmk(@Param("xtlb") String xtlb, @Param("mklx") String mklx, @Param("ssmk") String ssmk);
 
     Sjzd selectByCode(String zdbm);
 
