@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
@@ -38,7 +39,7 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
  */
 @Service
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements PyJhService {
 
     @Resource
@@ -121,15 +122,35 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
 
     /**
      * 更新培养计划
-     * @param pyJh
+     * @param pyJhDTO
      * @return
      */
     @Override
-    public boolean update(PyJh pyJh) {
-        log.info("【人才培养 - 更新培养计划:{}】",pyJh);
-        Long userId = getUserId();
-        pyJh.setGxr(userId);
-        return pyJhService.updateById(pyJh);
+    public boolean update(PyJhDTO pyJhDTO) {
+        log.info("【人才培养 - 更新培养计划:{}】",pyJhDTO);
+        pyJhDTO.setGxr(getUserId());
+        PyJh pyJh = new PyJh();
+        BeanUtils.copyProperties(pyJhDTO,pyJh);
+        if (pyJhService.updateById(pyJh)) {
+            List<Long> kcIds = pyJhDTO.getKcIds();
+            if (kcIds != null) {
+                HashMap<String, Object> map = new HashMap<>();
+                Long jhId = pyJh.getId();
+                map.put("jh_id",jhId);
+                if (jhKcService.removeByMap(map)) {
+                    List<JhKc> kcList = new ArrayList<>();
+                    for (Long kcId : kcIds) {
+                        JhKc jhKc = new JhKc();
+                        jhKc.setJhId(jhId);
+                        jhKc.setKcId(kcId);
+                        kcList.add(jhKc);
+                    }
+                    return jhKcService.saveBatch(kcList);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -145,7 +166,12 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         pyJhDTO.setGxr(getUserId());
         PyJh pyJh = new PyJh();
         BeanUtils.copyProperties(pyJhDTO,pyJh);
-        return pyJhService.updateById(pyJh);
+        if (pyJhService.updateById(pyJh)) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("jh_id",pyJh.getId());
+            return jhKcService.removeByMap(map);
+        }
+        return false;
     }
 
     /**

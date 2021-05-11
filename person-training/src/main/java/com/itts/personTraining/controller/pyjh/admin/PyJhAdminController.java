@@ -83,14 +83,14 @@ public class PyJhAdminController {
     /**
      * 更新培养计划
      *
-     * @param pyJh
+     * @param pyJhDTO
      * @return
      * @throws WebException
      */
     @PutMapping("/update")
     @ApiOperation(value = "更新培养计划")
-    public ResponseUtil update(@RequestBody PyJh pyJh) throws WebException {
-        Long id = pyJh.getId();
+    public ResponseUtil update(@RequestBody PyJhDTO pyJhDTO) throws WebException {
+        Long id = pyJhDTO.getId();
         //检查参数是否合法
         if (id == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
@@ -99,7 +99,7 @@ public class PyJhAdminController {
         if (pyJhService.get(id) == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        if (!pyJhService.update(pyJh)) {
+        if (!pyJhService.update(pyJhDTO)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新培养计划成功!");

@@ -99,8 +99,9 @@ public class PcAdminController {
                          @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
                          @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary") String dictionary,
                          @ApiParam(value = "字典编码") @RequestParam(value = "zdbm", required = false) String zdbm,
+                         @ApiParam(value = "父级字典ID") @RequestParam(value = "parentId", required = false) Long parentId,
                          @RequestHeader(name = "token") String token){
-        return ResponseUtil.success(sjzdService.getList(pageNum, pageSize, model, systemType, dictionary, zdbm, token));
+        return sjzdService.getList(pageNum, pageSize, model, systemType, dictionary, zdbm, parentId, token);
     }
     /**
      * 新增批次

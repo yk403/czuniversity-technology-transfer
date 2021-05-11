@@ -44,9 +44,10 @@ public interface PyJhService extends IService<PyJh> {
 
     /**
      * 更新培养计划
+     * @param pyJhDTO
      * @return
      */
-    boolean update(PyJh pyJh);
+    boolean update(PyJhDTO pyJhDTO);
 
     /**
      * 删除培养计划
