@@ -1,4 +1,4 @@
-package com.itts.userservice.vo;
+package com.itts.userservice.vo.yh;
 
 
 import com.itts.userservice.dto.JsDTO;
