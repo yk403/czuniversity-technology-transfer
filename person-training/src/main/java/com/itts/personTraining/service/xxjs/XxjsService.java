@@ -1,7 +1,6 @@
 package com.itts.personTraining.service.xxjs;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xxjs.Xxjs;
 import com.baomidou.mybatisplus.extension.service.IService;
 

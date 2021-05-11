@@ -63,7 +63,7 @@ public class KcAdminController {
     /**
      * 查询所有课程
      */
-    @GetMapping("/getAll/")
+    @GetMapping("/getAll")
     @ApiOperation(value = "查询所有课程")
     public ResponseUtil getAll() {
         return ResponseUtil.success(kcService.getAll());
@@ -99,7 +99,7 @@ public class KcAdminController {
     public ResponseUtil update(@RequestBody KcDTO kcDTO) throws WebException {
         Long id = kcDTO.getId();
         //检查参数是否合法
-        if (id == null && kcDTO.getXyKcId() == null) {
+        if (id == null ) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //检查数据库中是否存在要更新的数据

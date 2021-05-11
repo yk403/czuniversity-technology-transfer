@@ -30,25 +30,7 @@ public class KcDTO {
     private List<Long> szIds;
 
     /**
-     * 学院课程id
-     */
-    @ApiModelProperty(value = "学院课程id", required = true)
-    private Long xyKcId;
-
-    /**
-     * 学院ID
-     */
-    @ApiModelProperty(value = "学院ID", required = true)
-    private Long xyId;
-
-    /**
-     * 学院名称
-     */
-    @ApiModelProperty(value = "学院名称", required = true)
-    private String xymc;
-
-    /**
-     * 类别:	compulsory - 必修课;	internship_training - 实习实训
+     * 类别: compulsory - 必修课;	internship_training - 实习实训
      */
     @ApiModelProperty(value = "类别", required = true)
     private String lb;

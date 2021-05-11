@@ -47,8 +47,6 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     private KcMapper kcMapper;
     @Autowired
     private KcService kcService;
-    @Autowired
-    private XyKcService xyKcService;
     @Resource
     private KcSzMapper kcSzMapper;
     @Autowired
@@ -116,19 +114,14 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
      */
     @Override
     public boolean delete(Kc kc) {
-        log.info("【人才培养 - 删除课程:{}】",kc);
+        log.info("【人才培养 - 删除课程:{}】", kc);
         //设置删除状态
         kc.setSfsc(true);
         kc.setGxr(getUserId());
         if (kcService.updateById(kc)) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("kc_id",kc.getId());
-            if (xyKcService.removeByMap(map)) {
-                HashMap<String, Object> map1 = new HashMap<>();
-                map1.put("kc_id",kc.getId());
-                return kcSzService.removeByMap(map1);
-            }
-            return false;
+            map.put("kc_id", kc.getId());
+            return kcSzService.removeByMap(map);
         }
         return false;
     }
@@ -152,20 +145,14 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
      */
     @Override
     public boolean add(KcDTO kcDTO) {
-        log.info("【人才培养 - 新增课程:{}】",kcDTO);
+        log.info("【人才培养 - 新增课程:{}】", kcDTO);
         Long userId = getUserId();
         Kc kc = new Kc();
         kc.setCjr(userId);
         kc.setGxr(userId);
-        BeanUtils.copyProperties(kcDTO,kc);
+        BeanUtils.copyProperties(kcDTO, kc);
         if (kcService.save(kc)) {
-            XyKc xyKc = new XyKc();
-            xyKc.setKcId(kc.getId());
-            xyKc.setXyId(kcDTO.getXyId());
-            if (xyKcService.save(xyKc)) {
-                return addKcSz(kcDTO, kc);
-            }
-            return false;
+            return addKcSz(kcDTO, kc);
         }
         return false;
     }
@@ -182,10 +169,6 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         kc.setGxr(getUserId());
         BeanUtils.copyProperties(kcDTO,kc);
         if (kcService.updateById(kc)) {
-            xyKcService.removeById(kcDTO.getXyKcId());
-            XyKc xyKc = new XyKc();
-            xyKc.setKcId(kc.getId());
-            xyKc.setXyId(kcDTO.getXyId());
             if (kcDTO.getSzIds() != null) {
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("kc_id",kcDTO.getId());
@@ -194,7 +177,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                 }
                 return false;
             }
-            return xyKcService.save(xyKc);
+            return false;
         }
         return false;
     }
