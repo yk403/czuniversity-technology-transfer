@@ -24,4 +24,27 @@
         id, zdmc, zdbm, xtlb, mklx, ssmkmc, ssmk, fj_id, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
+    <select id="selectByCode" resultMap="BaseResultMap">
+        select * from t_sjzd where zdbm= #{zdbm} and sfsc = false
+    </select>
+
+
+    <select id="selectSjzd" resultType="com.itts.userservice.vo.SjzdVO">
+        select zdmc as zdmc,
+               zdbm as zdbm,
+               xtlb as xtlb,
+               mklx as mklx,
+               ssmk as ssmk,
+               cjsj as cjsj
+        from t_sjzd
+        where sfsc = false
+    </select>
+    <!--查询通过名字或者编码-->
+    <select id="selectByNameOrCode" resultType="com.itts.userservice.model.sjzd.Sjzd">
+        select *
+        from t_sjzd
+        where (zdmc like concat('%',#{string},'%') or zdbm like concat('%',#{string},'%')) and sfsc =false and ssmk =#{ssmk}
+        order by cjsj desc
+    </select>
+
 </mapper>
