@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,12 +76,17 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
      * @return
      */
     @Override
-    public PyJh get(Long id) {
+    public PyJhDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询培养计划】",id);
         QueryWrapper<PyJh> pyJhQueryWrapper = new QueryWrapper<>();
         pyJhQueryWrapper.eq("sfsc",false)
                 .eq("id",id);
-        return pyJhMapper.selectOne(pyJhQueryWrapper);
+        PyJhDTO pyJhDTO = new PyJhDTO();
+        PyJh pyJh = pyJhMapper.selectOne(pyJhQueryWrapper);
+        BeanUtils.copyProperties(pyJh,pyJhDTO);
+        //List<Long> kcIds = jhKcService.selectByJhId(pyJh.getId());
+        //pyJhDTO.setKcIds(kcIds);
+        return pyJhDTO;
     }
 
     /**
@@ -126,15 +132,17 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
 
     /**
      * 删除培养计划
-     * @param pyJh
+     * @param pyJhDTO
      * @return
      */
     @Override
-    public boolean delete(PyJh pyJh) {
-        log.info("【人才培养 - 删除培养计划:{}】",pyJh);
+    public boolean delete(PyJhDTO pyJhDTO) {
+        log.info("【人才培养 - 删除培养计划:{}】",pyJhDTO);
         //设置删除状态
-        pyJh.setSfsc(true);
-        pyJh.setGxr(getUserId());
+        pyJhDTO.setSfsc(true);
+        pyJhDTO.setGxr(getUserId());
+        PyJh pyJh = new PyJh();
+        BeanUtils.copyProperties(pyJhDTO,pyJh);
         return pyJhService.updateById(pyJh);
     }
 

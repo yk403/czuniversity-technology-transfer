@@ -119,12 +119,12 @@ public class PyJhAdminController {
         if (id == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        PyJh pyJh = pyJhService.get(id);
-        if (pyJh == null) {
+        PyJhDTO pyJhDTO = pyJhService.get(id);
+        if (pyJhDTO == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新删除状态
-        if (!pyJhService.delete(pyJh)) {
+        if (!pyJhService.delete(pyJhDTO)) {
             throw new WebException(DELETE_FAIL);
         }
         return ResponseUtil.success("删除培养计划成功!");

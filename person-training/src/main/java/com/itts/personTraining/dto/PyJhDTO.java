@@ -75,6 +75,11 @@ public class PyJhDTO {
     private Date xfsj;
 
     /**
+     * 是否删除(0:否;1:是)
+     */
+    private boolean sfsc;
+
+    /**
      * 创建时间
      */
     @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行

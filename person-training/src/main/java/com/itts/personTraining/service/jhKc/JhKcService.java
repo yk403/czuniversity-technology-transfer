@@ -2,6 +2,9 @@ package com.itts.personTraining.service.jhKc;
 
 import com.itts.personTraining.model.jhKc.JhKc;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2021-05-11
  */
 public interface JhKcService extends IService<JhKc> {
+
 
 }

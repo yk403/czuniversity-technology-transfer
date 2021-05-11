@@ -33,7 +33,7 @@ public interface PyJhService extends IService<PyJh> {
      * @param id
      * @return
      */
-    PyJh get(Long id);
+    PyJhDTO get(Long id);
 
     /**
      * 新增培养计划
@@ -50,10 +50,10 @@ public interface PyJhService extends IService<PyJh> {
 
     /**
      * 删除培养计划
-     * @param pyJh
+     * @param pyJhDTO
      * @return
      */
-    boolean delete(PyJh pyJh);
+    boolean delete(PyJhDTO pyJhDTO);
 
     /**
      * 培养计划批量下发
