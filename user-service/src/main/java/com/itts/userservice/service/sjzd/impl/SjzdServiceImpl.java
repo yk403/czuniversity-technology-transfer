@@ -3,14 +3,17 @@ package com.itts.userservice.service.sjzd.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
 import com.itts.userservice.mapper.sjzd.SjzdMapper;
 import com.itts.userservice.model.sjzd.Sjzd;
+import com.itts.userservice.request.sjzd.*;
 import com.itts.userservice.service.sjzd.SjzdService;
 import com.itts.userservice.vo.SjzdModelVO;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.parameters.P;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -45,6 +48,16 @@ public class SjzdServiceImpl implements SjzdService {
         PageInfo<SjzdModelVO> pageInfo = new PageInfo<>(sjzdModels);
 
         return pageInfo;
+    }
+
+    /**
+     * 通过所属模块获取数据
+     */
+    @Override
+    public List<Sjzd> findBySsmk(String xtlb, String mklx, String ssmk) {
+
+        List<Sjzd> sjzds = sjzdMapper.findBySsmk(xtlb, mklx, ssmk);
+        return sjzds;
     }
 
     /**
@@ -92,6 +105,41 @@ public class SjzdServiceImpl implements SjzdService {
     }
 
     /**
+     * 通过所属模块获取数据
+     */
+    @Override
+    public GetSjzdRequest get(String xtlb, String mklx, String ssmk) {
+
+        List<Sjzd> sjzds = sjzdMapper.findBySsmk(xtlb, mklx, ssmk);
+
+        GetSjzdRequest getSjzdRequest = new GetSjzdRequest();
+
+        if (CollectionUtils.isEmpty(sjzds)) {
+            return null;
+        }
+
+        getSjzdRequest.setXtlb(sjzds.get(0).getXtlb());
+        getSjzdRequest.setMklx(sjzds.get(0).getMklx());
+        getSjzdRequest.setSsmkmc(sjzds.get(0).getSsmkmc());
+        getSjzdRequest.setSsmk(sjzds.get(0).getSsmk());
+
+        List<GetSjzdItemRequest> getSjzdItemRequests = Lists.newArrayList();
+
+        for (Sjzd sjzd : sjzds) {
+
+            GetSjzdItemRequest getSjzdItemRequest = new GetSjzdItemRequest();
+
+            BeanUtils.copyProperties(sjzd, getSjzdItemRequest);
+
+            getSjzdItemRequests.add(getSjzdItemRequest);
+
+        }
+        getSjzdRequest.setSjzdItems(getSjzdItemRequests);
+
+        return getSjzdRequest;
+    }
+
+    /**
      * 查询通过名称或编码
      *
      * @param pageNum
@@ -117,18 +165,34 @@ public class SjzdServiceImpl implements SjzdService {
      * @return
      */
     @Override
-    public Sjzd add(Sjzd sjzd) {
+    public AddSjzdRequest add(AddSjzdRequest sjzd) {
         LoginUser loginUser = threadLocal.get();
         Long userId = null;
         if (loginUser != null) {
             userId = loginUser.getUserId();
         }
-        //新增时设置更新时间和更新人
-        sjzd.setCjsj(new Date());
-        sjzd.setCjr(userId);
-        sjzd.setGxsj(new Date());
-        sjzd.setGxr(userId);
-        sjzdMapper.insert(sjzd);
+
+        Date now = new Date();
+
+        //循环便利，
+        for (AddSjzdItemRequest sjzdItem : sjzd.getSjzdItems()) {
+
+            Sjzd addSjzd = new Sjzd();
+
+            BeanUtils.copyProperties(sjzd, addSjzd);
+
+            addSjzd.setZdmc(sjzdItem.getZdmc());
+            addSjzd.setZdbm(sjzdItem.getZdbm());
+            addSjzd.setFjId(sjzdItem.getFjId());
+
+            //新增时设置更新时间和更新人
+            addSjzd.setCjsj(now);
+            addSjzd.setCjr(userId);
+            addSjzd.setGxsj(now);
+            addSjzd.setGxr(userId);
+            sjzdMapper.insert(addSjzd);
+        }
+
         return sjzd;
     }
 
@@ -139,16 +203,58 @@ public class SjzdServiceImpl implements SjzdService {
      * @return
      */
     @Override
-    public Sjzd update(Sjzd sjzd) {
+    public UpdateSjzdRequest update(UpdateSjzdRequest sjzd) {
+
         LoginUser loginUser = threadLocal.get();
         Long userId = null;
         if (loginUser != null) {
             userId = loginUser.getUserId();
         }
-        //更新时设置更新时间和更新人
-        sjzd.setGxsj(new Date());
-        sjzd.setGxr(userId);
-        sjzdMapper.updateById(sjzd);
+
+        List<Sjzd> oldSjzds = sjzdMapper.findBySsmk(sjzd.getXtlb(), sjzd.getMklx(), sjzd.getSsmk());
+
+        Date now = new Date();
+
+        if (!CollectionUtils.isEmpty(oldSjzds)) {
+
+            //删除所有旧的数据字典
+            for (Sjzd oldSjzd : oldSjzds) {
+
+                oldSjzd.setSfsc(true);
+                oldSjzd.setGxr(userId);
+                oldSjzd.setGxsj(now);
+                sjzdMapper.updateById(oldSjzd);
+            }
+        }
+
+        //增加新的数据字典
+        for (UpdateSjzdItemRequest sjzdItem : sjzd.getSjzdItems()) {
+
+            Sjzd addSjzd = new Sjzd();
+
+            BeanUtils.copyProperties(sjzd, addSjzd);
+
+            addSjzd.setZdmc(sjzdItem.getZdmc());
+            addSjzd.setZdbm(sjzdItem.getZdbm());
+            addSjzd.setFjId(sjzdItem.getFjId());
+
+            //新增时设置更新时间和更新人
+            addSjzd.setCjsj(now);
+            addSjzd.setCjr(userId);
+            addSjzd.setGxsj(now);
+            addSjzd.setGxr(userId);
+            sjzdMapper.insert(addSjzd);
+        }
+
         return sjzd;
+    }
+
+    /**
+     * 删除
+     */
+    @Override
+    public void delete(Long id) {
+
+        sjzdMapper.deleteById(id);
     }
 }

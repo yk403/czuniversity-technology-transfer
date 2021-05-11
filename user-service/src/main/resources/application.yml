@@ -41,3 +41,15 @@ pagehelper:
   helper-dialect: mysql
   reasonable: true
   support-methods-arguments: true
+# huawei ods
+huawei:
+  obs:
+    ak: D19EMDG2HD30LAAJULFV
+    sk: Oy26kRatswkUvkhhKQNyQdhDZxwT3MNExtwcFoae\
+    # 桶
+    bucketName: cdspzb
+    upload:
+      endPoint: obs.cn-north-4.myhuaweicloud.com
+  # 访问的endPoint
+    access:
+      endPoint: cdspzb.obs.cn-north-4.myhuaweicloud.com
