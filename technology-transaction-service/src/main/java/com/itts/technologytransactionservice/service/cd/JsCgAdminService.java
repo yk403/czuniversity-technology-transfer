@@ -36,4 +36,5 @@ public interface JsCgAdminService extends IService<TJsCg> {
 	boolean cgmove(Integer id,Integer bottom);
 
 	boolean topBottom(Integer id,Integer bottom);
+	Long getUserId();
 }

@@ -73,7 +73,7 @@ public class JsLcKzAdminServiceImpl extends ServiceImpl<JsLcKzMapper, TJsLcKz> i
 			if(list1.size()>0){
 				list1.get(0).setAuctionStatus(tJsLcKzDto.getAuctionStatus());
 				jsXqMapper.updateTJsXq(list1.get(0));
-				TJsLcKz tJsLcKz=new TJsLcKz();
+				/*TJsLcKz tJsLcKz=new TJsLcKz();
 				tJsLcKzDto.setXqId(list1.get(0).getId());
 				tJsLcKzDto.setFdjg("1000");
 				BeanUtils.copyProperties(tJsLcKzDto,tJsLcKz);
@@ -83,7 +83,7 @@ public class JsLcKzAdminServiceImpl extends ServiceImpl<JsLcKzMapper, TJsLcKz> i
 
 				}else{
 					save(tJsLcKz);
-				}
+				}*/
 			}
 		}
 		if(tJsLcKzDto.getType() == 1){
@@ -95,7 +95,7 @@ public class JsLcKzAdminServiceImpl extends ServiceImpl<JsLcKzMapper, TJsLcKz> i
 			if(list1.size()>0){
 				list1.get(0).setAuctionStatus(tJsLcKzDto.getAuctionStatus());
 				jsCgMapper.updateTJsCg(list1.get(0));
-				TJsLcKz tJsLcKz=new TJsLcKz();
+/*				TJsLcKz tJsLcKz=new TJsLcKz();
 				tJsLcKzDto.setCgId(list1.get(0).getId());
 				tJsLcKzDto.setFdjg("1000");
 				BeanUtils.copyProperties(tJsLcKzDto,tJsLcKz);
@@ -105,7 +105,7 @@ public class JsLcKzAdminServiceImpl extends ServiceImpl<JsLcKzMapper, TJsLcKz> i
 
 				}else{
 					save(tJsLcKz);
-				}
+				}*/
 			}
 		}
 		return true;

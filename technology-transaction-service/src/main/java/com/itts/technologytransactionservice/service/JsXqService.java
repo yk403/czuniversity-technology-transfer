@@ -70,4 +70,5 @@ public interface JsXqService extends IService<TJsXq> {
      * @return
      */
     boolean auditXq(Map<String, Object> params, Integer fbshzt);
+    Long getUserId();
 }

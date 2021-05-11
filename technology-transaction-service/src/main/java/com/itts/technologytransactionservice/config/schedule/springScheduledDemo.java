@@ -55,7 +55,7 @@ public class springScheduledDemo {
                             if(list1.size()>0){
                                 if(list1.get(0).getAuctionStatus()==0){
                                     list1.get(0).setAuctionStatus(1);
-                                    Map<String,Object>querymap=new HashMap<String,Object>();
+/*                                    Map<String,Object>querymap=new HashMap<String,Object>();
                                     querymap.put("cgId",list1.get(0).getId());
                                     List<TJsLcKz> list2 = jsLcKzMapper.list(querymap);
                                     if(list2.size()==0){
@@ -66,7 +66,7 @@ public class springScheduledDemo {
                                     }else{
                                         list2.get(0).setJjjgzt(0);
                                         jsLcKzAdminService.updateById(list2.get(0));
-                                    }
+                                    }*/
                                     jsCgMapper.updateTJsCg(list1.get(0));
                                 }
                             }
@@ -79,7 +79,7 @@ public class springScheduledDemo {
                             if(list1.size()>0){
                                 if(list1.get(0).getAuctionStatus()==0){
                                     list1.get(0).setAuctionStatus(1);
-                                    Map<String,Object>querymap=new HashMap<String,Object>();
+/*                                    Map<String,Object>querymap=new HashMap<String,Object>();
                                     querymap.put("xqId",list1.get(0).getId());
                                     List<TJsLcKz> list2 = jsLcKzMapper.list(querymap);
                                     if(list2.size()==0){
@@ -90,7 +90,7 @@ public class springScheduledDemo {
                                     }else{
                                         list2.get(0).setJjjgzt(0);
                                         jsLcKzAdminService.updateById(list2.get(0));
-                                    }
+                                    }*/
                                     jsXqMapper.updateTJsXq(list1.get(0));
                                 }
                             }

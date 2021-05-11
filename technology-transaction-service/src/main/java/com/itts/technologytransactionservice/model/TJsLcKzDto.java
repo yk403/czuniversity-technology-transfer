@@ -55,6 +55,10 @@ public class TJsLcKzDto implements Serializable {
      */
     private String fdjg;
     /**
+     * 底价
+     */
+    private String dj;
+    /**
      * 叫价间隔状态
      */
     private String jjjgzt;

@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsLcKzMapper">
 
     <select id="list" resultType="com.itts.technologytransactionservice.model.TJsLcKz">
-    select kz.id,kz.cjsj,kz.gxsj,lcsj,kz.hdzt,dqzgjg,fdjg,jjjgzt,lcdj,cg_id,xq_id
+    select kz.id,kz.cjsj,kz.gxsj,lcsj,kz.hdzt,dqzgjg,fdjg,jjjgzt,lcdj,cg_id,xq_id,kz.dj
     from t_js_lc_kz kz
         <if test="map.type == 0">left join t_js_xq xq on( xq.id = kz.xq_id )</if>
         <if test="map.type == 1">left join t_js_cg cg on( cg.id = kz.cg_id )</if>
@@ -14,6 +14,7 @@
         <if test="map.cjsj != null and map.cjsj != ''"> and cjsj = #{map.cjsj} </if>
         <if test="map.gxsj != null and map.gxsj != ''"> and gxsj = #{map.gxsj} </if>
         <if test="map.lcsj != null and map.lcsj != ''"> and lcsj = #{map.lcsj} </if>
+        <if test="map.dj != null and map.dj != ''"> and dj = #{map.dj} </if>
         <if test="map.hdzt != null and map.hdzt != ''"> and hdzt = #{map.hdzt} </if>
         <if test="map.xqId != null"> and xq_id = #{map.xqId} </if>
         <if test="map.cgId != null"> and cg_id = #{map.cgId} </if>

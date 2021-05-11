@@ -69,7 +69,7 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
     public boolean saveCjRc(TJsCjRcDto tJsCjRcDto) {
         Map<String,Object> map=new HashMap<>();
         map.put("hdId",tJsCjRcDto.getHdId());
-        map.put("userId",2);
+        map.put("userId",Integer.parseInt(String.valueOf(getUserId())));
         //判断是成果活动还是需求活动，并把流程状态控制表当前最高价格置为当前叫价金额
         if(tJsCjRcDto.getCgId()!=null){
             Map<String,Object> cjmap=new HashMap<String,Object>();

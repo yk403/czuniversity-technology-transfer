@@ -97,4 +97,5 @@ public class JsHdDTO {
 是否报名
  */
     private Integer isBm;
+
 }

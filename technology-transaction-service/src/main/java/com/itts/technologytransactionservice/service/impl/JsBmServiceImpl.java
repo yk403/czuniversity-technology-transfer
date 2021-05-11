@@ -77,7 +77,7 @@ public class JsBmServiceImpl extends ServiceImpl<JsBmMapper, TJsBm> implements J
 	@Override
 	public boolean saveBm(TJsBm tJsBm) {
 		Long userId = getUserId();
-		//tJsBm.setUserId(Integer.parseInt(String.valueOf(userId)));
+		tJsBm.setUserId(Integer.parseInt(String.valueOf(userId)));
 		return save(tJsBm);
 	}
 	/**
