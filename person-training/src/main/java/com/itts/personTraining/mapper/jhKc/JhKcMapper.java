@@ -2,6 +2,9 @@ package com.itts.personTraining.mapper.jhKc;
 
 import com.itts.personTraining.model.jhKc.JhKc;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface JhKcMapper extends BaseMapper<JhKc> {
 
+    /**
+     * 根据jhId查询课程ids
+     * @param jhId
+     * @return
+     */
+    List<Long> selectByJhId(@Param("jhId") Long jhId);
 }

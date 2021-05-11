@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.PyJhDTO;
+import com.itts.personTraining.mapper.jhKc.JhKcMapper;
 import com.itts.personTraining.model.jhKc.JhKc;
 import com.itts.personTraining.model.pyjh.PyJh;
 import com.itts.personTraining.mapper.pyjh.PyJhMapper;
@@ -46,6 +47,8 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     private PyJhService pyJhService;
     @Autowired
     private JhKcService jhKcService;
+    @Resource
+    private JhKcMapper jhKcMapper;
 
     /**
      * 查询培养计划列表
@@ -84,8 +87,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         PyJhDTO pyJhDTO = new PyJhDTO();
         PyJh pyJh = pyJhMapper.selectOne(pyJhQueryWrapper);
         BeanUtils.copyProperties(pyJh,pyJhDTO);
-        //List<Long> kcIds = jhKcService.selectByJhId(pyJh.getId());
-        //pyJhDTO.setKcIds(kcIds);
+        pyJhDTO.setKcIds(jhKcMapper.selectByJhId(pyJh.getId()));
         return pyJhDTO;
     }
 
