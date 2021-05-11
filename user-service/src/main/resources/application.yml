@@ -45,7 +45,7 @@ pagehelper:
 huawei:
   obs:
     ak: D19EMDG2HD30LAAJULFV
-    sk: Oy26kRatswkUvkhhKQNyQdhDZxwT3MNExtwcFoae\
+    sk: Oy26kRatswkUvkhhKQNyQdhDZxwT3MNExtwcFoae
     # 桶
     bucketName: cdspzb
     upload:
