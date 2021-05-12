@@ -120,6 +120,19 @@ public class Xxzy implements Serializable {
     private Boolean sffx;
 
     /**
+     * 是否上架
+     */
+    @ApiModelProperty(value = "是否上架")
+    private Boolean sfsj;
+
+    /**
+     * 上架时间
+     */
+    @ApiModelProperty(value = "上架时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date sjsj;
+
+    /**
      * 是否删除
      */
     @ApiModelProperty(value = "是否删除")
