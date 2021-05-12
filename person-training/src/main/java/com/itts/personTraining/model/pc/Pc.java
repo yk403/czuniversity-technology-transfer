@@ -31,6 +31,11 @@ public class Pc implements Serializable {
     private Long id;
 
     /**
+     * 入学日期
+     */
+    private String rxrq;
+
+    /**
      * 批次名称
      */
     @ApiModelProperty(value = "批次名称", required = true)

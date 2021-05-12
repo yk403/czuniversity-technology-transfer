@@ -5,6 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.pc.Pc">
         <id column="id" property="id" />
+        <result column="rxrq" property="rxrq" />
         <result column="pcmc" property="pcmc" />
         <result column="pch" property="pch" />
         <result column="jylx" property="jylx" />
@@ -20,7 +21,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pcmc, pch, jylx, xylx, kclx, sfsc, pcnf, cjsj, cjr, gxsj, gxr
+        id, rxrq, pcmc, pch, jylx, xylx, kclx, sfsc, pcnf, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="selectPcList" parameterType="java.util.List">
