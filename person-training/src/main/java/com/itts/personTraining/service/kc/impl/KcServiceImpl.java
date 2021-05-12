@@ -162,8 +162,8 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         log.info("【人才培养 - 新增课程:{}】", kcDTO);
         Long userId = getUserId();
         Kc kc = new Kc();
-        kc.setCjr(userId);
-        kc.setGxr(userId);
+        kcDTO.setCjr(userId);
+        kcDTO.setGxr(userId);
         BeanUtils.copyProperties(kcDTO, kc);
         if (kcService.save(kc)) {
             return addKcSz(kcDTO, kc);
@@ -180,7 +180,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     public boolean update(KcDTO kcDTO) {
         log.info("【人才培养 - 更新课程:{}】",kcDTO);
         Kc kc = new Kc();
-        kc.setGxr(getUserId());
+        kcDTO .setGxr(getUserId());
         BeanUtils.copyProperties(kcDTO,kc);
         if (kcService.updateById(kc)) {
             if (kcDTO.getSzIds() != null) {

@@ -36,13 +36,21 @@ public class KcDTO {
     private Long zsmkId;
 
     /**
+     * 教育类型
+     */
+    @ApiModelProperty(value = "教育类型", required = true)
+    private String jylx;
+
+    /**
      * 字典编码
      */
+    @ApiModelProperty(value = "字典编码", required = true)
     private String zdbm;
 
     /**
      * 课程类型(theory_class：理论课；practical_training：实训课；practice_course：实践课)
      */
+    @ApiModelProperty(value = "课程类型", required = true)
     private String kclx;
 
     /**
