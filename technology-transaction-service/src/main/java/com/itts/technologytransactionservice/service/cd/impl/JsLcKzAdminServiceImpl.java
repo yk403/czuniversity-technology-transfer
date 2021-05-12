@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
@@ -111,6 +112,7 @@ public class JsLcKzAdminServiceImpl extends ServiceImpl<JsLcKzMapper, TJsLcKz> i
 		return true;
 	}
 
+	//落锤逻辑
 	@Override
 	public boolean updateLc(TJsLcKzDto tJsLcKzDto) {
 		tJsLcKzDto.setLcsj(new Date());
@@ -120,6 +122,9 @@ public class JsLcKzAdminServiceImpl extends ServiceImpl<JsLcKzMapper, TJsLcKz> i
 			byId.setAuctionStatus(tJsLcKzDto.getAuctionStatus());
 			jsCgMapper.updateTJsCg(byId);
 			BeanUtils.copyProperties(tJsLcKzDto,tJsLcKz);
+			//计算服务费为落锤价格的5%
+			BigDecimal num1 = new BigDecimal("0.05");
+			tJsLcKz.setFwf(tJsLcKz.getLcdj().multiply(num1));
 			updateById(tJsLcKz);
 		}
 		if(tJsLcKzDto.getType()== 0){
@@ -127,6 +132,9 @@ public class JsLcKzAdminServiceImpl extends ServiceImpl<JsLcKzMapper, TJsLcKz> i
 			byId.setAuctionStatus(tJsLcKzDto.getAuctionStatus());
 			jsXqMapper.updateTJsXq(byId);
 			BeanUtils.copyProperties(tJsLcKzDto,tJsLcKz);
+			//计算服务费为落锤价格的5%
+			BigDecimal num1 = new BigDecimal("0.05");
+			tJsLcKz.setFwf(tJsLcKz.getLcdj().multiply(num1));
 			updateById(tJsLcKz);
 		}
 

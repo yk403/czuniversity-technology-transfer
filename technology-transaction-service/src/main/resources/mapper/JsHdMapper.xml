@@ -58,7 +58,7 @@
 			<if test="map.hdkssj != null and map.hdkssj != ''"> and hd.hdkssj = #{map.hdkssj} </if>
 			<if test="map.hdjssj != null and map.hdjssj != ''"> and hd.hdjssj = #{map.hdjssj} </if>
 			<if test="map.hdzt != null"> and hd.hdzt = #{map.hdzt} </if>
-			<if test="map.cjsj != null and map.cjsj != ''"> and hd.cjsj = #{map.cjsj} </if>
+			<if test="map.cjsj != null"> and hd.cjsj = #{map.cjsj} </if>
 			<if test="map.hdfs != null"> and hd.hdfs = #{map.hdfs} </if>
 			<if test="map.isBm != null"> and hd.is_bm = #{map.isBm} </if>
 			<if test="map.hdfbzt != null"> and hd.hdfbzt = #{map.hdfbzt} </if>

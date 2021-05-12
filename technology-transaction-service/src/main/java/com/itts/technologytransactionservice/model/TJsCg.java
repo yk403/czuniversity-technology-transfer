@@ -258,4 +258,12 @@ public class TJsCg implements Serializable {
 	 * 结算状态(0:未结算;1:已结算)
 	 */
 	private Integer jszt;
+	/**
+	 * 服务费(默认为落锤金额的5%)
+	 */
+	private BigDecimal fwf;
+	/**
+	 * 落锤定价
+	 */
+	private Integer lcdj;
 }

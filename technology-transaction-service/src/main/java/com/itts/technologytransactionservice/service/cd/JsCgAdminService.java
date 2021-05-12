@@ -18,6 +18,8 @@ public interface JsCgAdminService extends IService<TJsCg> {
 
 	PageInfo findJsCg(Map<String, Object> params);
 
+	PageInfo findGdJsCg(Map<String, Object> params);
+
 	TJsCg selectByName(String name);
 
 	boolean saveCg(TJsCg tJsCg);
