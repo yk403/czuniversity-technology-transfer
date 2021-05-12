@@ -155,17 +155,23 @@ public class JgglController {
         Jggl fatherGroup;
         //机构移入自身的子机构
         boolean flag = false;
-        Jggl chirdjggl = null;
+
+        List<Jggl> jgglList=null;
+        //判断子机构是否直属为下一级
         for (Jggl jggl1 : list) {
             if(jggl1.getJgbm().equals(jggl.getFjbm())){
                 flag=true;
-                chirdjggl=jggl1;
+                jgglList.add(jggl1);
             }
         }
         if(flag){
-            chirdjggl.setFjbm(group.getFjbm());
-            jgglService.update(chirdjggl);
-            //修改所有子机构的父机构和层级
+            //修改机构自身下一级的所有子机构的fjbm
+            for (int i = 0; i < jgglList.size(); i++) {
+                Jggl jggl1 = jgglList.get(i);
+                jggl1.setFjbm(group.getFjbm());
+                jgglService.update(jggl1);
+            }
+            //修改所有子机构的父机构编码和层级
             list.forEach(Jggl ->{
                 if(Jggl.getJgbm()!=group.getJgbm()){
                     Jggl.setCj(Jggl.getCj().replace(group.getCj(),jgglService.selectByJgbm(group.getFjbm()).getCj()));
@@ -175,6 +181,7 @@ public class JgglController {
             //修改自身层级
             jggl.setCj(group.getCj().replace(jgglService.selectByJgbm(group.getFjbm()).getCj(),jgglService.selectByJgbm(jggl.getFjbm()).getCj()));
             jgglService.update(jggl);
+            return ResponseUtil.success(jggl);
         }
         //机构移入上级或平级无关的机构
         if(fjbm.equals("000")){
