@@ -95,4 +95,8 @@ public class TJsLcKzDto implements Serializable {
    活动排序值
      */
     private Integer soft;
+    /**
+     * 服务费(默认为落锤金额的5%)
+     */
+    private BigDecimal fwf;
 }

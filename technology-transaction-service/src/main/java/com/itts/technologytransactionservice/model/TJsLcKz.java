@@ -82,4 +82,8 @@ public class TJsLcKz implements Serializable {
      * 删除状态(0:未删除;1:已删除)
      */
     private Integer isDelete;
+    /**
+     * 服务费(默认为落锤金额的5%)
+     */
+    private BigDecimal fwf;
 }

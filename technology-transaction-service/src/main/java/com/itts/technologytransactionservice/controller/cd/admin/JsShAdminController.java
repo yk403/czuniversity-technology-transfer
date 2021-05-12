@@ -9,6 +9,7 @@ import com.itts.technologytransactionservice.controller.BaseController;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.service.cd.JsShAdminService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,18 @@ public class JsShAdminController extends BaseController {
         return success(JsShAdminService.page(query));
     }
 
+    @GetMapping("/jsUpdate")
+    @ApiOperation(value = "归档清算结算逻辑")
+    public ResponseUtil updateByCgXqId(@RequestParam(value = "cgId", required = false)Integer cgId,
+                                @RequestParam(value = "xqId", required = false)Integer xqId) {
+        if(cgId!=null){
+            JsShAdminService.updateByCgId(cgId);
+        }
+        if(xqId!=null){
+            JsShAdminService.updateByXqId(xqId);
+        }
+        return ResponseUtil.success();
+    }
     /**
      * 根据ID查询
      *

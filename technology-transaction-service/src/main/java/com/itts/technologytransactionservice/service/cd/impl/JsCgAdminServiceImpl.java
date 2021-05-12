@@ -64,6 +64,22 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         List<TJsCg> list = jsCgMapper.findJsCg(query);
         return new PageInfo<>(list);
     }
+    /**
+     * 分页查询成果(后台管理归档清算用)
+     * @param params
+     * @return
+     */
+    @Override
+    public PageInfo<TJsCg> findGdJsCg(Map<String, Object> params) {
+        log.info("【技术交易 - 分页查询成果(后台审批管理)】");
+        //前端传输标识type(0：审批管理;1：信息采集)
+        //TODO 从ThreadLocal中获取管理员id 暂时是假数据
+        params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
+        Query query = new Query(params);
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsCg> list = jsCgMapper.findGdJsCg(query);
+        return new PageInfo<>(list);
+    }
 
     /**
      * 根据成果id查询详细信息

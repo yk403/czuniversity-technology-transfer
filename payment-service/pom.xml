@@ -84,6 +84,12 @@
             <artifactId>feign-httpclient</artifactId>
         </dependency>
 
+        <!--微信支付API v3的Apache HttpClient扩展，实现了请求签名的生成和应答签名的验证-->
+        <dependency>
+            <groupId>com.github.wechatpay-apiv3</groupId>
+            <artifactId>wechatpay-apache-httpclient</artifactId>
+            <version>0.2.2</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
