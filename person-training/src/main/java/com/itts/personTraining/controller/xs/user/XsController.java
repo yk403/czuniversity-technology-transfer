@@ -33,15 +33,8 @@ public class XsController {
      */
     @GetMapping("/get/")
     @ApiOperation(value = "获取学员详情")
-    public ResponseUtil get() {
-        LoginUser loginUser = threadLocal.get();
-        Long userId;
-        if (loginUser != null) {
-            userId = loginUser.getUserId();
-        } else {
-            throw new ServiceException(GET_THREADLOCAL_ERROR);
-        }
-        return ResponseUtil.success(xsService.get(userId));
+    public ResponseUtil get(@RequestParam(value = "xh") String xh) {
+        return ResponseUtil.success(xsService.getByXh(xh));
     }
 
     /**

@@ -36,15 +36,9 @@ public class PkController {
      */
     @GetMapping("/list/")
     @ApiOperation(value = "查询排课信息")
-    public ResponseUtil findPkInfo(@RequestParam(value = "skqsnyr") String skqsnyr) {
-        LoginUser loginUser = threadLocal.get();
-        Long userId;
-        if (loginUser != null) {
-            userId = loginUser.getUserId();
-        } else {
-            throw new ServiceException(GET_THREADLOCAL_ERROR);
-        }
-        Long pcId = xsService.get(userId).getPcId();
+    public ResponseUtil findPkInfo(@RequestParam(value = "skqsnyr") String skqsnyr,
+                                   @RequestParam(value = "xh") String xh) {
+        Long pcId = xsService.getByXh(xh).getPcId();
         if(pcId==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }

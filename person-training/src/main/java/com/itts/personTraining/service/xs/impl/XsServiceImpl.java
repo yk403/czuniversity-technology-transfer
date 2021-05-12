@@ -90,6 +90,19 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                       .eq("id",id);
         return xsMapper.selectOne(xsQueryWrapper);
     }
+    /**
+     * 根据xh查询学员信息
+     * @param xh
+     * @return
+     */
+    @Override
+    public Xs getByXh(String xh) {
+        log.info("【人才培养 - 根据学号:{}查询学员信息】",xh);
+        QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
+        xsQueryWrapper.eq("sfsc",false)
+                .eq("xh",xh);
+        return xsMapper.selectOne(xsQueryWrapper);
+    }
 
     /**
      * 新增学员
