@@ -14,6 +14,7 @@ import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.vo.JgglVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -153,15 +154,24 @@ public class JgglController {
         String fjbm = jggl.getFjbm();
         String cj;
         Jggl fatherGroup;
-        //机构移入自身的子机构
+        //判断机构是否移入自身的子机构
+        boolean flagold = false;
+
+        for (Jggl jggl1:list){
+            if(jggl.getFjbm().equals(jggl1.getJgbm())){
+                flagold=true;
+            }
+        }
         boolean flag = false;
 
         List<Jggl> jgglList=null;
         //判断子机构是否直属为下一级
-        for (Jggl jggl1 : list) {
-            if(jggl1.getJgbm().equals(jggl.getFjbm())){
-                flag=true;
-                jgglList.add(jggl1);
+        if(flagold){
+            for (Jggl jggl1 : list) {
+                if(jggl1.getFjbm().equals(jggl.getJgbm())){
+                    flag=true;
+                    jgglList.add(jggl1);
+                }
             }
         }
         if(flag){
@@ -174,12 +184,12 @@ public class JgglController {
             //修改所有子机构的父机构编码和层级
             list.forEach(Jggl ->{
                 if(Jggl.getJgbm()!=group.getJgbm()){
-                    Jggl.setCj(Jggl.getCj().replace(group.getCj(),jgglService.selectByJgbm(group.getFjbm()).getCj()));
+                    Jggl.setCj(StringUtils.strip(Jggl.getCj(),jggl.getJgbm()+"-"));
                     jgglService.update(Jggl);
                 }
             });
             //修改自身层级
-            jggl.setCj(group.getCj().replace(jgglService.selectByJgbm(group.getFjbm()).getCj(),jgglService.selectByJgbm(jggl.getFjbm()).getCj()));
+            jggl.setCj(jgglService.selectByJgbm(jggl.getFjbm()).getCj()+"-"+jggl.getJgbm());
             jgglService.update(jggl);
             return ResponseUtil.success(jggl);
         }
