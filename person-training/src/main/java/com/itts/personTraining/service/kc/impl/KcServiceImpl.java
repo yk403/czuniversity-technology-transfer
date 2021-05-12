@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.kcSz.KcSzService;
 import com.itts.personTraining.service.xyKc.XyKcService;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.K;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,12 +83,23 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
      * @return
      */
     @Override
-    public Kc get(Long id) {
+    public KcDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询课程信息】",id);
         QueryWrapper<Kc> kcQueryWrapper = new QueryWrapper<>();
         kcQueryWrapper.eq("sfsc",false)
                       .eq("id",id);
-        return kcMapper.selectOne(kcQueryWrapper);
+        Kc kc = kcMapper.selectOne(kcQueryWrapper);
+        KcDTO kcDTO = new KcDTO();
+        BeanUtils.copyProperties(kc,kcDTO);
+        QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
+        kcSzQueryWrapper.eq("kc_id",kc.getId());
+        List<KcSz> kcSzList = kcSzMapper.selectList(kcSzQueryWrapper);
+        List<Long> szIds = new ArrayList<>();
+        for (KcSz kcSz : kcSzList) {
+            szIds.add(kcSz.getSzId());
+        }
+        kcDTO.setSzIds(szIds);
+        return kcDTO;
     }
 
     /**
@@ -109,18 +121,20 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
 
     /**
      * 删除课程
-     * @param kc
+     * @param kcDTO
      * @return
      */
     @Override
-    public boolean delete(Kc kc) {
-        log.info("【人才培养 - 删除课程:{}】", kc);
+    public boolean delete(KcDTO kcDTO) {
+        log.info("【人才培养 - 删除课程:{}】", kcDTO);
         //设置删除状态
-        kc.setSfsc(true);
-        kc.setGxr(getUserId());
+        kcDTO.setSfsc(true);
+        kcDTO.setGxr(getUserId());
+        Kc kc = new Kc();
+        BeanUtils.copyProperties(kcDTO,kc);
         if (kcService.updateById(kc)) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("kc_id", kc.getId());
+            map.put("kc_id", kcDTO.getId());
             return kcSzService.removeByMap(map);
         }
         return false;

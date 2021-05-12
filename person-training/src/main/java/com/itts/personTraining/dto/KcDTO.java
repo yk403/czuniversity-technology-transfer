@@ -136,6 +136,11 @@ public class KcDTO {
     private String bz;
 
     /**
+     * 是否删除(0:否；1:是)
+     */
+    private boolean sfsc;
+
+    /**
      * 是否下发(0:否;1:是)
      */
     @ApiModelProperty(value = "是否下发")

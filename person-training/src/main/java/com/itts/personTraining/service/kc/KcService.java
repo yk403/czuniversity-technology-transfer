@@ -45,7 +45,7 @@ public interface KcService extends IService<Kc> {
      * @param id
      * @return
      */
-    Kc get(Long id);
+    KcDTO get(Long id);
 
     /**
      * 课程批量下发
@@ -56,10 +56,10 @@ public interface KcService extends IService<Kc> {
 
     /**
      * 删除课程
-     * @param kc
+     * @param kcDTO
      * @return
      */
-    boolean delete(Kc kc);
+    boolean delete(KcDTO kcDTO);
 
     /**
      * 查询所有课程

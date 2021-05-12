@@ -121,12 +121,12 @@ public class KcAdminController {
     @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "删除课程")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
-        Kc kc = kcService.get(id);
-        if (kc == null) {
+        KcDTO kcDTO = kcService.get(id);
+        if (kcDTO == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新删除状态
-        if (!kcService.delete(kc)) {
+        if (!kcService.delete(kcDTO)) {
             throw new WebException(DELETE_FAIL);
         }
         return ResponseUtil.success("删除课程成功!");
