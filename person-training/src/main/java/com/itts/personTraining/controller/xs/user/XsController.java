@@ -1,7 +1,9 @@
 package com.itts.personTraining.controller.xs.user;
 
 
+import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.xs.Xs;
@@ -12,10 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
-import static com.itts.common.constant.SystemConstant.BASE_URL;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR;
-import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
+import static com.itts.common.constant.SystemConstant.*;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 @RestController
 @RequestMapping(BASE_URL + "/v1/xs")
@@ -26,15 +26,22 @@ public class XsController {
     private XsService xsService;
 
     /**
-     * 根据id查询学员详情
+     * 查询学员详情
      *
-     * @param id
+     *
      * @return
      */
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/")
     @ApiOperation(value = "获取学员详情")
-    public ResponseUtil get(@PathVariable("id") Long id) {
-        return ResponseUtil.success(xsService.get(id));
+    public ResponseUtil get() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return ResponseUtil.success(xsService.get(userId));
     }
 
     /**
