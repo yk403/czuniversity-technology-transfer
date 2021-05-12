@@ -157,6 +157,17 @@ public class SpzbAdminController {
     }
 
     /**
+    *视频录制完成回调接口
+    */
+    @PostMapping("/callback/")
+    public ResponseUtil callback(@RequestBody String string){
+
+        System.out.println(string);
+
+        return ResponseUtil.success(string);
+    }
+
+    /**
      * 校验参数
      *
      * @param

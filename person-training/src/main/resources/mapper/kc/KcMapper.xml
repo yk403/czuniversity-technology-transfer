@@ -5,7 +5,8 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.kc.Kc">
         <id column="id" property="id" />
-        <result column="lb" property="lb" />
+        <result column="jylx" property="jylx" />
+        <result column="zdbm" property="zdbm" />
         <result column="zsmk_id" property="zsmkId" />
         <result column="kcmc" property="kcmc" />
         <result column="kcdm" property="kcdm" />
@@ -26,18 +27,17 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, js_id, lb, zsmk_id, jsxm, zsmkmc, kcmc, kcdm, kclx, kcxs, kcxf, kkxq, kkxy, skfs, sfbx, bz, sczt, cjsj, cjr, gxsj, gxr
+        id, js_id, jylx, zdbm, zsmk_id, jsxm, zsmkmc, kcmc, kcdm, kclx, kcxs, kcxf, kkxq, kkxy, skfs, sfbx, bz, sczt, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="findByPage" resultType="com.itts.personTraining.dto.KcDTO">
-        select kc.id as id,txk.id as xyKcId,xy.id as xyId,xymc,lb,zsmk_id as zsmkId,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfbx,bz,sfxf,kc.cjsj,kc.cjr,kc.gxsj,kc.gxr
-        from t_kc kc left join t_xy_kc txk on(kc.id=txk.kc_id) left join t_xy xy on(xy.id=txk.xy_id)
+        select kc.id as id,zdbm,zsmk_id as zsmkId,jylx,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfbx,bz,sfxf,cjsj,cjr,gxsj,gxr
+        from t_kc kc
         <where>
             kc.sfsc = false
-            <if test="xyId != null"> xy.id = #{xyId} </if>
             <if test="kclx != null and kclx != ''"> and kc.kclx like #{kclx} </if>
-            <if test="name != null and name != ''"> and kc.kcdm like #{name} </if>
-            <if test="name != null and name != ''"> or kc.kcmc like #{name} </if>
+            <if test="name != null and name != ''"> and kc.kcdm = #{name} </if>
+            <if test="name != null and name != ''"> or kc.kcmc like concat('%',#{name},'%') </if>
         </where>
         order by kc.id desc
     </select>

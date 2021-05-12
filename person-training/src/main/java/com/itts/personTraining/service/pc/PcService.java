@@ -32,13 +32,34 @@ public interface PcService  {
      * 新增
      *
      */
-    Pc add(Pc pc);
+    boolean add(Pc pc);
     /**
      * 更新
      */
-    Pc update(Pc pc);
+    boolean update(Pc pc);
     /**
      * 批量更新
      */
-    Boolean updateBatch(List<Long> ids);
+    boolean updateBatch(List<Long> ids);
+
+    /**
+     * 根据教育类型查询批次信息
+     * @param jylx
+     * @return
+     */
+    List<Pc> getByJylx(String jylx);
+
+    /**
+     * 删除批次
+     * @param pc
+     * @return
+     */
+    boolean delete(Pc pc);
+
+    /**
+     * 获取所有批次详情
+     * @return
+     */
+    List<Pc> getAll();
+
 }

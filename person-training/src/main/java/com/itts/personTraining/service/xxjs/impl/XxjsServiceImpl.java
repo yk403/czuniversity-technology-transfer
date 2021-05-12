@@ -5,7 +5,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
-import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xxjs.Xxjs;
 import com.itts.personTraining.mapper.xxjs.XxjsMapper;
 import com.itts.personTraining.service.xxjs.XxjsService;
@@ -54,9 +53,7 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
         QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
         xxjsQueryWrapper.eq("sfsc",false)
                       .eq(StringUtils.isNotBlank(jxlmc), "jxlmc", jxlmc);
-        List<Xxjs> xxjs = xxjsMapper.selectList(xxjsQueryWrapper);
-        PageInfo<Xxjs> PageInfo = new PageInfo<>(xxjs);
-        return PageInfo;
+        return new PageInfo<>(xxjsMapper.selectList(xxjsQueryWrapper));
     }
 
     /**
@@ -130,6 +127,32 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
             }
         }
         return true;
+    }
+
+    /**
+     * 根据教学楼名称查询学校教室
+     * @param jxlmc
+     * @return
+     */
+    @Override
+    public List<Xxjs> getByJxlmc(String jxlmc) {
+        log.info("【人才培养 - 根据教学楼名称:{}查询学校教室信息】",jxlmc);
+        QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
+        xxjsQueryWrapper.eq("sfsc",false)
+                .eq("jxlmc",jxlmc);
+        return xxjsMapper.selectList(xxjsQueryWrapper);
+    }
+
+    /**
+     * 查询所有学校教室
+     * @return
+     */
+    @Override
+    public List<Xxjs> getAll() {
+        log.info("【人才培养 - 查询所有学校教室】");
+        QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
+        xxjsQueryWrapper.eq("sfsc",false);
+        return xxjsMapper.selectList(xxjsQueryWrapper);
     }
 
     /**

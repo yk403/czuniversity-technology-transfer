@@ -3,15 +3,12 @@ package com.itts.personTraining.controller.xxjs.admin;
 
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xxjs.Xxjs;
 import com.itts.personTraining.service.xxjs.XxjsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -56,6 +53,28 @@ public class XxjsAdminController {
     @ApiOperation(value = "获取详情")
     public ResponseUtil get(@PathVariable("id") Long id) {
         return ResponseUtil.success(xxjsService.get(id));
+    }
+
+    /**
+     * 查询所有学校教室
+     * @return
+     */
+    @GetMapping("/getAll")
+    @ApiOperation(value = "查询所有学校教室")
+    public ResponseUtil getAll() {
+        return ResponseUtil.success(xxjsService.getAll());
+    }
+
+    /**
+     * 根据教学楼名称查询学校教室
+     *
+     * @param jxlmc
+     * @return
+     */
+    @GetMapping("/getByJxlmc/{jxlmc}")
+    @ApiOperation(value = "根据教学楼名称查询学校教室")
+    public ResponseUtil getByJxlmc(@PathVariable("jxlmc") String jxlmc) {
+        return ResponseUtil.success(xxjsService.getByJxlmc(jxlmc));
     }
 
     /**

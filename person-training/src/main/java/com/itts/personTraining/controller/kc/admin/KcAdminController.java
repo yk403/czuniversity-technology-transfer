@@ -43,9 +43,8 @@ public class KcAdminController {
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "kclx", required = false) String kclx,
-                                   @RequestParam(value = "name", required = false) String name,
-                                   @RequestParam(value = "xyId", required = false) Long xyId) {
-        return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name, xyId));
+                                   @RequestParam(value = "name", required = false) String name) {
+        return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name));
     }
 
     /**
@@ -99,7 +98,7 @@ public class KcAdminController {
     public ResponseUtil update(@RequestBody KcDTO kcDTO) throws WebException {
         Long id = kcDTO.getId();
         //检查参数是否合法
-        if (id == null && kcDTO.getXyKcId() == null) {
+        if (id == null ) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //检查数据库中是否存在要更新的数据
@@ -122,12 +121,12 @@ public class KcAdminController {
     @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "删除课程")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
-        Kc kc = kcService.get(id);
-        if (kc == null) {
+        KcDTO kcDTO = kcService.get(id);
+        if (kcDTO == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新删除状态
-        if (!kcService.delete(kc)) {
+        if (!kcService.delete(kcDTO)) {
             throw new WebException(DELETE_FAIL);
         }
         return ResponseUtil.success("删除课程成功!");
@@ -155,6 +154,9 @@ public class KcAdminController {
         }
         if(kcDTO.getSzIds() == null) {
             throw new WebException(TEACHER_ISEMPTY_ERROR);
+        }
+        if (kcDTO.getKcdm() == null) {
+            throw new WebException(TEACH_TYPE_ISEMPTY_ERROR);
         }
         List<Kc> kcList = kcService.getAll();
         for (Kc kc : kcList) {

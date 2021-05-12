@@ -34,11 +34,6 @@ public class PyJh implements Serializable {
     private Long pcId;
 
     /**
-     * 学院名称
-     */
-    private String xymc;
-
-    /**
      * 是否下发(0:否;1:是)
      */
     private Boolean sfxf;

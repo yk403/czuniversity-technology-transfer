@@ -1,6 +1,5 @@
 package com.itts.userservice.controller.yh.user;
 
-import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
@@ -11,13 +10,14 @@ import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.service.yh.YhJsGlService;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.GetJsVO;
-import com.itts.userservice.vo.YhVO;
+import com.itts.userservice.vo.yh.GetYhVO;
+import com.itts.userservice.vo.yh.YhVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -62,7 +62,10 @@ public class YhController {
             throw new WebException(ErrorCodeEnum.USER_NOT_FIND_ERROR);
         }
 
-        return ResponseUtil.success(yh);
+        GetYhVO getYhVO = new GetYhVO();
+        BeanUtils.copyProperties(yh, getYhVO);
+
+        return ResponseUtil.success(getYhVO);
     }
 
     /**

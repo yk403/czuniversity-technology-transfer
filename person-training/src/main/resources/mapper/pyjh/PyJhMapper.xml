@@ -6,7 +6,6 @@
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.pyjh.PyJh">
         <id column="id" property="id" />
         <result column="pc_id" property="pcId" />
-        <result column="xymc" property="xymc" />
         <result column="sfxf" property="sfxf" />
         <result column="pyfa" property="pyfa" />
         <result column="pyjh" property="pyjh" />
@@ -22,7 +21,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pc_id, xymc, xfzt, pyfa, pyjh, jxdg, sczt, scsj, xfsj, cjsj, cjr, gxsj, gxr
+        id, pc_id, sfxf, pyfa, pyjh, jxdg, sfsc, scsj, xfsj, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

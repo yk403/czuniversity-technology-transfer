@@ -13,11 +13,12 @@ import com.itts.userservice.mapper.yh.YhJsGlMapper;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.model.yh.YhJsGl;
-import com.itts.userservice.request.AddYhRequest;
+import com.itts.userservice.request.yh.AddYhRequest;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.service.yh.YhService;
-import com.itts.userservice.vo.YhListVO;
+import com.itts.userservice.vo.yh.GetYhVO;
+import com.itts.userservice.vo.yh.YhListVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -123,8 +124,17 @@ public class YhAdminController {
     @GetMapping("/get/{id}")
     @ApiOperation(value = "获取详情")
     public ResponseUtil get(@PathVariable("id") Long id) {
-        Yh Yh = yhService.get(id);
-        return ResponseUtil.success(Yh);
+
+        Yh yh = yhService.get(id);
+
+        if(yh == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        GetYhVO getYhVO = new GetYhVO();
+        BeanUtils.copyProperties(yh, getYhVO);
+
+        return ResponseUtil.success(getYhVO);
     }
 
     /**
@@ -182,7 +192,7 @@ public class YhAdminController {
         BeanUtils.copyProperties(addYhRequest, Yh);
 
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
-        BeanUtils.copyProperties(Yh, Yh1, "id", "yhjb", "chsj", "cjr", "mm");
+        BeanUtils.copyProperties(Yh, Yh1, "id", "yhjb", "cjsj", "cjr", "mm");
         //逻辑删除此用户的所有角色
         Long yhid = Yh.getId();
         QueryWrapper<YhJsGl> QueryWrapper = new QueryWrapper<>();

@@ -5,7 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
-import com.itts.personTraining.model.kc.Kc;
+import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.service.xs.XsService;
@@ -58,8 +58,23 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                       .eq(pcId != null,"pc_id", pcId)
                       .eq(StringUtils.isNotBlank(xslbId),"xslb_id", xslbId)
                       .eq(StringUtils.isNotBlank(jyxs),"jyxs", jyxs);
-        List<Xs> xss = xsMapper.selectList(xsQueryWrapper);
-        return new PageInfo<>(xss);
+        return new PageInfo<>(xsMapper.selectList(xsQueryWrapper));
+    }
+
+    /**
+     * 查询教务管理列表
+     * @param pageNum
+     * @param pageSize
+     * @param string
+     * @param yx
+     * @param pcId
+     * @return
+     */
+    @Override
+    public PageInfo<JwglDTO> findJwglByPage(Integer pageNum, Integer pageSize, String string, String yx, Long pcId) {
+        log.info("【人才培养 - 分页条件查询教务管理列表,编号/姓名:{},院系:{},批次id:{}】",string,yx,pcId);
+        PageHelper.startPage(pageNum,pageSize);
+        return new PageInfo<>(xsMapper.findJwglList(string, yx, pcId));
     }
 
     /**
@@ -73,6 +88,19 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
         xsQueryWrapper.eq("sfsc",false)
                       .eq("id",id);
+        return xsMapper.selectOne(xsQueryWrapper);
+    }
+    /**
+     * 根据xh查询学员信息
+     * @param xh
+     * @return
+     */
+    @Override
+    public Xs getByXh(String xh) {
+        log.info("【人才培养 - 根据学号:{}查询学员信息】",xh);
+        QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
+        xsQueryWrapper.eq("sfsc",false)
+                .eq("xh",xh);
         return xsMapper.selectOne(xsQueryWrapper);
     }
 
@@ -132,6 +160,11 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         xsQueryWrapper.eq("sfsc",false)
                 .eq("xh",xh);
         return xsMapper.selectOne(xsQueryWrapper);
+    }
+
+    @Override
+    public Boolean addKcXs(Long id, Long kcId) {
+        return xsMapper.addKcList(id, kcId);
     }
 
     /**

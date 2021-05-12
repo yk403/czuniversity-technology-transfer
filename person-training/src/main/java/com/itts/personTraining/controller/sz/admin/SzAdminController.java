@@ -4,7 +4,6 @@ package com.itts.personTraining.controller.sz.admin;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.sz.Sz;
-import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.service.sz.SzService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
