@@ -48,6 +48,7 @@
 		from t_js_hd hd LEFT JOIN t_js_bm bm on (hd.id = bm.hd_id)
 		<where>
 			hd.is_delete = 0
+			<!--<if test="map.containFlag != null and map.userId != null">and bm.user_id= #{map.userId}</if>-->
 			<if test="map.userId != null">and bm.user_id= #{map.userId}</if>
 			<if test="map.hdlx != null"> and hd.hdlx = #{map.hdlx} </if>
 			<if test="map.name != null and map.name != ''"> and hd.hdmc = #{map.name} </if>
@@ -57,7 +58,7 @@
 			<if test="map.hdkssj != null and map.hdkssj != ''"> and hd.hdkssj = #{map.hdkssj} </if>
 			<if test="map.hdjssj != null and map.hdjssj != ''"> and hd.hdjssj = #{map.hdjssj} </if>
 			<if test="map.hdzt != null"> and hd.hdzt = #{map.hdzt} </if>
-			<if test="map.cjsj != null and map.cjsj != ''"> and hd.cjsj = #{map.cjsj} </if>
+			<if test="map.cjsj != null"> and hd.cjsj = #{map.cjsj} </if>
 			<if test="map.hdfs != null"> and hd.hdfs = #{map.hdfs} </if>
 			<if test="map.isBm != null"> and hd.is_bm = #{map.isBm} </if>
 			<if test="map.hdfbzt != null"> and hd.hdfbzt = #{map.hdfbzt} </if>

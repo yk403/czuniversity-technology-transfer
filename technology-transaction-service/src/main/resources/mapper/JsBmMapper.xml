@@ -18,7 +18,7 @@
             <if test="map.lxr != null and map.lxr != ''"> and lxr = #{map.lxr} </if>
             <if test="map.sjhm != null and map.sjhm != ''"> and sjhm = #{map.sjhm} </if>
             <if test="map.gszz != null and map.gszz != ''"> and gszz = #{map.gszz} </if>
-            <if test="map.bzj != null and map.bzj != ''"> and bzj = #{map.bzj} </if>
+            <if test="map.bzj != null"> and bzj = #{map.bzj} </if>
             <if test="map.sjfa != null and map.sjfa != ''"> and sjfa = #{map.sjfa} </if>
             <if test="map.zbwj != null and map.zbwj != ''"> and zbwj = #{map.zbwj} </if>
             <if test="map.shzt != null and map.shzt != ''"> and shzt = #{map.shzt} </if>

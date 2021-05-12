@@ -38,4 +38,5 @@ public interface JsXqAdminService extends IService<TJsXq> {
     boolean xqmove(Integer id, Integer type);
 
     boolean topBottom(Integer id, Integer type);
+    Long getUserId();
 }

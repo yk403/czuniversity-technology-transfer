@@ -95,4 +95,8 @@ public class TJsSh implements Serializable {
 	 * 删除状态(0:未删除;1:已删除)
 	 */
 	private Integer isDelete;
+	/**
+	 * 结算状态(0:未结算;1:已结算)
+	 */
+	private Integer jszt;
 }

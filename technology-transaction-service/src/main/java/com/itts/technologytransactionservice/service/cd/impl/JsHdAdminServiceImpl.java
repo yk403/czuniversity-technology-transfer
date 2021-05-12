@@ -7,12 +7,11 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
 import com.itts.technologytransactionservice.mapper.JsHdMapper;
+import com.itts.technologytransactionservice.mapper.JsLcKzMapper;
 import com.itts.technologytransactionservice.mapper.JsXqMapper;
-import com.itts.technologytransactionservice.model.JsHdDTO;
-import com.itts.technologytransactionservice.model.TJsCg;
-import com.itts.technologytransactionservice.model.TJsHd;
-import com.itts.technologytransactionservice.model.TJsXq;
+import com.itts.technologytransactionservice.model.*;
 import com.itts.technologytransactionservice.service.cd.JsHdAdminService;
+import com.itts.technologytransactionservice.service.cd.JsLcKzAdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,10 +39,12 @@ import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements JsHdAdminService {
 	@Autowired
 	private JsHdMapper jsHdMapper;
-
+    @Autowired
+    private JsLcKzMapper jsLcKzMapper;
 	@Autowired
 	private JsCgMapper jsCgMapper;
-
+    @Autowired
+    private JsLcKzAdminService jsLcKzAdminService;
 	@Autowired
 	private JsXqMapper jsXqMapper;
 
@@ -78,6 +81,18 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 				TJsCg tJsCg = jsCgMapper.getById((Integer) item.get("id"));
 				tJsCg.setJshdId(tJsHd.getId());
 				tJsCg.setSoft((Integer) item.get("soft"));
+				tJsCg.setAuctionStatus(0);
+                Map<String,Object>querymap=new HashMap<String,Object>();
+                querymap.put("cgId",tJsCg.getId());
+                List<TJsLcKz> list2 = jsLcKzMapper.list(querymap);
+                if(list2.size()==0){
+                    TJsLcKz tJsLcKz=new TJsLcKz();
+                    tJsLcKz.setCgId(tJsCg.getId());
+                    tJsLcKz.setFdjg(new BigDecimal(item.get("fdjg").toString()));
+                    tJsLcKz.setDj(new BigDecimal(item.get("dj").toString()));
+					tJsLcKz.setDqzgjg(new BigDecimal(item.get("dj").toString()));
+                    jsLcKzAdminService.save(tJsLcKz);
+                }
 				jsCgMapper.updateTJsCg(tJsCg);
 			}
 		} else if (hdlx == 1) {
@@ -85,6 +100,18 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 				TJsXq tJsXq = jsXqMapper.getById((Integer) item.get("id"));
 				tJsXq.setJshdId(tJsHd.getId());
 				tJsXq.setSoft((Integer) item.get("soft"));
+				tJsXq.setAuctionStatus(0);
+                Map<String,Object>querymap=new HashMap<String,Object>();
+                querymap.put("xqId",tJsXq.getId());
+                List<TJsLcKz> list2 = jsLcKzMapper.list(querymap);
+                if(list2.size()==0){
+                    TJsLcKz tJsLcKz=new TJsLcKz();
+                    tJsLcKz.setXqId(tJsXq.getId());
+                    tJsLcKz.setFdjg(new BigDecimal(item.get("fdjg").toString()));
+                    tJsLcKz.setDj(new BigDecimal(item.get("dj").toString()));
+					tJsLcKz.setDqzgjg(new BigDecimal(item.get("dj").toString()));
+                    jsLcKzAdminService.save(tJsLcKz);
+                }
 				jsXqMapper.updateTJsXq(tJsXq);
 			}
 		}

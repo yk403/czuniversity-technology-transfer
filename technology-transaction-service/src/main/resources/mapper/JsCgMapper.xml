@@ -9,7 +9,7 @@
           cg.is_delete = 0
 		  		  <if test="map.id != null"> and id = #{map.id} </if>
 			<if test="map.soft != null"> and cg.soft  = #{map.soft} </if>
-			<if test="map.cjjg != null and map.cjjg != ''"> and id = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and id = #{map.cjjg} </if>
 		  		  <if test="map.cgqsr != null and map.cgqsr != ''"> and cgqsr = #{map.cgqsr} </if>
 		  		  <if test="map.qsrlxdh != null and map.qsrlxdh != ''"> and qsrlxdh = #{map.qsrlxdh} </if>
 		  		  <if test="map.cgmc != null and map.cgmc != ''"> and cgmc = #{map.cgmc} </if>
@@ -21,7 +21,7 @@
 		  		  <if test="map.cghqfs != null and map.cghqfs != ''"> and cghqfs = #{map.cghqfs} </if>
 		  		  <if test="map.jscsd != null and map.jscsd != ''"> and jscsd = #{map.jscsd} </if>
 		  		  <if test="map.hjqk != null and map.hjqk != ''"> and hjqk = #{map.hjqk} </if>
-		  		  <if test="map.hzjg != null and map.hzjg != ''"> and hzjg = #{map.hzjg} </if>
+		  		  <if test="map.hzjg != null"> and hzjg = #{map.hzjg} </if>
 		  		  <if test="map.hzfs != null and map.hzfs != ''"> and hzfs = #{map.hzfs} </if>
 		  		  <if test="map.dwmc != null and map.dwmc != ''"> and dwmc = #{map.dwmc} </if>
 		  		  <if test="map.dz != null and map.dz != ''"> and dz = #{map.dz} </if>
@@ -59,11 +59,12 @@
 			<if test="map.userId != null and map.userId != ''"> and cg.user_id = #{map.userId} </if>
 			<if test="map.type == 0"> and sh.fbshzt != 2 </if>
 			<if test="map.type == 1"> and sh.fbshzt = 2 and sh.assistance_status != 2 </if>
+			<if test="map.fbshzt != null"> and sh.fbshzt = #{map.fbshzt} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null"> and cg.auction_status = #{map.auctionStatus} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
-			<if test="map.cjjg != null and map.cjjg != ''"> and cg.cjjg = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and cg.cjjg = #{map.cjjg} </if>
 			<if test="map.xqId != null and map.xqId != ''"> and sh.xq_id = #{map.xqId} </if>
 			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc = concat('%',#{map.cgmc},'%') </if>
 			<if test="map.cgspmc != null and map.cgspmc != ''"> and cg.cgspmc = concat('%',#{map.cgspmc},'%') </if>
@@ -86,7 +87,7 @@
 </select>
 
 	<select id="findJsCg" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,cgspmc,cgfj,cgfjmc,user_id,agreement,agreement_name,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,lb.mc as lbName,sh.fbshbz,sh.slxbbz as slxbbz,cg.soft,cjjg,auction_status
+		select cg.id as id,cgspmc,cgfj,cgfjmc,user_id,agreement,agreement_name,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,lb.mc as lbName,sh.fbshbz,sh.slxbbz as slxbbz,cg.soft,cjjg,auction_status,sh.jszt as jszt
 		from t_js_cg cg left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lb lb on(cg.lb_id=lb.id)
 		<where>
 			cg.is_delete != 2
@@ -96,12 +97,12 @@
 			<if test="map.soft != null"> and cg.soft  = #{map.soft} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
-			<if test="map.cjjg != null and map.cjjg != ''"> and cg.cjjg = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and cg.cjjg = #{map.cjjg} </if>
 			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',#{map.cgmc},'%') </if>
 			<if test="map.cgspmc != null and map.cgspmc != ''"> and cg.cgspmc = concat('%',#{map.cgspmc},'%') </if>
 			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
-			<if test="map.fbshzt != null and map.fbshzt != ''"> and sh.fbshzt = #{map.fbshzt} </if>
+			<if test="map.fbshzt != null"> and sh.fbshzt = #{map.fbshzt} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
 			<if test="map.jylx != null"> and sh.jylx = #{map.jylx} </if>
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
@@ -109,7 +110,43 @@
 			<if test="map.type == 0"> and cg.user_id != #{map.userId} </if>
 			<if test="map.jshdId != null"> and cg.jshd_id = #{map.jshdId} </if>
 			<!-- 检索所有关联活动为空的技术需求-->
-			<if test="map.addActivity == 0"> and cg.jshd_id IS NULL </if>
+			<if test="map.addActivity == 0"> and (cg.jshd_id IS NULL or cg.auction_status = 3) </if>
+		</where>
+		<choose>
+			<when test="map.sort != null and map.sort.trim() != ''">
+				order by ${map.sort} ${map.order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+	</select>
+	<!--归档清算用-->
+	<select id="findGdJsCg" resultType="com.itts.technologytransactionservice.model.TJsCg">
+		select cg.id as id,cgspmc,cgfj,cgfjmc,user_id,agreement,agreement_name,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,sh.fbshbz,sh.slxbbz as slxbbz,cg.soft,cjjg,auction_status,sh.jszt as jszt,kz.fwf as fwf,kz.lcdj as lcdj,ly.mc as lyName
+		from t_js_cg cg  left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lc_kz kz on(kz.cg_id=cg.id) left join t_js_ly ly on(cg.ly_id=ly.id)
+		<where>
+			cg.is_delete != 2
+			<if test="map.type == 1"> and cg.user_id = #{map.userId} </if>
+			<if test="map.lyId != null and map.lyId != ''"> and cg.ly_id = #{map.lyId} </if>
+			<if test="map.auctionStatus != null"> and cg.auction_status = #{map.auctionStatus} </if>
+			<if test="map.soft != null"> and cg.soft  = #{map.soft} </if>
+			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
+			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
+			<if test="map.cjjg != null"> and cg.cjjg = #{map.cjjg} </if>
+			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',#{map.cgmc},'%') </if>
+			<if test="map.cgspmc != null and map.cgspmc != ''"> and cg.cgspmc = concat('%',#{map.cgspmc},'%') </if>
+			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>
+			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
+			<if test="map.fbshzt != null"> and sh.fbshzt = #{map.fbshzt} </if>
+			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
+			<if test="map.jylx != null"> and sh.jylx = #{map.jylx} </if>
+			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
+			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
+			<if test="map.type == 0"> and cg.user_id != #{map.userId} </if>
+			<if test="map.jshdId != null"> and cg.jshd_id = #{map.jshdId} </if>
+			<!-- 检索所有关联活动为空的技术需求-->
+			<if test="map.addActivity == 0"> and (cg.jshd_id IS NULL or cg.auction_status = 3) </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">
@@ -132,7 +169,7 @@
 			<if test="map.soft != null"> and cg.soft  = #{map.soft} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
-			<if test="map.cjjg != null and map.cjjg != ''"> and cg.cjjg = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and cg.cjjg = #{map.cjjg} </if>
 			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',#{map.cgmc},'%') </if>
 			<if test="map.cgspmc != null and map.cgspmc != ''"> and cg.cgspmc = concat('%',#{map.cgspmc},'%') </if>
 			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>

@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.service.impl;
 
+import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 
 import java.time.LocalDate;
@@ -67,7 +70,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     public PageInfo<TJsCg> findJsCgUser(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询成果(个人详情)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据
-        params.put("userId",2);
+        params.put("userId",Integer.parseInt(String.valueOf(getUserId())));
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsCg> list = jsCgMapper.findJsCgFront(query);
@@ -100,7 +103,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
                 throw new ServiceException(NAME_REPEAT);
             }
             //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
-            tJsCg.setUserId(2);
+            tJsCg.setUserId(Integer.parseInt(String.valueOf(getUserId())));
             tJsCg.setReleaseType("技术成果");
             tJsCg.setCjsj(new Date());
             tJsCg.setGxsj(new Date());
@@ -312,7 +315,20 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 		return true;
 	}
 
-
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    public Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
+    }
 
 }
 

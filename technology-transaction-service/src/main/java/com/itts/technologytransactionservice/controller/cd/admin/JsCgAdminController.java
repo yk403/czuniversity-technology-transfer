@@ -42,6 +42,17 @@ public class JsCgAdminController extends BaseController {
         //前端传输标识type(0：审批管理;1：信息采集)
         return ResponseUtil.success(jsCgAdminService.findJsCg(params));
     }
+    /**
+     * 分页条件查询成果(归档清算用)
+     *
+     * @param params
+     * @return
+     */
+    @PostMapping("/gdPage")
+    public ResponseUtil gdPageJsCg(@RequestBody Map<String, Object> params) {
+        //前端传输标识type(0：审批管理;1：信息采集)
+        return ResponseUtil.success(jsCgAdminService.findGdJsCg(params));
+    }
 
     /**
      * 根据成果id查询详细信息

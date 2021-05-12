@@ -147,7 +147,5 @@
             <artifactId>fastdfs-client-java</artifactId>
         </dependency>
 
-
-
     </dependencies>
 </project>
