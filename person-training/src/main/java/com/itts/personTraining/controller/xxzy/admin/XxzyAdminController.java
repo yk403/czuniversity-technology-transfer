@@ -11,6 +11,7 @@ import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
 import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,7 @@ import java.util.Objects;
  * @author liuyingming
  * @since 2021-05-12
  */
+@Api(tags = "学习资源后台管理")
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/xxzy/v1")
 public class XxzyAdminController {
@@ -39,6 +41,7 @@ public class XxzyAdminController {
     /**
      * 获取列表
      */
+    @ApiOperation(value = "获取列表")
     @GetMapping("/list/")
     public ResponseUtil list(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                              @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -56,6 +59,7 @@ public class XxzyAdminController {
     /**
      * 获取详情
      */
+    @ApiOperation(value = "获取详情")
     @GetMapping("/get/{id}")
     public ResponseUtil get(@PathVariable("id") Long id) {
 
@@ -75,6 +79,7 @@ public class XxzyAdminController {
     /**
      * 新增
      */
+    @ApiOperation(value = "新增")
     @PostMapping("/add/")
     public ResponseUtil add(@RequestBody AddXxzyRequest addXxzyRequest) {
 
@@ -88,6 +93,7 @@ public class XxzyAdminController {
     /**
      * 更新
      */
+    @ApiOperation(value = "更新")
     @PutMapping("/update/")
     public ResponseUtil update(@RequestBody UpdateXxzyRequest updateXxzyRequest) {
 
@@ -125,6 +131,7 @@ public class XxzyAdminController {
     /**
      * 更新状态 - 是否上架
      */
+    @ApiOperation(value = "更新状态 - 是否上架")
     @PutMapping("/update/status/{id}")
     public ResponseUtil updateStatus(@ApiParam(value = "主键ID") @PathVariable(value = "id") Long id,
                                      @ApiParam(value = "是否上架") @RequestParam(value = "sfsj") Boolean sfsj) {
@@ -168,10 +175,34 @@ public class XxzyAdminController {
      */
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete/{id}")
-    public ResponseUtil delete(){
+    public ResponseUtil delete(@PathVariable(value = "id") Long id){
 
-        //TODO：待完善
-        return null;
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+
+        if (loginUser == null) {
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        Xxzy xxzy = xxzyService.getById(id);
+        if (xxzy == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (xxzy.getSfsc()) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (Objects.equals(loginUser.getUserId(), xxzy.getCjr())) {
+            throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
+        }
+
+        xxzy.setSfsc(true);
+        xxzy.setGxsj(new Date());
+        xxzy.setGxr(loginUser.getUserId());
+
+        xxzyService.updateById(xxzy);
+
+        return ResponseUtil.success(xxzy);
     }
 
     /**
