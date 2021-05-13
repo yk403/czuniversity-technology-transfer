@@ -147,6 +147,9 @@ public class KsAdminController {
         if (ksDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+        if (ksDTO.getKcExps() == null) {
+            throw new WebException(COURSE_ISEMPTY_ERROR);
+        }
     }
 }
 

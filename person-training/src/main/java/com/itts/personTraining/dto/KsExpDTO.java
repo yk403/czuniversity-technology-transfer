@@ -13,13 +13,13 @@ import java.util.List;
 
 /**
  * @Author: Austin
- * @Data: 2021/5/6
+ * @Data: 2021/5/13
  * @Version: 1.0.0
- * @Description: 考试DTO
+ * @Description: 考试扩展DTO
  */
 @Data
-@ApiModel("考试对象")
-public class KsDTO {
+@ApiModel("考试扩展对象")
+public class KsExpDTO {
     /**
      * 主键
      */
@@ -27,28 +27,60 @@ public class KsDTO {
     private Long id;
 
     /**
-     * 批次ID
+     * 考试ID
      */
-    @ApiModelProperty(value = "批次ID", required = true)
-    private Long pcId;
+    @ApiModelProperty(value = "考试ID", required = true)
+    private Long ksId;
 
     /**
-     * 考试名称
+     * 师资ids
      */
-    @ApiModelProperty(value = "考试名称")
-    private String ksmc;
+    @ApiModelProperty(value = "师资ids", required = true)
+    private List<Long> szIds;
 
     /**
-     * 考试类型(0:统一考试;1:实训考试;2:证书考试;3:补考)
+     * 学校教室ID
      */
-    @ApiModelProperty(value = "试类型(0:统一考试;1:实训考试;2:证书考试;3:补考)", required = true)
-    private Integer kslx;
+    @ApiModelProperty(value = "学校教室ID", required = true)
+    private Long xxjsId;
 
     /**
-     * 是否下发(0:否;1:是)
+     * 教学楼名称
      */
-    @ApiModelProperty(value = "是否下发(0:否;1:是)")
-    private Boolean sfxf;
+    private String jxlmc;
+
+    /**
+     * 教室编号
+     */
+    private String jsbh;
+
+    /**
+     * 课程ID
+     */
+    @ApiModelProperty(value = "课程ID", required = true)
+    private Long kcId;
+
+    /**
+     * 课程代码
+     */
+    private String kcdm;
+
+    /**
+     * 课程名称
+     */
+    private String kcmc;
+
+    /**
+     * 考试开始时间
+     */
+    @ApiModelProperty(value = "考试开始时间", required = true)
+    private Date kskssj;
+
+    /**
+     * 考试结束时间
+     */
+    @ApiModelProperty(value = "考试结束时间", required = true)
+    private Date ksjssj;
 
     /**
      * 是否删除(0:否;1:是)
@@ -64,7 +96,6 @@ public class KsDTO {
     /**
      * 创建人
      */
-
     private Long cjr;
 
     /**
@@ -82,9 +113,4 @@ public class KsDTO {
      * 下发时间
      */
     private Date xfsj;
-
-    /**
-     * 课程集合
-     */
-    private List<KsExpDTO> kcExps;
 }
