@@ -3,6 +3,7 @@ package com.itts.personTraining.controller.pyjh.admin;
 
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.dto.PyJhDTO;
 import com.itts.personTraining.model.pyjh.PyJh;
 import com.itts.personTraining.service.pyjh.PyJhService;
 import io.swagger.annotations.Api;
@@ -64,16 +65,16 @@ public class PyJhAdminController {
     /**
      * 新增培养计划
      *
-     * @param pyJh
+     * @param pyJhDTO
      * @return
      * @throws WebException
      */
     @PostMapping("/add")
     @ApiOperation(value = "新增培养计划")
-    public ResponseUtil add(@RequestBody PyJh pyJh) throws WebException {
+    public ResponseUtil add(@RequestBody PyJhDTO pyJhDTO) throws WebException {
         //检查参数是否合法
-        checkRequest(pyJh);
-        if (!pyJhService.add(pyJh)) {
+        checkRequest(pyJhDTO);
+        if (!pyJhService.add(pyJhDTO)) {
             throw new WebException(INSERT_FAIL);
         }
         return ResponseUtil.success("新增培养计划成功!");
@@ -82,14 +83,14 @@ public class PyJhAdminController {
     /**
      * 更新培养计划
      *
-     * @param pyJh
+     * @param pyJhDTO
      * @return
      * @throws WebException
      */
     @PutMapping("/update")
     @ApiOperation(value = "更新培养计划")
-    public ResponseUtil update(@RequestBody PyJh pyJh) throws WebException {
-        Long id = pyJh.getId();
+    public ResponseUtil update(@RequestBody PyJhDTO pyJhDTO) throws WebException {
+        Long id = pyJhDTO.getId();
         //检查参数是否合法
         if (id == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
@@ -98,7 +99,7 @@ public class PyJhAdminController {
         if (pyJhService.get(id) == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        if (!pyJhService.update(pyJh)) {
+        if (!pyJhService.update(pyJhDTO)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新培养计划成功!");
@@ -118,12 +119,12 @@ public class PyJhAdminController {
         if (id == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        PyJh pyJh = pyJhService.get(id);
-        if (pyJh == null) {
+        PyJhDTO pyJhDTO = pyJhService.get(id);
+        if (pyJhDTO == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新删除状态
-        if (!pyJhService.delete(pyJh)) {
+        if (!pyJhService.delete(pyJhDTO)) {
             throw new WebException(DELETE_FAIL);
         }
         return ResponseUtil.success("删除培养计划成功!");
@@ -146,9 +147,15 @@ public class PyJhAdminController {
     /**
      * 校验参数
      */
-    private void checkRequest(PyJh pyJh) throws WebException {
-        if (pyJh == null) {
+    private void checkRequest(PyJhDTO pyJhDTO) throws WebException {
+        if (pyJhDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (pyJhDTO.getPcId() == null) {
+            throw new WebException(BATCH_NUMBER_ISEMPTY_ERROR);
+        }
+        if (pyJhDTO.getKcIds() == null) {
+            throw new WebException(COURSE_ISEMPTY_ERROR);
         }
     }
 }

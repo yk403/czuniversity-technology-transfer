@@ -74,7 +74,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
             tJsXq.setHzfs(data.getHzfs());
         }
         //合作价格
-        if (!StringUtils.isBlank(data.getHzjg())) {
+        if (data.getHzjg()!=null) {
             tJsXq.setHzjg(data.getHzjg());
         }
         //意向合作单位

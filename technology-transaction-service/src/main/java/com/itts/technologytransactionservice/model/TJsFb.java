@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * 需求成果合并表
@@ -33,7 +34,7 @@ public class TJsFb implements Serializable {
     /**
      * 预算
      */
-    private String hzjg;
+    private BigDecimal hzjg;
     /**
      * 地址
      */

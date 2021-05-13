@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +117,7 @@ public class JsXqController extends BaseController {
      * @return
      */
     @PutMapping("/assistanceUpdate")
-    public ResponseUtil assistanceUpdate(@RequestBody Map<String, Object> params) {
+    public ResponseUtil assistanceUpdate(@RequestBody Map<String, Object> params) throws ParseException {
         if (params.get("jylx") == null || params.get("id") == null || params.get("xqxq") == null || params.get("jszb") == null || params.get("remarks") == null) {
             throw new WebException(REQUEST_PARAMS_ISEMPTY);
         }

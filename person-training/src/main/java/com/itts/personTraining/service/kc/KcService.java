@@ -23,10 +23,9 @@ public interface KcService extends IService<Kc> {
      * @param pageSize
      * @param kclx
      * @param name
-     * @param xyId
      * @return
      */
-    PageInfo<KcDTO> findByPage(Integer pageNum, Integer pageSize, String kclx, String name, Long xyId);
+    PageInfo<KcDTO> findByPage(Integer pageNum, Integer pageSize, String kclx, String name);
 
     /**
      * 新增课程
@@ -46,7 +45,7 @@ public interface KcService extends IService<Kc> {
      * @param id
      * @return
      */
-    Kc get(Long id);
+    KcDTO get(Long id);
 
     /**
      * 课程批量下发
@@ -57,10 +56,10 @@ public interface KcService extends IService<Kc> {
 
     /**
      * 删除课程
-     * @param kc
+     * @param kcDTO
      * @return
      */
-    boolean delete(Kc kc);
+    boolean delete(KcDTO kcDTO);
 
     /**
      * 查询所有课程

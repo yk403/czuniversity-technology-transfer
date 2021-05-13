@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
@@ -49,11 +50,15 @@ public class TJsLcKzDto implements Serializable {
     /**
      * 当前最高价格
      */
-    private String dqzgjg;
+    private BigDecimal dqzgjg;
     /**
      * 幅度价格
      */
-    private String fdjg;
+    private BigDecimal fdjg;
+    /**
+     * 底价
+     */
+    private BigDecimal dj;
     /**
      * 叫价间隔状态
      */
@@ -61,7 +66,7 @@ public class TJsLcKzDto implements Serializable {
     /**
      * 落槌定价
      */
-    private String lcdj;
+    private BigDecimal lcdj;
     /**
      * 技术成果ID
      */
@@ -90,4 +95,8 @@ public class TJsLcKzDto implements Serializable {
    活动排序值
      */
     private Integer soft;
+    /**
+     * 服务费(默认为落锤金额的5%)
+     */
+    private BigDecimal fwf;
 }

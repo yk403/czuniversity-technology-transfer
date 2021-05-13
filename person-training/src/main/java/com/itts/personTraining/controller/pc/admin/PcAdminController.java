@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -68,39 +69,43 @@ public class PcAdminController {
     }
 
     /**
-     * 根据字典编码查询批次信息
-     * @param zdbm
+     * 根据教育类型查询批次信息
+     * @param jylx
      * @return
      */
-    @GetMapping("/getByZdbm/{zdbm}")
-    @ApiOperation(value = "根据字典编码查询批次信息")
-    public ResponseUtil getBysjzdId(@PathVariable("zdbm")String zdbm){
-        if (zdbm == null) {
+    @GetMapping("/getByJylx/{jylx}")
+    @ApiOperation(value = "根据教育类型查询批次信息")
+    public ResponseUtil getByJylx(@PathVariable("jylx")String jylx){
+        if (jylx == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(pcService.getByZdbm(zdbm));
+        return ResponseUtil.success(pcService.getByJylx(jylx));
     }
 
     /**
-     * 根据字典项类型查询学生类型
+     * 根据字典项类型查询类型
      * @param pageNum
      * @param pageSize
      * @param model
      * @param systemType
      * @param dictionary
-     * @param token
+     * @param zdbm
+     * @param parentId
+     * @param request
      * @return
      */
     @GetMapping("/getByDictionary")
-    @ApiOperation(value = "根据字典项类型查询学生类型")
+    @ApiOperation(value = "根据字典项类型查询类型")
     public ResponseUtil getList(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                          @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                         @ApiParam(value = "所属模块") @RequestParam(value = "model", required = false) String model,
+                         @ApiParam(value = "模块类型") @RequestParam(value = "model", required = false) String model,
                          @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
-                         @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary") String dictionary,
+                         @ApiParam(value = "所属模块编码") @RequestParam(value = "dictionary",required = false) String dictionary,
                          @ApiParam(value = "字典编码") @RequestParam(value = "zdbm", required = false) String zdbm,
-                         @RequestHeader(name = "token") String token){
-        return ResponseUtil.success(sjzdService.getList(pageNum, pageSize, model, systemType, dictionary, zdbm, token));
+                         @ApiParam(value = "父级字典ID") @RequestParam(value = "parentId", required = false) Long parentId,
+                         HttpServletRequest request){
+
+        return sjzdService.getList(pageNum, pageSize, model, systemType, dictionary, zdbm, parentId, request.getHeader("token"));
     }
     /**
      * 新增批次

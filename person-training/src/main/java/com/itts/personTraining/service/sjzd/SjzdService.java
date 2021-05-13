@@ -25,6 +25,8 @@ public interface SjzdService {
      * @param model
      * @param systemType
      * @param dictionary
+     * @param zdbm
+     * @param parentId
      * @param token
      * @return
      */
@@ -35,7 +37,7 @@ public interface SjzdService {
                          @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
                          @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary,
                          @ApiParam(value = "字典编码") @RequestParam(value = "zdbm", required = false) String zdbm,
+                         @ApiParam(value = "父级字典ID") @RequestParam(value = "parentId", required = false) Long parentId,
                          @RequestHeader(name = "token") String token);
-
 
 }

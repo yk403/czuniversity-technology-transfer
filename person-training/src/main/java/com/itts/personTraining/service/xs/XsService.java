@@ -36,6 +36,7 @@ public interface XsService extends IService<Xs> {
      */
     Xs get(Long id);
 
+    Xs getByXh(String xh);
     /**
      * 新增学员
      * @param xs

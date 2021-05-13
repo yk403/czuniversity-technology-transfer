@@ -130,6 +130,32 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
     }
 
     /**
+     * 根据教学楼名称查询学校教室
+     * @param jxlmc
+     * @return
+     */
+    @Override
+    public List<Xxjs> getByJxlmc(String jxlmc) {
+        log.info("【人才培养 - 根据教学楼名称:{}查询学校教室信息】",jxlmc);
+        QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
+        xxjsQueryWrapper.eq("sfsc",false)
+                .eq("jxlmc",jxlmc);
+        return xxjsMapper.selectList(xxjsQueryWrapper);
+    }
+
+    /**
+     * 查询所有学校教室
+     * @return
+     */
+    @Override
+    public List<Xxjs> getAll() {
+        log.info("【人才培养 - 查询所有学校教室】");
+        QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
+        xxjsQueryWrapper.eq("sfsc",false);
+        return xxjsMapper.selectList(xxjsQueryWrapper);
+    }
+
+    /**
      * 获取当前用户id
      * @return
      */

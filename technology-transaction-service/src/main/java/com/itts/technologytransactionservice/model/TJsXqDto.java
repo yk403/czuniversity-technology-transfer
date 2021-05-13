@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -59,7 +60,7 @@ public class TJsXqDto implements Serializable {
      * 合作价格
      */
     @ExcelProperty(value = "合作价格", index = 6)
-    private String hzjg;
+    private BigDecimal hzjg;
     /**
      * 意向合作单位
      */

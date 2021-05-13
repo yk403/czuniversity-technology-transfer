@@ -56,6 +56,28 @@ public class XxjsAdminController {
     }
 
     /**
+     * 查询所有学校教室
+     * @return
+     */
+    @GetMapping("/getAll")
+    @ApiOperation(value = "查询所有学校教室")
+    public ResponseUtil getAll() {
+        return ResponseUtil.success(xxjsService.getAll());
+    }
+
+    /**
+     * 根据教学楼名称查询学校教室
+     *
+     * @param jxlmc
+     * @return
+     */
+    @GetMapping("/getByJxlmc/{jxlmc}")
+    @ApiOperation(value = "根据教学楼名称查询学校教室")
+    public ResponseUtil getByJxlmc(@PathVariable("jxlmc") String jxlmc) {
+        return ResponseUtil.success(xxjsService.getByJxlmc(jxlmc));
+    }
+
+    /**
      * 新增学校教室
      *
      * @param xxjs

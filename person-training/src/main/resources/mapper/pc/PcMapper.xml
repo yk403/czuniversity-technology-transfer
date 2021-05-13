@@ -7,7 +7,9 @@
         <id column="id" property="id" />
         <result column="pcmc" property="pcmc" />
         <result column="pch" property="pch" />
-        <result column="zdbm" property="zdbm" />
+        <result column="jylx" property="jylx" />
+        <result column="xylx" property="xylx" />
+        <result column="kclx" property="kclx" />
         <result column="sfsc" property="sfsc" />
         <result column="pcnf" property="pcnf" />
         <result column="cjsj" property="cjsj" />
@@ -18,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pcmc, pch, zdbm, sfsc, pcnf, cjsj, cjr, gxsj, gxr
+        id, pcmc, pch, jylx, xylx, kclx, sfsc, pcnf, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="selectPcList" parameterType="java.util.List">

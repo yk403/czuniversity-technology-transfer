@@ -97,7 +97,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
             tJsCg.setHjqk(data.getHjqk());
         }
         //合作价格
-        if (!StringUtils.isBlank(data.getHzjg())) {
+        if (data.getHzjg()!=null) {
             tJsCg.setHzjg(data.getHzjg());
         }
         //合作方式

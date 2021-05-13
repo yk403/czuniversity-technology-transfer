@@ -5,17 +5,25 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.dto.PyJhDTO;
+import com.itts.personTraining.mapper.jhKc.JhKcMapper;
+import com.itts.personTraining.model.jhKc.JhKc;
 import com.itts.personTraining.model.pyjh.PyJh;
 import com.itts.personTraining.mapper.pyjh.PyJhMapper;
+import com.itts.personTraining.service.jhKc.JhKcService;
 import com.itts.personTraining.service.pyjh.PyJhService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
@@ -31,13 +39,17 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
  */
 @Service
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements PyJhService {
 
     @Resource
     private PyJhMapper pyJhMapper;
     @Autowired
     private PyJhService pyJhService;
+    @Autowired
+    private JhKcService jhKcService;
+    @Resource
+    private JhKcMapper jhKcMapper;
 
     /**
      * 查询培养计划列表
@@ -68,53 +80,98 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
      * @return
      */
     @Override
-    public PyJh get(Long id) {
+    public PyJhDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询培养计划】",id);
         QueryWrapper<PyJh> pyJhQueryWrapper = new QueryWrapper<>();
         pyJhQueryWrapper.eq("sfsc",false)
                 .eq("id",id);
-        return pyJhMapper.selectOne(pyJhQueryWrapper);
+        PyJhDTO pyJhDTO = new PyJhDTO();
+        PyJh pyJh = pyJhMapper.selectOne(pyJhQueryWrapper);
+        BeanUtils.copyProperties(pyJh,pyJhDTO);
+        pyJhDTO.setKcIds(jhKcMapper.selectByJhId(pyJh.getId()));
+        return pyJhDTO;
     }
 
     /**
      * 新增培养计划
-     * @param pyJh
+     * @param pyJhDTO
      * @return
      */
     @Override
-    public boolean add(PyJh pyJh) {
-        log.info("【人才培养 - 新增培养计划:{}】",pyJh);
+    public boolean add(PyJhDTO pyJhDTO) {
+        log.info("【人才培养 - 新增培养计划:{}】",pyJhDTO);
+        PyJh pyJh = new PyJh();
         Long userId = getUserId();
-        pyJh.setCjr(userId);
-        pyJh.setGxr(userId);
-        return pyJhService.save(pyJh);
+        pyJhDTO.setCjr(userId);
+        pyJhDTO.setGxr(userId);
+        BeanUtils.copyProperties(pyJhDTO,pyJh);
+        if (pyJhService.save(pyJh)) {
+            List<JhKc> jhKcList = new ArrayList<>();
+            Long jhId = pyJh.getId();
+            List<Long> kcIds = pyJhDTO.getKcIds();
+            for (Long kcId : kcIds) {
+                JhKc jhKc = new JhKc();
+                jhKc.setKcId(kcId);
+                jhKc.setJhId(jhId);
+                jhKcList.add(jhKc);
+            }
+            return jhKcService.saveBatch(jhKcList);
+        }
+        return false;
     }
 
     /**
      * 更新培养计划
-     * @param pyJh
+     * @param pyJhDTO
      * @return
      */
     @Override
-    public boolean update(PyJh pyJh) {
-        log.info("【人才培养 - 更新培养计划:{}】",pyJh);
-        Long userId = getUserId();
-        pyJh.setGxr(userId);
-        return pyJhService.updateById(pyJh);
+    public boolean update(PyJhDTO pyJhDTO) {
+        log.info("【人才培养 - 更新培养计划:{}】",pyJhDTO);
+        pyJhDTO.setGxr(getUserId());
+        PyJh pyJh = new PyJh();
+        BeanUtils.copyProperties(pyJhDTO,pyJh);
+        if (pyJhService.updateById(pyJh)) {
+            List<Long> kcIds = pyJhDTO.getKcIds();
+            if (kcIds != null) {
+                HashMap<String, Object> map = new HashMap<>();
+                Long jhId = pyJh.getId();
+                map.put("jh_id",jhId);
+                if (jhKcService.removeByMap(map)) {
+                    List<JhKc> kcList = new ArrayList<>();
+                    for (Long kcId : kcIds) {
+                        JhKc jhKc = new JhKc();
+                        jhKc.setJhId(jhId);
+                        jhKc.setKcId(kcId);
+                        kcList.add(jhKc);
+                    }
+                    return jhKcService.saveBatch(kcList);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
      * 删除培养计划
-     * @param pyJh
+     * @param pyJhDTO
      * @return
      */
     @Override
-    public boolean delete(PyJh pyJh) {
-        log.info("【人才培养 - 删除培养计划:{}】",pyJh);
+    public boolean delete(PyJhDTO pyJhDTO) {
+        log.info("【人才培养 - 删除培养计划:{}】",pyJhDTO);
         //设置删除状态
-        pyJh.setSfsc(true);
-        pyJh.setGxr(getUserId());
-        return pyJhService.updateById(pyJh);
+        pyJhDTO.setSfsc(true);
+        pyJhDTO.setGxr(getUserId());
+        PyJh pyJh = new PyJh();
+        BeanUtils.copyProperties(pyJhDTO,pyJh);
+        if (pyJhService.updateById(pyJh)) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("jh_id",pyJh.getId());
+            return jhKcService.removeByMap(map);
+        }
+        return false;
     }
 
     /**

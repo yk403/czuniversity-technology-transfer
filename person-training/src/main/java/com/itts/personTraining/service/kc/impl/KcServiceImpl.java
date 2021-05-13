@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.kcSz.KcSzService;
 import com.itts.personTraining.service.xyKc.XyKcService;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.K;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,8 +48,6 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     private KcMapper kcMapper;
     @Autowired
     private KcService kcService;
-    @Autowired
-    private XyKcService xyKcService;
     @Resource
     private KcSzMapper kcSzMapper;
     @Autowired
@@ -61,10 +60,10 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
      * @return
      */
     @Override
-    public PageInfo<KcDTO> findByPage(Integer pageNum, Integer pageSize, String kclx, String name, Long xyId) {
-        log.info("【人才培养 - 分页条件查询课程列表,课程类型:{},课程代码/名称:{},学院id:{}】",kclx,name,xyId);
+    public PageInfo<KcDTO> findByPage(Integer pageNum, Integer pageSize, String kclx, String name) {
+        log.info("【人才培养 - 分页条件查询课程列表,课程类型:{},课程代码/名称:{},学院id:{}】",kclx,name);
         PageHelper.startPage(pageNum, pageSize);
-        List<KcDTO> kcDTOS = kcMapper.findByPage(kclx,name,xyId);
+        List<KcDTO> kcDTOS = kcMapper.findByPage(kclx,name);
         for (KcDTO kcDTO : kcDTOS) {
             QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
             kcSzQueryWrapper.eq("kc_id",kcDTO.getId());
@@ -84,12 +83,23 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
      * @return
      */
     @Override
-    public Kc get(Long id) {
+    public KcDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询课程信息】",id);
         QueryWrapper<Kc> kcQueryWrapper = new QueryWrapper<>();
         kcQueryWrapper.eq("sfsc",false)
                       .eq("id",id);
-        return kcMapper.selectOne(kcQueryWrapper);
+        Kc kc = kcMapper.selectOne(kcQueryWrapper);
+        KcDTO kcDTO = new KcDTO();
+        BeanUtils.copyProperties(kc,kcDTO);
+        QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
+        kcSzQueryWrapper.eq("kc_id",kc.getId());
+        List<KcSz> kcSzList = kcSzMapper.selectList(kcSzQueryWrapper);
+        List<Long> szIds = new ArrayList<>();
+        for (KcSz kcSz : kcSzList) {
+            szIds.add(kcSz.getSzId());
+        }
+        kcDTO.setSzIds(szIds);
+        return kcDTO;
     }
 
     /**
@@ -111,24 +121,21 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
 
     /**
      * 删除课程
-     * @param kc
+     * @param kcDTO
      * @return
      */
     @Override
-    public boolean delete(Kc kc) {
-        log.info("【人才培养 - 删除课程:{}】",kc);
+    public boolean delete(KcDTO kcDTO) {
+        log.info("【人才培养 - 删除课程:{}】", kcDTO);
         //设置删除状态
-        kc.setSfsc(true);
-        kc.setGxr(getUserId());
+        kcDTO.setSfsc(true);
+        kcDTO.setGxr(getUserId());
+        Kc kc = new Kc();
+        BeanUtils.copyProperties(kcDTO,kc);
         if (kcService.updateById(kc)) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("kc_id",kc.getId());
-            if (xyKcService.removeByMap(map)) {
-                HashMap<String, Object> map1 = new HashMap<>();
-                map1.put("kc_id",kc.getId());
-                return kcSzService.removeByMap(map1);
-            }
-            return false;
+            map.put("kc_id", kcDTO.getId());
+            return kcSzService.removeByMap(map);
         }
         return false;
     }
@@ -152,20 +159,14 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
      */
     @Override
     public boolean add(KcDTO kcDTO) {
-        log.info("【人才培养 - 新增课程:{}】",kcDTO);
+        log.info("【人才培养 - 新增课程:{}】", kcDTO);
         Long userId = getUserId();
         Kc kc = new Kc();
-        kc.setCjr(userId);
-        kc.setGxr(userId);
-        BeanUtils.copyProperties(kcDTO,kc);
+        kcDTO.setCjr(userId);
+        kcDTO.setGxr(userId);
+        BeanUtils.copyProperties(kcDTO, kc);
         if (kcService.save(kc)) {
-            XyKc xyKc = new XyKc();
-            xyKc.setKcId(kc.getId());
-            xyKc.setXyId(kcDTO.getXyId());
-            if (xyKcService.save(xyKc)) {
-                return addKcSz(kcDTO, kc);
-            }
-            return false;
+            return addKcSz(kcDTO, kc);
         }
         return false;
     }
@@ -179,13 +180,9 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     public boolean update(KcDTO kcDTO) {
         log.info("【人才培养 - 更新课程:{}】",kcDTO);
         Kc kc = new Kc();
-        kc.setGxr(getUserId());
+        kcDTO .setGxr(getUserId());
         BeanUtils.copyProperties(kcDTO,kc);
         if (kcService.updateById(kc)) {
-            xyKcService.removeById(kcDTO.getXyKcId());
-            XyKc xyKc = new XyKc();
-            xyKc.setKcId(kc.getId());
-            xyKc.setXyId(kcDTO.getXyId());
             if (kcDTO.getSzIds() != null) {
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("kc_id",kcDTO.getId());
@@ -194,7 +191,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                 }
                 return false;
             }
-            return xyKcService.save(xyKc);
+            return false;
         }
         return false;
     }

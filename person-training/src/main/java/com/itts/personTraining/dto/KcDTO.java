@@ -30,34 +30,28 @@ public class KcDTO {
     private List<Long> szIds;
 
     /**
-     * 学院课程id
-     */
-    @ApiModelProperty(value = "学院课程id", required = true)
-    private Long xyKcId;
-
-    /**
-     * 学院ID
-     */
-    @ApiModelProperty(value = "学院ID", required = true)
-    private Long xyId;
-
-    /**
-     * 学院名称
-     */
-    @ApiModelProperty(value = "学院名称", required = true)
-    private String xymc;
-
-    /**
-     * 类别:	compulsory - 必修课;	internship_training - 实习实训
-     */
-    @ApiModelProperty(value = "类别", required = true)
-    private String lb;
-
-    /**
      * 知识模块ID(1:公共知识模块;2:政策法规模块;3:实务技能模块一;4:实务技能模块二;5:实务技能模块三;6:能力提升模块)
      */
     @ApiModelProperty(value = "知识模块ID", required = true)
     private Long zsmkId;
+
+    /**
+     * 教育类型
+     */
+    @ApiModelProperty(value = "教育类型", required = true)
+    private String jylx;
+
+    /**
+     * 字典编码
+     */
+    @ApiModelProperty(value = "字典编码", required = true)
+    private String zdbm;
+
+    /**
+     * 课程类型(theory_class：理论课；practical_training：实训课；practice_course：实践课)
+     */
+    @ApiModelProperty(value = "课程类型", required = true)
+    private String kclx;
 
     /**
      * 课程名称
@@ -70,12 +64,6 @@ public class KcDTO {
      */
     @ApiModelProperty(value = "课程代码", required = true)
     private String kcdm;
-
-    /**
-     * 课程类型:	original_major - 原专业课程;	technology_transfer - 技术转移专业;	broker - 经纪人课程
-     */
-    @ApiModelProperty(value = "课程类型", required = true)
-    private String kclx;
 
     /**
      * 课程学时(如总学时为36学时)
@@ -154,6 +142,11 @@ public class KcDTO {
      */
     @ApiModelProperty(value = "备注")
     private String bz;
+
+    /**
+     * 是否删除(0:否；1:是)
+     */
+    private boolean sfsc;
 
     /**
      * 是否下发(0:否;1:是)

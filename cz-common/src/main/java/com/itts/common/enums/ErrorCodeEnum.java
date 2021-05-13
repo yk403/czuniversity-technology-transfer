@@ -56,6 +56,7 @@ public enum ErrorCodeEnum {
     REGISTER_SYSTEM_TYPE_PARAMS_ILLEGAL_ERROR(-430006, "用户注册系统类型为空"),
     REGISTER_USERNAME_EXISTS_ERROR(-430007, "用户注册账号已存在"),
     REGISTER_DEFAULT_ROLE_NOT_FIND_ERROR(-430008, "用户注册默认角色不存在"),
+    NOT_LOGIN_ERROR(-430009, "用户未登录"),
     //====================       登录、登出、注册错误提示END     ====================
 
     //====================      人才培养服务错误提示（服务码450）      ====================
@@ -75,6 +76,9 @@ public enum ErrorCodeEnum {
     START_TIME_GREATER_END_TIME_ERROR(-45013, "课程时间不合法，开始时间大于等于结束时间"),
     BATCH_NUMBER_EXISTS_ERROR(-45014, "批次号已存在!"),
     BATCH_NAME_EXISTS_ERROR(-45015, "批次名称已存在!"),
+    BATCH_NUMBER_ISEMPTY_ERROR(-45016, "批次号不可为空!"),
+    COURSE_ISEMPTY_ERROR(-45017, "课程不可为空!"),
+    TEACH_TYPE_ISEMPTY_ERROR(-45018,"教育类型不可为空!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
