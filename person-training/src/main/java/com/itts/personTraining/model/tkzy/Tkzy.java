@@ -56,7 +56,7 @@ public class Tkzy implements Serializable {
     /**
      * 题目二级分类
      */
-    @ApiModelProperty(value = "题目二级分类", required = true)
+    @ApiModelProperty(value = "题目二级分类")
     private String tmejfl;
 
     /**
