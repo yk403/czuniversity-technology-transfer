@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -146,6 +147,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         Long userId = getUserId();
         for (PyJh pyJh : pyJhs) {
             pyJh.setSfxf(true);
+            pyJh.setXfsj(new Date());
             pyJh.setGxr(userId);
         }
         return pyJhService.updateBatchById(pyJhs);

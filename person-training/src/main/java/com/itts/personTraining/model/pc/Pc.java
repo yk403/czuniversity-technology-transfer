@@ -61,12 +61,6 @@ public class Pc implements Serializable {
     private String xylx;
 
     /**
-     * 课程类型
-     */
-    @ApiModelProperty(value = "课程类型", required = true)
-    private String kclx;
-
-    /**
      * 是否删除(0:未删除;1已删除)
      */
     private Boolean sfsc;
