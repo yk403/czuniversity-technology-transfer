@@ -44,7 +44,7 @@ public class AddSjzdRequest implements Serializable {
      * 父级编码
      */
     @ApiModelProperty(value = "父级编码")
-    private Long fjBm;
+    private String fjBm;
 
     /**
      * 数据字典子项
