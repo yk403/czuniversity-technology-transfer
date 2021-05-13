@@ -266,4 +266,12 @@ public class TJsCg implements Serializable {
 	 * 落锤定价
 	 */
 	private Integer lcdj;
+	/**
+	 * 受让方
+	 */
+	private String srfmc;
+	/**
+	 * 受让方联系电话
+	 */
+	private String srfhm;
 }
