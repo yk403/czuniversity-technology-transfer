@@ -60,12 +60,12 @@ public class KcAdminController {
     }
 
     /**
-     * 查询所有课程
+     * 根据条件查询课程
      */
-    @GetMapping("/getAll")
-    @ApiOperation(value = "查询所有课程")
-    public ResponseUtil getAll() {
-        return ResponseUtil.success(kcService.getAll());
+    @GetMapping("/getByCondition")
+    @ApiOperation(value = "根据条件查询课程")
+    public ResponseUtil getByCondition(@RequestParam(value = "xylx", required = false) String xylx) {
+        return ResponseUtil.success(kcService.getByCondition(xylx));
     }
 
     /**
@@ -158,7 +158,7 @@ public class KcAdminController {
         if (kcDTO.getKcdm() == null) {
             throw new WebException(TEACH_TYPE_ISEMPTY_ERROR);
         }
-        List<Kc> kcList = kcService.getAll();
+        List<Kc> kcList = kcService.getByCondition(null);
         for (Kc kc : kcList) {
             if (kc.getKcdm().equals(kcDTO.getKcdm()) || kc.getKcmc().equals(kcDTO.getKcmc())) {
                 throw new WebException(COURSE_EXISTS_ERROR);

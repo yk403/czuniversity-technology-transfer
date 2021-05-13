@@ -63,7 +63,8 @@ public interface KcService extends IService<Kc> {
 
     /**
      * 查询所有课程
+     * @param xylx
      * @return
      */
-    List<Kc> getAll();
+    List<Kc> getByCondition(String xylx);
 }

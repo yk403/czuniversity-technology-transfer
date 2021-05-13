@@ -22,6 +22,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -141,14 +142,16 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     }
 
     /**
-     * 查询所有课程
+     * 根据条件查询课程
+     * @param xylx
      * @return
      */
     @Override
-    public List<Kc> getAll() {
-        log.info("【人才培养 - 查询所有课程信息】");
+    public List<Kc> getByCondition(String xylx) {
+        log.info("【人才培养 - 根据条件查询课程信息】");
         QueryWrapper<Kc> kcQueryWrapper = new QueryWrapper<>();
-        kcQueryWrapper.eq("sfsc",false);
+        kcQueryWrapper.eq("sfsc",false)
+                      .eq(!StringUtils.isEmpty(xylx),"zdbm",xylx);
         return kcMapper.selectList(kcQueryWrapper);
     }
 
