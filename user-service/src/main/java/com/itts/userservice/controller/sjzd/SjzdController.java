@@ -121,6 +121,10 @@ public class SjzdController {
                                @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
                                @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary) throws WebException {
 
+        if(StringUtils.isBlank(dictionary)){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
         List<Sjzd> sjzds = sjzdService.findBySsmk(systemType, model, dictionary);
 
         if (!CollectionUtils.isEmpty(sjzds)) {
