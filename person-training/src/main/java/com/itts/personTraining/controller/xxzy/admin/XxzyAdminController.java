@@ -114,7 +114,7 @@ public class XxzyAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        if (Objects.equals(loginUser.getUserId(), xxzy.getCjr())) {
+        if (!Objects.equals(loginUser.getUserId(), xxzy.getCjr())) {
             throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
         }
 
@@ -151,7 +151,7 @@ public class XxzyAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        if (Objects.equals(loginUser.getUserId(), xxzy.getCjr())) {
+        if (!Objects.equals(loginUser.getUserId(), xxzy.getCjr())) {
             throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
         }
 
@@ -192,7 +192,7 @@ public class XxzyAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        if (Objects.equals(loginUser.getUserId(), xxzy.getCjr())) {
+        if (!Objects.equals(loginUser.getUserId(), xxzy.getCjr())) {
             throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
         }
 
