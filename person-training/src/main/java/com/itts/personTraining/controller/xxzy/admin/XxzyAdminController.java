@@ -13,8 +13,12 @@ import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * <p>
@@ -86,16 +90,76 @@ public class XxzyAdminController {
     @PutMapping("/update/")
     public ResponseUtil update(@RequestBody UpdateXxzyRequest updateXxzyRequest) {
 
+        checkUpdateRequest(updateXxzyRequest);
+
         LoginUser loginUser = SystemConstant.threadLocal.get();
 
-        if(loginUser == null){
+        if (loginUser == null) {
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
         }
 
-        //TODO: 待完善
+        Xxzy xxzy = xxzyService.getById(updateXxzyRequest.getId());
+        if (xxzy == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
 
-        return null;
+        if (xxzy.getSfsc()) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
 
+        if (Objects.equals(loginUser.getUserId(), xxzy.getCjr())) {
+            throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
+        }
+
+        BeanUtils.copyProperties(updateXxzyRequest, xxzy);
+
+        xxzy.setGxsj(new Date());
+        xxzy.setGxr(loginUser.getUserId());
+
+        xxzyService.updateById(xxzy);
+
+        return ResponseUtil.success(xxzy);
+    }
+
+    /**
+     * 更新状态 - 是否上架
+     */
+    @PutMapping("/update/status/{id}")
+    public ResponseUtil updateStatus(@ApiParam(value = "主键ID") @PathVariable(value = "id") Long id,
+                                     @ApiParam(value = "是否上架") @RequestParam(value = "sfsj") Boolean sfsj) {
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+
+        if (loginUser == null) {
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        Xxzy xxzy = xxzyService.getById(id);
+        if (xxzy == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (xxzy.getSfsc()) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (Objects.equals(loginUser.getUserId(), xxzy.getCjr())) {
+            throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
+        }
+
+        Date now = new Date();
+
+        xxzy.setSfsj(sfsj);
+        xxzy.setGxr(loginUser.getUserId());
+        xxzy.setGxsj(now);
+
+        if (sfsj) {
+            xxzy.setSjsj(now);
+        }
+
+        xxzyService.updateById(xxzy);
+
+        return ResponseUtil.success(xxzy);
     }
 
     /**
@@ -129,7 +193,7 @@ public class XxzyAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        if(updateXxzyRequest.getId() == null){
+        if (updateXxzyRequest.getId() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 

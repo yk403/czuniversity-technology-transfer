@@ -25,5 +25,4 @@ public interface XxzyService extends IService<Xxzy> {
      * 新增
      */
     Xxzy add(AddXxzyRequest addXxzyRequest);
-
 }
