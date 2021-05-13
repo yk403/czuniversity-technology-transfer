@@ -127,6 +127,7 @@ public class SjzdServiceImpl implements SjzdService {
         getSjzdRequest.setSsmkmc(sjzds.get(0).getSsmkmc());
         getSjzdRequest.setSsmk(sjzds.get(0).getSsmk());
         getSjzdRequest.setFjId(sjzds.get(0).getFjId());
+        getSjzdRequest.setFjBm(sjzds.get(0).getFjBm());
         getSjzdRequest.setFjmc(sjzds.get(0).getFjmc());
 
         List<GetSjzdItemRequest> getSjzdItemRequests = Lists.newArrayList();
