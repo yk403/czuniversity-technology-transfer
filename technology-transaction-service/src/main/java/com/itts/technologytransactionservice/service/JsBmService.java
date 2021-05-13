@@ -32,4 +32,7 @@ public interface JsBmService extends IService<TJsBm> {
 	 */
 	boolean removeByIdsBm(List<String> ids);
 
+    boolean saveBm(TJsBm tJsBm);
+
+	Long getUserId();
 }

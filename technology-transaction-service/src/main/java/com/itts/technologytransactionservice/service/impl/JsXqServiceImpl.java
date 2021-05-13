@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
@@ -20,10 +21,15 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 
 @Service
@@ -76,7 +82,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
                 return false;
             }
             //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
-            tJsXq.setUserId(2);
+            tJsXq.setUserId(Integer.parseInt(String.valueOf(getUserId())));
             tJsXq.setReleaseType("技术需求");
             //tJsXq.setCjsj(new Date());
             //tJsXq.setGxsj(new Date());
@@ -196,7 +202,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     public PageInfo<TJsXq> findJsXqUser(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询需求(个人详情)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据
-        params.put("userId", 2);
+        params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsXq> list = jsXqMapper.findJsXqFront(query);
@@ -226,17 +232,26 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
      * @return
      */
     @Override
-    public boolean assistanceUpdateTJsXq(Map<String, Object> params, Integer jylx) {
+    public boolean assistanceUpdateTJsXq(Map<String, Object> params, Integer jylx) throws ParseException {
         TJsSh tJsSh = jsShService.selectByXqId(Integer.valueOf(params.get("id").toString()));
         if (tJsSh.getFbshzt() != 2) {
             log.error("发布审核状态未通过,无法申请拍卖挂牌!");
             return false;
         }
         TJsXq xq = new TJsXq();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         xq.setId(Integer.valueOf(params.get("id").toString()));
         xq.setXqxq(params.get("xqxq").toString());
         xq.setJszb(params.get("jszb").toString());
         xq.setRemarks(params.get("remarks").toString());
+        xq.setZbxmgs(params.get("zbxmgs").toString());
+        xq.setZbxmqd(params.get("zbxmqd").toString());
+        xq.setXqfj(params.get("xqfj").toString());
+        xq.setXqfjmc(params.get("xqfjmc").toString());
+        xq.setJscs(params.get("jscs").toString());
+        xq.setFwnr(params.get("fwnr").toString());
+        xq.setJhrq(simpleDateFormat.parse(params.get("jhrq").toString()));
+        xq.setYsrq(simpleDateFormat.parse(params.get("ysrq").toString()));
         jsXqMapper.updateTJsXq(xq);
         tJsSh.setAssistanceStatus(1);
         tJsSh.setJylx(jylx);
@@ -246,6 +261,20 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
             throw new ServiceException("更新审核失败!");
         }
         return true;
+    }
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    public Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
     }
 
 }

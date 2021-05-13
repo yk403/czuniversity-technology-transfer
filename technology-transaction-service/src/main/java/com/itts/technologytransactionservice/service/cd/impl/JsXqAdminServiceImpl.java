@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
@@ -23,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 import static com.itts.common.enums.ErrorCodeEnum.ISSUE_BATCH_FAIL;
 
 /**
@@ -54,7 +57,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     public PageInfo<TJsXq> findJsXq(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询需求(后台审批管理)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据,1表示管理员
-        params.put("userId", 1);
+        params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsXq> list = jsXqMapper.findJsXq(query);
@@ -106,7 +109,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
             return false;
         }
         //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
-        tJsXq.setUserId(1);
+        tJsXq.setUserId(Integer.parseInt(String.valueOf(getUserId())));
         tJsXq.setReleaseType("技术需求");
         tJsXq.setCjsj(new Date());
         tJsXq.setGxsj(new Date());
@@ -265,5 +268,18 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         System.out.println(tempList);
         return updateBatchById(tempList);
     }
-
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    public Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
+    }
 }

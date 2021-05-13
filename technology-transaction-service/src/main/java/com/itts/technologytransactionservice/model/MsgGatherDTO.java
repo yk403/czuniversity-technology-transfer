@@ -3,6 +3,8 @@ package com.itts.technologytransactionservice.model;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @Author: Austin
  * @Data: 2021/4/1
@@ -21,7 +23,7 @@ public class MsgGatherDTO {
     private String mc;
 
     @ApiModelProperty(value = "合作价格")
-    private String hzjg;
+    private BigDecimal hzjg;
 
     @ApiModelProperty(value = "单位名称")
     private String dwmc;

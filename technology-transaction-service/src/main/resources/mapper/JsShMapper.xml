@@ -16,10 +16,28 @@
         <if test="xqId != null">xq_id = #{xqId} and sh.xq_id = #{xqId}</if>
         <if test="cgId != null">cg_id = #{cgId} and sh.cg_id = #{cgId}</if>
     </update>
+    <update id="updateByCgId">
+        UPDATE
+        t_js_sh sh
+        <set>
+            <if test="cgId != null">sh.jszt = #{jszt}</if>
+        </set>
+        Where
+        <if test="cgId != null">sh.cg_id = #{cgId}</if>
+    </update>
+    <update id="updateByXqId">
+        UPDATE
+        t_js_sh sh
+        <set>
+            <if test="xqId != null">sh.jszt = #{jszt}</if>
+        </set>
+        Where
+        <if test="xqId != null">sh.xq_id = #{xqId}</if>
+    </update>
 
     <select id="list" resultType="com.itts.technologytransactionservice.model.TJsSh">
         select
-        `id`,`lx`,`cgxq_id`,`fbshzt`,`hdsqzt`,`fbwtgsm`,`hdsqwtgsm`,`cjsj`,`gxsj`,`release_assistance_status`,`assistance_status`,`assistance_remark`
+        `id`,`lx`,`cgxq_id`,`fbshzt`,`hdsqzt`,`fbwtgsm`,`hdsqwtgsm`,`cjsj`,`gxsj`,`release_assistance_status`,`assistance_status`,`assistance_remark`,`jszt`
         from t_js_sh
         <where>
             <if test="map.id != null and map.id != ''">and id = #{map.id}</if>

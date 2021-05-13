@@ -147,7 +147,11 @@
             <artifactId>fastdfs-client-java</artifactId>
         </dependency>
 
-
+        <dependency>
+            <groupId>com.huaweicloud</groupId>
+            <artifactId>esdk-obs-java</artifactId>
+            <version>[3.20.6.1,)</version>
+        </dependency>
 
     </dependencies>
 </project>

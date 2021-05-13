@@ -127,6 +127,7 @@ public class SjzdServiceImpl implements SjzdService {
         getSjzdRequest.setSsmkmc(sjzds.get(0).getSsmkmc());
         getSjzdRequest.setSsmk(sjzds.get(0).getSsmk());
         getSjzdRequest.setFjId(sjzds.get(0).getFjId());
+        getSjzdRequest.setFjBm(sjzds.get(0).getFjBm());
         getSjzdRequest.setFjmc(sjzds.get(0).getFjmc());
 
         List<GetSjzdItemRequest> getSjzdItemRequests = Lists.newArrayList();
@@ -239,10 +240,7 @@ public class SjzdServiceImpl implements SjzdService {
             //删除所有旧的数据字典
             for (Sjzd oldSjzd : oldSjzds) {
 
-                oldSjzd.setSfsc(true);
-                oldSjzd.setGxr(userId);
-                oldSjzd.setGxsj(now);
-                sjzdMapper.updateById(oldSjzd);
+                sjzdMapper.deleteById(oldSjzd.getId());
             }
         }
 

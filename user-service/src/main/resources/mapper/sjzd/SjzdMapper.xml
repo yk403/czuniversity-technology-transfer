@@ -12,6 +12,7 @@
         <result column="ssmkmc" property="ssmkmc" />
         <result column="ssmk" property="ssmk" />
         <result column="fj_id" property="fjId" />
+        <result column="fj_bm" property="fjBm" />
         <result column="fjmc" property="fjmc" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
@@ -22,7 +23,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, zdmc, zdbm, xtlb, mklx, ssmkmc, ssmk, fj_id, fjmc, sfsc, cjsj, cjr, gxsj, gxr
+        id, zdmc, zdbm, xtlb, mklx, ssmkmc, ssmk, fj_id, fj_bm, fjmc, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="selectByCode" resultMap="BaseResultMap">
