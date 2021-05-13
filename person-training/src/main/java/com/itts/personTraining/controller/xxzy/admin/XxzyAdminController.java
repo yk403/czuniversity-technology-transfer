@@ -11,6 +11,7 @@ import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
 import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -160,6 +161,17 @@ public class XxzyAdminController {
         xxzyService.updateById(xxzy);
 
         return ResponseUtil.success(xxzy);
+    }
+
+    /**
+     * 删除
+     */
+    @ApiOperation(value = "删除")
+    @DeleteMapping("/delete/{id}")
+    public ResponseUtil delete(){
+
+        //TODO：待完善
+        return null;
     }
 
     /**
