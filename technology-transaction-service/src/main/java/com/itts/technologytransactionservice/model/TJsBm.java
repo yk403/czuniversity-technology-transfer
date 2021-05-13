@@ -9,6 +9,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -71,7 +72,7 @@ public class TJsBm implements Serializable {
     /**
      * 保证金
      */
-    private String bzj;
+    private BigDecimal bzj;
     /**
      * 删除状态(0:未删除;1:已删除)
      */

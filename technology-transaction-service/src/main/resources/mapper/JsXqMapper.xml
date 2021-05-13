@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsXqMapper">
 
 	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,xq.cjsj as cjsj,xq.remarks,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status
+		select xq.id as id,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,xq.cjsj as cjsj,xq.remarks,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status,yxqkssj,yxqjssj
 		from t_js_xq xq
 		<where>
 			<!--后台能查询0或者1的数据 -->
@@ -13,7 +13,7 @@
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and xq.auction_status = #{map.auctionStatus} </if>
 			<if test="map.soft != null and map.soft != ''"> and xq.soft = #{map.soft} </if>
-			<if test="map.cjjg != null and map.cjjg != ''"> and xq.cjjg = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and xq.cjjg = #{map.cjjg} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
 			<if test="map.jshdId != null and map.jshdId != ''"> and xq.jshd_id = #{map.jshdId} </if>
 			<if test="map.xqmc != null and map.xqmc != ''"> and xq.xqmc like concat('%',#{map.xqmc},'%') </if>
@@ -26,6 +26,8 @@
 			<if test="map.fwnr != null and map.fwnr != ''"> and xq.fwnr = #{map.fwnr} </if>
 			<if test="map.jhrq != null and map.jhrq != ''"> and xq.jhrq = #{map.jhrq} </if>
 			<if test="map.ysrq != null and map.ysrq != ''"> and xq.ysrq = #{map.ysrq} </if>
+            <if test="map.yxqkssj != null"> and xq.yxqkssj = #{map.yxqkssj} </if>
+            <if test="map.yxqjssj != null"> and xq.yxqjssj = #{map.yxqjssj} </if>
 			<if test="map.type == 0"> and xq.user_id != #{map.userId} </if>
 			<if test="map.jshdId != null"> and xq.jshd_id = #{map.jshdId} </if>
 			<!-- 检索所有关联活动为空的技术需求-->
@@ -42,7 +44,7 @@
 	</select>
 
 	<select id="findJsXq" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status
+		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status,sh.jszt as jszt
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id)
 		<where>
 		<!--后台能查询0或者1的数据 -->
@@ -51,7 +53,7 @@
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and xq.auction_status = #{map.auctionStatus} </if>
 			<if test="map.soft != null and map.soft != ''"> and xq.soft = #{map.soft} </if>
-			<if test="map.cjjg != null and map.cjjg != ''"> and xq.cjjg = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and xq.cjjg = #{map.cjjg} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
 			<if test="map.jshdId != null and map.jshdId != ''"> and xq.jshd_id = #{map.jshdId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
@@ -66,15 +68,17 @@
 			<if test="map.fwnr != null and map.fwnr != ''"> and xq.fwnr = #{map.fwnr} </if>
 			<if test="map.jhrq != null and map.jhrq != ''"> and xq.jhrq = #{map.jhrq} </if>
 			<if test="map.ysrq != null and map.ysrq != ''"> and xq.ysrq = #{map.ysrq} </if>
-			<if test="map.fbshzt != null and map.fbshzt != ''"> and sh.fbshzt = #{map.fbshzt} </if>
+			<if test="map.fbshzt != null"> and sh.fbshzt = #{map.fbshzt} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and d.release_status = #{map.releaseStatus} </if>
 			<if test="map.jylx != null and map.jylx != ''"> and sh.jylx = #{map.jylx} </if>
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
 			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 			<if test="map.type == 0"> and xq.user_id != #{map.userId} </if>
+            <if test="map.yxqkssj != null"> and xq.yxqkssj = #{map.yxqkssj} </if>
+            <if test="map.yxqjssj != null"> and xq.yxqjssj = #{map.yxqjssj} </if>
 			<if test="map.jshdId != null"> and xq.jshd_id = #{map.jshdId} </if>
 			 <!-- 检索所有关联活动为空的技术需求-->
-			<if test="map.addActivity == 0"> and xq.jshd_id IS NULL </if>
+			<if test="map.addActivity == 0"> and (xq.jshd_id IS NULL or xq.auction_status = 3) </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">
@@ -123,7 +127,7 @@
 	</select>
 
 	<select id="findJsXqFront" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,xqmc,xqfj,xqfjmc,xqspmc,sjhm,agreement,agreement_name,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,sh.assistance_status,sh.release_assistance_status,sh.fbshbz,xq.remarks,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,cjjg,auction_status
+		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,agreement,agreement_name,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,sh.assistance_status,sh.release_assistance_status,sh.fbshbz,xq.remarks,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,cjjg,auction_status
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id) left join t_js_hd hd on(xq.jshd_id=hd.id)
 		<where>
 			xq.is_delete = 0
@@ -132,7 +136,7 @@
 			<if test="map.type == 1"> and sh.fbshzt = 2 and sh.assistance_status != 2 </if>
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and xq.auction_status = #{map.auctionStatus} </if>
-			<if test="map.cjjg != null and map.cjjg != ''"> and xq.cjjg = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and xq.cjjg = #{map.cjjg} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
 			<if test="map.xqId != null and map.xqId != ''"> and sh.xq_id = #{map.xqId} </if>
@@ -151,6 +155,9 @@
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
 			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 			<if test="map.jshdId != null"> and xq.jshd_id = #{map.jshdId} </if>
+			<if test="map.fbshzt != null"> and sh.fbshzt = #{map.fbshzt} </if>
+            <if test="map.yxqkssj != null"> and xq.yxqkssj = #{map.yxqkssj} </if>
+            <if test="map.yxqjssj != null"> and xq.yxqjssj = #{map.yxqjssj} </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">
@@ -162,14 +169,14 @@
 		</choose>
 	</select>
 	<select id="findHdJsXq" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,xqmc,xqfj,xqfjmc,xqspmc,sjhm,agreement,agreement_name,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,cjjg,auction_status,xq.remarks,xq.soft
+		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,agreement,agreement_name,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,cjjg,auction_status,xq.remarks,xq.soft
 		from t_js_xq xq left join t_js_hd hd on (xq.jshd_id = hd.id)
 		<where>
 			xq.is_delete != 2
 			<if test="map.userId != null and map.userId != ''"> and xq.user_id = #{map.userId} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and xq.auction_status = #{map.auctionStatus} </if>
-			<if test="map.cjjg != null and map.cjjg != ''"> and xq.cjjg = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and xq.cjjg = #{map.cjjg} </if>
 			<if test="map.lbId != null and map.lbId != ''"> and xq.lb_id = #{map.lbId} </if>
 			<if test="map.xqmc != null and map.xqmc != ''"> and xq.xqmc = concat('%',#{map.xqmc},'%') </if>
 			<if test="map.xqspmc != null and map.xqspmc != ''"> and xq.xqspmc = concat('%',#{map.xqspmc},'%') </if>
@@ -181,6 +188,8 @@
 			<if test="map.fwnr != null and map.fwnr != ''"> and xq.fwnr = #{map.fwnr} </if>
 			<if test="map.jhrq != null and map.jhrq != ''"> and xq.jhrq = #{map.jhrq} </if>
 			<if test="map.ysrq != null and map.ysrq != ''"> and xq.ysrq = #{map.ysrq} </if>
+            <if test="map.yxqkssj != null"> and xq.yxqkssj = #{map.yxqkssj} </if>
+            <if test="map.yxqjssj != null"> and xq.yxqjssj = #{map.yxqjssj} </if>
 			<if test="map.jshdId != null"> and xq.jshd_id = #{map.jshdId} </if>
 			<if test="map.soft != null"> and xq.soft  = #{map.soft} </if>
 		</where>
@@ -233,7 +242,18 @@
 			<if test="cjjg != null">cjjg = #{cjjg},</if>
 			<if test="auctionStatus != null">auction_status = #{auctionStatus},</if>
 			<if test="cjsj != null">cjsj = #{cjsj},</if>
-			<if test="gxsj != null">gxsj = #{gxsj}</if>
+			<if test="gxsj != null">gxsj = #{gxsj},</if>
+			<if test="jhrq != null">jhrq = #{jhrq},</if>
+			<if test="ysrq != null">ysrq = #{ysrq},</if>
+			<if test="fwnr != null">fwnr = #{fwnr},</if>
+			<if test="jscs != null">jscs = #{jscs},</if>
+			<if test="xqfjmc != null">xqfjmc = #{xqfjmc},</if>
+			<if test="xqfj != null">xqfj = #{xqfj},</if>
+			<if test="yxqkssj != null">yxqkssj = #{yxqkssj},</if>
+			<if test="yxqjssj != null">yxqjssj = #{yxqjssj},</if>
+			<if test="zbxmqd != null">zbxmqd = #{zbxmqd},</if>
+			<if test="zbxmgs != null">zbxmgs = #{zbxmgs}</if>
+
 		</set>
 		where id = #{id}
 	</update>

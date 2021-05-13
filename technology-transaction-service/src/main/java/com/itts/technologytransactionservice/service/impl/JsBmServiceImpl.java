@@ -3,6 +3,8 @@ package com.itts.technologytransactionservice.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsBmMapper;
 import com.itts.technologytransactionservice.model.TJsBm;
@@ -18,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 
 @Service
@@ -67,5 +72,26 @@ public class JsBmServiceImpl extends ServiceImpl<JsBmMapper, TJsBm> implements J
 		updateBatchById(list);
 
 		return true;
+	}
+
+	@Override
+	public boolean saveBm(TJsBm tJsBm) {
+		Long userId = getUserId();
+		tJsBm.setUserId(Integer.parseInt(String.valueOf(userId)));
+		return save(tJsBm);
+	}
+	/**
+	 * 获取当前用户id
+	 * @return
+	 */
+	public Long getUserId() {
+		LoginUser loginUser = threadLocal.get();
+		Long userId;
+		if (loginUser != null) {
+			userId = loginUser.getUserId();
+		} else {
+			throw new ServiceException(GET_THREADLOCAL_ERROR);
+		}
+		return userId;
 	}
 }

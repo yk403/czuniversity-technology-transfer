@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.config.schedule;
 
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
 import com.itts.technologytransactionservice.mapper.JsHdMapper;
+import com.itts.technologytransactionservice.mapper.JsLcKzMapper;
 import com.itts.technologytransactionservice.mapper.JsXqMapper;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsHd;
@@ -30,6 +31,8 @@ public class springScheduledDemo {
     private JsXqMapper jsXqMapper;
     @Autowired
     private JsLcKzAdminService jsLcKzAdminService;
+    @Autowired
+    private JsLcKzMapper jsLcKzMapper;
     //活动定时到开始时间如果是未开始状态置为进行中
     @Scheduled(cron = "0 0/1 * * * ?")
     public void testScheduled(){
@@ -52,10 +55,18 @@ public class springScheduledDemo {
                             if(list1.size()>0){
                                 if(list1.get(0).getAuctionStatus()==0){
                                     list1.get(0).setAuctionStatus(1);
-                                    TJsLcKz tJsLcKz=new TJsLcKz();
-                                    tJsLcKz.setCgId(list1.get(0).getId());
-                                    tJsLcKz.setFdjg("1000");
-                                    jsLcKzAdminService.save(tJsLcKz);
+/*                                    Map<String,Object>querymap=new HashMap<String,Object>();
+                                    querymap.put("cgId",list1.get(0).getId());
+                                    List<TJsLcKz> list2 = jsLcKzMapper.list(querymap);
+                                    if(list2.size()==0){
+                                        TJsLcKz tJsLcKz=new TJsLcKz();
+                                        tJsLcKz.setCgId(list1.get(0).getId());
+                                        tJsLcKz.setFdjg("1000");
+                                        jsLcKzAdminService.save(tJsLcKz);
+                                    }else{
+                                        list2.get(0).setJjjgzt(0);
+                                        jsLcKzAdminService.updateById(list2.get(0));
+                                    }*/
                                     jsCgMapper.updateTJsCg(list1.get(0));
                                 }
                             }
@@ -68,10 +79,18 @@ public class springScheduledDemo {
                             if(list1.size()>0){
                                 if(list1.get(0).getAuctionStatus()==0){
                                     list1.get(0).setAuctionStatus(1);
-                                    TJsLcKz tJsLcKz=new TJsLcKz();
-                                    tJsLcKz.setXqId(list1.get(0).getId());
-                                    tJsLcKz.setFdjg("1000");
-                                    jsLcKzAdminService.save(tJsLcKz);
+/*                                    Map<String,Object>querymap=new HashMap<String,Object>();
+                                    querymap.put("xqId",list1.get(0).getId());
+                                    List<TJsLcKz> list2 = jsLcKzMapper.list(querymap);
+                                    if(list2.size()==0){
+                                        TJsLcKz tJsLcKz=new TJsLcKz();
+                                        tJsLcKz.setXqId(list1.get(0).getId());
+                                        tJsLcKz.setFdjg("1000");
+                                        jsLcKzAdminService.save(tJsLcKz);
+                                    }else{
+                                        list2.get(0).setJjjgzt(0);
+                                        jsLcKzAdminService.updateById(list2.get(0));
+                                    }*/
                                     jsXqMapper.updateTJsXq(list1.get(0));
                                 }
                             }

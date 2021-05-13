@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
@@ -21,6 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 /**
  * @Author: Austin
@@ -54,10 +58,26 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         log.info("【技术交易 - 分页查询成果(后台审批管理)】");
         //前端传输标识type(0：审批管理;1：信息采集)
         //TODO 从ThreadLocal中获取管理员id 暂时是假数据
-        params.put("userId", 1);
+        params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsCg> list = jsCgMapper.findJsCg(query);
+        return new PageInfo<>(list);
+    }
+    /**
+     * 分页查询成果(后台管理归档清算用)
+     * @param params
+     * @return
+     */
+    @Override
+    public PageInfo<TJsCg> findGdJsCg(Map<String, Object> params) {
+        log.info("【技术交易 - 分页查询成果(后台审批管理)】");
+        //前端传输标识type(0：审批管理;1：信息采集)
+        //TODO 从ThreadLocal中获取管理员id 暂时是假数据
+        params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
+        Query query = new Query(params);
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsCg> list = jsCgMapper.findGdJsCg(query);
         return new PageInfo<>(list);
     }
 
@@ -76,7 +96,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     /**
      * 成果上移下移 上移type为0 下移type为1
      *
-     * @param ids
+     * @param i
      * @return
      */
     @Override
@@ -184,7 +204,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
             return false;
         }
         //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
-        tJsCg.setUserId(1);
+        tJsCg.setUserId(Integer.parseInt(String.valueOf(getUserId())));
         tJsCg.setReleaseType("技术成果");
         tJsCg.setCjsj(new Date());
         tJsCg.setGxsj(new Date());
@@ -283,6 +303,20 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
             jsShMapper.updateById(tJsSh);
         }
         return true;
+    }
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    public Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
     }
 
 }

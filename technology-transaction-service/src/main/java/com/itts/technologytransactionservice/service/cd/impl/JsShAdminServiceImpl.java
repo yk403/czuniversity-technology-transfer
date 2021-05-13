@@ -151,5 +151,15 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
         List<TJsSh> tJsShes = jsShMapper.selectByCgIds(ids);
         return tJsShes;
     }
+    @Override
+    public boolean updateByCgId(Integer cgId) {
+        jsShMapper.updateByCgId(cgId,1);
+        return true;
+    }
+    @Override
+    public boolean updateByXqId(Integer xqId) {
+        jsShMapper.updateByXqId(xqId,1);
+        return true;
+    }
 
 }

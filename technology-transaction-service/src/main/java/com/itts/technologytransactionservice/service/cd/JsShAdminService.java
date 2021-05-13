@@ -29,4 +29,18 @@ public interface JsShAdminService extends IService<TJsSh> {
     Boolean assistanceAuditCg(Map<String, Object> params, Integer assistanceStatus);
 
     List<TJsSh> selectByCgIds(List<Integer> ids);
+    /**
+     * 根据成果id更新
+     *
+     * @param id
+     * @return
+     */
+    boolean updateByCgId(Integer id);
+    /**
+     * 根据需求id更新
+     *
+     * @param id
+     * @return
+     */
+    boolean updateByXqId(Integer id);
 }

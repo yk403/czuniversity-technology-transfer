@@ -3,6 +3,7 @@ package com.itts.technologytransactionservice.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
@@ -25,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 
 /**
@@ -159,6 +162,20 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 		tJsHd.setIsDelete(1);
 		jsHdMapper.updateById(tJsHd);
 		return true;
+	}
+	/**
+	 * 获取当前用户id
+	 * @return
+	 */
+	public Long getUserId() {
+		LoginUser loginUser = threadLocal.get();
+		Long userId;
+		if (loginUser != null) {
+			userId = loginUser.getUserId();
+		} else {
+			throw new ServiceException(GET_THREADLOCAL_ERROR);
+		}
+		return userId;
 	}
 
 }

@@ -56,6 +56,7 @@ public enum ErrorCodeEnum {
     REGISTER_SYSTEM_TYPE_PARAMS_ILLEGAL_ERROR(-430006, "用户注册系统类型为空"),
     REGISTER_USERNAME_EXISTS_ERROR(-430007, "用户注册账号已存在"),
     REGISTER_DEFAULT_ROLE_NOT_FIND_ERROR(-430008, "用户注册默认角色不存在"),
+    NOT_LOGIN_ERROR(-430009, "用户未登录"),
     //====================       登录、登出、注册错误提示END     ====================
 
     //====================      人才培养服务错误提示（服务码450）      ====================
