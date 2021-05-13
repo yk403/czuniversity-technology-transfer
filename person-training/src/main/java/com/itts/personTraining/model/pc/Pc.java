@@ -33,6 +33,7 @@ public class Pc implements Serializable {
     /**
      * 入学日期
      */
+    @ApiModelProperty(value = "入学日期", required = true)
     private String rxrq;
 
     /**

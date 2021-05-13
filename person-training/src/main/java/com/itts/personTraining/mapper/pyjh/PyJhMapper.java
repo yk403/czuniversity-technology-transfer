@@ -1,7 +1,11 @@
 package com.itts.personTraining.mapper.pyjh;
 
+import com.itts.personTraining.dto.PyJhDTO;
 import com.itts.personTraining.model.pyjh.PyJh;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface PyJhMapper extends BaseMapper<PyJh> {
 
+    /**
+     * 分页查询培养计划列表
+     * @param pch
+     * @param jylx
+     * @param jhmc
+     * @return
+     */
+    List<PyJhDTO> findByPage(@Param("pch") String pch, @Param("jylx") String jylx, @Param("jhmc") String jhmc);
 }

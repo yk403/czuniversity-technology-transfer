@@ -8,9 +8,11 @@ import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.PyJhDTO;
 import com.itts.personTraining.mapper.jhKc.JhKcMapper;
 import com.itts.personTraining.model.jhKc.JhKc;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pyjh.PyJh;
 import com.itts.personTraining.mapper.pyjh.PyJhMapper;
 import com.itts.personTraining.service.jhKc.JhKcService;
+import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.pyjh.PyJhService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -47,31 +49,23 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     @Autowired
     private PyJhService pyJhService;
     @Autowired
-    private JhKcService jhKcService;
-    @Resource
-    private JhKcMapper jhKcMapper;
+    private PcService pcService;
 
     /**
      * 查询培养计划列表
      * @param pageNum
      * @param pageSize
-     * @param xslbmc
-     * @param name
-     * @param pcId
+     * @param pch
+     * @param jylx
+     * @param jhmc
      * @return
      */
     @Override
-    public PageInfo<PyJh> findByPage(Integer pageNum, Integer pageSize, String xslbmc, String name, Long pcId) {
-        log.info("【人才培养 - 分页条件查询培养计划列表,学生类别名称:{},培养方案/培养计划/教学大纲:{},批次id:{}】",xslbmc,name,pcId);
+    public PageInfo<PyJhDTO> findByPage(Integer pageNum, Integer pageSize, String pch, String jylx, String jhmc) {
+        log.info("【人才培养 - 分页条件查询培养计划列表,批次号:{},教育类型:{},计划名称:{}】",pch,jylx,jhmc);
         PageHelper.startPage(pageNum, pageSize);
-        QueryWrapper<PyJh> pyJhQueryWrapper = new QueryWrapper<>();
-        pyJhQueryWrapper.eq("sfsc",false)
-                .eq(pcId != null,"pc_id",pcId)
-                .eq(StringUtils.isNotBlank(xslbmc),"xslbmc",xslbmc)
-                .like(StringUtils.isNotBlank(name), "pyfa", name)
-                .or().like(StringUtils.isNotBlank(name), "pyjh", name)
-                .or().like(StringUtils.isNotBlank(name), "jxdg", name);
-        return new PageInfo<>(pyJhMapper.selectList(pyJhQueryWrapper));
+        List<PyJhDTO> pyJhDTOList = pyJhMapper.findByPage(pch,jylx,jhmc);
+        return new PageInfo<>(pyJhDTOList);
     }
 
     /**
@@ -88,7 +82,9 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         PyJhDTO pyJhDTO = new PyJhDTO();
         PyJh pyJh = pyJhMapper.selectOne(pyJhQueryWrapper);
         BeanUtils.copyProperties(pyJh,pyJhDTO);
-        pyJhDTO.setKcIds(jhKcMapper.selectByJhId(pyJh.getId()));
+        Pc pc = pcService.get(pyJhDTO.getPcId());
+        pyJhDTO.setPch(pc.getPch());
+        pyJhDTO.setJylx(pc.getJylx());
         return pyJhDTO;
     }
 
@@ -105,19 +101,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         pyJhDTO.setCjr(userId);
         pyJhDTO.setGxr(userId);
         BeanUtils.copyProperties(pyJhDTO,pyJh);
-        if (pyJhService.save(pyJh)) {
-            List<JhKc> jhKcList = new ArrayList<>();
-            Long jhId = pyJh.getId();
-            List<Long> kcIds = pyJhDTO.getKcIds();
-            for (Long kcId : kcIds) {
-                JhKc jhKc = new JhKc();
-                jhKc.setKcId(kcId);
-                jhKc.setJhId(jhId);
-                jhKcList.add(jhKc);
-            }
-            return jhKcService.saveBatch(jhKcList);
-        }
-        return false;
+        return pyJhService.save(pyJh);
     }
 
     /**
@@ -131,26 +115,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         pyJhDTO.setGxr(getUserId());
         PyJh pyJh = new PyJh();
         BeanUtils.copyProperties(pyJhDTO,pyJh);
-        if (pyJhService.updateById(pyJh)) {
-            List<Long> kcIds = pyJhDTO.getKcIds();
-            if (kcIds != null) {
-                HashMap<String, Object> map = new HashMap<>();
-                Long jhId = pyJh.getId();
-                map.put("jh_id",jhId);
-                if (jhKcService.removeByMap(map)) {
-                    List<JhKc> kcList = new ArrayList<>();
-                    for (Long kcId : kcIds) {
-                        JhKc jhKc = new JhKc();
-                        jhKc.setJhId(jhId);
-                        jhKc.setKcId(kcId);
-                        kcList.add(jhKc);
-                    }
-                    return jhKcService.saveBatch(kcList);
-                }
-            }
-            return true;
-        }
-        return false;
+        return pyJhService.updateById(pyJh);
     }
 
     /**
@@ -166,12 +131,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         pyJhDTO.setGxr(getUserId());
         PyJh pyJh = new PyJh();
         BeanUtils.copyProperties(pyJhDTO,pyJh);
-        if (pyJhService.updateById(pyJh)) {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("jh_id",pyJh.getId());
-            return jhKcService.removeByMap(map);
-        }
-        return false;
+        return pyJhService.updateById(pyJh);
     }
 
     /**

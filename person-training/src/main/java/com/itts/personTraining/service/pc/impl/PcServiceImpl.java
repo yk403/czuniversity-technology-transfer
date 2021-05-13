@@ -68,7 +68,10 @@ public class PcServiceImpl implements PcService {
     @Override
     public Pc get(Long id) {
         log.info("【人才培养 - 根据id:{}查询详情】",id);
-        return pcMapper.selectById(id);
+        QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
+        pcQueryWrapper.eq("sfsc",false)
+                      .eq("id",id);
+        return pcMapper.selectOne(pcQueryWrapper);
     }
 
     /**

@@ -21,12 +21,12 @@ public interface PyJhService extends IService<PyJh> {
      * 查询培养计划列表
      * @param pageNum
      * @param pageSize
-     * @param xslbmc
-     * @param name
-     * @param pcId
+     * @param pch
+     * @param jylx
+     * @param jhmc
      * @return
      */
-    PageInfo<PyJh> findByPage(Integer pageNum, Integer pageSize, String xslbmc, String name, Long pcId);
+    PageInfo<PyJhDTO> findByPage(Integer pageNum, Integer pageSize, String pch, String jylx, String jhmc);
 
     /**
      * 根据id查询培养计划
