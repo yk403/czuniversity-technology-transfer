@@ -66,7 +66,7 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 		List<TJsHd> list = jsHdMapper.listCount(query);
 		HashMap<String, Object> userMap = new HashMap<>();
 		//门户报名暂定为userId为2
-		userMap.put("userId",2);
+		userMap.put("userId",Integer.parseInt(String.valueOf(getUserId())));
 		List<TJsHd> list1 = jsHdMapper.listCount(userMap);
 		for (TJsHd item:list1) {
 			for (TJsHd item2:list) {
