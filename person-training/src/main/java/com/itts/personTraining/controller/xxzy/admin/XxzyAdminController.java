@@ -2,12 +2,14 @@ package com.itts.personTraining.controller.xxzy.admin;
 
 
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
+import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
@@ -79,6 +81,24 @@ public class XxzyAdminController {
     }
 
     /**
+     * 更新
+     */
+    @PutMapping("/update/")
+    public ResponseUtil update(@RequestBody UpdateXxzyRequest updateXxzyRequest) {
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+
+        if(loginUser == null){
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        //TODO: 待完善
+
+        return null;
+
+    }
+
+    /**
      * 校验新增参数是否合法
      */
     private void checkAddRequest(AddXxzyRequest addXxzyRequest) {
@@ -96,6 +116,32 @@ public class XxzyAdminController {
         }
 
         if (StringUtils.isBlank(addXxzyRequest.getZylx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+    }
+
+    /**
+     * 校验新增参数是否合法
+     */
+    private void checkUpdateRequest(UpdateXxzyRequest updateXxzyRequest) {
+
+        if (updateXxzyRequest == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if(updateXxzyRequest.getId() == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(updateXxzyRequest.getMc())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(updateXxzyRequest.getZylx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(updateXxzyRequest.getZylx())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
