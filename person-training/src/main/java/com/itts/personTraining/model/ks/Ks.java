@@ -34,29 +34,9 @@ public class Ks implements Serializable {
     private Long pcId;
 
     /**
-     * 学校教室ID
-     */
-    private Long xxjsId;
-
-    /**
-     * 课程ID
-     */
-    private Long kcId;
-
-    /**
      * 考试名称
      */
     private String ksmc;
-
-    /**
-     * 考试开始时间
-     */
-    private Date kskssj;
-
-    /**
-     * 考试结束时间
-     */
-    private Date ksjssj;
 
     /**
      * 考试类型(0:统一考试;1:实训考试;2:证书考试;3:补考)

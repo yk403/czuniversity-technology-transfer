@@ -6,11 +6,7 @@
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.ks.Ks">
         <id column="id" property="id" />
         <result column="pc_id" property="pcId" />
-        <result column="xxjs_id" property="xxjsId" />
-        <result column="kc_id" property="kcId" />
         <result column="ksmc" property="ksmc" />
-        <result column="kskssj" property="kskssj" />
-        <result column="ksjssj" property="ksjssj" />
         <result column="kslx" property="kslx" />
         <result column="sfxf" property="sfxf" />
         <result column="sfsc" property="sfsc" />
@@ -23,7 +19,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pc_id, xxjs_id, kc_id, ksmc, kskssj, ksjssj, kslx, sfxf, sfsc, cjsj, cjr, gxsj, gxr, xfsj
+        id, pc_id, ksmc, kslx, sfxf, sfsc, cjsj, cjr, gxsj, gxr, xfsj
     </sql>
     <select id="findByPage" resultType="com.itts.personTraining.dto.KsDTO">
         select ks.id, pc_id, xxjs_id, kc_id, kcmc, jxlmc, jsbh, ksmc, kskssj, ksjssj, kslx, ks.sfxf, ks.cjsj, ks.cjr,
