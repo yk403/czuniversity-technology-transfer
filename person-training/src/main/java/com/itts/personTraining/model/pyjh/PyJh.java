@@ -79,6 +79,11 @@ public class PyJh implements Serializable {
     private String fj;
 
     /**
+     * 附件名称
+     */
+    private String fjmc;
+
+    /**
      * 是否下发(0:否;1:是)
      */
     private Boolean sfxf;

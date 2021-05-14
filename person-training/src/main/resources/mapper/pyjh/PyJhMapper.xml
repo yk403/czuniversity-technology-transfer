@@ -15,6 +15,7 @@
         <result column="sjlw" property="sjlw" />
         <result column="pygl" property="pygl" />
         <result column="fj" property="fj" />
+        <result column="fjmc" property="fjmc" />
         <result column="sfsc" property="sfsc" />
         <result column="sfxf" property="sfxf" />
         <result column="xfsj" property="xfsj" />
@@ -26,10 +27,10 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pc_id, jhmc, pymb, xzyxxnx, pyfshff, pyfaypyjh, kcszhxfgd, sjlw, pygl, fj, sfsc, sfxf, xfsj, cjr, gxsj, gxr
+        id, pc_id, jhmc, pymb, xzyxxnx, pyfshff, pyfaypyjh, kcszhxfgd, sjlw, pygl, fj, fjmc, sfsc, sfxf, xfsj, cjr, gxsj, gxr
     </sql>
     <select id="findByPage" resultType="com.itts.personTraining.dto.PyJhDTO">
-        select tpj.id as id, pc_id,pc.pch as pch, pc.jylx as jylx, jhmc, pymb, xzyxxnx, pyfshff, pyfaypyjh, kcszhxfgd, sjlw, pygl, fj, tpj.sfsc as sfsc, tpj.sfxf, tpj.xfsj, tpj.cjsj, tpj.cjr, tpj.gxsj, tpj.gxr
+        select tpj.id as id, pc_id,pc.pch as pch, pc.jylx as jylx, jhmc, pymb, xzyxxnx, pyfshff, pyfaypyjh, kcszhxfgd, sjlw, pygl, fj, fjmc, tpj.sfsc as sfsc, tpj.sfxf, tpj.xfsj, tpj.cjsj, tpj.cjr, tpj.gxsj, tpj.gxr
         from t_py_jh tpj left join t_pc pc on (tpj.pc_id = pc.id)
         <where>
             tpj.sfsc = false and pc.sfsc = false
