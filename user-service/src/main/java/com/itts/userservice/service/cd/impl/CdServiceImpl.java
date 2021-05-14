@@ -414,6 +414,13 @@ public class CdServiceImpl implements CdService {
 
                 CdTreeVO childVO = new CdTreeVO();
                 BeanUtils.copyProperties(child, childVO);
+
+                //获取当前菜单拥有的操作
+                List<Cz> czs = czMapper.findByCdId(child.getId());
+                if (!CollectionUtils.isEmpty(czs)) {
+                    childVO.setCzs(czs);
+                }
+
                 childrenVOs.add(childVO);
 
                 //将当前子级菜单从列表中删除
