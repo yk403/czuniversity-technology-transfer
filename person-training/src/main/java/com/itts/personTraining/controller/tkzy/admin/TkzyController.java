@@ -50,7 +50,7 @@ public class TkzyController {
                              @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                              @ApiParam(value = "一级分类") @RequestParam(value = "firstCategory", required = false) String firstCategory,
                              @ApiParam(value = "二级分类") @RequestParam(value = "secondCategory", required = false) String secondCategory,
-                             @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) String courseId,
+                             @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
                              @ApiParam(value = "题库所属：my - 我的") @RequestParam(value = "belong", required = false) String belong,
                              @ApiParam(value = "题目类型: single_choice - 单选; multiple_choice - 多选;judgment - 判断") @RequestParam(value = "type", required = false) String type,
                              @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition) {
@@ -70,7 +70,7 @@ public class TkzyController {
             query.eq("tmejfl", secondCategory);
         }
 
-        if (StringUtils.isNotBlank(courseId)) {
+        if (courseId != null) {
             query.eq("kc_id", courseId);
         }
 

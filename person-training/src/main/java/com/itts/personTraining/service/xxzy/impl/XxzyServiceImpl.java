@@ -37,7 +37,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      */
     @Override
     public PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type,
-                               String firstCategory, String secondCategory, String courseId, String condition) {
+                               String firstCategory, String secondCategory, Long courseId, String condition) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -54,7 +54,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             query.eq("zyejfl", secondCategory);
         }
 
-        if (StringUtils.isNotBlank(courseId)) {
+        if (courseId != null) {
             query.eq("kc_id", courseId);
         }
 
