@@ -17,9 +17,9 @@ import java.util.List;
 public interface SzKsExpMapper extends BaseMapper<SzKsExp> {
 
     /**
-     * 根据考试id查询师资ids
-     * @param ksId
+     * 根据考试扩展id查询师资ids
+     * @param ksExpId
      * @return
      */
-    List<Long> selectByKsId(@Param("ksId") Long ksId);
+    List<Long> selectByKsExpId(@Param("ksExpId") Long ksExpId);
 }

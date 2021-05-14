@@ -13,11 +13,11 @@
     <sql id="Base_Column_List">
         id, sz_id, ks_exp_id
     </sql>
-    <select id="selectByKsId" resultType="java.lang.Long">
+    <select id="selectByKsExpId" resultType="java.lang.Long">
         select sz_id
-        from t_sz_ks tsk
+        from t_sz_ks_exp tske
         <where>
-            tsk.ks_id = #{ksId}
+            tske.ks_exp_id = #{ksExpId}
         </where>
     </select>
 

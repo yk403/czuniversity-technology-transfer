@@ -41,11 +41,10 @@ public class KsAdminController {
     @ApiOperation(value = "获取考试列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                   @RequestParam(value = "kslx", required = false) String kslx,
                                    @RequestParam(value = "pcId", required = false) Long pcId,
-                                   @RequestParam(value = "pclx", required = false) String pclx,
-                                   @RequestParam(value = "kcmc", required = false) String kcmc) {
-        return ResponseUtil.success(ksService.findByPage(pageNum, pageSize, kslx, pcId, pclx, kcmc));
+                                   @RequestParam(value = "ksmc", required = false) String ksmc,
+                                   @RequestParam(value = "kslx", required = false) Integer kslx) {
+        return ResponseUtil.success(ksService.findByPage(pageNum, pageSize, pcId, ksmc, kslx));
     }
 
     /**

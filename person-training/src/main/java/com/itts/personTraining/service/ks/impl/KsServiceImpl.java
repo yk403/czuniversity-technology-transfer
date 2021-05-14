@@ -1,11 +1,13 @@
 package com.itts.personTraining.service.ks.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KsDTO;
 import com.itts.personTraining.dto.KsExpDTO;
+import com.itts.personTraining.mapper.ksExp.KsExpMapper;
 import com.itts.personTraining.mapper.szKsExp.SzKsExpMapper;
 import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.mapper.ks.KsMapper;
@@ -52,22 +54,23 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     private SzKsExpMapper szKsExpMapper;
     @Autowired
     private KsExpService ksExpService;
+    @Resource
+    private KsExpMapper ksExpMapper;
 
     /**
      * 查询考试列表
      * @param pageNum
      * @param pageSize
-     * @param kslx
      * @param pcId
-     * @param pclx
-     * @param kcmc
+     * @param ksmc
+     * @param kslx
      * @return
      */
     @Override
-    public PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, String kslx, Long pcId, String pclx, String kcmc) {
-        log.info("【人才培养 - 分页条件查询考试列表,考试类型:{},批次id:{},批次类型:{},课程名称:{}】",kslx,pcId,pclx,kcmc);
+    public PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String ksmc, Integer kslx) {
+        log.info("【人才培养 - 分页条件查询考试列表,,批次id:{},考试名称:{},考试类型:{}】",pcId,ksmc,kslx);
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo<>(ksMapper.findByPage(kslx,pcId,pclx,kcmc));
+        return new PageInfo<>(ksMapper.findByPage(pcId,ksmc,kslx));
     }
 
     /**
@@ -79,7 +82,14 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     public KsDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询考试详情】",id);
         KsDTO ksDTO = ksMapper.findById(id);
-        //ksDTO.setSzIds(szKsMapper.selectByKsId(id));
+        if (ksDTO != null) {
+            List<KsExpDTO> ksExpDTOs = ksExpMapper.findByKsId(ksDTO.getId());
+            for (KsExpDTO ksExpDTO : ksExpDTOs) {
+                List<Long> szIds = szKsExpMapper.selectByKsExpId(ksExpDTO.getId());
+                ksExpDTO.setSzIds(szIds);
+            }
+            ksDTO.setKsExps(ksExpDTOs);
+        }
         return ksDTO;
     }
 

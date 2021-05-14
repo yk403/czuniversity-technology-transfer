@@ -33,6 +33,11 @@ public class KsDTO {
     private Long pcId;
 
     /**
+     * 批次号
+     */
+    private String pch;
+
+    /**
      * 考试名称
      */
     @ApiModelProperty(value = "考试名称")

@@ -79,7 +79,7 @@ public class Xs implements Serializable {
     /**
      * 学生类别ID	postgraduate - 研究生;	broker - 经纪人
      */
-    @ApiModelProperty(value = "学生类别ID", required = true)
+    @ApiModelProperty(value = "学生类别ID")
     private String xslbId;
 
     /**
@@ -200,13 +200,13 @@ public class Xs implements Serializable {
     /**
      * 新专业ID
      */
-    @ApiModelProperty(value = "新专业ID", required = true)
+    @ApiModelProperty(value = "新专业ID")
     private Long zyId;
 
     /**
      * 新专业名称
      */
-    @ApiModelProperty(value = "新专业名称", required = true)
+    @ApiModelProperty(value = "新专业名称")
     private String zymc;
 
     /**
@@ -240,7 +240,7 @@ public class Xs implements Serializable {
     /**
      * 教育形式
      */
-    @ApiModelProperty(value = "教育形式", required = true)
+    @ApiModelProperty(value = "教育形式")
     private String jyxs;
 
 }
