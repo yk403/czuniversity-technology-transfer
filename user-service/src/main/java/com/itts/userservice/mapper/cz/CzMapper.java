@@ -5,6 +5,7 @@ import com.itts.userservice.dto.CzDTO;
 import com.itts.userservice.model.cz.Cz;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * @author lym
  * @since 2021-03-19
  */
+@Repository
 public interface CzMapper extends BaseMapper<Cz> {
 
     /**
