@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -100,28 +101,86 @@ public class KssjController {
     public ResponseUtil update(@RequestBody UpdateKssjRequest updateKssjRequest) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
-        if(loginUser == null){
+        if (loginUser == null) {
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
         }
 
         checkUpdateRequest(updateKssjRequest);
 
-        QueryWrapper query = new QueryWrapper();
-        query.eq("sfsc", false);
-        query.eq("id", updateKssjRequest.getId());
-
-        Kssj old = kssjService.getOne(query);
-        if(old == null){
+        Kssj old = kssjService.getOne(new QueryWrapper<Kssj>().eq("sfsc", false).eq("id", updateKssjRequest.getId()));
+        if (old == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        if(!Objects.equals(old.getCjr(), loginUser.getUserId())){
+        if (!Objects.equals(old.getCjr(), loginUser.getUserId())) {
             throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
         }
 
         Kssj kssj = kssjService.update(updateKssjRequest, old, loginUser.getUserId());
 
         return ResponseUtil.success(kssj);
+    }
+
+    @ApiOperation(value = "更新状态")
+    @PutMapping("/update/status/{id}")
+    public ResponseUtil updateStatus(@ApiParam(value = "主键ID") @PathVariable("id") Long id,
+                                     @ApiParam(value = "是否上架") @RequestParam("sfsj") Boolean sfsj) {
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser == null) {
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        Kssj old = kssjService.getOne(new QueryWrapper<Kssj>().eq("sfsc", false).eq("id", id));
+
+        if (old == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (!Objects.equals(old.getCjr(), loginUser.getUserId())) {
+            throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
+        }
+
+        Date now = new Date();
+
+        old.setSfsj(sfsj);
+        old.setSjsj(now);
+        old.setGxr(loginUser.getUserId());
+        old.setGxsj(now);
+
+        kssjService.updateById(old);
+
+        return ResponseUtil.success(old);
+    }
+
+    @ApiOperation(value = "删除")
+    @DeleteMapping("/delete/{id}")
+    public ResponseUtil delete(@PathVariable(value = "id") Long id) {
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser == null) {
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        Kssj old = kssjService.getOne(new QueryWrapper<Kssj>().eq("sfsc", false).eq("id", id));
+
+        if (old == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (!Objects.equals(old.getCjr(), loginUser.getUserId())) {
+            throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
+        }
+
+        Date now = new Date();
+
+        old.setSfsc(true);
+        old.setGxr(loginUser.getUserId());
+        old.setGxsj(now);
+
+        kssjService.updateById(old);
+
+        return ResponseUtil.success(old);
     }
 
     /**
