@@ -17,9 +17,24 @@ import java.util.List;
 public interface KsExpService extends IService<KsExp> {
 
     /**
-     * 根据考试id查询考试扩展信息
+     * 根据条件查询考试扩展信息
      * @param id
+     * @param ksId
      * @return
      */
-    List<KsExpDTO> get(Long id);
+    List<KsExpDTO> get(Long id,Long ksId);
+
+    /**
+     * 根据考试扩展id删除考试扩展信息
+     * @param ksExpDTO
+     * @return
+     */
+    boolean delete(KsExpDTO ksExpDTO);
+
+    /**
+     * 更新考试扩展信息
+     * @param ksExpDTO
+     * @return
+     */
+    boolean update(KsExpDTO ksExpDTO);
 }

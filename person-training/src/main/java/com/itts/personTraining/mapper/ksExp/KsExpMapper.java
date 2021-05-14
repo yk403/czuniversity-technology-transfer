@@ -18,9 +18,12 @@ import java.util.List;
 public interface KsExpMapper extends BaseMapper<KsExp> {
 
     /**
-     * 根据考试id查询考试扩展DTO
+     * 根据条件查询考试扩展DTO
+     * @param id
      * @param ksId
      * @return
      */
-    List<KsExpDTO> findByKsId(@Param("ksId") Long ksId);
+    List<KsExpDTO> findByCondition(@Param("id") Long id,@Param("ksId") Long ksId);
+
+    KsExpDTO findByKsExpId(@Param("id") Long id);
 }

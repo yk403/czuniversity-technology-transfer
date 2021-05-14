@@ -183,10 +183,11 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     public boolean update(KcDTO kcDTO) {
         log.info("【人才培养 - 更新课程:{}】",kcDTO);
         Kc kc = new Kc();
-        kcDTO .setGxr(getUserId());
+        kcDTO.setGxr(getUserId());
         BeanUtils.copyProperties(kcDTO,kc);
         if (kcService.updateById(kc)) {
-            if (kcDTO.getSzIds() != null) {
+            List<Long> szIds = kcDTO.getSzIds();
+            if (szIds != null || szIds.size() > 0) {
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("kc_id",kcDTO.getId());
                 if (kcSzService.removeByMap(map)) {

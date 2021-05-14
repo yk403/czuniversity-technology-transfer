@@ -22,14 +22,19 @@
     <sql id="Base_Column_List">
         id, ks_id, xxjs_id, kc_id, kskssj, ksjssj, sfsc, cjsj, cjr, gxsj, gxr, xfsj
     </sql>
-    <select id="findByKsId" resultType="com.itts.personTraining.dto.KsExpDTO">
+    <select id="findByCondition" resultType="com.itts.personTraining.dto.KsExpDTO">
         select tke.id, tke.ks_id, tke.xxjs_id, tx.jxlmc, tx.jsbh, tke.kc_id, tk.kcdm, tk.kcmc, kskssj, ksjssj, tke.sfsc, tke.cjsj, tke.cjr, tke.gxsj, tke.gxr, tke.xfsj
         from t_ks_exp tke left join t_xxjs tx on (tke.xxjs_id=tx.id) left join t_kc tk on (tke.kc_id=tk.id)
         <where>
             tke.sfsc = false and tx.sfsc = false and tk.sfsc = false
+            <if test="id != null">and tke.id = #{id}</if>
             <if test="ksId != null">and tke.ks_id = #{ksId}</if>
         </where>
         order by tke.cjsj desc
+    </select>
+
+    <select id="findByKsExpId" resultType="com.itts.personTraining.dto.KsExpDTO">
+
     </select>
 
 </mapper>

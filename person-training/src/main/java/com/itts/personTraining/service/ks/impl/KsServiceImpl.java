@@ -83,7 +83,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         log.info("【人才培养 - 根据id:{}查询考试详情】",id);
         KsDTO ksDTO = ksMapper.findById(id);
         if (ksDTO != null) {
-            List<KsExpDTO> ksExpDTOs = ksExpMapper.findByKsId(ksDTO.getId());
+            List<KsExpDTO> ksExpDTOs = ksExpMapper.findByCondition(null,ksDTO.getId());
             for (KsExpDTO ksExpDTO : ksExpDTOs) {
                 List<Long> szIds = szKsExpMapper.selectByKsExpId(ksExpDTO.getId());
                 ksExpDTO.setSzIds(szIds);
