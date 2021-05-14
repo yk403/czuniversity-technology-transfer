@@ -57,7 +57,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     public PageInfo<TJsXq> findJsXq(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询需求(后台审批管理)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据,1表示管理员
-        params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
+        //params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsXq> list = jsXqMapper.findJsXq(query);

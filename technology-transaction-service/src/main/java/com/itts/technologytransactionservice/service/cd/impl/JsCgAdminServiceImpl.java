@@ -58,7 +58,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         log.info("【技术交易 - 分页查询成果(后台审批管理)】");
         //前端传输标识type(0：审批管理;1：信息采集)
         //TODO 从ThreadLocal中获取管理员id 暂时是假数据
-        params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
+        //params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsCg> list = jsCgMapper.findJsCg(query);
