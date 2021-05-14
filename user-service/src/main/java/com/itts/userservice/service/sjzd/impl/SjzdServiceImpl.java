@@ -181,7 +181,10 @@ public class SjzdServiceImpl implements SjzdService {
             userId = loginUser.getUserId();
         }
 
-        Sjzd fjzd = sjzdMapper.selectById(sjzd.getFjId());
+        QueryWrapper query = new QueryWrapper();
+        query.eq("zdbm", sjzd.getFjBm());
+
+        Sjzd fjzd = sjzdMapper.selectOne(query);
 
         Date now = new Date();
 
@@ -193,14 +196,15 @@ public class SjzdServiceImpl implements SjzdService {
             BeanUtils.copyProperties(sjzd, addSjzd);
 
             addSjzd.setZdmc(sjzdItem.getZdmc());
-            addSjzd.setZdbm(sjzdItem.getZdbm());
-            addSjzd.setFjId(sjzd.getFjId());
 
             if (fjzd != null) {
 
+                addSjzd.setFjId(fjzd.getId());
+                addSjzd.setFjBm(fjzd.getZdbm());
                 addSjzd.setFjmc(fjzd.getZdmc());
                 addSjzd.setZdbm(fjzd.getZdbm() + sjzdItem.getZdbm());
             } else {
+
                 addSjzd.setZdbm(sjzdItem.getZdbm());
             }
 
@@ -244,7 +248,10 @@ public class SjzdServiceImpl implements SjzdService {
             }
         }
 
-        Sjzd fjzd = sjzdMapper.selectById(sjzd.getFjId());
+        QueryWrapper query = new QueryWrapper();
+        query.eq("zdbm", sjzd.getFjBm());
+
+        Sjzd fjzd = sjzdMapper.selectOne(query);
 
         //增加新的数据字典
         for (UpdateSjzdItemRequest sjzdItem : sjzd.getSjzdItems()) {
@@ -254,14 +261,15 @@ public class SjzdServiceImpl implements SjzdService {
             BeanUtils.copyProperties(sjzd, addSjzd);
 
             addSjzd.setZdmc(sjzdItem.getZdmc());
-            addSjzd.setZdbm(sjzdItem.getZdbm());
-            addSjzd.setFjId(sjzd.getFjId());
 
             if (fjzd != null) {
 
+                addSjzd.setFjId(fjzd.getId());
+                addSjzd.setFjBm(fjzd.getZdbm());
                 addSjzd.setFjmc(fjzd.getZdmc());
                 addSjzd.setZdbm(fjzd.getZdbm() + sjzdItem.getZdbm());
             } else {
+
                 addSjzd.setZdbm(sjzdItem.getZdbm());
             }
 
