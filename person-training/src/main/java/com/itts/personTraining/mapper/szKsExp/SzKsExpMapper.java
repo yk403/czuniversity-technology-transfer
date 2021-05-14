@@ -1,6 +1,6 @@
-package com.itts.personTraining.mapper.szKs;
+package com.itts.personTraining.mapper.szKsExp;
 
-import com.itts.personTraining.model.szKs.SzKs;
+import com.itts.personTraining.model.szKsExp.SzKsExp;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * @author Austin
  * @since 2021-05-06
  */
-public interface SzKsMapper extends BaseMapper<SzKs> {
+public interface SzKsExpMapper extends BaseMapper<SzKsExp> {
 
     /**
      * 根据考试id查询师资ids

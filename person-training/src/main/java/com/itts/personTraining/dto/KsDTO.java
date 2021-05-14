@@ -86,5 +86,5 @@ public class KsDTO {
     /**
      * 课程集合
      */
-    private List<KsExpDTO> kcExps;
+    private List<KsExpDTO> ksExps;
 }

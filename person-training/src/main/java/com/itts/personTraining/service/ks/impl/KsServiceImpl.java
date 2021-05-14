@@ -1,26 +1,20 @@
 package com.itts.personTraining.service.ks.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KsDTO;
 import com.itts.personTraining.dto.KsExpDTO;
-import com.itts.personTraining.mapper.ksXs.KsXsMapper;
-import com.itts.personTraining.mapper.szKs.SzKsMapper;
-import com.itts.personTraining.model.kc.Kc;
+import com.itts.personTraining.mapper.szKsExp.SzKsExpMapper;
 import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.mapper.ks.KsMapper;
 import com.itts.personTraining.model.ksExp.KsExp;
-import com.itts.personTraining.model.ksXs.KsXs;
-import com.itts.personTraining.model.szKs.SzKs;
-import com.itts.personTraining.model.xyKc.XyKc;
+import com.itts.personTraining.model.szKsExp.SzKsExp;
 import com.itts.personTraining.service.ks.KsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.ksExp.KsExpService;
-import com.itts.personTraining.service.ksXs.KsXsService;
-import com.itts.personTraining.service.szKs.SzKsService;
+import com.itts.personTraining.service.szKsExp.SzKsExpService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +47,9 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     @Resource
     private KsMapper ksMapper;
     @Autowired
-    private SzKsService szKsService;
+    private SzKsExpService szKsExpService;
     @Resource
-    private SzKsMapper szKsMapper;
+    private SzKsExpMapper szKsExpMapper;
     @Autowired
     private KsExpService ksExpService;
 
@@ -106,7 +100,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         BeanUtils.copyProperties(ksDTO,ks);
         if (ksService.save(ks)) {
             Long ksId = ks.getId();
-            List<KsExpDTO> ksExpDTOs = ksDTO.getKcExps();
+            List<KsExpDTO> ksExpDTOs = ksDTO.getKsExps();
             for (KsExpDTO ksExpDTO : ksExpDTOs) {
                 KsExp ksExp = new KsExp();
                 ksExpDTO.setKsId(ksId);
@@ -168,7 +162,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         if (ksService.updateById(ks)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("ks_id",ks.getId());
-            return szKsService.removeByMap(map);
+            return szKsExpService.removeByMap(map);
         }
         return false;
     }
@@ -212,13 +206,13 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
      * @return
      */
     private boolean saveSzKs(List<Long> szIds, KsExp ksExp) {
-        List<SzKs> szKsList = new ArrayList<>();
+        List<SzKsExp> szKsExpList = new ArrayList<>();
         for (Long szId : szIds) {
-            SzKs szKs = new SzKs();
-            szKs.setSzId(szId);
-            szKs.setKsId(ksExp.getId());
-            szKsList.add(szKs);
+            SzKsExp szKsExp = new SzKsExp();
+            szKsExp.setSzId(szId);
+            szKsExp.setKsExpId(ksExp.getId());
+            szKsExpList.add(szKsExp);
         }
-        return szKsService.saveBatch(szKsList);
+        return szKsExpService.saveBatch(szKsExpList);
     }
 }
