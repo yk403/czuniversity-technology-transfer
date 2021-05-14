@@ -99,6 +99,12 @@ public class UpdateXxzyRequest implements Serializable {
     private String xzdz;
 
     /**
+     * 播放地址
+     */
+    @ApiModelProperty(value = "播放地址")
+    private String bfdz;
+
+    /**
      * 是否分享
      */
     @ApiModelProperty(value = "是否分享")

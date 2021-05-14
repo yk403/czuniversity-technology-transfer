@@ -90,6 +90,9 @@ public class AddXxzyRequest implements Serializable {
     @ApiModelProperty(value = "下载地址")
     private String xzdz;
 
+    @ApiModelProperty(value = "播放地址")
+    private String bfdz;
+
     /**
      * 是否分享
      */
