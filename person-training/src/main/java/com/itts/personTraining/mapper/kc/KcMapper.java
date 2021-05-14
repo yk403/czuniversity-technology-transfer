@@ -4,6 +4,7 @@ import com.itts.personTraining.dto.KcDTO;
 import com.itts.personTraining.model.kc.Kc;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @author Austin
  * @since 2021-04-20
  */
+@Repository
 public interface KcMapper extends BaseMapper<Kc> {
 
     /**
