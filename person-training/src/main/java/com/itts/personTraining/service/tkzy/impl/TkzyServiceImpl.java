@@ -1,0 +1,192 @@
+package com.itts.personTraining.service.tkzy.impl;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.SystemConstant;
+import com.itts.personTraining.mapper.tkzy.TkzyMapper;
+import com.itts.personTraining.mapper.tkzy.TmxxMapper;
+import com.itts.personTraining.model.tkzy.Tkzy;
+import com.itts.personTraining.model.tkzy.Tmxx;
+import com.itts.personTraining.request.tkzy.AddTkzyRequest;
+import com.itts.personTraining.request.tkzy.AddTmxxRequest;
+import com.itts.personTraining.request.tkzy.UpdateTkzyRequest;
+import com.itts.personTraining.request.tkzy.UpdateTmxxRequest;
+import com.itts.personTraining.service.tkzy.TkzyService;
+import com.itts.personTraining.vo.tkzy.GetTkzyVO;
+import com.itts.personTraining.vo.tkzy.GetTmxxVO;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+/**
+ * <p>
+ * 题库资源 服务实现类
+ * </p>
+ *
+ * @author liuyingming
+ * @since 2021-05-13
+ */
+@Service
+public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements TkzyService {
+
+    @Autowired
+    private TkzyMapper tkzyMapper;
+
+    @Autowired
+    private TmxxMapper tmxxMapper;
+
+    /**
+     * 详情
+     */
+    @Override
+    public GetTkzyVO get(Long id) {
+
+        Tkzy tkzy = tkzyMapper.selectById(id);
+
+        if (tkzy == null || tkzy.getSfsc()) {
+            return null;
+        }
+
+        GetTkzyVO vo = new GetTkzyVO();
+        BeanUtils.copyProperties(tkzy, vo);
+
+        List<GetTmxxVO> tmxxs = tmxxMapper.findByTmId(id).stream().map(obj -> {
+
+            GetTmxxVO tmxxVO = new GetTmxxVO();
+            BeanUtils.copyProperties(obj, tmxxVO);
+            return tmxxVO;
+        }).collect(Collectors.toList());
+
+        vo.setTmxxs(tmxxs);
+        return vo;
+    }
+
+    /**
+     * 新增
+     */
+    @Override
+    public Tkzy add(AddTkzyRequest addTkzyRequest) {
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        Long userId = null;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        }
+
+        Tkzy tkzy = new Tkzy();
+        BeanUtils.copyProperties(addTkzyRequest, tkzy);
+
+        Date now = new Date();
+
+        tkzy.setCjr(userId);
+        tkzy.setGxr(userId);
+        tkzy.setCjsj(now);
+        tkzy.setGxsj(now);
+
+        tkzyMapper.insert(tkzy);
+
+        for (AddTmxxRequest addTmxx : addTkzyRequest.getTmxxs()) {
+
+            Tmxx tmxx = new Tmxx();
+            BeanUtils.copyProperties(addTmxx, tmxx);
+
+            tmxx.setCjr(userId);
+            tmxx.setGxr(userId);
+            tmxx.setCjsj(now);
+            tmxx.setGxsj(now);
+            tmxx.setTmId(tkzy.getId());
+
+            tmxxMapper.insert(tmxx);
+        }
+
+        return tkzy;
+    }
+
+    /**
+     * 更新
+     */
+    @Override
+    public Tkzy update(UpdateTkzyRequest updateTkzyRequest, Tkzy tkzy, Long userId) {
+
+        Date now = new Date();
+
+        BeanUtils.copyProperties(updateTkzyRequest, tkzy);
+
+        tkzy.setGxr(userId);
+        tkzy.setGxsj(now);
+
+        tkzyMapper.updateById(tkzy);
+
+        //更新题目选项
+        List<UpdateTmxxRequest> updateTmxxList = updateTkzyRequest.getTmxxs();
+
+        //获取新增选项
+        List<UpdateTmxxRequest> addList = updateTmxxList.stream().filter(obj -> obj.getId() == null).collect(Collectors.toList());
+
+        //移除需要添加的选项
+        updateTmxxList.removeAll(addList);
+
+        //获取当前题目之前的所有选项
+        List<Tmxx> oldTmxxs = tmxxMapper.findByTmId(updateTkzyRequest.getId());
+
+        //之前所有选项ID
+        List<Long> oldTmxxIds = oldTmxxs.stream().map(Tmxx::getId).collect(Collectors.toList());
+        Map<Long, Tmxx> oldTmxxMap = oldTmxxs.stream().collect(Collectors.toMap(Tmxx::getId, obj -> obj));
+
+        //需要更新的所有选项ID
+        List<Long> updateTmxxIds = updateTmxxList.stream().map(UpdateTmxxRequest::getId).collect(Collectors.toList());
+        Map<Long, UpdateTmxxRequest> updateTmxxMap = updateTmxxList.stream().collect(Collectors.toMap(UpdateTmxxRequest::getId, obj -> obj));
+
+        for (Long updateTmxxId : updateTmxxIds) {
+
+            if (oldTmxxIds.contains(updateTmxxId)) {
+
+                //更新选项
+                Tmxx tmxx = oldTmxxMap.get(updateTmxxId);
+                UpdateTmxxRequest updateTmxx = updateTmxxMap.get(updateTmxxId);
+                BeanUtils.copyProperties(updateTmxx, tmxx);
+
+                tmxx.setGxr(userId);
+                tmxx.setGxsj(now);
+
+                tmxxMapper.updateById(tmxx);
+
+                oldTmxxIds.remove(updateTmxxId);
+            }
+        }
+
+        //添加新的选项
+        if (!CollectionUtils.isEmpty(addList)) {
+
+            for (UpdateTmxxRequest updateTmxxRequest : addList) {
+
+                Tmxx tmxx = new Tmxx();
+                BeanUtils.copyProperties(updateTmxxRequest, tmxx);
+
+                tmxx.setTmId(updateTkzyRequest.getId());
+                tmxx.setCjr(userId);
+                tmxx.setGxr(userId);
+                tmxx.setCjsj(now);
+                tmxx.setGxsj(now);
+
+                tmxxMapper.insert(tmxx);
+            }
+        }
+
+        //删除选项
+        if (CollectionUtils.isEmpty(oldTmxxIds)) {
+
+            for (Long oldTmxxId : oldTmxxIds) {
+                tmxxMapper.deleteById(oldTmxxId);
+            }
+        }
+
+        return tkzy;
+    }
+}

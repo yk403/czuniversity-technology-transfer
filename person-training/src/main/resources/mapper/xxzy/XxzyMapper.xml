@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personTraining.mapper.xxzy.XxzyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.xxzy.Xxzy">
+        <id column="id" property="id" />
+        <result column="mc" property="mc" />
+        <result column="bm" property="bm" />
+        <result column="kc_id" property="kcId" />
+        <result column="zylb" property="zylb" />
+        <result column="zyyjfl" property="zyyjfl" />
+        <result column="zyejfl" property="zyejfl" />
+        <result column="zylx" property="zylx" />
+        <result column="jj" property="jj" />
+        <result column="lll" property="lll" />
+        <result column="jg" property="jg" />
+        <result column="zz" property="zz" />
+        <result column="spzy_id" property="spzyId" />
+        <result column="xzdz" property="xzdz" />
+        <result column="bfdz" property="bfdz" />
+        <result column="sffx" property="sffx" />
+        <result column="sfsj" property="sfsj" />
+        <result column="sjsj" property="sjsj" />
+        <result column="sfsc" property="sfsc" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, mc, bm, kc_id, zylb, zyyjfl, zyejfl, zylx, jj, lll, jg, zz, spzy_id, xzdz, bfdz, sffx, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
+    </sql>
+
+</mapper>

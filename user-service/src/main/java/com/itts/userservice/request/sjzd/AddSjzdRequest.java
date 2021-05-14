@@ -41,10 +41,10 @@ public class AddSjzdRequest implements Serializable {
     private String ssmk;
 
     /**
-     * 父级ID
+     * 父级编码
      */
-    @ApiModelProperty(value = "父级ID")
-    private Long fjId;
+    @ApiModelProperty(value = "父级编码")
+    private String fjBm;
 
     /**
      * 数据字典子项
