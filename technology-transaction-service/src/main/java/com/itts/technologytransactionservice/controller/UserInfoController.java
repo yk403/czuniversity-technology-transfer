@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 import static com.itts.common.constant.SystemConstant.threadLocal;
 
@@ -30,7 +32,7 @@ public class UserInfoController extends BaseController {
      */
     @GetMapping("/get/")
     @ApiOperation(value = "获取用户信息")
-    public ResponseUtil get() {
-        return userInfoService.get();
+    public ResponseUtil get(HttpServletRequest request) {
+        return userInfoService.get(request.getHeader("token"));
     }
 }
