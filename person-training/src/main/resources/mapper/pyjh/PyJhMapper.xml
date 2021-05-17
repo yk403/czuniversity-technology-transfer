@@ -38,6 +38,7 @@
             <if test="jylx != null and jylx != ''"> and pc.jylx = #{jylx} </if>
             <if test="jhmc != null and jhmc != ''"> and tpj.jhmc like concat('%',#{jhmc},'%') </if>
         </where>
+        order by tpj.cjsj desc
     </select>
 
 </mapper>
