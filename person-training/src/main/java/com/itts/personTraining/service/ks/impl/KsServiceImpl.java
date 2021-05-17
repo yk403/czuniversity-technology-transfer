@@ -166,7 +166,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 for (KsExpDTO ksExpDTO : ksExpDTOs) {
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("ks_exp_id",ksExpDTO.getId());
-                    if (ksExpService.removeByMap(map)) {
+                    if (szKsExpService.removeByMap(map)) {
                         continue;
                     }
                     return false;

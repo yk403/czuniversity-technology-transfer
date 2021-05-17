@@ -1,6 +1,5 @@
 package com.itts.personTraining.controller.pc.admin;
 
-import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
