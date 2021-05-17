@@ -124,7 +124,9 @@ public class JsLcKzAdminServiceImpl extends ServiceImpl<JsLcKzMapper, TJsLcKz> i
 			BeanUtils.copyProperties(tJsLcKzDto,tJsLcKz);
 			//计算服务费为落锤价格的5%
 			BigDecimal num1 = new BigDecimal("0.05");
-			tJsLcKz.setFwf(tJsLcKz.getLcdj().multiply(num1));
+			if(tJsLcKz.getLcdj()!=null ){
+				tJsLcKz.setFwf(tJsLcKz.getLcdj().multiply(num1));
+			}
 			updateById(tJsLcKz);
 		}
 		if(tJsLcKzDto.getType()== 0){
@@ -134,7 +136,9 @@ public class JsLcKzAdminServiceImpl extends ServiceImpl<JsLcKzMapper, TJsLcKz> i
 			BeanUtils.copyProperties(tJsLcKzDto,tJsLcKz);
 			//计算服务费为落锤价格的5%
 			BigDecimal num1 = new BigDecimal("0.05");
-			tJsLcKz.setFwf(tJsLcKz.getLcdj().multiply(num1));
+			if(tJsLcKz.getLcdj()!=null ){
+				tJsLcKz.setFwf(tJsLcKz.getLcdj().multiply(num1));
+			}
 			updateById(tJsLcKz);
 		}
 

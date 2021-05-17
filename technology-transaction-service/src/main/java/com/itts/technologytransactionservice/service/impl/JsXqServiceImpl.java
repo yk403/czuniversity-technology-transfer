@@ -246,8 +246,12 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
         xq.setRemarks(params.get("remarks").toString());
         xq.setZbxmgs(params.get("zbxmgs").toString());
         xq.setZbxmqd(params.get("zbxmqd").toString());
-        xq.setXqfj(params.get("xqfj").toString());
-        xq.setXqfjmc(params.get("xqfjmc").toString());
+        if(params.get("xqfj")!=null){
+            xq.setXqfj(params.get("xqfj").toString());
+        }
+        if(params.get("xqfj")!=null){
+            xq.setXqfjmc(params.get("xqfjmc").toString());
+        }
         xq.setJscs(params.get("jscs").toString());
         xq.setFwnr(params.get("fwnr").toString());
         xq.setJhrq(simpleDateFormat.parse(params.get("jhrq").toString()));

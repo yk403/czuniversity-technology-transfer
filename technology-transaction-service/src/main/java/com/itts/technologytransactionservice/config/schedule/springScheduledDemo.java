@@ -43,6 +43,7 @@ public class springScheduledDemo {
             for (TJsHd item:list) {
                 Date startTime= item.getHdkssj();
                 Date nowDate = new Date();
+                //判断如果活动开始时
                 if(startTime.before(nowDate)){
                     if(item.getHdzt()==0){
                         item.setHdzt(1);
@@ -55,18 +56,6 @@ public class springScheduledDemo {
                             if(list1.size()>0){
                                 if(list1.get(0).getAuctionStatus()==0){
                                     list1.get(0).setAuctionStatus(1);
-/*                                    Map<String,Object>querymap=new HashMap<String,Object>();
-                                    querymap.put("cgId",list1.get(0).getId());
-                                    List<TJsLcKz> list2 = jsLcKzMapper.list(querymap);
-                                    if(list2.size()==0){
-                                        TJsLcKz tJsLcKz=new TJsLcKz();
-                                        tJsLcKz.setCgId(list1.get(0).getId());
-                                        tJsLcKz.setFdjg("1000");
-                                        jsLcKzAdminService.save(tJsLcKz);
-                                    }else{
-                                        list2.get(0).setJjjgzt(0);
-                                        jsLcKzAdminService.updateById(list2.get(0));
-                                    }*/
                                     jsCgMapper.updateTJsCg(list1.get(0));
                                 }
                             }
@@ -79,23 +68,22 @@ public class springScheduledDemo {
                             if(list1.size()>0){
                                 if(list1.get(0).getAuctionStatus()==0){
                                     list1.get(0).setAuctionStatus(1);
-/*                                    Map<String,Object>querymap=new HashMap<String,Object>();
-                                    querymap.put("xqId",list1.get(0).getId());
-                                    List<TJsLcKz> list2 = jsLcKzMapper.list(querymap);
-                                    if(list2.size()==0){
-                                        TJsLcKz tJsLcKz=new TJsLcKz();
-                                        tJsLcKz.setXqId(list1.get(0).getId());
-                                        tJsLcKz.setFdjg("1000");
-                                        jsLcKzAdminService.save(tJsLcKz);
-                                    }else{
-                                        list2.get(0).setJjjgzt(0);
-                                        jsLcKzAdminService.updateById(list2.get(0));
-                                    }*/
                                     jsXqMapper.updateTJsXq(list1.get(0));
                                 }
                             }
                         }
 
+
+                    }else if(item.getHdzt()==1){
+                        if(item.getHdjssj()!=null){
+                            if(item.getHdlx()==2){
+                                //如果活动时间已结束则置活动状态为已结束
+                                if(item.getHdjssj().before(nowDate)){
+                                    item.setHdzt(2);
+                                    jsHdMapper.updateById(item);
+                                }
+                            }
+                        }
 
                     }
                 }
