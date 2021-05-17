@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -192,6 +193,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         for (Ks ks : ksList) {
             ks.setGxr(userId);
             ks.setSfxf(true);
+            ks.setXfsj(new Date());
         }
         return ksService.updateBatchById(ksList);
     }
