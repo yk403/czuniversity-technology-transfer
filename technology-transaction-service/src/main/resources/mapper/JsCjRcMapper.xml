@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsCjRcMapper">
 
     <select id="list" resultType="com.itts.technologytransactionservice.model.TJsCjRc">
-    select rc.id,rc.cjsj,rc.gxsj,jjsj,jjje,bm_id,cg_id,xq_id,ppmc,cjf,rc.is_delete
+    select rc.id,rc.cjsj,rc.gxsj,jjsj,jjje,rc.bm_id,cg_id,xq_id,ppmc,cjf,rc.is_delete
     from t_js_cj_rc rc
         <if test="map.type == 0">left join t_js_xq xq on( xq.id = rc.xq_id )</if>
         <if test="map.type == 1">left join t_js_cg cg on( cg.id = rc.cg_id )</if>
@@ -13,7 +13,7 @@
         <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
         <if test="map.jjsj != null and map.jjsj != ''"> and jjsj = #{map.jjsj} </if>
         <if test="map.jjje != null and map.jjje != ''"> and jjje = #{map.jjje} </if>
-        <if test="map.bmId != null and map.bmId != ''"> and bm_id = #{map.bmId} </if>
+        <if test="map.bmId != null and map.bmId != ''"> and rc.bm_id = #{map.bmId} </if>
         <if test="map.cgId != null and map.cgId != ''"> and cg_id = #{map.cgId} </if>
         <if test="map.xqId != null and map.xqId != ''"> and xq_id = #{map.xqId} </if>
         <if test="map.ppmc != null and map.ppmc != ''"> and ppmc = #{map.ppmc} </if>
@@ -30,7 +30,7 @@
 </select>
     <!--根据出价记录查询活动信息-->
     <select id="listRcHd" resultType="com.itts.technologytransactionservice.model.TJsCjRcDto">
-        select rc.id,rc.cjsj,rc.gxsj,jjsj,jjje,bm_id,cg_id,xq_id,ppmc,cjf,rc.is_delete,hd.hdkssj as hdkssj,hd.hdjssj as hdjssj
+        select rc.id,rc.cjsj,rc.gxsj,jjsj,jjje,rc.bm_id,cg_id,xq_id,ppmc,cjf,rc.is_delete,hd.hdkssj as hdkssj,hd.hdjssj as hdjssj
         from t_js_cj_rc rc
         <if test="map.type == 0">left join t_js_xq xq on( xq.id = rc.xq_id ) left join t_js_hd hd on( hd.id = xq.jshd_id)</if>
         <if test="map.type == 1">left join t_js_cg cg on( cg.id = rc.cg_id ) left join t_js_hd hd on( hd.id = cg.jshd_id)</if>

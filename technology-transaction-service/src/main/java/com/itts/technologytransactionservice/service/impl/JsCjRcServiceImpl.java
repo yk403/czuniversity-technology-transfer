@@ -70,26 +70,32 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
         Map<String,Object> map=new HashMap<>();
         map.put("hdId",tJsCjRcDto.getHdId());
         map.put("userId",Integer.parseInt(String.valueOf(getUserId())));
+        List<TJsBm> list = jsBmMapper.list(map);
+        TJsCjRc tJsCjRc=new TJsCjRc();
+        BeanUtils.copyProperties(tJsCjRcDto,tJsCjRc);
         //判断是成果活动还是需求活动，并把流程状态控制表当前最高价格置为当前叫价金额
         if(tJsCjRcDto.getCgId()!=null){
             Map<String,Object> cjmap=new HashMap<String,Object>();
             cjmap.put("type",1);
             cjmap.put("cgId",tJsCjRcDto.getCgId());
-            List<TJsLcKz> list = jsLcKzMapper.list(cjmap);
-            list.get(0).setDqzgjg(tJsCjRcDto.getJjje());
-            jsLcKzMapper.updateById(list.get(0));
+            List<TJsLcKz> listLckz = jsLcKzMapper.list(cjmap);
+            listLckz.get(0).setDqzgjg(tJsCjRcDto.getJjje());
+            if(list.size()>0){
+                listLckz.get(0).setBmId(list.get(0).getId());
+            }
+            jsLcKzMapper.updateById(listLckz.get(0));
         }
         if(tJsCjRcDto.getXqId()!=null){
             Map<String,Object> xqmap=new HashMap<String,Object>();
             xqmap.put("type",0);
             xqmap.put("xqId",tJsCjRcDto.getXqId());
-            List<TJsLcKz> list = jsLcKzMapper.list(xqmap);
-            list.get(0).setDqzgjg(tJsCjRcDto.getJjje());
-            jsLcKzMapper.updateById(list.get(0));
+            List<TJsLcKz> listLckz = jsLcKzMapper.list(xqmap);
+            listLckz.get(0).setDqzgjg(tJsCjRcDto.getJjje());
+            if(list.size()>0){
+                listLckz.get(0).setBmId(list.get(0).getId());
+            }
+            jsLcKzMapper.updateById(listLckz.get(0));
         }
-        List<TJsBm> list = jsBmMapper.list(map);
-        TJsCjRc tJsCjRc=new TJsCjRc();
-        BeanUtils.copyProperties(tJsCjRcDto,tJsCjRc);
         //暂时设定单个活动多个报名信息默认显示最新的那个
         if(list.size()>0){
             tJsCjRc.setBmId(list.get(0).getId());

@@ -4,13 +4,22 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.FastDFSClient;
+import com.itts.common.utils.FastDFSFile;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import com.alibaba.fastjson.JSON;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -30,7 +39,7 @@ public class QrCodeUtils {
      * @param qrCodePath 生成的二维码地址(最终保存地址)
      * @throws Exception 异常
      */
-    public static void generatorQrCode(String content, String qrCodePath) throws Exception {
+    public static String generatorQrCode(String content, String qrCodePath) throws Exception {
         Map<EncodeHintType, Object> hints = new HashMap<>();
 
         hints.put(EncodeHintType.MARGIN, 0);
@@ -64,7 +73,62 @@ public class QrCodeUtils {
                 }
             }
         }
-        ImageIO.write(image, "png", new File(qrCodePath));
+        //ImageIO.write(image, "png", new File(qrCodePath));
+        InputStream inputStream = bufferedImageToInputStream(image);
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String format = df.format(now);
+        String fileNameString = format+"qrcode.png";
+        return uploadFile(inputStream,fileNameString);
+
+    }
+    /**
+     * 将BufferedImage转换为InputStream
+     * @param image
+     * @return
+     */
+    public static InputStream bufferedImageToInputStream(BufferedImage image){
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "png", os);
+            InputStream input = new ByteArrayInputStream(os.toByteArray());
+            return input;
+        } catch (IOException e) {
+            throw new ServiceException("二维码转码失败");
+        }
+    }
+    /**
+     * 文件上传
+     * @param multipartFile
+     * @return
+     * @throws IOException
+     */
+    public static String uploadFile(InputStream inputStream,String fileNameString) throws IOException {
+        String[] fileAbsolutPath = {};
+        String fileName = fileNameString;
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+        byte[] file_buff = null;
+        if (inputStream != null) {
+            int len1 = inputStream.available();
+            file_buff = new byte[len1];
+            inputStream.read(file_buff);
+        }
+        inputStream.close();
+        FastDFSFile file = new FastDFSFile(fileName, file_buff, ext);
+        if (file == null) {
+            log.error("文件上传失败, 文件为空");
+        } else {
+            log.info("file:{}", file);
+            fileAbsolutPath = FastDFSClient.upload(file);
+            if (fileAbsolutPath == null) {
+                log.error("【文件上传失败】");
+                throw new ServiceException(ErrorCodeEnum.UPLOAD_FAIL_ERROR);
+            }
+            String path = FastDFSClient.getTrackerUrl() + "/" + fileAbsolutPath[0] + "/" + fileAbsolutPath[1];
+            log.info("【文件上传成功】,path: {}", path);
+            return path;
+        }
+        return null;
     }
 
     @Test
