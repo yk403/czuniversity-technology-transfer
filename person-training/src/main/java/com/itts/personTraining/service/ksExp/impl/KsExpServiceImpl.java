@@ -4,7 +4,6 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KsExpDTO;
 import com.itts.personTraining.mapper.szKsExp.SzKsExpMapper;
-import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.ksExp.KsExp;
 import com.itts.personTraining.mapper.ksExp.KsExpMapper;
 import com.itts.personTraining.model.szKsExp.SzKsExp;
@@ -103,7 +102,7 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
                 Long ksExpId = ksExpDTO.getId();
                 map.put("ks_exp_id",ksExpId);
                 if (szKsExpService.removeByMap(map)) {
-                    return saveSzKs(szIds,ksExpId);
+                    return saveSzKsExp(szIds,ksExpId);
                 }
                 return false;
             }
@@ -128,12 +127,12 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
     }
 
     /**
-     * 新增师资考试
+     * 新增师资考试扩展
      * @param szIds
      * @param ksExpId
      * @return
      */
-    private boolean saveSzKs(List<Long> szIds, Long ksExpId) {
+    private boolean saveSzKsExp(List<Long> szIds, Long ksExpId) {
         List<SzKsExp> szKsExpList = new ArrayList<>();
         for (Long szId : szIds) {
             SzKsExp szKsExp = new SzKsExp();

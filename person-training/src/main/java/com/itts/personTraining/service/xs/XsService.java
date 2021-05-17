@@ -21,9 +21,10 @@ public interface XsService extends IService<Xs> {
      * @param pageSize
      * @param pcId
      * @param jyxs
+     * @param name
      * @return
      */
-    PageInfo<Xs> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbId, String jyxs);
+    PageInfo<Xs> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbId, String jyxs, String name);
 
     /**
      * 查询教务管理列表

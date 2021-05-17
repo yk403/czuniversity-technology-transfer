@@ -93,8 +93,14 @@ public class PyJhDTO {
     /**
      * 附件
      */
-    @ApiModelProperty(value = "附件", required = true)
+    @ApiModelProperty(value = "附件")
     private String fj;
+
+    /**
+     * 附件名称
+     */
+    @ApiModelProperty(value = "附件名称")
+    private String fjmc;
 
     /**
      * 是否下发(0:否;1:是)

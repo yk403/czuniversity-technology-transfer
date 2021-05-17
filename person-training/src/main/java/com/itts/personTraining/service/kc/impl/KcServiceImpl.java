@@ -64,8 +64,8 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     public PageInfo<KcDTO> findByPage(Integer pageNum, Integer pageSize, String kclx, String name) {
         log.info("【人才培养 - 分页条件查询课程列表,课程类型:{},课程代码/名称:{},学院id:{}】",kclx,name);
         PageHelper.startPage(pageNum, pageSize);
-        List<KcDTO> kcDTOS = kcMapper.findByPage(kclx,name);
-        for (KcDTO kcDTO : kcDTOS) {
+        List<KcDTO> kcDTOs = kcMapper.findByPage(kclx,name);
+        for (KcDTO kcDTO : kcDTOs) {
             QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
             kcSzQueryWrapper.eq("kc_id",kcDTO.getId());
             List<KcSz> kcSzList = kcSzMapper.selectList(kcSzQueryWrapper);
@@ -75,7 +75,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             }
             kcDTO.setSzIds(szIds);
         }
-        return new PageInfo<>(kcDTOS);
+        return new PageInfo<>(kcDTOs);
     }
 
     /**

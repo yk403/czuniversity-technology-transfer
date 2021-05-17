@@ -42,8 +42,9 @@ public class XsAdminController {
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "pcId", required = false) Long pcId,
                                    @RequestParam(value = "xslbId", required = false) String xslbId,
-                                   @RequestParam(value = "jyxs", required = false) String jyxs) {
-        return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbId, jyxs));
+                                   @RequestParam(value = "jyxs", required = false) String jyxs,
+                                   @RequestParam(value = "name", required = false) String name) {
+        return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbId, jyxs, name));
     }
 
     /**

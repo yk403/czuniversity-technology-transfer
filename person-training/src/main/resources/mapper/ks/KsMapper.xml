@@ -30,6 +30,7 @@
             <if test="ksmc != null and ksmc != ''">and ks.ksmc like concat('%',#{ksmc},'%')</if>
             <if test="kslx != null">and ks.kslx = #{kslx}</if>
         </where>
+        order by ks.cjsj desc
     </select>
     <select id="findById" resultType="com.itts.personTraining.dto.KsDTO">
         select ks.id, pc_id, pc.pch, ksmc, kslx, ks.sfsc, ks.sfxf, ks.cjsj, ks.cjr, ks.gxsj, ks.gxr, ks.xfsj

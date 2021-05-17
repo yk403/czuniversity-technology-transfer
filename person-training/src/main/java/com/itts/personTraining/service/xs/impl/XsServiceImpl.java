@@ -50,14 +50,16 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      * @return
      */
     @Override
-    public PageInfo<Xs> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbId, String jyxs) {
-        log.info("【人才培养 - 分页条件查询学员列表,批次id:{},学生类别id:{},教育形式:{}】",pcId,xslbId,jyxs);
+    public PageInfo<Xs> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbId, String jyxs, String name) {
+        log.info("【人才培养 - 分页条件查询学员列表,批次id:{},学生类别id:{},教育形式:{},学号/姓名:{}】",pcId,xslbId,jyxs,name);
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
         xsQueryWrapper.eq("sfsc",false)
                       .eq(pcId != null,"pc_id", pcId)
                       .eq(StringUtils.isNotBlank(xslbId),"xslb_id", xslbId)
-                      .eq(StringUtils.isNotBlank(jyxs),"jyxs", jyxs);
+                      .eq(StringUtils.isNotBlank(jyxs),"jyxs", jyxs)
+                      .like("xh",name)
+                      .or().like("xm",name);
         return new PageInfo<>(xsMapper.selectList(xsQueryWrapper));
     }
 
