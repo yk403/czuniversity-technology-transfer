@@ -274,4 +274,8 @@ public class TJsCg implements Serializable {
 	 * 受让方联系电话
 	 */
 	private String srfhm;
+	/**
+	 * 底价
+	 */
+	private BigDecimal dj;
 }

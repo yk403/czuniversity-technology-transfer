@@ -6,10 +6,8 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.technologytransactionservice.model.LyBm;
-import com.itts.technologytransactionservice.model.LyHd;
-import com.itts.technologytransactionservice.service.LyBmService;
-import com.itts.technologytransactionservice.service.LyHdService;
+import com.itts.technologytransactionservice.model.LyLy;
+import com.itts.technologytransactionservice.service.LyLyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +29,11 @@ import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
  * @since 2021-05-18
  */
 @RestController
-@RequestMapping(BASE_URL+"/v1/lyHd")
-@Api(value = "LyHdController", tags = "双创路演活动门户端")
-public class LyHdController {
+@RequestMapping(BASE_URL+"/v1/lyLy")
+@Api(value = "LyLyController", tags = "双创路演路演门户端")
+public class LyLyController {
     @Autowired
-    private LyHdService lyHdService;
+    private LyLyService lyLyService;
 //    *
 //     * 获取列表
 
@@ -43,7 +41,7 @@ public class LyHdController {
     @GetMapping("/list")
     public ResponseUtil find(@RequestBody Map<String, Object> params) {
 //return null;
-        return ResponseUtil.success(lyHdService.findLyHdFront(params));
+        return ResponseUtil.success(lyLyService.findLyLyFront(params));
     }
 //    *
 //     * 根据ID查询
@@ -52,20 +50,20 @@ public class LyHdController {
 
     @GetMapping("/getById/{id}")
     public ResponseUtil getById(@PathVariable("id") Long id) {
-        return ResponseUtil.success(lyHdService.getById(id));
+        return ResponseUtil.success(lyLyService.getById(id));
     }
 //    *
 //     * 保存
 
     @PostMapping("/save")
     @ApiOperation(value ="新增")
-    public ResponseUtil save(@RequestBody LyHd lyHd) {
-        if (!lyHdService.saveHd(lyHd)) {
+    public ResponseUtil save(@RequestBody LyLy lyLy) {
+        if (!lyLyService.saveLy(lyLy)) {
             throw new WebException(INSERT_FAIL);
         }
         return ResponseUtil.success("报名成功");
     }
-/*    *
+    /*    *
      * 更新课程
      *
      * @param lyBm
@@ -74,18 +72,18 @@ public class LyHdController {
 
     @PutMapping("/update")
     @ApiOperation(value = "更新报名")
-    public ResponseUtil update(@RequestBody LyHd lyHd) throws WebException {
-        Long id = lyHd.getId();
+    public ResponseUtil update(@RequestBody LyLy lyLy) throws WebException {
+        Long id = lyLy.getId();
         //检查参数是否合法
         if (id == null ) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //检查数据库中是否存在要更新的数据
-        if (lyHdService.getById(id) == null) {
+        if (lyLyService.getById(id) == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新数据
-        if (!lyHdService.updateById(lyHd)) {
+        if (!lyLyService.updateById(lyLy)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新课程成功!");
@@ -101,7 +99,7 @@ public class LyHdController {
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
         }
 
-        LyHd old = lyHdService.getById(id);
+        LyLy old = lyLyService.getById(id);
         if (old == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
@@ -109,7 +107,7 @@ public class LyHdController {
         old.setIsDelete(true);
         old.setGxsj(new Date());
 
-        lyHdService.updateById(old);
+        lyLyService.updateById(old);
 
         return ResponseUtil.success(old);
     }
