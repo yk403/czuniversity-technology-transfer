@@ -276,4 +276,8 @@ public class TJsXq implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date yxqjssj;
+	/**
+	 * 底价
+	 */
+	private BigDecimal dj;
 }

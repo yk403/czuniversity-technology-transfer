@@ -80,6 +80,8 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             cjmap.put("cgId",tJsCjRcDto.getCgId());
             List<TJsLcKz> listLckz = jsLcKzMapper.list(cjmap);
             listLckz.get(0).setDqzgjg(tJsCjRcDto.getJjje());
+            //如果有新的叫价，将叫价间隔状态置为0
+            listLckz.get(0).setJjjgzt(0);
             if(list.size()>0){
                 listLckz.get(0).setBmId(list.get(0).getId());
             }
@@ -91,6 +93,8 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             xqmap.put("xqId",tJsCjRcDto.getXqId());
             List<TJsLcKz> listLckz = jsLcKzMapper.list(xqmap);
             listLckz.get(0).setDqzgjg(tJsCjRcDto.getJjje());
+            //如果有新的叫价，将叫价间隔状态置为0
+            listLckz.get(0).setJjjgzt(0);
             if(list.size()>0){
                 listLckz.get(0).setBmId(list.get(0).getId());
             }
