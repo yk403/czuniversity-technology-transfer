@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -178,8 +179,15 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             if (pcIds != null && pcIds.size() > 0) {
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("xs_id",stuDTO.getId());
+                List<PcXs> pcXsList = new ArrayList<>();
                 if (pcXsService.removeByMap(map)) {
-
+                    for (Long pcId : pcIds) {
+                        PcXs pcXs = new PcXs();
+                        pcXs.setPcId(pcId);
+                        pcXs.setXsId(xs.getId());
+                        pcXsList.add(pcXs);
+                    }
+                    return pcXsService.saveBatch(pcXsList);
                 }
                 return false;
             }
