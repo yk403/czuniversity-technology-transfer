@@ -44,10 +44,10 @@ public class PyJhAdminController {
     @ApiOperation(value = "获取培养计划列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                   @RequestParam(value = "xslbmc", required = false) String xslbmc,
-                                   @RequestParam(value = "name", required = false) String name,
-                                   @RequestParam(value = "pcId", required = false) Long pcId) {
-        return ResponseUtil.success(pyJhService.findByPage(pageNum, pageSize, xslbmc, name, pcId));
+                                   @RequestParam(value = "pch", required = false) String pch,
+                                   @RequestParam(value = "jylx", required = false) String jylx,
+                                   @RequestParam(value = "jhmc", required = false) String jhmc) {
+        return ResponseUtil.success(pyJhService.findByPage(pageNum, pageSize, pch, jylx, jhmc));
     }
 
     /**
@@ -153,9 +153,6 @@ public class PyJhAdminController {
         }
         if (pyJhDTO.getPcId() == null) {
             throw new WebException(BATCH_NUMBER_ISEMPTY_ERROR);
-        }
-        if (pyJhDTO.getKcIds() == null) {
-            throw new WebException(COURSE_ISEMPTY_ERROR);
         }
     }
 }

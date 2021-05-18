@@ -80,6 +80,8 @@ public enum ErrorCodeEnum {
     BATCH_NUMBER_ISEMPTY_ERROR(-45016, "批次号不可为空!"),
     COURSE_ISEMPTY_ERROR(-45017, "课程不可为空!"),
     TEACH_TYPE_ISEMPTY_ERROR(-45018,"教育类型不可为空!"),
+    TEACHING_NAME_OR_BH_ISEMPTY_ERROR(-45019,"教学楼名称或教室编号不可为空!"),
+
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

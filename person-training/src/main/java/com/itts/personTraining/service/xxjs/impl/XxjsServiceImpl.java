@@ -130,16 +130,18 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
     }
 
     /**
-     * 根据教学楼名称查询学校教室
+     * 根据教学楼名称或教室编号查询学校教室
      * @param jxlmc
+     * @param jsbh
      * @return
      */
     @Override
-    public List<Xxjs> getByJxlmc(String jxlmc) {
-        log.info("【人才培养 - 根据教学楼名称:{}查询学校教室信息】",jxlmc);
+    public List<Xxjs> getByMcOrBh(String jxlmc,String jsbh) {
+        log.info("【人才培养 - 根据教学楼名称:{},教室编号:{}查询学校教室信息】",jxlmc,jsbh);
         QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
         xxjsQueryWrapper.eq("sfsc",false)
-                .eq("jxlmc",jxlmc);
+                .eq(StringUtils.isNotBlank(jxlmc), "jxlmc", jxlmc)
+                .eq(StringUtils.isNotBlank(jsbh), "jsbh", jsbh);
         return xxjsMapper.selectList(xxjsQueryWrapper);
     }
 

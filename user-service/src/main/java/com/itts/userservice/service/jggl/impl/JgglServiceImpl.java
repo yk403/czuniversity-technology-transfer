@@ -11,6 +11,7 @@ import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.service.jggl.JgglService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.userservice.vo.JgglVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ import static com.itts.common.constant.SystemConstant.threadLocal;
  * @author fl
  * @since 2021-03-30
  */
+@Slf4j
 @Service
 public class JgglServiceImpl implements JgglService {
 
@@ -43,6 +45,7 @@ public class JgglServiceImpl implements JgglService {
      */
     @Override
     public PageInfo<Jggl> findByPage(Integer pageNum, Integer pageSize,String jgbm) {
+        log.info("【机构管理 - 分页查询】");
         if(!StringUtils.isBlank(jgbm)){
             String cj = jgglMapper.selectByCode(jgbm).getCj();
             jgbm=cj;
@@ -149,8 +152,9 @@ public class JgglServiceImpl implements JgglService {
             jggl.setCjr(loginUser.getUserId());
             jggl.setGxr(loginUser.getUserId());
         }
-        jggl.setCjsj(new Date());
-        jggl.setGxsj(new Date());
+        Date date = new Date();
+        jggl.setCjsj(date);
+        jggl.setGxsj(date);
         jgglMapper.insert(jggl);
         return jggl;
     }

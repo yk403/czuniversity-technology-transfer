@@ -1,4 +1,4 @@
-package com.itts.personTraining.model.szKs;
+package com.itts.personTraining.model.szKsExp;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -17,8 +17,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_sz_ks")
-public class SzKs implements Serializable {
+@TableName("t_sz_ks_exp")
+public class SzKsExp implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class SzKs implements Serializable {
     /**
      * 考试ID
      */
-    private Long ksId;
+    private Long ksExpId;
 
 
 }

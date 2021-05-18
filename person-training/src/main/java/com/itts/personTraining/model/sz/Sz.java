@@ -114,36 +114,6 @@ public class Sz implements Serializable {
     private String dwdh;
 
     /**
-     * 住宅电话
-     */
-    private String zzdh;
-
-    /**
-     * 获学位时间
-     */
-    private Date hxwsj;
-
-    /**
-     * 获学历院校
-     */
-    private String hxlyx;
-
-    /**
-     * 获学历时间
-     */
-    private Date hxlsj;
-
-    /**
-     * 所学专业
-     */
-    private String sxzy;
-
-    /**
-     * 最高学历
-     */
-    private String zgxl;
-
-    /**
      * 批准硕导年月
      */
     private String pzsdny;
@@ -152,16 +122,6 @@ public class Sz implements Serializable {
      * 批准博导年月
      */
     private String pzbdny;
-
-    /**
-     * 带硕士起始年月
-     */
-    private String dssqsny;
-
-    /**
-     * 带博士起始年月
-     */
-    private String dbsqsny;
 
     /**
      * 在岗状态

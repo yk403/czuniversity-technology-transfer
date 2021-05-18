@@ -124,104 +124,56 @@ public class SzDTO implements Serializable {
     private String dwdh;
 
     /**
-     * 住宅电话
-     */
-    @ExcelProperty(value = "住宅电话", index = 16)
-    private String zzdh;
-
-    /**
-     * 获学位时间
-     */
-    @ExcelProperty(value = "获学位时间", index = 17)
-    private Date hxwsj;
-
-    /**
-     * 获学历院校
-     */
-    @ExcelProperty(value = "获学历院校", index = 18)
-    private String hxlyx;
-
-    /**
-     * 获学历时间
-     */
-    @ExcelProperty(value = "获学历时间", index = 19)
-    private Date hxlsj;
-
-    /**
-     * 所学专业
-     */
-    @ExcelProperty(value = "所学专业", index = 20)
-    private String sxzy;
-
-    /**
-     * 最高学历
-     */
-    @ExcelProperty(value = "最高学历", index = 21)
-    private String zgxl;
-
-    /**
      * 批准硕导年月
      */
-    @ExcelProperty(value = "批准硕导年月", index = 22)
+    @ExcelProperty(value = "批准硕导年月", index = 16)
     private String pzsdny;
 
     /**
      * 批准博导年月
      */
-    @ExcelProperty(value = "批准博导年月", index = 23)
+    @ExcelProperty(value = "批准博导年月", index = 17)
     private String pzbdny;
-
-    /**
-     * 带硕士起始年月
-     */
-    @ExcelProperty(value = "带硕士起始年月", index = 24)
-    private String dssqsny;
-
-    /**
-     * 带博士起始年月
-     */
-    @ExcelProperty(value = "带博士起始年月", index = 25)
-    private String dbsqsny;
 
     /**
      * 在岗状态
      */
-    @ExcelProperty(value = "在岗状态", index = 26)
+    @ExcelProperty(value = "在岗状态", index = 18)
     private String zgzt;
 
     /**
      * 导师类别:	tutor - 研究生导师;	corporate_mentor - 企业导师;	teacher - 授课教师
      */
-    @ExcelProperty(value = "导师类别", index = 27)
+    @ExcelProperty(value = "导师类别", index = 19)
     private String dslb;
 
     /**
      * 个人照片
      */
-    @ExcelProperty(value = "个人照片", index = 28)
+    @ExcelProperty(value = "个人照片", index = 20)
     private String grzp;
 
     /**
      * 行业领域
      */
-    @ExcelProperty(value = "行业领域", index = 29)
+    @ExcelProperty(value = "行业领域", index = 21)
     private String hyly;
 
     /**
      * 所属机构
      */
-    @ExcelProperty(value = "所属机构", index = 30)
+    @ExcelProperty(value = "所属机构", index = 22)
     private String ssjg;
 
     /**
      * 专属资格证
      */
-    @ExcelProperty(value = "专属资格证", index = 31)
+    @ExcelProperty(value = "专属资格证", index = 23)
     private String zszgz;
 
     /**
      * 驻入时间
      */
-    @ExcelProperty(value = "驻入时间", index = 32)
+    @ExcelProperty(value = "驻入时间", index = 24)
     private Date zrsj;
 }

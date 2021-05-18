@@ -55,7 +55,8 @@ public class PcServiceImpl implements PcService {
         log.info("【人才培养 - 分页查询批次】");
         PageHelper.startPage(pageNum,pageSize);
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
-        pcQueryWrapper.eq("sfsc",false);
+        pcQueryWrapper.eq("sfsc",false)
+                      .orderByDesc("cjsj");
         List<Pc> pcs = pcMapper.selectList(pcQueryWrapper);
         return new PageInfo<>(pcs);
     }
@@ -68,7 +69,10 @@ public class PcServiceImpl implements PcService {
     @Override
     public Pc get(Long id) {
         log.info("【人才培养 - 根据id:{}查询详情】",id);
-        return pcMapper.selectById(id);
+        QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
+        pcQueryWrapper.eq("sfsc",false)
+                      .eq("id",id);
+        return pcMapper.selectOne(pcQueryWrapper);
     }
 
     /**

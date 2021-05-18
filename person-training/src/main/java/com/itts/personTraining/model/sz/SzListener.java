@@ -114,30 +114,6 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
         if (!StringUtils.isBlank(data.getDwdh())) {
             sz.setDwdh(data.getDwdh());
         }
-        //住宅电话
-        if (!StringUtils.isBlank(data.getZzdh())) {
-            sz.setZzdh(data.getZzdh());
-        }
-        //获学位时间
-        if (!StringUtils.isBlank(data.getHxwsj().toString())) {
-            sz.setHxwsj(data.getHxwsj());
-        }
-        //获学历院校
-        if (!StringUtils.isBlank(data.getHxlyx())) {
-            sz.setHxlyx(data.getHxlyx());
-        }
-        //获学历时间
-        if (!StringUtils.isBlank(data.getHxlsj().toString())) {
-            sz.setHxlsj(data.getHxlsj());
-        }
-        //所学专业
-        if (!StringUtils.isBlank(data.getSxzy())) {
-            sz.setSxzy(data.getSxzy());
-        }
-        //最高学历
-        if (!StringUtils.isBlank(data.getZgxl())) {
-            sz.setZgxl(data.getZgxl());
-        }
         //批准硕导年月
         if (!StringUtils.isBlank(data.getPzsdny())) {
             sz.setPzsdny(data.getPzsdny());
@@ -145,14 +121,6 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
         //批准博导年月
         if (!StringUtils.isBlank(data.getPzbdny())) {
             sz.setPzbdny(data.getPzbdny());
-        }
-        //带硕士起始年月
-        if (!StringUtils.isBlank(data.getDssqsny())) {
-            sz.setDssqsny(data.getDssqsny());
-        }
-        //带博士起始年月
-        if (!StringUtils.isBlank(data.getDbsqsny())) {
-            sz.setDbsqsny(data.getDbsqsny());
         }
         //在岗状态
         if (!StringUtils.isBlank(data.getZgzt())) {

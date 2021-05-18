@@ -1,6 +1,6 @@
-package com.itts.personTraining.service.szKs;
+package com.itts.personTraining.service.szKsExp;
 
-import com.itts.personTraining.model.szKs.SzKs;
+import com.itts.personTraining.model.szKsExp.SzKsExp;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author Austin
  * @since 2021-05-06
  */
-public interface SzKsService extends IService<SzKs> {
+public interface SzKsExpService extends IService<SzKsExp> {
 
 }

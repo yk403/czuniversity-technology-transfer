@@ -21,16 +21,8 @@
         <result column="cszy_three" property="cszyThree" />
         <result column="jszc" property="jszc" />
         <result column="dwdh" property="dwdh" />
-        <result column="zzdh" property="zzdh" />
-        <result column="hxwsj" property="hxwsj" />
-        <result column="hxlyx" property="hxlyx" />
-        <result column="hxlsj" property="hxlsj" />
-        <result column="sxzy" property="sxzy" />
-        <result column="zgxl" property="zgxl" />
         <result column="pzsdny" property="pzsdny" />
         <result column="pzbdny" property="pzbdny" />
-        <result column="dssqsny" property="dssqsny" />
-        <result column="dbsqsny" property="dbsqsny" />
         <result column="zgzt" property="zgzt" />
         <result column="dslb" property="dslb" />
         <result column="sfsc" property="sfsc" />

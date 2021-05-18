@@ -66,15 +66,19 @@ public class XxjsAdminController {
     }
 
     /**
-     * 根据教学楼名称查询学校教室
-     *
+     * 根据教学楼名称或教室编号查询学校教室信息
      * @param jxlmc
+     * @param jsbh
      * @return
      */
-    @GetMapping("/getByJxlmc/{jxlmc}")
-    @ApiOperation(value = "根据教学楼名称查询学校教室")
-    public ResponseUtil getByJxlmc(@PathVariable("jxlmc") String jxlmc) {
-        return ResponseUtil.success(xxjsService.getByJxlmc(jxlmc));
+    @GetMapping("/getByMcOrBh")
+    @ApiOperation(value = "根据教学楼名称或教室编号查询学校教室信息")
+    public ResponseUtil getByMcOrBh(@RequestParam(value = "jxlmc", required = false) String jxlmc,
+                                    @RequestParam(value = "jsbh", required = false) String jsbh){
+        if (jxlmc == null && jsbh == null) {
+            throw new WebException(TEACHING_NAME_OR_BH_ISEMPTY_ERROR);
+        }
+        return ResponseUtil.success(xxjsService.getByMcOrBh(jxlmc,jsbh));
     }
 
     /**

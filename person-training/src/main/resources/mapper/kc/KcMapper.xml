@@ -36,9 +36,9 @@
         <where>
             kc.sfsc = false
             <if test="kclx != null and kclx != ''"> and kc.kclx like #{kclx} </if>
-            <if test="name != null and name != ''"> and kc.kcdm = #{name} </if>
+            <if test="name != null and name != ''"> and kc.kcdm like concat('%',#{kcdm},'%') </if>
             <if test="name != null and name != ''"> or kc.kcmc like concat('%',#{name},'%') </if>
         </where>
-        order by kc.id desc
+        order by kc.cjsj desc
     </select>
 </mapper>

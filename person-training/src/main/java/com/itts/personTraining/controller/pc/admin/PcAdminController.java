@@ -1,6 +1,5 @@
 package com.itts.personTraining.controller.pc.admin;
 
-import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
@@ -132,7 +131,6 @@ public class PcAdminController {
     @ApiOperation(value = "更新批次")
     @PutMapping("/update")
     public ResponseUtil update(@RequestBody Pc pc)throws WebException{
-        checkRequset(pc);
         Pc old = pcService.get(pc.getId());
         if(old==null){
             throw new WebException(SYSTEM_NOT_FIND_ERROR);

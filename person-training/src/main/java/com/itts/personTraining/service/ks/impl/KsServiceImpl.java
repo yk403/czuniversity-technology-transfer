@@ -6,18 +6,17 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KsDTO;
-import com.itts.personTraining.mapper.ksXs.KsXsMapper;
-import com.itts.personTraining.mapper.szKs.SzKsMapper;
-import com.itts.personTraining.model.kc.Kc;
+import com.itts.personTraining.dto.KsExpDTO;
+import com.itts.personTraining.mapper.ksExp.KsExpMapper;
+import com.itts.personTraining.mapper.szKsExp.SzKsExpMapper;
 import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.mapper.ks.KsMapper;
-import com.itts.personTraining.model.ksXs.KsXs;
-import com.itts.personTraining.model.szKs.SzKs;
-import com.itts.personTraining.model.xyKc.XyKc;
+import com.itts.personTraining.model.ksExp.KsExp;
+import com.itts.personTraining.model.szKsExp.SzKsExp;
 import com.itts.personTraining.service.ks.KsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.itts.personTraining.service.ksXs.KsXsService;
-import com.itts.personTraining.service.szKs.SzKsService;
+import com.itts.personTraining.service.ksExp.KsExpService;
+import com.itts.personTraining.service.szKsExp.SzKsExpService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,25 +50,28 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     @Resource
     private KsMapper ksMapper;
     @Autowired
-    private SzKsService szKsService;
+    private SzKsExpService szKsExpService;
     @Resource
-    private SzKsMapper szKsMapper;
+    private SzKsExpMapper szKsExpMapper;
+    @Autowired
+    private KsExpService ksExpService;
+    @Resource
+    private KsExpMapper ksExpMapper;
 
     /**
      * 查询考试列表
      * @param pageNum
      * @param pageSize
-     * @param kslx
      * @param pcId
-     * @param pclx
-     * @param kcmc
+     * @param ksmc
+     * @param kslx
      * @return
      */
     @Override
-    public PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, String kslx, Long pcId, String pclx, String kcmc) {
-        log.info("【人才培养 - 分页条件查询考试列表,考试类型:{},批次id:{},批次类型:{},课程名称:{}】",kslx,pcId,pclx,kcmc);
+    public PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String ksmc, Integer kslx) {
+        log.info("【人才培养 - 分页条件查询考试列表,,批次id:{},考试名称:{},考试类型:{}】",pcId,ksmc,kslx);
         PageHelper.startPage(pageNum, pageSize);
-        return new PageInfo<>(ksMapper.findByPage(kslx,pcId,pclx,kcmc));
+        return new PageInfo<>(ksMapper.findByPage(pcId,ksmc,kslx));
     }
 
     /**
@@ -80,7 +83,14 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     public KsDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询考试详情】",id);
         KsDTO ksDTO = ksMapper.findById(id);
-        ksDTO.setSzIds(szKsMapper.selectByKsId(id));
+        if (ksDTO != null) {
+            List<KsExpDTO> ksExpDTOs = ksExpMapper.findByCondition(null,ksDTO.getId());
+            for (KsExpDTO ksExpDTO : ksExpDTOs) {
+                List<Long> szIds = szKsExpMapper.selectByKsExpId(ksExpDTO.getId());
+                ksExpDTO.setSzIds(szIds);
+            }
+            ksDTO.setKsExps(ksExpDTOs);
+        }
         return ksDTO;
     }
 
@@ -100,7 +110,23 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         ksDTO.setGxr(userId);
         BeanUtils.copyProperties(ksDTO,ks);
         if (ksService.save(ks)) {
-            return saveSzKs(ksDTO.getSzIds(), ks);
+            Long ksId = ks.getId();
+            List<KsExpDTO> ksExpDTOs = ksDTO.getKsExps();
+            for (KsExpDTO ksExpDTO : ksExpDTOs) {
+                KsExp ksExp = new KsExp();
+                ksExpDTO.setKsId(ksId);
+                ksExpDTO.setCjr(userId);
+                ksExpDTO.setGxr(userId);
+                BeanUtils.copyProperties(ksExpDTO,ksExp);
+                if (ksExpService.save(ksExp)) {
+                    if (saveSzKs(ksExpDTO.getSzIds(),ksExp)) {
+                        continue;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            return true;
         }
         return false;
     }
@@ -116,19 +142,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         Ks ks = new Ks();
         ksDTO.setGxr(getUserId());
         BeanUtils.copyProperties(ksDTO,ks);
-        if (ksService.updateById(ks)) {
-            List<Long> szIds = ksDTO.getSzIds();
-            if (szIds != null) {
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("ks_id",ksDTO.getId());
-                if (szKsService.removeByMap(map)) {
-                    return saveSzKs(szIds,ks);
-                }
-                return false;
-            }
-            return false;
-        }
-        return false;
+        return ksService.updateById(ks);
     }
 
     /**
@@ -139,18 +153,32 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     @Override
     public boolean delete(KsDTO ksDTO) {
         log.info("【人才培养 - 删除考试:{}】",ksDTO);
+        Long userId = getUserId();
         //设置删除状态
         ksDTO.setSfsc(true);
-        ksDTO.setGxr(getUserId());
+        ksDTO.setGxr(userId);
         Ks ks = new Ks();
         BeanUtils.copyProperties(ksDTO,ks);
         if (ksService.updateById(ks)) {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("ks_id",ks.getId());
-            return szKsService.removeByMap(map);
+            List<KsExpDTO> ksExpDTOs = ksExpService.get(null, ksDTO.getId());
+            List<KsExp> ksExps = getKsExps(userId, ksExpDTOs);
+            if (ksExpService.updateBatchById(ksExps)) {
+                for (KsExpDTO ksExpDTO : ksExpDTOs) {
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("ks_exp_id",ksExpDTO.getId());
+                    if (szKsExpService.removeByMap(map)) {
+                        continue;
+                    }
+                    return false;
+                }
+                return true;
+            }
+            return false;
         }
         return false;
     }
+
+
 
     /**
      * 考试批量下发
@@ -165,6 +193,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         for (Ks ks : ksList) {
             ks.setGxr(userId);
             ks.setSfxf(true);
+            ks.setXfsj(new Date());
         }
         return ksService.updateBatchById(ksList);
     }
@@ -187,17 +216,36 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     /**
      * 新增师资考试
      * @param szIds
-     * @param ks
+     * @param ksExp
      * @return
      */
-    private boolean saveSzKs(List<Long> szIds, Ks ks) {
-        List<SzKs> szKsList = new ArrayList<>();
+    private boolean saveSzKs(List<Long> szIds, KsExp ksExp) {
+        List<SzKsExp> szKsExpList = new ArrayList<>();
         for (Long szId : szIds) {
-            SzKs szKs = new SzKs();
-            szKs.setSzId(szId);
-            szKs.setKsId(ks.getId());
-            szKsList.add(szKs);
+            SzKsExp szKsExp = new SzKsExp();
+            szKsExp.setSzId(szId);
+            szKsExp.setKsExpId(ksExp.getId());
+            szKsExpList.add(szKsExp);
         }
-        return szKsService.saveBatch(szKsList);
+        return szKsExpService.saveBatch(szKsExpList);
     }
+
+    /**
+     * 获取考试扩展集合信息
+     * @param userId
+     * @param ksExpDTOS
+     * @return
+     */
+    private List<KsExp> getKsExps(Long userId, List<KsExpDTO> ksExpDTOS) {
+        List<KsExp> ksExps = new ArrayList<>();
+        for (KsExpDTO ksExpDTO : ksExpDTOS) {
+            KsExp ksExp = new KsExp();
+            ksExpDTO.setGxr(userId);
+            ksExpDTO.setSfsc(true);
+            BeanUtils.copyProperties(ksExpDTO,ksExp);
+            ksExps.add(ksExp);
+        }
+        return ksExps;
+    }
+
 }

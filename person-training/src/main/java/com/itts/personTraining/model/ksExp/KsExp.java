@@ -1,4 +1,4 @@
-package com.itts.personTraining.model.ks;
+package com.itts.personTraining.model.ksExp;
 
 import com.baomidou.mybatisplus.annotation.*;
 
@@ -9,16 +9,16 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 考试表
+ * 考试扩展表
  * </p>
  *
  * @author Austin
- * @since 2021-05-06
+ * @since 2021-05-13
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_ks")
-public class Ks implements Serializable {
+@TableName("t_ks_exp")
+public class KsExp implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,24 +29,29 @@ public class Ks implements Serializable {
     private Long id;
 
     /**
-     * 批次ID
+     * 考试ID
      */
-    private Long pcId;
+    private Long ksId;
 
     /**
-     * 考试名称
+     * 学校教室ID
      */
-    private String ksmc;
+    private Long xxjsId;
 
     /**
-     * 考试类型(0:统一考试;1:实训考试;2:证书考试;3:补考)
+     * 课程ID
      */
-    private Integer kslx;
+    private Long kcId;
 
     /**
-     * 是否下发(0:否;1:是)
+     * 考试开始时间
      */
-    private Boolean sfxf;
+    private Date kskssj;
+
+    /**
+     * 考试结束时间
+     */
+    private Date ksjssj;
 
     /**
      * 是否删除(0:否;1:是)

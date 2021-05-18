@@ -6,11 +6,7 @@
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.ks.Ks">
         <id column="id" property="id" />
         <result column="pc_id" property="pcId" />
-        <result column="xxjs_id" property="xxjsId" />
-        <result column="kc_id" property="kcId" />
         <result column="ksmc" property="ksmc" />
-        <result column="kskssj" property="kskssj" />
-        <result column="ksjssj" property="ksjssj" />
         <result column="kslx" property="kslx" />
         <result column="sfxf" property="sfxf" />
         <result column="sfsc" property="sfsc" />
@@ -23,26 +19,25 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pc_id, xxjs_id, kc_id, ksmc, kskssj, ksjssj, kslx, sfxf, sfsc, cjsj, cjr, gxsj, gxr, xfsj
+        id, pc_id, ksmc, kslx, sfxf, sfsc, cjsj, cjr, gxsj, gxr, xfsj
     </sql>
     <select id="findByPage" resultType="com.itts.personTraining.dto.KsDTO">
-        select ks.id, pc_id, xxjs_id, kc_id, kcmc, jxlmc, jsbh, ksmc, kskssj, ksjssj, kslx, ks.sfxf, ks.cjsj, ks.cjr,
-        ks.gxsj, ks.gxr
-        from t_ks ks left join t_kc kc on(ks.kc_id=kc.id) left join t_xxjs xxjs on(ks.xxjs_id=xxjs.id) left join t_pc pc
-        on(ks.pc_id=pc.id)
+        select ks.id, pc_id, pc.pch, ksmc, kslx, ks.sfxf, ks.sfsc, ks.cjsj, ks.cjr, ks.gxsj, ks.gxr, ks.xfsj
+        from t_ks ks left join t_pc pc on (ks.pc_id=pc.id)
         <where>
-            ks.sfsc = false and kc.sfsc = false and xxjs.sfsc = false and pc.sfsc = false
+            ks.sfsc = false and pc.sfsc = false
             <if test="pcId != null">and ks.pc_id = #{pcId}</if>
-            <if test="kslx != null and kslx != ''">and ks.kslx = #{kslx}</if>
-            <if test="pclx != null and pclx != ''">and pc.pclx = #{pclx}</if>
-            <if test="kcmc != null and kcmc != ''">and kc.kcmc like concat('%',#{kcmc},'%')</if>
+            <if test="ksmc != null and ksmc != ''">and ks.ksmc like concat('%',#{ksmc},'%')</if>
+            <if test="kslx != null">and ks.kslx = #{kslx}</if>
         </where>
+        order by ks.cjsj desc
     </select>
     <select id="findById" resultType="com.itts.personTraining.dto.KsDTO">
-        select ks.id, pc_id, xxjs_id, kc_id, kcmc, jxlmc, jsbh, ksmc, kskssj, ksjssj, kslx, ks.sfxf, ks.cjsj, ks.cjr, ks.gxsj, ks.gxr
-        from t_ks ks left join t_kc kc on(ks.kc_id=kc.id) left join t_xxjs xxjs on(ks.xxjs_id=xxjs.id)
+        select ks.id, pc_id, pc.pch, ksmc, kslx, ks.sfsc, ks.sfxf, ks.cjsj, ks.cjr, ks.gxsj, ks.gxr, ks.xfsj
+        from t_ks ks left join t_pc pc on(ks.pc_id=pc.id)
         <where>
-            ks.sfsc = false and kc.sfsc = false and xxjs.sfsc = false and ks.id = #{id}
+            ks.sfsc = false and pc.sfsc = false
+            <if test="id != null">and ks.id = #{id}</if>
         </where>
     </select>
 

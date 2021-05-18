@@ -60,11 +60,12 @@ public interface XxjsService extends IService<Xxjs> {
     boolean selectExists(Xxjs xxjs);
 
     /**
-     * 根据教学楼名称查询学校教室
+     * 根据教学楼名称或教室编号查询学校教室信息
      * @param jxlmc
+     * @param jsbh
      * @return
      */
-    List<Xxjs> getByJxlmc(String jxlmc);
+    List<Xxjs> getByMcOrBh(String jxlmc,String jsbh);
 
     /**
      * 查询所有学校教室

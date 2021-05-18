@@ -21,13 +21,12 @@ public interface KsService extends IService<Ks> {
      * 查询考试列表
      * @param pageNum
      * @param pageSize
-     * @param kslx
      * @param pcId
-     * @param pclx
-     * @param kcmc
+     * @param ksmc
+     * @param kslx
      * @return
      */
-    PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, String kslx, Long pcId, String pclx, String kcmc);
+    PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String ksmc, Integer kslx);
 
     /**
      * 根据id查询考试详情

@@ -13,42 +13,25 @@
         <result column="xslb_id" property="xslbId" />
         <result column="xslbmc" property="xslbmc" />
         <result column="sfzh" property="sfzh" />
-        <result column="byzh" property="byzh" />
-        <result column="xwzh" property="xwzh" />
         <result column="yjfx" property="yjfx" />
-        <result column="pylb_id" property="pylbId" />
-        <result column="pylbmc" property="pylbmc" />
         <result column="jg" property="jg" />
         <result column="mz" property="mz" />
         <result column="zzmm" property="zzmm" />
         <result column="rxfs" property="rxfs" />
         <result column="ybyyx" property="ybyyx" />
-        <result column="ygzdw" property="ygzdw" />
-        <result column="ygzdwdz" property="ygzdwdz" />
-        <result column="xgzdw" property="xgzdw" />
-        <result column="xgzdwdz" property="xgzdwdz" />
-        <result column="xgzdwyb" property="xgzdwyb" />
         <result column="xz" property="xz" />
-        <result column="xxdd" property="xxdd" />
-        <result column="bkbyzh" property="bkbyzh" />
-        <result column="bkxwzh" property="bkxwzh" />
-        <result column="lwtm" property="lwtm" />
-        <result column="lwztc" property="lwztc" />
-        <result column="dbrq" property="dbrq" />
-        <result column="byrq" property="byrq" />
-        <result column="sxwrq" property="sxwrq" />
-        <result column="xwlx" property="xwlx" />
         <result column="dsbh" property="dsbh" />
         <result column="dsxm" property="dsxm" />
         <result column="yx" property="yx" />
-        <result column="jwzydm" property="jwzydm" />
         <result column="xxxs" property="xxxs" />
         <result column="byjl" property="byjl" />
-        <result column="xzxm" property="xzxm" />
-        <result column="bxlx" property="bxlx" />
-        <result column="pydwm" property="pydwm" />
-        <result column="pydw" property="pydw" />
-        <result column="zsjj" property="zsjj" />
+        <result column="rxrq" property="rxrq" />
+        <result column="lxdh" property="lxdh" />
+        <result column="jtdz" property="jtdz" />
+        <result column="yzydm" property="yzydm" />
+        <result column="yzy" property="yzy" />
+        <result column="zy_id" property="zyId" />
+        <result column="zymc" property="zymc" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
@@ -66,42 +49,18 @@
         <result column="xslb_id" property="xslbId" />
         <result column="xslbmc" property="xslbmc" />
         <result column="sfzh" property="sfzh" />
-        <result column="byzh" property="byzh" />
-        <result column="xwzh" property="xwzh" />
         <result column="yjfx" property="yjfx" />
-        <result column="pylb_id" property="pylbId" />
-        <result column="pylbmc" property="pylbmc" />
         <result column="jg" property="jg" />
         <result column="mz" property="mz" />
         <result column="zzmm" property="zzmm" />
         <result column="rxfs" property="rxfs" />
         <result column="ybyyx" property="ybyyx" />
-        <result column="ygzdw" property="ygzdw" />
-        <result column="ygzdwdz" property="ygzdwdz" />
-        <result column="xgzdw" property="xgzdw" />
-        <result column="xgzdwdz" property="xgzdwdz" />
-        <result column="xgzdwyb" property="xgzdwyb" />
         <result column="xz" property="xz" />
-        <result column="xxdd" property="xxdd" />
-        <result column="bkbyzh" property="bkbyzh" />
-        <result column="bkxwzh" property="bkxwzh" />
-        <result column="lwtm" property="lwtm" />
-        <result column="lwztc" property="lwztc" />
-        <result column="dbrq" property="dbrq" />
-        <result column="byrq" property="byrq" />
-        <result column="sxwrq" property="sxwrq" />
-        <result column="xwlx" property="xwlx" />
         <result column="dsbh" property="dsbh" />
         <result column="dsxm" property="dsxm" />
         <result column="yx" property="yx" />
-        <result column="jwzydm" property="jwzydm" />
         <result column="xxxs" property="xxxs" />
         <result column="byjl" property="byjl" />
-        <result column="xzxm" property="xzxm" />
-        <result column="bxlx" property="bxlx" />
-        <result column="pydwm" property="pydwm" />
-        <result column="pydw" property="pydw" />
-        <result column="zsjj" property="zsjj" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
@@ -110,7 +69,6 @@
         <result column="pcmc" property="pcmc" />
         <collection property="kcList" ofType="com.itts.personTraining.model.kc.Kc">
         <id column="id" property="id" />
-        <result column="lb" property="lb" />
         <result column="zsmk_id" property="zsmkId" />
         <result column="kcmc" property="kcmc" />
         <result column="kcdm" property="kcdm" />
@@ -133,7 +91,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, xh, xm, nj, xb, csrq, xslb_id, xslbmc, sfzh, byzh, xwzh, yjfx, pylb_id, pylbmc, jg, mz, zzmm, rxfs, ybyyx, ygzdw, ygzdwdz, xgzdw, xgzdwdz, xgzdwyb, xz, xxdd, bkbyzh, bkxwzh, lwtm, lwztc, dbrq, byrq, sxwrq, xwlx, dsbh, dsxm, yx, jwzydm, xxxs, byjl, xzxm, bxlx, pydwm, pydw, zsjj, sczt, cjsj, cjr, gxsj, gxr
+        id, xh, xm, nj, xb, csrq, xslb_id, xslbmc, sfzh, yjfx, jg, mz, zzmm, rxfs, ybyyx, xz, dsbh, dsxm, yx, xxxs, byjl, rxrq, lxdh, jtdz, yzydm, yzy, zy_id, zymc, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
     <!--教务管理-->
     <select id="findJwglList" resultMap="JwglDTOMap">

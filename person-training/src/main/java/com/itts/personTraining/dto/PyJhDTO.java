@@ -18,15 +18,11 @@ import java.util.List;
 @Data
 @ApiModel("培养计划对象")
 public class PyJhDTO {
+
     /**
      * 培养计划主键
      */
     private Long id;
-
-    /**
-     * 课程ids
-     */
-    private List<Long> kcIds;
 
     /**
      * 批次ID
@@ -35,49 +31,91 @@ public class PyJhDTO {
     private Long pcId;
 
     /**
+     * 批次号
+     */
+    @ApiModelProperty(value = "批次号", required = true)
+    private String pch;
+
+    /**
+     * 教育类型
+     */
+    @ApiModelProperty(value = "教育类型", required = true)
+    private String jylx;
+
+    /**
+     * 计划名称
+     */
+    @ApiModelProperty(value = "计划名称", required = true)
+    private String jhmc;
+
+    /**
+     * 培养目标
+     */
+    @ApiModelProperty(value = "培养目标", required = true)
+    private String pymb;
+
+    /**
+     * 学制与学习年限
+     */
+    @ApiModelProperty(value = "学制与学习年限", required = true)
+    private String xzyxxnx;
+
+    /**
+     * 培养方式和方法
+     */
+    @ApiModelProperty(value = "培养方式和方法", required = true)
+    private String pyfshff;
+
+    /**
+     * 培养方案与培养计划
+     */
+    @ApiModelProperty(value = "培养方案与培养计划", required = true)
+    private String pyfaypyjh;
+
+    /**
+     * 课程设置和学分规定
+     */
+    @ApiModelProperty(value = "课程设置和学分规定", required = true)
+    private String kcszhxfgd;
+
+    /**
+     * 实践论文
+     */
+    @ApiModelProperty(value = "实践论文", required = true)
+    private String sjlw;
+
+    /**
+     * 培养管理
+     */
+    @ApiModelProperty(value = "培养管理", required = true)
+    private String pygl;
+
+    /**
+     * 附件
+     */
+    @ApiModelProperty(value = "附件")
+    private String fj;
+
+    /**
+     * 附件名称
+     */
+    @ApiModelProperty(value = "附件名称")
+    private String fjmc;
+
+    /**
      * 是否下发(0:否;1:是)
      */
-    @ApiModelProperty(value = "是否下发(0:否;1:是)", required = true)
     private Boolean sfxf;
 
     /**
-     * 培养方案
+     * 是否删除(0:未删除;1已删除)
      */
-    @ApiModelProperty(value = "培养方案", required = true)
-    private String pyfa;
-
-    /**
-     * 培养计划
-     */
-    @ApiModelProperty(value = "培养计划", required = true)
-    private String pyjh;
-
-    /**
-     * 教学大纲
-     */
-    @ApiModelProperty(value = "教学大纲", required = true)
-    private String jxdg;
-
-    /**
-     * 学生类别名称
-     */
-    @ApiModelProperty(value = "学生类别名称", required = true)
-    private String xslbmc;
-
-    /**
-     * 上传时间
-     */
-    private Date scsj;
+    private Boolean sfsc;
 
     /**
      * 下发时间
      */
     private Date xfsj;
-
-    /**
-     * 是否删除(0:否;1:是)
-     */
-    private boolean sfsc;
 
     /**
      * 创建时间

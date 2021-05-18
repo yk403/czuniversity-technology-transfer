@@ -73,20 +73,8 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         if(!StringUtils.isBlank(data.getSfzh())){
             xs.setSfzh(data.getSfzh());
         }
-        if(!StringUtils.isBlank(data.getByzh())){
-            xs.setSfzh(data.getByzh());
-        }
-        if(!StringUtils.isBlank(data.getXwzh())){
-            xs.setXwzh(data.getXwzh());
-        }
         if(!StringUtils.isBlank(data.getYjfx())){
             xs.setYjfx(data.getYjfx());
-        }
-        if(!StringUtils.isBlank(data.getPylbId())){
-            xs.setPylbId(data.getPylbId());
-        }
-        if(!StringUtils.isBlank(data.getPylbmc())){
-            xs.setPylbmc(data.getPylbmc());
         }
         if(!StringUtils.isBlank(data.getJg())){
             xs.setJg(data.getJg());
@@ -103,50 +91,8 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         if(!StringUtils.isBlank(data.getYbyyx())){
             xs.setYbyyx(data.getYbyyx());
         }
-        if(!StringUtils.isBlank(data.getYgzdw())){
-            xs.setYgzdw(data.getYgzdw());
-        }
-        if(!StringUtils.isBlank(data.getYgzdwdz())){
-            xs.setYgzdwdz(data.getYgzdwdz());
-        }
-        if(!StringUtils.isBlank(data.getXgzdw())){
-            xs.setXgzdw(data.getXgzdw());
-        }
-        if(!StringUtils.isBlank(data.getXgzdwdz())){
-            xs.setXgzdwdz(data.getXgzdwdz());
-        }
-        if(!StringUtils.isBlank(data.getXgzdwyb())){
-            xs.setXgzdwyb(data.getXgzdwyb());
-        }
         if(!StringUtils.isBlank(data.getXz())){
             xs.setXz(data.getXz());
-        }
-        if(!StringUtils.isBlank(data.getXxdd())){
-            xs.setXxdd(data.getXxdd());
-        }
-        if(!StringUtils.isBlank(data.getBkbyzh())){
-            xs.setBkbyzh(data.getBkbyzh());
-        }
-        if(!StringUtils.isBlank(data.getBkxwzh())){
-            xs.setBkxwzh(data.getBkxwzh());
-        }
-        if(!StringUtils.isBlank(data.getLwtm())){
-            xs.setLwtm(data.getLwtm());
-        }
-        if(!StringUtils.isBlank(data.getLwztc())){
-            xs.setLwztc(data.getLwztc());
-        }
-        if(!StringUtils.isBlank(data.getDbrq().toString())){
-            xs.setDbrq(data.getDbrq());
-        }
-        if(!StringUtils.isBlank(data.getByrq().toString())){
-            xs.setByrq(data.getByrq());
-        }
-        if(!StringUtils.isBlank(data.getSxwrq().toString())){
-            xs.setSxwrq(data.getSxwrq());
-        }
-        if(!StringUtils.isBlank(data.getXwlx())){
-            xs.setXwlx(data.getXwlx());
         }
         if(!StringUtils.isBlank(data.getDsbh())){
             xs.setDsbh(data.getDsbh());
@@ -157,47 +103,20 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         if(!StringUtils.isBlank(data.getYx())){
             xs.setYx(data.getYx());
         }
-        if(!StringUtils.isBlank(data.getJwzydm())){
-            xs.setJwzydm(data.getJwzydm());
-        }
         if(!StringUtils.isBlank(data.getXxxs())){
             xs.setXxxs(data.getXxxs());
         }
         if(!StringUtils.isBlank(data.getByjl())){
             xs.setByjl(data.getByjl());
         }
-        if(!StringUtils.isBlank(data.getXzxm())){
-            xs.setXzxm(data.getXzxm());
-        }
-        if(!StringUtils.isBlank(data.getBxlx())){
-            xs.setBxlx(data.getBxlx());
-        }
-        if(!StringUtils.isBlank(data.getPydwm())){
-            xs.setPydwm(data.getPydwm());
-        }
-        if(!StringUtils.isBlank(data.getPydw())){
-            xs.setPydw(data.getPydw());
-        }
-        if(!StringUtils.isBlank(data.getZsjj())){
-            xs.setZsjj(data.getZsjj());
-        }
         if(!StringUtils.isBlank(data.getRxrq().toString())){
             xs.setRxrq(data.getRxrq());
-        }
-        if(!StringUtils.isBlank(data.getXzTwo())){
-            xs.setXzTwo(data.getXzTwo());
-        }
-        if(!StringUtils.isBlank(data.getZkzh())){
-            xs.setZkzh(data.getZkzh());
         }
         if(!StringUtils.isBlank(data.getLxdh())){
             xs.setLxdh(data.getLxdh());
         }
         if(!StringUtils.isBlank(data.getJtdz())){
             xs.setJtdz(data.getJtdz());
-        }
-        if(!StringUtils.isBlank(data.getBz())){
-            xs.setBz(data.getBz());
         }
         if(!StringUtils.isBlank(data.getYzydm())){
             xs.setYzydm(data.getYzydm());
