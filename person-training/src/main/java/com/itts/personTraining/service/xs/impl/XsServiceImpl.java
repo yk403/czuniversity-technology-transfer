@@ -4,23 +4,31 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.JwglDTO;
+import com.itts.personTraining.dto.StuDTO;
+import com.itts.personTraining.mapper.pcXs.PcXsMapper;
+import com.itts.personTraining.model.pcXs.PcXs;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.mapper.xs.XsMapper;
+import com.itts.personTraining.service.pcXs.PcXsService;
 import com.itts.personTraining.service.xs.XsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.STUDENT_MSG_NOT_EXISTS_ERROR;
 
 /**
  * <p>
@@ -40,6 +48,12 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
 
     @Autowired
     private XsService xsService;
+
+    @Autowired
+    private PcXsService pcXsService;
+
+    @Resource
+    private PcXsMapper pcXsMapper;
 
     /**
      * 查询学员列表
@@ -85,12 +99,20 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      * @return
      */
     @Override
-    public Xs get(Long id) {
+    public StuDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询学员信息】",id);
         QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
         xsQueryWrapper.eq("sfsc",false)
                       .eq("id",id);
-        return xsMapper.selectOne(xsQueryWrapper);
+        Xs xs = xsMapper.selectOne(xsQueryWrapper);
+        if (xs == null) {
+            throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+        }
+        StuDTO stuDTO = new StuDTO();
+        BeanUtils.copyProperties(xs,stuDTO);
+        List<Long> pcIds = pcXsMapper.selectByXsId(id);
+        stuDTO.setPcIds(pcIds);
+        return stuDTO;
     }
     /**
      * 根据xh查询学员信息
@@ -98,56 +120,95 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      * @return
      */
     @Override
-    public Xs getByXh(String xh) {
+    public StuDTO getByXh(String xh) {
         log.info("【人才培养 - 根据学号:{}查询学员信息】",xh);
         QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
         xsQueryWrapper.eq("sfsc",false)
                 .eq("xh",xh);
-        return xsMapper.selectOne(xsQueryWrapper);
+        Xs xs = xsMapper.selectOne(xsQueryWrapper);
+        if (xs == null) {
+            throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+        }
+        StuDTO stuDTO = new StuDTO();
+        BeanUtils.copyProperties(xs,stuDTO);
+        List<Long> pcIds = pcXsMapper.selectByXsId(xs.getId());
+        stuDTO.setPcIds(pcIds);
+        return stuDTO;
     }
 
     /**
      * 新增学员
-     * @param xs
+     * @param stuDTO
      * @return
      */
     @Override
-    public boolean add(Xs xs) {
-        log.info("【人才培养 - 新增学员:{}】",xs);
-        if (xsMapper.selectById(xs.getId()) != null) {
+    public boolean add(StuDTO stuDTO) {
+        log.info("【人才培养 - 新增学员:{}】",stuDTO);
+        if (xsMapper.selectById(stuDTO.getId()) != null) {
             return false;
         }
         Long userId = getUserId();
-        xs.setCjr(userId);
-        xs.setGxr(userId);
-        return xsService.save(xs);
+        stuDTO.setCjr(userId);
+        stuDTO.setGxr(userId);
+        Xs xs = new Xs();
+        BeanUtils.copyProperties(stuDTO,xs);
+        if (xsService.save(xs)) {
+            PcXs pcXs = new PcXs();
+            pcXs.setPcId(stuDTO.getPcIds().get(0));
+            pcXs.setXsId(xs.getId());
+            return pcXsService.save(pcXs);
+        }
+        return false;
     }
 
     /**
      * 更新学员
-     * @param xs
+     * @param stuDTO
      * @return
      */
     @Override
-    public boolean update(Xs xs) {
-        log.info("【人才培养 - 更新学员:{}】",xs);
+    public boolean update(StuDTO stuDTO) {
+        log.info("【人才培养 - 更新学员:{}】",stuDTO);
         Long userId = getUserId();
-        xs.setGxr(userId);
-        return xsService.updateById(xs);
+        stuDTO.setGxr(userId);
+        Xs xs = new Xs();
+        BeanUtils.copyProperties(stuDTO,xs);
+        if (xsService.updateById(xs)) {
+            List<Long> pcIds = stuDTO.getPcIds();
+            if (pcIds != null && pcIds.size() > 0) {
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("xs_id",stuDTO.getId());
+                if (pcXsService.removeByMap(map)) {
+
+                }
+                return false;
+            }
+        }
+        return false;
     }
 
     /**
      * 删除学员
-     * @param xs
+     * @param stuDTO
      * @return
      */
     @Override
-    public boolean delete(Xs xs) {
-        log.info("【人才培养 - 删除学员:{}】",xs);
+    public boolean delete(StuDTO stuDTO) {
+        log.info("【人才培养 - 删除学员:{}】",stuDTO);
         //设置删除状态
-        xs.setSfsc(true);
-        xs.setGxr(getUserId());
-        return xsService.updateById(xs);
+        stuDTO.setSfsc(true);
+        stuDTO.setGxr(getUserId());
+        Xs xs = new Xs();
+        BeanUtils.copyProperties(stuDTO,xs);
+        if (xsService.updateById(xs)) {
+            List<Long> pcIds = stuDTO.getPcIds();
+            if (pcIds != null && pcIds.size() > 0) {
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("xs_id",stuDTO.getId());
+                return pcXsService.removeByMap(map);
+            }
+        }
+        return false;
     }
 
     /**

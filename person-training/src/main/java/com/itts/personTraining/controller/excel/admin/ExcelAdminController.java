@@ -23,7 +23,7 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_UPLOAD_ERROR;
  */
 @Api(tags = "Excel导入")
 @RestController
-@RequestMapping(ADMIN_BASE_URL + "/personTrainingService/excel")
+@RequestMapping(ADMIN_BASE_URL + "/v1/personTrainingService/excel")
 @Slf4j
 public class ExcelAdminController {
     @Autowired

@@ -2,6 +2,7 @@ package com.itts.personTraining.service.xs;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.dto.JwglDTO;
+import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.model.xs.Xs;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -35,29 +36,29 @@ public interface XsService extends IService<Xs> {
      * @param id
      * @return
      */
-    Xs get(Long id);
+    StuDTO get(Long id);
 
-    Xs getByXh(String xh);
+    StuDTO getByXh(String xh);
     /**
      * 新增学员
-     * @param xs
+     * @param stuDTO
      * @return
      */
-    boolean add(Xs xs);
+    boolean add(StuDTO stuDTO);
 
     /**
      * 更新学员
-     * @param xs
+     * @param stuDTO
      * @return
      */
-    boolean update(Xs xs);
+    boolean update(StuDTO stuDTO);
 
     /**
      * 删除学员
-     * @param xs
+     * @param stuDTO
      * @return
      */
-    boolean delete(Xs xs);
+    boolean delete(StuDTO stuDTO);
 
     /**
      * 根据学号查询学员信息

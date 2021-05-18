@@ -9,6 +9,7 @@ import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.sz.SzListener;
 import com.itts.personTraining.model.xs.XsListener;
 import com.itts.personTraining.service.excel.ExcelService;
+import com.itts.personTraining.service.sz.SzService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,8 @@ public class ExcelServiceImpl implements ExcelService {
     private XsMapper xsMapper;
     @Resource
     private SzMapper szMapper;
+    @Resource
+    private SzService szService;
 
     /**
      * 导入学员Excel
@@ -67,6 +70,7 @@ public class ExcelServiceImpl implements ExcelService {
     public ResponseUtil importSz(MultipartFile file, Integer headRowNumber) {
         SzListener szListener = new SzListener();
         szListener.setSzMapper(szMapper);
+        szListener.setSzService(szService);
         try{
             EasyExcel.read(file.getInputStream(), SzDTO.class,szListener).headRowNumber(headRowNumber).sheet().doRead();
             return ResponseUtil.success(szListener.getResult());

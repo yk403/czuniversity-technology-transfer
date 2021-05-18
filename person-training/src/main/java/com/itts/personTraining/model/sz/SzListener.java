@@ -33,7 +33,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
     private Integer count = 0;
     @Resource
     private SzMapper szMapper;
-    @Autowired
+    @Resource
     private SzService szService;
 
     public static SzListener szListener;
@@ -71,7 +71,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
             sz.setJg(data.getJg());
         }
         //出生日期
-        if (!StringUtils.isBlank(data.getCsrq().toString())) {
+        if (data.getCsrq() != null) {
             sz.setCsrq(data.getCsrq());
         }
         //民族
@@ -130,7 +130,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
         if (!StringUtils.isBlank(data.getDslb())) {
             sz.setDslb(data.getDslb());
         }
-        //个人照片
+       /* //个人照片
         if (!StringUtils.isBlank(data.getGrzp())) {
             sz.setGrzp(data.getGrzp());
         }
@@ -149,7 +149,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
         //驻入时间
         if (!StringUtils.isBlank(data.getZrsj().toString())) {
             sz.setZrsj(data.getZrsj());
-        }
+        }*/
         save(sz);
     }
 

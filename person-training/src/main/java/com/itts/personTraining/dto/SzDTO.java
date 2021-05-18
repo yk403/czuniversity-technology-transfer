@@ -149,31 +149,31 @@ public class SzDTO implements Serializable {
 
     /**
      * 个人照片
-     */
+     *//*
     @ExcelProperty(value = "个人照片", index = 20)
     private String grzp;
 
-    /**
+    *//**
      * 行业领域
-     */
+     *//*
     @ExcelProperty(value = "行业领域", index = 21)
     private String hyly;
 
-    /**
+    *//**
      * 所属机构
-     */
+     *//*
     @ExcelProperty(value = "所属机构", index = 22)
     private String ssjg;
 
-    /**
+    *//**
      * 专属资格证
-     */
+     *//*
     @ExcelProperty(value = "专属资格证", index = 23)
     private String zszgz;
 
-    /**
+    *//**
      * 驻入时间
-     */
+     *//*
     @ExcelProperty(value = "驻入时间", index = 24)
-    private Date zrsj;
+    private Date zrsj;*/
 }

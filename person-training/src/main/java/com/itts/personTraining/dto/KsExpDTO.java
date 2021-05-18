@@ -30,7 +30,7 @@ public class KsExpDTO {
     /**
      * 考试ID
      */
-    @ApiModelProperty(value = "考试ID", required = true)
+    @ApiModelProperty(value = "考试ID")
     private Long ksId;
 
     /**

@@ -4,8 +4,12 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.WebException;
 import com.itts.personTraining.dto.XsDTO;
+import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
+import com.itts.personTraining.model.pcXs.PcXs;
 import com.itts.personTraining.service.xs.XsService;
 import lombok.Data;
 import lombok.SneakyThrows;
@@ -17,6 +21,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Date;
+
+import static com.itts.common.enums.ErrorCodeEnum.BATCH_NUMBER_ISEMPTY_ERROR;
 
 /**
  * @Author: Austin
@@ -35,6 +41,8 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
     private XsMapper xsMapper;
     @Autowired
     private XsService xsService;
+    @Resource
+    private PcXsMapper pcXsMapper;
 
     public static XsListener xsListener;
 
@@ -45,6 +53,9 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
     @SneakyThrows
     @Override
     public void invoke(XsDTO data, AnalysisContext context) {
+        if (pcId == null) {
+            throw new WebException(BATCH_NUMBER_ISEMPTY_ERROR);
+        }
         ReadRowHolder readRowHolder = context.readRowHolder();
         int rowIndex=readRowHolder.getRowIndex()+1;
         log.info("解析第"+rowIndex+"行数据：{}", JSON.toJSONString(data));
@@ -127,10 +138,11 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         if(!StringUtils.isBlank(data.getJyxs())){
             xs.setJyxs(data.getJyxs());
         }
-        if(pcId != null){
-            xs.setPcId(pcId);
-        }
         save(xs);
+        PcXs pcXs = new PcXs();
+        pcXs.setXsId(xs.getId());
+        pcXs.setPcId(pcId);
+        pcXsMapper.insert(pcXs);
     }
 
     @Override
