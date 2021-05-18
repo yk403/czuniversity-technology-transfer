@@ -87,7 +87,7 @@ public class TkzyController {
             query.eq("cjr", loginUser.getUserId());
         }
 
-        if (StringUtils.isBlank(condition)) {
+        if (StringUtils.isNotBlank(condition)) {
             query.like("mc", condition);
         }
 
