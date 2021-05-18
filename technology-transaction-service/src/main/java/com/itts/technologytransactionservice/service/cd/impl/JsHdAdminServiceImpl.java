@@ -92,7 +92,14 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
                     tJsLcKz.setDj(new BigDecimal(item.get("dj").toString()));
 					tJsLcKz.setDqzgjg(new BigDecimal(item.get("dj").toString()));
                     jsLcKzAdminService.save(tJsLcKz);
-                }
+                }else if(list2.size()==1){
+					list2.get(0).setCgId(tJsCg.getId());
+					list2.get(0).setFdjg(new BigDecimal(item.get("fdjg").toString()));
+					list2.get(0).setDj(new BigDecimal(item.get("dj").toString()));
+					list2.get(0).setDqzgjg(new BigDecimal(item.get("dj").toString()));
+					list2.get(0).setJjjgzt(0);
+					jsLcKzAdminService.updateById(list2.get(0));
+				}
 				jsCgMapper.updateTJsCg(tJsCg);
 			}
 		} else if (hdlx == 1) {
@@ -111,7 +118,14 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
                     tJsLcKz.setDj(new BigDecimal(item.get("dj").toString()));
 					tJsLcKz.setDqzgjg(new BigDecimal(item.get("dj").toString()));
                     jsLcKzAdminService.save(tJsLcKz);
-                }
+                }else if(list2.size()==1){
+					list2.get(0).setXqId(tJsXq.getId());
+					list2.get(0).setFdjg(new BigDecimal(item.get("fdjg").toString()));
+					list2.get(0).setDj(new BigDecimal(item.get("dj").toString()));
+					list2.get(0).setDqzgjg(new BigDecimal(item.get("dj").toString()));
+					list2.get(0).setJjjgzt(0);
+					jsLcKzAdminService.updateById(list2.get(0));
+				}
 				jsXqMapper.updateTJsXq(tJsXq);
 			}
 		}
