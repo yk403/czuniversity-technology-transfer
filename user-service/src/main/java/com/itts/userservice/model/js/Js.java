@@ -18,15 +18,15 @@ import java.util.Date;
  * </p>
  *
  * @author liuyingming
- * @since 2021-04-19
+ * @since 2021-05-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_js")
-@ApiModel("角色对象")
+@ApiModel(value = "角色管理")
 public class Js implements Serializable {
 
-    private static final long serialVersionUID = -409494400980209645L;
+    private static final long serialVersionUID = -5659070268888720520L;
 
     /**
      * 主键ID
@@ -67,34 +67,32 @@ public class Js implements Serializable {
     /**
      * 是否删除
      */
-    @ApiModelProperty("是否删除")
+    @ApiModelProperty(value = "是否删除")
     private Boolean sfsc;
 
     /**
      * 创建时间
      */
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
      * 创建人
      */
-    @ApiModelProperty("创建人")
+    @ApiModelProperty(value = "创建人")
     private Long cjr;
 
     /**
      * 更新时间
      */
-    @ApiModelProperty("更新时间")
+    @ApiModelProperty(value = "更新时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**
      * 更新人
      */
-    @ApiModelProperty("更新人")
+    @ApiModelProperty(value = "更新人")
     private Long gxr;
-
-
 }

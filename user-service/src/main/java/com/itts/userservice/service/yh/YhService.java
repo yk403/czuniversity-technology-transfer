@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
+import com.itts.userservice.request.yh.AddYhRequest;
 import com.itts.userservice.vo.yh.GetYhVO;
 import com.itts.userservice.vo.yh.YhListVO;
 import com.itts.userservice.vo.yh.YhVO;
@@ -51,17 +52,12 @@ public interface YhService {
     /**
      * 新增
      */
-    Boolean addYhAndJsmc(Yh Yh, Long jsid);
+    GetYhVO add(AddYhRequest addYhRequest);
 
     /**
      * 更新
      */
-    Yh update(Yh Yh);
-
-    /**
-     * 级联更新
-     */
-    Yh updateByYhAndJsmc(Yh Yh, Long jsid);
+    GetYhVO update(AddYhRequest request, Yh old);
 
     /**
      * 查询角色菜单目录
@@ -70,4 +66,9 @@ public interface YhService {
      * @return
      */
     YhVO findMenusByUserID(Long userId, String systemType);
+
+    /**
+     * 删除用户
+     */
+    void delete(Yh yh);
 }
