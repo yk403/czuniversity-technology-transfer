@@ -1,19 +1,16 @@
 package com.itts.userservice.model.js;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.TableId;
-
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -46,13 +43,13 @@ public class Js implements Serializable {
     /**
      * 角色编码
      */
-    @ApiModelProperty(value = "角色编码",required = true)
+    @ApiModelProperty(value = "角色编码", required = true)
     private String jsbm;
 
     /**
      * 是否为默认角色
      */
-    @ApiModelProperty(value = "是否为默认角色",required = true)
+    @ApiModelProperty(value = "是否为默认角色", required = true)
     private Boolean sfmr;
 
     /**
@@ -60,6 +57,12 @@ public class Js implements Serializable {
      */
     @ApiModelProperty(value = "用户角色类型： in - 内部用户角色； out - 外部用户角色", required = true)
     private String yhjslx;
+
+    /**
+     * 角色类别（内部用户角色使用）：研究生；经纪人；导师；企业导师；任课教师；校领导；管理员
+     */
+    @ApiModelProperty(value = "角色类别（内部用户角色使用）：研究生；经纪人；导师；企业导师；任课教师；校领导；管理员")
+    private String jslb;
 
     /**
      * 是否删除

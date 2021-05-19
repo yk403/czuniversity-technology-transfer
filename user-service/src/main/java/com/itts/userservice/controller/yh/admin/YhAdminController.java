@@ -296,21 +296,25 @@ public class YhAdminController {
      * 校验参数是否合法
      */
     private void checkRequest(AddYhRequest yh) throws WebException {
+
         //如果参数为空，抛出异常
         if (yh == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        if (yh.getYhlx() == null) {
+        if (StringUtils.isBlank(yh.getYhlx())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (yh.getYhm() == null) {
+
+        if(StringUtils.isBlank(yh.getYhlb())){
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (yh.getMm() == null) {
+
+        if (StringUtils.isBlank(yh.getYhm())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (yh.getZsxm() == null) {
+
+        if (StringUtils.isBlank(yh.getMm())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
