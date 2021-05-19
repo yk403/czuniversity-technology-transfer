@@ -18,6 +18,7 @@ import com.itts.userservice.model.js.Js;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.model.yh.YhJsGl;
 import com.itts.userservice.service.yh.YhService;
+import com.itts.userservice.vo.yh.GetYhVO;
 import com.itts.userservice.vo.yh.YhListVO;
 import com.itts.userservice.vo.yh.YhVO;
 import org.apache.commons.lang3.StringUtils;
@@ -106,18 +107,30 @@ public class YhServiceImpl implements YhService {
      * 通过用户编号获取用户信息
      */
     @Override
-    public Yh getByCode(String code, String type) {
+    public GetYhVO getByCode(String code) {
 
-        QueryWrapper<Yh> query = new QueryWrapper<Yh>().eq("yhbh", code)
-                .eq("sfsc", false);
+        Yh yh = yhMapper.selectOne(new QueryWrapper<Yh>().eq("yhbh", code)
+                .eq("sfsc", false));
 
-        if(StringUtils.isNotBlank(type)){
-            query.eq("yhlx", type);
-        }
+        GetYhVO vo = new GetYhVO();
+        BeanUtils.copyProperties(yh, vo);
 
-        Yh yh = yhMapper.selectOne(query);
+        return vo;
+    }
 
-        return yh;
+    /**
+     * 通过手机号获取用户信息
+     */
+    @Override
+    public GetYhVO getByphone(String phone) {
+
+        Yh yh = yhMapper.selectOne(new QueryWrapper<Yh>().eq("lxdh", phone)
+                .eq("sfsc", false));
+
+        GetYhVO vo = new GetYhVO();
+        BeanUtils.copyProperties(yh, vo);
+
+        return vo;
     }
 
     /**
