@@ -88,10 +88,10 @@ public class XsAdminController {
      */
     @PostMapping("/add")
     @ApiOperation(value = "新增学员")
-    public ResponseUtil add(@RequestBody StuDTO stuDTO) throws WebException {
+    public ResponseUtil add(@RequestBody StuDTO stuDTO,HttpServletRequest request) throws WebException {
         //检查参数是否合法
         checkRequest(stuDTO);
-        if (!xsService.add(stuDTO)) {
+        if (!xsService.add(stuDTO,request.getHeader("token"))) {
             throw new WebException(INSERT_FAIL);
         }
         return ResponseUtil.success("新增学员成功!");
@@ -106,10 +106,10 @@ public class XsAdminController {
      */
     @PostMapping("/addUser")
     @ApiOperation(value = "新增学员")
-    public ResponseUtil addUser(@RequestBody StuDTO stuDTO) throws WebException {
+    public ResponseUtil addUser(@RequestBody StuDTO stuDTO,HttpServletRequest request) throws WebException {
         //检查参数是否合法
         checkRequestUser(stuDTO);
-        if (!xsService.add(stuDTO)) {
+        if (!xsService.add(stuDTO,request.getHeader("token"))) {
             throw new WebException(INSERT_FAIL);
         }
         return ResponseUtil.success("新增学员成功!");
@@ -171,9 +171,6 @@ public class XsAdminController {
     private void checkRequest(StuDTO stuDTO) throws WebException {
         if (stuDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        if (xsService.selectByCondition(stuDTO.getXh()).get(0) != null) {
-            throw new WebException(STUDENT_NUMBER_EXISTS_ERROR);
         }
     }
 

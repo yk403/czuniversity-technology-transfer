@@ -47,7 +47,7 @@ public interface XsService extends IService<Xs> {
      * @param stuDTO
      * @return
      */
-    boolean add(StuDTO stuDTO);
+    boolean add(StuDTO stuDTO,String token);
 
     /**
      * 更新学员

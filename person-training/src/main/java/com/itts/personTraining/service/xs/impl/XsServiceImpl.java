@@ -1,21 +1,26 @@
 package com.itts.personTraining.service.xs.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.enums.EduTypeEnum;
+import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.model.pcXs.PcXs;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.mapper.xs.XsMapper;
+import com.itts.personTraining.model.yh.Yh;
 import com.itts.personTraining.service.pcXs.PcXsService;
 import com.itts.personTraining.service.xs.XsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.personTraining.service.yh.YhService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -49,15 +54,14 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     
     @Resource
     private XsMapper xsMapper;
-
     @Autowired
     private XsService xsService;
-
     @Autowired
     private PcXsService pcXsService;
-
     @Resource
     private PcXsMapper pcXsMapper;
+    @Autowired
+    private YhService yhService;
 
     /**
      * 查询学员列表
@@ -129,7 +133,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 .eq("xh",xh);
         Xs xs = xsMapper.selectOne(xsQueryWrapper);
         if (xs == null) {
-            throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+            return null;
         }
         StuDTO stuDTO = new StuDTO();
         BeanUtils.copyProperties(xs,stuDTO);
@@ -144,25 +148,40 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      * @return
      */
     @Override
-    public boolean add(StuDTO stuDTO) {
+    public boolean add(StuDTO stuDTO,String token) {
         log.info("【人才培养 - 新增学员:{}】",stuDTO);
         Long userId = getUserId();
         stuDTO.setCjr(userId);
         stuDTO.setGxr(userId);
         String jylx = stuDTO.getJylx();
+        StuDTO byXh = getByXh(stuDTO.getXh());
         if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
             //学历学位教育(研究生)
-            StuDTO byXh = getByXh(stuDTO.getXh());
             if (byXh != null) {
                 Xs xs = new Xs();
                 BeanUtils.copyProperties(stuDTO,xs);
                 if (xsService.updateById(xs)) {
                     Long pcId = stuDTO.getPcIds().get(0);
                     if (pcId != null) {
-
+                        PcXs pcXs = new PcXs();
+                        pcXs.setXsId(xs.getId());
+                        pcXs.setPcId(pcId);
+                        return pcXsService.save(pcXs);
                     }
                 }
                 return false;
+            } else {
+                //调用户服务新增并获取到用户id然后新增到学生表
+                String xh = stuDTO.getXh();
+                Yh yh = new Yh();
+                yh.setYhbh(xh);
+                yh.setYhm(xh);
+                yh.setMm(xh);
+                yh.setYhlx("in");
+                yh.setYhlb(UserTypeEnum.POSTGRADUATE.getKey());
+                ResponseUtil util = yhService.add(yh,token);
+                Yh yh1 = JSON.parseObject(util.getData().toString(), Yh.class);
+
             }
         } else if (ADULT_EDUCATION.getKey().equals(jylx)) {
             //继续教育(经纪人)
