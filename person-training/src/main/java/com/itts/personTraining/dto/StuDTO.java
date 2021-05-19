@@ -48,8 +48,14 @@ public class StuDTO {
     /**
      * 机构ID
      */
-    @ApiModelProperty(value = "机构ID")
+    @ApiModelProperty(value = "机构ID", required = true)
     private Long jgId;
+
+    /**
+     * 教育类型（学历学位教育；职业教育；继续教育）
+     */
+    @ApiModelProperty(value = "教育类型（A学历学位教育；B职业教育；C继续教育）", required = true)
+    private String jylx;
 
     /**
      * 学号
