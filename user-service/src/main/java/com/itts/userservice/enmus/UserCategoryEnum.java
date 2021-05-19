@@ -3,6 +3,7 @@ package com.itts.userservice.enmus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @Description：
@@ -31,4 +32,16 @@ public enum UserCategoryEnum {
     private String key;
 
     private String msg;
+
+    public static String getMsgByKey(String key) {
+
+        for (UserCategoryEnum value : UserCategoryEnum.values()) {
+
+            if (StringUtils.equals(value.getKey(), key)) {
+                return value.getMsg();
+            }
+        }
+
+        return null;
+    }
 }

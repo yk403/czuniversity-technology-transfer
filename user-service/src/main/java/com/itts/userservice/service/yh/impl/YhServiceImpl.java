@@ -11,7 +11,10 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.dto.YhDTO;
+import com.itts.userservice.enmus.UserCategoryEnum;
 import com.itts.userservice.enmus.UserTypeEnum;
+import com.itts.userservice.feign.persontraining.jdxy.JdxyRpcService;
+import com.itts.userservice.feign.persontraining.szgl.SzglRpcService;
 import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.mapper.js.JsMapper;
 import com.itts.userservice.mapper.yh.YhJsGlMapper;
@@ -20,6 +23,8 @@ import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.js.Js;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.model.yh.YhJsGl;
+import com.itts.userservice.request.jsxy.AddJdxyRequest;
+import com.itts.userservice.request.szgl.AddSzglRequest;
 import com.itts.userservice.request.yh.AddYhRequest;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.yh.GetYhVO;
@@ -27,6 +32,7 @@ import com.itts.userservice.vo.yh.YhListVO;
 import com.itts.userservice.vo.yh.YhVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -65,6 +71,12 @@ public class YhServiceImpl implements YhService {
 
     @Resource
     private YhJsGlMapper yhJsGlMapper;
+
+    @Autowired
+    private JdxyRpcService jdxyRpcService;
+
+    @Autowired
+    private SzglRpcService szglRpcService;
 
     /**
      * 获取列表 - 分页
@@ -158,7 +170,7 @@ public class YhServiceImpl implements YhService {
      * 新增用户
      */
     @Override
-    public GetYhVO add(AddYhRequest addYhRequest) {
+    public GetYhVO add(AddYhRequest addYhRequest, String token) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         Long userId = null;
@@ -220,16 +232,7 @@ public class YhServiceImpl implements YhService {
         //判断用户是否为内部用户，并设置人才培养对应信息
         if (StringUtils.equals(UserTypeEnum.IN_USER.getCode(), addYhRequest.getYhlx())) {
 
-            switch (addYhRequest.getYhlb()) {
-                case "postgraduate":
-                case "broker":
-                    //TODO:调用人才培养基地学员添加接口
-                case "tutor":
-                case "corporate_mentor":
-                case "teacher":
-                case "school_leader":
-                    //TODO: 调用人才培养师资管理添加接口
-            }
+            addSzglOrJdxy(yh, token);
         }
 
         return vo;
@@ -370,7 +373,7 @@ public class YhServiceImpl implements YhService {
         Long userId = null;
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
-        if(loginUser !=null){
+        if (loginUser != null) {
             userId = loginUser.getUserId();
         }
 
@@ -426,5 +429,92 @@ public class YhServiceImpl implements YhService {
         });
 
         return yhListVOs;
+    }
+
+    /**
+     * 添加基地学员信息
+     */
+    private void addJdxy(Yh yh, String token) {
+
+        if (yh == null) {
+            return;
+        }
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        Long userId = null;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        }
+
+        Date now = new Date();
+
+        AddJdxyRequest request = new AddJdxyRequest();
+
+        request.setYhId(yh.getId());
+        request.setJgId(yh.getJgId());
+        request.setXm(yh.getZsxm());
+        request.setXh(yh.getYhbh());
+        request.setLxdh(yh.getLxdh());
+        request.setXslbId(yh.getYhlb());
+        request.setXslbmc(UserCategoryEnum.getMsgByKey(yh.getYhlb()));
+
+        request.setCjsj(now);
+        request.setGxsj(now);
+        request.setCjr(userId);
+        request.setGxr(userId);
+
+        jdxyRpcService.addUsr(request, token);
+    }
+
+    /**
+     * 新增师资管理
+     */
+    private void addSzgl(Yh yh, String token) {
+
+        if (yh == null) {
+            return;
+        }
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        Long userId = null;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        }
+
+        Date now = new Date();
+
+        AddSzglRequest request = new AddSzglRequest();
+
+        request.setYhId(yh.getId());
+        request.setDsbh(yh.getYhbh());
+        request.setDsxm(yh.getZsxm());
+        request.setDslb(yh.getYhlb());
+        request.setSsjgId(yh.getJgId());
+
+        request.setCjsj(now);
+        request.setGxsj(now);
+        request.setCjr(userId);
+        request.setGxr(userId);
+
+        szglRpcService.addSzgl(request, token);
+    }
+
+    /**
+     * 新增师资管理或基地学员
+     */
+    private void addSzglOrJdxy(Yh yh, String token) {
+
+        switch (yh.getYhlb()) {
+            case "postgraduate":
+            case "broker":
+                addJdxy(yh, token);
+                break;
+            case "tutor":
+            case "corporate_mentor":
+            case "teacher":
+            case "school_leader":
+                addSzgl(yh, token);
+                break;
+        }
     }
 }

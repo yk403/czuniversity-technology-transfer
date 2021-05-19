@@ -25,8 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -160,12 +159,12 @@ public class YhAdminController {
      */
     @PostMapping("/add/")
     @ApiOperation(value = "新增")
-    public ResponseUtil add(@RequestBody AddYhRequest addYhRequest) throws WebException {
+    public ResponseUtil add(@RequestBody AddYhRequest addYhRequest, HttpServletRequest request) throws WebException {
 
         //检查参数是否合法
         checkRequest(addYhRequest);
 
-        yhService.add(addYhRequest);
+        yhService.add(addYhRequest, request.getHeader(SystemConstant.TOKEN_PREFIX));
 
 
         /*Yh Yh = new Yh();
