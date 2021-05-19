@@ -21,14 +21,21 @@ public interface YhService {
      * 查询列表
      */
     PageInfo<YhListVO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group, String condition);
+
     /**
      * 查询列表
      */
     PageInfo<YhDTO> selectByString(Integer pageNum, Integer pageSize, String type, String string);
+
     /**
      * 获取详情
      */
     Yh get(Long id);
+
+    /**
+     * 通过编号获取用户信息
+     */
+    Yh getByCode(String code, String type);
 
     /**
      * 通过用户名获取用户信息
@@ -38,7 +45,7 @@ public interface YhService {
     /**
      * 新增
      */
-    Boolean addYhAndJsmc(Yh Yh,Long jsid);
+    Boolean addYhAndJsmc(Yh Yh, Long jsid);
 
     /**
      * 更新
@@ -48,7 +55,8 @@ public interface YhService {
     /**
      * 级联更新
      */
-    Yh updateByYhAndJsmc(Yh Yh,Long jsid);
+    Yh updateByYhAndJsmc(Yh Yh, Long jsid);
+
     /**
      * 查询角色菜单目录
      *
