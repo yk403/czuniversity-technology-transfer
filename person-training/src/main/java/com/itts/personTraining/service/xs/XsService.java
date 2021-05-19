@@ -2,8 +2,11 @@ package com.itts.personTraining.service.xs;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.dto.JwglDTO;
+import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.model.xs.Xs;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -20,11 +23,12 @@ public interface XsService extends IService<Xs> {
      * @param pageNum
      * @param pageSize
      * @param pcId
+     * @param xslbmc
      * @param jyxs
      * @param name
      * @return
      */
-    PageInfo<Xs> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbId, String jyxs, String name);
+    PageInfo<StuDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbmc, String jyxs, String name);
 
     /**
      * 查询教务管理列表
@@ -35,35 +39,36 @@ public interface XsService extends IService<Xs> {
      * @param id
      * @return
      */
-    Xs get(Long id);
+    StuDTO get(Long id);
 
-    Xs getByXh(String xh);
+    StuDTO getByXh(String xh);
     /**
      * 新增学员
-     * @param xs
+     * @param stuDTO
      * @return
      */
-    boolean add(Xs xs);
+    boolean add(StuDTO stuDTO);
 
     /**
      * 更新学员
-     * @param xs
+     * @param stuDTO
      * @return
      */
-    boolean update(Xs xs);
+    boolean update(StuDTO stuDTO);
 
     /**
      * 删除学员
-     * @param xs
+     * @param stuDTO
      * @return
      */
-    boolean delete(Xs xs);
+    boolean delete(StuDTO stuDTO);
 
     /**
-     * 根据学号查询学员信息
+     * 根据条件查询学员信息
      * @param xh
      * @return
      */
-    Xs selectByXh(String xh);
+    List<Xs> selectByCondition(String xh);
+
     Boolean addKcXs(Long id,Long kcId);
 }

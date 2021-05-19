@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -29,7 +30,7 @@ public class KsExpDTO {
     /**
      * 考试ID
      */
-    @ApiModelProperty(value = "考试ID", required = true)
+    @ApiModelProperty(value = "考试ID")
     private Long ksId;
 
     /**
@@ -71,16 +72,17 @@ public class KsExpDTO {
     private String kcmc;
 
     /**
-     * 考试开始时间
+     * 考试日期
      */
-    @ApiModelProperty(value = "考试开始时间", required = true)
-    private Date kskssj;
+    @ApiModelProperty(value = "考试日期", required = true)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ksrq;
 
     /**
-     * 考试结束时间
+     * 考试时间
      */
-    @ApiModelProperty(value = "考试结束时间", required = true)
-    private Date ksjssj;
+    @ApiModelProperty(value = "考试时间", required = true)
+    private String kssj;
 
     /**
      * 是否删除(0:否;1:是)

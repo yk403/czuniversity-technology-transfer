@@ -44,10 +44,10 @@ public class KsDTO {
     private String ksmc;
 
     /**
-     * 考试类型(0:统一考试;1:实训考试;2:证书考试;3:补考)
+     * 考试类型(统一考试;补考)
      */
-    @ApiModelProperty(value = "试类型(0:统一考试;1:实训考试;2:证书考试;3:补考)", required = true)
-    private Integer kslx;
+    @ApiModelProperty(value = "试类型(统一考试;补考)", required = true)
+    private String kslx;
 
     /**
      * 是否下发(0:否;1:是)

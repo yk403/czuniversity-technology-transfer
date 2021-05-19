@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -44,14 +46,15 @@ public class KsExp implements Serializable {
     private Long kcId;
 
     /**
-     * 考试开始时间
+     * 考试日期
      */
-    private Date kskssj;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ksrq;
 
     /**
-     * 考试结束时间
+     * 考试时间
      */
-    private Date ksjssj;
+    private String kssj;
 
     /**
      * 是否删除(0:否;1:是)

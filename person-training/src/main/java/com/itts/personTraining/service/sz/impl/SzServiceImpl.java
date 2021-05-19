@@ -54,7 +54,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
         szQueryWrapper.eq("sfsc",false)
-                      .eq(StringUtils.isNotBlank(dsxm),"dsxm", dsxm)
+                      .like(StringUtils.isNotBlank(dsxm),"dsxm", dsxm)
                       .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
                       .eq(StringUtils.isNotBlank(hyly),"hyly", hyly);
         return new PageInfo<>(szMapper.selectList(szQueryWrapper));

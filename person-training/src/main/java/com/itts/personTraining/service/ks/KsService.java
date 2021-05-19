@@ -26,7 +26,7 @@ public interface KsService extends IService<Ks> {
      * @param kslx
      * @return
      */
-    PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String ksmc, Integer kslx);
+    PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String ksmc, String kslx);
 
     /**
      * 根据id查询考试详情

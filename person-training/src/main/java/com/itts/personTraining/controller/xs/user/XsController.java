@@ -6,6 +6,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.service.xs.XsService;
 import io.swagger.annotations.Api;
@@ -39,23 +40,23 @@ public class XsController {
 
     /**
      * 更新学生
-     * @param xs
+     * @param stuDTO
      * @return
      * @throws WebException
      */
     @PutMapping("/update/")
     @ApiOperation(value = "更新学生")
-    public ResponseUtil update(@RequestBody Xs xs) throws WebException{
-        checkRequest(xs);
-        Long id = xs.getId();
+    public ResponseUtil update(@RequestBody StuDTO stuDTO) throws WebException{
+        checkRequest(stuDTO);
+        Long id = stuDTO.getId();
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        Xs old = xsService.get(id);
+        StuDTO old = xsService.get(id);
         if(old==null){
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        if(!xsService.update(xs)){
+        if(!xsService.update(stuDTO)){
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新学生成功!");
@@ -63,13 +64,13 @@ public class XsController {
     /**
      * 校验参数
      */
-    private void checkRequest(Xs xs) throws WebException {
+    private void checkRequest(StuDTO stuDTO) throws WebException {
 
-        if (xs == null) {
+        if (stuDTO == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        if (StringUtils.isBlank(xs.getXm())) {
+        if (StringUtils.isBlank(stuDTO.getXm())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 

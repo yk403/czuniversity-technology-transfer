@@ -8,8 +8,8 @@
         <result column="ks_id" property="ksId" />
         <result column="xxjs_id" property="xxjsId" />
         <result column="kc_id" property="kcId" />
-        <result column="kskssj" property="kskssj" />
-        <result column="ksjssj" property="ksjssj" />
+        <result column="ksrq" property="ksrq" />
+        <result column="kssj" property="kssj" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
@@ -20,10 +20,10 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, ks_id, xxjs_id, kc_id, kskssj, ksjssj, sfsc, cjsj, cjr, gxsj, gxr, xfsj
+        id, ks_id, xxjs_id, kc_id, ksrq, kssj, sfsc, cjsj, cjr, gxsj, gxr, xfsj
     </sql>
     <select id="findByCondition" resultType="com.itts.personTraining.dto.KsExpDTO">
-        select tke.id, tke.ks_id, tke.xxjs_id, tx.jxlmc, tx.jsbh, tke.kc_id, tk.kcdm, tk.kcmc, kskssj, ksjssj, tke.sfsc, tke.cjsj, tke.cjr, tke.gxsj, tke.gxr, tke.xfsj
+        select tke.id, tke.ks_id, tke.xxjs_id, tx.jxlmc, tx.jsbh, tke.kc_id, tk.kcdm, tk.kcmc, ksrq, kssj, tke.sfsc, tke.cjsj, tke.cjr, tke.gxsj, tke.gxr, tke.xfsj
         from t_ks_exp tke left join t_xxjs tx on (tke.xxjs_id=tx.id) left join t_kc tk on (tke.kc_id=tk.id)
         <where>
             tke.sfsc = false and tx.sfsc = false and tk.sfsc = false
