@@ -28,6 +28,12 @@ public class StuDTO {
     private Long id;
 
     /**
+     * 用户ID
+     */
+    @ApiModelProperty(value = "用户ID")
+    private Long yhId;
+
+    /**
      * 师资ID
      */
     @ApiModelProperty(value = "师资ID", required = true)
@@ -38,6 +44,12 @@ public class StuDTO {
      */
     @ApiModelProperty(value = "批次Ids", required = true)
     private List<Long> pcIds;
+
+    /**
+     * 机构ID
+     */
+    @ApiModelProperty(value = "机构ID")
+    private Long jgId;
 
     /**
      * 学号

@@ -33,9 +33,19 @@ public class Xs implements Serializable {
     private Long id;
 
     /**
+     * 用户ID
+     */
+    private Long yhId;
+
+    /**
      * 师资ID
      */
     private Long szId;
+
+    /**
+     * 机构ID
+     */
+    private Long jgId;
 
     /**
      * 学号

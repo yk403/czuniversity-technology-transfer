@@ -11,6 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 
@@ -42,10 +44,10 @@ public class XsAdminController {
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "pcId", required = false) Long pcId,
-                                   @RequestParam(value = "xslbId", required = false) String xslbId,
+                                   @RequestParam(value = "xslbmc", required = false) String xslbmc,
                                    @RequestParam(value = "jyxs", required = false) String jyxs,
                                    @RequestParam(value = "name", required = false) String name) {
-        return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbId, jyxs, name));
+        return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbmc, jyxs, name));
     }
 
     /**
@@ -72,6 +74,24 @@ public class XsAdminController {
     public ResponseUtil add(@RequestBody StuDTO stuDTO) throws WebException {
         //检查参数是否合法
         checkRequest(stuDTO);
+        if (!xsService.add(stuDTO)) {
+            throw new WebException(INSERT_FAIL);
+        }
+        return ResponseUtil.success("新增学员成功!");
+    }
+
+    /**
+     * 新增学员
+     *
+     * @param stuDTO
+     * @return
+     * @throws WebException
+     */
+    @PostMapping("/addUser")
+    @ApiOperation(value = "新增学员")
+    public ResponseUtil addUser(@RequestBody StuDTO stuDTO) throws WebException {
+        //检查参数是否合法
+        checkRequestUser(stuDTO);
         if (!xsService.add(stuDTO)) {
             throw new WebException(INSERT_FAIL);
         }
@@ -135,9 +155,25 @@ public class XsAdminController {
         if (stuDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (xsService.selectByXh(stuDTO.getXh()) != null) {
+        if (xsService.selectByCondition(stuDTO.getXh()).get(0) != null) {
             throw new WebException(STUDENT_NUMBER_EXISTS_ERROR);
         }
+    }
+
+    /**
+     * 校验参数
+     */
+    private void checkRequestUser(StuDTO stuDTO) throws WebException {
+        if (stuDTO == null) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        List<Xs> xs = xsService.selectByCondition(stuDTO.getXh());
+        for (Xs x : xs) {
+            if (stuDTO.getYhId().equals(x.getYhId())) {
+                throw new WebException(USER_EXISTS_ERROR);
+            }
+        }
+
     }
 
 }

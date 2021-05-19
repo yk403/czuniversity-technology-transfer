@@ -65,17 +65,15 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      * @return
      */
     @Override
-    public PageInfo<Xs> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbId, String jyxs, String name) {
-        log.info("【人才培养 - 分页条件查询学员列表,批次id:{},学生类别id:{},教育形式:{},学号/姓名:{}】",pcId,xslbId,jyxs,name);
+    public PageInfo<StuDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbmc, String jyxs, String name) {
+        log.info("【人才培养 - 分页条件查询学员列表,批次id:{},学生类别名称:{},教育形式:{},学号/姓名:{}】",pcId,xslbmc,jyxs,name);
         PageHelper.startPage(pageNum, pageSize);
-        QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
-        xsQueryWrapper.eq("sfsc",false)
-                      .eq(pcId != null,"pc_id", pcId)
-                      .eq(StringUtils.isNotBlank(xslbId),"xslb_id", xslbId)
-                      .eq(StringUtils.isNotBlank(jyxs),"jyxs", jyxs)
-                      .like("xh",name)
-                      .or().like("xm",name);
-        return new PageInfo<>(xsMapper.selectList(xsQueryWrapper));
+        List<StuDTO> stuDTOList = xsMapper.findXsList(pcId,xslbmc,jyxs,name);
+        for (StuDTO stuDTO : stuDTOList) {
+            List<Long> pcIds = pcXsMapper.selectByXsId(stuDTO.getId());
+            stuDTO.setPcIds(pcIds);
+        }
+        return new PageInfo<>(stuDTOList);
     }
 
     /**
@@ -154,10 +152,13 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         Xs xs = new Xs();
         BeanUtils.copyProperties(stuDTO,xs);
         if (xsService.save(xs)) {
-            PcXs pcXs = new PcXs();
-            pcXs.setPcId(stuDTO.getPcIds().get(0));
-            pcXs.setXsId(xs.getId());
-            return pcXsService.save(pcXs);
+            List<Long> pcIds = stuDTO.getPcIds();
+            if (pcIds != null && pcIds.size() > 0) {
+                PcXs pcXs = new PcXs();
+                pcXs.setPcId(stuDTO.getPcIds().get(0));
+                pcXs.setXsId(xs.getId());
+                return pcXsService.save(pcXs);
+            }
         }
         return false;
     }
@@ -220,17 +221,17 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     }
 
     /**
-     * 根据学号查询学员信息
+     * 根据条件查询学员信息
      * @param xh
      * @return
      */
     @Override
-    public Xs selectByXh(String xh) {
+    public List<Xs> selectByCondition(String xh) {
         log.info("【人才培养 - 根据学号:{}查询学员信息】",xh);
         QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
         xsQueryWrapper.eq("sfsc",false)
                 .eq("xh",xh);
-        return xsMapper.selectOne(xsQueryWrapper);
+        return xsMapper.selectList(xsQueryWrapper);
     }
 
     @Override

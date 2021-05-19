@@ -6,6 +6,8 @@ import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.model.xs.Xs;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 学生表 服务类
@@ -21,11 +23,12 @@ public interface XsService extends IService<Xs> {
      * @param pageNum
      * @param pageSize
      * @param pcId
+     * @param xslbmc
      * @param jyxs
      * @param name
      * @return
      */
-    PageInfo<Xs> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbId, String jyxs, String name);
+    PageInfo<StuDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbmc, String jyxs, String name);
 
     /**
      * 查询教务管理列表
@@ -61,10 +64,11 @@ public interface XsService extends IService<Xs> {
     boolean delete(StuDTO stuDTO);
 
     /**
-     * 根据学号查询学员信息
+     * 根据条件查询学员信息
      * @param xh
      * @return
      */
-    Xs selectByXh(String xh);
+    List<Xs> selectByCondition(String xh);
+
     Boolean addKcXs(Long id,Long kcId);
 }

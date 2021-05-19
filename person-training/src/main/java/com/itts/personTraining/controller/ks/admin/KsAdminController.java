@@ -43,7 +43,7 @@ public class KsAdminController {
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "pcId", required = false) Long pcId,
                                    @RequestParam(value = "ksmc", required = false) String ksmc,
-                                   @RequestParam(value = "kslx", required = false) Integer kslx) {
+                                   @RequestParam(value = "kslx", required = false) String kslx) {
         return ResponseUtil.success(ksService.findByPage(pageNum, pageSize, pcId, ksmc, kslx));
     }
 
