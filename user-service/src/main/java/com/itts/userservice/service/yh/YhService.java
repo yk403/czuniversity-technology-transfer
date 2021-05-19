@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
+import com.itts.userservice.vo.yh.GetYhVO;
 import com.itts.userservice.vo.yh.YhListVO;
 import com.itts.userservice.vo.yh.YhVO;
 
@@ -35,7 +36,12 @@ public interface YhService {
     /**
      * 通过编号获取用户信息
      */
-    Yh getByCode(String code, String type);
+    GetYhVO getByCode(String code);
+
+    /**
+     * 通过手机号获取用户信息
+     */
+    GetYhVO getByphone(String phone);
 
     /**
      * 通过用户名获取用户信息
