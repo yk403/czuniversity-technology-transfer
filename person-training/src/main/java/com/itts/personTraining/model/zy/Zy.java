@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
 @TableName("t_zy")
 public class Zy implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -9211694985343283005L;
 
     /**
      * 主键

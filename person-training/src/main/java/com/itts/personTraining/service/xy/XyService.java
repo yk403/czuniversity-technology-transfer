@@ -48,4 +48,11 @@ public interface XyService extends IService<Xy> {
      * @return
      */
     boolean delete(Xy xy);
+
+    /**
+     * 根据条件查询学院信息
+     * @param xymc
+     * @return
+     */
+    Xy getByCondition(String xymc);
 }

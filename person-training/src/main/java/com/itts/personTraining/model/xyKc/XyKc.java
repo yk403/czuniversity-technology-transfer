@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @TableName("t_xy_kc")
 public class XyKc implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -9058871982016221907L;
 
     /**
      * 主键

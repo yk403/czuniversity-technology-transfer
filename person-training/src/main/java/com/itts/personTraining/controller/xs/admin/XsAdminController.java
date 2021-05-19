@@ -5,12 +5,15 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.model.xs.Xs;
+import com.itts.personTraining.service.jg.JgService;
 import com.itts.personTraining.service.xs.XsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
@@ -31,6 +34,8 @@ public class XsAdminController {
 
     @Autowired
     private XsService xsService;
+    @Autowired
+    private JgService jgService;
 
     /**
      * 查询学员列表
@@ -48,6 +53,18 @@ public class XsAdminController {
                                    @RequestParam(value = "jyxs", required = false) String jyxs,
                                    @RequestParam(value = "name", required = false) String name) {
         return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbmc, jyxs, name));
+    }
+
+    /**
+     * 获取机构列表
+     */
+    @GetMapping("/getJgList")
+    @ApiOperation(value = "获取机构列表")
+    public ResponseUtil getlist(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                @ApiParam(value = "机构编码") @RequestParam(value = "jgbm",required = false) String jgbm,
+                                HttpServletRequest request){
+        return jgService.getlist(pageNum,pageSize,jgbm,request.getHeader("token"));
     }
 
     /**
