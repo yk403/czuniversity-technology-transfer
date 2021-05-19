@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     private static final String[] AUTH_WHITELIST = {
             "/api/register/", "/websocket/**", "/swagger-resources/**", "/swagger-ui/**",
-            "/v2/api-docs", "/v3/api-docs", "/webjars/**", "/api/admin/v1/spzb/callback/"};
+            "/v2/api-docs", "/v3/api-docs", "/webjars/**", "/api/admin/v1/spzb/callback/","/api/uncheck/v1/**"};
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

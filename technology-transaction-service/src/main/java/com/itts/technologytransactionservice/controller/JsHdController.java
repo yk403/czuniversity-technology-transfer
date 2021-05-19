@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 
 
 /**
@@ -23,7 +24,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
  * @Description: 技术活动管理
  */
 
-@RequestMapping(BASE_URL + "/v1/JsHd")
+@RequestMapping(UNCHECK_BASE_URL + "/v1/JsHd")
 @Api(value = "JsHdController", tags = "技术活动管理")
 @RestController
 public class JsHdController extends BaseController {

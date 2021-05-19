@@ -151,9 +151,9 @@
 			<if test="map.jhrq != null and map.jhrq != ''"> and xq.jhrq = #{map.jhrq} </if>
 			<if test="map.ysrq != null and map.ysrq != ''"> and xq.ysrq = #{map.ysrq} </if>
 			<if test="map.jylx != null and map.jylx != ''"> and sh.jylx = #{map.jylx} </if>
-			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
-			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and sh.release_status = #{map.releaseStatus} </if>
-			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
+			<if test="map.assistanceStatus != null"> and sh.assistance_status = #{map.assistanceStatus} </if>
+			<if test="map.releaseStatus != null"> and sh.release_status = #{map.releaseStatus} </if>
+			<if test="map.releaseAssistanceStatus != null"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 			<if test="map.jshdId != null"> and xq.jshd_id = #{map.jshdId} </if>
 			<if test="map.fbshzt != null"> and sh.fbshzt = #{map.fbshzt} </if>
             <if test="map.yxqkssj != null"> and xq.yxqkssj = #{map.yxqkssj} </if>

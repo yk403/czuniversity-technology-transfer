@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
@@ -33,7 +34,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  * @since 2021-05-17
  */
 @RestController
-@RequestMapping(BASE_URL+"/v1/LyBm")
+@RequestMapping(UNCHECK_BASE_URL+"/v1/LyBm")
 @Api(value = "LyBmController", tags = "双创路演报名门户端")
 public class LyBmController {
     @Autowired

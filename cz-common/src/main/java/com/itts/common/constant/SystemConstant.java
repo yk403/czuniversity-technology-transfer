@@ -19,6 +19,8 @@ public class SystemConstant {
      * 客户端、门户URL前缀
      */
     public static final String BASE_URL = "/api";
+    //设置非权限校验白名单接口
+    public static final String UNCHECK_BASE_URL = "/api/uncheck";
 
     public static final String WEBSOCKET_URL = "/websocket";
 

@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 
 
 @RestController
-@RequestMapping(BASE_URL + "/v1/sys/excel")
+@RequestMapping(UNCHECK_BASE_URL + "/v1/sys/excel")
 //@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/excel")
 @Slf4j
 public class ExcelController extends BaseController {
