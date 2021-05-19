@@ -141,7 +141,7 @@ public class YhAdminController {
     @ApiOperation(value = "通过用户编号查询")
     @GetMapping("/get/by/code/{code}")
     public ResponseUtil getByCode(@ApiParam("用户编号") @PathVariable("code") String code,
-                                  @ApiParam("用户类型：in - 内部用户；out - 外部用户") @RequestParam("type") String type) {
+                                  @ApiParam("用户类型：in - 内部用户；out - 外部用户") @RequestParam(value = "type", required = false) String type) {
 
         Yh yh = yhService.getByCode(code, type);
 

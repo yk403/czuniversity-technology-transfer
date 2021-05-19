@@ -108,8 +108,14 @@ public class YhServiceImpl implements YhService {
     @Override
     public Yh getByCode(String code, String type) {
 
-        Yh yh = yhMapper.selectOne(new QueryWrapper<Yh>().eq("yhbh", code)
-                .eq("sfsc", false).eq("yhlx", type));
+        QueryWrapper<Yh> query = new QueryWrapper<Yh>().eq("yhbh", code)
+                .eq("sfsc", false);
+
+        if(StringUtils.isNotBlank(type)){
+            query.eq("yhlx", type);
+        }
+
+        Yh yh = yhMapper.selectOne(query);
 
         return yh;
     }
