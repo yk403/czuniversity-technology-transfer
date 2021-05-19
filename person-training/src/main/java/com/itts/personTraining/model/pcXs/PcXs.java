@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @TableName("t_pc_xs")
 public class PcXs implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -3097078215456437667L;
 
     /**
      * 主键

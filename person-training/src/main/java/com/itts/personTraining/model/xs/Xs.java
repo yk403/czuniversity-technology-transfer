@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 @TableName("t_xs")
 public class Xs implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -8679063028284005847L;
 
     /**
      * 主键
@@ -46,6 +46,11 @@ public class Xs implements Serializable {
      * 机构ID
      */
     private Long jgId;
+
+    /**
+     * 学院ID
+     */
+    private Long xyId;
 
     /**
      * 学号

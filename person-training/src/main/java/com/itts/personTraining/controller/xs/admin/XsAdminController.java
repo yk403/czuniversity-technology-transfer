@@ -5,6 +5,7 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.model.xs.Xs;
+import com.itts.personTraining.service.jg.JgService;
 import com.itts.personTraining.service.xs.XsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +32,8 @@ public class XsAdminController {
 
     @Autowired
     private XsService xsService;
+    @Autowired
+    private JgService jgService;
 
     /**
      * 查询学员列表
@@ -48,6 +51,17 @@ public class XsAdminController {
                                    @RequestParam(value = "jyxs", required = false) String jyxs,
                                    @RequestParam(value = "name", required = false) String name) {
         return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbmc, jyxs, name));
+    }
+
+    /**
+     * 获取机构列表
+     */
+    @GetMapping("/getJgList")
+    @ApiOperation(value = "获取机构列表")
+    public ResponseUtil getlist(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                @RequestParam(value = "jgbm",required = false) String jgbm){
+        return jgService.getlist(pageNum,pageSize,jgbm);
     }
 
     /**

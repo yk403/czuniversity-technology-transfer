@@ -45,6 +45,16 @@ public class XyAdminController {
     }
 
     /**
+     * 根据条件查询学院信息
+     * @return
+     */
+    @GetMapping("/getByCondition")
+    @ApiOperation(value = "根据条件查询学院信息")
+    public ResponseUtil getByCondition(@RequestParam(value = "xymc")String xymc) {
+        return ResponseUtil.success(xyService.getByCondition(xymc));
+    }
+
+    /**
      * 新增学院
      *
      * @param xy

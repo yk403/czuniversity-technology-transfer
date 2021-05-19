@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @TableName("t_xy")
 public class Xy implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -389348446679186406L;
 
     /**
      * 主键

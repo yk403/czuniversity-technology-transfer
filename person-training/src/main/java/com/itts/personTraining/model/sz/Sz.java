@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
 @TableName("t_sz")
 public class Sz implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 7996143002138221691L;
 
     /**
      * 主键
@@ -35,6 +35,11 @@ public class Sz implements Serializable {
      * 用户id
      */
     private Long yhId;
+
+    /**
+     * 学院id
+     */
+    private Long xyId;
 
     /**
      * 导师编号
@@ -82,11 +87,6 @@ public class Sz implements Serializable {
      * 文化程度
      */
     private String whcd;
-
-    /**
-     * 院系
-     */
-    private String yx;
 
     /**
      * 干部职务
