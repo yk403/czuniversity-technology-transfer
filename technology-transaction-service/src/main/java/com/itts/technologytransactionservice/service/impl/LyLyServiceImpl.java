@@ -5,16 +5,14 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
-import com.itts.technologytransactionservice.model.LyBm;
-import com.itts.technologytransactionservice.mapper.LyBmMapper;
-import com.itts.technologytransactionservice.model.TJsXq;
-import com.itts.technologytransactionservice.service.LyBmService;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.itts.technologytransactionservice.model.LyLy;
+import com.itts.technologytransactionservice.mapper.LyLyMapper;
+import com.itts.technologytransactionservice.service.LyLyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -29,38 +27,36 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
  * </p>
  *
  * @author yukai
- * @since 2021-05-17
+ * @since 2021-05-18
  */
 @Service
 @Primary
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
-public class LyBmServiceImpl extends ServiceImpl<LyBmMapper, LyBm> implements LyBmService {
+public class LyLyServiceImpl extends ServiceImpl<LyLyMapper, LyLy> implements LyLyService {
     @Autowired
-    private LyBmMapper lyBmMapper;
+    private LyLyMapper lyLyMapper;
     @Override
-    public PageInfo findLyBmFront(Map<String, Object> params) {
-       log.info("【技术交易 - 分页条件查询(前台)】");
+    public PageInfo findLyLyFront(Map<String, Object> params) {
+        log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyBm> list = lyBmMapper.findLyBmFront(query);
+        List<LyLy> list = lyLyMapper.findLyLyFront(query);
         return new PageInfo<>(list);
     }
 
     @Override
-    public Boolean saveBm(LyBm lyBm) {
-        Long userId = getUserId();
-        lyBm.setUserId(userId);
-        if(save(lyBm)){
+    public Boolean saveLy(LyLy lyLy) {
+        if(save(lyLy)){
             return true;
         }else{
             return false;
         }
     }
-    /**
-     * 获取当前用户id
-     * @return
-     */
+//    *
+//     * 获取当前用户id
+//     * @return
+
     public Long getUserId() {
         LoginUser loginUser = threadLocal.get();
         Long userId;

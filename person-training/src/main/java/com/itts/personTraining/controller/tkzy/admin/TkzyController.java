@@ -37,7 +37,7 @@ import java.util.Objects;
  * @since 2021-05-13
  */
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/tkzy/v1")
+@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/tkzy")
 @Api(tags = "题库资源后台管理")
 public class TkzyController {
 
@@ -87,7 +87,7 @@ public class TkzyController {
             query.eq("cjr", loginUser.getUserId());
         }
 
-        if (StringUtils.isBlank(condition)) {
+        if (StringUtils.isNotBlank(condition)) {
             query.like("mc", condition);
         }
 

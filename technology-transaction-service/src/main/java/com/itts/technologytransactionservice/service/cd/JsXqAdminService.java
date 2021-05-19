@@ -18,6 +18,7 @@ public interface JsXqAdminService extends IService<TJsXq> {
 
     PageInfo<TJsXq> findJsXq(Map<String, Object> params);
 
+    PageInfo findGdJsXq(Map<String, Object> params);
     TJsXq getById(Integer id);
 
     TJsXq selectByName(String name);

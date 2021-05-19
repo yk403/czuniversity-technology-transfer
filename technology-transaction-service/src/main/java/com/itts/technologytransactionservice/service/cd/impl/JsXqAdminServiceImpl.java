@@ -63,6 +63,21 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         List<TJsXq> list = jsXqMapper.findJsXq(query);
         return new PageInfo<>(list);
     }
+    /**
+     * 分页查询成果(后台管理归档清算用)
+     * @param params
+     * @return
+     */
+    @Override
+    public PageInfo<TJsXq> findGdJsXq(Map<String, Object> params) {
+        log.info("【技术交易 - 分页查询成果(后台审批管理)】");
+        //前端传输标识type(0：审批管理;1：信息采集)
+        params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
+        Query query = new Query(params);
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsXq> list = jsXqMapper.findGdJsXq(query);
+        return new PageInfo<>(list);
+    }
 
     /**
      * 根据需求id查询详细信息

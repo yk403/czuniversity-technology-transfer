@@ -54,6 +54,12 @@ public class GetKssjVO implements Serializable {
     private Integer sjzf;
 
     /**
+     * 考试类型：single_subject - 单科；comprehensive - 综合
+     */
+    @ApiModelProperty(value = "考试类型：single_subject - 单科；comprehensive - 综合", required = true)
+    private String sjlx;
+
+    /**
      * 是否上架
      */
     @ApiModelProperty(value = "是否上架")

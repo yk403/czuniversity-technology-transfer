@@ -1,7 +1,7 @@
 package com.itts.technologytransactionservice.service;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.technologytransactionservice.model.LyBm;
+import com.itts.technologytransactionservice.model.LyZw;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.Map;
@@ -12,12 +12,11 @@ import java.util.Map;
  * </p>
  *
  * @author yukai
- * @since 2021-05-17
+ * @since 2021-05-18
  */
-public interface LyBmService extends IService<LyBm> {
+public interface LyZwService extends IService<LyZw> {
+    PageInfo findLyZwFront(Map<String, Object> params);
 
-    PageInfo findLyBmFront(Map<String, Object> params);
-
-    Boolean saveBm(LyBm lyBm);
+    Boolean saveZw(LyZw lyZw);
     Long getUserId();
 }

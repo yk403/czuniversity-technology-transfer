@@ -91,6 +91,10 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
 
         tkzyMapper.insert(tkzy);
 
+        if(CollectionUtils.isEmpty(addTkzyRequest.getTmxxs())){
+            return tkzy;
+        }
+
         for (AddTmxxRequest addTmxx : addTkzyRequest.getTmxxs()) {
 
             Tmxx tmxx = new Tmxx();
@@ -122,6 +126,10 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
         tkzy.setGxsj(now);
 
         tkzyMapper.updateById(tkzy);
+
+        if(CollectionUtils.isEmpty(updateTkzyRequest.getTmxxs())){
+            return tkzy;
+        }
 
         //更新题目选项
         List<UpdateTmxxRequest> updateTmxxList = updateTkzyRequest.getTmxxs();

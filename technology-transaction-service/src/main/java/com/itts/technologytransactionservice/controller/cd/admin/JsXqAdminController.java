@@ -63,6 +63,17 @@ public class JsXqAdminController extends BaseController {
         //前端传输标识type(0：审批管理;1：信息采集)
         return ResponseUtil.success(jsXqAdminService.findJsXq(params));
     }
+    /**
+     * 分页条件查询成果(归档清算用)
+     *
+     * @param params
+     * @return
+     */
+    @PostMapping("/gdPage")
+    public ResponseUtil gdPageJsXq(@RequestBody Map<String, Object> params) {
+        //前端传输标识type(0：审批管理;1：信息采集)
+        return ResponseUtil.success(jsXqAdminService.findGdJsXq(params));
+    }
 
     /**
      * 根据需求id查询详细信息
@@ -177,7 +188,7 @@ public class JsXqAdminController extends BaseController {
     }
     /**
      * 成果上移下移
-     * @param ids
+     * @param
      * @return
      */
     @GetMapping("/xqmove")
@@ -188,7 +199,7 @@ public class JsXqAdminController extends BaseController {
     }
     /**
      * 成果置顶置底 置顶ype为0 置底type为1
-     * @param ids
+     * @param
      * @return
      */
     @GetMapping("/topBottom")

@@ -87,7 +87,7 @@ public class YhServiceImpl implements YhService {
 
     @Override
     public PageInfo<YhDTO> selectByString(Integer pageNum, Integer pageSize, String type, String string) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<YhDTO> byString = yhMapper.findByString(type, string);
         PageInfo<YhDTO> yhDTOPageInfo = new PageInfo<>(byString);
         return yhDTOPageInfo;
@@ -100,6 +100,24 @@ public class YhServiceImpl implements YhService {
     public Yh get(Long id) {
         Yh Yh = yhMapper.selectById(id);
         return Yh;
+    }
+
+    /**
+     * 通过用户编号获取用户信息
+     */
+    @Override
+    public Yh getByCode(String code, String type) {
+
+        QueryWrapper<Yh> query = new QueryWrapper<Yh>().eq("yhbh", code)
+                .eq("sfsc", false);
+
+        if(StringUtils.isNotBlank(type)){
+            query.eq("yhlx", type);
+        }
+
+        Yh yh = yhMapper.selectOne(query);
+
+        return yh;
     }
 
     /**
@@ -257,9 +275,9 @@ public class YhServiceImpl implements YhService {
 
             StringBuilder builder = new StringBuilder();
 
-            if(!CollectionUtils.isEmpty(jsList)){
+            if (!CollectionUtils.isEmpty(jsList)) {
 
-                jsList.forEach(js->{
+                jsList.forEach(js -> {
                     builder.append(js.getJsmc()).append(",");
                 });
 

@@ -10,6 +10,7 @@
         <result column="sjmc" property="sjmc" />
         <result column="tmzs" property="tmzs" />
         <result column="sjzf" property="sjzf" />
+        <result column="sjlx" property="sjlx" />
         <result column="sfsj" property="sfsj" />
         <result column="sjsj" property="sjsj" />
         <result column="sfsc" property="sfsc" />
@@ -21,7 +22,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, kc_id, kc_mc, sjmc, tmzs, sjzf, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
+        id, kc_id, kc_mc, sjmc, tmzs, sjzf, sjlx, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>
