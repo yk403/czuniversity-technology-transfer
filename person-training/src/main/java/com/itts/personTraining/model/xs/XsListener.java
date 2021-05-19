@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 import static com.itts.common.enums.ErrorCodeEnum.BATCH_NUMBER_ISEMPTY_ERROR;
 
@@ -158,7 +159,8 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         throw exception;
     }
     private void save(Xs xs){
-        Xs xsOld = xsService.selectByXh(xs.getXh());
+        List<Xs> xsList = xsService.selectByCondition(xs.getXh());
+        Xs xsOld = xsList.get(0);
         if (xsOld != null) {
             xs.setId(xsOld.getId());
             xs.setGxsj(new Date());

@@ -32,6 +32,11 @@ public class Sz implements Serializable {
     private Long id;
 
     /**
+     * 用户id
+     */
+    private Long yhId;
+
+    /**
      * 导师编号
      */
     @ApiModelProperty(value = "导师编号", required = true)
