@@ -21,6 +21,7 @@ import com.itts.userservice.vo.yh.GetYhVO;
 import com.itts.userservice.vo.yh.YhListVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -70,7 +71,7 @@ public class YhAdminController {
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "type", required = false) String type,
                                    @RequestParam(value = "groupId", required = false) Long groupId,
-                                   @RequestParam(value = "condition", required = false) String condition ) {
+                                   @RequestParam(value = "condition", required = false) String condition) {
         Jggl group = null;
 
         if (groupId != null) {
@@ -127,7 +128,7 @@ public class YhAdminController {
 
         Yh yh = yhService.get(id);
 
-        if(yh == null){
+        if (yh == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
@@ -135,6 +136,20 @@ public class YhAdminController {
         BeanUtils.copyProperties(yh, getYhVO);
 
         return ResponseUtil.success(getYhVO);
+    }
+
+    @ApiOperation(value = "通过用户编号查询")
+    @GetMapping("/get/by/code/{code}")
+    public ResponseUtil getByCode(@ApiParam("用户编号") @PathVariable("code") String code,
+                                  @ApiParam("用户类型：in - 内部用户；out - 外部用户") @RequestParam("type") String type) {
+
+        Yh yh = yhService.getByCode(code, type);
+
+        if(yh == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        return ResponseUtil.success(yh);
     }
 
     /**
