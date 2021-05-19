@@ -53,6 +53,7 @@ public class ExcelServiceImpl implements ExcelService {
     public ResponseUtil importXs(MultipartFile file, Integer headRowNumber, Long pcId) {
         XsListener xsListener = new XsListener();
         xsListener.setXsMapper(xsMapper);
+        xsListener.setXyService(xyService);
         xsListener.setPcId(pcId);
         try{
             EasyExcel.read(file.getInputStream(), XsDTO.class,xsListener).headRowNumber(headRowNumber).sheet().doRead();

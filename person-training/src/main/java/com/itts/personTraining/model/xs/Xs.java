@@ -140,11 +140,6 @@ public class Xs implements Serializable {
     private String dsxm;
 
     /**
-     * 院系
-     */
-    private String yx;
-
-    /**
      * 学习形式
      */
     private String xxxs;
