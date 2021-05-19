@@ -198,16 +198,20 @@ public class YhServiceImpl implements YhService {
         if (CollectionUtils.isEmpty(addYhRequest.getJsidlist())) {
 
             Js defaultJs = jsMapper.getDefault(addYhRequest.getYhlx(), addYhRequest.getYhlb());
-            YhJsGl yhJsGl = new YhJsGl();
 
-            yhJsGl.setJsId(defaultJs.getId());
-            yhJsGl.setYhId(yh.getId());
-            yhJsGl.setGxsj(now);
-            yhJsGl.setCjsj(now);
-            yhJsGl.setCjr(userId);
-            yhJsGl.setGxr(userId);
+            if(defaultJs != null){
 
-            yhJsGlMapper.insert(yhJsGl);
+                YhJsGl yhJsGl = new YhJsGl();
+
+                yhJsGl.setJsId(defaultJs.getId());
+                yhJsGl.setYhId(yh.getId());
+                yhJsGl.setGxsj(now);
+                yhJsGl.setCjsj(now);
+                yhJsGl.setCjr(userId);
+                yhJsGl.setGxr(userId);
+
+                yhJsGlMapper.insert(yhJsGl);
+            }
 
         } else {
 
