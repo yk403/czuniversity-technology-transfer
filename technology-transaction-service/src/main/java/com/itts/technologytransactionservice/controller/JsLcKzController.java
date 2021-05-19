@@ -27,7 +27,7 @@ import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
  * @Description: 技术类别管理
  */
 
-@RequestMapping(UNCHECK_BASE_URL+"/v1/JsLcKz")
+@RequestMapping(BASE_URL+"/v1/JsLcKz")
 @Api(value = "JsLcKzController", tags = "活动流程控制")
 @RestController
 public class JsLcKzController extends BaseController {

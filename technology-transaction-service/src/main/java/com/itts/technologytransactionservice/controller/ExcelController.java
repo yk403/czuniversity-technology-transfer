@@ -15,7 +15,7 @@ import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 
 
 @RestController
-@RequestMapping(UNCHECK_BASE_URL + "/v1/sys/excel")
+@RequestMapping(BASE_URL + "/v1/sys/excel")
 //@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/excel")
 @Slf4j
 public class ExcelController extends BaseController {

@@ -32,7 +32,7 @@ import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
  * @since 2021-05-18
  */
 @RestController
-@RequestMapping(UNCHECK_BASE_URL+"/v1/lyHd")
+@RequestMapping(BASE_URL+"/v1/lyHd")
 @Api(value = "LyHdController", tags = "双创路演活动门户端")
 public class LyHdController {
     @Autowired

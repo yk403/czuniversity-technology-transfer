@@ -24,7 +24,7 @@ import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
  * @Description: 技术活动管理
  */
 
-@RequestMapping(UNCHECK_BASE_URL + "/v1/JsHd")
+@RequestMapping(BASE_URL + "/v1/JsHd")
 @Api(value = "JsHdController", tags = "技术活动管理")
 @RestController
 public class JsHdController extends BaseController {
