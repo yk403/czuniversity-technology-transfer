@@ -1,10 +1,11 @@
 package com.itts.technologytransactionservice.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -32,11 +33,15 @@ public class LyZp implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date cjsj;
 
     /**
      * 更新时间
      */
+    @TableField(value = "gxsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date gxsj;
 
     /**
