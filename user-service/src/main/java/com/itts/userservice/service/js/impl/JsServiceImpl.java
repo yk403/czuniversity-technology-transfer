@@ -196,9 +196,8 @@ public class JsServiceImpl implements JsService {
 
                 if (updateDefaultJs != null) {
                     updateDefaultJs.setSfmr(false);
+                    jsMapper.updateById(updateDefaultJs);
                 }
-
-                jsMapper.updateById(updateDefaultJs);
             }
         }
 
@@ -293,10 +292,10 @@ public class JsServiceImpl implements JsService {
                         .eq("yhjslx", UserTypeEnum.OUT_USER.getCode()).eq("sfmr", true));
 
                 if (updateDefaultJs != null) {
-                    updateDefaultJs.setSfmr(false);
-                }
 
-                jsMapper.updateById(updateDefaultJs);
+                    updateDefaultJs.setSfmr(false);
+                    jsMapper.updateById(updateDefaultJs);
+                }
             }
         }
 
@@ -351,9 +350,8 @@ public class JsServiceImpl implements JsService {
 
                 if (updateDefaultJs != null) {
                     updateDefaultJs.setSfmr(false);
+                    jsMapper.updateById(updateDefaultJs);
                 }
-
-                jsMapper.updateById(updateDefaultJs);
             }
         }
 
