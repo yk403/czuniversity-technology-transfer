@@ -184,10 +184,11 @@ public class JsServiceImpl implements JsService {
                         .eq("yhjslx", UserTypeEnum.IN_USER.getCode()).eq("sfmr", true));
 
                 if (updateDefaultJs != null) {
+
                     updateDefaultJs.setSfmr(false);
+                    jsMapper.updateById(updateDefaultJs);
                 }
 
-                jsMapper.updateById(updateDefaultJs);
             } else {
 
                 Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>()
@@ -282,10 +283,10 @@ public class JsServiceImpl implements JsService {
                         .eq("yhjslx", UserTypeEnum.IN_USER.getCode()).eq("sfmr", true));
 
                 if (updateDefaultJs != null) {
-                    updateDefaultJs.setSfmr(false);
-                }
 
-                jsMapper.updateById(updateDefaultJs);
+                    updateDefaultJs.setSfmr(false);
+                    jsMapper.updateById(updateDefaultJs);
+                }
             } else {
 
                 Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>()
