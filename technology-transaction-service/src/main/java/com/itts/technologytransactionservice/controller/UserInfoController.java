@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.itts.common.constant.SystemConstant.BASE_URL;
-import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.constant.SystemConstant.*;
 
 @RequestMapping(BASE_URL+"/v1/userInfo")
 @Api(value = "UserInfoController", tags = "技术交易用户服务")

@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 
 
 /**
@@ -34,7 +34,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
  * @Description: 技术类别管理
  */
 
-@RequestMapping(BASE_URL+"/v1/JsCjRc")
+@RequestMapping(UNCHECK_BASE_URL+"/v1/JsCjRc")
 @Api(value = "JsCjRcController", tags = "受让方出价记录表")
 @RestController
 public class JsCjRcController extends BaseController {

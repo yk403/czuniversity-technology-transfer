@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
@@ -26,7 +27,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  * @Description: 技术成果管理
  */
 
-@RequestMapping(BASE_URL + "/v1/JsCg")
+@RequestMapping(UNCHECK_BASE_URL + "/v1/JsCg")
 @Api(value = "JsCgController", tags = "技术成果管理")
 @RestController
 public class JsCgController extends BaseController {

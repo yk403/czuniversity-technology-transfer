@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ISEMPTY_ERROR;
 
 /**
@@ -21,7 +22,7 @@ import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ISEMPTY_ERROR;
  * @Description: 技术成果管理
  */
 @RestController
-@RequestMapping(BASE_URL + "/v1/File")
+@RequestMapping(UNCHECK_BASE_URL + "/v1/File")
 public class FileController {
     @Autowired
     private FileService fileService;

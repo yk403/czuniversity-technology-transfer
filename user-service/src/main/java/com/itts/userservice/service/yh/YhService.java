@@ -52,7 +52,7 @@ public interface YhService {
     /**
      * 新增
      */
-    GetYhVO add(AddYhRequest addYhRequest);
+    GetYhVO add(AddYhRequest addYhRequest, String token);
 
     /**
      * 更新
