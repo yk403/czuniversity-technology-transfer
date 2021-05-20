@@ -60,6 +60,11 @@ public interface YhService {
     GetYhVO update(AddYhRequest request, Yh old);
 
     /**
+     * 重置密码
+     */
+    void resetPassword(Yh yh);
+
+    /**
      * 查询角色菜单目录
      *
      * @param

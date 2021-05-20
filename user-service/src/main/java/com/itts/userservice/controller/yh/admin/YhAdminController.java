@@ -208,6 +208,20 @@ public class YhAdminController {
         return ResponseUtil.success(result);
     }
 
+    @ApiOperation(value = "重置密码")
+    @PutMapping("/reset/password/{id}")
+    public ResponseUtil resetPassword(@PathVariable("id") Long id) {
+
+        Yh yh = yhService.get(id);
+        if (yh == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        yhService.resetPassword(yh);
+
+        return ResponseUtil.success();
+    }
+
     /**
      * 删除
      *
