@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
 @TableName("t_pc")
 public class Pc implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 723841754888857561L;
 
     /**
      * 主键

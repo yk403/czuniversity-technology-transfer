@@ -164,7 +164,7 @@ public class YhAdminController {
         //检查参数是否合法
         checkRequest(addYhRequest);
 
-        yhService.add(addYhRequest, request.getHeader(SystemConstant.TOKEN_PREFIX));
+        GetYhVO result = yhService.add(addYhRequest, request.getHeader(SystemConstant.TOKEN_PREFIX));
 
 
         /*Yh Yh = new Yh();
@@ -180,7 +180,7 @@ public class YhAdminController {
             Boolean flag = yhService.addYhAndJsmc(Yh, jsid);
         });*/
 
-        return ResponseUtil.success(addYhRequest);
+        return ResponseUtil.success(result);
     }
 
     /**

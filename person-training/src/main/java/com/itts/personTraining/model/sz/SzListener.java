@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.itts.personTraining.dto.SzDTO;
 import com.itts.personTraining.dto.XsDTO;
 import com.itts.personTraining.mapper.sz.SzMapper;
+import com.itts.personTraining.model.xy.Xy;
 import com.itts.personTraining.service.sz.SzService;
+import com.itts.personTraining.service.xy.XyService;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,8 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
     private SzMapper szMapper;
     @Resource
     private SzService szService;
+    @Resource
+    private XyService xyService;
 
     public static SzListener szListener;
 
@@ -88,7 +92,8 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
         }
         //院系
         if (!StringUtils.isBlank(data.getYx())) {
-            sz.setYx(data.getYx());
+            Xy xy = xyService.getByCondition(data.getYx());
+            sz.setXyId(xy.getId());
         }
         //干部职务
         if (!StringUtils.isBlank(data.getGbzw())) {

@@ -8,6 +8,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
+import com.itts.personTraining.enums.EduTypeEnum;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.model.pcXs.PcXs;
 import com.itts.personTraining.model.xs.Xs;
@@ -30,6 +31,8 @@ import java.util.List;
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 import static com.itts.common.enums.ErrorCodeEnum.STUDENT_MSG_NOT_EXISTS_ERROR;
+import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
+import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
 
 /**
  * <p>
@@ -143,12 +146,28 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     @Override
     public boolean add(StuDTO stuDTO) {
         log.info("【人才培养 - 新增学员:{}】",stuDTO);
-        if (xsMapper.selectById(stuDTO.getId()) != null) {
-            return false;
-        }
         Long userId = getUserId();
         stuDTO.setCjr(userId);
         stuDTO.setGxr(userId);
+        String jylx = stuDTO.getJylx();
+        if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
+            //学历学位教育(研究生)
+            StuDTO byXh = getByXh(stuDTO.getXh());
+            if (byXh != null) {
+                Xs xs = new Xs();
+                BeanUtils.copyProperties(stuDTO,xs);
+                if (xsService.updateById(xs)) {
+                    Long pcId = stuDTO.getPcIds().get(0);
+                    if (pcId != null) {
+
+                    }
+                }
+                return false;
+            }
+        } else if (ADULT_EDUCATION.getKey().equals(jylx)) {
+            //继续教育(经纪人)
+
+        }
         Xs xs = new Xs();
         BeanUtils.copyProperties(stuDTO,xs);
         if (xsService.save(xs)) {
@@ -159,6 +178,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 pcXs.setXsId(xs.getId());
                 return pcXsService.save(pcXs);
             }
+            return true;
         }
         return false;
     }

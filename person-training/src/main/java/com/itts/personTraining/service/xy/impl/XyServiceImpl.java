@@ -113,6 +113,20 @@ public class XyServiceImpl extends ServiceImpl<XyMapper, Xy> implements XyServic
     }
 
     /**
+     * 根据条件查询学院信息
+     * @param xymc
+     * @return
+     */
+    @Override
+    public Xy getByCondition(String xymc) {
+        log.info("【人才培养 - 根据条件学院名称:{}查询学院信息】",xymc);
+        QueryWrapper<Xy> xyQueryWrapper = new QueryWrapper<>();
+        xyQueryWrapper.eq("sfsc",false)
+                      .eq("xymc",xymc);
+        return xyMapper.selectOne(xyQueryWrapper);
+    }
+
+    /**
      * 获取当前用户id
      * @return
      */

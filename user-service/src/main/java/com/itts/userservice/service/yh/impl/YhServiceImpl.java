@@ -37,6 +37,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -169,6 +170,7 @@ public class YhServiceImpl implements YhService {
     /**
      * 新增用户
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public GetYhVO add(AddYhRequest addYhRequest, String token) {
 
@@ -450,8 +452,6 @@ public class YhServiceImpl implements YhService {
             userId = loginUser.getUserId();
         }
 
-        Date now = new Date();
-
         AddJdxyRequest request = new AddJdxyRequest();
 
         request.setYhId(yh.getId());
@@ -462,8 +462,6 @@ public class YhServiceImpl implements YhService {
         request.setXslbId(yh.getYhlb());
         request.setXslbmc(UserCategoryEnum.getMsgByKey(yh.getYhlb()));
 
-        request.setCjsj(now);
-        request.setGxsj(now);
         request.setCjr(userId);
         request.setGxr(userId);
 
@@ -495,8 +493,6 @@ public class YhServiceImpl implements YhService {
         request.setDslb(yh.getYhlb());
         request.setSsjgId(yh.getJgId());
 
-        request.setCjsj(now);
-        request.setGxsj(now);
         request.setCjr(userId);
         request.setGxr(userId);
 

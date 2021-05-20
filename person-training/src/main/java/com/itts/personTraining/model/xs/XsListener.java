@@ -10,7 +10,9 @@ import com.itts.personTraining.dto.XsDTO;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.pcXs.PcXs;
+import com.itts.personTraining.model.xy.Xy;
 import com.itts.personTraining.service.xs.XsService;
+import com.itts.personTraining.service.xy.XyService;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +46,8 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
     private XsService xsService;
     @Resource
     private PcXsMapper pcXsMapper;
+    @Resource
+    private XyService xyService;
 
     public static XsListener xsListener;
 
@@ -113,7 +117,8 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
             xs.setDsxm(data.getDsxm());
         }
         if(!StringUtils.isBlank(data.getYx())){
-            xs.setYx(data.getYx());
+            Xy xy = xyService.getByCondition(data.getYx());
+            xs.setXyId(xy.getId());
         }
         if(!StringUtils.isBlank(data.getXxxs())){
             xs.setXxxs(data.getXxxs());
