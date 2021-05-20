@@ -285,7 +285,7 @@ public class YhServiceImpl implements YhService {
 
         Date now = new Date();
 
-        BeanUtils.copyProperties(request, old, "cjsj", "cjr");
+        BeanUtils.copyProperties(request, old, "cjsj", "cjr", "mm");
 
         old.setGxsj(now);
         old.setGxr(userId);
