@@ -41,7 +41,6 @@ public interface XsService extends IService<Xs> {
      */
     StuDTO get(Long id);
 
-    StuDTO getByXh(String xh);
     /**
      * 新增学员
      * @param stuDTO
@@ -79,4 +78,11 @@ public interface XsService extends IService<Xs> {
 
     Boolean addKcXs(Long id,Long kcId);
 
+    /**
+     * 根据xh或lxdh查询学员信息
+     * @param xh
+     * @param lxdh
+     * @return
+     */
+    StuDTO selectByXhOrLxdh(String xh, String lxdh);
 }

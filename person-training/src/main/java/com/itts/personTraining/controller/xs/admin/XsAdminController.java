@@ -92,6 +92,19 @@ public class XsAdminController {
     }
 
     /**
+     * 根据xh或lxdh查询学员详情
+     *
+     * @param xh
+     * @return
+     */
+    @GetMapping("/getByXhOrLxdh")
+    @ApiOperation(value = "根据xh或lxdh查询学员详情")
+    public ResponseUtil selectByXhOrLxdh(@RequestParam(value = "xh",required = false) String xh,
+                                       @RequestParam(value = "lxdh",required = false) String lxdh) {
+        return ResponseUtil.success(xsService.selectByXhOrLxdh(xh,lxdh));
+    }
+
+    /**
      * 新增学员
      *
      * @param stuDTO
@@ -110,7 +123,7 @@ public class XsAdminController {
     }
 
     /**
-     * 新增学员
+     * 新增学员(外部调用)
      *
      * @param stuDTO
      * @return
@@ -184,8 +197,23 @@ public class XsAdminController {
         if (stuDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        //checkXh(stuDTO);
+        List<Long> pcIds = stuDTO.getPcIds();
+        if (pcIds == null || pcIds.size() == 0) {
+            throw new WebException(BATCH_NUMBER_ISEMPTY_ERROR);
+        }
+        String xh = stuDTO.getXh();
+        String lxdh = stuDTO.getLxdh();
+        if (xh == null && lxdh == null) {
+            throw new WebException(NUMBER_AND_PHONE_ISEMPTY_ERROR);
+        }
+        if (xh != null) {
+            checkXsExist(xh, null);
+        } else {
+            checkXsExist(null, lxdh);
+        }
+        //checkLxdh(stuDTO);
     }
+
 
 
 
@@ -202,18 +230,33 @@ public class XsAdminController {
                 throw new WebException(USER_EXISTS_ERROR);
             }
         }
-        //checkXh(stuDTO);
+        //checkLxdh(stuDTO);
     }
 
     /**
      * 校验学号
      * @param stuDTO
      */
-    private void checkXh(StuDTO stuDTO) {
+    private void checkLxdh(StuDTO stuDTO) {
         List<Xs> xs = xsService.selectByCondition(null);
         for (Xs x : xs) {
-            if (x.getXh().equals(stuDTO.getXh())) {
-                throw new WebException(STUDENT_NUMBER_EXISTS_ERROR);
+            if (x.getLxdh().equals(stuDTO.getLxdh())) {
+                throw new WebException(PHONE_NUMBER_EXISTS_ERROR);
+            }
+        }
+    }
+
+    /**
+     * 校验学生信息是否存在
+     * @param xh
+     * @param lxdh
+     */
+    public void checkXsExist(String xh, String lxdh) {
+        StuDTO byXh = xsService.selectByXhOrLxdh(xh, lxdh);
+        if (byXh != null) {
+            List<Long> pcIds1 = byXh.getPcIds();
+            if (pcIds1 != null && pcIds1.size() > 0) {
+                throw new WebException(STUDENT_MSG_EXISTS_ERROR);
             }
         }
     }
