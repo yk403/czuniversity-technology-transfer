@@ -80,6 +80,18 @@ public class XsAdminController {
     }
 
     /**
+     * 根据条件查询学员详情
+     *
+     * @param xh
+     * @return
+     */
+    @GetMapping("/getByCondition")
+    @ApiOperation(value = "根据条件查询学员详情")
+    public ResponseUtil getByCondition(@RequestParam(value = "xh",required = false) String xh) {
+        return ResponseUtil.success(xsService.selectByCondition(xh));
+    }
+
+    /**
      * 新增学员
      *
      * @param stuDTO
@@ -105,11 +117,11 @@ public class XsAdminController {
      * @throws WebException
      */
     @PostMapping("/addUser")
-    @ApiOperation(value = "新增学员")
-    public ResponseUtil addUser(@RequestBody StuDTO stuDTO,HttpServletRequest request) throws WebException {
+    @ApiOperation(value = "新增学员(外部调用)")
+    public ResponseUtil addUser(@RequestBody StuDTO stuDTO) throws WebException {
         //检查参数是否合法
         checkRequestUser(stuDTO);
-        if (!xsService.add(stuDTO,request.getHeader("token"))) {
+        if (!xsService.addUser(stuDTO)) {
             throw new WebException(INSERT_FAIL);
         }
         return ResponseUtil.success("新增学员成功!");
@@ -172,7 +184,10 @@ public class XsAdminController {
         if (stuDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+        //checkXh(stuDTO);
     }
+
+
 
     /**
      * 校验参数
@@ -187,7 +202,20 @@ public class XsAdminController {
                 throw new WebException(USER_EXISTS_ERROR);
             }
         }
+        //checkXh(stuDTO);
+    }
 
+    /**
+     * 校验学号
+     * @param stuDTO
+     */
+    private void checkXh(StuDTO stuDTO) {
+        List<Xs> xs = xsService.selectByCondition(null);
+        for (Xs x : xs) {
+            if (x.getXh().equals(stuDTO.getXh())) {
+                throw new WebException(STUDENT_NUMBER_EXISTS_ERROR);
+            }
+        }
     }
 
 }

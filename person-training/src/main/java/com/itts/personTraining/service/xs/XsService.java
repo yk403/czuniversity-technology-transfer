@@ -50,6 +50,13 @@ public interface XsService extends IService<Xs> {
     boolean add(StuDTO stuDTO,String token);
 
     /**
+     * 新增学员(外部调用)
+     * @param stuDTO
+     * @return
+     */
+    boolean addUser(StuDTO stuDTO);
+
+    /**
      * 更新学员
      * @param stuDTO
      * @return
@@ -71,4 +78,5 @@ public interface XsService extends IService<Xs> {
     List<Xs> selectByCondition(String xh);
 
     Boolean addKcXs(Long id,Long kcId);
+
 }

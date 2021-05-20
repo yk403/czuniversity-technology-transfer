@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,7 +16,9 @@ import java.util.Date;
  * @Description: 用户对象
  */
 @Data
-public class Yh {
+public class Yh implements Serializable {
+
+    private static final long serialVersionUID = 5792382643716241476L;
     /**
      * 主键ID
      */
