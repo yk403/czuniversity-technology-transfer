@@ -35,7 +35,7 @@ public class XsController {
     @GetMapping("/get/")
     @ApiOperation(value = "获取学员详情")
     public ResponseUtil get(@RequestParam(value = "xh") String xh) {
-        return ResponseUtil.success(xsService.getByXh(xh));
+        return ResponseUtil.success(xsService.selectByXhOrLxdh(xh,null));
     }
 
     /**

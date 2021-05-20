@@ -41,13 +41,19 @@ public interface XsService extends IService<Xs> {
      */
     StuDTO get(Long id);
 
-    StuDTO getByXh(String xh);
     /**
      * 新增学员
      * @param stuDTO
      * @return
      */
-    boolean add(StuDTO stuDTO);
+    boolean add(StuDTO stuDTO,String token);
+
+    /**
+     * 新增学员(外部调用)
+     * @param stuDTO
+     * @return
+     */
+    boolean addUser(StuDTO stuDTO);
 
     /**
      * 更新学员
@@ -71,4 +77,12 @@ public interface XsService extends IService<Xs> {
     List<Xs> selectByCondition(String xh);
 
     Boolean addKcXs(Long id,Long kcId);
+
+    /**
+     * 根据xh或lxdh查询学员信息
+     * @param xh
+     * @param lxdh
+     * @return
+     */
+    StuDTO selectByXhOrLxdh(String xh, String lxdh);
 }

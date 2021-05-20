@@ -83,6 +83,11 @@ public enum ErrorCodeEnum {
     TEACHING_NAME_OR_BH_ISEMPTY_ERROR(-45019,"教学楼名称或教室编号不可为空!"),
     STUDENT_MSG_NOT_EXISTS_ERROR(-45020,"学生信息不存在!"),
     USER_EXISTS_ERROR(-45021,"用户已存在!"),
+    PHONE_NUMBER_EXISTS_ERROR(-45022,"手机号已存在!"),
+    PHONE_NUMBER_ISEMPTY_ERROR(-45023,"手机号不可为空!"),
+    EDU_TYPE_ERROR(-45024,"教育类型不合法!"),
+    NUMBER_AND_PHONE_ISEMPTY_ERROR(-45025,"学号和联系电话不可都为空!"),
+    STUDENT_MSG_EXISTS_ERROR(-45026, "学员信息已存在,不可新增!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
