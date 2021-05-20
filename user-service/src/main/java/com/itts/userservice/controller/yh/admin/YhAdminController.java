@@ -198,7 +198,17 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        checkRequest(addYhRequest);
+        if (addYhRequest == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(addYhRequest.getYhlx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(addYhRequest.getYhm())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
 
         //检查数据库中是否存在要更新的数据
         Yh old = yhService.get(addYhRequest.getId());
@@ -206,6 +216,20 @@ public class YhAdminController {
         GetYhVO result = yhService.update(addYhRequest, old);
 
         return ResponseUtil.success(result);
+    }
+
+    @ApiOperation(value = "重置密码")
+    @PutMapping("/reset/password/{id}")
+    public ResponseUtil resetPassword(@PathVariable("id") Long id) {
+
+        Yh yh = yhService.get(id);
+        if (yh == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        yhService.resetPassword(yh);
+
+        return ResponseUtil.success();
     }
 
     /**
@@ -246,8 +270,10 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        if (StringUtils.isBlank(yh.getYhlb())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        if(StringUtils.equals(yh.getYhlx(), UserTypeEnum.IN_USER.getCode())){
+            if (StringUtils.isBlank(yh.getYhlb())) {
+                throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            }
         }
 
         if (StringUtils.isBlank(yh.getYhm())) {

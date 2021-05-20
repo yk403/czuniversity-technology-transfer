@@ -201,7 +201,7 @@ public class YhServiceImpl implements YhService {
 
             Js defaultJs = jsMapper.getDefault(addYhRequest.getYhlx(), addYhRequest.getYhlb());
 
-            if(defaultJs != null){
+            if (defaultJs != null) {
 
                 YhJsGl yhJsGl = new YhJsGl();
 
@@ -285,7 +285,7 @@ public class YhServiceImpl implements YhService {
 
         Date now = new Date();
 
-        BeanUtils.copyProperties(request, old, "cjsj", "cjr");
+        BeanUtils.copyProperties(request, old, "cjsj", "cjr", "mm");
 
         old.setGxsj(now);
         old.setGxr(userId);
@@ -316,6 +316,25 @@ public class YhServiceImpl implements YhService {
         BeanUtils.copyProperties(old, vo);
 
         return vo;
+    }
+
+    /**
+     * 重置密码
+     */
+    @Override
+    public void resetPassword(Yh yh) {
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        Long userId = null;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        }
+
+        yh.setMm(new BCryptPasswordEncoder().encode(yh.getYhm()));
+        yh.setGxr(userId);
+        yh.setGxsj(new Date());
+
+        yhMapper.updateById(yh);
     }
 
     /**
