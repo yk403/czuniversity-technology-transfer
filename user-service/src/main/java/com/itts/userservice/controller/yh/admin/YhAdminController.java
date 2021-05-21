@@ -206,10 +206,6 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        if (StringUtils.isBlank(addYhRequest.getYhm())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-
         //检查数据库中是否存在要更新的数据
         Yh old = yhService.get(addYhRequest.getId());
 
