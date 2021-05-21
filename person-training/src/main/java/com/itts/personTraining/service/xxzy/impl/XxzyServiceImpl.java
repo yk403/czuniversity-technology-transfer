@@ -62,6 +62,8 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             query.like("mc", condition);
         }
 
+        query.orderByDesc("cjsj");
+
         List xxzys = xxzyMapper.selectList(query);
 
         PageInfo pageInfo = new PageInfo(xxzys);
