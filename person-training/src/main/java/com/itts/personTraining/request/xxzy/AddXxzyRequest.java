@@ -1,11 +1,13 @@
 package com.itts.personTraining.request.xxzy;
 
+import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @Description：
@@ -85,23 +87,14 @@ public class AddXxzyRequest implements Serializable {
     private String zz;
 
     /**
-     * 视频直播ID
-     */
-    @ApiModelProperty(value = "视频直播ID")
-    private Long spzyId;
-
-    /**
-     * 下载地址
-     */
-    @ApiModelProperty(value = "下载地址")
-    private String xzdz;
-
-    @ApiModelProperty(value = "播放地址")
-    private String bfdz;
-
-    /**
      * 是否分享
      */
     @ApiModelProperty(value = "是否分享")
     private Boolean sffx;
+
+    /**
+     * 附件资源
+     */
+    @ApiModelProperty(value = "附件资源")
+    private List<AddFjzyRequest> fjzys;
 }

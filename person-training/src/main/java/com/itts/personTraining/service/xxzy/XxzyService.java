@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
+import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
+import com.itts.personTraining.vo.xxzy.GetXxzyVO;
 
 /**
  * <p>
@@ -22,7 +24,17 @@ public interface XxzyService extends IService<Xxzy> {
                         String secondCategory, Long courseId, String condition);
 
     /**
+     * 获取详情
+     */
+    GetXxzyVO get(Long id);
+
+    /**
      * 新增
      */
     Xxzy add(AddXxzyRequest addXxzyRequest);
+
+    /**
+     * 更新
+     */
+    Xxzy update(UpdateXxzyRequest updateXxzyRequest, Xxzy xxzy, Long userId);
 }
