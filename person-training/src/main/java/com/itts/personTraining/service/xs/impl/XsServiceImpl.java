@@ -218,7 +218,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     }
                     return false;
                 } else {
-                    //说明用户表不存在该用户信息,则用户表新增,学生表新增
+                    //说明用户表不存在该用户信息,则用户表新增,学生表查询判断是否存在
                     String xh = stuDTO.getXh();
                     yh.setYhbh(xh);
                     yh.setYhm(xh);
@@ -231,6 +231,12 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     Object data1 = yhService.rpcAdd(yh, token).getData();
                     if (data1 == null) {
                         throw new ServiceException(USER_INSERT_ERROR);
+                    }
+                    StuDTO dto = xsService.selectByCondition(xh, null, null);
+                    if (dto != null) {
+                        //存在,则更新
+                    } else {
+                        //不存在.则新增
                     }
                     Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
                     Long yh1Id = yh1.getId();

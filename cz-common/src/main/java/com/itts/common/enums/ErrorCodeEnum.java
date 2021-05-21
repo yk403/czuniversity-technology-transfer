@@ -94,6 +94,7 @@ public enum ErrorCodeEnum {
     USER_INSERT_ERROR(-45030, "用户表新增用户失败!"),
     STUDENT_NUMBER_ISEMPTY_ERROR(-45031, "学号不可为空!"),
     USER_UPDATE_ERROR(-45032, "用户表更新用户失败!"),
+    TEACHER_NUMBER_ISEMPTY_ERROR(-45033, "导师编号不可为空!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

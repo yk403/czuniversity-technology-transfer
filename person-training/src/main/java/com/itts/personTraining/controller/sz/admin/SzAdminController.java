@@ -91,7 +91,7 @@ public class SzAdminController {
     @ApiOperation(value = "新增师资")
     public ResponseUtil addSz(@RequestBody Sz sz) throws WebException {
         //检查参数是否合法
-        checkRequest(sz);
+        checkSzRequest(sz);
         if (!szService.addSz(sz)) {
             throw new WebException(INSERT_FAIL);
         }
@@ -148,6 +148,17 @@ public class SzAdminController {
         return ResponseUtil.success("删除师资成功!");
     }
 
+    /**
+     * 校验参数
+     */
+    private void checkSzRequest(Sz sz) throws WebException {
+        if (sz == null) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (sz.getDsbh() == null) {
+            throw new WebException(TEACHER_NUMBER_ISEMPTY_ERROR);
+        }
+    }
     /**
      * 校验参数
      */
