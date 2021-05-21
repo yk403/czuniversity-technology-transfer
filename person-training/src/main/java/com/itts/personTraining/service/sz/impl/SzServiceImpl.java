@@ -93,6 +93,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         if (szMapper.selectById(sz.getId()) != null) {
             return false;
         }
+
         Long userId = getUserId();
         sz.setCjr(userId);
         sz.setGxr(userId);
