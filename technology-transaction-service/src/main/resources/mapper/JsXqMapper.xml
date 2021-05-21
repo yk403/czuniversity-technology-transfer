@@ -204,7 +204,7 @@
 	</select>
 	<!--归档清算用-->
 	<select id="findGdJsXq" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,xq.sjhm as sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status,sh.jszt as jszt,kz.fwf as fwf,kz.lcdj as lcdj,ly.mc as lyName,bm.dwmc as srfmc,bm.sjhm as srfhm
+		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,xq.sjhm as sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,xq.dwmc as dwmc,xq.dz as dz,xq.fr as fr,xq.contracts as contracts,xq.lxrdh as lxrdh,xq.zj as zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status,sh.jszt as jszt,kz.fwf as fwf,kz.lcdj as lcdj,ly.mc as lyName,bm.dwmc as srfmc,bm.sjhm as srfhm
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id) left join t_js_lc_kz kz on(kz.xq_id=xq.id) left join t_js_bm bm on (bm.id = kz.bm_id)
 		<where>
 			<!--后台能查询0或者1的数据 -->

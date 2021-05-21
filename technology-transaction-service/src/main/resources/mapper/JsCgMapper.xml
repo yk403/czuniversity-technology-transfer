@@ -9,7 +9,7 @@
           cg.is_delete = 0
 		  		  <if test="map.id != null"> and id = #{map.id} </if>
 			<if test="map.soft != null"> and cg.soft  = #{map.soft} </if>
-			<if test="map.cjjg != null"> and id = #{map.cjjg} </if>
+			<if test="map.cjjg != null"> and cjjg = #{map.cjjg} </if>
 		  		  <if test="map.cgqsr != null and map.cgqsr != ''"> and cgqsr = #{map.cgqsr} </if>
 		  		  <if test="map.qsrlxdh != null and map.qsrlxdh != ''"> and qsrlxdh = #{map.qsrlxdh} </if>
 		  		  <if test="map.cgmc != null and map.cgmc != ''"> and cgmc = #{map.cgmc} </if>

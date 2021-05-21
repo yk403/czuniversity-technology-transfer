@@ -32,7 +32,7 @@ import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
  * @since 2021-05-18
  */
 @RestController
-@RequestMapping(BASE_URL+"/v1/lyZw")
+@RequestMapping(BASE_URL+"/v1/LyZw")
 @Api(value = "LyZwController", tags = "双创路演展位门户端")
 public class LyZwController {
     @Autowired
@@ -41,7 +41,7 @@ public class LyZwController {
 //     * 获取列表
 
     @ApiOperation(value = "获取列表")
-    @GetMapping("/list")
+    @PostMapping("/list")
     public ResponseUtil find(@RequestBody Map<String, Object> params) {
 //return null;
         return ResponseUtil.success(lyZwService.findLyZwFront(params));
