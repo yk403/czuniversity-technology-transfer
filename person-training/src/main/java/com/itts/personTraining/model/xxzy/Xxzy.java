@@ -108,22 +108,10 @@ public class Xxzy implements Serializable {
     private String zz;
 
     /**
-     * 视频直播ID
+     * 附件资源ID
      */
-    @ApiModelProperty(value = "视频直播ID")
-    private Long spzyId;
-
-    /**
-     * 下载地址
-     */
-    @ApiModelProperty(value = "下载地址")
-    private String xzdz;
-
-    /**
-     * 播放地址
-     */
-    @ApiModelProperty(value = "播放地址")
-    private String bfdz;
+    @ApiModelProperty(value = "附件资源ID")
+    private String fjzyId;
 
     /**
      * 是否分享
