@@ -65,7 +65,11 @@ public class SjzdServiceImpl implements SjzdService {
      */
     @Override
     public PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType, String dictionary, String zdbm, Long parentId) {
-        PageHelper.startPage(pageNum, pageSize);
+
+        if(pageSize != -1){
+            PageHelper.startPage(pageNum, pageSize);
+        }
+
         QueryWrapper<Sjzd> objectQueryWrapper = new QueryWrapper<>();
         objectQueryWrapper.eq("sfsc", false);
 

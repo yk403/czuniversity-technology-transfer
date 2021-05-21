@@ -6,17 +6,25 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.common.utils.common.CommonUtils;
+import com.itts.personTraining.mapper.fjzy.FjzyMapper;
 import com.itts.personTraining.mapper.xxzy.XxzyMapper;
+import com.itts.personTraining.model.fjzy.Fjzy;
 import com.itts.personTraining.model.xxzy.Xxzy;
+import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
+import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
+import com.itts.personTraining.vo.xxzy.GetXxzyVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -31,6 +39,9 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
     @Autowired
     private XxzyMapper xxzyMapper;
+
+    @Autowired
+    private FjzyMapper fjzyMapper;
 
     /**
      * 获取列表 - 分页
@@ -62,11 +73,47 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             query.like("mc", condition);
         }
 
+        query.orderByDesc("cjsj");
+
         List xxzys = xxzyMapper.selectList(query);
 
         PageInfo pageInfo = new PageInfo(xxzys);
 
         return pageInfo;
+    }
+
+    /**
+     * 获取详情
+     */
+    @Override
+    public GetXxzyVO get(Long id) {
+
+
+        Xxzy xxzy = xxzyMapper.selectOne(new QueryWrapper<Xxzy>().eq("id", id).eq("sfsc", false));
+
+        if (xxzy == null) {
+            return null;
+        }
+
+        GetXxzyVO vo = new GetXxzyVO();
+        BeanUtils.copyProperties(xxzy, vo);
+
+        if (StringUtils.isNotBlank(xxzy.getFjzyId())) {
+
+            List<AddFjzyRequest> fjzys = fjzyMapper.selectList(new QueryWrapper<Fjzy>().eq("fjzy_id", xxzy.getFjzyId()))
+                    .stream().map(obj -> {
+
+                AddFjzyRequest request = new AddFjzyRequest();
+                BeanUtils.copyProperties(obj, request);
+                return request;
+
+            }).collect(Collectors.toList());
+
+            vo.setFjzys(fjzys);
+        }
+
+
+        return vo;
     }
 
     /**
@@ -78,10 +125,10 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         LoginUser loginUser = SystemConstant.threadLocal.get();
 
         Long userId = null;
-        if(loginUser != null){
+        if (loginUser != null) {
             userId = loginUser.getUserId();
         }
-        
+
         Xxzy xxzy = new Xxzy();
         BeanUtils.copyProperties(addXxzyRequest, xxzy);
 
@@ -92,7 +139,74 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         xxzy.setCjsj(now);
         xxzy.setGxsj(now);
 
+        if (!CollectionUtils.isEmpty(addXxzyRequest.getFjzys())) {
+
+            String fjzyId = CommonUtils.generateUUID();
+            xxzy.setFjzyId(fjzyId);
+
+            List<AddFjzyRequest> fjzys = addXxzyRequest.getFjzys();
+
+            for (AddFjzyRequest addFjzy : fjzys) {
+
+                Fjzy fjzy = new Fjzy();
+                BeanUtils.copyProperties(addFjzy, fjzy);
+
+                fjzy.setFjzyId(fjzyId);
+                fjzy.setCjr(userId);
+                fjzy.setCjsj(now);
+
+                fjzyMapper.insert(fjzy);
+            }
+        }
         xxzyMapper.insert(xxzy);
+
+        return xxzy;
+    }
+
+    /**
+     * 更新
+     */
+    @Override
+    public Xxzy update(UpdateXxzyRequest updateXxzyRequest, Xxzy xxzy, Long userId) {
+
+        Date now = new Date();
+
+        BeanUtils.copyProperties(updateXxzyRequest, xxzy, "cjr", "cjsj", "fjzy_id", "lll", "zz", "sfsc", "sfsj", "sjsj");
+        xxzy.setGxsj(now);
+        xxzy.setGxr(userId);
+
+        xxzyMapper.updateById(xxzy);
+
+        if (!CollectionUtils.isEmpty(updateXxzyRequest.getFjzys())) {
+
+            List<AddFjzyRequest> fjzys = updateXxzyRequest.getFjzys();
+
+            String xxzyFjzyId = xxzy.getFjzyId();
+
+            //判断当前学习资源是否有附件资源
+            if (StringUtils.isNotBlank(xxzyFjzyId)) {
+
+                //删除当前所有的附件资源，增加新的附件资源
+                fjzyMapper.delete(new QueryWrapper<Fjzy>().eq("fjzy_id", xxzy.getFjzyId()));
+
+            } else {
+
+                xxzyFjzyId = CommonUtils.generateUUID();
+            }
+
+            for (AddFjzyRequest addFjzy : fjzys) {
+
+                Fjzy fjzy = new Fjzy();
+                BeanUtils.copyProperties(addFjzy, fjzy);
+
+                fjzy.setFjzyId(xxzyFjzyId);
+                fjzy.setCjr(userId);
+                fjzy.setCjsj(now);
+
+                fjzyMapper.insert(fjzy);
+            }
+        }
+
         return xxzy;
     }
 }

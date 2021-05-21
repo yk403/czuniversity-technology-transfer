@@ -11,6 +11,7 @@ import com.itts.userservice.enmus.UserTypeEnum;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.request.yh.AddYhRequest;
+import com.itts.userservice.request.yh.RpcAddYhRequest;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.yh.GetYhVO;
@@ -166,19 +167,40 @@ public class YhAdminController {
 
         GetYhVO result = yhService.add(addYhRequest, request.getHeader(SystemConstant.TOKEN_PREFIX));
 
+        return ResponseUtil.success(result);
+    }
 
-        /*Yh Yh = new Yh();
-        BeanUtils.copyProperties(addYhRequest, Yh);
+    /**
+     * 新增
+     *
+     * @author fl
+     */
+    @PostMapping("/rpc/add/")
+    @ApiOperation(value = "新增")
+    public ResponseUtil rpcAdd(@RequestBody RpcAddYhRequest yh) throws WebException {
 
         //检查参数是否合法
-        List<Long> jsidlist = addYhRequest.getJsidlist();
-        if (jsidlist == null) {
+        if (yh == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        jsidlist.forEach(jsid -> {
-            Boolean flag = yhService.addYhAndJsmc(Yh, jsid);
-        });*/
+        if (StringUtils.isBlank(yh.getYhlx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(yh.getYhlb())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(yh.getYhm())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(yh.getMm())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        GetYhVO result = yhService.rpcAdd(yh);
 
         return ResponseUtil.success(result);
     }
@@ -203,10 +225,6 @@ public class YhAdminController {
         }
 
         if (StringUtils.isBlank(addYhRequest.getYhlx())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-
-        if (StringUtils.isBlank(addYhRequest.getYhm())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
@@ -270,7 +288,7 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        if(StringUtils.equals(yh.getYhlx(), UserTypeEnum.IN_USER.getCode())){
+        if (StringUtils.equals(yh.getYhlx(), UserTypeEnum.IN_USER.getCode())) {
             if (StringUtils.isBlank(yh.getYhlb())) {
                 throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
             }

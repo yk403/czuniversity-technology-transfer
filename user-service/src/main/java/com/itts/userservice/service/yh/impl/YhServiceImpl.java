@@ -26,6 +26,7 @@ import com.itts.userservice.model.yh.YhJsGl;
 import com.itts.userservice.request.jsxy.AddJdxyRequest;
 import com.itts.userservice.request.szgl.AddSzglRequest;
 import com.itts.userservice.request.yh.AddYhRequest;
+import com.itts.userservice.request.yh.RpcAddYhRequest;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.yh.GetYhVO;
 import com.itts.userservice.vo.yh.YhListVO;
@@ -245,6 +246,58 @@ public class YhServiceImpl implements YhService {
     }
 
     /**
+     * 新增 - rpc
+     */
+    @Override
+    public GetYhVO rpcAdd(RpcAddYhRequest addYhRequest) {
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+
+        Long userId = null;
+
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        }
+
+        Date now = new Date();
+
+        Yh yh = new Yh();
+
+        BeanUtils.copyProperties(addYhRequest, yh);
+
+        yh.setMm(new BCryptPasswordEncoder().encode(addYhRequest.getMm()));
+
+        yh.setGxsj(now);
+        yh.setCjsj(now);
+        yh.setCjr(userId);
+        yh.setGxr(userId);
+
+        yhMapper.insert(yh);
+
+        //设置默认角色
+        Js defaultJs = jsMapper.getDefault(addYhRequest.getYhlx(), addYhRequest.getYhlb());
+
+        if (defaultJs != null) {
+
+            YhJsGl yhJsGl = new YhJsGl();
+
+            yhJsGl.setJsId(defaultJs.getId());
+            yhJsGl.setYhId(yh.getId());
+            yhJsGl.setGxsj(now);
+            yhJsGl.setCjsj(now);
+            yhJsGl.setCjr(userId);
+            yhJsGl.setGxr(userId);
+
+            yhJsGlMapper.insert(yhJsGl);
+        }
+
+        GetYhVO vo = new GetYhVO();
+        BeanUtils.copyProperties(yh, vo);
+
+        return vo;
+    }
+
+    /**
      * 级联新增
      */
     /*@Override
@@ -285,7 +338,7 @@ public class YhServiceImpl implements YhService {
 
         Date now = new Date();
 
-        BeanUtils.copyProperties(request, old, "cjsj", "cjr", "mm");
+        BeanUtils.copyProperties(request, old, "cjsj", "cjr", "mm", "yhm");
 
         old.setGxsj(now);
         old.setGxr(userId);

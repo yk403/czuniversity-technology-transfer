@@ -7,6 +7,7 @@
         <id column="id" property="id" />
         <result column="mc" property="mc" />
         <result column="kc_id" property="kcId" />
+        <result column="kcmc" property="kcmc" />
         <result column="tmyjfl" property="tmyjfl" />
         <result column="tmejfl" property="tmejfl" />
         <result column="tmlx" property="tmlx" />
@@ -24,7 +25,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, mc, kc_id, tmyjfl, tmejfl, tmlx, fz, sfzqda, ctr, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
+        id, mc, kc_id, kcmc, tmyjfl, tmejfl, tmlx, fz, sfzqda, ctr, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>
