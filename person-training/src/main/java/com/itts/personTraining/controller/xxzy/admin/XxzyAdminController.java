@@ -32,7 +32,7 @@ import java.util.Objects;
  */
 @Api(tags = "学习资源后台管理")
 @RestController
-@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/xxzy/v1")
+@RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/xxzy")
 public class XxzyAdminController {
 
     @Autowired
