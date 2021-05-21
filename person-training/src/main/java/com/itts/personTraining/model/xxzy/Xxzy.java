@@ -54,6 +54,12 @@ public class Xxzy implements Serializable {
     private Long kcId;
 
     /**
+     * 课程名称
+     */
+    @ApiModelProperty(value = "课程名称")
+    private String kcmc;
+
+    /**
      * 资源类别: in - 内部资源; out - 外部资源
      */
     @ApiModelProperty(value = "资源类别: in - 内部资源; out - 外部资源")
