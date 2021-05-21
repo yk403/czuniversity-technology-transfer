@@ -43,7 +43,7 @@ public class LyBmController {
      * 获取列表
      */
     @ApiOperation(value = "获取列表")
-    @GetMapping("/list")
+    @PostMapping("/list")
     public ResponseUtil find(@RequestBody Map<String, Object> params) {
         return ResponseUtil.success(lyBmService.findLyBmFront(params));
     }

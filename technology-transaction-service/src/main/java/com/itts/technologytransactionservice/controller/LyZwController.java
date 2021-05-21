@@ -41,7 +41,7 @@ public class LyZwController {
 //     * 获取列表
 
     @ApiOperation(value = "获取列表")
-    @GetMapping("/list")
+    @PostMapping("/list")
     public ResponseUtil find(@RequestBody Map<String, Object> params) {
 //return null;
         return ResponseUtil.success(lyZwService.findLyZwFront(params));
