@@ -121,6 +121,10 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
+        if(yh.getSfsc()){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
         GetYhVO getYhVO = new GetYhVO();
         BeanUtils.copyProperties(yh, getYhVO);
 
