@@ -232,16 +232,18 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     if (data1 == null) {
                         throw new ServiceException(USER_INSERT_ERROR);
                     }
-                    StuDTO dto = xsService.selectByCondition(xh, null, null);
-                    if (dto != null) {
-                        //存在,则更新
-                    } else {
-                        //不存在.则新增
-                    }
                     Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
                     Long yh1Id = yh1.getId();
                     stuDTO.setYhId(yh1Id);
-                    return addXsAndPcXs(stuDTO);
+                    StuDTO dto = xsService.selectByCondition(xh, null, null);
+                    if (dto != null) {
+                        //存在,则更新
+                        stuDTO.setId(dto.getId());
+                        return updateXsAndAddPcXs(stuDTO);
+                    } else {
+                        //不存在.则新增
+                        return addXsAndPcXs(stuDTO);
+                    }
                 }
             } else {
                 throw new ServiceException(STUDENT_NUMBER_ISEMPTY_ERROR);
@@ -276,7 +278,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     stuDTO.setId(dto.getId());
                     return updateXsAndAddPcXs(stuDTO);
                 } else {
-                    //说明用户表不存在该用户信息,则用户表新增,学生表更新
+                    //说明用户表不存在该用户信息,则用户表新增,学生表查询判断是否存在
                     Yh yh = new Yh();
                     yh.setYhbh(xh);
                     yh.setYhm(xh);
@@ -293,8 +295,15 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
                     Long yh1Id = yh1.getId();
                     stuDTO.setYhId(yh1Id);
-                    return addXsAndPcXs(stuDTO);
-
+                    StuDTO dto = xsService.selectByCondition(null, lxdh, null);
+                    if (dto != null) {
+                        //存在,则更新
+                        stuDTO.setId(dto.getId());
+                        return updateXsAndAddPcXs(stuDTO);
+                    } else {
+                        //不存在.则新增
+                        return addXsAndPcXs(stuDTO);
+                    }
                 }
             } else {
                 throw new ServiceException(PHONE_NUMBER_ISEMPTY_ERROR);

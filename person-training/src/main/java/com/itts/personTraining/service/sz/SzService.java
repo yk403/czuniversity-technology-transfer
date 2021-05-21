@@ -66,4 +66,12 @@ public interface SzService extends IService<Sz> {
      * @return
      */
     boolean addSz(Sz sz);
+
+    /**
+     * 根据条件查询师资信息
+     * @param dsbh
+     * @param yhId
+     * @return
+     */
+    Sz selectByCondition(String dsbh, Long yhId);
 }

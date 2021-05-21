@@ -24,6 +24,11 @@ public class KcDTO {
     private Long id;
 
     /**
+     * 转化给前端使用
+     */
+    private Long kcId;
+
+    /**
      * 师资ids
      */
     @ApiModelProperty(value = "师资ids", required = true)

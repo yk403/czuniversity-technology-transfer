@@ -8,8 +8,10 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.mapper.sz.SzMapper;
+import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.model.yh.Yh;
 import com.itts.personTraining.service.sz.SzService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -41,7 +43,6 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
 
     @Resource
     private SzMapper szMapper;
-
     @Autowired
     private SzService szService;
     @Autowired
@@ -93,7 +94,31 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         if (szMapper.selectById(sz.getId()) != null) {
             return false;
         }
+        Long userId = getUserId();
+        sz.setCjr(userId);
+        sz.setGxr(userId);
+        //通过用户编号查询
+        Object data = yhService.getByCode(sz.getDsbh(), token).getData();
+        String yhlx = IN.getKey();
+        String yhlb = sz.getDslb();
+        Long ssjgId = sz.getSsjgId();
+        if (data != null) {
+            //用户表存在用户信息,更新用户信息
+            GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
+            Yh yh = new Yh();
+            yh.setId(getYhVo.getId());
+            yh.setZsxm(sz.getDsxm());
+            yh.setYhlx(yhlx);
+            yh.setYhlb(yhlb);
+            yh.setJgId(ssjgId);
+            Sz sz1 = szService.selectByCondition(sz.getDsbh(), null);
 
+
+        } else {
+            //用户表没有用户信息,新增用户信息,学员表查询是否存在
+            return false;
+        }
+        /*
         Long userId = getUserId();
         sz.setCjr(userId);
         sz.setGxr(userId);
@@ -117,7 +142,8 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         } else {
             sz.setId(sz1.getId());
             return szService.updateById(sz);
-        }
+        }*/
+        return false;
     }
 
     /**
@@ -135,6 +161,22 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         sz.setCjr(userId);
         sz.setGxr(userId);
         return szService.save(sz);
+    }
+
+    /**
+     * 根据条件查询师资信息
+     * @param dsbh
+     * @param yhId
+     * @return
+     */
+    @Override
+    public Sz selectByCondition(String dsbh, Long yhId) {
+        log.info("【人才培养 - 根据师资编号:{},用户id:{}查询师资信息】",dsbh,yhId);
+        QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
+        szQueryWrapper.eq("sfsc",false)
+                .eq(StringUtils.isNotBlank(dsbh),"dsbh",dsbh)
+                .eq(yhId != null,"yh_id",yhId);
+        return szMapper.selectOne(szQueryWrapper);
     }
 
     /**

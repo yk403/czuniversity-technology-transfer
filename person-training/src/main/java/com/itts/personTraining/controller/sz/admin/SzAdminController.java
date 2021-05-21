@@ -63,6 +63,19 @@ public class SzAdminController {
     }
 
     /**
+     * 根据条件查询师资详情
+     * @param dsbh
+     * @param yhId
+     * @return
+     */
+    @GetMapping("/getByCondition")
+    @ApiOperation(value = "根据条件查询师资详情")
+    public ResponseUtil selectByCondition(@RequestParam(value = "dsbh",required = false) String dsbh,
+                                          @RequestParam(value = "yhId",required = false) Long yhId) {
+        return ResponseUtil.success(szService.selectByCondition(dsbh,yhId));
+    }
+
+    /**
      * 新增师资
      *
      * @param sz
