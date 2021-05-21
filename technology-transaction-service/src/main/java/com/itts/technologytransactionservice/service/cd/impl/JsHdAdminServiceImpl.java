@@ -160,6 +160,11 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 		if(tJsHd!=null && tJsHd.getHdzt() == 0){
 			tJsHd.setId(id);
 			tJsHd.setIsDelete(2);
+			if(tJsHd.getHdlx() == 0 || tJsHd.getHdlx() == 2){
+
+			}else if(tJsHd.getHdlx() == 1){
+
+			}
 			jsHdMapper.updateById(tJsHd);
 		}else{
 			throw new ServiceException("活动已开始过，无法删除");
