@@ -277,6 +277,22 @@ public class TJsXq implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date yxqjssj;
 	/**
+	 * 服务费(默认为落锤金额的5%)
+	 */
+	private BigDecimal fwf;
+	/**
+	 * 落锤定价
+	 */
+	private Integer lcdj;
+	/**
+	 * 受让方
+	 */
+	private String srfmc;
+	/**
+	 * 受让方联系电话
+	 */
+	private String srfhm;
+	/**
 	 * 底价
 	 */
 	private BigDecimal dj;
