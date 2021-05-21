@@ -196,6 +196,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 Yh yh = new Yh();
                 String xm = stuDTO.getXm();
                 Long jgId = stuDTO.getJgId();
+                //String lxdh = stuDTO.getLxdh();
                 String yhlx = IN.getKey();
                 String yhlb = POSTGRADUATE.getKey();
                 if (data != null) {
@@ -204,6 +205,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     //作更新操作
                     yh.setId(getYhVo.getId());
                     yh.setZsxm(xm);
+                    //yh.setLxdh(lxdh);
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
@@ -222,6 +224,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh.setYhm(xh);
                     yh.setMm(xh);
                     yh.setZsxm(xm);
+                    //yh.setLxdh(lxdh);
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
@@ -285,6 +288,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     Long yh1Id = yh1.getId();
                     stuDTO.setYhId(yh1Id);
                     return addXsAndPcXs(stuDTO);
+
                 }
             } else {
                 throw new ServiceException(PHONE_NUMBER_ISEMPTY_ERROR);
