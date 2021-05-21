@@ -158,9 +158,10 @@ public class KcAdminController {
         if (kcDTO.getKcdm() == null) {
             throw new WebException(TEACH_TYPE_ISEMPTY_ERROR);
         }
-        List<Kc> kcList = kcService.getByCondition(null);
-        for (Kc kc : kcList) {
-            if (kc.getKcdm().equals(kcDTO.getKcdm()) || kc.getKcmc().equals(kcDTO.getKcmc())) {
+        List<KcDTO> kcList = kcService.getByCondition(null);
+
+        for (KcDTO kcDTO1 : kcList) {
+            if (kcDTO1.getKcdm().equals(kcDTO.getKcdm()) || kcDTO1.getKcmc().equals(kcDTO.getKcmc())) {
                 throw new WebException(COURSE_EXISTS_ERROR);
             }
         }

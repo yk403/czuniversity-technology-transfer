@@ -63,6 +63,20 @@ public class SzAdminController {
     }
 
     /**
+     * 根据条件查询师资详情
+     * @param dsbh
+     * @param yhId
+     * @return
+     */
+    @GetMapping("/getByCondition")
+    @ApiOperation(value = "根据条件查询师资详情")
+    public ResponseUtil selectByCondition(@RequestParam(value = "dsbh",required = false) String dsbh,
+                                          @RequestParam(value = "xb",required = false) String xb,
+                                          @RequestParam(value = "yhId",required = false) Long yhId) {
+        return ResponseUtil.success(szService.selectByCondition(dsbh,xb,yhId));
+    }
+
+    /**
      * 新增师资
      *
      * @param sz
@@ -88,7 +102,7 @@ public class SzAdminController {
      * @throws WebException
      */
     @PostMapping("/addSz")
-    @ApiOperation(value = "新增师资")
+    @ApiOperation(value = "新增师资(外部调用)")
     public ResponseUtil addSz(@RequestBody Sz sz) throws WebException {
         //检查参数是否合法
         checkSzRequest(sz);
@@ -166,7 +180,7 @@ public class SzAdminController {
         if (sz == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (szService.selectByDsbh(sz.getDsbh()) != null) {
+        if (szService.selectByCondition(sz.getDsbh(),sz.getXb(),null) != null) {
             throw new WebException(TEACHER_NUMBER_EXISTS_ERROR);
         }
         String dslb = sz.getDslb();
