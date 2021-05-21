@@ -70,8 +70,9 @@ public interface SzService extends IService<Sz> {
     /**
      * 根据条件查询师资信息
      * @param dsbh
+     * @param xb
      * @param yhId
      * @return
      */
-    Sz selectByCondition(String dsbh, Long yhId);
+    Sz selectByCondition(String dsbh,String xb, Long yhId);
 }

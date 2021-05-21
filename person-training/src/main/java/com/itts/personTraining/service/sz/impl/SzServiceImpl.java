@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.mapper.sz.SzMapper;
@@ -26,6 +27,7 @@ import javax.annotation.Resource;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.USER_INSERT_ERROR;
 import static com.itts.personTraining.enums.UserTypeEnum.IN;
 
 /**
@@ -102,48 +104,54 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         String yhlx = IN.getKey();
         String yhlb = sz.getDslb();
         Long ssjgId = sz.getSsjgId();
+        String dsbh = sz.getDsbh();
+        String dsxm = sz.getDsxm();
         if (data != null) {
-            //用户表存在用户信息,更新用户信息
+            //用户表存在用户信息,更新用户信息,师资表判断是否存在
             GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
             Yh yh = new Yh();
             yh.setId(getYhVo.getId());
-            yh.setZsxm(sz.getDsxm());
+            yh.setZsxm(dsxm);
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
             yh.setJgId(ssjgId);
-            Sz sz1 = szService.selectByCondition(sz.getDsbh(), null);
-
-
+            yhService.update(yh,token);
+            Sz sz1 = szService.selectByCondition(dsbh,null, null);
+            if (sz1 != null) {
+                //存在,则更新
+                sz.setId(sz1.getId());
+                return szService.updateById(sz);
+            } else {
+                //不存在,则新增
+                return szService.save(sz);
+            }
         } else {
             //用户表没有用户信息,新增用户信息,学员表查询是否存在
-            return false;
-        }
-        /*
-        Long userId = getUserId();
-        sz.setCjr(userId);
-        sz.setGxr(userId);
-        String dsbh = sz.getDsbh();
-        Sz sz1 = selectByDsbh(dsbh);
-        if (sz1 == null) {
             Yh yh = new Yh();
             yh.setYhbh(dsbh);
             yh.setYhm(dsbh);
             yh.setMm(dsbh);
-            yh.setJgId(sz.getSsjgId());
-            yh.setZsxm(sz.getDsxm());
-            yh.setYhlx(IN.getKey());
-            yh.setYhlb(sz.getDslb());
-            ResponseUtil util = yhService.rpcAdd(yh, token);
-            Yh yh1 = JSONObject.parseObject(JSON.toJSON(util.getData()).toString(), Yh.class);
-            sz.setYhId(yh1.getId());
-            Sz sz2 = selectByDsbh(dsbh);
-            sz.setId(sz2.getId());
-            return szService.updateById(sz);
-        } else {
-            sz.setId(sz1.getId());
-            return szService.updateById(sz);
-        }*/
-        return false;
+            yh.setZsxm(dsxm);
+            yh.setYhlx(yhlx);
+            yh.setYhlb(yhlb);
+            yh.setJgId(ssjgId);
+            Object data1 = yhService.rpcAdd(yh, token).getData();
+            if (data1 == null) {
+                throw new ServiceException(USER_INSERT_ERROR);
+            }
+            Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
+            Long yh1Id = yh1.getId();
+            sz.setYhId(yh1Id);
+            Sz sz1 = szService.selectByCondition(dsbh,null, null);
+            if (sz1 != null) {
+                //存在,则更新
+                sz.setId(sz1.getId());
+                return updateById(sz);
+            } else {
+                //不存在.则新增
+                return save(sz);
+            }
+        }
     }
 
     /**
@@ -170,11 +178,12 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
      * @return
      */
     @Override
-    public Sz selectByCondition(String dsbh, Long yhId) {
-        log.info("【人才培养 - 根据师资编号:{},用户id:{}查询师资信息】",dsbh,yhId);
+    public Sz selectByCondition(String dsbh, String xb, Long yhId) {
+        log.info("【人才培养 - 根据师资编号:{},性别:{},用户id:{}查询师资信息】",dsbh,yhId);
         QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
         szQueryWrapper.eq("sfsc",false)
                 .eq(StringUtils.isNotBlank(dsbh),"dsbh",dsbh)
+                .eq(StringUtils.isNotBlank(xb),"xb",xb)
                 .eq(yhId != null,"yh_id",yhId);
         return szMapper.selectOne(szQueryWrapper);
     }
