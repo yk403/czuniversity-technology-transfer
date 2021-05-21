@@ -20,9 +20,9 @@ public interface YhService {
     /**
      * 新增用户
      */
-    @PostMapping(ADMIN_BASE_URL + "/v1/yh/add/")
+    @PostMapping(ADMIN_BASE_URL + "/v1/yh/rpc/add/")
     @ApiOperation(value = "新增")
-    ResponseUtil add(@RequestBody Yh yh,@RequestHeader(name = "token") String token) throws WebException;
+    ResponseUtil rpcAdd(@RequestBody Yh yh,@RequestHeader(name = "token") String token) throws WebException;
 
     @GetMapping(ADMIN_BASE_URL + "/v1/yh/get/by/phone/")
     @ApiOperation(value = "通过用户手机号查询")

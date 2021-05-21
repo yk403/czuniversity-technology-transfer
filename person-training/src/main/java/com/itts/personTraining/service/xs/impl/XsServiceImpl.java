@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
 import com.itts.common.utils.common.ResponseUtil;
@@ -206,10 +207,14 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
-                    yhService.update(yh, token);
                     StuDTO dto = xsService.selectByCondition(null, null, getYhVo.getId());
                     stuDTO.setId(dto.getId());
-                    return updateXsAndAddPcXs(stuDTO);
+                    if (updateXsAndAddPcXs(stuDTO)) {
+                        //TODO 后期优化选择用mq同步
+                        yhService.update(yh, token);
+                        return true;
+                    }
+                    return false;
                 } else {
                     //说明用户表不存在该用户信息,则用户表新增,学生表新增
                     String xh = stuDTO.getXh();
@@ -220,7 +225,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
-                    Object data1 = yhService.add(yh, token).getData();
+                    Object data1 = yhService.rpcAdd(yh, token).getData();
                     if (data1 == null) {
                         throw new ServiceException(USER_INSERT_ERROR);
                     }
@@ -244,6 +249,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 stuDTO.setXh(xh);
                 String xm = stuDTO.getXm();
                 Long jgId = stuDTO.getJgId();
+                String lxdh = stuDTO.getLxdh();
                 String yhlx = IN.getKey();
                 String yhlb = BROKER.getKey();
                 if (data != null) {
@@ -252,6 +258,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     Long yhId = yh.getId();
                     yh.setYhbh(xh);
                     yh.setZsxm(xm);
+                    yh.setLxdh(lxdh);
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
@@ -266,10 +273,11 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh.setYhm(xh);
                     yh.setMm(xh);
                     yh.setZsxm(xm);
+                    yh.setLxdh(lxdh);
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
-                    Object data1 = yhService.add(yh, token).getData();
+                    Object data1 = yhService.rpcAdd(yh, token).getData();
                     if (data1 == null) {
                         throw new ServiceException(USER_INSERT_ERROR);
                     }

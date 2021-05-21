@@ -107,7 +107,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             yh.setZsxm(sz.getDsxm());
             yh.setYhlx(IN.getKey());
             yh.setYhlb(sz.getDslb());
-            ResponseUtil util = yhService.add(yh, token);
+            ResponseUtil util = yhService.rpcAdd(yh, token);
             Yh yh1 = JSONObject.parseObject(JSON.toJSON(util.getData()).toString(), Yh.class);
             sz.setYhId(yh1.getId());
             Sz sz2 = selectByDsbh(dsbh);
