@@ -30,7 +30,7 @@ import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
  * @since 2021-05-18
  */
 @RestController
-@RequestMapping(BASE_URL+"/v1/lyZp")
+@RequestMapping(BASE_URL+"/v1/LyZp")
 @Api(value = "LyZpController", tags = "双创路演展品门户端")
 public class LyZpController {
     @Autowired
