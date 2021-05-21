@@ -155,10 +155,19 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 
 	@Override
 	public boolean removeByIdHd(Integer id) {
-		TJsHd tJsHd = new TJsHd();
-		tJsHd.setId(id);
-		tJsHd.setIsDelete(2);
-		jsHdMapper.updateById(tJsHd);
+		TJsHd tJsHd = getById(id);
+
+		if(tJsHd!=null && tJsHd.getHdzt() == 0){
+			tJsHd.setId(id);
+			tJsHd.setIsDelete(2);
+			jsHdMapper.updateById(tJsHd);
+		}else if(tJsHd!=null && tJsHd.getHdzt() != 0){
+			tJsHd.setId(id);
+			tJsHd.setIsDelete(2);
+			jsHdMapper.updateById(tJsHd);
+		}else{
+			throw new ServiceException("删除错误");
+		}
 		return true;
 	}
 

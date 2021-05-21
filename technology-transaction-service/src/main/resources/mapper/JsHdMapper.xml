@@ -45,7 +45,14 @@
 	<!-- 判断报名人数-->
 	<select id="listCount" resultType="com.itts.technologytransactionservice.model.TJsHd">
 		select hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.hdfs,hd.hdtp,hd.hddqsj,count(DISTINCT bm.id) as bmrs,hd.is_bm
-		from t_js_hd hd LEFT JOIN t_js_bm bm on (hd.id = bm.hd_id)
+		from t_js_hd hd
+		LEFT JOIN
+		(select * from t_js_bm
+		<where>
+			<if test="map.shzt != null"> and shzt = #{map.shzt} </if>
+		</where>
+		) bm
+		on (hd.id = bm.hd_id)
 		<where>
 			hd.is_delete = 0
 			<!--<if test="map.containFlag != null and map.userId != null">and bm.user_id= #{map.userId}</if>-->
