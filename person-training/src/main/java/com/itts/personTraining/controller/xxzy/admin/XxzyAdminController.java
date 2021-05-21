@@ -11,6 +11,7 @@ import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
 import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
+import com.itts.personTraining.vo.xxzy.GetXxzyVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -63,13 +64,9 @@ public class XxzyAdminController {
     @GetMapping("/get/{id}")
     public ResponseUtil get(@PathVariable("id") Long id) {
 
-        Xxzy xxzy = xxzyService.getById(id);
+        GetXxzyVO xxzy = xxzyService.get(id);
 
         if (xxzy == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-        }
-
-        if (xxzy.getSfsc()) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
@@ -118,14 +115,9 @@ public class XxzyAdminController {
             throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
         }
 
-        BeanUtils.copyProperties(updateXxzyRequest, xxzy);
+        Xxzy result = xxzyService.update(updateXxzyRequest, xxzy, loginUser.getUserId());
 
-        xxzy.setGxsj(new Date());
-        xxzy.setGxr(loginUser.getUserId());
-
-        xxzyService.updateById(xxzy);
-
-        return ResponseUtil.success(xxzy);
+        return ResponseUtil.success(result);
     }
 
     /**

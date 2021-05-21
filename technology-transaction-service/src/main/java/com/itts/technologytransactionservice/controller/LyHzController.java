@@ -30,7 +30,7 @@ import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
  * @since 2021-05-18
  */
 @RestController
-@RequestMapping(BASE_URL+"/v1/lyHz")
+@RequestMapping(BASE_URL+"/v1/LyHz")
 @Api(value = "LyHzController", tags = "双创路演会展门户端")
 public class LyHzController {
     @Autowired
@@ -39,7 +39,7 @@ public class LyHzController {
 //     * 获取列表
 
     @ApiOperation(value = "获取列表")
-    @GetMapping("/list")
+    @PostMapping("/list")
     public ResponseUtil find(@RequestBody Map<String, Object> params) {
 //return null;
         return ResponseUtil.success(lyHzService.findLyHzFront(params));

@@ -1,31 +1,30 @@
-package com.itts.personTraining.request.xxzy;
+package com.itts.personTraining.vo.xxzy;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.itts.personTraining.request.fjzy.AddFjzyRequest;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @Description：
  * @Author：lym
- * @Date: 2021/5/12
+ * @Date: 2021/5/21
  */
 @Data
-@ApiModel(value = "更新学习资源")
-public class UpdateXxzyRequest implements Serializable {
+public class GetXxzyVO implements Serializable {
 
-    private static final long serialVersionUID = -5707908801740199201L;
+    private static final long serialVersionUID = 7574822003464087074L;
 
     /**
      * 主键ID
      */
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -49,7 +48,7 @@ public class UpdateXxzyRequest implements Serializable {
     /**
      * 课程名称
      */
-    @ApiModelProperty(value = "课程名称", required = true)
+    @ApiModelProperty(value = "课程名称")
     private String kcmc;
 
     /**
@@ -83,6 +82,12 @@ public class UpdateXxzyRequest implements Serializable {
     private String jj;
 
     /**
+     * 浏览量
+     */
+    @ApiModelProperty(value = "浏览量")
+    private Integer lll;
+
+    /**
      * 价格
      */
     @ApiModelProperty(value = "价格")
@@ -99,6 +104,51 @@ public class UpdateXxzyRequest implements Serializable {
      */
     @ApiModelProperty(value = "是否分享")
     private Boolean sffx;
+
+    /**
+     * 是否上架
+     */
+    @ApiModelProperty(value = "是否上架")
+    private Boolean sfsj;
+
+    /**
+     * 上架时间
+     */
+    @ApiModelProperty(value = "上架时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date sjsj;
+
+    /**
+     * 是否删除
+     */
+    @ApiModelProperty(value = "是否删除")
+    private Boolean sfsc;
+
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date cjsj;
+
+    /**
+     * 创建人
+     */
+    @ApiModelProperty(value = "创建人")
+    private Long cjr;
+
+    /**
+     * 更新时间
+     */
+    @ApiModelProperty(value = "更新时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date gxsj;
+
+    /**
+     * 更新人
+     */
+    @ApiModelProperty(value = "更新人")
+    private Long gxr;
 
     /**
      * 附件资源
