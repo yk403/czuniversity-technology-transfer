@@ -80,21 +80,28 @@ public class XsAdminController {
     }
 
     /**
-     * 新增学员
+     * 根据条件查询学员详情
      *
-     * @param stuDTO
+     * @param xh
      * @return
-     * @throws WebException
      */
-    @PostMapping("/add")
-    @ApiOperation(value = "新增学员")
-    public ResponseUtil add(@RequestBody StuDTO stuDTO) throws WebException {
-        //检查参数是否合法
-        checkRequest(stuDTO);
-        if (!xsService.add(stuDTO)) {
-            throw new WebException(INSERT_FAIL);
-        }
-        return ResponseUtil.success("新增学员成功!");
+    @GetMapping("/getByCondition")
+    @ApiOperation(value = "根据条件查询学员详情")
+    public ResponseUtil getByCondition(@RequestParam(value = "xh",required = false) String xh) {
+        return ResponseUtil.success(xsService.selectByCondition(xh));
+    }
+
+    /**
+     * 根据xh或lxdh查询学员详情
+     *
+     * @param xh
+     * @return
+     */
+    @GetMapping("/getByXhOrLxdh")
+    @ApiOperation(value = "根据xh或lxdh查询学员详情")
+    public ResponseUtil selectByXhOrLxdh(@RequestParam(value = "xh",required = false) String xh,
+                                       @RequestParam(value = "lxdh",required = false) String lxdh) {
+        return ResponseUtil.success(xsService.selectByXhOrLxdh(xh,lxdh));
     }
 
     /**
@@ -104,12 +111,30 @@ public class XsAdminController {
      * @return
      * @throws WebException
      */
-    @PostMapping("/addUser")
+    @PostMapping("/add")
     @ApiOperation(value = "新增学员")
+    public ResponseUtil add(@RequestBody StuDTO stuDTO,HttpServletRequest request) throws WebException {
+        //检查参数是否合法
+        checkRequest(stuDTO);
+        if (!xsService.add(stuDTO,request.getHeader("token"))) {
+            throw new WebException(INSERT_FAIL);
+        }
+        return ResponseUtil.success("新增学员成功!");
+    }
+
+    /**
+     * 新增学员(外部调用)
+     *
+     * @param stuDTO
+     * @return
+     * @throws WebException
+     */
+    @PostMapping("/addUser")
+    @ApiOperation(value = "新增学员(外部调用)")
     public ResponseUtil addUser(@RequestBody StuDTO stuDTO) throws WebException {
         //检查参数是否合法
         checkRequestUser(stuDTO);
-        if (!xsService.add(stuDTO)) {
+        if (!xsService.addUser(stuDTO)) {
             throw new WebException(INSERT_FAIL);
         }
         return ResponseUtil.success("新增学员成功!");
@@ -172,10 +197,25 @@ public class XsAdminController {
         if (stuDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (xsService.selectByCondition(stuDTO.getXh()).get(0) != null) {
-            throw new WebException(STUDENT_NUMBER_EXISTS_ERROR);
+        List<Long> pcIds = stuDTO.getPcIds();
+        if (pcIds == null || pcIds.size() == 0) {
+            throw new WebException(BATCH_NUMBER_ISEMPTY_ERROR);
         }
+        String xh = stuDTO.getXh();
+        String lxdh = stuDTO.getLxdh();
+        if (xh == null && lxdh == null) {
+            throw new WebException(NUMBER_AND_PHONE_ISEMPTY_ERROR);
+        }
+        if (xh != null) {
+            checkXsExist(xh, null);
+        } else {
+            checkXsExist(null, lxdh);
+        }
+        //checkLxdh(stuDTO);
     }
+
+
+
 
     /**
      * 校验参数
@@ -190,7 +230,35 @@ public class XsAdminController {
                 throw new WebException(USER_EXISTS_ERROR);
             }
         }
+        //checkLxdh(stuDTO);
+    }
 
+    /**
+     * 校验学号
+     * @param stuDTO
+     */
+    private void checkLxdh(StuDTO stuDTO) {
+        List<Xs> xs = xsService.selectByCondition(null);
+        for (Xs x : xs) {
+            if (x.getLxdh().equals(stuDTO.getLxdh())) {
+                throw new WebException(PHONE_NUMBER_EXISTS_ERROR);
+            }
+        }
+    }
+
+    /**
+     * 校验学生信息是否存在
+     * @param xh
+     * @param lxdh
+     */
+    public void checkXsExist(String xh, String lxdh) {
+        StuDTO byXh = xsService.selectByXhOrLxdh(xh, lxdh);
+        if (byXh != null) {
+            List<Long> pcIds1 = byXh.getPcIds();
+            if (pcIds1 != null && pcIds1.size() > 0) {
+                throw new WebException(STUDENT_MSG_EXISTS_ERROR);
+            }
+        }
     }
 
 }

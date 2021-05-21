@@ -76,6 +76,12 @@ public class StuDTO {
     private String nj;
 
     /**
+     * 联系电话(手机)
+     */
+    @ApiModelProperty(value = "联系电话(手机)", required = true)
+    private String lxdh;
+
+    /**
      * 性别(0:男;1:女)
      */
     @ApiModelProperty(value = "性别(0:男;1:女)", required = true)
@@ -184,12 +190,6 @@ public class StuDTO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "入学日期", required = true)
     private Date rxrq;
-
-    /**
-     * 联系电话(手机)
-     */
-    @ApiModelProperty(value = "联系电话(手机)", required = true)
-    private String lxdh;
 
     /**
      * 家庭地址
