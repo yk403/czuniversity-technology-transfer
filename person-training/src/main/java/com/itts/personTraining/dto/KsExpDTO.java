@@ -79,10 +79,16 @@ public class KsExpDTO {
     private Date ksrq;
 
     /**
-     * 考试时间
+     * 考试开始时间
      */
-    @ApiModelProperty(value = "考试时间", required = true)
-    private String kssj;
+    @ApiModelProperty(value = "考试开始时间", required = true)
+    private String kskssj;
+
+    /**
+     * 考试开始时间
+     */
+    @ApiModelProperty(value = "考试结束时间", required = true)
+    private String ksjssj;
 
     /**
      * 是否删除(0:否;1:是)

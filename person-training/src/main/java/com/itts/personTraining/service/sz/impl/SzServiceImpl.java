@@ -1,14 +1,19 @@
 package com.itts.personTraining.service.sz.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.mapper.sz.SzMapper;
+import com.itts.personTraining.model.yh.Yh;
 import com.itts.personTraining.service.sz.SzService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.personTraining.service.yh.YhService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +24,7 @@ import javax.annotation.Resource;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.personTraining.enums.UserTypeEnum.IN;
 
 /**
  * <p>
@@ -38,6 +44,8 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
 
     @Autowired
     private SzService szService;
+    @Autowired
+    private YhService yhService;
 
     /**
      * 获取师资列表
@@ -80,8 +88,45 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
      * @return
      */
     @Override
-    public boolean add(Sz sz) {
+    public boolean add(Sz sz,String token) {
         log.info("【人才培养 - 新增师资:{}】",sz);
+        if (szMapper.selectById(sz.getId()) != null) {
+            return false;
+        }
+        Long userId = getUserId();
+        sz.setCjr(userId);
+        sz.setGxr(userId);
+        String dsbh = sz.getDsbh();
+        Sz sz1 = selectByDsbh(dsbh);
+        if (sz1 == null) {
+            Yh yh = new Yh();
+            yh.setYhbh(dsbh);
+            yh.setYhm(dsbh);
+            yh.setMm(dsbh);
+            yh.setJgId(sz.getSsjgId());
+            yh.setZsxm(sz.getDsxm());
+            yh.setYhlx(IN.getKey());
+            yh.setYhlb(sz.getDslb());
+            ResponseUtil util = yhService.add(yh, token);
+            Yh yh1 = JSONObject.parseObject(JSON.toJSON(util.getData()).toString(), Yh.class);
+            sz.setYhId(yh1.getId());
+            Sz sz2 = selectByDsbh(dsbh);
+            sz.setId(sz2.getId());
+            return szService.updateById(sz);
+        } else {
+            sz.setId(sz1.getId());
+            return szService.updateById(sz);
+        }
+    }
+
+    /**
+     * 新增师资(外部调用)
+     * @param sz
+     * @return
+     */
+    @Override
+    public boolean addSz(Sz sz) {
+        log.info("【人才培养 - 新增师资(外部调用):{}】",sz);
         if (szMapper.selectById(sz.getId()) != null) {
             return false;
         }
@@ -102,6 +147,8 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         sz.setGxr(getUserId());
         return szService.updateById(sz);
     }
+
+
 
     /**
      * 删除师资

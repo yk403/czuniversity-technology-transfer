@@ -80,6 +80,16 @@ public class XsAdminController {
     }
 
     /**
+     * 查询所有学员详情
+     * @return
+     */
+    @GetMapping("/getAll")
+    @ApiOperation(value = "根据所有学员详情")
+    public ResponseUtil getAll() {
+        return ResponseUtil.success(xsService.getAll());
+    }
+
+    /**
      * 根据条件查询学员详情
      *
      * @param xh
@@ -87,21 +97,10 @@ public class XsAdminController {
      */
     @GetMapping("/getByCondition")
     @ApiOperation(value = "根据条件查询学员详情")
-    public ResponseUtil getByCondition(@RequestParam(value = "xh",required = false) String xh) {
-        return ResponseUtil.success(xsService.selectByCondition(xh));
-    }
-
-    /**
-     * 根据xh或lxdh查询学员详情
-     *
-     * @param xh
-     * @return
-     */
-    @GetMapping("/getByXhOrLxdh")
-    @ApiOperation(value = "根据xh或lxdh查询学员详情")
-    public ResponseUtil selectByXhOrLxdh(@RequestParam(value = "xh",required = false) String xh,
-                                       @RequestParam(value = "lxdh",required = false) String lxdh) {
-        return ResponseUtil.success(xsService.selectByXhOrLxdh(xh,lxdh));
+    public ResponseUtil selectByCondition(@RequestParam(value = "xh",required = false) String xh,
+                                       @RequestParam(value = "lxdh",required = false) String lxdh,
+                                         @RequestParam(value = "yhId",required = false) Long yhId) {
+        return ResponseUtil.success(xsService.selectByCondition(xh,lxdh,yhId));
     }
 
     /**
@@ -211,6 +210,9 @@ public class XsAdminController {
         } else {
             checkXsExist(null, lxdh);
         }
+        if(stuDTO.getJgId() == null) {
+            throw new WebException(ORGANIZATION_ISEMPTY_ERROR);
+        }
         //checkLxdh(stuDTO);
     }
 
@@ -224,9 +226,9 @@ public class XsAdminController {
         if (stuDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        List<Xs> xs = xsService.selectByCondition(stuDTO.getXh());
-        for (Xs x : xs) {
-            if (stuDTO.getYhId().equals(x.getYhId())) {
+        List<StuDTO> stuDTOList = xsService.getAll();
+        for (StuDTO stu : stuDTOList) {
+            if (stuDTO.getYhId().equals(stu.getYhId())) {
                 throw new WebException(USER_EXISTS_ERROR);
             }
         }
@@ -238,9 +240,9 @@ public class XsAdminController {
      * @param stuDTO
      */
     private void checkLxdh(StuDTO stuDTO) {
-        List<Xs> xs = xsService.selectByCondition(null);
-        for (Xs x : xs) {
-            if (x.getLxdh().equals(stuDTO.getLxdh())) {
+        List<StuDTO> stuDTOList = xsService.getAll();
+        for (StuDTO stu : stuDTOList) {
+            if (stu.getLxdh().equals(stuDTO.getLxdh())) {
                 throw new WebException(PHONE_NUMBER_EXISTS_ERROR);
             }
         }
@@ -252,7 +254,7 @@ public class XsAdminController {
      * @param lxdh
      */
     public void checkXsExist(String xh, String lxdh) {
-        StuDTO byXh = xsService.selectByXhOrLxdh(xh, lxdh);
+        StuDTO byXh = xsService.selectByCondition(xh, lxdh,null);
         if (byXh != null) {
             List<Long> pcIds1 = byXh.getPcIds();
             if (pcIds1 != null && pcIds1.size() > 0) {

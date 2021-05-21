@@ -52,9 +52,14 @@ public class KsExp implements Serializable {
     private Date ksrq;
 
     /**
-     * 考试时间
+     * 考试开始时间
      */
-    private String kssj;
+    private String kskssj;
+
+    /**
+     * 考试结束时间
+     */
+    private String ksjssj;
 
     /**
      * 是否删除(0:否;1:是)

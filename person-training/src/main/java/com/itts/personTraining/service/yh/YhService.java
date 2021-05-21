@@ -34,5 +34,14 @@ public interface YhService {
     @ApiOperation(value = "更新")
     @PutMapping(ADMIN_BASE_URL + "/v1/yh/update/")
     @Transactional(rollbackFor = Exception.class)
-    ResponseUtil update(@RequestBody Yh yh) throws WebException;
+    ResponseUtil update(@RequestBody Yh yh,@RequestHeader(name = "token") String token) throws WebException;
+
+    /**
+     * 通过用户编号查询用户
+     * @param code
+     * @return
+     */
+    @ApiOperation(value = "通过用户编号查询")
+    @GetMapping(ADMIN_BASE_URL + "/v1/yh/get/by/code/")
+    ResponseUtil getByCode(@ApiParam("用户编号") @RequestParam("code") String code,@RequestHeader(name = "token") String token);
 }

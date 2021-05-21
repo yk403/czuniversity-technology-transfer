@@ -14,7 +14,7 @@
         <result column="mz" property="mz" />
         <result column="zzmm" property="zzmm" />
         <result column="whcd" property="whcd" />
-        <result column="yx" property="yx" />
+        <result column="xy_id" property="xyId" />
         <result column="gbzw" property="gbzw" />
         <result column="cszy_one" property="cszyOne" />
         <result column="cszy_two" property="cszyTwo" />
