@@ -99,5 +99,5 @@ public interface JsCgService extends IService<TJsCg> {
 
     boolean assistanceIssueBatch(List<Integer> ids);
 
-    Long getUserId();
+
 }

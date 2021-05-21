@@ -69,7 +69,7 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
     public boolean saveCjRc(TJsCjRcDto tJsCjRcDto) {
         Map<String,Object> map=new HashMap<>();
         map.put("hdId",tJsCjRcDto.getHdId());
-        map.put("userId",Integer.parseInt(String.valueOf(getUserId())));
+        map.put("userId",tJsCjRcDto.getUserId());
         List<TJsBm> list = jsBmMapper.list(map);
         TJsCjRc tJsCjRc=new TJsCjRc();
         BeanUtils.copyProperties(tJsCjRcDto,tJsCjRc);
@@ -106,20 +106,6 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             tJsCjRc.setCjf(list.get(0).getDwmc());
         }
         return save(tJsCjRc);
-    }
-    /**
-     * 获取当前用户id
-     * @return
-     */
-    public Long getUserId() {
-        LoginUser loginUser = threadLocal.get();
-        Long userId;
-        if (loginUser != null) {
-            userId = loginUser.getUserId();
-        } else {
-            throw new ServiceException(GET_THREADLOCAL_ERROR);
-        }
-        return userId;
     }
 
 

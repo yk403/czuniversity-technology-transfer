@@ -18,5 +18,4 @@ public interface LyLyService extends IService<LyLy> {
     PageInfo findLyLyFront(Map<String, Object> params);
 
     Boolean saveLy(LyLy lyLy);
-    Long getUserId();
 }

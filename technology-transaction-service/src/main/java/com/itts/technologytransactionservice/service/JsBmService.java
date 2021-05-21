@@ -34,5 +34,5 @@ public interface JsBmService extends IService<TJsBm> {
 
     boolean saveBm(TJsBm tJsBm);
 
-	Long getUserId();
+
 }

@@ -55,18 +55,4 @@ public class LyZwServiceImpl extends ServiceImpl<LyZwMapper, LyZw> implements Ly
             return false;
         }
     }
-//    *
-//     * 获取当前用户id
-//     * @return
-
-    public Long getUserId() {
-        LoginUser loginUser = threadLocal.get();
-        Long userId;
-        if (loginUser != null) {
-            userId = loginUser.getUserId();
-        } else {
-            throw new ServiceException(GET_THREADLOCAL_ERROR);
-        }
-        return userId;
-    }
 }

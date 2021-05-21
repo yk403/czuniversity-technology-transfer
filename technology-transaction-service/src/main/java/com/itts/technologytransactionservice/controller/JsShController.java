@@ -25,7 +25,7 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_
  * @Description: 技术审核管理
  */
 
-@RequestMapping(BASE_URL + "/v1/JsSh")
+@RequestMapping(UNCHECK_BASE_URL + "/v1/JsSh")
 @Api(value = "JsShController", tags = "技术审核管理")
 @RestController
 public class JsShController extends BaseController {

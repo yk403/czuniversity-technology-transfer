@@ -18,5 +18,4 @@ public interface LyZwService extends IService<LyZw> {
     PageInfo findLyZwFront(Map<String, Object> params);
 
     Boolean saveZw(LyZw lyZw);
-    Long getUserId();
 }

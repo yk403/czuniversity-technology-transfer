@@ -25,5 +25,4 @@ public interface JsHdService extends IService<TJsHd> {
     boolean issueBatch(List<Integer> ids);
 
     boolean removeByIdHd(Integer id);
-    Long getUserId();
 }

@@ -25,7 +25,7 @@ import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
  * @Description: 技术类别管理
  */
 
-@RequestMapping(BASE_URL + "/v1/JsLb")
+@RequestMapping(UNCHECK_BASE_URL + "/v1/JsLb")
 @Api(value = "JsLbController", tags = "技术类别管理")
 @RestController
 public class JsLbController extends BaseController {

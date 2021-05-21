@@ -18,5 +18,4 @@ public interface LyHzService extends IService<LyHz> {
     PageInfo findLyHzFront(Map<String, Object> params);
 
     Boolean saveHz(LyHz lyHz);
-    Long getUserId();
 }

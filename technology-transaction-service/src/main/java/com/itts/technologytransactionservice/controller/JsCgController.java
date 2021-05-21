@@ -27,7 +27,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  * @Description: 技术成果管理
  */
 
-@RequestMapping(BASE_URL + "/v1/JsCg")
+@RequestMapping(UNCHECK_BASE_URL + "/v1/JsCg")
 @Api(value = "JsCgController", tags = "技术成果管理")
 @RestController
 public class JsCgController extends BaseController {

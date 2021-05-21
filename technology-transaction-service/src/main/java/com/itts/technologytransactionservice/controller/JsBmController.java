@@ -26,7 +26,7 @@ import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
  * @Description: 技术类别管理
  */
 
-@RequestMapping(BASE_URL+"/v1/JsBm")
+@RequestMapping(UNCHECK_BASE_URL+"/v1/JsBm")
 @Api(value = "JsBmController", tags = "活动报名管理")
 @RestController
 public class JsBmController extends BaseController {

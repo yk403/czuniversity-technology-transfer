@@ -29,7 +29,7 @@ import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ERROR;
  * @since 2020-06-19
  */
 @RestController
-@RequestMapping(BASE_URL + "/v1/oss/back-oss")
+@RequestMapping(UNCHECK_BASE_URL + "/v1/oss/back-oss")
 @Api(tags = "文件上传")
 public class BackOssController {
 

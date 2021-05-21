@@ -49,26 +49,10 @@ public class LyBmServiceImpl extends ServiceImpl<LyBmMapper, LyBm> implements Ly
 
     @Override
     public Boolean saveBm(LyBm lyBm) {
-        Long userId = getUserId();
-        lyBm.setUserId(userId);
         if(save(lyBm)){
             return true;
         }else{
             return false;
         }
-    }
-    /**
-     * 获取当前用户id
-     * @return
-     */
-    public Long getUserId() {
-        LoginUser loginUser = threadLocal.get();
-        Long userId;
-        if (loginUser != null) {
-            userId = loginUser.getUserId();
-        } else {
-            throw new ServiceException(GET_THREADLOCAL_ERROR);
-        }
-        return userId;
     }
 }

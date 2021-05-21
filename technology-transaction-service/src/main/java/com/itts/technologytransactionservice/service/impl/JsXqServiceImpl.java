@@ -82,7 +82,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
                 return false;
             }
             //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
-            tJsXq.setUserId(Integer.parseInt(String.valueOf(getUserId())));
+            //tJsXq.setUserId(Integer.parseInt(String.valueOf(getUserId())));
             tJsXq.setReleaseType("技术需求");
             //tJsXq.setCjsj(new Date());
             //tJsXq.setGxsj(new Date());
@@ -202,7 +202,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     public PageInfo<TJsXq> findJsXqUser(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询需求(个人详情)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据
-        params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
+        //params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsXq> list = jsXqMapper.findJsXqFront(query);
@@ -265,20 +265,6 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
             throw new ServiceException("更新审核失败!");
         }
         return true;
-    }
-    /**
-     * 获取当前用户id
-     * @return
-     */
-    public Long getUserId() {
-        LoginUser loginUser = threadLocal.get();
-        Long userId;
-        if (loginUser != null) {
-            userId = loginUser.getUserId();
-        } else {
-            throw new ServiceException(GET_THREADLOCAL_ERROR);
-        }
-        return userId;
     }
 
 }
