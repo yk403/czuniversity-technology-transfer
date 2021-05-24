@@ -64,6 +64,15 @@ public class LyHd implements Serializable {
      * 删除状态(0未删除;1已删除)
      */
     private Boolean isDelete;
-
+    /**
+     * 活动状态(0:未开始 1:报名中 2:活动中 3:已结束)
+     */
+    private Integer hdzt;
+    /**
+     * 活动截止时间
+     */
+    @TableField(value = "bmjzsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date bmjzsj;
 
 }
