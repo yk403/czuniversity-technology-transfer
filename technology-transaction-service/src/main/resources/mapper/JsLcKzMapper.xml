@@ -33,5 +33,17 @@
         </otherwise>
     </choose>
 </select>
+    <delete id="deleteLcKzByCgIds" parameterType="java.util.List">
+        delete from t_js_lc_kz where cg_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <delete id="deleteLcKzByXqIds" parameterType="java.util.List">
+        delete from t_js_lc_kz where xq_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 
 </mapper>

@@ -10,8 +10,10 @@ import com.itts.technologytransactionservice.mapper.JsHdMapper;
 import com.itts.technologytransactionservice.mapper.JsLcKzMapper;
 import com.itts.technologytransactionservice.mapper.JsXqMapper;
 import com.itts.technologytransactionservice.model.*;
+import com.itts.technologytransactionservice.service.cd.JsCgAdminService;
 import com.itts.technologytransactionservice.service.cd.JsHdAdminService;
 import com.itts.technologytransactionservice.service.cd.JsLcKzAdminService;
+import com.itts.technologytransactionservice.service.cd.JsXqAdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 
@@ -43,6 +42,10 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
     private JsLcKzMapper jsLcKzMapper;
 	@Autowired
 	private JsCgMapper jsCgMapper;
+	@Autowired
+	private JsCgAdminService jsCgAdminService;
+	@Autowired
+	private JsXqAdminService jsXqAdminService;
     @Autowired
     private JsLcKzAdminService jsLcKzAdminService;
 	@Autowired
@@ -60,7 +63,8 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 	}
 
 	/**
-	 * 新增技术活动
+	 * 新增技术活动(需调用redis或mq优化)
+	 * 
 	 * @param jsHdDTO
 	 * @return
 	 */
@@ -76,6 +80,7 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 		if (!jsHdAdminService.save(tJsHd)) {
 			return false;
 		}
+		//判断需求还是成果
 		if (hdlx == 0 || hdlx == 2) {
 			for (Map item : ids) {
 				TJsCg tJsCg = jsCgMapper.getById((Integer) item.get("id"));
@@ -152,13 +157,50 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 		}
 		return true;
 	}
-
+	//级联删除(需使用mq或redis优化)
 	@Override
 	public boolean removeByIdHd(Integer id) {
-		TJsHd tJsHd = new TJsHd();
-		tJsHd.setId(id);
-		tJsHd.setIsDelete(2);
-		jsHdMapper.updateById(tJsHd);
+		TJsHd tJsHd = getById(id);
+		if(tJsHd!=null && tJsHd.getHdzt() == 0){
+			tJsHd.setId(id);
+			tJsHd.setIsDelete(2);
+			jsHdMapper.updateById(tJsHd);
+			if(tJsHd.getHdlx() == 0 || tJsHd.getHdlx() == 2){
+				Map<String,Object>querymap=new HashMap<String,Object>();
+				querymap.put("jshdId",tJsHd.getId());
+				List<TJsCg> cgList = jsCgMapper.list(querymap);
+				List<TJsCg> cgListUpdate =new ArrayList<TJsCg>();
+				List<Integer> cgids =new ArrayList<Integer>();
+				for (TJsCg item:cgList) {
+					item.setAuctionStatus(0);
+					item.setSoft(null);
+					item.setJshdId(null);
+					//将要更新的成果实体类和成果id缓存保存到list和数组中，集中进行sql操作
+					cgListUpdate.add(item);
+					cgids.add(item.getId());
+				}
+				jsLcKzMapper.deleteLcKzByCgIds(cgids);
+				jsCgAdminService.updateBatchById(cgListUpdate);
+			}else if(tJsHd.getHdlx() == 1){
+				Map<String,Object>querymap=new HashMap<String,Object>();
+				querymap.put("jshdId",tJsHd.getId());
+				List<TJsXq> xqList = jsXqMapper.list(querymap);
+				List<TJsXq> xqListUpdate =new ArrayList<TJsXq>();
+				List<Integer> xqids =new ArrayList<Integer>();
+				for (TJsXq item:xqList) {
+					item.setAuctionStatus(0);
+					item.setSoft(null);
+					item.setJshdId(null);
+					//将要更新的需求实体类和成果id缓存保存到list和数组中，集中进行sql操作
+					xqListUpdate.add(item);
+					xqids.add(item.getId());
+				}
+				jsLcKzMapper.deleteLcKzByXqIds(xqids);
+				jsXqAdminService.updateBatchById(xqListUpdate);
+			}
+		}else{
+			throw new ServiceException("活动已开始过，无法删除");
+		}
 		return true;
 	}
 

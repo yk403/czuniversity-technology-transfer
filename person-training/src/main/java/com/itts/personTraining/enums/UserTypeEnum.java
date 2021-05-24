@@ -19,7 +19,9 @@ public enum UserTypeEnum {
 
     CORPORATE_MENTOR("corporate_mentor","企业导师"),
 
-    TEACHER("teacher","任课教师");
+    TEACHER("teacher","任课教师"),
+
+    IN("in","内部用户");
 
     private String key;
 

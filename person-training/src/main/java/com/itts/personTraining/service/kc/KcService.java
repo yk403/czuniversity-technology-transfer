@@ -66,5 +66,5 @@ public interface KcService extends IService<Kc> {
      * @param xylx
      * @return
      */
-    List<Kc> getByCondition(String xylx);
+    List<KcDTO> getByCondition(String xylx);
 }

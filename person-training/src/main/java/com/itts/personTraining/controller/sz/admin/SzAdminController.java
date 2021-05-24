@@ -3,12 +3,15 @@ package com.itts.personTraining.controller.sz.admin;
 
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.service.sz.SzService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -60,6 +63,20 @@ public class SzAdminController {
     }
 
     /**
+     * 根据条件查询师资详情
+     * @param dsbh
+     * @param yhId
+     * @return
+     */
+    @GetMapping("/getByCondition")
+    @ApiOperation(value = "根据条件查询师资详情")
+    public ResponseUtil selectByCondition(@RequestParam(value = "dsbh",required = false) String dsbh,
+                                          @RequestParam(value = "xb",required = false) String xb,
+                                          @RequestParam(value = "yhId",required = false) Long yhId) {
+        return ResponseUtil.success(szService.selectByCondition(dsbh,xb,yhId));
+    }
+
+    /**
      * 新增师资
      *
      * @param sz
@@ -68,10 +85,28 @@ public class SzAdminController {
      */
     @PostMapping("/add")
     @ApiOperation(value = "新增师资")
-    public ResponseUtil add(@RequestBody Sz sz) throws WebException {
+    public ResponseUtil add(@RequestBody Sz sz, HttpServletRequest request) throws WebException {
         //检查参数是否合法
         checkRequest(sz);
-        if (!szService.add(sz)) {
+        if (!szService.add(sz,request.getHeader("token"))) {
+            throw new WebException(INSERT_FAIL);
+        }
+        return ResponseUtil.success("新增师资成功!");
+    }
+
+    /**
+     * 新增师资(外部调用)
+     *
+     * @param sz
+     * @return
+     * @throws WebException
+     */
+    @PostMapping("/addSz")
+    @ApiOperation(value = "新增师资(外部调用)")
+    public ResponseUtil addSz(@RequestBody Sz sz) throws WebException {
+        //检查参数是否合法
+        checkSzRequest(sz);
+        if (!szService.addSz(sz)) {
             throw new WebException(INSERT_FAIL);
         }
         return ResponseUtil.success("新增师资成功!");
@@ -130,12 +165,33 @@ public class SzAdminController {
     /**
      * 校验参数
      */
+    private void checkSzRequest(Sz sz) throws WebException {
+        if (sz == null) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (sz.getDsbh() == null) {
+            throw new WebException(TEACHER_NUMBER_ISEMPTY_ERROR);
+        }
+    }
+    /**
+     * 校验参数
+     */
     private void checkRequest(Sz sz) throws WebException {
         if (sz == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (szService.selectByDsbh(sz.getDsbh()) != null) {
+        if (szService.selectByCondition(sz.getDsbh(),sz.getXb(),null) != null) {
             throw new WebException(TEACHER_NUMBER_EXISTS_ERROR);
+        }
+        String dslb = sz.getDslb();
+        if (dslb == null) {
+            throw new WebException(TEACHER_TYPE_ISEMPTY_ERROR);
+        }
+        if (!dslb.equals(UserTypeEnum.TUTOR.getKey()) && !dslb.equals(UserTypeEnum.CORPORATE_MENTOR) && !dslb.equals(UserTypeEnum.TEACHER)) {
+            throw new WebException(TEACHER_TYPE_ERROR);
+        }
+        if (sz.getSsjgId() == null) {
+            throw new WebException(ORGANIZATION_ISEMPTY_ERROR);
         }
     }
 

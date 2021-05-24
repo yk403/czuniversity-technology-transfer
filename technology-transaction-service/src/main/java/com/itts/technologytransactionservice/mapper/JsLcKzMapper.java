@@ -19,5 +19,6 @@ import java.util.Map;
 public interface JsLcKzMapper extends BaseMapper<TJsLcKz> {
 	
 	List<TJsLcKz> list(@Param("map") Map map);
-
+	List<TJsLcKz> deleteLcKzByCgIds(@Param("list") List<Integer> tJsLcKzList);
+	List<TJsLcKz> deleteLcKzByXqIds(@Param("list") List<Integer> tJsLcKzList);
 }

@@ -6,6 +6,7 @@ import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
+import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.dto.XsDTO;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
@@ -164,10 +165,9 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         throw exception;
     }
     private void save(Xs xs){
-        List<Xs> xsList = xsService.selectByCondition(xs.getXh());
-        Xs xsOld = xsList.get(0);
-        if (xsOld != null) {
-            xs.setId(xsOld.getId());
+        StuDTO stuDTO = xsService.selectByCondition(xs.getXh(),null,null);
+        if (stuDTO != null) {
+            xs.setId(stuDTO.getId());
             xs.setGxsj(new Date());
             try {
                 xsMapper.updateById(xs);

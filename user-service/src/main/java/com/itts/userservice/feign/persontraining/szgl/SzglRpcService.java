@@ -19,7 +19,7 @@ public interface SzglRpcService {
     /**
      * 新增师资管理
      */
-    @PostMapping(SystemConstant.ADMIN_BASE_URL + "/v1/sz/add")
+    @PostMapping(SystemConstant.ADMIN_BASE_URL + "/v1/sz/addSz")
     ResponseUtil addSzgl(@RequestBody AddSzglRequest addSzglRequest,
                          @RequestHeader(name = "token") String token);
 }

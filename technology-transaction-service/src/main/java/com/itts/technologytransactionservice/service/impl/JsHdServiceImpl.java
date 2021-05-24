@@ -55,6 +55,7 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 	@Override
 	public PageInfo page(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
+		query.put("shzt",2);
 		List<TJsHd> list = jsHdMapper.listCount(query);
 		PageInfo<TJsHd> page = new PageInfo<>(list);
 		return page;
@@ -63,6 +64,7 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 	@Override
 	public PageInfo pageFront1(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
+		query.put("shzt",2);
 		List<TJsHd> list = jsHdMapper.listCount(query);
 		HashMap<String, Object> userMap = new HashMap<>();
 		//门户报名暂定为userId为2

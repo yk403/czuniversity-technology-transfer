@@ -42,6 +42,11 @@ public class Sz implements Serializable {
     private Long xyId;
 
     /**
+     * 所属机构id
+     */
+    private Long ssjgId;
+
+    /**
      * 导师编号
      */
     @ApiModelProperty(value = "导师编号", required = true)
@@ -174,11 +179,6 @@ public class Sz implements Serializable {
      * 行业领域
      */
     private String hyly;
-
-    /**
-     * 所属机构
-     */
-    private String ssjg;
 
     /**
      * 专属资格证

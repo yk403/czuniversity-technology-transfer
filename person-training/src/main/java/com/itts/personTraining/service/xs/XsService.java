@@ -69,20 +69,20 @@ public interface XsService extends IService<Xs> {
      */
     boolean delete(StuDTO stuDTO);
 
-    /**
-     * 根据条件查询学员信息
-     * @param xh
-     * @return
-     */
-    List<Xs> selectByCondition(String xh);
-
     Boolean addKcXs(Long id,Long kcId);
 
     /**
-     * 根据xh或lxdh查询学员信息
+     * 根据条件查询学员信息
      * @param xh
      * @param lxdh
+     * @param yhId
      * @return
      */
-    StuDTO selectByXhOrLxdh(String xh, String lxdh);
+    StuDTO selectByCondition(String xh, String lxdh, Long yhId);
+
+    /**
+     * 查询所有学员详情
+     * @return
+     */
+    List<StuDTO> getAll();
 }

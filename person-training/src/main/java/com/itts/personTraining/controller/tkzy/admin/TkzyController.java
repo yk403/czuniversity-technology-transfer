@@ -91,6 +91,8 @@ public class TkzyController {
             query.like("mc", condition);
         }
 
+        query.orderByDesc("cjsj");
+
         List tkzys = tkzyService.list(query);
 
         PageInfo<Tkzy> pageInfo = new PageInfo<>(tkzys);

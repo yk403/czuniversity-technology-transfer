@@ -37,7 +37,7 @@ public interface SzService extends IService<Sz> {
      * @param sz
      * @return
      */
-    boolean add(Sz sz);
+    boolean add(Sz sz,String token);
 
     /**
      * 更新师资
@@ -59,4 +59,20 @@ public interface SzService extends IService<Sz> {
      * @return
      */
     Sz selectByDsbh(String dsbh);
+
+    /**
+     * 新增师资(外部调用)
+     * @param sz
+     * @return
+     */
+    boolean addSz(Sz sz);
+
+    /**
+     * 根据条件查询师资信息
+     * @param dsbh
+     * @param xb
+     * @param yhId
+     * @return
+     */
+    Sz selectByCondition(String dsbh,String xb, Long yhId);
 }

@@ -5,6 +5,7 @@ import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.request.yh.AddYhRequest;
+import com.itts.userservice.request.yh.RpcAddYhRequest;
 import com.itts.userservice.vo.yh.GetYhVO;
 import com.itts.userservice.vo.yh.YhListVO;
 import com.itts.userservice.vo.yh.YhVO;
@@ -53,6 +54,11 @@ public interface YhService {
      * 新增
      */
     GetYhVO add(AddYhRequest addYhRequest, String token);
+
+    /**
+     * 新增 - rpc
+     */
+    GetYhVO rpcAdd(RpcAddYhRequest yh);
 
     /**
      * 更新

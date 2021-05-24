@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.K;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -147,12 +148,21 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
      * @return
      */
     @Override
-    public List<Kc> getByCondition(String xylx) {
+    public List<KcDTO> getByCondition(String xylx) {
         log.info("【人才培养 - 根据条件查询课程信息】");
         QueryWrapper<Kc> kcQueryWrapper = new QueryWrapper<>();
         kcQueryWrapper.eq("sfsc",false)
                       .eq(!StringUtils.isEmpty(xylx),"zdbm",xylx);
-        return kcMapper.selectList(kcQueryWrapper);
+        List<Kc> kcList = kcMapper.selectList(kcQueryWrapper);
+        //将id放到kcId中,方便前端使用
+        List<KcDTO> kcDTOs = new ArrayList<>();
+        for (Kc kc : kcList) {
+            KcDTO kcDTO = new KcDTO();
+            BeanUtils.copyProperties(kc,kcDTO);
+            kcDTO.setKcId(kc.getId());
+            kcDTOs.add(kcDTO);
+        }
+        return kcDTOs;
     }
 
     /**

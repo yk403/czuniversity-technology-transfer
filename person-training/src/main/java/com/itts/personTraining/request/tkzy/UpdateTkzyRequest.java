@@ -37,6 +37,12 @@ public class UpdateTkzyRequest implements Serializable {
     private Long kcId;
 
     /**
+     * 课程名称
+     */
+    @ApiModelProperty(value = "课程名称", required = true)
+    private String kcmc;
+
+    /**
      * 题目一级分类
      */
     @ApiModelProperty(value = "题目一级分类", required = true)

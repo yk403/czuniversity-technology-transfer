@@ -12,13 +12,13 @@ import com.itts.common.utils.DateUtils;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
-import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pcXs.PcXs;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.mapper.xs.XsMapper;
+import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.model.yh.Yh;
 import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.pcXs.PcXsService;
@@ -37,12 +37,12 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.PrimitiveIterator;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
 import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
+import static com.itts.personTraining.enums.UserTypeEnum.*;
 
 /**
  * <p>
@@ -71,6 +71,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     private RedisTemplate redisTemplate;
     @Resource
     private PcMapper pcMapper;
+    @Autowired
+    private PcService pcService;
 
     /**
      * 查询学员列表
@@ -130,17 +132,18 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         return stuDTO;
     }
     /**
-     * 根据xh或lxdh查询学员信息
+     * 根据条件查询学员信息
      * @param xh
      * @return
      */
     @Override
-    public StuDTO selectByXhOrLxdh(String xh,String lxdh) {
-        log.info("【人才培养 - 根据学号:{},;联系电话:{}查询学员信息】",xh,lxdh);
+    public StuDTO selectByCondition(String xh,String lxdh, Long yhId) {
+        log.info("【人才培养 - 根据学号:{},;联系电话:{},用户id:{}查询学员信息】",xh,lxdh,yhId);
         QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
         xsQueryWrapper.eq("sfsc",false)
                 .eq(StringUtils.isNotBlank(xh),"xh",xh)
-                .eq(StringUtils.isNotBlank(lxdh),"lxdh",lxdh);
+                .eq(StringUtils.isNotBlank(lxdh),"lxdh",lxdh)
+                .eq(yhId != null,"yh_id",yhId);
         Xs xs = xsMapper.selectOne(xsQueryWrapper);
         if (xs == null) {
             return null;
@@ -150,6 +153,27 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         List<Long> pcIds = pcXsMapper.selectByXsId(xs.getId());
         stuDTO.setPcIds(pcIds);
         return stuDTO;
+    }
+
+    /**
+     * 查询所有学员详情
+     * @return
+     */
+    @Override
+    public List<StuDTO> getAll() {
+        log.info("【人才培养 - 查询所有学员详情】");
+        QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
+        xsQueryWrapper.eq("sfsc",false);
+        List<Xs> xsList = xsMapper.selectList(xsQueryWrapper);
+        List<StuDTO> stuDTOList = new ArrayList<>();
+        for (Xs xs : xsList) {
+            StuDTO stuDTO = new StuDTO();
+            BeanUtils.copyProperties(xs,stuDTO);
+            List<Long> pcIds = pcXsMapper.selectByXsId(xs.getId());
+            stuDTO.setPcIds(pcIds);
+            stuDTOList.add(stuDTO);
+        }
+        return stuDTOList;
     }
 
     /**
@@ -164,52 +188,122 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         stuDTO.setCjr(userId);
         stuDTO.setGxr(userId);
         String jylx = stuDTO.getJylx();
-        StuDTO byXh = xsService.selectByXhOrLxdh(stuDTO.getXh(),stuDTO.getLxdh());
         if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
             //学历学位教育(研究生)
-            if (byXh != null) {
-                stuDTO.setId(byXh.getId());
-                return updateXsAndAddPcXs(stuDTO);
-            } else {
-                //调用户服务新增并获取到用户id然后新增到学生表
-                String xh = stuDTO.getXh();
+            String dtoXh = stuDTO.getXh();
+            if (dtoXh != null) {
+                Object data = yhService.getByCode(dtoXh, token).getData();
                 Yh yh = new Yh();
-                yh.setYhbh(xh);
-                yh.setYhm(xh);
-                yh.setMm(xh);
-                yh.setZsxm(stuDTO.getXm());
-                yh.setYhlx("in");
-                yh.setYhlb(UserTypeEnum.POSTGRADUATE.getKey());
-                ResponseUtil util = yhService.add(yh,token);
-                Yh yh1 = JSONObject.parseObject(JSON.toJSON(util.getData()).toString(), Yh.class);
-                stuDTO.setYhId(yh1.getId());
-                return updateXsAndAddPcXs(stuDTO);
+                String xm = stuDTO.getXm();
+                Long jgId = stuDTO.getJgId();
+                //String lxdh = stuDTO.getLxdh();
+                String yhlx = IN.getKey();
+                String yhlb = POSTGRADUATE.getKey();
+                if (data != null) {
+                    //说明用户表存在该用户信息
+                    GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
+                    //作更新操作
+                    yh.setId(getYhVo.getId());
+                    yh.setZsxm(xm);
+                    //yh.setLxdh(lxdh);
+                    yh.setYhlx(yhlx);
+                    yh.setYhlb(yhlb);
+                    yh.setJgId(jgId);
+                    StuDTO dto = xsService.selectByCondition(null, null, getYhVo.getId());
+                    stuDTO.setId(dto.getId());
+                    if (updateXsAndAddPcXs(stuDTO)) {
+                        //TODO 后期优化选择用mq同步
+                        yhService.update(yh, token);
+                        return true;
+                    }
+                    return false;
+                } else {
+                    //说明用户表不存在该用户信息,则用户表新增,学生表查询判断是否存在
+                    String xh = stuDTO.getXh();
+                    yh.setYhbh(xh);
+                    yh.setYhm(xh);
+                    yh.setMm(xh);
+                    yh.setZsxm(xm);
+                    //yh.setLxdh(lxdh);
+                    yh.setYhlx(yhlx);
+                    yh.setYhlb(yhlb);
+                    yh.setJgId(jgId);
+                    Object data1 = yhService.rpcAdd(yh, token).getData();
+                    if (data1 == null) {
+                        throw new ServiceException(USER_INSERT_ERROR);
+                    }
+                    Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
+                    Long yh1Id = yh1.getId();
+                    stuDTO.setYhId(yh1Id);
+                    StuDTO dto = xsService.selectByCondition(xh, null, null);
+                    if (dto != null) {
+                        //存在,则更新
+                        stuDTO.setId(dto.getId());
+                        return updateXsAndAddPcXs(stuDTO);
+                    } else {
+                        //不存在.则新增
+                        return addXsAndPcXs(stuDTO);
+                    }
+                }
+            } else {
+                throw new ServiceException(STUDENT_NUMBER_ISEMPTY_ERROR);
             }
         } else if (ADULT_EDUCATION.getKey().equals(jylx)) {
             //继续教育(经纪人)
             String phone = stuDTO.getLxdh();
             if (phone != null) {
-                StuDTO stuDTO1 = xsService.selectByXhOrLxdh(null, phone);
-                if (stuDTO1 != null) {
-                    //存在
-                    ResponseUtil util = yhService.getByPhone(phone, token);
-                    Yh yh1 = JSONObject.parseObject(JSON.toJSON(util.getData()).toString(), Yh.class);
-                    stuDTO.setId(stuDTO1.getId());
-                    QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
-                    pcQueryWrapper.eq("sfsc",false)
-                                  .eq("id",stuDTO.getPcIds().get(0));
-                    Pc pc = pcMapper.selectOne(pcQueryWrapper);
-                    String bh = redisTemplate.opsForValue().increment(pc.getPch()).toString();
-                    String xh = pc.getJylx() + StringUtils.replace(DateUtils.toString(pc.getRxrq()),"/","") + String.format("%03d", Long.parseLong(bh));
-                    stuDTO.setXh(xh);
-                    yh1.setYhbh(xh);
-                    yh1.setZsxm(stuDTO.getXm());
-                    yh1.setJgId(stuDTO.getJgId());
-                    yhService.update(yh1);
+                Object data = yhService.getByPhone(phone, token).getData();
+                //生成经纪人学号
+                Pc pc = pcService.get(stuDTO.getPcIds().get(0));
+                String bh = redisTemplate.opsForValue().increment(pc.getPch()).toString();
+                String xh = pc.getJylx() + StringUtils.replace(DateUtils.toString(pc.getRxrq()),"/","") + String.format("%03d", Long.parseLong(bh));
+                stuDTO.setXh(xh);
+                String xm = stuDTO.getXm();
+                Long jgId = stuDTO.getJgId();
+                String lxdh = stuDTO.getLxdh();
+                String yhlx = IN.getKey();
+                String yhlb = BROKER.getKey();
+                if (data != null) {
+                    //说明用户服务存在用户信息
+                    Yh yh = JSONObject.parseObject(JSON.toJSON(data).toString(), Yh.class);
+                    Long yhId = yh.getId();
+                    yh.setYhbh(xh);
+                    yh.setZsxm(xm);
+                    yh.setLxdh(lxdh);
+                    yh.setYhlx(yhlx);
+                    yh.setYhlb(yhlb);
+                    yh.setJgId(jgId);
+                    yhService.update(yh,token);
+                    StuDTO dto = xsService.selectByCondition(null, null, yhId);
+                    stuDTO.setId(dto.getId());
                     return updateXsAndAddPcXs(stuDTO);
                 } else {
-                    //不存在
-
+                    //说明用户表不存在该用户信息,则用户表新增,学生表查询判断是否存在
+                    Yh yh = new Yh();
+                    yh.setYhbh(xh);
+                    yh.setYhm(xh);
+                    yh.setMm(xh);
+                    yh.setZsxm(xm);
+                    yh.setLxdh(lxdh);
+                    yh.setYhlx(yhlx);
+                    yh.setYhlb(yhlb);
+                    yh.setJgId(jgId);
+                    Object data1 = yhService.rpcAdd(yh, token).getData();
+                    if (data1 == null) {
+                        throw new ServiceException(USER_INSERT_ERROR);
+                    }
+                    Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
+                    Long yh1Id = yh1.getId();
+                    stuDTO.setYhId(yh1Id);
+                    StuDTO dto = xsService.selectByCondition(null, lxdh, null);
+                    if (dto != null) {
+                        //存在,则更新
+                        stuDTO.setId(dto.getId());
+                        return updateXsAndAddPcXs(stuDTO);
+                    } else {
+                        //不存在.则新增
+                        return addXsAndPcXs(stuDTO);
+                    }
                 }
             } else {
                 throw new ServiceException(PHONE_NUMBER_ISEMPTY_ERROR);
@@ -217,10 +311,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         } else {
             throw new ServiceException(EDU_TYPE_ERROR);
         }
-        return false;
     }
-
-
 
     /**
      * 新增学员(外部调用)
@@ -295,20 +386,6 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         return false;
     }
 
-    /**
-     * 根据条件查询学员信息
-     * @param xh
-     * @return
-     */
-    @Override
-    public List<Xs> selectByCondition(String xh) {
-        log.info("【人才培养 - 根据学号:{}查询学员信息】",xh);
-        QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
-        xsQueryWrapper.eq("sfsc",false)
-                .eq(StringUtils.isNotBlank(xh),"xh",xh);
-        return xsMapper.selectList(xsQueryWrapper);
-    }
-
     @Override
     public Boolean addKcXs(Long id, Long kcId) {
         return xsMapper.addKcList(id, kcId);
@@ -329,10 +406,35 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         return userId;
     }
 
+    /**
+     * 更新
+     * @param stuDTO
+     * @return
+     */
     private boolean updateXsAndAddPcXs(StuDTO stuDTO) {
         Xs xs = new Xs();
         BeanUtils.copyProperties(stuDTO,xs);
         if (xsService.updateById(xs)) {
+            Long pcId = stuDTO.getPcIds().get(0);
+            if (pcId != null) {
+                PcXs pcXs = new PcXs();
+                pcXs.setXsId(xs.getId());
+                pcXs.setPcId(pcId);
+                return pcXsService.save(pcXs);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 新增
+     * @param stuDTO
+     * @return
+     */
+    private boolean addXsAndPcXs(StuDTO stuDTO) {
+        Xs xs = new Xs();
+        BeanUtils.copyProperties(stuDTO,xs);
+        if (xsService.save(xs)) {
             Long pcId = stuDTO.getPcIds().get(0);
             if (pcId != null) {
                 PcXs pcXs = new PcXs();
