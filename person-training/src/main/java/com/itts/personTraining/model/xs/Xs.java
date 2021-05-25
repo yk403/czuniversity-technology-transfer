@@ -80,7 +80,7 @@ public class Xs implements Serializable {
     private Date csrq;
 
     /**
-     * 学生类别ID
+     * 学生类别ID (去除)
      */
     private String xslbId;
 

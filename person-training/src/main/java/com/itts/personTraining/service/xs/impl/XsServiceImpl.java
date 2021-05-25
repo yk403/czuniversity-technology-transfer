@@ -413,6 +413,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      */
     private boolean updateXsAndAddPcXs(StuDTO stuDTO) {
         Xs xs = new Xs();
+        stuDTO.setGxr(getUserId());
         BeanUtils.copyProperties(stuDTO,xs);
         if (xsService.updateById(xs)) {
             Long pcId = stuDTO.getPcIds().get(0);
@@ -433,6 +434,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      */
     private boolean addXsAndPcXs(StuDTO stuDTO) {
         Xs xs = new Xs();
+        stuDTO.setCjr(getUserId());
+        stuDTO.setGxr(getUserId());
         BeanUtils.copyProperties(stuDTO,xs);
         if (xsService.save(xs)) {
             Long pcId = stuDTO.getPcIds().get(0);

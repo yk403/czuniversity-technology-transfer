@@ -1,16 +1,16 @@
 package com.itts.personTraining.controller.excel.admin;
 
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.service.excel.ExcelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_UPLOAD_ERROR;
@@ -31,11 +31,11 @@ public class ExcelAdminController {
     /**
      * 学员导入
      */
-    @PostMapping("/importXs")
+    @RequestMapping("/importXs")
     @ApiOperation(value = "学员导入")
-    public ResponseUtil importXs(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true)Integer headRowNumber, @RequestParam(value = "pcId", required = true)Long pcId){
+    public ResponseUtil importXs(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, @RequestBody Pc pc, HttpServletRequest request){
         try{
-            return excelService.importXs(file, headRowNumber, pcId);
+            return excelService.importXs(file, headRowNumber, pc,request.getHeader("token"));
         }catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
