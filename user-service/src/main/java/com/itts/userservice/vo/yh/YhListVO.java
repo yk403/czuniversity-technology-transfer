@@ -83,6 +83,24 @@ public class YhListVO implements Serializable {
     private String yhyx;
 
     /**
+     * 用户积分
+     */
+    @ApiModelProperty(value = "用户积分")
+    private Integer yhjf;
+
+    /**
+     * 是否会员
+     */
+    @ApiModelProperty(value = "是否会员", required = true)
+    private Boolean sfhy;
+
+    /**
+     * 会员类型
+     */
+    @ApiModelProperty(value = "会员类型")
+    private String hylx;
+
+    /**
      * 用户角色名称
      */
     private String yhjsmc;
