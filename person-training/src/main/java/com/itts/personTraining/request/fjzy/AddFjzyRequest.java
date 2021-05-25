@@ -1,14 +1,10 @@
 package com.itts.personTraining.request.fjzy;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @Description：
@@ -20,6 +16,11 @@ import java.util.Date;
 public class AddFjzyRequest implements Serializable {
 
     private static final long serialVersionUID = -4603387495353538931L;
+
+    /**
+     * 附件资源ID
+     */
+    private long id;
 
     /**
      * 附件资源名称
