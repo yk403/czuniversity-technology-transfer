@@ -52,6 +52,11 @@ public class Ks implements Serializable {
     private Date ksrq;
 
     /**
+     * 考试地点
+     */
+    private String ksdd;
+
+    /**
      * 考试开始时间
      */
     private String kskssj;

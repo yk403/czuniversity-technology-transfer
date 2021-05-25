@@ -146,6 +146,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
             xs.setJyxs(data.getJyxs());
         }
         save(xs);
+
         PcXs pcXs = new PcXs();
         pcXs.setXsId(xs.getId());
         pcXs.setPcId(pcId);
