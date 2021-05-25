@@ -34,7 +34,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  * @since 2021-05-17
  */
 @RestController
-@RequestMapping(UNCHECK_BASE_URL+"/v1/LyBm")
+@RequestMapping(BASE_URL+"/v1/LyBm")
 @Api(value = "LyBmController", tags = "双创路演报名门户端")
 public class LyBmController {
     @Autowired

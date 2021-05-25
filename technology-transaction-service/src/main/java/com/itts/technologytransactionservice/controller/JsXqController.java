@@ -32,7 +32,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  * @Description: 技术需求管理
  */
 
-@RequestMapping(UNCHECK_BASE_URL + "/v1/JsXq")
+@RequestMapping(BASE_URL + "/v1/JsXq")
 @Api(value = "JsXqController", tags = "技术需求管理")
 @RestController
 public class JsXqController extends BaseController {

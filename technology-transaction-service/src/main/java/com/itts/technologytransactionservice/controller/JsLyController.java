@@ -24,7 +24,7 @@ import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
  * @Description: 技术领域管理
  */
 
-@RequestMapping(UNCHECK_BASE_URL + "/v1/JsLy")
+@RequestMapping(BASE_URL + "/v1/JsLy")
 @Api(value = "JsLyController", tags = "技术领域管理")
 @RestController
 public class JsLyController extends BaseController {
