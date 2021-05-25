@@ -103,11 +103,11 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             List<AddFjzyRequest> fjzys = fjzyMapper.selectList(new QueryWrapper<Fjzy>().eq("fjzy_id", xxzy.getFjzyId()))
                     .stream().map(obj -> {
 
-                AddFjzyRequest request = new AddFjzyRequest();
-                BeanUtils.copyProperties(obj, request);
-                return request;
+                        AddFjzyRequest request = new AddFjzyRequest();
+                        BeanUtils.copyProperties(obj, request);
+                        return request;
 
-            }).collect(Collectors.toList());
+                    }).collect(Collectors.toList());
 
             vo.setFjzys(fjzys);
         }
@@ -208,5 +208,15 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         }
 
         return xxzy;
+    }
+
+    /**
+     * 删除附件资源
+     */
+    @Override
+    public void deleteFjzy(Long fjzyId) {
+
+        fjzyMapper.deleteById(fjzyId);
+
     }
 }
