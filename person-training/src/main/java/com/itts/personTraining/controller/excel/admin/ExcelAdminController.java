@@ -48,9 +48,9 @@ public class ExcelAdminController {
      */
     @PostMapping("/importSz")
     @ApiOperation(value = "师资导入")
-    public ResponseUtil importSz(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true)Integer headRowNumber){
+    public ResponseUtil importSz(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, HttpServletRequest request){
         try{
-            return excelService.importSz(file, headRowNumber);
+            return excelService.importSz(file, headRowNumber, request.getHeader("token"));
         }catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());

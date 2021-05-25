@@ -5,7 +5,8 @@ import com.itts.personTraining.model.pc.Pc;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ExcelService {
+
     ResponseUtil importXs(MultipartFile file, Integer headRowNumber, Pc pc, String token);
 
-    ResponseUtil importSz(MultipartFile file, Integer headRowNumber);
+    ResponseUtil importSz(MultipartFile file, Integer headRowNumber, String token);
 }

@@ -82,11 +82,13 @@ public class ExcelServiceImpl implements ExcelService {
      * @return
      */
     @Override
-    public ResponseUtil importSz(MultipartFile file, Integer headRowNumber) {
+    public ResponseUtil importSz(MultipartFile file, Integer headRowNumber, String token) {
         SzListener szListener = new SzListener();
         szListener.setSzMapper(szMapper);
         szListener.setSzService(szService);
         szListener.setXyService(xyService);
+        szListener.setYhService(yhService);
+        szListener.setToken(token);
         try{
             EasyExcel.read(file.getInputStream(), SzDTO.class,szListener).headRowNumber(headRowNumber).sheet().doRead();
             return ResponseUtil.success(szListener.getResult());
