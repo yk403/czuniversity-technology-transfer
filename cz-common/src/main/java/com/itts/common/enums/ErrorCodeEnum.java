@@ -95,6 +95,8 @@ public enum ErrorCodeEnum {
     STUDENT_NUMBER_ISEMPTY_ERROR(-45031, "学号不可为空!"),
     USER_UPDATE_ERROR(-45032, "用户表更新用户失败!"),
     TEACHER_NUMBER_ISEMPTY_ERROR(-45033, "导师编号不可为空!"),
+    PROFESSOR_EXISTS_ERROR(-45034, "专家信息已存在,不可新增!"),
+    PROFESSOR_PHONE_EXISTS_ERROR(-45035, "专家手机号已存在,不可新增!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
