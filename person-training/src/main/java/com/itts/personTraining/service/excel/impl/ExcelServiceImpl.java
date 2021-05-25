@@ -35,9 +35,6 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_UPLOAD_ERROR;
 @Slf4j
 public class ExcelServiceImpl implements ExcelService {
 
-    private Pc pc;
-    private String token;
-
     @Resource
     private XsMapper xsMapper;
     @Resource
@@ -58,7 +55,7 @@ public class ExcelServiceImpl implements ExcelService {
      * @return
      */
     @Override
-    public ResponseUtil importXs(MultipartFile file, Integer headRowNumber, Pc pc, String token) {
+    public ResponseUtil importXs(MultipartFile file, Integer headRowNumber, Long jgId, Pc pc, String token) {
         XsListener xsListener = new XsListener();
         xsListener.setXsMapper(xsMapper);
         xsListener.setXyService(xyService);
@@ -66,6 +63,7 @@ public class ExcelServiceImpl implements ExcelService {
         xsListener.setRedisTemplate(redisTemplate);
         xsListener.setPc(pc);
         xsListener.setToken(token);
+        xsListener.setJgId(jgId);
         try{
             EasyExcel.read(file.getInputStream(), XsDTO.class,xsListener).headRowNumber(headRowNumber).sheet().doRead();
             return ResponseUtil.success(xsListener.getResult());
@@ -82,13 +80,14 @@ public class ExcelServiceImpl implements ExcelService {
      * @return
      */
     @Override
-    public ResponseUtil importSz(MultipartFile file, Integer headRowNumber, String token) {
+    public ResponseUtil importSz(MultipartFile file, Integer headRowNumber, Long jgId, String token) {
         SzListener szListener = new SzListener();
         szListener.setSzMapper(szMapper);
         szListener.setSzService(szService);
         szListener.setXyService(xyService);
         szListener.setYhService(yhService);
         szListener.setToken(token);
+        szListener.setJgId(jgId);
         try{
             EasyExcel.read(file.getInputStream(), SzDTO.class,szListener).headRowNumber(headRowNumber).sheet().doRead();
             return ResponseUtil.success(szListener.getResult());

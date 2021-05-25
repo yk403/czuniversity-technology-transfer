@@ -33,9 +33,9 @@ public class ExcelAdminController {
      */
     @RequestMapping("/importXs")
     @ApiOperation(value = "学员导入")
-    public ResponseUtil importXs(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, @RequestBody Pc pc, HttpServletRequest request){
+    public ResponseUtil importXs(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, @RequestParam(value = "jgId")Long jgId, @RequestBody Pc pc, HttpServletRequest request){
         try{
-            return excelService.importXs(file, headRowNumber, pc,request.getHeader("token"));
+            return excelService.importXs(file, headRowNumber, jgId, pc,request.getHeader("token"));
         }catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
@@ -48,9 +48,9 @@ public class ExcelAdminController {
      */
     @PostMapping("/importSz")
     @ApiOperation(value = "师资导入")
-    public ResponseUtil importSz(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, HttpServletRequest request){
+    public ResponseUtil importSz(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, @RequestParam(value = "jgId")Long jgId, HttpServletRequest request){
         try{
-            return excelService.importSz(file, headRowNumber, request.getHeader("token"));
+            return excelService.importSz(file, headRowNumber, jgId, request.getHeader("token"));
         }catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());

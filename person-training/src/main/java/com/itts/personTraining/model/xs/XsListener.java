@@ -25,7 +25,6 @@ import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -54,6 +53,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
     private Integer count=0;
     private Pc pc;
     private String token;
+    private Long jgId;
     @Resource
     private XsMapper xsMapper;
     @Autowired
@@ -162,6 +162,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         if(!StringUtils.isBlank(data.getJyxs())){
             xs.setJyxs(data.getJyxs());
         }
+        xs.setJgId(jgId);
         save(xs);
         PcXs pcXs = new PcXs();
         pcXs.setXsId(xs.getId());
@@ -182,7 +183,6 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         throw exception;
     }
     private void save(Xs xs) {
-        //TODO 确定前端传的是"A"还是"学历学位教育"
         if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
             //说明是学历学位教育
             xs.setXslbmc(POSTGRADUATE.getKey());
@@ -271,7 +271,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                 String xh = pc.getJylx() + org.apache.commons.lang3.StringUtils.replace(DateUtils.toString(pc.getRxrq()),"/","") + String.format("%03d", Long.parseLong(bh));
                 xs.setXh(xh);
                 String xm = xs.getXm();
-                //TODO 批量导入时机构ID如何选择?
+                //TODO 暂时是前端传,批量导入都是同一个机构id
                 Long jgId = xs.getJgId();
                 String lxdh = xs.getLxdh();
                 String yhlx = IN.getKey();

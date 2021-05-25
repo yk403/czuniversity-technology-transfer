@@ -45,6 +45,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
     private StringBuilder result = new StringBuilder();
     private Integer count = 0;
     private String token;
+    private Long jgId;
     @Resource
     private SzMapper szMapper;
     @Resource
@@ -170,6 +171,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
         if (!StringUtils.isBlank(data.getZrsj().toString())) {
             sz.setZrsj(data.getZrsj());
         }*/
+        sz.setSsjgId(jgId);
         save(sz);
     }
 

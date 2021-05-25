@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ExcelService {
 
-    ResponseUtil importXs(MultipartFile file, Integer headRowNumber, Pc pc, String token);
+    ResponseUtil importXs(MultipartFile file, Integer headRowNumber, Long jgId, Pc pc, String token);
 
-    ResponseUtil importSz(MultipartFile file, Integer headRowNumber, String token);
+    ResponseUtil importSz(MultipartFile file, Integer headRowNumber, Long jgId, String token);
 }
