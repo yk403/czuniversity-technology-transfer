@@ -46,6 +46,12 @@ public class StuDTO {
     private List<Long> pcIds;
 
     /**
+     * 学院ID
+     */
+    @ApiModelProperty(value = "学院ID", required = true)
+    private Long xyId;
+
+    /**
      * 机构ID
      */
     @ApiModelProperty(value = "机构ID", required = true)
@@ -166,11 +172,7 @@ public class StuDTO {
     @ApiModelProperty(value = "导师姓名", required = true)
     private String dsxm;
 
-    /**
-     * 院系
-     */
-    @ApiModelProperty(value = "院系", required = true)
-    private String yx;
+
 
     /**
      * 学习形式

@@ -34,6 +34,11 @@ public class KsDTO {
     private Long pcId;
 
     /**
+     * 类型 (1:学历学位考试;2:继续教育考试)
+     */
+    private Integer type;
+
+    /**
      * 批次号
      */
     private String pch;
@@ -55,6 +60,11 @@ public class KsDTO {
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date ksrq;
+
+    /**
+     * 考试地点
+     */
+    private String ksdd;
 
     /**
      * 考试开始时间

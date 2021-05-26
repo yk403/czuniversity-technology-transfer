@@ -37,4 +37,9 @@ public interface XxzyService extends IService<Xxzy> {
      * 更新
      */
     Xxzy update(UpdateXxzyRequest updateXxzyRequest, Xxzy xxzy, Long userId);
+
+    /**
+     * 删除附件资源
+     */
+    void deleteFjzy(Long fjzyId);
 }

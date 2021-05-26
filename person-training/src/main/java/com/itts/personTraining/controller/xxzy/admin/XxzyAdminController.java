@@ -16,7 +16,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -167,7 +166,7 @@ public class XxzyAdminController {
      */
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete/{id}")
-    public ResponseUtil delete(@PathVariable(value = "id") Long id){
+    public ResponseUtil delete(@PathVariable(value = "id") Long id) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
 
@@ -195,6 +194,15 @@ public class XxzyAdminController {
         xxzyService.updateById(xxzy);
 
         return ResponseUtil.success(xxzy);
+    }
+
+    @ApiOperation(value = "删除附件资源")
+    @DeleteMapping("/delete/fjzy/{fjzyId}")
+    public ResponseUtil deleteFjzy(@PathVariable("fjzyId") Long fjzyId) {
+
+        xxzyService.deleteFjzy(fjzyId);
+
+        return ResponseUtil.success();
     }
 
     /**
