@@ -3,11 +3,15 @@ package com.itts.personTraining.service.pk.impl;
 
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.DateUtils;
+import com.itts.personTraining.dto.KcDTO;
 import com.itts.personTraining.dto.PkDTO;
 import com.itts.personTraining.model.pk.Pk;
 import com.itts.personTraining.mapper.pk.PkMapper;
+import com.itts.personTraining.model.pkKc.PkKc;
 import com.itts.personTraining.service.pk.PkService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.personTraining.service.pkKc.PkKcService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,8 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     private PkMapper pkMapper;
     @Autowired
     private PkService pkService;
+    @Autowired
+    private PkKcService pkKcService;
 
     /**
      * 查询排课信息
@@ -49,7 +55,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
      */
     @Override
     public Map<String, List<PkDTO>> findPkInfo(String skqsnyr, Long pcId) {
-        log.info("【人才培养 - 查询排课信息,上课起始年月日:{},批次id:{}】", skqsnyr, pcId);
+        log.info("【人才培养 - 查询排课信息,上课开始时间:{},批次id:{}】", skqsnyr, pcId);
         List<PkDTO> pkDTOs = pkMapper.findPkInfo(skqsnyr, getDateAfterNDays(skqsnyr, 7), pcId);
         Map<String, List<PkDTO>> groupByXqs = pkDTOs.stream().collect(Collectors.groupingBy(PkDTO::getXqs));
         //遍历分组
@@ -93,7 +99,22 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
         BeanUtils.copyProperties(pkDTO, pk);
-        return pkService.save(pk);
+        if (pkDTO.getJsz() != null) {
+            String skjsnyr = getDateAfterNDays(pkDTO.getSkqsnyr(), pkDTO.getJsz() * 7);
+            pk.setSkjsnyr(skjsnyr);
+        }
+        if (pkService.save(pk)) {
+            List<KcDTO> kcDTOs = pkDTO.getKcDTOs();
+            List<PkKc> pkKcList = new ArrayList<>();
+            for (KcDTO kcDTO : kcDTOs) {
+                PkKc pkKc = new PkKc();
+                pkKc.setKcId(kcDTO.getId());
+                pkKc.setPkId(pk.getId());
+                pkKcList.add(pkKc);
+            }
+            return pkKcService.saveBatch(pkKcList);
+        }
+        return false;
     }
 
     /**

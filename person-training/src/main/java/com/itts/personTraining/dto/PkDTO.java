@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Austin
@@ -34,10 +36,10 @@ public class PkDTO {
     private Long pcId;
 
     /**
-     * 课程ID
+     * 课程DTO
      */
-    @ApiModelProperty(value = "课程ID", required = true)
-    private Long kcId;
+    @ApiModelProperty(value = "课程IDS", required = true)
+    private List<KcDTO> kcDTOs;
 
     /**
      * 师资ID
@@ -48,7 +50,7 @@ public class PkDTO {
     /**
      * 教室ID
      */
-    @ApiModelProperty(value = "教室ID", required = true)
+    @ApiModelProperty(value = "教室ID")
     private Long xxjsId;
 
     /**
@@ -58,22 +60,21 @@ public class PkDTO {
     private Long kcsjId;
 
     /**
+     * 类型(1:学历学位排课;2:继续教育排课)
+     */
+    @ApiModelProperty(value = "类型(1:学历学位排课;2:继续教育排课)", required = true)
+    private Integer type;
+
+    /**
+     * 上课地点
+     */
+    private String skdd;
+
+    /**
      * 排课名称
      */
-    @ApiModelProperty(value = "排课名称", required = true)
+    @ApiModelProperty(value = "排课名称")
     private String pkmc;
-
-    /**
-     * 课程代码
-     */
-    @ApiModelProperty(value = "课程代码")
-    private String kcdm;
-
-    /**
-     * 课程名称
-     */
-    @ApiModelProperty(value = "课程名称")
-    private String kcmc;
 
     /**
      * 上课起始年月日
@@ -87,6 +88,15 @@ public class PkDTO {
     @ApiModelProperty(value = "上课结束年月日", required = true)
     private String skjsnyr;
 
+    /**
+     * 起始周
+     */
+    private Integer qsz;
+
+    /**
+     * 结束周
+     */
+    private Integer jsz;
 
     /**
      * 星期数
