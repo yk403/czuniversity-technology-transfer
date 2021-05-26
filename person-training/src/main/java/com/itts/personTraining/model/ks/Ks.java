@@ -36,6 +36,11 @@ public class Ks implements Serializable {
     private Long pcId;
 
     /**
+     * 类型 (1:学历学位考试;2:继续教育考试)
+     */
+    private Integer type;
+
+    /**
      * 考试名称
      */
     private String ksmc;
@@ -50,6 +55,11 @@ public class Ks implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date ksrq;
+
+    /**
+     * 考试地点
+     */
+    private String ksdd;
 
     /**
      * 考试开始时间

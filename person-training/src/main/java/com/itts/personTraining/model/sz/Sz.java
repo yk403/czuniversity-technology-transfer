@@ -139,7 +139,7 @@ public class Sz implements Serializable {
     private String zgzt;
 
     /**
-     * 导师类别:	tutor - 研究生导师;	corporate_mentor - 企业导师;	teacher - 授课教师
+     * 导师类别:	tutor - 导师;	corporate_mentor - 企业导师;	teacher - 授课教师
      */
     private String dslb;
 
