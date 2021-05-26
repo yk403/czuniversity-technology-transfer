@@ -203,6 +203,26 @@ public class KssjController {
         if (CollectionUtils.isEmpty(addKssjRequest.getTmIds())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
+
+        if (addKssjRequest.getSjzf() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (addKssjRequest.getPdzf() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (addKssjRequest.getDanzf() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (addKssjRequest.getDuozf() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (StringUtils.isBlank(addKssjRequest.getSjlx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
     }
 
     /**
@@ -227,6 +247,26 @@ public class KssjController {
         }
 
         if (CollectionUtils.isEmpty(updateKssjRequest.getTmIds())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (updateKssjRequest.getSjzf() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (updateKssjRequest.getPdzf() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (updateKssjRequest.getDanzf() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (updateKssjRequest.getDuozf() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (StringUtils.isBlank(updateKssjRequest.getSjlx())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
     }
