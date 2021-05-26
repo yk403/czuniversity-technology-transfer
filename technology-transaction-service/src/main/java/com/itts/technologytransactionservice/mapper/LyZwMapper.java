@@ -24,4 +24,11 @@ public interface LyZwMapper extends BaseMapper<LyZw> {
      * @return
      */
     List<LyZw> findLyZwFront(@Param("map") Map map);
+    /**
+     * 分页条件查询需求(后台)
+     *
+     * @param map
+     * @return
+     */
+    List<LyZw> findLyZwBack(@Param("map") Map map);
 }

@@ -23,5 +23,26 @@
             </otherwise>
         </choose>
     </select>
+    <select id="findLyHdBack" resultType="com.itts.technologytransactionservice.model.LyHd">
+        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt
+        from t_ly_hd hd
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            hd.is_delete != 2
+            <if test="map.hdmc != null"> and hd.hdmc != #{map.hdmc} </if>
+            <if test="map.hdtp != null"> and hd.hdtp != #{map.hdtp} </if>
+            <if test="map.hdtpmc != null"> and hd.hdtpmc != #{map.hdtpmc} </if>
+            <if test="map.hdzt != null"> and hd.hdzt != #{map.hdzt} </if>
+            <if test="map.bmjzsj != null"> and hd.bmjzsj != #{map.bmjzsj} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
 
 </mapper>

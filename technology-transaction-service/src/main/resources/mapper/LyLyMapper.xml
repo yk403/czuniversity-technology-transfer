@@ -21,5 +21,24 @@
             </otherwise>
         </choose>
     </select>
+    <select id="findLyLyBack" resultType="com.itts.technologytransactionservice.model.LyLy">
+        select ly.id as id,cjsj,gxsj,lyxq,lymc,lytp,lytpmc
+        from t_ly_ly ly
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            ly.is_delete != 2
+            <if test="map.lyxq != null"> and ly.lyxq != #{map.lyxq} </if>
+            <if test="map.lymc != null"> and ly.lymc != #{map.lymc} </if>
+            <if test="map.lytp != null"> and ly.lytp != #{map.lytp} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
 
 </mapper>

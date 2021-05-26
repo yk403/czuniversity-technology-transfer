@@ -19,5 +19,23 @@
             </otherwise>
         </choose>
     </select>
+    <select id="findLyZpBack" resultType="com.itts.technologytransactionservice.model.LyZp">
+        select zp.id as id,cjsj,gxsj,zpjj,zplb
+        from t_ly_zp zp
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            zp.is_delete != 2
+            <if test="map.zpjj != null"> and zp.zpjj != #{map.zpjj} </if>
+            <if test="map.zplb != null"> and zp.zplb != #{map.zplb} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
 
 </mapper>

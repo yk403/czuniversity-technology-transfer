@@ -21,5 +21,24 @@
             </otherwise>
         </choose>
     </select>
+    <select id="findLyHzBack" resultType="com.itts.technologytransactionservice.model.LyHz">
+        select hz.id as id,cjsj,gxsj,hzjs,hztp,hztpmc
+        from t_ly_hz hz
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            hz.is_delete != 2
+            <if test="map.hzjs != null"> and hz.hzjs != #{map.hzjs} </if>
+            <if test="map.hztp != null"> and hz.hztp != #{map.hztp} </if>
+            <if test="map.hztpmc != null"> and hz.hztpmc != #{map.hztpmc} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
 
 </mapper>
