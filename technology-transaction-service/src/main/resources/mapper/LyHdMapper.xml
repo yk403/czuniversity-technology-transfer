@@ -3,7 +3,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyHdMapper">
 
     <select id="findLyHdFront" resultType="com.itts.technologytransactionservice.model.LyHd">
-        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt
+        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt,bmkssj,hdjzsj,hdkssj
         from t_ly_hd hd
         <where>
             <!--后台能查询0或者1的数据 -->
@@ -24,7 +24,7 @@
         </choose>
     </select>
     <select id="findLyHdBack" resultType="com.itts.technologytransactionservice.model.LyHd">
-        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt
+        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt,bmkssj,hdjzsj,hdkssj
         from t_ly_hd hd
         <where>
             <!--后台能查询0或者1的数据 -->
