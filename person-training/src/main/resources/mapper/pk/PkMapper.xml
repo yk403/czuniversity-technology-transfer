@@ -3,33 +3,47 @@
 <mapper namespace="com.itts.personTraining.mapper.pk.PkMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.pk.Pk">
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.dto.PkDTO">
         <id column="id" property="id" />
         <result column="pc_id" property="pcId" />
-        <result column="kc_id" property="kcId" />
         <result column="sz_id" property="szId" />
         <result column="xxjs_id" property="xxjsId" />
+        <result column="kcsj_id" property="kcsjId" />
+        <result column="type" property="type" />
+        <result column="skdd" property="skdd" />
         <result column="pkmc" property="pkmc" />
         <result column="skqsnyr" property="skqsnyr" />
         <result column="skjsnyr" property="skjsnyr" />
-        <result column="kcsj_id" property="kcsjId" />
+        <result column="skjsnyr" property="skjsnyr" />
+        <result column="qsz" property="qsz" />
+        <result column="jsz" property="jsz" />
         <result column="xqs" property="xqs" />
+        <result column="jxlmc" property="jxlmc" />
+        <result column="jsbh" property="jsbh" />
+        <result column="dsxm" property="dsxm" />
+        <result column="dsbh" property="dsbh" />
         <result column="sfxf" property="sfxf" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
         <result column="gxsj" property="gxsj" />
         <result column="gxr" property="gxr" />
+        <collection property="kcDTOs" resultMap="KcDTOListResultMap"/>
     </resultMap>
 
+    <resultMap id="KcDTOListResultMap" type="com.itts.personTraining.dto.KcDTO">
+        <id column="kc_id" property="id" />
+        <id column="kcdm" property="kcdm" />
+        <id column="kcmc" property="kcmc" />
+    </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, pc_id, kc_id, sz_id, xxjs_id, pkmc, skqsnyr, skjsnyr, kcsj_id, xqs, sfxf, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
-    <select id="getById" resultType="com.itts.personTraining.dto.PkDTO">
-        select pk.id as id,pc.id as pcId,kc.id as kcId,sz.id as szId,xxjs.id as xxjsId,kc.kcdm as kcdm,kc.kcmc as kcmc,skqsnyr,skjsnyr,kcsj.id as kcsjId,xqs,xxjs.jxlmc as jxlmc,xxjs.jsbh as jsbh,sz.dsxm as dsxm,dsbh,pk.sfxf as sfxf,pk.cjsj as cjsj,pk.cjr as cjr,pk.gxsj as gxsj,pk.gxr as gxr
-        from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_kc kc on(pk.kc_id=kc.id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id) left join t_kcsj kcsj on(pk.kcsj_id=kcsj.id)
+    <select id="getById" resultMap="BaseResultMap">
+        select pk.*,kc.id as kc_id,kc.kcdm as kcdm,kc.kcmc as kcmc,sz.*,xxjs.*
+        from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_pk_kc tpk on(pk.id=tpk.pk_id) left join t_kc kc on(kc.id=tpk.kc_id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id) left join t_kcsj kcsj on(pk.kcsj_id=kcsj.id)
         <where>
             pk.sfsc = false and pc.sfsc = false and kc.sfsc = false and sz.sfsc = false and xxjs.sfsc = false and kcsj.sfsc = false
             <if test="id != null"> and pk.id = #{id} </if>

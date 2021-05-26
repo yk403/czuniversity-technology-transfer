@@ -104,18 +104,12 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
             pk.setSkjsnyr(skjsnyr);
         }
         if (pkService.save(pk)) {
-            List<KcDTO> kcDTOs = pkDTO.getKcDTOs();
-            List<PkKc> pkKcList = new ArrayList<>();
-            for (KcDTO kcDTO : kcDTOs) {
-                PkKc pkKc = new PkKc();
-                pkKc.setKcId(kcDTO.getId());
-                pkKc.setPkId(pk.getId());
-                pkKcList.add(pkKc);
-            }
-            return pkKcService.saveBatch(pkKcList);
+            return savePkKc(pkDTO, pk);
         }
         return false;
     }
+
+
 
     /**
      * 更新排课
@@ -130,7 +124,17 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
         BeanUtils.copyProperties(pkDTO, pk);
-        return pkService.updateById(pk);
+        if (pkService.updateById(pk)) {
+            List<KcDTO> kcDTOs = pkDTO.getKcDTOs();
+            if (kcDTOs != null && kcDTOs.size() > 0) {
+                if (removePkKc(pkDTO)) {
+                    return savePkKc(pkDTO, pk);
+                }
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -147,7 +151,10 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         pkDTO.setGxr(getUserId());
         Pk pk = new Pk();
         BeanUtils.copyProperties(pkDTO, pk);
-        return pkService.updateById(pk);
+        if (pkService.updateById(pk)) {
+            return removePkKc(pkDTO);
+        }
+        return false;
     }
 
     /**
@@ -185,6 +192,35 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    /**
+     * 新增排课课程关系
+     * @param pkDTO
+     * @param pk
+     * @return
+     */
+    private boolean savePkKc(PkDTO pkDTO, Pk pk) {
+        List<KcDTO> kcDTOs = pkDTO.getKcDTOs();
+        List<PkKc> pkKcList = new ArrayList<>();
+        for (KcDTO kcDTO : kcDTOs) {
+            PkKc pkKc = new PkKc();
+            pkKc.setKcId(kcDTO.getId());
+            pkKc.setPkId(pk.getId());
+            pkKcList.add(pkKc);
+        }
+        return pkKcService.saveBatch(pkKcList);
+    }
+
+    /**
+     * 删除排课课程关系
+     * @param pkDTO
+     * @return
+     */
+    private boolean removePkKc(PkDTO pkDTO) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("pk_id", pkDTO.getId());
+        return pkKcService.removeByMap(map);
     }
 
 }
