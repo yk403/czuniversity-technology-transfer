@@ -66,7 +66,7 @@ public class SjzdServiceImpl implements SjzdService {
     @Override
     public PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType, String dictionary, String zdbm, Long parentId) {
 
-        if(pageSize != -1){
+        if (pageSize != -1) {
             PageHelper.startPage(pageNum, pageSize);
         }
 
@@ -200,6 +200,7 @@ public class SjzdServiceImpl implements SjzdService {
             BeanUtils.copyProperties(sjzd, addSjzd);
 
             addSjzd.setZdmc(sjzdItem.getZdmc());
+            addSjzd.setPx(sjzdItem.getPx());
 
             if (fjzd != null) {
 
@@ -276,6 +277,8 @@ public class SjzdServiceImpl implements SjzdService {
 
                 addSjzd.setZdbm(sjzdItem.getZdbm());
             }
+
+            addSjzd.setPx(sjzdItem.getPx());
 
             //新增时设置更新时间和更新人
             addSjzd.setCjsj(now);
