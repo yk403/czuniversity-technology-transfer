@@ -30,14 +30,9 @@ public class Ksjlxx implements Serializable {
     private Long id;
 
     /**
-     * 试卷ID
+     * 考试记录ID
      */
-    private Long sjId;
-
-    /**
-     * 学生ID
-     */
-    private Long xsId;
+    private Long ksjlId;
 
     /**
      * 题目ID
