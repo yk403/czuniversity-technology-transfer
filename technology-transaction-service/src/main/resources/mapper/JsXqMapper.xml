@@ -49,6 +49,8 @@
 		<where>
 		<!--后台能查询0或者1的数据 -->
 		    xq.is_delete != 2
+			<if test="map.zgzt == 0"> and (sh.fbshzt = 3 or sh.fbshzt = 5) </if>
+			<if test="map.zgzt == 1"> and (sh.auction_status = 3 or sh.auction_status = 5) </if>
 			<if test="map.type == 1"> and xq.user_id = #{map.userId} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and xq.auction_status = #{map.auctionStatus} </if>

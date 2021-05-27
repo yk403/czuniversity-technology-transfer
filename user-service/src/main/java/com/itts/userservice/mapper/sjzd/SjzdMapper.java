@@ -52,6 +52,7 @@ public interface SjzdMapper extends BaseMapper<Sjzd> {
             "   <if test=\"ssmk != null and ssmk != ''\"> " +
             "       AND ssmk = #{ssmk} " +
             "   </if>" +
+            "ORDER BY px" +
             "</script>")
     List<Sjzd> findBySsmk(@Param("xtlb") String xtlb, @Param("mklx") String mklx, @Param("ssmk") String ssmk);
 

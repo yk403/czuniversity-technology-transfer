@@ -4,12 +4,13 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsBmMapper">
 
     <select id="list" resultType="com.itts.technologytransactionservice.model.TJsBm">
-        select bm.id,dwmc,dz,fr,bm.cjsj,bm.gxsj,jgdm,lxr,sjhm,gszz,bzj,sjfa,zbwj,bm.is_delete,hd_id,hd.hdmc as hdmc,shzt,hdlx,hdzt,user_id
-        from t_js_bm bm left join t_js_hd hd on( bm.hd_id = hd.id )
+        select bm.id,dwmc,dz,fr,bm.cjsj,bm.gxsj,bm.gszzmc,jgdm,lxr,sjhm,gszz,bzj,sjfa,zbwj,bm.is_delete,hd_id,hd.hdmc as hdmc,shzt,hdlx,hdzt,user_id,yh.yhm as yhm
+        from t_js_bm bm left join t_js_hd hd on( bm.hd_id = hd.id ) left join t_yh yh on (yh.id=bm.user_id)
         <where>
             bm.is_delete = 0
             <if test="map.userId != null"> and user_id = #{map.userId} </if>
             <if test="map.id != null"> and id = #{map.id} </if>
+            <if test="map.gszzmc != null"> and gszzmc = #{map.gszzmc} </if>
             <if test="map.hdId != null"> and hd_id = #{map.hdId} </if>
             <if test="map.dwmc != null and map.dwmc != ''"> and dwmc = #{map.dwmc} </if>
             <if test="map.dz != null and map.dz != ''"> and dz = #{map.dz} </if>
