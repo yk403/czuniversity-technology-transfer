@@ -141,12 +141,10 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 if (ksExpService.save(ksExp)) {
                     List<Long> expszIds = ksExpDTO.getSzIds();
                     if (expszIds != null && expszIds.size() > 0) {
-                        if (saveSzKs(expszIds,ksExp)) {
-                            continue;
-                        }
-                        return false;
+                        saveSzKs(expszIds,ksExp);
+                        continue;
                     }
-                    return true;
+                    continue;
                 }
                 return false;
             }
