@@ -22,7 +22,7 @@
         <result column="xz" property="xz" />
         <result column="dsbh" property="dsbh" />
         <result column="dsxm" property="dsxm" />
-        <result column="yx" property="yx" />
+        <result column="xy_id" property="xyId" />
         <result column="xxxs" property="xxxs" />
         <result column="byjl" property="byjl" />
         <result column="rxrq" property="rxrq" />
@@ -58,7 +58,7 @@
         <result column="xz" property="xz" />
         <result column="dsbh" property="dsbh" />
         <result column="dsxm" property="dsxm" />
-        <result column="yx" property="yx" />
+        <result column="xy_id" property="xyId" />
         <result column="xxxs" property="xxxs" />
         <result column="byjl" property="byjl" />
         <result column="sfsc" property="sfsc" />
@@ -114,7 +114,7 @@
         <result column="xz" property="xz" />
         <result column="dsbh" property="dsbh" />
         <result column="dsxm" property="dsxm" />
-        <result column="yx" property="yx" />
+        <result column="xy_id" property="xyId" />
         <result column="xxxs" property="xxxs" />
         <result column="byjl" property="byjl" />
         <result column="rxrq" property="rxrq" />
