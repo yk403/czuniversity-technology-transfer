@@ -141,9 +141,9 @@ public class JsXqController extends BaseController {
     @PutMapping("/auditXq")
     public ResponseUtil auditXq(@RequestBody Map<String, Object> params) {
         Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
-        if (fbshzt != 1) {
+        /*if (fbshzt != 1) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
+        }*/
         return ResponseUtil.success(jsXqService.auditXq(params, fbshzt));
     }
 
