@@ -22,6 +22,26 @@
             </otherwise>
         </choose>
     </select>
+    <select id="findLyBmBack" resultType="com.itts.technologytransactionservice.model.LyBm">
+        select bm.id as id,cjsj,gxsj,dwmc,fr,dz,lxdh,bmly,yyzz,frsfz,lxr,hd_id,shzt,user_id
+        from t_ly_bm bm
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            bm.is_delete != 2
+            <if test="map.userId != null"> and bm.user_id != #{map.userId} </if>
+            <if test="map.hdId != null"> and bm.hd_id != #{map.hdId} </if>
+            <if test="map.shzt != null"> and bm.shzt != #{map.shzt} </if>
+            <if test="map.dwmc != null"> and bm.dwmc != #{map.dwmc} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
 
 
 

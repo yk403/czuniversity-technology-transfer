@@ -296,4 +296,8 @@ public class TJsXq implements Serializable {
 	 * 底价
 	 */
 	private BigDecimal dj;
+	/**
+	 * 活动名称
+	 */
+	private String hdmc;
 }

@@ -24,4 +24,11 @@ public interface LyHdMapper extends BaseMapper<LyHd> {
      * @return
      */
     List<LyHd> findLyHdFront(@Param("map") Map map);
+    /**
+     * 分页条件查询需求(后台)
+     *
+     * @param map
+     * @return
+     */
+    List<LyHd> findLyHdBack(@Param("map") Map map);
 }

@@ -19,6 +19,23 @@
             </otherwise>
         </choose>
     </select>
+    <select id="findLyZwBack" resultType="com.itts.technologytransactionservice.model.LyZw">
+        select zw.id as id,cjsj,gxsj,zwjj
+        from t_ly_zw zw
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            zw.is_delete != 2
+            <if test="map.zwjj != null"> and zw.zwjj != #{map.zwjj} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
 <!--
     &lt;!&ndash; 通用查询映射结果 &ndash;&gt;
     <resultMap id="BaseResultMap" type="com.itts.technologytransactionservice.model.LyZw">

@@ -69,10 +69,24 @@ public class LyHd implements Serializable {
      */
     private Integer hdzt;
     /**
+     * 报名截止时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date bmjzsj;
+    /**
+     * 报名开始时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date bmkssj;
+    /**
      * 活动截止时间
      */
-    @TableField(value = "bmjzsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date bmjzsj;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date hdjssj;
+    /**
+     * 活动开始时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date hdkssj;
 
 }

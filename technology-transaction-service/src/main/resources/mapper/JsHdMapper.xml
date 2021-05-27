@@ -21,7 +21,7 @@
 			 </if>
 		  		  <if test="map.id != null"> and hd.id = #{map.id} </if>
 			      <if test="map.hdlx != null"> and hd.hdlx = #{map.hdlx} </if>
-		  		  <if test="map.name != null and map.name != ''"> and hd.hdmc = #{map.name} </if>
+		  		  <if test="map.name != null and map.name != ''"> and hd.hdmc like concat('%',#{map.name},'%') </if>
 			      <if test="map.hdtp != null and map.hdtp != ''"> and hd.hdtp = #{map.hdtp} </if>
 		  		  <if test="map.hdjj != null and map.hdjj != ''"> and hd.hdjj = #{map.hdjj} </if>
 		  		  <if test="map.hdgz != null and map.hdgz != ''"> and hd.hdgz = #{map.hdgz} </if>

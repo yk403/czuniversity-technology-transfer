@@ -23,4 +23,11 @@ public interface LyLyMapper extends BaseMapper<LyLy> {
      * @return
      */
     List<LyLy> findLyLyFront(@Param("map") Map map);
+    /**
+     * 分页条件查询需求(后台)
+     *
+     * @param map
+     * @return
+     */
+    List<LyLy> findLyLyBack(@Param("map") Map map);
 }

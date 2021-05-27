@@ -24,4 +24,11 @@ public interface LyBmMapper extends BaseMapper<LyBm> {
      * @return
      */
     List<LyBm> findLyBmFront(@Param("map") Map map);
+    /**
+     * 分页条件查询需求(后台)
+     *
+     * @param map
+     * @return
+     */
+    List<LyBm> findLyBmBack(@Param("map") Map map);
 }
