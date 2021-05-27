@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personTraining.mapper.kssj.KsjlMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.kssj.Ksjl">
+        <id column="id" property="id" />
+        <result column="sj_id" property="sjId" />
+        <result column="xs_id" property="xsId" />
+        <result column="sjzf" property="sjzf" />
+        <result column="zzcj" property="zzcj" />
+        <result column="tmzs" property="tmzs" />
+        <result column="sjlx" property="sjlx" />
+        <result column="ksdtsj" property="ksdtsj" />
+        <result column="jsdtsj" property="jsdtsj" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, sj_id, xs_id, sjzf, zzcj, tmzs, sjlx, ksdtsj, jsdtsj
+    </sql>
+
+</mapper>

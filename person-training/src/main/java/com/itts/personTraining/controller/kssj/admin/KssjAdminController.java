@@ -1,4 +1,4 @@
-package com.itts.personTraining.controller.kssj;
+package com.itts.personTraining.controller.kssj.admin;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -37,7 +37,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/kssj")
 @Api(tags = "考试试卷后台管理")
-public class KssjController {
+public class KssjAdminController {
 
     @Autowired
     private KssjService kssjService;
