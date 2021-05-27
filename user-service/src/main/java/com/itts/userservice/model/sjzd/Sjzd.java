@@ -90,6 +90,12 @@ public class Sjzd implements Serializable {
     private String fjmc;
 
     /**
+     * 排序
+     */
+    @ApiModelProperty(value = "排序")
+    private Integer px;
+
+    /**
      * 是否删除
      */
     @ApiModelProperty(value = "是否删除")
