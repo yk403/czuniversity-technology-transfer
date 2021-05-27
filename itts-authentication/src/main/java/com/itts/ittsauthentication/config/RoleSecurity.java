@@ -35,6 +35,10 @@ public class RoleSecurity {
         if(StringUtils.isBlank(token)){
             return false;
         }
+        /*if(token == "undefined"){
+            return true;
+        }*/
+
 
         String[] tokenArr = token.split("&");
 
