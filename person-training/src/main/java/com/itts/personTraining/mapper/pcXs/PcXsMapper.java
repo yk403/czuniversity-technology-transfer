@@ -22,4 +22,11 @@ public interface PcXsMapper extends BaseMapper<PcXs> {
      * @return
      */
     List<Long> selectByXsId(@Param("xsId") Long xsId);
+
+    /**
+     * 根据pcId查询xsIds
+     * @param pcId
+     * @return
+     */
+    List<Long> selectByPcId(@Param("pcId") Long pcId);
 }

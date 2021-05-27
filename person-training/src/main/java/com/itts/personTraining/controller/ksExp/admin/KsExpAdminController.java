@@ -47,6 +47,20 @@ public class KsExpAdminController {
     }
 
     /**
+     * 根据条件查询考试扩展信息(继续教育)
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/getByCondition")
+    @ApiOperation(value = "根据条件查询考试扩展信息(继续教育)")
+    public ResponseUtil getByCondition(@RequestParam(value = "id", required = false) Long id,
+                            @RequestParam(value = "ksId", required = false) Long ksId) {
+        return ResponseUtil.success(ksExpService.getByCondition(id,ksId));
+    }
+
+
+    /**
      * 更新考试扩展信息
      * @param ksExpDTO
      * @return

@@ -8,16 +8,19 @@ import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KsDTO;
 import com.itts.personTraining.dto.KsExpDTO;
 import com.itts.personTraining.mapper.ksExp.KsExpMapper;
+import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.szKs.SzKsMapper;
 import com.itts.personTraining.mapper.szKsExp.SzKsExpMapper;
 import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.mapper.ks.KsMapper;
 import com.itts.personTraining.model.ksExp.KsExp;
+import com.itts.personTraining.model.ksXs.KsXs;
 import com.itts.personTraining.model.szKs.SzKs;
 import com.itts.personTraining.model.szKsExp.SzKsExp;
 import com.itts.personTraining.service.ks.KsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.ksExp.KsExpService;
+import com.itts.personTraining.service.ksXs.KsXsService;
 import com.itts.personTraining.service.szKs.SzKsService;
 import com.itts.personTraining.service.szKsExp.SzKsExpService;
 import lombok.extern.slf4j.Slf4j;
@@ -62,8 +65,12 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     private KsExpMapper ksExpMapper;
     @Autowired
     private SzKsService szKsService;
+    @Autowired
+    private KsXsService ksXsService;
     @Resource
     private SzKsMapper szKsMapper;
+    @Resource
+    private PcXsMapper pcXsMapper;
 
     /**
      * 查询考试列表
@@ -122,7 +129,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             Long ksId = ks.getId();
             List<Long> szIds = ksDTO.getSzIds();
             if (szIds != null && szIds.size() > 0) {
-                return saveSzKs(ksDTO, szIds);
+                saveSzKs(ks, szIds);
             }
             List<KsExpDTO> ksExpDTOs = ksDTO.getKsExps();
             for (KsExpDTO ksExpDTO : ksExpDTOs) {
@@ -167,7 +174,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("ks_id",ksDTO.getId());
                 if (szKsService.removeByMap(map)) {
-                    return saveSzKs(ksDTO, szIds);
+                    return saveSzKs(ks, szIds);
                 }
                 return false;
             }
@@ -229,7 +236,23 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             ks.setSfxf(true);
             ks.setXfsj(new Date());
         }
-        return ksService.updateBatchById(ksList);
+        if (ksService.updateBatchById(ksList)) {
+            for (Long id : ids) {
+                //根据考试id查询批次id
+                Ks ks = ksService.getById(id);
+                Long pcId = ks.getPcId();
+                List<Long> xsIds = pcXsMapper.selectByPcId(pcId);
+                List<KsXs> ksXsList = new ArrayList<>();
+                for (Long xsId : xsIds) {
+                    KsXs ksXs = new KsXs();
+                    ksXs.setXsId(xsId);
+                    ksXs.setKsId(id);
+                    ksXsList.add(ksXs);
+                }
+                return ksXsService.saveBatch(ksXsList);
+            }
+        }
+        return false;
     }
 
     /**
@@ -288,12 +311,12 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
      * @param szIds
      * @return
      */
-    private boolean saveSzKs(KsDTO ksDTO, List<Long> szIds) {
+    private boolean saveSzKs(Ks ks, List<Long> szIds) {
         List<SzKs> szKsList = new ArrayList<>();
         for (Long szId : szIds) {
             SzKs szKs = new SzKs();
             szKs.setSzId(szId);
-            szKs.setKsId(ksDTO.getId());
+            szKs.setKsId(ks.getId());
             szKsList.add(szKs);
         }
         return szKsService.saveBatch(szKsList);
