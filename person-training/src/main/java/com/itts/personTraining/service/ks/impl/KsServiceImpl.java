@@ -8,14 +8,17 @@ import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KsDTO;
 import com.itts.personTraining.dto.KsExpDTO;
 import com.itts.personTraining.mapper.ksExp.KsExpMapper;
+import com.itts.personTraining.mapper.szKs.SzKsMapper;
 import com.itts.personTraining.mapper.szKsExp.SzKsExpMapper;
 import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.mapper.ks.KsMapper;
 import com.itts.personTraining.model.ksExp.KsExp;
+import com.itts.personTraining.model.szKs.SzKs;
 import com.itts.personTraining.model.szKsExp.SzKsExp;
 import com.itts.personTraining.service.ks.KsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.ksExp.KsExpService;
+import com.itts.personTraining.service.szKs.SzKsService;
 import com.itts.personTraining.service.szKsExp.SzKsExpService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -57,6 +60,10 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     private KsExpService ksExpService;
     @Resource
     private KsExpMapper ksExpMapper;
+    @Autowired
+    private SzKsService szKsService;
+    @Resource
+    private SzKsMapper szKsMapper;
 
     /**
      * 查询考试列表
@@ -84,10 +91,12 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         log.info("【人才培养 - 根据id:{}查询考试详情】",id);
         KsDTO ksDTO = ksMapper.findById(id);
         if (ksDTO != null) {
+            List<Long> szIds = szKsMapper.getByKsId(ksDTO.getId());
+            ksDTO.setSzIds(szIds);
             List<KsExpDTO> ksExpDTOs = ksExpMapper.findByCondition(null,ksDTO.getId());
             for (KsExpDTO ksExpDTO : ksExpDTOs) {
-                List<Long> szIds = szKsExpMapper.selectByKsExpId(ksExpDTO.getId());
-                ksExpDTO.setSzIds(szIds);
+                List<Long> expsSzIds = szKsExpMapper.selectByKsExpId(ksExpDTO.getId());
+                ksExpDTO.setSzIds(expsSzIds);
             }
             ksDTO.setKsExps(ksExpDTOs);
         }
@@ -111,6 +120,10 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         BeanUtils.copyProperties(ksDTO,ks);
         if (ksService.save(ks)) {
             Long ksId = ks.getId();
+            List<Long> szIds = ksDTO.getSzIds();
+            if (szIds != null && szIds.size() > 0) {
+                return saveSzKs(ksDTO, szIds);
+            }
             List<KsExpDTO> ksExpDTOs = ksDTO.getKsExps();
             for (KsExpDTO ksExpDTO : ksExpDTOs) {
                 KsExp ksExp = new KsExp();
@@ -119,10 +132,14 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 ksExpDTO.setGxr(userId);
                 BeanUtils.copyProperties(ksExpDTO,ksExp);
                 if (ksExpService.save(ksExp)) {
-                    if (saveSzKs(ksExpDTO.getSzIds(),ksExp)) {
-                        continue;
+                    List<Long> expszIds = ksExpDTO.getSzIds();
+                    if (expszIds != null && expszIds.size() > 0) {
+                        if (saveSzKs(expszIds,ksExp)) {
+                            continue;
+                        }
+                        return false;
                     }
-                    return false;
+                    return true;
                 }
                 return false;
             }
@@ -130,6 +147,8 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         }
         return false;
     }
+
+
 
     /**
      * 更新考试
@@ -142,7 +161,18 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         Ks ks = new Ks();
         ksDTO.setGxr(getUserId());
         BeanUtils.copyProperties(ksDTO,ks);
-        return ksService.updateById(ks);
+        if (ksService.updateById(ks)) {
+            List<Long> szIds = ksDTO.getSzIds();
+            if (szIds != null && szIds.size() > 0) {
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("ks_id",ksDTO.getId());
+                if (szKsService.removeByMap(map)) {
+                    return saveSzKs(ksDTO, szIds);
+                }
+                return false;
+            }
+        }
+        return false;
     }
 
     /**
@@ -159,6 +189,12 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         ksDTO.setGxr(userId);
         Ks ks = new Ks();
         BeanUtils.copyProperties(ksDTO,ks);
+        List<Long> szIds = ksDTO.getSzIds();
+        if (szIds != null && szIds.size() > 0) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("ks_id",ksDTO.getId());
+            return szKsService.removeByMap(map);
+        }
         if (ksService.updateById(ks)) {
             List<KsExpDTO> ksExpDTOs = ksExpService.get(null, ksDTO.getId());
             List<KsExp> ksExps = getKsExps(userId, ksExpDTOs);
@@ -177,8 +213,6 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         }
         return false;
     }
-
-
 
     /**
      * 考试批量下发
@@ -246,6 +280,23 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             ksExps.add(ksExp);
         }
         return ksExps;
+    }
+
+    /**
+     * 新增师资考试(监考老师)
+     * @param ksDTO
+     * @param szIds
+     * @return
+     */
+    private boolean saveSzKs(KsDTO ksDTO, List<Long> szIds) {
+        List<SzKs> szKsList = new ArrayList<>();
+        for (Long szId : szIds) {
+            SzKs szKs = new SzKs();
+            szKs.setSzId(szId);
+            szKs.setKsId(ksDTO.getId());
+            szKsList.add(szKs);
+        }
+        return szKsService.saveBatch(szKsList);
     }
 
 }

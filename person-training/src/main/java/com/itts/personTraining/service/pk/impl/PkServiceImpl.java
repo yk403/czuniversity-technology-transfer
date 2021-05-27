@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -99,8 +100,14 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
         BeanUtils.copyProperties(pkDTO, pk);
-        if (pkDTO.getJsz() != null) {
-            String skjsnyr = getDateAfterNDays(pkDTO.getSkqsnyr(), pkDTO.getJsz() * 7);
+        Integer jsz = pkDTO.getJsz();
+        if (jsz != null) {
+            String skjsnyr = null;
+            try {
+                skjsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getSkqsnyr(), jsz*7);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             pk.setSkjsnyr(skjsnyr);
         }
         if (pkService.save(pk)) {
@@ -108,8 +115,6 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         }
         return false;
     }
-
-
 
     /**
      * 更新排课

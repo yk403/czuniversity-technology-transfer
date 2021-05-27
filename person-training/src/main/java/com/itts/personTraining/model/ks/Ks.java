@@ -6,6 +6,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -39,6 +40,11 @@ public class Ks implements Serializable {
      * 类型 (1:学历学位考试;2:继续教育考试)
      */
     private Integer type;
+
+    /**
+     * 试卷id
+     */
+    private Long sjId;
 
     /**
      * 考试名称
