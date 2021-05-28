@@ -98,6 +98,6 @@ public interface JsCgService extends IService<TJsCg> {
     boolean assistanceDisPassById(Map<String, Object> params);
 
     boolean assistanceIssueBatch(List<Integer> ids);
-
+    Long getUserId();
 
 }
