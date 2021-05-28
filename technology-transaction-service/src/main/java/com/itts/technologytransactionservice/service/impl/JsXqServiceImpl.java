@@ -269,6 +269,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
         }else if(params.get("assistanceStatus")!=null){
             tJsSh.setAssistanceStatus(Integer.parseInt(params.get("assistanceStatus").toString()));
             tJsSh.setJylx(jylx);
+            tJsSh.setSlxbbz(null);
             tJsSh.setReleaseAssistanceStatus(1);
         }
         if (!jsShService.updateById(tJsSh)) {

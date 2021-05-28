@@ -119,7 +119,10 @@ public class JsXqController extends BaseController {
      */
     @PutMapping("/assistanceUpdate")
     public ResponseUtil assistanceUpdate(@RequestBody Map<String, Object> params) throws ParseException {
-        if (params.get("jylx") == null || params.get("id") == null || params.get("xqxq") == null || params.get("jszb") == null || params.get("remarks") == null) {
+//        if (params.get("jylx") == null || params.get("id") == null || params.get("xqxq") == null || params.get("jszb") == null || params.get("remarks") == null) {
+//            throw new WebException(REQUEST_PARAMS_ISEMPTY);
+//        }
+        if (params.get("jylx") == null || params.get("id") == null ) {
             throw new WebException(REQUEST_PARAMS_ISEMPTY);
         }
         Integer jylx = Integer.valueOf(params.get("jylx").toString());
