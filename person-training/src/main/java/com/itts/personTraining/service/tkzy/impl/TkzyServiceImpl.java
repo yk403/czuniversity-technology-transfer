@@ -1,5 +1,6 @@
 package com.itts.personTraining.service.tkzy.impl;
 
+import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -56,10 +57,15 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
         List<Tkzy> tkzys = tkzyMapper.selectList(new QueryWrapper<Tkzy>().eq(courseId != null, "kc_id", courseId)
                 .eq(score != null, "fz", score).eq(StringUtils.isNotBlank(type), "tmlx", type));
 
+        if(CollectionUtils.isEmpty(tkzys)){
+            return null;
+        }
+
         List<Long> tkzyIds = tkzys.stream().map(Tkzy::getId).collect(Collectors.toList());
 
         //获取题库列表重的所有选项
         List<Tmxx> tmxxs = tmxxMapper.selectList(new QueryWrapper<Tmxx>().in("tm_id", tkzyIds));
+
         Map<Long, List<Tmxx>> tmxxMap = tmxxs.stream().collect(Collectors.groupingBy(Tmxx::getTmId));
 
         List<GetTkzyVO> tkzyVOs = tkzys.stream().map(obj -> {
@@ -67,16 +73,23 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
             GetTkzyVO vo = new GetTkzyVO();
             BeanUtils.copyProperties(obj, vo);
 
-            List<Tmxx> thisTmxxs = tmxxMap.get(obj.getId());
-            List<GetTmxxVO> thisTMxxVOs = thisTmxxs.stream().map(tmxxObj -> {
+            if(MapUtil.isNotEmpty(tmxxMap)){
 
-                GetTmxxVO tmxxVo = new GetTmxxVO();
-                BeanUtils.copyProperties(tmxxObj, tmxxVo);
-                return tmxxVo;
+                List<Tmxx> thisTmxxs = tmxxMap.get(obj.getId());
 
-            }).collect(Collectors.toList());
+                if(!CollectionUtils.isEmpty(thisTmxxs)){
 
-            vo.setTmxxs(thisTMxxVOs);
+                    List<GetTmxxVO> thisTMxxVOs = thisTmxxs.stream().map(tmxxObj -> {
+
+                        GetTmxxVO tmxxVo = new GetTmxxVO();
+                        BeanUtils.copyProperties(tmxxObj, tmxxVo);
+                        return tmxxVo;
+
+                    }).collect(Collectors.toList());
+
+                    vo.setTmxxs(thisTMxxVOs);
+                }
+            }
 
             return vo;
         }).collect(Collectors.toList());
