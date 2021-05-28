@@ -175,7 +175,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
                 }
             });
 
-            //选中数量与正确答案数量不一致，直接判断错误
+            //选中数量大于正确数量，直接判断错误
             if (zqList.size() < xzList.size()) {
                 return;
             }
