@@ -37,7 +37,7 @@ import static com.itts.common.utils.DateUtils.getDateAfterNDays;
  */
 @Service
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkService {
 
     @Resource

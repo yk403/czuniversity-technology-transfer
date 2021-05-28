@@ -4,7 +4,12 @@ import com.itts.personTraining.model.pcXs.PcXs;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.service.pcXs.PcXsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -15,6 +20,22 @@ import org.springframework.stereotype.Service;
  * @since 2021-05-18
  */
 @Service
+@Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class PcXsServiceImpl extends ServiceImpl<PcXsMapper, PcXs> implements PcXsService {
 
+    @Resource
+    private PcXsMapper pcXsMapper;
+
+    /**
+     * 根据pcId查询学生ids
+     * @param pcId
+     * @return
+     */
+    @Override
+    public List<Long> getByPcId(Long pcId) {
+        log.info("【人才培养 - 根据pcId:{}查询学生ids】",pcId);
+        List<Long> xsIds = pcXsMapper.selectByPcId(pcId);
+        return xsIds;
+    }
 }

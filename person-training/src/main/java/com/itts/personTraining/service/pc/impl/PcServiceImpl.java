@@ -8,6 +8,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.mapper.pc.PcMapper;
+import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.service.pc.PcService;
@@ -43,6 +44,8 @@ public class PcServiceImpl implements PcService {
     private SjzdService sjzdService;
     @Resource
     private PcMapper pcMapper;
+    @Resource
+    private PcXsMapper pcXsMapper;
 
     /**
      * 获取分页
