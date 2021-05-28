@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.itts.common.bean.LoginUser;
 import com.itts.personTraining.model.kssj.Ksjl;
 import com.itts.personTraining.model.kssj.Kssj;
+import com.itts.personTraining.vo.kssj.GetKsjlVO;
 
 /**
  * <p>
@@ -18,6 +19,6 @@ public interface KsjlService extends IService<Ksjl> {
     /**
      * 生成试卷
      */
-    Ksjl add(Kssj kssj, LoginUser loginUser);
+    GetKsjlVO add(Kssj kssj, LoginUser loginUser);
 
 }

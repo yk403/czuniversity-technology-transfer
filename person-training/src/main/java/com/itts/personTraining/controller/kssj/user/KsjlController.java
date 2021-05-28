@@ -6,10 +6,10 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.personTraining.model.kssj.Ksjl;
 import com.itts.personTraining.model.kssj.Kssj;
 import com.itts.personTraining.service.kssj.KsjlService;
 import com.itts.personTraining.service.kssj.KssjService;
+import com.itts.personTraining.vo.kssj.GetKsjlVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -52,7 +52,7 @@ public class KsjlController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        Ksjl ksjl = ksjlService.add(kssj, loginUser);
+        GetKsjlVO ksjl = ksjlService.add(kssj, loginUser);
 
         return ResponseUtil.success(ksjl);
     }

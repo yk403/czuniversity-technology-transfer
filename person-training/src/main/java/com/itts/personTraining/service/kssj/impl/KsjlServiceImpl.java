@@ -2,6 +2,7 @@ package com.itts.personTraining.service.kssj.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
 import com.itts.personTraining.enums.KsjlXxbhEnum;
 import com.itts.personTraining.enums.TkzyTypeEnum;
@@ -15,6 +16,9 @@ import com.itts.personTraining.model.kssj.Kssj;
 import com.itts.personTraining.model.tkzy.Tkzy;
 import com.itts.personTraining.model.tkzy.Tmxx;
 import com.itts.personTraining.service.kssj.KsjlService;
+import com.itts.personTraining.vo.kssj.GetKsjlTmVO;
+import com.itts.personTraining.vo.kssj.GetKsjlTmXxVO;
+import com.itts.personTraining.vo.kssj.GetKsjlVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +56,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
      * 生成试卷
      */
     @Override
-    public Ksjl add(Kssj kssj, LoginUser loginUser) {
+    public GetKsjlVO add(Kssj kssj, LoginUser loginUser) {
 
         Ksjl ksjl = new Ksjl();
         BeanUtils.copyProperties(kssj, ksjl);
@@ -61,6 +65,10 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         ksjl.setXsId(loginUser.getUserId());
 
         ksjlMapper.insert(ksjl);
+
+        //返回生成的试卷
+        GetKsjlVO getKsjlVO = new GetKsjlVO();
+        BeanUtils.copyProperties(ksjl, getKsjlVO);
 
         //获取当前试卷的题目
         List<Tkzy> tms = tkzyMapper.findBySjId(kssj.getId());
@@ -72,33 +80,47 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         //根据题目ID分组成map
         Map<Long, List<Tmxx>> allTmxxMap = allTmxxs.stream().collect(Collectors.groupingBy(Tmxx::getTmId));
 
+        List<GetKsjlTmVO> ksjlTms = Lists.newArrayList();
+
         //便利所有题目，生成试卷记录选项
         Iterator<Tkzy> tmIterator = tms.iterator();
         while (tmIterator.hasNext()) {
 
             Tkzy tm = tmIterator.next();
 
+            GetKsjlTmVO getKsjlTmVO = new GetKsjlTmVO();
+            BeanUtils.copyProperties(tm, getKsjlTmVO);
+
             if (tm != null) {
 
                 //判断题目是否为判断题
                 if (Objects.equals(tm.getTmlx(), TkzyTypeEnum.JUDGMENT.getKey())) {
 
-                    setJudgmentOptions(tm, ksjl);
+                    setJudgmentOptions(tm, ksjl, getKsjlTmVO);
                 } else {
 
-                    setSelectOptions(tm, allTmxxMap, ksjl);
+                    setSelectOptions(tm, allTmxxMap, ksjl, getKsjlTmVO);
                 }
 
                 tmIterator.remove();
             }
+
+            ksjlTms.add(getKsjlTmVO);
         }
-        return null;
+
+
+        return getKsjlVO;
     }
 
     /**
      * 设置判断题选项
      */
-    private void setJudgmentOptions(Tkzy tm, Ksjl ksjl) {
+    private void setJudgmentOptions(Tkzy tm, Ksjl ksjl, GetKsjlTmVO getKsjlTmVO) {
+
+        List<GetKsjlTmXxVO> ksjlTmXxs = Lists.newArrayList();
+
+        GetKsjlTmXxVO zqVo = new GetKsjlTmXxVO();
+        GetKsjlTmXxVO cwVo = new GetKsjlTmXxVO();
 
         //正确
         Ksjlxx zqxx = new Ksjlxx();
@@ -122,14 +144,22 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         ksjlxxMapper.insert(zqxx);
         ksjlxxMapper.insert(cwxx);
+
+        BeanUtils.copyProperties(zqxx, zqVo);
+        BeanUtils.copyProperties(cwxx, cwVo);
+        ksjlTmXxs.add(zqVo);
+        ksjlTmXxs.add(cwVo);
+
+        getKsjlTmVO.setKsjlTmXxs(ksjlTmXxs);
     }
 
     /**
      * 设置选择题选项
      */
-    private void setSelectOptions(Tkzy tm, Map<Long, List<Tmxx>> allTmxxMap, Ksjl ksjl) {
+    private void setSelectOptions(Tkzy tm, Map<Long, List<Tmxx>> allTmxxMap, Ksjl ksjl, GetKsjlTmVO getKsjlTmVO) {
 
         List<Tmxx> tmxxs = allTmxxMap.get(tm.getId());
+        List<GetKsjlTmXxVO> ksjlTmXxs = Lists.newArrayList();
 
         for (int i = 0; i < tmxxs.size(); i++) {
 
@@ -141,6 +171,13 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             ksjlxx.setSfzqda(tmxxs.get(i).getSfzqda());
 
             ksjlxxMapper.insert(ksjlxx);
+
+            GetKsjlTmXxVO getKsjlTmXxVO = new GetKsjlTmXxVO();
+            BeanUtils.copyProperties(ksjlxx, getKsjlTmXxVO);
+
+            ksjlTmXxs.add(getKsjlTmXxVO);
         }
+
+        getKsjlTmVO.setKsjlTmXxs(ksjlTmXxs);
     }
 }

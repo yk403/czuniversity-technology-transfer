@@ -58,6 +58,4 @@ public class Ksjlxx implements Serializable {
      * 是否正确答案
      */
     private Boolean sfzqda;
-
-
 }
