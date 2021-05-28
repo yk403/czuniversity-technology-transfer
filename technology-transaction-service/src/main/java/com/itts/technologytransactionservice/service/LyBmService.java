@@ -19,5 +19,4 @@ public interface LyBmService extends IService<LyBm> {
     PageInfo findLyBmFront(Map<String, Object> params);
 
     Boolean saveBm(LyBm lyBm);
-    Long getUserId();
 }

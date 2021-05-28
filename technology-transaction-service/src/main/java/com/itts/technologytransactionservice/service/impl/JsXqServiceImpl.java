@@ -219,6 +219,10 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     public boolean auditXq(Map<String, Object> params, Integer fbshzt) {
         TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
         tJsSh.setFbshzt(fbshzt);
+        //如果门户在信息采集的整改中申请发布改为整改完成时将发布审核状态清空
+        if(fbshzt == 5){
+            tJsSh.setFbshbz(null);
+        }
         if (!jsShService.updateById(tJsSh)) {
             throw new ServiceException("发布审核需求申请失败!");
         }
@@ -240,26 +244,33 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
         }
         TJsXq xq = new TJsXq();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        xq.setId(Integer.valueOf(params.get("id").toString()));
-        xq.setXqxq(params.get("xqxq").toString());
-        xq.setJszb(params.get("jszb").toString());
-        xq.setRemarks(params.get("remarks").toString());
-        xq.setZbxmgs(params.get("zbxmgs").toString());
-        xq.setZbxmqd(params.get("zbxmqd").toString());
-        if(params.get("xqfj")!=null){
-            xq.setXqfj(params.get("xqfj").toString());
+        if(params.get("xqxq")!=null){
+            xq.setId(Integer.valueOf(params.get("id").toString()));
+            xq.setXqxq(params.get("xqxq").toString());
+            xq.setJszb(params.get("jszb").toString());
+            xq.setRemarks(params.get("remarks").toString());
+            xq.setZbxmgs(params.get("zbxmgs").toString());
+            xq.setZbxmqd(params.get("zbxmqd").toString());
+            if(params.get("xqfj")!=null){
+                xq.setXqfj(params.get("xqfj").toString());
+            }
+            if(params.get("xqfj")!=null){
+                xq.setXqfjmc(params.get("xqfjmc").toString());
+            }
+            xq.setJscs(params.get("jscs").toString());
+            xq.setFwnr(params.get("fwnr").toString());
+            xq.setJhrq(simpleDateFormat.parse(params.get("jhrq").toString()));
+            xq.setYsrq(simpleDateFormat.parse(params.get("ysrq").toString()));
+
+            tJsSh.setAssistanceStatus(1);
+            tJsSh.setJylx(jylx);
+            tJsSh.setReleaseAssistanceStatus(1);
+            jsXqMapper.updateTJsXq(xq);
+        }else if(params.get("assistanceStatus")!=null){
+            tJsSh.setAssistanceStatus(Integer.parseInt(params.get("assistanceStatus").toString()));
+            tJsSh.setJylx(jylx);
+            tJsSh.setReleaseAssistanceStatus(1);
         }
-        if(params.get("xqfj")!=null){
-            xq.setXqfjmc(params.get("xqfjmc").toString());
-        }
-        xq.setJscs(params.get("jscs").toString());
-        xq.setFwnr(params.get("fwnr").toString());
-        xq.setJhrq(simpleDateFormat.parse(params.get("jhrq").toString()));
-        xq.setYsrq(simpleDateFormat.parse(params.get("ysrq").toString()));
-        jsXqMapper.updateTJsXq(xq);
-        tJsSh.setAssistanceStatus(1);
-        tJsSh.setJylx(jylx);
-        tJsSh.setReleaseAssistanceStatus(1);
         if (!jsShService.updateById(tJsSh)) {
             log.error("更新审核失败!");
             throw new ServiceException("更新审核失败!");
@@ -280,5 +291,4 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
         }
         return userId;
     }
-
 }

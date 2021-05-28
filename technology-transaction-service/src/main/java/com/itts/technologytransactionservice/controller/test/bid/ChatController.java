@@ -19,6 +19,8 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * @Description：
@@ -41,9 +43,16 @@ public class ChatController {
      */
     @OnOpen
     public void onOpen(@PathParam("roomId") String roomId,@PathParam("userId") String userId, Session session) {
-
+        Set set = SessionPool.rooms.get(roomId);
         SessionPool.open(userId, session);
-
+        // 如果是新的房间，则创建一个映射，如果房间已存在，则把用户放进去
+        if (set == null) {
+            set = new CopyOnWriteArraySet();
+            set.add(session);
+            SessionPool.rooms.put(roomId, set);
+        } else {
+            set.add(session);
+        }
         System.out.println("open....");
     }
 
@@ -51,11 +60,15 @@ public class ChatController {
      * websocket断开链接
      */
     @OnClose
-    public void onClose(Session session) throws IOException {
+    public void onClose(@PathParam("roomId") String roomId,@PathParam("userId") String userId, Session session) throws IOException {
 
         System.out.println("close.....");
-
+        //从用户map中移除相应的用户
         SessionPool.close(session.getId());
+        // 如果某个用户离开了，就移除房间map中相应的信息
+        if (SessionPool.rooms.containsKey(roomId)) {
+            SessionPool.rooms.get(roomId).remove(session);
+        }
         session.close();
     }
 
@@ -63,8 +76,8 @@ public class ChatController {
      * 接收消息并处理消息
      */
     @OnMessage
-    public void onMessage(String message) throws IOException {
-
+    public void onMessage(@PathParam("roomId") String roomId, Session session,String message) throws IOException {
+        log.info("接受到用户{}的数据:{}", session.getId(), message);
         System.out.println(message);
 
         //检测心跳

@@ -76,22 +76,8 @@ public class JsBmServiceImpl extends ServiceImpl<JsBmMapper, TJsBm> implements J
 
 	@Override
 	public boolean saveBm(TJsBm tJsBm) {
-		Long userId = getUserId();
-		tJsBm.setUserId(Integer.parseInt(String.valueOf(userId)));
+		//Long userId = getUserId();
+		//tJsBm.setUserId(Integer.parseInt(String.valueOf(userId)));
 		return save(tJsBm);
-	}
-	/**
-	 * 获取当前用户id
-	 * @return
-	 */
-	public Long getUserId() {
-		LoginUser loginUser = threadLocal.get();
-		Long userId;
-		if (loginUser != null) {
-			userId = loginUser.getUserId();
-		} else {
-			throw new ServiceException(GET_THREADLOCAL_ERROR);
-		}
-		return userId;
 	}
 }

@@ -89,4 +89,8 @@ public class TJsCjRcDto implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date hdjssj;
+    /**
+     * 删除状态(0:未删除;1:已删除)
+     */
+    private Integer userId;
 }

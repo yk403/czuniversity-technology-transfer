@@ -22,6 +22,5 @@ public interface JsCjRcService extends IService<TJsCjRc> {
 	PageInfo page(Query query);
 	boolean removeByIdCjRc(String id);
 	boolean saveCjRc(TJsCjRcDto tJsCjRcDto);
-	Long getUserId();
 
 }
