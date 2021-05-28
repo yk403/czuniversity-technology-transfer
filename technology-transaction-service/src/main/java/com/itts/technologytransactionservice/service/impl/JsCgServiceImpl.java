@@ -204,21 +204,27 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             return false;
         }
         TJsCg cg= new TJsCg();
-        cg.setId(Integer.valueOf(params.get("id").toString()));
-        cg.setBz(params.get("bz").toString());
-        cg.setCghqfs(params.get("cghqfs").toString());
-        cg.setCgjs(params.get("cgjs").toString());
-        cg.setHjqk(params.get("hjqk").toString());
-        cg.setJscsd(params.get("jscsd").toString());
-        cg.setJszb(params.get("jszb").toString());
-        cg.setSyfx(params.get("syfx").toString());
-        cg.setZscqxs(params.get("zscqxs").toString());
-        cg.setZzqk(params.get("zzqk").toString());
-        cg.setGxsj(new Date());
-        jsCgMapper.updateTJsCg(cg);
-        tJsSh.setAssistanceStatus(1);
-        tJsSh.setJylx(jylx);
-        tJsSh.setReleaseAssistanceStatus(1);
+        if(params.get("zzqk")!=null){
+            cg.setId(Integer.valueOf(params.get("id").toString()));
+            cg.setBz(params.get("bz").toString());
+            cg.setCghqfs(params.get("cghqfs").toString());
+            cg.setCgjs(params.get("cgjs").toString());
+            cg.setHjqk(params.get("hjqk").toString());
+            cg.setJscsd(params.get("jscsd").toString());
+            cg.setJszb(params.get("jszb").toString());
+            cg.setSyfx(params.get("syfx").toString());
+            cg.setZscqxs(params.get("zscqxs").toString());
+            cg.setZzqk(params.get("zzqk").toString());
+            cg.setGxsj(new Date());
+            tJsSh.setAssistanceStatus(1);
+            tJsSh.setJylx(jylx);
+            tJsSh.setReleaseAssistanceStatus(1);
+            jsCgMapper.updateTJsCg(cg);
+        }else if(params.get("assistanceStatus")!=null){
+            tJsSh.setAssistanceStatus(Integer.parseInt(params.get("assistanceStatus").toString()));
+            tJsSh.setJylx(jylx);
+            tJsSh.setReleaseAssistanceStatus(1);
+        }
         if (!jsShService.updateById(tJsSh)) {
             log.error("更新审核失败!");
             throw new ServiceException("更新审核失败!");
@@ -236,6 +242,10 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
         tJsSh.setFbshzt(fbshzt);
         tJsSh.setGxsj(new Date());
+        //如果门户在信息采集的整改中申请发布改为整改完成时将发布审核状态清空
+        if(fbshzt == 5){
+            tJsSh.setFbshbz(null);
+        }
         if (!jsShService.updateById(tJsSh)) {
             throw new ServiceException("发布审核成果申请失败!");
         }
