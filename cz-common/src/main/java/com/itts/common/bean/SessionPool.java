@@ -20,7 +20,7 @@ public class SessionPool {
     /**
      * 房间链接池
      */
-    public static Map<String, Set<Session>> rooms = new ConcurrentHashMap<>();
+    public static Map<String, Set> rooms = new ConcurrentHashMap(8);
     /**
      * 建立链接
      */
