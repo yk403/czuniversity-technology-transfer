@@ -52,12 +52,10 @@ public class TJsSh implements Serializable {
 	/**
  	* 发布审核备注
  	*/
-	@TableField(updateStrategy = FieldStrategy.IGNORED)
 	private String fbshbz;
 	/**
  	* 活动申请备注
  	*/
-	@TableField(updateStrategy = FieldStrategy.IGNORED)
 	private String hdsqbz;
 	/**
  	* 创建时间
@@ -92,7 +90,6 @@ public class TJsSh implements Serializable {
 	/**
 	 * 受理协办备注
 	 */
-	@TableField(updateStrategy = FieldStrategy.IGNORED)
 	private String slxbbz;
 	/**
 	 * 删除状态(0:未删除;1:已删除)
