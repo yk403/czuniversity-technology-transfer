@@ -108,7 +108,7 @@ public class TkzyController {
                                       @ApiParam(value = "分值") @RequestParam(value = "score", required = false) Integer score,
                                       @ApiParam(value = "题目类型") @RequestParam(value = "type", required = false) String type) {
 
-        List<GetTkzyVO> tkzys = tkzyService.listByDetail(pageNum, pageSize, courseId, score, type);
+        PageInfo tkzys = tkzyService.listByDetail(pageNum, pageSize, courseId, score, type);
         return ResponseUtil.success(tkzys);
     }
 

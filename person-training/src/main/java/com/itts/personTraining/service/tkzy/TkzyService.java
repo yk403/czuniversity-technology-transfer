@@ -1,12 +1,11 @@
 package com.itts.personTraining.service.tkzy;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.model.tkzy.Tkzy;
 import com.itts.personTraining.request.tkzy.AddTkzyRequest;
 import com.itts.personTraining.request.tkzy.UpdateTkzyRequest;
 import com.itts.personTraining.vo.tkzy.GetTkzyVO;
-
-import java.util.List;
 
 /**
  * <p>
@@ -21,7 +20,7 @@ public interface TkzyService extends IService<Tkzy> {
     /**
      * 列表 - 有题目选项
      */
-    List<GetTkzyVO> listByDetail(Integer pageNum, Integer pageSize, Long courseId, Integer score, String type);
+    PageInfo listByDetail(Integer pageNum, Integer pageSize, Long courseId, Integer score, String type);
 
     /**
      * 详情
