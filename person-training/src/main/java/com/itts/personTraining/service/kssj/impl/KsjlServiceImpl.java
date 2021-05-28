@@ -26,8 +26,11 @@ import com.itts.personTraining.vo.kssj.GetKsjlVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -123,20 +126,99 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         //查询当前试卷记录信息
         Ksjl ksjl = ksjlMapper.selectById(commitKsjlRequest.getId());
-        if(ksjl == null){
-           ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        if (ksjl == null) {
+            return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
+
+        //获取当前试卷所有题目
+        List<Tkzy> tms = tkzyMapper.findBySjId(ksjl.getSjId());
+        if (CollectionUtils.isEmpty(tms)) {
+            return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        Map<Long, Tkzy> tmMap = tms.stream().collect(Collectors.toMap(Tkzy::getId, Function.identity()));
 
         ksjl.setJsdtsj(new Date());
 
         //获取当前考试记录所有考试记录选项
         List<Ksjlxx> ksjlxxs = ksjlxxMapper.selectList(new QueryWrapper<Ksjlxx>().eq("ksjl_id", ksjl.getId()));
+        if (CollectionUtils.isEmpty(ksjlxxs)) {
+            return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+        Map<Long, List<Ksjlxx>> ksjlxxMap = ksjlxxs.stream().collect(Collectors.groupingBy(Ksjlxx::getTmId));
 
         //获取用户提交的考试选项记录
         List<CommitKsjlXxRequest> commitKsjlxxs = commitKsjlRequest.getKsjlxxs();
+        Map<Long, List<CommitKsjlXxRequest>> commitKsjlxxMap = commitKsjlxxs.stream().collect(Collectors.groupingBy(CommitKsjlXxRequest::getTmId));
 
+        AtomicInteger totalScore = new AtomicInteger();
 
-        return null;
+        ksjlxxMap.forEach((k, v) -> {
+
+            //通过ID分组当前题目选项
+            Map<Long, Ksjlxx> vMap = v.stream().collect(Collectors.toMap(Ksjlxx::getId, Function.identity()));
+
+            //获取当前选项正确答案有几个
+            List<Ksjlxx> zqList = v.stream().filter(Ksjlxx::getSfzqda).collect(Collectors.toList());
+
+            //获取当前用户选项选中哪些答案
+            List<CommitKsjlXxRequest> xzList = commitKsjlxxMap.get(k).stream().filter(CommitKsjlXxRequest::getSfxz).collect(Collectors.toList());
+
+            //设置选中的选项
+            xzList.forEach(xz -> {
+
+                Ksjlxx ksjlxx = vMap.get(xz.getId());
+                if (ksjlxx != null) {
+
+                    ksjlxx.setSfxz(true);
+                    ksjlxxMapper.updateById(ksjlxx);
+                }
+            });
+
+            //选中数量与正确答案数量不一致，直接判断错误
+            if (zqList.size() < xzList.size()) {
+                return;
+            }
+
+            //如果选中数量一致， 则判断是否选对选项
+            List<Long> zqIdList = zqList.stream().map(Ksjlxx::getId).collect(Collectors.toList());
+            List<Long> xzIdList = xzList.stream().map(CommitKsjlXxRequest::getId).collect(Collectors.toList());
+
+            //如果选中数量等于正确答案数量，循环便利，判断是否全部正确
+            if (zqIdList.size() == xzIdList.size()) {
+
+                xzIdList.stream().forEach(xzId -> {
+
+                    if (zqIdList.contains(xzId)) {
+                        zqIdList.remove(xzId);
+                    }
+                });
+
+                if (CollectionUtils.isEmpty(zqIdList)) {
+
+                    totalScore.addAndGet(tmMap.get(k).getFz());
+                }
+            }
+
+            //如果选中的数量小于正确答案数量，漏选得一半分，多选或者有选错选项不得分
+            zqIdList.stream().forEach(zqId -> {
+
+                if (xzIdList.contains(zqId)) {
+                    xzIdList.remove(zqId);
+                }
+            });
+
+            if (CollectionUtils.isEmpty(xzIdList)) {
+
+                totalScore.addAndGet(tmMap.get(k).getFz() / 2);
+            }
+        });
+
+        ksjl.setZzcj(totalScore.get());
+
+        ksjlMapper.updateById(ksjl);
+
+        return ResponseUtil.success(totalScore.get());
     }
 
     /**
