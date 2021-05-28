@@ -3,6 +3,7 @@ package com.itts.personTraining.service.tkzy.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.personTraining.mapper.tkzy.TkzyMapper;
@@ -48,7 +49,7 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
      * 列表 - 有题目选项
      */
     @Override
-    public List<GetTkzyVO> listByDetail(Integer pageNum, Integer pageSize, Long courseId, Integer score, String type) {
+    public PageInfo listByDetail(Integer pageNum, Integer pageSize, Long courseId, Integer score, String type) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -80,7 +81,9 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
             return vo;
         }).collect(Collectors.toList());
 
-        return tkzyVOs;
+        PageInfo pageInfo = new PageInfo(tkzyVOs);
+
+        return pageInfo;
     }
 
     /**
