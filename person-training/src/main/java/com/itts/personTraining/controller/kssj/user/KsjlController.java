@@ -7,6 +7,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.kssj.Kssj;
+import com.itts.personTraining.request.kssj.CommitKsjlRequest;
 import com.itts.personTraining.service.kssj.KsjlService;
 import com.itts.personTraining.service.kssj.KssjService;
 import com.itts.personTraining.vo.kssj.GetKsjlVO;
@@ -14,10 +15,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -43,7 +42,7 @@ public class KsjlController {
     public ResponseUtil add(@ApiParam("试卷ID") @RequestParam("sjId") Long sjId) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
-        if(loginUser == null){
+        if (loginUser == null) {
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
         }
 
@@ -55,6 +54,36 @@ public class KsjlController {
         GetKsjlVO ksjl = ksjlService.add(kssj, loginUser);
 
         return ResponseUtil.success(ksjl);
+    }
+
+    @ApiOperation(value = "提交试卷")
+    @PostMapping("/commit/")
+    public ResponseUtil commit(@RequestBody CommitKsjlRequest commitKsjlRequest) {
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser == null) {
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        checkCommitRequest(commitKsjlRequest);
+        ResponseUtil result = ksjlService.commit(commitKsjlRequest, loginUser);
+
+        return result;
+    }
+
+    private void checkCommitRequest(CommitKsjlRequest commitKsjlRequest) {
+
+        if (commitKsjlRequest == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (commitKsjlRequest.getId() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (CollectionUtils.isEmpty(commitKsjlRequest.getKsjlxxs())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
     }
 }
 

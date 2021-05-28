@@ -6,6 +6,8 @@ import com.itts.personTraining.request.tkzy.AddTkzyRequest;
 import com.itts.personTraining.request.tkzy.UpdateTkzyRequest;
 import com.itts.personTraining.vo.tkzy.GetTkzyVO;
 
+import java.util.List;
+
 /**
  * <p>
  * 题库资源 服务类
@@ -15,6 +17,11 @@ import com.itts.personTraining.vo.tkzy.GetTkzyVO;
  * @since 2021-05-13
  */
 public interface TkzyService extends IService<Tkzy> {
+
+    /**
+     * 列表 - 有题目选项
+     */
+    List<GetTkzyVO> listByDetail(Integer pageNum, Integer pageSize, Long courseId, Integer score, String type);
 
     /**
      * 详情

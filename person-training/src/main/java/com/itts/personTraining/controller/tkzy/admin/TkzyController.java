@@ -100,6 +100,18 @@ public class TkzyController {
         return ResponseUtil.success(pageInfo);
     }
 
+    @ApiOperation(value = "列表 - 有题目选项")
+    @GetMapping("/list/by/details/")
+    public ResponseUtil listByDetails(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                      @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                      @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
+                                      @ApiParam(value = "分值") @RequestParam(value = "score", required = false) Integer score,
+                                      @ApiParam(value = "题目类型") @RequestParam(value = "type", required = false) String type) {
+
+        List<GetTkzyVO> tkzys = tkzyService.listByDetail(pageNum, pageSize, courseId, score, type);
+        return ResponseUtil.success(tkzys);
+    }
+
     @ApiOperation("详情")
     @GetMapping("/get/{id}")
     public ResponseUtil get(@PathVariable("id") Long id) {
