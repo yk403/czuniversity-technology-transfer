@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personTraining.mapper.sj.SjMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.sj.Sj">
+        <id column="id" property="id" />
+        <result column="xs_id" property="xsId" />
+        <result column="sjlx" property="sjlx" />
+        <result column="sjdw" property="sjdw" />
+        <result column="bg" property="bg" />
+        <result column="pjb" property="pjb" />
+        <result column="sjcj" property="sjcj" />
+        <result column="jcjxj_one" property="jcjxjOne" />
+        <result column="jcjxj_two" property="jcjxjTwo" />
+        <result column="jdjj_one" property="jdjjOne" />
+        <result column="jdjj_two" property="jdjjTwo" />
+        <result column="sfsc" property="sfsc" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, xs_id, sjlx, sjdw, bg, pjb, sjcj, jcjxj_one, jcjxj_two, jdjj_one, jdjj_two, sfsc, cjsj, cjr, gxsj, gxr
+    </sql>
+
+</mapper>
