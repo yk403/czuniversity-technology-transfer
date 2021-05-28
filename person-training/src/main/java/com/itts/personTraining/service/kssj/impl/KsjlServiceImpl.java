@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.enums.KsjlXxbhEnum;
 import com.itts.personTraining.enums.TkzyTypeEnum;
 import com.itts.personTraining.mapper.kssj.KsjlMapper;
@@ -15,6 +17,8 @@ import com.itts.personTraining.model.kssj.Ksjlxx;
 import com.itts.personTraining.model.kssj.Kssj;
 import com.itts.personTraining.model.tkzy.Tkzy;
 import com.itts.personTraining.model.tkzy.Tmxx;
+import com.itts.personTraining.request.kssj.CommitKsjlRequest;
+import com.itts.personTraining.request.kssj.CommitKsjlXxRequest;
 import com.itts.personTraining.service.kssj.KsjlService;
 import com.itts.personTraining.vo.kssj.GetKsjlTmVO;
 import com.itts.personTraining.vo.kssj.GetKsjlTmXxVO;
@@ -23,10 +27,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -63,6 +64,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         ksjl.setSjId(kssj.getId());
         ksjl.setXsId(loginUser.getUserId());
+        ksjl.setKsdtsj(new Date());
 
         ksjlMapper.insert(ksjl);
 
@@ -110,6 +112,31 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
 
         return getKsjlVO;
+    }
+
+
+    /**
+     * 提交试卷
+     */
+    @Override
+    public ResponseUtil commit(CommitKsjlRequest commitKsjlRequest, LoginUser loginUser) {
+
+        //查询当前试卷记录信息
+        Ksjl ksjl = ksjlMapper.selectById(commitKsjlRequest.getId());
+        if(ksjl == null){
+           ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        ksjl.setJsdtsj(new Date());
+
+        //获取当前考试记录所有考试记录选项
+        List<Ksjlxx> ksjlxxs = ksjlxxMapper.selectList(new QueryWrapper<Ksjlxx>().eq("ksjl_id", ksjl.getId()));
+
+        //获取用户提交的考试选项记录
+        List<CommitKsjlXxRequest> commitKsjlxxs = commitKsjlRequest.getKsjlxxs();
+
+
+        return null;
     }
 
     /**

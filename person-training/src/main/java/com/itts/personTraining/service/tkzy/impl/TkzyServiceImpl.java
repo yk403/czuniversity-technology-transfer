@@ -1,6 +1,8 @@
 package com.itts.personTraining.service.tkzy.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.personTraining.mapper.tkzy.TkzyMapper;
@@ -14,6 +16,7 @@ import com.itts.personTraining.request.tkzy.UpdateTmxxRequest;
 import com.itts.personTraining.service.tkzy.TkzyService;
 import com.itts.personTraining.vo.tkzy.GetTkzyVO;
 import com.itts.personTraining.vo.tkzy.GetTmxxVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +43,45 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
 
     @Autowired
     private TmxxMapper tmxxMapper;
+
+    /**
+     * 列表 - 有题目选项
+     */
+    @Override
+    public List<GetTkzyVO> listByDetail(Integer pageNum, Integer pageSize, Long courseId, Integer score, String type) {
+
+        PageHelper.startPage(pageNum, pageSize);
+
+        List<Tkzy> tkzys = tkzyMapper.selectList(new QueryWrapper<Tkzy>().eq(courseId != null, "kc_id", courseId)
+                .eq(score != null, "fz", score).eq(StringUtils.isNotBlank(type), "tmlx", type));
+
+        List<Long> tkzyIds = tkzys.stream().map(Tkzy::getId).collect(Collectors.toList());
+
+        //获取题库列表重的所有选项
+        List<Tmxx> tmxxs = tmxxMapper.selectList(new QueryWrapper<Tmxx>().in("tm_id", tkzyIds));
+        Map<Long, List<Tmxx>> tmxxMap = tmxxs.stream().collect(Collectors.groupingBy(Tmxx::getTmId));
+
+        List<GetTkzyVO> tkzyVOs = tkzys.stream().map(obj -> {
+
+            GetTkzyVO vo = new GetTkzyVO();
+            BeanUtils.copyProperties(obj, vo);
+
+            List<Tmxx> thisTmxxs = tmxxMap.get(obj.getId());
+            List<GetTmxxVO> thisTMxxVOs = thisTmxxs.stream().map(tmxxObj -> {
+
+                GetTmxxVO tmxxVo = new GetTmxxVO();
+                BeanUtils.copyProperties(tmxxObj, tmxxVo);
+                return tmxxVo;
+
+            }).collect(Collectors.toList());
+
+            vo.setTmxxs(thisTMxxVOs);
+
+            return vo;
+        }).collect(Collectors.toList());
+
+        return tkzyVOs;
+    }
 
     /**
      * 详情
@@ -91,7 +133,7 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
 
         tkzyMapper.insert(tkzy);
 
-        if(CollectionUtils.isEmpty(addTkzyRequest.getTmxxs())){
+        if (CollectionUtils.isEmpty(addTkzyRequest.getTmxxs())) {
             return tkzy;
         }
 
@@ -127,7 +169,7 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
 
         tkzyMapper.updateById(tkzy);
 
-        if(CollectionUtils.isEmpty(updateTkzyRequest.getTmxxs())){
+        if (CollectionUtils.isEmpty(updateTkzyRequest.getTmxxs())) {
             return tkzy;
         }
 
