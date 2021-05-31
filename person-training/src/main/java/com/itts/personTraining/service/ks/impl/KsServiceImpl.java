@@ -305,7 +305,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
 
     /**
      * 新增师资考试(监考老师)
-     * @param ksDTO
+     * @param ks
      * @param szIds
      * @return
      */

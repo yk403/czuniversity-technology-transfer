@@ -39,7 +39,7 @@ public class KcAdminController {
      * @return
      */
     @GetMapping("/list")
-    @ApiOperation(value = "获取列表")
+    @ApiOperation(value = "查询课程列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "kclx", required = false) String kclx,

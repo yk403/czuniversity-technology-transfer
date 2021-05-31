@@ -15,10 +15,10 @@ import com.itts.personTraining.service.pc.PcService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.sjzd.SjzdService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -54,11 +54,13 @@ public class PcServiceImpl implements PcService {
      * @return
      */
     @Override
-    public PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize, String pch, String pcmc) {
         log.info("【人才培养 - 分页查询批次】");
         PageHelper.startPage(pageNum,pageSize);
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
         pcQueryWrapper.eq("sfsc",false)
+                      .eq(StringUtils.isNotBlank(pch),"pch",pch)
+                      .like(StringUtils.isNotBlank(pch),"pcmc",pcmc)
                       .orderByDesc("cjsj");
         List<Pc> pcs = pcMapper.selectList(pcQueryWrapper);
         return new PageInfo<>(pcs);

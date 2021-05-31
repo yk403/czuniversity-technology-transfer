@@ -1,6 +1,8 @@
 package com.itts.personTraining.dto;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -112,6 +114,7 @@ public class SjDTO {
     /**
      * 创建时间
      */
+    @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行
     private Date cjsj;
 
     /**
@@ -122,6 +125,7 @@ public class SjDTO {
     /**
      * 更新时间
      */
+    @TableField(value = "gxsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
     private Date gxsj;
 
     /**

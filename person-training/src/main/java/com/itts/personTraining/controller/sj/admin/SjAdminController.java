@@ -4,7 +4,9 @@ package com.itts.personTraining.controller.sj.admin;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.KcDTO;
+import com.itts.personTraining.dto.SjDTO;
 import com.itts.personTraining.service.kc.KcService;
+import com.itts.personTraining.service.sj.SjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,86 +30,88 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 @Api(value = "SjAdminController", tags = "实践后台管理")
 public class SjAdminController {
     @Autowired
+    private SjService sjService;
+    @Autowired
     private KcService kcService;
 
     /**
-     * 查询课程列表
+     * 查询实践列表
      *
      * @param pageNum
      * @param pageSize
      * @return
      */
     @GetMapping("/list")
-    @ApiOperation(value = "获取列表")
+    @ApiOperation(value = "获取实践列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                   @RequestParam(value = "kclx", required = false) String kclx,
-                                   @RequestParam(value = "name", required = false) String name) {
-        return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name));
+                                   @RequestParam(value = "pcId", required = false) Long pcId,
+                                   @RequestParam(value = "sjlx", required = false) String sjlx) {
+        return ResponseUtil.success(sjService.findByPage(pageNum, pageSize, pcId, sjlx));
     }
 
     /**
-     * 根据id查询课程详情
+     * 根据id查询实践详情
      *
      * @param id
      * @return
      */
     @GetMapping("/get/{id}")
-    @ApiOperation(value = "根据id查询课程详情")
+    @ApiOperation(value = "根据id查询实践详情")
     public ResponseUtil get(@PathVariable("id") Long id) {
-        return ResponseUtil.success(kcService.get(id));
+        return ResponseUtil.success(sjService.get(id));
     }
 
     /**
-     * 根据条件查询课程
+     * 查询所有实践
      */
-    @GetMapping("/getByCondition")
-    @ApiOperation(value = "根据条件查询课程")
-    public ResponseUtil getByCondition(@RequestParam(value = "xylx", required = false) String xylx) {
-        return ResponseUtil.success(kcService.getByCondition(xylx));
+    @GetMapping("/getAll")
+    @ApiOperation(value = "查询所有实践")
+    public ResponseUtil getAll() {
+        return ResponseUtil.success(sjService.getAll());
     }
 
     /**
      * 新增实践
      *
-     * @param kcDTO
+     * @param sjDTO
      * @return
      * @throws WebException
      */
     @PostMapping("/add")
-    @ApiOperation(value = "新增课程")
-    public ResponseUtil add(@RequestBody KcDTO kcDTO) throws WebException {
+    @ApiOperation(value = "新增实践")
+    public ResponseUtil add(@RequestBody SjDTO sjDTO) throws WebException {
         //检查参数是否合法
-        checkRequest(kcDTO);
-        if (!kcService.add(kcDTO)) {
+        checkRequest(sjDTO);
+        if (!sjService.add(sjDTO)) {
             throw new WebException(INSERT_FAIL);
         }
-        return ResponseUtil.success("新增课程成功!");
+        return ResponseUtil.success("新增实践成功!");
     }
 
     /**
-     * 更新课程
+     * 更新实践
      *
-     * @param kcDTO
+     * @param sjDTO
      * @return
      * @throws WebException
      */
     @PutMapping("/update")
-    @ApiOperation(value = "更新课程")
-    public ResponseUtil update(@RequestBody KcDTO kcDTO) throws WebException {
-        Long id = kcDTO.getId();
+    @ApiOperation(value = "更新实践")
+    public ResponseUtil update(@RequestBody SjDTO sjDTO) throws WebException {
+        Long id = sjDTO.getId();
         //检查参数是否合法
         if (id == null ) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //检查数据库中是否存在要更新的数据
-        if (kcService.get(id) == null) {
+        if (sjService.get(id) == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        if (!kcService.update(kcDTO)) {
+        if (!sjService.update(sjDTO)) {
             throw new WebException(UPDATE_FAIL);
         }
-        return ResponseUtil.success("更新课程成功!");
+        return ResponseUtil.success("更新实践成功!");
 
     }
 
@@ -147,21 +151,14 @@ public class SjAdminController {
     /**
      * 校验参数
      */
-    private void checkRequest(KcDTO kcDTO) throws WebException {
-        if (kcDTO == null) {
+    private void checkRequest(SjDTO sjDTO) throws WebException {
+        if (sjDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if(kcDTO.getSzIds() == null) {
-            throw new WebException(TEACHER_ISEMPTY_ERROR);
-        }
-        if (kcDTO.getKcdm() == null) {
-            throw new WebException(TEACH_TYPE_ISEMPTY_ERROR);
-        }
-        List<KcDTO> kcList = kcService.getByCondition(null);
-
-        for (KcDTO kcDTO1 : kcList) {
-            if (kcDTO1.getKcdm().equals(kcDTO.getKcdm()) || kcDTO1.getKcmc().equals(kcDTO.getKcmc())) {
-                throw new WebException(COURSE_EXISTS_ERROR);
+        List<SjDTO> sjDTOs = sjService.getAll();
+        for (SjDTO dto : sjDTOs) {
+            if (dto.getXh().equals(sjDTO.getXh())) {
+                throw new WebException(STUDENT_NUMBER_EXISTS_ERROR);
             }
         }
     }
