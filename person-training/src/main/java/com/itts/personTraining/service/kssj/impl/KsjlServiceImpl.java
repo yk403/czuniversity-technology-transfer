@@ -3,6 +3,7 @@ package com.itts.personTraining.service.kssj.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.utils.common.ResponseUtil;
@@ -55,6 +56,74 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
     @Autowired
     private KsjlxxMapper ksjlxxMapper;
+
+    /**
+     * 获取详情
+     */
+    @Override
+    public GetKsjlVO get(Long id) {
+
+        Ksjl ksjl = ksjlMapper.selectById(id);
+        if (ksjl == null) {
+            return null;
+        }
+
+
+        GetKsjlVO vo = new GetKsjlVO();
+        BeanUtils.copyProperties(ksjl, vo);
+
+        //获取当前考试记录所有题目信息
+        List<Tkzy> tkzys = tkzyMapper.findBySjId(ksjl.getSjId());
+        if (CollectionUtils.isEmpty(tkzys)) {
+            return vo;
+        }
+
+        List<Long> tkzyIds = tkzys.stream().map(Tkzy::getId).collect(Collectors.toList());
+
+        //获取试卷题目所有选项
+        List<Tmxx> tmxxs = Lists.newArrayList();
+        if (!CollectionUtils.isEmpty(tkzyIds)) {
+
+            tmxxs = tmxxMapper.selectList(new QueryWrapper<Tmxx>().in("tm_id", tkzyIds));
+        }
+
+        //题目选项根据题目ID分组
+        Map<Long, List<Tmxx>> tmxxMap = Maps.newHashMap();
+        if (!CollectionUtils.isEmpty(tmxxs)) {
+            tmxxMap = tmxxs.stream().collect(Collectors.groupingBy(Tmxx::getTmId));
+        }
+
+        //循环便利所有题目并转VO
+        Map<Long, List<Tmxx>> finalTmxxMap = tmxxMap;
+        List<GetKsjlTmVO> tmVOs = tkzys.stream().map(obj -> {
+
+            GetKsjlTmVO tmVO = new GetKsjlTmVO();
+            BeanUtils.copyProperties(obj, tmVO);
+
+            //循环便利所有选项，通过题目ID将选项设置到对应题目中
+            if (!CollectionUtils.isEmpty(finalTmxxMap)) {
+
+                List<Tmxx> thisTmxxs = finalTmxxMap.get(obj.getId());
+                if (!CollectionUtils.isEmpty(thisTmxxs)) {
+
+                    List<GetKsjlTmXxVO> thisTmxxVOs = thisTmxxs.stream().map(thisTmxx -> {
+
+                        GetKsjlTmXxVO tmxxVO = new GetKsjlTmXxVO();
+                        BeanUtils.copyProperties(thisTmxx, tmxxVO);
+                        return tmxxVO;
+                    }).collect(Collectors.toList());
+
+                    tmVO.setKsjlTmXxs(thisTmxxVOs);
+                }
+            }
+
+            return tmVO;
+        }).collect(Collectors.toList());
+
+        vo.setKsjlTms(tmVOs);
+
+        return vo;
+    }
 
     /**
      * 生成试卷
