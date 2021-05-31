@@ -4,6 +4,7 @@ package com.itts.technologytransactionservice.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.itts.technologytransactionservice.model.TJsSh;
+import com.itts.technologytransactionservice.model.TJsXq;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -44,4 +45,10 @@ public interface JsShMapper extends BaseMapper<TJsSh> {
     void updateByCgId(@Param("cgId") Integer cgId,@Param("jszt") Integer jszt);
 
     void updateByXqId(@Param("xqId")Integer xqId,@Param("jszt") Integer jszt);
+    /**
+     * 更新技术需求
+     *
+     * @param tJsXq
+     */
+    boolean updateTJsShs(TJsSh tJsSh);
 }

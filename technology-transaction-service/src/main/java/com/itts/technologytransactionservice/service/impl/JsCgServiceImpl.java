@@ -223,12 +223,14 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         }else if(params.get("assistanceStatus")!=null){
             tJsSh.setAssistanceStatus(Integer.parseInt(params.get("assistanceStatus").toString()));
             tJsSh.setJylx(jylx);
+            tJsSh.setSlxbbz("");
             tJsSh.setReleaseAssistanceStatus(1);
         }
-        if (!jsShService.updateById(tJsSh)) {
-            log.error("更新审核失败!");
-            throw new ServiceException("更新审核失败!");
-        }
+        jsShMapper.updateTJsShs(tJsSh);
+//        if (!jsShService.updateById(tJsSh)) {
+//            log.error("更新审核失败!");
+//            throw new ServiceException("更新审核失败!");
+//        }
         return true;
     }
 
@@ -244,11 +246,12 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         tJsSh.setGxsj(new Date());
         //如果门户在信息采集的整改中申请发布改为整改完成时将发布审核状态清空
         if(fbshzt == 5){
-            tJsSh.setFbshbz(null);
+            tJsSh.setFbshbz("");
         }
-        if (!jsShService.updateById(tJsSh)) {
-            throw new ServiceException("发布审核成果申请失败!");
-        }
+        jsShMapper.updateTJsShs(tJsSh);
+//        if (!jsShService.updateById(tJsSh)) {
+//            throw new ServiceException("发布审核成果申请失败!");
+//        }
         return true;
     }
 

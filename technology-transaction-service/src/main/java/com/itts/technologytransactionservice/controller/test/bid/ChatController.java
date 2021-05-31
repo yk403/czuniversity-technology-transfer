@@ -4,6 +4,7 @@ import com.itts.common.bean.SessionPool;
 import com.itts.common.config.EndpointConfig;
 import com.itts.common.constant.MQConstant;
 import com.itts.common.constant.SystemConstant;
+import com.itts.technologytransactionservice.feign.userservice.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.ExchangeTypes;
@@ -31,7 +32,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Slf4j
 @Component
 public class ChatController {
-
+    @Autowired
+    private UserInfoService userInfoService;
     @Autowired
     private AmqpTemplate amqpTemplate;
 
