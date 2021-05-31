@@ -116,38 +116,25 @@ public class SjAdminController {
     }
 
     /**
-     * 删除课程
+     * 删除实践
      * @param id
      * @return
      * @throws WebException
      */
     @DeleteMapping("/delete/{id}")
-    @ApiOperation(value = "删除课程")
+    @ApiOperation(value = "删除实践")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
-        KcDTO kcDTO = kcService.get(id);
-        if (kcDTO == null) {
+        SjDTO sjDTO = sjService.get(id);
+        if (sjDTO == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新删除状态
-        if (!kcService.delete(kcDTO)) {
+        if (!sjService.delete(sjDTO)) {
             throw new WebException(DELETE_FAIL);
         }
-        return ResponseUtil.success("删除课程成功!");
+        return ResponseUtil.success("删除实践成功!");
     }
 
-    /**
-     * 课程批量下发
-     * @param ids
-     * @return
-     */
-    @PutMapping("/update/issueBatch")
-    @ApiOperation(value = "课程批量下发")
-    public ResponseUtil issueBatch(@RequestBody List<Long> ids) {
-        if (!kcService.issueBatch(ids)) {
-            throw new WebException(UPDATE_FAIL);
-        }
-        return ResponseUtil.success("课程统一下发成功!");
-    }
     /**
      * 校验参数
      */
@@ -162,5 +149,6 @@ public class SjAdminController {
             }
         }
     }
+
 }
 

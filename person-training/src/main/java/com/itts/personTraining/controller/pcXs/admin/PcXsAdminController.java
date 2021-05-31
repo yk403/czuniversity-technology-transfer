@@ -2,6 +2,7 @@ package com.itts.personTraining.controller.pcXs.admin;
 
 
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.service.pcXs.PcXsService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +32,15 @@ public class PcXsAdminController {
     private PcXsService pcXsService;
 
     /**
-     * 根据pcId查询学生ids
+     * 根据pcId查询学生信息
      * @param pcId
      * @return
      */
     @GetMapping("/getByPcId/{pcId}")
-    @ApiOperation(value = "根据pcId查询学生ids")
+    @ApiOperation(value = "根据pcId查询学生信息")
     public ResponseUtil getByPcId(@PathVariable("pcId")Long pcId){
-        List<Long> xsIds = pcXsService.getByPcId(pcId);
-        return ResponseUtil.success(xsIds);
+        List<StuDTO> stuDTOs = pcXsService.getByPcId(pcId);
+        return ResponseUtil.success(stuDTOs);
     }
 
 }

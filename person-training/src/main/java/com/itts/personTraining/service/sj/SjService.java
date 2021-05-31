@@ -53,4 +53,12 @@ public interface SjService extends IService<Sj> {
      * @return
      */
     PageInfo<SjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String sjlx);
+
+    /**
+     * 删除实践
+     * @param sjDTO
+     * @return
+     */
+    boolean delete(SjDTO sjDTO);
+
 }

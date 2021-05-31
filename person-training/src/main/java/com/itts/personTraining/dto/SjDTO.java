@@ -64,46 +64,55 @@ public class SjDTO {
     /**
      * 实践类型
      */
+    @ApiModelProperty(value = "实践类型")
     private String sjlx;
 
     /**
      * 实践单位
      */
+    @ApiModelProperty(value = "实践单位")
     private String sjdw;
 
     /**
      * 报告
      */
+    @ApiModelProperty(value = "报告")
     private String bg;
 
     /**
      * 评价表
      */
+    @ApiModelProperty(value = "评价表")
     private String pjb;
 
     /**
      * 实践成绩
      */
+    @ApiModelProperty(value = "实践成绩")
     private String sjcj;
 
     /**
      * 集萃奖学金1
      */
+    @ApiModelProperty(value = "集萃奖学金1")
     private String jcjxjOne;
 
     /**
      * 集萃奖学金2
      */
+    @ApiModelProperty(value = "集萃奖学金2")
     private String jcjxjTwo;
 
     /**
      * 基地基金1
      */
+    @ApiModelProperty(value = "基地基金1")
     private String jdjjOne;
 
     /**
      * 基地基金2
      */
+    @ApiModelProperty(value = "基地基金2")
     private String jdjjTwo;
 
     /**

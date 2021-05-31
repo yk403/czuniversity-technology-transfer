@@ -19,23 +19,17 @@ public interface SjMapper extends BaseMapper<Sj> {
 
 
     /**
-     * 分页查询实践信息
+     * 条件查询实践信息
      * @param pcId
      * @param sjlx
      * @return
      */
-    List<SjDTO> getByCondition(Long pcId, String sjlx);
-
-    /**
-     * 查询所有实践
-     * @return
-     */
-    List<SjDTO> getByCondition();
+    List<SjDTO> getByCondition(@Param("pcId") Long pcId, @Param("sjlx") String sjlx);
 
     /**
      * 根据id查询实践详情
      * @param id
      * @return
      */
-    SjDTO getByCondition(@Param("id") Long id);
+    SjDTO getById(@Param("id") Long id);
 }

@@ -23,5 +23,10 @@
         from t_pc_xs
         where pc_id = #{pcId}
     </select>
+    <select id="selectStuByPcId" resultType="com.itts.personTraining.dto.StuDTO">
+        select tpx.xs_id as id, xs.xh, xs.xm, xs.yzy
+        from t_pc_xs tpx left join t_xs xs on (xs.id=tpx.xs_id)
+        where pc_id = #{pcId} and xs.sfsc = false
+    </select>
 
 </mapper>

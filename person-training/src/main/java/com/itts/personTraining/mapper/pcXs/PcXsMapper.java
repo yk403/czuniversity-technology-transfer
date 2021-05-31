@@ -1,5 +1,6 @@
 package com.itts.personTraining.mapper.pcXs;
 
+import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.model.pcXs.PcXs;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -29,4 +30,12 @@ public interface PcXsMapper extends BaseMapper<PcXs> {
      * @return
      */
     List<Long> selectByPcId(@Param("pcId") Long pcId);
+
+    /**
+     * 根据pcId查询学生信息
+     * @param pcId
+     * @return
+     */
+    List<StuDTO> selectStuByPcId(@Param("pcId") Long pcId);
+
 }

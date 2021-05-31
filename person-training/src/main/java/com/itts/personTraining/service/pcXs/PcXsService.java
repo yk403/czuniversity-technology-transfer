@@ -1,5 +1,6 @@
 package com.itts.personTraining.service.pcXs;
 
+import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.model.pcXs.PcXs;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,10 +17,10 @@ import java.util.List;
 public interface PcXsService extends IService<PcXs> {
 
     /**
-     * 根据pcId查询学生ids
+     * 根据pcId查询学生信息
      * @param pcId
      * @return
      */
-    List<Long> getByPcId(Long pcId);
+    List<StuDTO> getByPcId(Long pcId);
 
 }

@@ -1,5 +1,6 @@
 package com.itts.personTraining.service.pcXs.impl;
 
+import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.model.pcXs.PcXs;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.service.pcXs.PcXsService;
@@ -28,14 +29,14 @@ public class PcXsServiceImpl extends ServiceImpl<PcXsMapper, PcXs> implements Pc
     private PcXsMapper pcXsMapper;
 
     /**
-     * 根据pcId查询学生ids
+     * 根据pcId查询学生信息
      * @param pcId
      * @return
      */
     @Override
-    public List<Long> getByPcId(Long pcId) {
+    public List<StuDTO> getByPcId(Long pcId) {
         log.info("【人才培养 - 根据pcId:{}查询学生ids】",pcId);
-        List<Long> xsIds = pcXsMapper.selectByPcId(pcId);
-        return xsIds;
+        List<StuDTO> stuDTOs = pcXsMapper.selectStuByPcId(pcId);
+        return stuDTOs;
     }
 }

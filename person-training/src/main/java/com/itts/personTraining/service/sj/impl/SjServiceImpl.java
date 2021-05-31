@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,13 +58,28 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     }
 
     /**
+     * 删除实践
+     * @param sjDTO
+     * @return
+     */
+    @Override
+    public boolean delete(SjDTO sjDTO) {
+        log.info("【人才培养 - 查询所有实践】");
+        sjDTO.setGxr(getUserId());
+        sjDTO.setSfsc(true);
+        Sj sj = new Sj();
+        BeanUtils.copyProperties(sjDTO,sj);
+        return sjService.updateById(sj);
+    }
+
+    /**
      * 查询所有实践
      * @return
      */
     @Override
     public List<SjDTO> getAll() {
         log.info("【人才培养 - 查询所有实践】");
-        List<SjDTO> sjDTOs = sjMapper.getByCondition();
+        List<SjDTO> sjDTOs = sjMapper.getByCondition(null,null);
         return sjDTOs;
     }
 
@@ -75,8 +91,12 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     @Override
     public boolean add(SjDTO sjDTO) {
         log.info("【人才培养 - 新增实践:{}】",sjDTO);
-
-        return false;
+        Long userId = getUserId();
+        sjDTO.setCjr(userId);
+        sjDTO.setGxr(userId);
+        Sj sj = new Sj();
+        BeanUtils.copyProperties(sjDTO,sj);
+        return sjService.save(sj);
     }
 
     /**
@@ -87,7 +107,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     @Override
     public SjDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询实践详情】",id);
-        SjDTO sjDTO = sjMapper.getByCondition(id);
+        SjDTO sjDTO = sjMapper.getById(id);
         return sjDTO;
     }
 
@@ -105,8 +125,6 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
         return sjService.updateById(sj);
     }
 
-
-
     /**
      * 获取当前用户id
      * @return
@@ -121,4 +139,5 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
         }
         return userId;
     }
+
 }
