@@ -178,13 +178,6 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         QueryWrapper query = new QueryWrapper();
         query.in("id", addKssjRequest.getTmIds());
 
-        List<Tkzy> tms = tkzyMapper.selectList(query);
-        if (!CollectionUtils.isEmpty(tms)) {
-
-            long totalCount = tms.stream().map(Tkzy::getFz).count();
-            kssj.setSjzf(Integer.valueOf((int) totalCount));
-        }
-
         kssjMapper.insert(kssj);
 
         //添加试卷题目关联
