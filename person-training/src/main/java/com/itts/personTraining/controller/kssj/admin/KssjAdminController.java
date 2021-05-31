@@ -189,39 +189,35 @@ public class KssjAdminController {
     private void checkAddRequest(AddKssjRequest addKssjRequest) {
 
         if (addKssjRequest == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-        }
-
-        if (addKssjRequest.getKcId() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (StringUtils.isBlank(addKssjRequest.getSjmc())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (CollectionUtils.isEmpty(addKssjRequest.getTmIds())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (addKssjRequest.getSjzf() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (addKssjRequest.getPdzf() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (addKssjRequest.getDanzf() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (addKssjRequest.getDuozf() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (StringUtils.isBlank(addKssjRequest.getSjlx())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
 
@@ -231,43 +227,39 @@ public class KssjAdminController {
     private void checkUpdateRequest(UpdateKssjRequest updateKssjRequest) {
 
         if (updateKssjRequest == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (updateKssjRequest.getId() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-        }
-
-        if (updateKssjRequest.getKcId() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (StringUtils.isBlank(updateKssjRequest.getSjmc())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (CollectionUtils.isEmpty(updateKssjRequest.getTmIds())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (updateKssjRequest.getSjzf() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (updateKssjRequest.getPdzf() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (updateKssjRequest.getDanzf() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (updateKssjRequest.getDuozf() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
         if (StringUtils.isBlank(updateKssjRequest.getSjlx())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }
 }
