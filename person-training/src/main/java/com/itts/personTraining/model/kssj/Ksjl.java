@@ -41,6 +41,21 @@ public class Ksjl implements Serializable {
     private Long xsId;
 
     /**
+     * 学生编号
+     */
+    private String xsbm;
+
+    /**
+     * 学生姓名
+     */
+    private String xsmc;
+
+    /**
+     * 试卷名称
+     */
+    private String sjmc;
+
+    /**
      * 试卷总分
      */
     private Integer sjzf;

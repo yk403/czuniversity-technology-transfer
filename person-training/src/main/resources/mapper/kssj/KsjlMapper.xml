@@ -7,6 +7,9 @@
         <id column="id" property="id" />
         <result column="sj_id" property="sjId" />
         <result column="xs_id" property="xsId" />
+        <result column="xsbm" property="xsbm" />
+        <result column="xsmc" property="xsmc" />
+        <result column="sjmc" property="sjmc" />
         <result column="sjzf" property="sjzf" />
         <result column="zzcj" property="zzcj" />
         <result column="tmzs" property="tmzs" />
@@ -17,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, sj_id, xs_id, sjzf, zzcj, tmzs, sjlx, ksdtsj, jsdtsj
+        id, sj_id, xs_id, xsbm, xsmc, sjmc, sjzf, zzcj, tmzs, sjlx, ksdtsj, jsdtsj
     </sql>
 
 </mapper>

@@ -65,9 +65,15 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         Ksjl ksjl = new Ksjl();
         BeanUtils.copyProperties(kssj, ksjl);
 
-        ksjl.setSjId(kssj.getId());
         ksjl.setXsId(loginUser.getUserId());
+        ksjl.setXsmc(loginUser.getRealName());
+        ksjl.setXsbm("");
+
+        ksjl.setSjId(kssj.getId());
+        ksjl.setSjmc(kssj.getSjmc());
+
         ksjl.setKsdtsj(new Date());
+
 
         ksjlMapper.insert(ksjl);
 

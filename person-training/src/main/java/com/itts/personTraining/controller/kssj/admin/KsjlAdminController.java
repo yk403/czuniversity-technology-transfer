@@ -19,5 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "考试记录后台管理")
 public class KsjlAdminController {
 
+
+
 }
 
