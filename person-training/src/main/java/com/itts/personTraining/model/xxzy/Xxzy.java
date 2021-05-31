@@ -133,6 +133,26 @@ public class Xxzy implements Serializable {
     private Date sjsj;
 
     /**
+     * 是否公开
+     */
+    @ApiModelProperty(value = "是否公开")
+    private Boolean sfgk;
+
+    /**
+     * 公开开始时间
+     */
+    @ApiModelProperty(value = "公开开始时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date gkkssj;
+
+    /**
+     * 公开结束时间
+     */
+    @ApiModelProperty(value = "公开结束时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date gkjssj;
+
+    /**
      * 是否删除
      */
     @ApiModelProperty(value = "是否删除")

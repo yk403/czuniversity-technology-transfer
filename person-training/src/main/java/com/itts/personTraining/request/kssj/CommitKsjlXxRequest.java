@@ -25,6 +25,4 @@ public class CommitKsjlXxRequest implements Serializable {
 
     @ApiModelProperty(value = "是否选中", required = true)
     private Boolean sfxz;
-
-
 }

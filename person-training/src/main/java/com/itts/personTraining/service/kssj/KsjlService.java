@@ -19,6 +19,11 @@ import com.itts.personTraining.vo.kssj.GetKsjlVO;
 public interface KsjlService extends IService<Ksjl> {
 
     /**
+     * 获取详情
+     */
+    GetKsjlVO get(Long id);
+
+    /**
      * 生成试卷
      */
     GetKsjlVO add(Kssj kssj, LoginUser loginUser);
@@ -27,5 +32,4 @@ public interface KsjlService extends IService<Ksjl> {
      * 提交试卷
      */
     ResponseUtil commit(CommitKsjlRequest commitKsjlRequest, LoginUser loginUser);
-
 }
