@@ -11,7 +11,6 @@
         <result column="kcbh" property="kcbh" />
         <result column="kcmc" property="kcmc" />
         <result column="sfbx" property="sfbx" />
-        <result column="cjlx" property="cjlx" />
         <result column="xwk" property="xwk" />
         <result column="cj" property="cj" />
         <result column="xxxq" property="xxxq" />
@@ -27,7 +26,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, xs_cj_id, kc_id, kclx, kcbh, kcmc, sfbx, cjlx, xwk, cj, xxxq, cjsx, bkcj, sfsc, bz, cjsj, cjr, gxsj, gxr
+        id, xs_cj_id, kc_id, kclx, kcbh, kcmc, sfbx, xwk, cj, xxxq, cjsx, bkcj, sfsc, bz, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

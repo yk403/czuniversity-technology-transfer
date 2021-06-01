@@ -60,11 +60,6 @@ public class XsKcCj implements Serializable {
     private Boolean sfbx;
 
     /**
-     * 成绩类型
-     */
-    private String cjlx;
-
-    /**
      * 学位课(0:否;1:是)
      */
     private Boolean xwk;

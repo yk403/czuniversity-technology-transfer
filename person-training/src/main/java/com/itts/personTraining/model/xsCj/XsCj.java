@@ -35,19 +35,19 @@ public class XsCj implements Serializable {
     private Long xsId;
 
     /**
-     * 成绩名称
+     * 综合成绩
      */
-    private String cjmc;
-
-    /**
-     * 当前学分
-     */
-    private String dqxf;
+    private String zhcj;
 
     /**
      * 总学分
      */
     private String zxf;
+
+    /**
+     * 论文成绩
+     */
+    private String lwcj;
 
     /**
      * 是否删除（0：否；1：是）
