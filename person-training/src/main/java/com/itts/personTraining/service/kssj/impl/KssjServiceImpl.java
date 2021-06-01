@@ -205,14 +205,6 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         kssj.setGxr(userId);
         kssj.setGxsj(new Date());
 
-        //获取当前试卷题目总分
-        QueryWrapper query = new QueryWrapper();
-        query.in(updateKssjRequest.getTmIds());
-
-        List<Tkzy> tms = tkzyMapper.selectList(query);
-        long totalCount = tms.stream().map(Tkzy::getFz).count();
-        kssj.setSjzf(Integer.valueOf((int) totalCount));
-
         kssjMapper.updateById(kssj);
 
         //获取试卷当前所有题目
