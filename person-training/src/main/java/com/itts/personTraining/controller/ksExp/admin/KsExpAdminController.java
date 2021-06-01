@@ -62,24 +62,26 @@ public class KsExpAdminController {
 
     /**
      * 更新考试扩展信息
-     * @param ksExpDTO
+     * @param ksExpDTOs
      * @return
      * @throws WebException
      */
     @PutMapping("/update")
     @ApiOperation(value = "更新考试扩展信息")
-    public ResponseUtil update(@RequestBody KsExpDTO ksExpDTO) throws WebException {
-        Long id = ksExpDTO.getId();
-        //检查参数是否合法
-        if (id == null ) {
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+    public ResponseUtil update(@RequestBody List<KsExpDTO> ksExpDTOs) throws WebException {
+        for (KsExpDTO ksExpDTO : ksExpDTOs) {
+            Long id = ksExpDTO.getId();
+            //检查参数是否合法
+            if (id == null ) {
+                throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            }
+            //检查数据库中是否存在要更新的数据
+            List<KsExpDTO> ksExpDTOS = ksExpService.get( id,null);
+            if (ksExpDTOS == null || ksExpDTOS.size() == 0) {
+                throw new WebException(SYSTEM_NOT_FIND_ERROR);
+            }
         }
-        //检查数据库中是否存在要更新的数据
-        List<KsExpDTO> ksExpDTOS = ksExpService.get( id,null);
-        if (ksExpDTOS == null || ksExpDTOS.size() == 0) {
-            throw new WebException(SYSTEM_NOT_FIND_ERROR);
-        }
-        if (!ksExpService.update(ksExpDTO)) {
+        if (!ksExpService.update(ksExpDTOs)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新考试扩展信息成功!");

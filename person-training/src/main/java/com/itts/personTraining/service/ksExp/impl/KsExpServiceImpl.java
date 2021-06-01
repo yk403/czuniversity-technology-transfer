@@ -56,10 +56,18 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
     @Override
     public List<KsExpDTO> get(Long id,Long ksId) {
         log.info("【人才培养 - 根据考试扩展id:{},考试id:{}查询考试扩展信息】",id,ksId);
-        List<KsExpDTO> ksExpDTOs = ksExpMapper.findByCondition(id,ksId);
-        for (KsExpDTO ksExpDTO : ksExpDTOs) {
-            List<Long> szIds = szKsExpMapper.selectByKsExpId(ksExpDTO.getId());
-            ksExpDTO.setSzIds(szIds);
+        KsExp ksExp = ksExpMapper.selectById(id);
+        List<KsExpDTO> ksExpDTOs;
+        if (ksExp.getXxjsId() != null) {
+            //学位学历教育
+            ksExpDTOs = ksExpMapper.findByCondition(id,ksId);
+            for (KsExpDTO ksExpDTO : ksExpDTOs) {
+                List<Long> szIds = szKsExpMapper.selectByKsExpId(ksExpDTO.getId());
+                ksExpDTO.setSzIds(szIds);
+            }
+        } else {
+            //继续教育
+            ksExpDTOs =ksExpMapper.getByCondition(id,ksId);
         }
         return ksExpDTOs;
     }
@@ -86,29 +94,46 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
 
     /**
      * 更新考试扩展信息
-     * @param ksExpDTO
+     * @param ksExpDTOs
      * @return
      */
     @Override
-    public boolean update(KsExpDTO ksExpDTO) {
-        log.info("【人才培养 - 更新考试扩展信息:{}】",ksExpDTO);
-        KsExp ksExp = new KsExp();
-        ksExpDTO.setGxr(getUserId());
-        BeanUtils.copyProperties(ksExpDTO,ksExp);
-        if (ksExpService.updateById(ksExp)) {
-            List<Long> szIds = ksExpDTO.getSzIds();
-            if (szIds != null || szIds.size() > 0) {
-                HashMap<String, Object> map = new HashMap<>();
-                Long ksExpId = ksExpDTO.getId();
-                map.put("ks_exp_id",ksExpId);
-                if (szKsExpService.removeByMap(map)) {
-                    return saveSzKsExp(szIds,ksExpId);
+    public boolean update(List<KsExpDTO> ksExpDTOs) {
+        log.info("【人才培养 - 更新考试扩展信息:{}】",ksExpDTOs);
+        for (KsExpDTO ksExpDTO : ksExpDTOs) {
+            KsExp ksExp = ksExpMapper.selectById(ksExpDTO.getId());
+            if (ksExp.getXxjsId() != null) {
+                //学位学历教育
+                ksExpDTO.setGxr(getUserId());
+                BeanUtils.copyProperties(ksExpDTO,ksExp);
+                if (ksExpService.updateById(ksExp)) {
+                    List<Long> szIds = ksExpDTO.getSzIds();
+                    if (szIds != null || szIds.size() > 0) {
+                        HashMap<String, Object> map = new HashMap<>();
+                        Long ksExpId = ksExpDTO.getId();
+                        map.put("ks_exp_id",ksExpId);
+                        if (szKsExpService.removeByMap(map)) {
+                            return saveSzKsExp(szIds,ksExpId);
+                        }
+                        return false;
+                    }
+                    return true;
                 }
                 return false;
+            } else {
+                //继续教育
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("ks_id",ksExpDTO.getKsId());
+                ksExpService.removeByMap(map);
+                KsExp ksExp1 = new KsExp();
+                ksExp1.setCjr(getUserId());
+                ksExp1.setGxr(getUserId());
+                ksExp1.setKsId(ksExpDTO.getKsId());
+                ksExp1.setKcId(ksExpDTO.getKcId());
+                return ksExpService.save(ksExp1);
             }
-            return false;
         }
-        return false;
+        return true;
     }
 
     /**

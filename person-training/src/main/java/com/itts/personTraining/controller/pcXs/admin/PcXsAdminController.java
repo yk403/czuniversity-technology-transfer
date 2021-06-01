@@ -4,6 +4,7 @@ package com.itts.personTraining.controller.pcXs.admin;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.service.pcXs.PcXsService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
  */
 @RestController
 @RequestMapping(ADMIN_BASE_URL + "/v1/pcXs")
+@Api(value = "PcXsAdminController", tags = "批次学生后台管理")
 public class PcXsAdminController {
 
     @Autowired
