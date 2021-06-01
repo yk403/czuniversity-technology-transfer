@@ -2,6 +2,9 @@ package com.itts.personTraining.service.kcSz;
 
 import com.itts.personTraining.model.kcSz.KcSz;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.itts.personTraining.model.sz.Sz;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface KcSzService extends IService<KcSz> {
 
+    /**
+     * 根据kcId查询师资ids
+     * @param kcId
+     * @return
+     */
+    List<Sz> get(Long kcId);
 }

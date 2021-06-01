@@ -112,6 +112,19 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
     }
 
     /**
+     * 根据条件查询考试扩展信息(继续教育)
+     * @param id
+     * @param ksId
+     * @return
+     */
+    @Override
+    public List<KsExpDTO> getByCondition(Long id, Long ksId) {
+        log.info("【人才培养 - 根据考试扩展id:{},考试id:{}查询考试扩展信息(继续教育)】",id,ksId);
+        List<KsExpDTO> ksExpDTOs = ksExpMapper.getByCondition(id,ksId);
+        return ksExpDTOs;
+    }
+
+    /**
      * 获取当前用户id
      * @return
      */

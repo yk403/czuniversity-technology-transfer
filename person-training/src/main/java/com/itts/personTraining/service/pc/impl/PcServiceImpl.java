@@ -8,16 +8,17 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.mapper.pc.PcMapper;
+import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.service.pc.PcService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.sjzd.SjzdService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -43,6 +44,8 @@ public class PcServiceImpl implements PcService {
     private SjzdService sjzdService;
     @Resource
     private PcMapper pcMapper;
+    @Resource
+    private PcXsMapper pcXsMapper;
 
     /**
      * 获取分页
@@ -51,11 +54,13 @@ public class PcServiceImpl implements PcService {
      * @return
      */
     @Override
-    public PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize, String pch, String pcmc) {
         log.info("【人才培养 - 分页查询批次】");
         PageHelper.startPage(pageNum,pageSize);
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
         pcQueryWrapper.eq("sfsc",false)
+                      .eq(StringUtils.isNotBlank(pch),"pch",pch)
+                      .like(StringUtils.isNotBlank(pch),"pcmc",pcmc)
                       .orderByDesc("cjsj");
         List<Pc> pcs = pcMapper.selectList(pcQueryWrapper);
         return new PageInfo<>(pcs);

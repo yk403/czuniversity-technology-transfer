@@ -40,8 +40,10 @@ public class PcAdminController {
     @GetMapping("/list/")
     @ApiModelProperty(value = "查询批次列表")
     public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
-        return ResponseUtil.success(pcService.findByPage(pageNum, pageSize));
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                @RequestParam(value = "pch", required = false) String pch,
+                                @RequestParam(value = "pcmc", required = false) String pcmc){
+        return ResponseUtil.success(pcService.findByPage(pageNum, pageSize, pch, pcmc));
     }
 
     /**

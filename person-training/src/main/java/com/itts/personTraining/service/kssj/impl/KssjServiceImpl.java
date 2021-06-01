@@ -71,7 +71,7 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         kssjQuery.eq("id", id);
         kssjQuery.eq("sfsc", false);
 
-        Kssj kssj = kssjMapper.selectOne(query());
+        Kssj kssj = kssjMapper.selectOne(kssjQuery);
 
         if (kssj == null) {
             return null;

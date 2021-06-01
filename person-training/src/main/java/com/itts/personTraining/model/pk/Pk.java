@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.util.Date;
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,12 +38,6 @@ public class Pk implements Serializable {
     private Long pcId;
 
     /**
-     * 课程ID
-     */
-    @ApiModelProperty(value = "课程ID", required = true)
-    private Long kcId;
-
-    /**
      * 师资ID
      */
     @ApiModelProperty(value = "师资ID", required = true)
@@ -61,6 +56,16 @@ public class Pk implements Serializable {
     private Long kcsjId;
 
     /**
+     * 类型(1:学历学位排课;2:继续教育排课)
+     */
+    private Integer type;
+
+    /**
+     * 上课地点
+     */
+    private String skdd;
+
+    /**
      * 排课名称
      */
     @ApiModelProperty(value = "排课名称", required = true)
@@ -77,6 +82,16 @@ public class Pk implements Serializable {
      */
     @ApiModelProperty(value = "上课结束年月日", required = true)
     private String skjsnyr;
+
+    /**
+     * 起始周
+     */
+    private Integer qsz;
+
+    /**
+     * 结束周
+     */
+    private Integer jsz;
 
     /**
      * 星期数

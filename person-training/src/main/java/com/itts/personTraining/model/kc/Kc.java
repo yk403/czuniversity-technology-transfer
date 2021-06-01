@@ -41,9 +41,9 @@ public class Kc implements Serializable {
     private String jylx;
 
     /**
-     * 字典编码
+     * 学员类型
      */
-    private String zdbm;
+    private String xylx;
 
     /**
      * 课程类型(theory_class：理论课；practical_training：实训课；practice_course：实践课)

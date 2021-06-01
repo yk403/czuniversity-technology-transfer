@@ -34,6 +34,19 @@ public class KsDTO {
     private Long pcId;
 
     /**
+     * 师资ids
+     */
+    @ApiModelProperty(value = "师资ids")
+    private List<Long> szIds;
+
+    /**
+     * 试卷id
+     */
+    @ApiModelProperty(value = "试卷id")
+    private Long sjId;
+
+
+    /**
      * 类型 (1:学历学位考试;2:继续教育考试)
      */
     private Integer type;
