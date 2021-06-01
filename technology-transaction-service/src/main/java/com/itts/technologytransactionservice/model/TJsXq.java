@@ -34,6 +34,7 @@ public class TJsXq implements Serializable {
 	/**
 	 * soft(排序使用)
 	 */
+	@TableField(updateStrategy = FieldStrategy.IGNORED)
 	private Integer soft;
 	/**
 	 * 技术需求id
@@ -122,6 +123,7 @@ public class TJsXq implements Serializable {
 	/**
  	* 技术活动id
  	*/
+	@TableField(updateStrategy = FieldStrategy.IGNORED)
 	private Integer jshdId;
 	/**
 	 * 发布需求审核状态(0待提交、1待审核、2通过、3整改、4拒绝)

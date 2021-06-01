@@ -88,5 +88,9 @@ public class LyHd implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date hdkssj;
+    /*
+     * 活动发布状态(0:未发布 1:已发布)
+     */
+    private Integer hdfbzt;
 
 }

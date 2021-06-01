@@ -36,6 +36,7 @@ public class TJsCg implements Serializable {
 	/**
 	 * soft(排序使用)
 	 */
+	@TableField(updateStrategy = FieldStrategy.IGNORED)
 	private Integer soft;
 	/**
 	 * 用户ID
@@ -153,6 +154,7 @@ public class TJsCg implements Serializable {
 	/**
  	* 活动id
  	*/
+	@TableField(updateStrategy = FieldStrategy.IGNORED)
 	private Integer jshdId;
 	/**
 	*发布成果审核状态(0待提交;1审核中;2通过;3整改;4拒绝)

@@ -4,6 +4,8 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.annotation.write.style.ContentRowHeight;
 import com.alibaba.excel.annotation.write.style.HeadRowHeight;
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -130,5 +132,6 @@ public class TJsXqDto implements Serializable {
      * 活动id
      */
     @ExcelProperty(value = "活动id", index = 20)
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String jshdId;
 }
