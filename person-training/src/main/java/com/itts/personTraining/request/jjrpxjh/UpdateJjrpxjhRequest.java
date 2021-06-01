@@ -69,28 +69,28 @@ public class UpdateJjrpxjhRequest implements Serializable {
      * 上课开始时间
      */
     @ApiParam(value = "上课开始时间", required = true)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date skkssj;
 
     /**
      * 上课结束时间
      */
     @ApiParam(value = "上课结束时间", required = true)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date skjssj;
 
     /**
      * 报名开始时间
      */
     @ApiParam(value = "报名开始时间", required = true)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date bmkssj;
 
     /**
      * 报名结束时间
      */
     @ApiParam(value = "报名结束时间", required = true)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date bmjssj;
 
     /**
