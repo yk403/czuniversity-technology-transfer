@@ -110,7 +110,7 @@ public class JjrpxjhAdminController {
     }
 
     @ApiOperation(value = "删除")
-    @DeleteMapping("/delete/")
+    @DeleteMapping("/delete/{id}")
     public ResponseUtil delete(@PathVariable("id") Long id) {
 
         Jjrpxjh old = jjrpxjhService.getById(id);
