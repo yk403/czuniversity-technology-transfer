@@ -186,6 +186,11 @@ public class Xs implements Serializable {
     private String zymc;
 
     /**
+     * 报名方式
+     */
+    private String bmfs;
+
+    /**
      * 是否删除(0:未删除;1已删除)
      */
     private Boolean sfsc;

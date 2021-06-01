@@ -13,6 +13,11 @@
     <sql id="Base_Column_List">
         id, kc_id, sz_id
     </sql>
+    <select id="getByKcId" resultType="com.itts.personTraining.model.sz.Sz">
+        select tks.sz_id as id,sz.dsxm as dsxm
+        from t_kc_sz tks left join t_sz sz on (tks.sz_id=sz.id)
+        where sz.sfsc = false and tks.kc_id = #{kcId}
+    </select>
 
 
 </mapper>

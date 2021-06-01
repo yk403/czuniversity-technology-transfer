@@ -2,6 +2,7 @@ package com.itts.personTraining.mapper.kcSz;
 
 import com.itts.personTraining.model.kcSz.KcSz;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itts.personTraining.model.sz.Sz;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -16,4 +17,10 @@ import java.util.List;
  */
 public interface KcSzMapper extends BaseMapper<KcSz> {
 
+    /**
+     * 根据kcId查询师资ids
+     * @param kcId
+     * @return
+     */
+    List<Sz> getByKcId(@Param("kcId") Long kcId);
 }

@@ -37,4 +37,12 @@ public interface KsExpService extends IService<KsExp> {
      * @return
      */
     boolean update(KsExpDTO ksExpDTO);
+
+    /**
+     * 根据条件查询考试扩展信息(继续教育)
+     * @param id
+     * @param ksId
+     * @return
+     */
+    List<KsExpDTO> getByCondition(Long id, Long ksId);
 }

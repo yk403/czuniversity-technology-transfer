@@ -1,12 +1,14 @@
 package com.itts.common.utils;
 
+
+import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * 日期处理
@@ -169,4 +171,15 @@ public class DateUtils {
                 + "-" + (calendar.get(Calendar.MONTH) + 1)
                 + "-" + calendar.get(Calendar.DAY_OF_MONTH);
     }
+
+    public static String getBeforeOrAfterDate(String time, int num) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        java.sql.Date date = java.sql.Date.valueOf(time);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, num);
+        Date d = calendar.getTime();
+        return formatter.format(d);
+    }
+
 }

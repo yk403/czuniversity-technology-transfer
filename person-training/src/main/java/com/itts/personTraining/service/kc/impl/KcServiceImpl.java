@@ -152,7 +152,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         log.info("【人才培养 - 根据条件查询课程信息】");
         QueryWrapper<Kc> kcQueryWrapper = new QueryWrapper<>();
         kcQueryWrapper.eq("sfsc",false)
-                      .eq(!StringUtils.isEmpty(xylx),"zdbm",xylx);
+                      .eq(!StringUtils.isEmpty(xylx),"xylx",xylx);
         List<Kc> kcList = kcMapper.selectList(kcQueryWrapper);
         //将id放到kcId中,方便前端使用
         List<KcDTO> kcDTOs = new ArrayList<>();

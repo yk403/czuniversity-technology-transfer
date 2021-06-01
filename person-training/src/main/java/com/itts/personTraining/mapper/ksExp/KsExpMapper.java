@@ -26,4 +26,12 @@ public interface KsExpMapper extends BaseMapper<KsExp> {
     List<KsExpDTO> findByCondition(@Param("id") Long id,@Param("ksId") Long ksId);
 
     KsExpDTO findByKsExpId(@Param("id") Long id);
+
+    /**
+     * 根据条件查询考试扩展DTO(继续教育)
+     * @param id
+     * @param ksId
+     * @return
+     */
+    List<KsExpDTO> getByCondition(@Param("id") Long id, @Param("ksId") Long ksId);
 }

@@ -19,7 +19,7 @@ public interface PcService  {
     /**
      * 获取列表 - 分页
      */
-    PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize);
+    PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize, String pch, String pcmc);
     /**
      * 获取通过id
      */

@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.kc.Kc">
         <id column="id" property="id" />
         <result column="jylx" property="jylx" />
-        <result column="zdbm" property="zdbm" />
+        <result column="xylx" property="xylx" />
         <result column="zsmk_id" property="zsmkId" />
         <result column="kcmc" property="kcmc" />
         <result column="kcdm" property="kcdm" />
@@ -27,11 +27,11 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, js_id, jylx, zdbm, zsmk_id, jsxm, zsmkmc, kcmc, kcdm, kclx, kcxs, kcxf, kkxq, kkxy, skfs, sfbx, bz, sczt, cjsj, cjr, gxsj, gxr
+        id, js_id, jylx, xylx, zsmk_id, jsxm, zsmkmc, kcmc, kcdm, kclx, kcxs, kcxf, kkxq, kkxy, skfs, sfbx, bz, sczt, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="findByPage" resultType="com.itts.personTraining.dto.KcDTO">
-        select kc.id as id,zdbm,zsmk_id as zsmkId,jylx,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfbx,bz,sfxf,cjsj,cjr,gxsj,gxr
+        select kc.id as id,xylx,zsmk_id as zsmkId,jylx,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfbx,bz,sfxf,cjsj,cjr,gxsj,gxr
         from t_kc kc
         <where>
             kc.sfsc = false

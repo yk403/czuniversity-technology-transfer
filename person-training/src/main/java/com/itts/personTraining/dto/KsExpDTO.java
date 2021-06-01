@@ -36,13 +36,13 @@ public class KsExpDTO {
     /**
      * 师资ids
      */
-    @ApiModelProperty(value = "师资ids", required = true)
+    @ApiModelProperty(value = "师资ids")
     private List<Long> szIds;
 
     /**
      * 学校教室ID
      */
-    @ApiModelProperty(value = "学校教室ID", required = true)
+    @ApiModelProperty(value = "学校教室ID")
     private Long xxjsId;
 
     /**
@@ -74,20 +74,20 @@ public class KsExpDTO {
     /**
      * 考试日期
      */
-    @ApiModelProperty(value = "考试日期", required = true)
+    @ApiModelProperty(value = "考试日期")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date ksrq;
 
     /**
      * 考试开始时间
      */
-    @ApiModelProperty(value = "考试开始时间", required = true)
+    @ApiModelProperty(value = "考试开始时间")
     private String kskssj;
 
     /**
      * 考试开始时间
      */
-    @ApiModelProperty(value = "考试结束时间", required = true)
+    @ApiModelProperty(value = "考试结束时间")
     private String ksjssj;
 
     /**
