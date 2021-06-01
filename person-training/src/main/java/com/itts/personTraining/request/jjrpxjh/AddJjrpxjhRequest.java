@@ -50,6 +50,18 @@ public class AddJjrpxjhRequest implements Serializable {
     private String pcMc;
 
     /**
+     * 教育类型
+     */
+    @ApiParam(value = "教育类型", required = true)
+    private String jylx;
+
+    /**
+     * 学员类型
+     */
+    @ApiParam(value = "学员类型", required = true)
+    private String xylx;
+
+    /**
      * 上课开始时间
      */
     @ApiParam(value = "上课开始时间", required = true)

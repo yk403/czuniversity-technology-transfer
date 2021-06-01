@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.itts.personTraining.model.jjrpxjh.Jjrpxjh;
 import com.itts.personTraining.request.jjrpxjh.AddJjrpxjhRequest;
 import com.itts.personTraining.request.jjrpxjh.UpdateJjrpxjhRequest;
+import com.itts.personTraining.vo.jjrpxjh.GetJjrpxjhVO;
 
 /**
  * <p>
@@ -15,6 +16,11 @@ import com.itts.personTraining.request.jjrpxjh.UpdateJjrpxjhRequest;
  * @since 2021-06-01
  */
 public interface JjrpxjhService extends IService<Jjrpxjh> {
+
+    /**
+     * 获取详情
+     */
+    GetJjrpxjhVO get(Jjrpxjh old);
 
     /**
      * 新增

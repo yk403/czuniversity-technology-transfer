@@ -57,6 +57,16 @@ public class Jjrpxjh implements Serializable {
     private String pcMc;
 
     /**
+     * 教育类型
+     */
+    private String jylx;
+
+    /**
+     * 学员类型
+     */
+    private String xylx;
+
+    /**
      * 上课开始时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

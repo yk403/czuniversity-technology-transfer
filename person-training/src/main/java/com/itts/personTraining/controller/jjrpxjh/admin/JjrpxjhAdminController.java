@@ -32,7 +32,7 @@ import java.util.List;
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/jjrpxjh")
 @Api(tags = "经纪人培训计划管理")
-public class JjrpxjhController {
+public class JjrpxjhAdminController {
 
     @Autowired
     private JjrpxjhService jjrpxjhService;
@@ -167,6 +167,14 @@ public class JjrpxjhController {
         if (StringUtils.isBlank(addJjrpxjhRequest.getDd())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+
+        if (StringUtils.isBlank(addJjrpxjhRequest.getJylx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(addJjrpxjhRequest.getXylx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
     }
 
     /**
@@ -215,6 +223,14 @@ public class JjrpxjhController {
         }
 
         if (StringUtils.isBlank(updateJjrpxjhRequest.getDd())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(updateJjrpxjhRequest.getJylx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(updateJjrpxjhRequest.getXylx())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }

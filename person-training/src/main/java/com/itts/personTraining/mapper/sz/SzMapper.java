@@ -1,7 +1,8 @@
 package com.itts.personTraining.mapper.sz;
 
-import com.itts.personTraining.model.sz.Sz;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itts.personTraining.model.sz.Sz;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author Austin
  * @since 2021-04-20
  */
+@Repository
 public interface SzMapper extends BaseMapper<Sz> {
 
 }
