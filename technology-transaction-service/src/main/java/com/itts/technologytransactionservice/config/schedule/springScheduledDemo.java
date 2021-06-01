@@ -97,16 +97,18 @@ public class springScheduledDemo {
                 Date startTime=item.getHdkssj();
                 Date nowDate = new Date();
                 //判断如果活动开始时
-                if(startTime.before(nowDate)){
-                    if(item.getHdzt()==0 && item.getHdfbzt() == 1){
-                        item.setHdzt(1);
-                        lyHdMapper.updateById(item);
-                    }else if(item.getHdzt()==1 && item.getHdfbzt() == 1){
-                        if(item.getHdjssj()!=null){
-                            //如果活动时间已结束则置活动状态为已结束
-                            if(item.getHdjssj().before(nowDate)){
-                                item.setHdzt(2);
-                                lyHdMapper.updateById(item);
+                if(item.getHdkssj()!=null){
+                    if(startTime.before(nowDate)){
+                        if(item.getHdzt()==0 && item.getHdfbzt() == 1){
+                            item.setHdzt(1);
+                            lyHdMapper.updateById(item);
+                        }else if(item.getHdzt()==1 && item.getHdfbzt() == 1){
+                            if(item.getHdjssj()!=null){
+                                //如果活动时间已结束则置活动状态为已结束
+                                if(item.getHdjssj().before(nowDate)){
+                                    item.setHdzt(2);
+                                    lyHdMapper.updateById(item);
+                                }
                             }
                         }
                     }

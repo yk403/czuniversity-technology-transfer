@@ -68,7 +68,7 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 		List<TJsHd> list = jsHdMapper.listCount(query);
 		HashMap<String, Object> userMap = new HashMap<>();
 		//门户报名暂定为userId为2
-		userMap.put("userId",query.get("userId"));
+		userMap.put("userId",getUserId());
 		List<TJsHd> list1 = jsHdMapper.listCount(userMap);
 		for (TJsHd item:list1) {
 			for (TJsHd item2:list) {
@@ -164,6 +164,21 @@ public class JsHdServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implements Js
 		tJsHd.setIsDelete(1);
 		jsHdMapper.updateById(tJsHd);
 		return true;
+	}
+	/**
+	 * 获取当前用户id
+	 * @return
+	 */
+	public Long getUserId() {
+		LoginUser loginUser = threadLocal.get();
+		Long userId;
+		if (loginUser != null) {
+			userId = loginUser.getUserId();
+		} else {
+			//throw new ServiceException(GET_THREADLOCAL_ERROR);
+			userId=null;
+		}
+		return userId;
 	}
 
 
