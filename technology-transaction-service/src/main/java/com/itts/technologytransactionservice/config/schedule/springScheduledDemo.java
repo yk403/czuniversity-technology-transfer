@@ -88,7 +88,7 @@ public class springScheduledDemo {
 
     }
     //双创路演活动定时到活动开始时间就开始活动
-    @Scheduled(cron = "1 0/1 * * * ?")
+    @Scheduled(cron = "5 0/1 * * * ?")
     public void startRoadShow(){
         Map<String,Object> map=new HashMap<>();
         List<LyHd> lyHdBack = lyHdMapper.findLyHdBack(map);
