@@ -15,10 +15,11 @@
         <result column="yhlb" property="yhlb"/>
         <result column="yhjb" property="yhjb"/>
         <result column="jg_id" property="jgId"/>
+        <result column="jgmc" property="jgmc"/>
         <result column="yhyx" property="yhyx"/>
-        <result column="yhjf" property="yhjf" />
-        <result column="sfhy" property="sfhy" />
-        <result column="hylx" property="hylx" />
+        <result column="yhjf" property="yhjf"/>
+        <result column="sfhy" property="sfhy"/>
+        <result column="hylx" property="hylx"/>
         <result column="sfsc" property="sfsc"/>
         <result column="cjsj" property="cjsj"/>
         <result column="cjr" property="cjr"/>
@@ -29,7 +30,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id
-        , yhm, mm, yhbh, zsxm, lxdh, yhtx, yhlx, yhlb, yhjb, jg_id, yhyx, yhjf, sfhy, hylx, sfsc, cjsj, cjr, gxsj, gxr
+        , yhm, mm, yhbh, zsxm, lxdh, yhtx, yhlx, yhlb, yhjb, jg_id, jgmc, yhyx, yhjf, sfhy, hylx, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
     <!-- 通用查询映射结果 -->
@@ -46,9 +47,9 @@
         <result column="yhjb" property="yhjb"/>
         <result column="jg_id" property="jgId"/>
         <result column="yhyx" property="yhyx"/>
-        <result column="yhjf" property="yhjf" />
-        <result column="sfhy" property="sfhy" />
-        <result column="hylx" property="hylx" />
+        <result column="yhjf" property="yhjf"/>
+        <result column="sfhy" property="sfhy"/>
+        <result column="hylx" property="hylx"/>
         <result column="sfsc" property="sfsc"/>
         <result column="cjsj" property="cjsj"/>
         <result column="cjr" property="cjr"/>
