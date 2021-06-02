@@ -1,9 +1,11 @@
-package com.itts.paymentservice.controller.ddxfjl;
+package com.itts.paymentservice.controller.ddxfjl.admin;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.paymentservice.model.ddxfjl.Ddxfjl;
 import com.itts.paymentservice.service.DdxfjlService;
@@ -51,6 +53,11 @@ public class DdxfjlAdminController {
     @GetMapping("/get/{id}")
     public ResponseUtil get(@PathVariable("id") Long id) {
 
-        return null;
+        Ddxfjl ddxfjl = ddxfjlService.getById(id);
+        if(ddxfjl == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        return ResponseUtil.success(ddxfjl);
     }
 }

@@ -3,6 +3,7 @@ package com.itts.paymentservice.model.ddxfjl;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -154,26 +155,31 @@ public class Ddxfjl implements Serializable {
     /**
      * 支付时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date zfsj;
 
     /**
      * 申请退款时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date sqtksj;
 
     /**
      * 退款时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date tksj;
 
     /**
      * 取消时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date qxsj;
 
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
@@ -184,12 +190,11 @@ public class Ddxfjl implements Serializable {
     /**
      * 更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**
      * 更新人
      */
     private Long gxr;
-
-
 }
