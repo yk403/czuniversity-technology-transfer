@@ -13,6 +13,8 @@
         <result column="pdzf" property="pdzf"/>
         <result column="danzf" property="danzf"/>
         <result column="duozf" property="duozf"/>
+        <result column="jylx" property="jylx"/>
+        <result column="xylx" property="xylx"/>
         <result column="sjlx" property="sjlx"/>
         <result column="sfsj" property="sfsj"/>
         <result column="sjsj" property="sjsj"/>
@@ -26,7 +28,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id
-        , kc_id, kc_mc, sjmc, tmzs, sjzf, pdzf, danzf, duozf, sjlx, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
+        , kc_id, kc_mc, sjmc, tmzs, sjzf, pdzf, danzf, duozf, jylx, xylx, sjlx, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>
