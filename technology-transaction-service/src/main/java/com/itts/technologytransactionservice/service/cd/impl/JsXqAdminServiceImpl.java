@@ -264,11 +264,19 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         List<TJsXq> hdJsXq = jsXqMapper.findHdJsXq(queryMap);
         //置顶
         if (type == 0) {
-            for(int i=0;i<soft-1;i++){
+            int k=0;
+            //判断状态为即将开始的成果或需求的第一个技术商品的序号
+            for(int j=0;j<hdJsXq.size();j++){
+                if(hdJsXq.get(j).getAuctionStatus()==0){
+                    k=j;
+                }
+            }
+            //将选中的那项的序号置为即将开始的第一个其他所有在此项之前的即将开始的项目往后移一位
+            for(int i=k;i<soft-1;i++){
                 hdJsXq.get(i).setSoft(hdJsXq.get(i).getSoft()+1);
                 tempList.add(hdJsXq.get(i));
             }
-            byId.setSoft(0);
+            byId.setSoft(k);
             tempList.add(byId);
         }
         //置底

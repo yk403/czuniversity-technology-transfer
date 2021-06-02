@@ -21,4 +21,5 @@ public interface JsCjRcMapper extends BaseMapper<TJsCjRc> {
 	
 	List<TJsCjRc> list(@Param("map") Map map);
 	List<TJsCjRcDto> listRcHd(@Param("map") Map map);
+	List<TJsCjRcDto> listRcJy(@Param("map") Map map);
 }

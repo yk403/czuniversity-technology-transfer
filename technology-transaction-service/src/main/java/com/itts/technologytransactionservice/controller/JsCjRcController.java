@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.controller;
 
 
 import ch.qos.logback.core.joran.util.beans.BeanUtil;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
@@ -42,6 +43,9 @@ public class JsCjRcController extends BaseController {
     private BidController bidController;
     @Autowired
     private JsCjRcService jsCjRcService;
+    @Autowired
+    private JsBmMapper jsBmMapper;
+
 
     /**
     *websocket监听程序
@@ -84,26 +88,35 @@ public class JsCjRcController extends BaseController {
             long startTime = tJsCjRcDto.getHdkssj().getTime();
             if (startTime < now ) {
                 tJsCjRcDto.setJjsj(nowDate);
+                HashMap<String, Object> bmquery = new HashMap<>();
+                bmquery.put("userId",jsCjRcService.getUserId());
+                bmquery.put("hdId",tJsCjRcDto.getHdId());
+                List<TJsBm> list = jsBmMapper.list(bmquery);
+                if(list.size()==1){
+                    tJsCjRcDto.setBmId(list.get(0).getId());
+                }else{
+                    throw new ServiceException("用户未报名无法叫价");
+                }
                 if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
                     bidController.onMessage("叫价成功，调用刷新出价记录方法");
                     return ResponseUtil.success("叫价成功");
                 } else {
-                    return ResponseUtil.error(400, "叫价错误");
+                    return ResponseUtil.error(400, "保存失败，叫价错误");
                 }
             } else {
                 return ResponseUtil.error(400, "叫价超时");
             }
         }
         //暂定可以不传时间，等前端完成后注掉
-        Date nowDate = new Date();
-        tJsCjRcDto.setJjsj(nowDate);
-        if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
-            bidController.onMessage("叫价成功，调用刷新出价记录方法");
-            return ResponseUtil.success("叫价成功");
-        } else {
-            return ResponseUtil.error(400, "叫价错误");
-        }
-
+//        Date nowDate = new Date();
+//        tJsCjRcDto.setJjsj(nowDate);
+//        if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
+//            bidController.onMessage("叫价成功，调用刷新出价记录方法");
+//            return ResponseUtil.success("叫价成功");
+//        } else {
+//            return ResponseUtil.error(400, "叫价错误");
+//        }
+        return ResponseUtil.error(400, "活动没有开始时间，叫价错误");
     }
 
     /**

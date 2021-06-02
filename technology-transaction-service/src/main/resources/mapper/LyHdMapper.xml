@@ -3,7 +3,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyHdMapper">
 
     <select id="findLyHdFront" resultType="com.itts.technologytransactionservice.model.LyHd">
-        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt,bmkssj,hdjssj,hdkssj,hdfbzt
+        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt,bmkssj,hdjssj,hdkssj,hdfbzt,hdnr
         from t_ly_hd hd
         <where>
             <!--后台能查询0或者1的数据 -->
@@ -12,6 +12,7 @@
             <if test="map.hdtp != null"> and hd.hdtp != #{map.hdtp} </if>
             <if test="map.hdtpmc != null"> and hd.hdtpmc != #{map.hdtpmc} </if>
             <if test="map.hdzt != null"> and hd.hdzt != #{map.hdzt} </if>
+            <if test="map.hdnr != null"> and hd.hdnr != #{map.hdnr} </if>
             <if test="map.bmjzsj != null"> and hd.bmjzsj != #{map.bmjzsj} </if>
             <if test="map.hdfbzt != null"> and hd.hdfbzt != #{map.hdfbzt} </if>
         </where>
@@ -25,7 +26,7 @@
         </choose>
     </select>
     <select id="findLyHdBack" resultType="com.itts.technologytransactionservice.model.LyHd">
-        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt,bmkssj,hdjssj,hdkssj,hdfbzt
+        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt,bmkssj,hdjssj,hdkssj,hdfbzt,hdnr
         from t_ly_hd hd
         <where>
             <!--后台能查询0或者1的数据 -->
@@ -34,6 +35,7 @@
             <if test="map.hdtp != null"> and hd.hdtp != #{map.hdtp} </if>
             <if test="map.hdtpmc != null"> and hd.hdtpmc != #{map.hdtpmc} </if>
             <if test="map.hdzt != null"> and hd.hdzt != #{map.hdzt} </if>
+            <if test="map.hdnr != null"> and hd.hdnr != #{map.hdnr} </if>
             <if test="map.bmjzsj != null"> and hd.bmjzsj != #{map.bmjzsj} </if>
             <if test="map.hdfbzt != null"> and hd.hdfbzt != #{map.hdfbzt} </if>
         </where>

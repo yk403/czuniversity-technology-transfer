@@ -44,7 +44,7 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
 	@Override
 	public PageInfo page(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		List<TJsCjRcDto> list = jsCjRcMapper.listRcHd(query);
+		List<TJsCjRcDto> list = jsCjRcMapper.listRcJy(query);
 		PageInfo<TJsCjRcDto> page = new PageInfo<>(list);
 		return page;
 	}
@@ -101,12 +101,26 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             jsLcKzMapper.updateById(listLckz.get(0));
         }
         //暂时设定单个活动多个报名信息默认显示最新的那个
-        if(list.size()>0){
+       /* if(list.size()>0){
             tJsCjRc.setBmId(list.get(0).getId());
             tJsCjRc.setCjf(list.get(0).getDwmc());
-        }
+        }*/
         return save(tJsCjRc);
     }
-
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    public Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            //throw new ServiceException(GET_THREADLOCAL_ERROR);
+            userId=null;
+        }
+        return userId;
+    }
 
 }

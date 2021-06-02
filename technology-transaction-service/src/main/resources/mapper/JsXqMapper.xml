@@ -129,7 +129,7 @@
 	</select>
 
 	<select id="findJsXqFront" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,kz.dj as dj,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,agreement,agreement_name,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,sh.assistance_status,sh.release_assistance_status,sh.fbshbz,xq.remarks,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,cjjg,auction_status
+		select xq.id as id,kz.dj as dj,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,agreement,agreement_name,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,sh.assistance_status,sh.release_assistance_status,sh.fbshbz,xq.remarks,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,cjjg,auction_status,kz.lcdj as lcdj
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id) left join t_js_hd hd on(xq.jshd_id=hd.id) left join t_js_lc_kz kz on (xq.id = kz.xq_id)
 		<where>
 			xq.is_delete = 0
@@ -231,6 +231,7 @@
 			<if test="map.jhrq != null and map.jhrq != ''"> and xq.jhrq = #{map.jhrq} </if>
 			<if test="map.ysrq != null and map.ysrq != ''"> and xq.ysrq = #{map.ysrq} </if>
 			<if test="map.fbshzt != null"> and sh.fbshzt = #{map.fbshzt} </if>
+			<if test="map.hdzt != null"> and hd.hdzt = #{map.hdzt} </if>
 			<if test="map.releaseStatus != null and map.releaseStatus != ''"> and d.release_status = #{map.releaseStatus} </if>
 			<if test="map.jylx != null and map.jylx != ''"> and sh.jylx = #{map.jylx} </if>
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
