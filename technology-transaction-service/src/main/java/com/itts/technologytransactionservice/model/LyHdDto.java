@@ -1,13 +1,12 @@
 package com.itts.technologytransactionservice.model;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.util.Date;
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -18,9 +17,7 @@ import lombok.EqualsAndHashCode;
  * @since 2021-05-18
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("t_ly_hd")
-public class LyHd implements Serializable {
+public class LyHdDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -108,20 +105,5 @@ public class LyHd implements Serializable {
      * 展品列表
      */
     private String zplb;
-    /**
-     * 咨询电话
-     */
-    private String zxdh;
-    /**
-     * 活动规则
-     */
-    private String hdgz;
-    /**
-     * 活动轮播图
-     */
-    private String hdlbt;
-    /**
-     * 活动详情
-     */
-    private String hdxq;
+
 }
