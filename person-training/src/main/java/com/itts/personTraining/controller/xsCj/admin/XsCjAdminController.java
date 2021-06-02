@@ -42,19 +42,21 @@ public class XsCjAdminController {
     private PcXsMapper pcXsMapper;
 
     /**
-     * 查询学生成绩列表
+     * 分页查询学生成绩列表
      *
      * @param pageNum
      * @param pageSize
      * @return
      */
     @GetMapping("/list")
-    @ApiOperation(value = "查询学生成绩列表")
+    @ApiOperation(value = "分页查询学生成绩列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                   @RequestParam(value = "kclx", required = false) String kclx,
-                                   @RequestParam(value = "name", required = false) String name) {
-        return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name));
+                                   @RequestParam(value = "pcId", required = false) Long pcId,
+                                   @RequestParam(value = "xh", required = false) String xh,
+                                   @RequestParam(value = "xm", required = false) String xm,
+                                   @RequestParam(value = "xymc", required = false) String xymc) {
+        return ResponseUtil.success(xsCjService.findByPage(pageNum, pageSize, pcId, xh, xm, xymc));
     }
 
     /**
@@ -142,19 +144,6 @@ public class XsCjAdminController {
         return ResponseUtil.success("删除学生成绩成功!");
     }
 
-    /**
-     * 课程批量下发
-     * @param ids
-     * @return
-     */
-    @PutMapping("/update/issueBatch")
-    @ApiOperation(value = "课程批量下发")
-    public ResponseUtil issueBatch(@RequestBody List<Long> ids) {
-        if (!kcService.issueBatch(ids)) {
-            throw new WebException(UPDATE_FAIL);
-        }
-        return ResponseUtil.success("课程统一下发成功!");
-    }
     /**
      * 校验参数
      */

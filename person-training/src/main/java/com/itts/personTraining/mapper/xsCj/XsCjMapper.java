@@ -21,12 +21,12 @@ public interface XsCjMapper extends BaseMapper<XsCj> {
      * 查询所有学生成绩(学历学位)
      * @return
      */
-    List<XsCjDTO> findXsKcCj(@Param("pcId") Long pcId);
+    List<XsCjDTO> findXsKcCj(@Param("pcId") Long pcId, @Param("xh") String xh, @Param("xm") String xm, @Param("xymc") String xymc);
 
     /**
      * 查询所有学生成绩(继续教育)
      * @param pcId
      * @return
      */
-    List<XsCjDTO> findXsCj(@Param("pcId") Long pcId);
+    List<XsCjDTO> findXsCj(@Param("pcId") Long pcId, @Param("xh") String xh, @Param("xm") String xm, @Param("xymc") String xymc);
 }

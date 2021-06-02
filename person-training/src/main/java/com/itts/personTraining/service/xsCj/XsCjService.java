@@ -1,5 +1,6 @@
 package com.itts.personTraining.service.xsCj;
 
+import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -50,4 +51,16 @@ public interface XsCjService extends IService<XsCj> {
      * @return
      */
     List<XsCj> getXsCjByPcId(Long pcId);
+
+    /**
+     * 分页条件查询学生成绩
+     * @param pageNum
+     * @param pageSize
+     * @param pcId
+     * @param xh
+     * @param xm
+     * @param xymc
+     * @return
+     */
+    PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String xymc);
 }

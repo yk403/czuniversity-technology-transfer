@@ -1,6 +1,8 @@
 package com.itts.personTraining.service.xsCj.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.XsCjDTO;
@@ -62,10 +64,10 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         Pc pc = pcService.get(pcId);
         if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
             //学历学位教育
-            xsCjDTOs = xsCjMapper.findXsKcCj(pcId);
+            xsCjDTOs = xsCjMapper.findXsKcCj(pcId,null,null,null);
         } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
             //继续教育
-            xsCjDTOs = xsCjMapper.findXsCj(pcId);
+            xsCjDTOs = xsCjMapper.findXsCj(pcId,null,null,null);
         }
         return xsCjDTOs;
     }
@@ -151,6 +153,33 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                         .eq("pc_id",pcId);
         List<XsCj> xsCjs = xsCjMapper.selectList(xsCjQueryWrapper);
         return xsCjs;
+    }
+
+    /**
+     * 分页条件查询学生成绩
+     * @param pageNum
+     * @param pageSize
+     * @param pcId
+     * @param xh
+     * @param xm
+     * @param xymc
+     * @return
+     */
+    @Override
+    public PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String xymc) {
+        log.info("【人才培养 - 根据条件批次ID:{},学号:{},姓名:{},学院名称:{}分页查询学生成绩】",pcId,xh,xm,xymc);
+        //前台第一次展示暂无数据,以后批次ID必传
+        PageHelper.startPage(pageNum,pageSize);
+        List<XsCjDTO> xsCjDTOs = null;
+        Pc pc = pcService.get(pcId);
+        if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
+            //学历学位教育
+            xsCjDTOs = xsCjMapper.findXsKcCj(pcId,xh,xm,xymc);
+        } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
+            //继续教育
+            xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,xymc);
+        }
+        return new PageInfo<>(xsCjDTOs);
     }
 
     /**
