@@ -55,8 +55,20 @@ public class UpdateKssjRequest implements Serializable {
     /**
      * 多选题总分
      */
-    @ApiModelProperty(value = "单选题总分")
+    @ApiModelProperty(value = "多选题总分")
     private Integer duozf;
+
+    /**
+     * 教育类型
+     */
+    @ApiModelProperty(value = "教育类型")
+    private String jylx;
+
+    /**
+     * 学员类型
+     */
+    @ApiModelProperty(value = "学员类型")
+    private String xylx;
 
     /**
      * 考试类型：single_subject - 单科；comprehensive - 综合
