@@ -126,7 +126,7 @@ public class JgglController {
         jggl.setCjsj(new Date());
 
         LoginUser loginUser = threadLocal.get();
-        if(loginUser.getUserId()!=null){
+        if (loginUser.getUserId() != null) {
             jggl.setCjr(loginUser.getUserId());
             jggl.setGxr(loginUser.getUserId());
         }
@@ -308,6 +308,10 @@ public class JgglController {
         //如果参数为空，抛出异常
         if (jggl == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (Objects.equals(jggl.getJgbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)){
+            throw new WebException(ErrorCodeEnum.SYSTEM_FIND_ERROR);
         }
 
         if (jggl.getFjbm() == null) {
