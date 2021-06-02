@@ -122,6 +122,31 @@ public class Ddxfjl implements Serializable {
     private String zt;
 
     /**
+     * 联系电话
+     */
+    private String lxdh;
+
+    /**
+     * 省份
+     */
+    private String sf;
+
+    /**
+     * 城市
+     */
+    private String cs;
+
+    /**
+     * 区县
+     */
+    private String qx;
+
+    /**
+     * 详细地址
+     */
+    private String xxdz;
+
+    /**
      * 退款理由
      */
     private String tkly;

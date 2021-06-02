@@ -23,6 +23,11 @@
         <result column="jfje" property="jfje" />
         <result column="yeje" property="yeje" />
         <result column="zt" property="zt" />
+        <result column="lxdh" property="lxdh" />
+        <result column="sf" property="sf" />
+        <result column="cs" property="cs" />
+        <result column="qx" property="qx" />
+        <result column="xxdz" property="xxdz" />
         <result column="tkly" property="tkly" />
         <result column="zfsj" property="zfsj" />
         <result column="sqtksj" property="sqtksj" />
@@ -36,7 +41,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, bh, ddmc, sp_id, spmc, yhj_id, xtlx, xflx, xfsm, zffs, zsl, zje, sjzfje, yhje, zfbje, wxje, jfje, yeje, zt, tkly, zfsj, sqtksj, tksj, qxsj, cjsj, cjr, gxsj, gxr
+        id, bh, ddmc, sp_id, spmc, yhj_id, xtlx, xflx, xfsm, zffs, zsl, zje, sjzfje, yhje, zfbje, wxje, jfje, yeje, zt, lxdh, sf, cs, qx, xxdz, tkly, zfsj, sqtksj, tksj, qxsj, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>
