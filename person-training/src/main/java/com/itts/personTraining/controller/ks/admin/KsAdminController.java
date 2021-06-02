@@ -117,6 +117,9 @@ public class KsAdminController {
         if (ksDTO == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
+        if (ksDTO.getSfxf()) {
+            throw new WebException(ISSUEBATCH_DELETE_ERROR);
+        }
         //更新删除状态
         if (!ksService.delete(ksDTO)) {
             throw new WebException(DELETE_FAIL);
