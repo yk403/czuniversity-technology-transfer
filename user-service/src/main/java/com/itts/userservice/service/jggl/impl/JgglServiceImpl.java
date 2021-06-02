@@ -146,17 +146,6 @@ public class JgglServiceImpl implements JgglService {
     @Override
     public Jggl add(Jggl jggl) {
 
-        LoginUser loginUser = threadLocal.get();
-        if(loginUser.getUserId()!=null){
-            jggl.setCjr(loginUser.getUserId());
-            jggl.setGxr(loginUser.getUserId());
-        }
-        Date date = new Date();
-        jggl.setCjsj(date);
-        jggl.setGxsj(date);
-        if(StringUtils.isBlank(jggl.getFjbm())){
-            jggl.setFjbm("000");
-        }
         jgglMapper.insert(jggl);
         return jggl;
     }
