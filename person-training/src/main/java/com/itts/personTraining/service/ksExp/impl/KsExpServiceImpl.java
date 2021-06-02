@@ -98,30 +98,33 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
      * @return
      */
     @Override
-    public boolean update(List<KsExpDTO> ksExpDTOs) {
-        log.info("【人才培养 - 更新考试扩展信息:{}】",ksExpDTOs);
-        for (KsExpDTO ksExpDTO : ksExpDTOs) {
-            KsExp ksExp = ksExpMapper.selectById(ksExpDTO.getId());
-            if (ksExp.getXxjsId() != null) {
+    public boolean update(List<KsExpDTO> ksExpDTOs,Long id) {
+        log.info("【人才培养 - 更新考试扩展信息:{},id:{},考试id:{}】",ksExpDTOs,id);
+        KsExp ksExp = ksExpMapper.selectById(id);
+        if (ksExp.getXxjsId() != null) {
+            for (KsExpDTO ksExpDTO : ksExpDTOs) {
                 //学位学历教育
                 ksExpDTO.setGxr(getUserId());
-                BeanUtils.copyProperties(ksExpDTO,ksExp);
+                BeanUtils.copyProperties(ksExpDTO, ksExp);
                 if (ksExpService.updateById(ksExp)) {
                     List<Long> szIds = ksExpDTO.getSzIds();
                     if (szIds != null || szIds.size() > 0) {
                         HashMap<String, Object> map = new HashMap<>();
                         Long ksExpId = ksExpDTO.getId();
-                        map.put("ks_exp_id",ksExpId);
+                        map.put("ks_exp_id", ksExpId);
                         if (szKsExpService.removeByMap(map)) {
-                            return saveSzKsExp(szIds,ksExpId);
+                            return saveSzKsExp(szIds, ksExpId);
                         }
                         return false;
                     }
                     return true;
                 }
                 return false;
-            } else {
-                //继续教育
+            }
+        } else {
+            //继续教育
+            List<KsExp> ksExps = new ArrayList<>();
+            for (KsExpDTO ksExpDTO : ksExpDTOs) {
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("ks_id",ksExpDTO.getKsId());
                 ksExpService.removeByMap(map);
@@ -130,9 +133,10 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
                 ksExp1.setGxr(getUserId());
                 ksExp1.setKsId(ksExpDTO.getKsId());
                 ksExp1.setKcId(ksExpDTO.getKcId());
-                return ksExpService.save(ksExp1);
+                ksExps.add(ksExp1);
             }
-        }
+            return ksExpService.saveBatch(ksExps);
+            }
         return true;
     }
 

@@ -68,20 +68,20 @@ public class KsExpAdminController {
      */
     @PutMapping("/update")
     @ApiOperation(value = "更新考试扩展信息")
-    public ResponseUtil update(@RequestBody List<KsExpDTO> ksExpDTOs) throws WebException {
+    public ResponseUtil update(@RequestBody List<KsExpDTO> ksExpDTOs,@RequestParam(value = "id", required = false) Long id) throws WebException {
         for (KsExpDTO ksExpDTO : ksExpDTOs) {
-            Long id = ksExpDTO.getId();
+            Long id1 = ksExpDTO.getId();
             //检查参数是否合法
-            if (id == null ) {
+            if (id1 == null ) {
                 throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
             }
             //检查数据库中是否存在要更新的数据
-            List<KsExpDTO> ksExpDTOS = ksExpService.get( id,null);
+            List<KsExpDTO> ksExpDTOS = ksExpService.get( id1,null);
             if (ksExpDTOS == null || ksExpDTOS.size() == 0) {
                 throw new WebException(SYSTEM_NOT_FIND_ERROR);
             }
         }
-        if (!ksExpService.update(ksExpDTOs)) {
+        if (!ksExpService.update(ksExpDTOs,id)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新考试扩展信息成功!");

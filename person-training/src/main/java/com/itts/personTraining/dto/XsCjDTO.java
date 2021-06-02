@@ -1,37 +1,58 @@
-package com.itts.personTraining.model.xsCj;
+package com.itts.personTraining.dto;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import io.swagger.annotations.ApiModel;
+import lombok.Data;
 
 import java.util.Date;
-import java.io.Serializable;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
- * <p>
- * 学生成绩表
- * </p>
- *
- * @author Austin
- * @since 2021-06-01
+ * @Author: Austin
+ * @Data: 2021/6/1
+ * @Version: 1.0.0
+ * @Description: 学生成绩对象
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("t_xs_cj")
-public class XsCj implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@ApiModel("学生成绩对象")
+public class XsCjDTO {
 
     /**
-     * 主键
+     * 学生成绩主键
      */
-      @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
      * 学生ID
      */
     private Long xsId;
+
+    /**
+     * 学号
+     */
+    private String xh;
+
+    /**
+     * 姓名
+     */
+    private String xm;
+
+    /**
+     * 学院id
+     */
+    private Long xyId;
+
+    /**
+     * 学院名称
+     */
+    private String xymc;
+
+    /**
+     * 原专业
+     */
+    private String yzy;
 
     /**
      * 综合成绩
@@ -74,6 +95,4 @@ public class XsCj implements Serializable {
      * 更新人
      */
     private Long gxr;
-
-
 }
