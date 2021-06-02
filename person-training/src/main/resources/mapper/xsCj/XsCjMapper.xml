@@ -3,9 +3,14 @@
 <mapper namespace="com.itts.personTraining.mapper.xsCj.XsCjMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.xsCj.XsCj">
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.dto.XsCjDTO">
         <id column="id" property="id" />
         <result column="xs_id" property="xsId" />
+        <result column="xh" property="xh" />
+        <result column="xm" property="xm" />
+        <result column="xy_id" property="xyId" />
+        <result column="xymc" property="xymc" />
+        <result column="yzy" property="yzy" />
         <result column="zhcj" property="zhcj" />
         <result column="zxf" property="zxf" />
         <result column="lwcj" property="lwcj" />
@@ -14,11 +19,38 @@
         <result column="cjr" property="cjr" />
         <result column="gxsj" property="gxsj" />
         <result column="gxr" property="gxr" />
+        <collection property="xsKcCjDTOList" resultMap="xsKcCjDTOListResultMap"/>
     </resultMap>
 
+    <resultMap id="xsKcCjDTOListResultMap" type="com.itts.personTraining.dto.XsKcCjDTO">
+        <id column="xs_kc_cj_id" property="id" />
+        <id column="xs_cj_id" property="xsCjId" />
+        <id column="kc_id" property="kcId" />
+        <id column="kclx" property="kclx" />
+        <id column="kcxs" property="kcxs" />
+        <id column="kcxf" property="kcxf" />
+        <id column="kcdm" property="kcdm" />
+        <id column="kcmc" property="kcmc" />
+        <id column="sfbx" property="sfbx" />
+        <id column="xwk" property="xwk" />
+        <id column="dqxf" property="dqxf" />
+        <id column="cj" property="cj" />
+        <id column="xxxq" property="xxxq" />
+        <id column="cjsx" property="cjsx" />
+        <id column="bkcj" property="bkcj" />
+        <id column="sfsc" property="sfsc" />
+        <id column="bz" property="bz" />
+        <id column="cjsj" property="cjsj" />
+        <id column="cjr" property="cjr" />
+        <id column="gxsj" property="gxsj" />
+        <id column="gxr" property="gxr" />
+    </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, xs_id, zhcj, zxf, lwcj, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
+    <select id="findXsCj" resultMap="BaseResultMap">
+
+    </select>
 
 </mapper>

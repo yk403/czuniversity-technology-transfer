@@ -1,13 +1,13 @@
 package com.itts.personTraining.dto;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Austin
@@ -27,46 +27,55 @@ public class XsCjDTO {
     /**
      * 学生ID
      */
+    @ApiModelProperty(value = "学生ID")
     private Long xsId;
 
     /**
      * 学号
      */
+    @ApiModelProperty(value = "学号")
     private String xh;
 
     /**
      * 姓名
      */
+    @ApiModelProperty(value = "姓名")
     private String xm;
 
     /**
      * 学院id
      */
+    @ApiModelProperty(value = "学院id")
     private Long xyId;
 
     /**
      * 学院名称
      */
+    @ApiModelProperty(value = "学院名称")
     private String xymc;
 
     /**
      * 原专业
      */
+    @ApiModelProperty(value = "原专业")
     private String yzy;
 
     /**
      * 综合成绩
      */
+    @ApiModelProperty(value = "综合成绩")
     private String zhcj;
 
     /**
      * 总学分
      */
-    private String zxf;
+    @ApiModelProperty(value = "总学分")
+    private Integer zxf;
 
     /**
      * 论文成绩
      */
+    @ApiModelProperty(value = "论文成绩")
     private String lwcj;
 
     /**
@@ -95,4 +104,9 @@ public class XsCjDTO {
      * 更新人
      */
     private Long gxr;
+
+    /**
+     * 学生成绩扩展集合
+     */
+    private List<XsKcCjDTO> xsKcCjDTOList;
 }

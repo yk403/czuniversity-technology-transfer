@@ -4,6 +4,7 @@ package com.itts.personTraining.controller.xsCj.admin;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.KcDTO;
+import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.service.kc.KcService;
 import com.itts.personTraining.service.xsCj.XsCjService;
 import io.swagger.annotations.Api;
@@ -62,30 +63,30 @@ public class XsCjAdminController {
     }
 
     /**
-     * 根据条件查询课程
+     * 查询所有学生成绩
      */
-    @GetMapping("/getByCondition")
-    @ApiOperation(value = "根据条件查询课程")
-    public ResponseUtil getByCondition(@RequestParam(value = "xylx", required = false) String xylx) {
-        return ResponseUtil.success(kcService.getByCondition(xylx));
+    @GetMapping("/getAll")
+    @ApiOperation(value = "查询所有学生成绩")
+    public ResponseUtil getAll() {
+        return ResponseUtil.success(xsCjService.getAll());
     }
 
     /**
-     * 新增课程
+     * 新增学生成绩
      *
-     * @param kcDTO
+     * @param xsCjDTO
      * @return
      * @throws WebException
      */
     @PostMapping("/add")
-    @ApiOperation(value = "新增课程")
-    public ResponseUtil add(@RequestBody KcDTO kcDTO) throws WebException {
+    @ApiOperation(value = "新增学生成绩")
+    public ResponseUtil add(@RequestBody XsCjDTO xsCjDTO) throws WebException {
         //检查参数是否合法
-        checkRequest(kcDTO);
-        if (!kcService.add(kcDTO)) {
+        checkRequest(xsCjDTO);
+        if (!xsCjService.add(xsCjDTO)) {
             throw new WebException(INSERT_FAIL);
         }
-        return ResponseUtil.success("新增课程成功!");
+        return ResponseUtil.success("新增学生成绩成功!");
     }
 
     /**
@@ -150,23 +151,11 @@ public class XsCjAdminController {
     /**
      * 校验参数
      */
-    private void checkRequest(KcDTO kcDTO) throws WebException {
-        if (kcDTO == null) {
+    private void checkRequest(XsCjDTO xsCjDTO) throws WebException {
+        if (xsCjDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if(kcDTO.getSzIds() == null) {
-            throw new WebException(TEACHER_ISEMPTY_ERROR);
-        }
-        if (kcDTO.getKcdm() == null) {
-            throw new WebException(TEACH_TYPE_ISEMPTY_ERROR);
-        }
-        List<KcDTO> kcList = kcService.getByCondition(null);
-
-        for (KcDTO kcDTO1 : kcList) {
-            if (kcDTO1.getKcdm().equals(kcDTO.getKcdm()) || kcDTO1.getKcmc().equals(kcDTO.getKcmc())) {
-                throw new WebException(COURSE_EXISTS_ERROR);
-            }
-        }
+        //判断该学生成绩是否已存在,存在则返回提示消息
     }
 }
 

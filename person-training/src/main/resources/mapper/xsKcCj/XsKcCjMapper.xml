@@ -8,10 +8,11 @@
         <result column="xs_cj_id" property="xsCjId" />
         <result column="kc_id" property="kcId" />
         <result column="kclx" property="kclx" />
-        <result column="kcbh" property="kcbh" />
+        <result column="kcdm" property="kcdm" />
         <result column="kcmc" property="kcmc" />
         <result column="sfbx" property="sfbx" />
         <result column="xwk" property="xwk" />
+        <result column="dqxf" property="dqxf" />
         <result column="cj" property="cj" />
         <result column="xxxq" property="xxxq" />
         <result column="cjsx" property="cjsx" />
@@ -26,7 +27,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, xs_cj_id, kc_id, kclx, kcbh, kcmc, sfbx, xwk, cj, xxxq, cjsx, bkcj, sfsc, bz, cjsj, cjr, gxsj, gxr
+        id, xs_cj_id, kc_id, kclx, kcdm, kcmc, sfbx, xwk, dqxf, cj, xxxq, cjsx, bkcj, sfsc, bz, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

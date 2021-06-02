@@ -41,7 +41,7 @@ public class XsCj implements Serializable {
     /**
      * 总学分
      */
-    private String zxf;
+    private Integer zxf;
 
     /**
      * 论文成绩
