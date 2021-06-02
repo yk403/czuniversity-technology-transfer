@@ -17,10 +17,11 @@ import java.util.List;
 public interface XsCjService extends IService<XsCj> {
 
     /**
-     * 查询所有学生成绩
+     * 根据批次id查询所有学生成绩(学历学位)
+     * @param pcId
      * @return
      */
-    List<XsCjDTO> getAll();
+    List<XsCjDTO> getByPcId(Long pcId);
 
     /**
      * 新增学生成绩
@@ -28,4 +29,25 @@ public interface XsCjService extends IService<XsCj> {
      * @return
      */
     boolean add(XsCjDTO xsCjDTO);
+
+    /**
+     * 删除学生成绩
+     * @param xsCjDTO
+     * @return
+     */
+    boolean delete(XsCjDTO xsCjDTO);
+
+    /**
+     * 根据id查询学生成绩详情
+     * @param id
+     * @return
+     */
+    XsCjDTO get(Long id);
+
+    /**
+     * 根据piId查询XsCj对象
+     * @param pcId
+     * @return
+     */
+    List<XsCj> getXsCjByPcId(Long pcId);
 }

@@ -1,12 +1,15 @@
 package com.itts.personTraining.service.xsCj.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
+import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.xsCj.XsCjService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.xsKcCj.XsKcCjService;
@@ -22,6 +25,9 @@ import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.personTraining.enums.CourseTypeEnum.TECHNOLOGY_TRANSFER_COURSE;
+import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
+import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
 
 /**
  * <p>
@@ -41,15 +47,26 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     private XsCjService xsCjService;
     @Autowired
     private XsKcCjService xsKcCjService;
+    @Autowired
+    private PcService pcService;
 
     /**
-     * 查询所有学生成绩
+     * 根据批次id查询所有学生成绩
      * @return
      */
     @Override
-    public List<XsCjDTO> getAll() {
+    public List<XsCjDTO> getByPcId(Long pcId) {
         log.info("【人才培养 - 查询所有学生成绩】");
-        List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCj();
+        //通过批次id查询教育类型
+        List<XsCjDTO> xsCjDTOs = null;
+        Pc pc = pcService.get(pcId);
+        if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
+            //学历学位教育
+            xsCjDTOs = xsCjMapper.findXsKcCj(pcId);
+        } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
+            //继续教育
+            xsCjDTOs = xsCjMapper.findXsCj(pcId);
+        }
         return xsCjDTOs;
     }
 
@@ -75,7 +92,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 for (XsKcCjDTO xsKcCjDTO : xsKcCjDTOList) {
                     XsKcCj xsKcCj = new XsKcCj();
                     xsKcCjDTO.setXsCjId(id);
-                    xsKcCjDTO.setKclx(true);
+                    xsKcCjDTO.setKclx(TECHNOLOGY_TRANSFER_COURSE.getKey());
                     xsKcCjDTO.setCjr(userId);
                     xsKcCjDTO.setGxr(userId);
                     Integer dqxf = xsKcCjDTO.getDqxf();
@@ -92,6 +109,48 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             return true;
         }
         return false;
+    }
+
+    /**
+     * 删除学生成绩
+     * @param xsCjDTO
+     * @return
+     */
+    @Override
+    public boolean delete(XsCjDTO xsCjDTO) {
+        log.info("【人才培养 - 删除学生成绩:{}】",xsCjDTO);
+        xsCjDTO.setSfsc(true);
+        xsCjDTO.setGxr(getUserId());
+        XsCj xsCj = new XsCj();
+        BeanUtils.copyProperties(xsCjDTO,xsCj);
+        return xsCjService.updateById(xsCj);
+    }
+
+    /**
+     * 根据id查询学生成绩详情
+     * @param id
+     * @return
+     */
+    @Override
+    public XsCjDTO get(Long id) {
+        log.info("【人才培养 - 删除学生成绩:{}】",id);
+
+        return null;
+    }
+
+    /**
+     * 根据piId查询XsCj对象
+     * @param pcId
+     * @return
+     */
+    @Override
+    public List<XsCj> getXsCjByPcId(Long pcId) {
+        log.info("【人才培养 - 根据piId查询XsCj对象:{}】",pcId);
+        QueryWrapper<XsCj> xsCjQueryWrapper = new QueryWrapper<>();
+        xsCjQueryWrapper.eq("sfsc",false)
+                        .eq("pc_id",pcId);
+        List<XsCj> xsCjs = xsCjMapper.selectList(xsCjQueryWrapper);
+        return xsCjs;
     }
 
     /**

@@ -6,6 +6,8 @@
     <resultMap id="BaseResultMap" type="com.itts.personTraining.dto.XsCjDTO">
         <id column="id" property="id" />
         <result column="xs_id" property="xsId" />
+        <result column="pc_id" property="pcId" />
+        <result column="pch" property="pch" />
         <result column="xh" property="xh" />
         <result column="xm" property="xm" />
         <result column="xy_id" property="xyId" />
@@ -49,8 +51,20 @@
     <sql id="Base_Column_List">
         id, xs_id, zhcj, zxf, lwcj, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
-    <select id="findXsCj" resultMap="BaseResultMap">
-
+    <select id="findXsKcCj" resultMap="BaseResultMap">
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yzy, xy.id as xy_id, xy.xymc, txkc.id as xs_kc_cj_id, txkc.xs_cj_id, txkc.kc_id, txkc.kclx, txkc.dqxf, txkc.cj, txkc.cjsx, txkc.bkcj, txkc.bz, kc.kcdm, kc.kcmc, kc.kcxs, kc.kcxf, kc.sfbx, pc.pch
+        from t_xs_cj txc left join t_xs_kc_cj txkc on (txc.id=txkc.xs_cj_id) left join t_xs xs on (txc.xs_id=xs.id) left
+        join t_xy xy on (xy.id=xs.xy_id) left join t_kc kc on (kc.id=txkc.kc_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
+        where txc.sfsc = false and txkc.sfsc = false and xs.sfsc = false and xs.sfsc = false and xy.sfsc = false and kc.sfsc = false
+        <if test="pcId != null and pcId != ''"> and pc.id = #{pcId} </if>
+        <!--<if test="name != null and name != ''"> and kc.kcdm like concat('%',#{kcdm},'%') </if>-->
+        order by txc.cjsj desc
+    </select>
+    <select id="findXsCj" resultType="com.itts.personTraining.dto.XsCjDTO">
+        select txc.*, pc.pch, xs.xm, xs.xh, xy.id as xy_id, xy.xymc
+        from t_xs_cj txc left join t_xs xs on (txc.xs_id=xs.id) left join t_xy xy on (xy.id=xs.xy_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
+        where txc.sfsc = false and xs.sfsc = false and xy.sfsc = false and pc.sfsc = false
+        <if test="pcId != null and pcId != ''"> and pc.id = #{pcId} </if>
     </select>
 
 </mapper>

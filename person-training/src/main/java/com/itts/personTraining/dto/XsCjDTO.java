@@ -30,11 +30,24 @@ public class XsCjDTO {
     @ApiModelProperty(value = "学生ID")
     private Long xsId;
 
+
     /**
      * 学号
      */
     @ApiModelProperty(value = "学号")
     private String xh;
+
+    /**
+     * 批次ID
+     */
+    @ApiModelProperty(value = "批次ID")
+    private Long pcId;
+
+    /**
+     * 批次号
+     */
+    @ApiModelProperty(value = "批次号")
+    private String pch;
 
     /**
      * 姓名

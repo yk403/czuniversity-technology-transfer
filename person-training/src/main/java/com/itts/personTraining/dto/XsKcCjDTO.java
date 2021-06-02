@@ -38,7 +38,7 @@ public class XsKcCjDTO {
      * 课程类型(1:原专业课程;2:技术转移专业课程)
      */
     @ApiModelProperty(value = "课程类型(1:原专业课程;2:技术转移专业课程)")
-    private Boolean kclx;
+    private Integer kclx;
 
     /**
      * 课程学时(如总学时为36学时)

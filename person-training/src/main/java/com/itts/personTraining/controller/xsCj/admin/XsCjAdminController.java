@@ -4,14 +4,19 @@ package com.itts.personTraining.controller.xsCj.admin;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.KcDTO;
+import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.dto.XsCjDTO;
+import com.itts.personTraining.mapper.pcXs.PcXsMapper;
+import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.service.kc.KcService;
+import com.itts.personTraining.service.pcXs.PcXsService;
 import com.itts.personTraining.service.xsCj.XsCjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
@@ -33,6 +38,8 @@ public class XsCjAdminController {
     private XsCjService xsCjService;
     @Autowired
     private KcService kcService;
+    @Resource
+    private PcXsMapper pcXsMapper;
 
     /**
      * 查询学生成绩列表
@@ -63,12 +70,12 @@ public class XsCjAdminController {
     }
 
     /**
-     * 查询所有学生成绩
+     * 根据批次id查询所有学生成绩
      */
-    @GetMapping("/getAll")
-    @ApiOperation(value = "查询所有学生成绩")
-    public ResponseUtil getAll() {
-        return ResponseUtil.success(xsCjService.getAll());
+    @GetMapping("/getByPcId/{pcId}")
+    @ApiOperation(value = "根据批次id查询所有学生成绩")
+    public ResponseUtil getByPcId(@PathVariable("pcId") Long pcId) {
+        return ResponseUtil.success(xsCjService.getByPcId(pcId));
     }
 
     /**
@@ -116,23 +123,23 @@ public class XsCjAdminController {
     }
 
     /**
-     * 删除课程
+     * 删除学生成绩
      * @param id
      * @return
      * @throws WebException
      */
     @DeleteMapping("/delete/{id}")
-    @ApiOperation(value = "删除课程")
+    @ApiOperation(value = "删除学生成绩")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
-        KcDTO kcDTO = kcService.get(id);
-        if (kcDTO == null) {
+        XsCjDTO xsCjDTO = xsCjService.get(id);
+        if (xsCjDTO == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新删除状态
-        if (!kcService.delete(kcDTO)) {
+        if (!xsCjService.delete(xsCjDTO)) {
             throw new WebException(DELETE_FAIL);
         }
-        return ResponseUtil.success("删除课程成功!");
+        return ResponseUtil.success("删除学生成绩成功!");
     }
 
     /**
@@ -155,7 +162,18 @@ public class XsCjAdminController {
         if (xsCjDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+        Long pcId = xsCjDTO.getPcId();
+        if (pcId == null) {
+            throw new WebException(BATCH_ID_ISEMPTY_ERROR);
+        }
         //判断该学生成绩是否已存在,存在则返回提示消息
+        List<XsCj> xsCjs = xsCjService.getXsCjByPcId(pcId);
+        for (XsCj xsCj : xsCjs) {
+            if (xsCj.getPcId().equals(pcId) && xsCj.getXsId().equals(xsCjDTO.getXsId())) {
+                throw new WebException(BATCH_STUDENT_EXISTS_ERROR);
+            }
+        }
+
     }
 }
 

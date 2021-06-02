@@ -98,6 +98,8 @@ public enum ErrorCodeEnum {
     PROFESSOR_EXISTS_ERROR(-45034, "专家信息已存在,不可新增!"),
     PROFESSOR_PHONE_EXISTS_ERROR(-45035, "专家手机号已存在,不可新增!"),
     ISSUEBATCH_DELETE_ERROR(-45036, "已下发,不可删除!"),
+    BATCH_ID_ISEMPTY_ERROR(-45037, "批次ID不可为空!"),
+    BATCH_STUDENT_EXISTS_ERROR(-45038, "该批次学生成绩已存在!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

@@ -64,13 +64,13 @@ public class SjDTO {
     /**
      * 实践类型
      */
-    @ApiModelProperty(value = "实践类型")
+    @ApiModelProperty(value = "实践类型", required = true)
     private String sjlx;
 
     /**
      * 实践单位
      */
-    @ApiModelProperty(value = "实践单位")
+    @ApiModelProperty(value = "实践单位", required = true)
     private String sjdw;
 
     /**
@@ -80,15 +80,27 @@ public class SjDTO {
     private String bg;
 
     /**
+     * 报告名称
+     */
+    @ApiModelProperty(value = "报告名称")
+    private String bgmc;
+
+    /**
      * 评价表
      */
     @ApiModelProperty(value = "评价表")
     private String pjb;
 
     /**
+     * 评价表名称
+     */
+    @ApiModelProperty(value = "评价表名称")
+    private String pjbmc;
+
+    /**
      * 实践成绩
      */
-    @ApiModelProperty(value = "实践成绩")
+    @ApiModelProperty(value = "实践成绩", required = true)
     private String sjcj;
 
     /**
