@@ -106,6 +106,11 @@ public class JgglController {
 
         checkPequest(jggl);
 
+        Jggl checkJgbm = jgglService.selectByJgbm(jggl.getJgbm());
+        if (checkJgbm != null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_FIND_ERROR);
+        }
+
         if (Objects.equals(jggl.getFjbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
 
             jggl.setCj(jggl.getJgbm());
@@ -310,7 +315,7 @@ public class JgglController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        if (Objects.equals(jggl.getJgbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)){
+        if (Objects.equals(jggl.getJgbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
             throw new WebException(ErrorCodeEnum.SYSTEM_FIND_ERROR);
         }
 
