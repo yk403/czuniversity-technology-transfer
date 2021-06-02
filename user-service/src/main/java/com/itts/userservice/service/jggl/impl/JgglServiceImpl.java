@@ -5,11 +5,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.userservice.common.UserServiceCommon;
-import com.itts.userservice.dto.JgglDTO;
-import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.mapper.jggl.JgglMapper;
+import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.service.jggl.JgglService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.userservice.vo.JgglVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -147,6 +145,7 @@ public class JgglServiceImpl implements JgglService {
      */
     @Override
     public Jggl add(Jggl jggl) {
+
         LoginUser loginUser = threadLocal.get();
         if(loginUser.getUserId()!=null){
             jggl.setCjr(loginUser.getUserId());
@@ -155,6 +154,9 @@ public class JgglServiceImpl implements JgglService {
         Date date = new Date();
         jggl.setCjsj(date);
         jggl.setGxsj(date);
+        if(StringUtils.isBlank(jggl.getFjbm())){
+            jggl.setFjbm("000");
+        }
         jgglMapper.insert(jggl);
         return jggl;
     }
