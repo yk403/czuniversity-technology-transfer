@@ -77,6 +77,12 @@ public class YhListVO implements Serializable {
     private Long jgId;
 
     /**
+     * 机构名称
+     */
+    @ApiModelProperty(value = "机构名称")
+    private String jgmc;
+
+    /**
      * 用户邮箱
      */
     @ApiModelProperty(value = "用户邮箱", required = true)
