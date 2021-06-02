@@ -115,29 +115,30 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
 
     /**
      * 删除学生成绩
-     * @param xsCjDTO
+     * @param xsCj
      * @return
      */
     @Override
-    public boolean delete(XsCjDTO xsCjDTO) {
-        log.info("【人才培养 - 删除学生成绩:{}】",xsCjDTO);
-        xsCjDTO.setSfsc(true);
-        xsCjDTO.setGxr(getUserId());
-        XsCj xsCj = new XsCj();
-        BeanUtils.copyProperties(xsCjDTO,xsCj);
+    public boolean delete(XsCj xsCj) {
+        log.info("【人才培养 - 删除学生成绩:{}】",xsCj);
+        xsCj.setSfsc(true);
+        xsCj.setGxr(getUserId());
         return xsCjService.updateById(xsCj);
     }
 
     /**
-     * 根据id查询学生成绩详情
+     * 根据id查询XsCj对象
      * @param id
      * @return
      */
     @Override
-    public XsCjDTO get(Long id) {
-        log.info("【人才培养 - 删除学生成绩:{}】",id);
-
-        return null;
+    public XsCj get(Long id) {
+        log.info("【人才培养 - 根据id:{}查询XsCj对象】",id);
+        QueryWrapper<XsCj> xsCjQueryWrapper = new QueryWrapper<>();
+        xsCjQueryWrapper.eq("sfsc",false)
+                .eq("id",id);
+        XsCj xsCj = xsCjMapper.selectOne(xsCjQueryWrapper);
+        return xsCj;
     }
 
     /**
@@ -180,6 +181,21 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,xymc);
         }
         return new PageInfo<>(xsCjDTOs);
+    }
+
+    /**
+     * 更新学生成绩
+     * @param xsCjDTO
+     * @return
+     */
+    @Override
+    public boolean update(XsCjDTO xsCjDTO) {
+        log.info("【人才培养 - 更新学生成绩:{}】",xsCjDTO);
+        //学历学位:可修改论文成绩;继续教育:可修改综合成绩
+        XsCj xsCj = new XsCj();
+        xsCjDTO.setGxr(getUserId());
+        BeanUtils.copyProperties(xsCjDTO,xsCj);
+        return xsCjService.updateById(xsCj);
     }
 
     /**

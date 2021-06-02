@@ -99,28 +99,28 @@ public class XsCjAdminController {
     }
 
     /**
-     * 更新课程
+     * 更新学生成绩
      *
-     * @param kcDTO
+     * @param xsCjDTO
      * @return
      * @throws WebException
      */
     @PutMapping("/update")
-    @ApiOperation(value = "更新课程")
-    public ResponseUtil update(@RequestBody KcDTO kcDTO) throws WebException {
-        Long id = kcDTO.getId();
+    @ApiOperation(value = "更新学生成绩")
+    public ResponseUtil update(@RequestBody XsCjDTO xsCjDTO) throws WebException {
+        Long id = xsCjDTO.getId();
         //检查参数是否合法
         if (id == null ) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //检查数据库中是否存在要更新的数据
-        if (kcService.get(id) == null) {
+        if (xsCjService.get(id) == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        if (!kcService.update(kcDTO)) {
+        if (!xsCjService.update(xsCjDTO)) {
             throw new WebException(UPDATE_FAIL);
         }
-        return ResponseUtil.success("更新课程成功!");
+        return ResponseUtil.success("更新学生成绩成功!");
 
     }
 
@@ -133,12 +133,12 @@ public class XsCjAdminController {
     @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "删除学生成绩")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
-        XsCjDTO xsCjDTO = xsCjService.get(id);
-        if (xsCjDTO == null) {
+        XsCj xsCj = xsCjService.get(id);
+        if (xsCj == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新删除状态
-        if (!xsCjService.delete(xsCjDTO)) {
+        if (!xsCjService.delete(xsCj)) {
             throw new WebException(DELETE_FAIL);
         }
         return ResponseUtil.success("删除学生成绩成功!");

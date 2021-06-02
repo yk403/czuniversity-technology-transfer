@@ -33,17 +33,17 @@ public interface XsCjService extends IService<XsCj> {
 
     /**
      * 删除学生成绩
-     * @param xsCjDTO
+     * @param xsCj
      * @return
      */
-    boolean delete(XsCjDTO xsCjDTO);
+    boolean delete(XsCj xsCj);
 
     /**
-     * 根据id查询学生成绩详情
+     * 根据id查询XsCj对象
      * @param id
      * @return
      */
-    XsCjDTO get(Long id);
+    XsCj get(Long id);
 
     /**
      * 根据piId查询XsCj对象
@@ -63,4 +63,11 @@ public interface XsCjService extends IService<XsCj> {
      * @return
      */
     PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String xymc);
+
+    /**
+     * 更新学生成绩
+     * @param xsCjDTO
+     * @return
+     */
+    boolean update(XsCjDTO xsCjDTO);
 }
