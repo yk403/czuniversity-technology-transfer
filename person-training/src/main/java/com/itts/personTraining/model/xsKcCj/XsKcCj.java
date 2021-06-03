@@ -1,4 +1,4 @@
-package com.itts.personTraining.model.sj;
+package com.itts.personTraining.model.xsKcCj;
 
 import com.baomidou.mybatisplus.annotation.*;
 
@@ -9,16 +9,16 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 实践表
+ * 学生课程成绩表
  * </p>
  *
  * @author Austin
- * @since 2021-05-28
+ * @since 2021-06-01
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_sj")
-public class Sj implements Serializable {
+@TableName("t_xs_kc_cj")
+public class XsKcCj implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,74 +29,74 @@ public class Sj implements Serializable {
     private Long id;
 
     /**
-     * 批次ID
+     * 学生成绩ID
      */
-    private Long pcId;
+    private Long xsCjId;
 
     /**
-     * 学生ID
+     * 课程ID
      */
-    private Long xsId;
+    private Long kcId;
 
     /**
-     * 实践类型
+     * 课程类型(1:原专业课程;2:技术转移专业课程)
      */
-    private String sjlx;
+    private Integer kclx;
 
     /**
-     * 实践单位
+     * 课程代码
      */
-    private String sjdw;
+    private String kcdm;
 
     /**
-     * 报告
+     * 课程名称
      */
-    private String bg;
+    private String kcmc;
 
     /**
-     * 报告名称
+     * 是否必修(0:否;1:是)
      */
-    private String bgmc;
+    private Boolean sfbx;
 
     /**
-     * 评价表
+     * 学位课(0:否;1:是)
      */
-    private String pjb;
+    private Boolean xwk;
 
     /**
-     * 评价表名称
+     * 当前学分
      */
-    private String pjbmc;
+    private Integer dqxf;
 
     /**
-     * 实践成绩
+     * 成绩
      */
-    private String sjcj;
+    private String cj;
 
     /**
-     * 集萃奖学金1
+     * 选修学期(1-6)
      */
-    private String jcjxjOne;
+    private String xxxq;
 
     /**
-     * 集萃奖学金2
+     * 成绩属性:(正常,旷考,免考,作弊 重修,缓考,补考, 取消资格)
      */
-    private String jcjxjTwo;
+    private String cjsx;
 
     /**
-     * 基地基金1
+     * 补考成绩
      */
-    private String jdjjOne;
-
-    /**
-     * 基地基金2
-     */
-    private String jdjjTwo;
+    private String bkcj;
 
     /**
      * 是否删除(0:否;1:是)
      */
     private Boolean sfsc;
+
+    /**
+     * 备注
+     */
+    private String bz;
 
     /**
      * 创建时间

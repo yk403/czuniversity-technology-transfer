@@ -1,4 +1,4 @@
-package com.itts.personTraining.model.sj;
+package com.itts.personTraining.model.xsCj;
 
 import com.baomidou.mybatisplus.annotation.*;
 
@@ -9,16 +9,16 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 实践表
+ * 学生成绩表
  * </p>
  *
  * @author Austin
- * @since 2021-05-28
+ * @since 2021-06-01
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_sj")
-public class Sj implements Serializable {
+@TableName("t_xs_cj")
+public class XsCj implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class Sj implements Serializable {
 
     /**
      * 批次ID
-     */
+      */
     private Long pcId;
 
     /**
@@ -39,62 +39,22 @@ public class Sj implements Serializable {
     private Long xsId;
 
     /**
-     * 实践类型
+     * 综合成绩
      */
-    private String sjlx;
+    private String zhcj;
 
     /**
-     * 实践单位
+     * 总学分
      */
-    private String sjdw;
+    private Integer zxf;
 
     /**
-     * 报告
+     * 论文成绩
      */
-    private String bg;
+    private String lwcj;
 
     /**
-     * 报告名称
-     */
-    private String bgmc;
-
-    /**
-     * 评价表
-     */
-    private String pjb;
-
-    /**
-     * 评价表名称
-     */
-    private String pjbmc;
-
-    /**
-     * 实践成绩
-     */
-    private String sjcj;
-
-    /**
-     * 集萃奖学金1
-     */
-    private String jcjxjOne;
-
-    /**
-     * 集萃奖学金2
-     */
-    private String jcjxjTwo;
-
-    /**
-     * 基地基金1
-     */
-    private String jdjjOne;
-
-    /**
-     * 基地基金2
-     */
-    private String jdjjTwo;
-
-    /**
-     * 是否删除(0:否;1:是)
+     * 是否删除（0：否；1：是）
      */
     private Boolean sfsc;
 

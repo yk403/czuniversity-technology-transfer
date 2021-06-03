@@ -181,6 +181,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 }
                 return false;
             }
+            return true;
         }
         return false;
     }
@@ -254,6 +255,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 }
                 return ksXsService.saveBatch(ksXsList);
             }
+            return true;
         }
         return false;
     }
