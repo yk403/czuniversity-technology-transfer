@@ -50,14 +50,18 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
      * 列表 - 有题目选项
      */
     @Override
-    public PageInfo listByDetail(Integer pageNum, Integer pageSize, Long courseId, Integer score, String type) {
+    public PageInfo listByDetail(Integer pageNum, Integer pageSize, String firstCategory, String secondCategory, Long courseId, Integer score, String type) {
 
         PageHelper.startPage(pageNum, pageSize);
 
-        List<Tkzy> tkzys = tkzyMapper.selectList(new QueryWrapper<Tkzy>().eq(courseId != null, "kc_id", courseId)
-                .eq(score != null, "fz", score).eq(StringUtils.isNotBlank(type), "tmlx", type));
+        List<Tkzy> tkzys = tkzyMapper.selectList(new QueryWrapper<Tkzy>()
+                .eq(StringUtils.isNotBlank(firstCategory), "tmyjfl", firstCategory)
+                .eq(StringUtils.isNotBlank(secondCategory), "tmejfl", secondCategory)
+                .eq(courseId != null, "kc_id", courseId)
+                .eq(score != null, "fz", score)
+                .eq(StringUtils.isNotBlank(type), "tmlx", type));
 
-        if(CollectionUtils.isEmpty(tkzys)){
+        if (CollectionUtils.isEmpty(tkzys)) {
             return null;
         }
 
@@ -73,11 +77,11 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
             GetTkzyVO vo = new GetTkzyVO();
             BeanUtils.copyProperties(obj, vo);
 
-            if(MapUtil.isNotEmpty(tmxxMap)){
+            if (MapUtil.isNotEmpty(tmxxMap)) {
 
                 List<Tmxx> thisTmxxs = tmxxMap.get(obj.getId());
 
-                if(!CollectionUtils.isEmpty(thisTmxxs)){
+                if (!CollectionUtils.isEmpty(thisTmxxs)) {
 
                     List<GetTmxxVO> thisTMxxVOs = thisTmxxs.stream().map(tmxxObj -> {
 
