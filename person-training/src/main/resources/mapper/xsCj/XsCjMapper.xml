@@ -72,5 +72,12 @@
         <if test="xymc != null and xymc != ''"> and xy.xymc like concat('%',#{xymc},'%') </if>
         order by txc.cjsj desc
     </select>
+    <select id="selectByPcIdAndXsId" resultType="com.itts.personTraining.model.xsCj.XsCj">
+        select *
+        from t_xs_cj txc
+        where txc.sfsc = false
+        <if test="pcId != null"> and txc.pc_id = #{pcId} </if>
+        <if test="xsId != null"> and txc.xs_id = #{xsId} </if>
+    </select>
 
 </mapper>

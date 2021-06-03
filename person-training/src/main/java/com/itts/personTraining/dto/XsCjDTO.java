@@ -27,7 +27,7 @@ public class XsCjDTO {
     /**
      * 学生ID
      */
-    @ApiModelProperty(value = "学生ID")
+    @ApiModelProperty(value = "学生ID", required = true)
     private Long xsId;
 
 
@@ -40,7 +40,7 @@ public class XsCjDTO {
     /**
      * 批次ID
      */
-    @ApiModelProperty(value = "批次ID")
+    @ApiModelProperty(value = "批次ID", required = true)
     private Long pcId;
 
     /**
