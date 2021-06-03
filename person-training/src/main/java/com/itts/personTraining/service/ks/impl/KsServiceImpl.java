@@ -188,39 +188,40 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
 
     /**
      * 删除考试
-     * @param ksDTO
+     * @param ks
      * @return
      */
     @Override
-    public boolean delete(KsDTO ksDTO) {
-        log.info("【人才培养 - 删除考试:{}】",ksDTO);
+    public boolean delete(Ks ks) {
+        log.info("【人才培养 - 删除考试:{}】",ks);
         Long userId = getUserId();
         //设置删除状态
-        ksDTO.setSfsc(true);
-        ksDTO.setGxr(userId);
-        Ks ks = new Ks();
-        BeanUtils.copyProperties(ksDTO,ks);
-        List<Long> szIds = ksDTO.getSzIds();
-        if (szIds != null && szIds.size() > 0) {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("ks_id",ksDTO.getId());
-            return szKsService.removeByMap(map);
-        }
+        ks.setSfsc(true);
+        ks.setGxr(userId);
+        List<Long> szIds = szKsMapper.getByKsId(ks.getId());
         if (ksService.updateById(ks)) {
-            List<KsExpDTO> ksExpDTOs = ksExpService.get(null, ksDTO.getId());
-            List<KsExp> ksExps = getKsExps(userId, ksExpDTOs);
-            if (ksExpService.updateBatchById(ksExps)) {
-                for (KsExpDTO ksExpDTO : ksExpDTOs) {
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("ks_exp_id",ksExpDTO.getId());
-                    if (szKsExpService.removeByMap(map)) {
-                        continue;
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("ks_id",ks.getId());
+            if (szIds != null && szIds.size() > 0) {
+                //继续教育
+                return szKsService.removeByMap(map);
+            } else {
+                //学历学位
+                List<KsExp> ksExps = ksExpMapper.selectByMap(map);
+                List<KsExp> ksExpList = getKsExps(userId, ksExps);
+                if (ksExpService.updateBatchById(ksExps)) {
+                    for (KsExp ksExp : ksExpList) {
+                        HashMap<String, Object> map1 = new HashMap<>();
+                        map1.put("ks_exp_id",ksExp.getId());
+                        if (szKsExpService.removeByMap(map1)) {
+                            continue;
+                        }
+                        return false;
                     }
-                    return false;
+                    return true;
                 }
-                return true;
+                return false;
             }
-            return false;
         }
         return false;
     }
@@ -295,17 +296,13 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     /**
      * 获取考试扩展集合信息
      * @param userId
-     * @param ksExpDTOS
+     * @param ksExps
      * @return
      */
-    private List<KsExp> getKsExps(Long userId, List<KsExpDTO> ksExpDTOS) {
-        List<KsExp> ksExps = new ArrayList<>();
-        for (KsExpDTO ksExpDTO : ksExpDTOS) {
-            KsExp ksExp = new KsExp();
-            ksExpDTO.setGxr(userId);
-            ksExpDTO.setSfsc(true);
-            BeanUtils.copyProperties(ksExpDTO,ksExp);
-            ksExps.add(ksExp);
+    private List<KsExp> getKsExps(Long userId, List<KsExp> ksExps) {
+        for (KsExp ksExp : ksExps) {
+            ksExp.setGxr(userId);
+            ksExp.setSfsc(true);
         }
         return ksExps;
     }
