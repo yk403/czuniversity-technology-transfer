@@ -24,10 +24,10 @@
         id, ks_id, xxjs_id, kc_id, ksrq, kssj, sfsc, cjsj, cjr, gxsj, gxr, xfsj
     </sql>
     <select id="findByCondition" resultType="com.itts.personTraining.dto.KsExpDTO">
-        select tke.id, tke.ks_id, tke.xxjs_id, tx.jxlmc, tx.jsbh, tke.kc_id, tk.kcdm, tk.kcmc, ksrq, kskssj, ksjssj, tke.sfsc, tke.cjsj, tke.cjr, tke.gxsj, tke.gxr, tke.xfsj
-        from t_ks_exp tke left join t_xxjs tx on (tke.xxjs_id=tx.id) left join t_kc tk on (tke.kc_id=tk.id)
+        select tke.id, tke.ks_id, tke.xxjs_id, tx.jxlmc, tx.jsbh, tke.kc_id, tk.kcdm, tk.kcmc, tke.ksrq, tke.kskssj, tke.ksjssj, tke.sfsc, tke.cjsj, tke.cjr, tke.gxsj, tke.gxr, tke.xfsj
+        from t_ks_exp tke left join t_xxjs tx on (tke.xxjs_id=tx.id) left join t_kc tk on (tke.kc_id=tk.id) left join t_ks ks on (ks.id=tke.ks_id)
         <where>
-            tke.sfsc = false and tx.sfsc = false and tk.sfsc = false
+            tke.sfsc = false and tx.sfsc = false and tk.sfsc = false and ks.sfsc = false
             <if test="id != null">and tke.id = #{id}</if>
             <if test="ksId != null">and tke.ks_id = #{ksId}</if>
         </where>
@@ -39,9 +39,9 @@
     </select>
     <select id="getByCondition" resultType="com.itts.personTraining.dto.KsExpDTO">
         select tke.id, tke.ks_id, tke.kc_id, tk.kcdm, tk.kcmc, tke.sfsc, tke.cjsj, tke.cjr, tke.gxsj, tke.gxr, tke.xfsj
-        from t_ks_exp tke left join t_kc tk on (tke.kc_id=tk.id)
+        from t_ks_exp tke left join t_kc tk on (tke.kc_id=tk.id) left join t_ks ks on (ks.id=tke.ks_id)
         <where>
-            tke.sfsc = false and tk.sfsc = false
+            tke.sfsc = false and tk.sfsc = false and ks.sfsc = false
             <if test="id != null">and tke.id = #{id}</if>
             <if test="ksId != null">and tke.ks_id = #{ksId}</if>
         </where>
