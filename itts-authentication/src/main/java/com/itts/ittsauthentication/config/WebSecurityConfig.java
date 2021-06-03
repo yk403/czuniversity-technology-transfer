@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/JsLy/getById","/api/v1/JsLb/page","/api/v1/JsLb/getById/**","/api/v1/File/upload","/api/v1/JsBm/page/usr",
             "/api/v1/JsHd/page","/api/v1/JsCjRc/page","/api/v1/JsLcKz/page","/api/v1/LyBm/list","/api/v1/LyHd/list",
             "/api/v1/LyHz/list","/api/v1/LyLy/list","/api/v1/LyZp/list","/api/v1/LyZw/list","/api/v1/JsXq/PageByTJsFb",
-            "/api/v1/JsHd/pageFront1","/api/v1/sjzd/list/**"
+            "/api/v1/JsHd/pageFront1","/api/v1/sjzd/list/**","/admin/api/v1/sjzd/list/**"
 
 
     };
