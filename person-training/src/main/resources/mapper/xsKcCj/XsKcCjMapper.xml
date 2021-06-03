@@ -27,7 +27,21 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, xs_cj_id, kc_id, kclx, kcdm, kcmc, sfbx, xwk, dqxf, cj, xxxq, cjsx, bkcj, sfsc, bz, cjsj, cjr, gxsj, gxr
+        id, xs_cj_id, kc_id, txkc.kclx, kcdm, kcmc, sfbx, xwk, dqxf, cj, xxxq, cjsx, bkcj, sfsc, bz, cjsj, cjr, gxsj, gxr
     </sql>
+    <select id="selectByXsCjId" resultType="com.itts.personTraining.dto.XsKcCjDTO">
+        select txkc.id, xs_cj_id, kc_id, txkc.kclx, kc.kcxs, kc.kcxf, kc.kcdm, kc.kcmc, kc.sfbx, xwk, dqxf, cj, xxxq, cjsx, bkcj, txkc.bz, txkc.cjsj, txkc.cjr, txkc.gxsj, txkc.gxr
+        from t_xs_kc_cj txkc left join t_kc kc on (txkc.kc_id=kc.id) left join t_xs_cj txc on (txc.id=txkc.xs_cj_id)
+        where txkc.sfsc = false and kc.sfsc = false and txc.sfsc = false
+        <if test="xsCjId != null"> and txkc.xs_cj_id = #{xsCjId} </if>
+        <if test="kclx != null"> and txkc.kclx = #{kclx} </if>
+    </select>
+    <select id="selectYzyByXsCjId" resultType="com.itts.personTraining.dto.XsKcCjDTO">
+        select *
+        from t_xs_kc_cj txkc left join t_xs_cj txc on (txc.id=txkc.xs_cj_id)
+        where txkc.sfsc = false and txc.sfsc = false
+        <if test="xsCjId != null"> and txkc.xs_cj_id = #{xsCjId} </if>
+        <if test="kclx != null"> and txkc.kclx = #{kclx} </if>
+    </select>
 
 </mapper>
