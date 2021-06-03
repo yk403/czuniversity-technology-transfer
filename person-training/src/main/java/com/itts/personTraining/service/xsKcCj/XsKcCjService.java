@@ -23,4 +23,11 @@ public interface XsKcCjService extends IService<XsKcCj> {
      * @return
      */
     List<XsKcCjDTO> getByXsCjId(Long xsCjId,Integer kclx);
+
+    /**
+     * 更新学生课程成绩
+     * @param xsKcCjDTOs
+     * @return
+     */
+    boolean update(List<XsKcCjDTO> xsKcCjDTOs);
 }

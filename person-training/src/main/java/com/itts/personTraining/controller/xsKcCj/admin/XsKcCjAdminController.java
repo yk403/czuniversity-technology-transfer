@@ -5,6 +5,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.XsCjDTO;
+import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.service.xsKcCj.XsKcCjService;
@@ -52,6 +53,19 @@ public class XsKcCjAdminController {
         checkRequest(kclx);
         return ResponseUtil.success(xsKcCjService.getByXsCjId(xsCjId,kclx));
     }
+
+    /**
+     * 更新学生课程成绩(原专业不可修改)
+     *
+     * @param xsKcCjDTOs
+     * @return
+     */
+    @PutMapping("/update")
+    @ApiOperation(value = "更新学生课程成绩")
+    public ResponseUtil update(@RequestBody List<XsKcCjDTO> xsKcCjDTOs) {
+        return ResponseUtil.success(xsKcCjService.update(xsKcCjDTOs));
+    }
+
     /**
      * 校验参数
      */
