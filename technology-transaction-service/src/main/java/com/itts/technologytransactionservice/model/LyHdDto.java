@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -105,5 +106,24 @@ public class LyHdDto implements Serializable {
      * 展品列表
      */
     private String zplb;
-
+    /**
+     * 咨询电话
+     */
+    private String zxdh;
+    /**
+     * 活动规则
+     */
+    private String hdgz;
+    /**
+     * 活动轮播图
+     */
+    private String hdlbt;
+    /**
+     * 活动轮播图列表
+     */
+    private List<Fjzy> fjzyList;
+    /**
+     * 活动详情
+     */
+    private String hdxq;
 }

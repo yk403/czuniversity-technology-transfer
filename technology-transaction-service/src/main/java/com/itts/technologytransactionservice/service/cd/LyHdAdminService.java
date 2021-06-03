@@ -3,6 +3,7 @@ package com.itts.technologytransactionservice.service.cd;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.technologytransactionservice.model.LyHd;
+import com.itts.technologytransactionservice.model.LyHdDto;
 
 import java.util.Map;
 
@@ -17,6 +18,6 @@ import java.util.Map;
 public interface LyHdAdminService extends IService<LyHd> {
     PageInfo findLyHdBack(Map<String, Object> params);
 
-    Boolean saveHd(LyHd lyHd);
+    Boolean saveHd(LyHdDto lyHdDto);
     Long getUserId();
 }
