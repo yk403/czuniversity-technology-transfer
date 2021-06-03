@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.mapper;
 
 import com.itts.technologytransactionservice.model.LyBm;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itts.technologytransactionservice.model.LyBmDto;
 import com.itts.technologytransactionservice.model.TJsXq;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,7 +24,7 @@ public interface LyBmMapper extends BaseMapper<LyBm> {
      * @param map
      * @return
      */
-    List<LyBm> findLyBmFront(@Param("map") Map map);
+    List<LyBmDto> findLyBmFront(@Param("map") Map map);
     /**
      * 分页条件查询需求(后台)
      *

@@ -7,6 +7,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.LyBm;
 import com.itts.technologytransactionservice.mapper.LyBmMapper;
+import com.itts.technologytransactionservice.model.LyBmDto;
 import com.itts.technologytransactionservice.model.TJsXq;
 import com.itts.technologytransactionservice.service.LyBmService;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -43,7 +44,7 @@ public class LyBmServiceImpl extends ServiceImpl<LyBmMapper, LyBm> implements Ly
        log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyBm> list = lyBmMapper.findLyBmFront(query);
+        List<LyBmDto> list = lyBmMapper.findLyBmFront(query);
         return new PageInfo<>(list);
     }
 

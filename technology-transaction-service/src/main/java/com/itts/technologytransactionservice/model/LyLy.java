@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_ly_ly")
-public class LyLy implements Serializable {
+public class  LyLy implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -68,6 +68,20 @@ public class LyLy implements Serializable {
      * 删除状态(0未删除;1已删除)
      */
     private Boolean isDelete;
-
-
+    /**
+     * 活动id
+     */
+    private Long hdId;
+    /**
+     * 路演标题
+     */
+    private String lybt;
+    /**
+     * 路演简介
+     */
+    private String lyjj;
+    /**
+     * 直播地址
+     */
+    private String zbdz;
 }
