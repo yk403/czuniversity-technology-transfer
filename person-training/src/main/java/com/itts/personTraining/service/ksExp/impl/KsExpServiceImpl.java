@@ -3,6 +3,7 @@ package com.itts.personTraining.service.ksExp.impl;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KsExpDTO;
+import com.itts.personTraining.enums.EduTypeEnum;
 import com.itts.personTraining.mapper.szKsExp.SzKsExpMapper;
 import com.itts.personTraining.model.ksExp.KsExp;
 import com.itts.personTraining.mapper.ksExp.KsExpMapper;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
 
 /**
  * <p>
@@ -98,12 +100,12 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
      * @return
      */
     @Override
-    public boolean update(List<KsExpDTO> ksExpDTOs,Long id) {
-        log.info("【人才培养 - 更新考试扩展信息:{},id:{},考试id:{}】",ksExpDTOs,id);
-        KsExp ksExp = ksExpMapper.selectById(id);
-        if (ksExp.getXxjsId() != null) {
+    public boolean update(List<KsExpDTO> ksExpDTOs,String jylx) {
+        log.info("【人才培养 - 更新考试扩展信息:{},id:{},教育类型:{}】",ksExpDTOs,jylx);
+        if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
             for (KsExpDTO ksExpDTO : ksExpDTOs) {
                 //学位学历教育
+                KsExp ksExp = new KsExp();
                 ksExpDTO.setGxr(getUserId());
                 BeanUtils.copyProperties(ksExpDTO, ksExp);
                 if (ksExpService.updateById(ksExp)) {

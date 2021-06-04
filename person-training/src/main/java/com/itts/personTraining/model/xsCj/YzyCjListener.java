@@ -9,34 +9,31 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.personTraining.dto.JxjyCjDTO;
 import com.itts.personTraining.dto.StuDTO;
+import com.itts.personTraining.dto.YzyCjDTO;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.service.xs.XsService;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import java.util.List;
-
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
-import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
 
 /**
  * @Author: Austin
- * @Data: 2021/6/3
+ * @Data: 2021/6/4
  * @Version: 1.0.0
- * @Description: 继续教育成绩解析
+ * @Description: 原专业成绩解析
  */
 @Slf4j
 @Data
 @Component
-public class JxjyCjListener extends AnalysisEventListener<JxjyCjDTO> {
+public class YzyCjListener extends AnalysisEventListener<YzyCjDTO> {
     private StringBuilder result = new StringBuilder();
     private Integer count = 0;
     private String token;
@@ -50,38 +47,21 @@ public class JxjyCjListener extends AnalysisEventListener<JxjyCjDTO> {
     @Resource
     private XsCjMapper xsCjMapper;
 
-    public static JxjyCjListener jxjyCjListener;
+    public static YzyCjListener YzyCjListener;
 
     @PostConstruct
     public void init() {
-        jxjyCjListener = this;
+        YzyCjListener = this;
     }
 
     @SneakyThrows
     @Override
-    public void invoke(JxjyCjDTO data, AnalysisContext analysisContext) {
+    public void invoke(YzyCjDTO data, AnalysisContext analysisContext) {
         ReadRowHolder rrh = analysisContext.readRowHolder();
         int rowIndex = rrh.getRowIndex() + 1;
         log.info("解析第" + rowIndex + "行数据:{}", JSON.toJSONString(data));
-        //判断是否是继续教育
-        if (!ADULT_EDUCATION.getKey().equals(jylx)) {
-            throw new WebException(EDU_TYPE_ERROR);
-        }
-        XsCj xsCj = new XsCj();
-        StuDTO stuDTO = xsService.selectByCondition(data.getXh(), null, null);
-        if (stuDTO == null) {
-            throw new WebException(STUDENT_MSG_NOT_EXISTS_ERROR);
-        }
-        List<StuDTO> stuDTOList = pcXsMapper.selectStuByPcId(pcId);
-        if (stuDTOList.contains(data.getXh())) {
-            //综合成绩
-            if (!StringUtils.isBlank(data.getZhcj())) {
-                xsCj.setZhcj(data.getZhcj());
-                xsCj.setPcId(pcId);
-                xsCj.setXsId(stuDTO.getId());
-                save(xsCj);
-            }
-        }
+        //原专业
+
     }
 
     @Override

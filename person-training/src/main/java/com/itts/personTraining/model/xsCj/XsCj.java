@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -37,6 +39,11 @@ public class XsCj implements Serializable {
      * 学生ID
      */
     private Long xsId;
+
+    /**
+     * 类型(1:学历学位教育;2:继续教育)
+     */
+    private Integer type;
 
     /**
      * 综合成绩

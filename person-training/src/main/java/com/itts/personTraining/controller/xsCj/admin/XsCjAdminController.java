@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
@@ -56,6 +57,9 @@ public class XsCjAdminController {
                                    @RequestParam(value = "xh", required = false) String xh,
                                    @RequestParam(value = "xm", required = false) String xm,
                                    @RequestParam(value = "xymc", required = false) String xymc) {
+        if (pcId == null) {
+            return ResponseUtil.success(Collections.EMPTY_LIST);
+        }
         return ResponseUtil.success(xsCjService.findByPage(pageNum, pageSize, pcId, xh, xm, xymc));
     }
 

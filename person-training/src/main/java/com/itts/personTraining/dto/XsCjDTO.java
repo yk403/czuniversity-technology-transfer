@@ -50,6 +50,12 @@ public class XsCjDTO {
     private String pch;
 
     /**
+     * 类型(1:学历学位教育;2:继续教育)
+     */
+    @ApiModelProperty(value = "类型(1:学历学位教育;2:继续教育)")
+    private Integer type;
+
+    /**
      * 姓名
      */
     @ApiModelProperty(value = "姓名")
