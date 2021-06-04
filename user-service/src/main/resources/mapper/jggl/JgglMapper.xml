@@ -4,35 +4,44 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.userservice.model.jggl.Jggl">
-        <id column="id" property="id" />
-        <result column="jgmc" property="jgmc" />
-        <result column="jgbm" property="jgbm" />
-        <result column="jglbbm" property="jglbbm" />
-        <result column="jglb" property="jglb" />
-        <result column="fjbm" property="fjbm" />
-        <result column="cj" property="cj" />
-        <result column="sfsc" property="sfsc" />
-        <result column="cjsj" property="cjsj" />
-        <result column="cjr" property="cjr" />
-        <result column="gxsj" property="gxsj" />
-        <result column="gxr" property="gxr" />
+        <id column="id" property="id"/>
+        <result column="jgmc" property="jgmc"/>
+        <result column="jgbm" property="jgbm"/>
+        <result column="jglbbm" property="jglbbm"/>
+        <result column="jglb" property="jglb"/>
+        <result column="fjbm" property="fjbm"/>
+        <result column="fjmc" property="fjmc"/>
+        <result column="cj" property="cj"/>
+        <result column="sfsc" property="sfsc"/>
+        <result column="cjsj" property="cjsj"/>
+        <result column="cjr" property="cjr"/>
+        <result column="gxsj" property="gxsj"/>
+        <result column="gxr" property="gxr"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, jgmc, jgbm, jglbbm, jglb, fjbm, cj, sfsc, cjsj, cjr, gxsj, gxr
+        id
+        , jgmc, jgbm, jglbbm, jglb, fjbm, fjmc, cj, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="selectByName" resultMap="BaseResultMap">
-        select * from t_jggl where jgmc = #{jgmc} and sfsc =false
+        select *
+        from t_jggl
+        where jgmc = #{jgmc}
+          and sfsc = false
     </select>
     <select id="selectByCode" resultMap="BaseResultMap">
-        select * from t_jggl where jgbm= #{jgbm} and sfsc = false
+        select *
+        from t_jggl
+        where jgbm = #{jgbm}
+          and sfsc = false
     </select>
     <select id="selectByString" resultMap="BaseResultMap">
-        select * from t_jggl
-        where (jgmc LIKE CONCAT('%', #{string}, '%')  or jgbm  LIKE CONCAT('%', #{string}, '%'))
-        and sfsc =false
+        select *
+        from t_jggl
+        where (jgmc LIKE CONCAT('%', #{string}, '%') or jgbm LIKE CONCAT('%', #{string}, '%'))
+          and sfsc = false
     </select>
 
     <select id="selectJggl" resultType="com.itts.userservice.vo.JgglVO">
@@ -44,7 +53,8 @@
     <select id="selectStringJggl" resultType="com.itts.userservice.vo.JgglVO">
         select *
         from t_jggl
-        where jgmc like concat('%',#{name},'%') and sfsc = false
+        where jgmc like concat('%', #{name}, '%')
+          and sfsc = false
     </select>
 
 

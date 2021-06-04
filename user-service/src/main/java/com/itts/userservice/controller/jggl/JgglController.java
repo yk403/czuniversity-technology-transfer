@@ -125,6 +125,7 @@ public class JgglController {
             String jgbm = jggl.getJgbm();
             cj = cj + "-" + jgbm;
             jggl.setCj(cj);
+            jggl.setFjmc(jggl1.getJgmc());
         }
 
         jggl.setGxsj(new Date());
@@ -207,12 +208,13 @@ public class JgglController {
             return ResponseUtil.success(jggl);
         }
         //机构移入上级或平级无关的机构
-        if (fjbm.equals("000")) {
+        if (fjbm.equals(UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
             cj = jggl.getJgbm();
             fatherGroup = jggl;
         } else {
             fatherGroup = jgglService.selectByJgbm(fjbm);
             cj = fatherGroup.getCj();
+            jggl.setFjmc(fatherGroup.getJgmc());
         }
 
         if (jggl.getFjbm().equals(jggl.getJgbm())) {
@@ -223,9 +225,7 @@ public class JgglController {
 
         if (!Objects.equals(fjbm, UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
 
-
             //生成层级
-
             if (list != null) {
 
                 list.forEach(Jggl -> {
@@ -237,10 +237,8 @@ public class JgglController {
                 });
             }
 
-
             cj = cj + "-" + jggl.getJgbm();
             jggl.setCj(cj);
-
 
         } else {
             if (list != null) {
