@@ -10,7 +10,7 @@
         <result column="xb" property="xb" />
         <result column="sr" property="sr" />
         <result column="mz" property="mz" />
-        <result column="dp" property="dp" />
+        <result column="zzmm" property="zzmm" />
         <result column="xl" property="xl" />
         <result column="lx" property="lx" />
         <result column="zyjszw" property="zyjszw" />
@@ -38,7 +38,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, xm, sfzh, xb, sr, mz, dp, xl, lx, zyjszw, dw, dz, dh, zjh, sshy, csxk, zcfx, yjcg, dzyj, yjly, zscq, zjxm, lw, zlh, bz, sfsc, cjsj, cjr, gxsj, gxr
+        id, xm, sfzh, xb, sr, mz, zzmm, xl, lx, zyjszw, dw, dz, dh, zjh, sshy, csxk, zcfx, yjcg, dzyj, yjly, zscq, zjxm, lw, zlh, bz, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

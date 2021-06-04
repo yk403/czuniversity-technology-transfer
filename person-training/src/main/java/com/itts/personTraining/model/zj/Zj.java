@@ -63,10 +63,10 @@ public class Zj implements Serializable {
     private String mz;
 
     /**
-     * 党派
+     * 政治面貌(数据字典获取)
      */
-    @ApiModelProperty(value = "党派")
-    private String dp;
+    @ApiModelProperty(value = "政治面貌(数据字典获取)")
+    private String zzmm;
 
     /**
      * 学历
