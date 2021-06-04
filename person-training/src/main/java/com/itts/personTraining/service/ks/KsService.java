@@ -51,10 +51,10 @@ public interface KsService extends IService<Ks> {
 
     /**
      * 删除考试
-     * @param ksDTO
+     * @param ks
      * @return
      */
-    boolean delete(KsDTO ksDTO);
+    boolean delete(Ks ks);
 
     /**
      * 考试批量下发
