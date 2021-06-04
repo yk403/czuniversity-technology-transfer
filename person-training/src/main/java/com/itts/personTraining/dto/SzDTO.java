@@ -25,7 +25,8 @@ import java.util.Date;
 @ColumnWidth(20)
 public class SzDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -2091097008684577812L;
+
 
     /**
      * 导师编号

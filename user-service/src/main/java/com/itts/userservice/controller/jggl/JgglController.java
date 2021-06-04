@@ -106,6 +106,11 @@ public class JgglController {
 
         checkPequest(jggl);
 
+        Jggl checkJgbm = jgglService.selectByJgbm(jggl.getJgbm());
+        if (checkJgbm != null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_FIND_ERROR);
+        }
+
         if (Objects.equals(jggl.getFjbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
 
             jggl.setCj(jggl.getJgbm());
@@ -120,13 +125,14 @@ public class JgglController {
             String jgbm = jggl.getJgbm();
             cj = cj + "-" + jgbm;
             jggl.setCj(cj);
+            jggl.setFjmc(jggl1.getJgmc());
         }
 
         jggl.setGxsj(new Date());
         jggl.setCjsj(new Date());
 
         LoginUser loginUser = threadLocal.get();
-        if(loginUser.getUserId()!=null){
+        if (loginUser.getUserId() != null) {
             jggl.setCjr(loginUser.getUserId());
             jggl.setGxr(loginUser.getUserId());
         }
@@ -202,12 +208,13 @@ public class JgglController {
             return ResponseUtil.success(jggl);
         }
         //机构移入上级或平级无关的机构
-        if (fjbm.equals("000")) {
+        if (fjbm.equals(UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
             cj = jggl.getJgbm();
             fatherGroup = jggl;
         } else {
             fatherGroup = jgglService.selectByJgbm(fjbm);
             cj = fatherGroup.getCj();
+            jggl.setFjmc(fatherGroup.getJgmc());
         }
 
         if (jggl.getFjbm().equals(jggl.getJgbm())) {
@@ -218,9 +225,7 @@ public class JgglController {
 
         if (!Objects.equals(fjbm, UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
 
-
             //生成层级
-
             if (list != null) {
 
                 list.forEach(Jggl -> {
@@ -232,10 +237,8 @@ public class JgglController {
                 });
             }
 
-
             cj = cj + "-" + jggl.getJgbm();
             jggl.setCj(cj);
-
 
         } else {
             if (list != null) {
@@ -308,6 +311,10 @@ public class JgglController {
         //如果参数为空，抛出异常
         if (jggl == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (Objects.equals(jggl.getJgbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_FIND_ERROR);
         }
 
         if (jggl.getFjbm() == null) {

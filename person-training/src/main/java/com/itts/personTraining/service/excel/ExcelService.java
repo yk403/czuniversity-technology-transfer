@@ -9,4 +9,8 @@ public interface ExcelService {
     ResponseUtil importXs(MultipartFile file, Integer headRowNumber, Long jgId, Pc pc, String token);
 
     ResponseUtil importSz(MultipartFile file, Integer headRowNumber, Long jgId, String token);
+
+    ResponseUtil importXlXwCj(MultipartFile file, Integer headRowNumber, Long pcId, String jylx, String token);
+
+    ResponseUtil importJxjyCj(MultipartFile file, Integer headRowNumber, Long pcId, String jylx, String token);
 }

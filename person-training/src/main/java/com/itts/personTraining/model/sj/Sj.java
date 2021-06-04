@@ -29,6 +29,11 @@ public class Sj implements Serializable {
     private Long id;
 
     /**
+     * 批次ID
+     */
+    private Long pcId;
+
+    /**
      * 学生ID
      */
     private Long xsId;
@@ -49,9 +54,19 @@ public class Sj implements Serializable {
     private String bg;
 
     /**
+     * 报告名称
+     */
+    private String bgmc;
+
+    /**
      * 评价表
      */
     private String pjb;
+
+    /**
+     * 评价表名称
+     */
+    private String pjbmc;
 
     /**
      * 实践成绩

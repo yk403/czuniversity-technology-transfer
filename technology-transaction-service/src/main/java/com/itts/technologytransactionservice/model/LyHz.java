@@ -68,6 +68,9 @@ public class LyHz implements Serializable {
      * 会展关联活动id
      */
     private Long hdId;
-
+    /*
+    会展名称
+     */
+    private String hzmc;
 
 }

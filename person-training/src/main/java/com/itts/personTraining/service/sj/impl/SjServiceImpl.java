@@ -50,10 +50,10 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
      * @return
      */
     @Override
-    public PageInfo<SjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String sjlx) {
-        log.info("【人才培养 - 根据pcId:{},实践类型:{}获取实践列表】",pcId,sjlx);
+    public PageInfo<SjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String sjlx, String name) {
+        log.info("【人才培养 - 根据pcId:{},实践类型:{},姓名/学号:{}获取实践列表】",pcId,sjlx,name);
         PageHelper.startPage(pageNum, pageSize);
-        List<SjDTO> sjDTOs = sjMapper.getByCondition(pcId, sjlx);
+        List<SjDTO> sjDTOs = sjMapper.getByCondition(pcId, sjlx, name);
         return new PageInfo<>(sjDTOs);
     }
 
@@ -79,7 +79,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     @Override
     public List<SjDTO> getAll() {
         log.info("【人才培养 - 查询所有实践】");
-        List<SjDTO> sjDTOs = sjMapper.getByCondition(null,null);
+        List<SjDTO> sjDTOs = sjMapper.getByCondition(null,null,null);
         return sjDTOs;
     }
 

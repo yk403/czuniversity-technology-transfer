@@ -92,5 +92,36 @@ public class LyHd implements Serializable {
      * 活动发布状态(0:未发布 1:已发布)
      */
     private Integer hdfbzt;
-
+    /*
+    活动内容
+     */
+    private String hdnr;
+    /**
+     *路演企业
+     */
+    private String lyqy;
+    /**
+     * 参展企业
+     */
+    private String czqy;
+    /**
+     * 展品列表
+     */
+    private String zplb;
+    /**
+     * 咨询电话
+     */
+    private String zxdh;
+    /**
+     * 活动规则
+     */
+    private String hdgz;
+    /**
+     * 活动轮播图
+     */
+    private String hdlbt;
+    /**
+     * 活动详情
+     */
+    private String hdxq;
 }

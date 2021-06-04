@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyBmMapper">
 
-    <select id="findLyBmFront" resultType="com.itts.technologytransactionservice.model.LyBm">
-        select bm.id as id,cjsj,gxsj,dwmc,fr,dz,lxdh,bmly,yyzz,frsfz,lxr,hd_id,shzt,user_id
-        from t_ly_bm bm
+    <select id="findLyBmFront" resultType="com.itts.technologytransactionservice.model.LyBmDto">
+        select bm.id as id,cjsj,gxsj,dwmc,fr,dz,lxdh,bmly,yyzz,frsfz,lxr,hd_id,shzt,user_id,hd.hdmc as hdmc
+        from t_ly_bm bm left join t_ly_hd hd on (bm.hd_id = hd.id)
         <where>
             <!--后台能查询0或者1的数据 -->
             bm.is_delete != 2

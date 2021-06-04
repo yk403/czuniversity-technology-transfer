@@ -104,11 +104,13 @@ public class TkzyController {
     @GetMapping("/list/by/details/")
     public ResponseUtil listByDetails(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                       @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                      @ApiParam(value = "一级分类") @RequestParam(value = "firstCategory", required = false) String firstCategory,
+                                      @ApiParam(value = "二级分类") @RequestParam(value = "secondCategory", required = false) String secondCategory,
                                       @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
                                       @ApiParam(value = "分值") @RequestParam(value = "score", required = false) Integer score,
                                       @ApiParam(value = "题目类型") @RequestParam(value = "type", required = false) String type) {
 
-        PageInfo tkzys = tkzyService.listByDetail(pageNum, pageSize, courseId, score, type);
+        PageInfo tkzys = tkzyService.listByDetail(pageNum, pageSize, firstCategory, secondCategory, courseId, score, type);
         return ResponseUtil.success(tkzys);
     }
 

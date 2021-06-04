@@ -169,34 +169,38 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 				Map<String,Object>querymap=new HashMap<String,Object>();
 				querymap.put("jshdId",tJsHd.getId());
 				List<TJsCg> cgList = jsCgMapper.list(querymap);
-				List<TJsCg> cgListUpdate =new ArrayList<TJsCg>();
-				List<Integer> cgids =new ArrayList<Integer>();
-				for (TJsCg item:cgList) {
-					item.setAuctionStatus(0);
-					item.setSoft(null);
-					item.setJshdId(null);
-					//将要更新的成果实体类和成果id缓存保存到list和数组中，集中进行sql操作
-					cgListUpdate.add(item);
-					cgids.add(item.getId());
+				if(cgList.size()>0){
+					List<TJsCg> cgListUpdate =new ArrayList<TJsCg>();
+					List<Integer> cgids =new ArrayList<Integer>();
+					for (TJsCg item:cgList) {
+						item.setAuctionStatus(0);
+						item.setSoft(null);
+						item.setJshdId(null);
+						//将要更新的成果实体类和成果id缓存保存到list和数组中，集中进行sql操作
+						cgListUpdate.add(item);
+						cgids.add(item.getId());
+					}
+					jsLcKzMapper.deleteLcKzByCgIds(cgids);
+					jsCgAdminService.updateBatchById(cgListUpdate);
 				}
-				jsLcKzMapper.deleteLcKzByCgIds(cgids);
-				jsCgAdminService.updateBatchById(cgListUpdate);
 			}else if(tJsHd.getHdlx() == 1){
 				Map<String,Object>querymap=new HashMap<String,Object>();
 				querymap.put("jshdId",tJsHd.getId());
 				List<TJsXq> xqList = jsXqMapper.list(querymap);
-				List<TJsXq> xqListUpdate =new ArrayList<TJsXq>();
-				List<Integer> xqids =new ArrayList<Integer>();
-				for (TJsXq item:xqList) {
-					item.setAuctionStatus(0);
-					item.setSoft(null);
-					item.setJshdId(null);
-					//将要更新的需求实体类和成果id缓存保存到list和数组中，集中进行sql操作
-					xqListUpdate.add(item);
-					xqids.add(item.getId());
+				if(xqList.size()>0){
+					List<TJsXq> xqListUpdate =new ArrayList<TJsXq>();
+					List<Integer> xqids =new ArrayList<Integer>();
+					for (TJsXq item:xqList) {
+						item.setAuctionStatus(0);
+						item.setSoft(null);
+						item.setJshdId(null);
+						//将要更新的需求实体类和成果id缓存保存到list和数组中，集中进行sql操作
+						xqListUpdate.add(item);
+						xqids.add(item.getId());
+					}
+					jsLcKzMapper.deleteLcKzByXqIds(xqids);
+					jsXqAdminService.updateBatchById(xqListUpdate);
 				}
-				jsLcKzMapper.deleteLcKzByXqIds(xqids);
-				jsXqAdminService.updateBatchById(xqListUpdate);
 			}
 		}else{
 			throw new ServiceException("活动已开始过，无法删除");

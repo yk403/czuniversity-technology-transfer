@@ -34,4 +34,6 @@ public interface KsExpMapper extends BaseMapper<KsExp> {
      * @return
      */
     List<KsExpDTO> getByCondition(@Param("id") Long id, @Param("ksId") Long ksId);
+
+
 }

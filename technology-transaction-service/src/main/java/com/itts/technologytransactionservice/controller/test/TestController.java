@@ -27,7 +27,7 @@ public class TestController {
                                   @RequestParam String model, @RequestParam String systemType,
                                   @RequestParam String diction, HttpServletRequest request){
 
-        ResponseUtil result = sjzdService.getList(pageNum, pageSize, model, systemType, diction, request.getHeader("token"));
+        ResponseUtil result = sjzdService.getList(pageNum, pageSize, model, systemType, diction);
 
         return result;
     }

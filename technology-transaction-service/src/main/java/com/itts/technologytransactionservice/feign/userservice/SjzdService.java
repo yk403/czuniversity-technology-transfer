@@ -24,7 +24,6 @@ public interface SjzdService {
                          @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                          @ApiParam(value = "所属模块") @RequestParam(value = "model", required = false) String model,
                          @ApiParam(value = "所属系统") @RequestParam(value = "systemType", required = false) String systemType,
-                         @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary,
-                         @RequestHeader(name = "token") String token);
+                         @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary);
 
 }

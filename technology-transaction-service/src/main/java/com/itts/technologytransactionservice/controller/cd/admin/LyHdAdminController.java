@@ -7,6 +7,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.LyHd;
+import com.itts.technologytransactionservice.model.LyHdDto;
 import com.itts.technologytransactionservice.service.LyHdService;
 import com.itts.technologytransactionservice.service.cd.LyHdAdminService;
 import io.swagger.annotations.Api;
@@ -58,32 +59,32 @@ public class LyHdAdminController {
 
     @PostMapping("/save")
     @ApiOperation(value ="新增")
-    public ResponseUtil save(@RequestBody LyHd lyHd) {
-        if (!lyHdAdminService.saveHd(lyHd)) {
+    public ResponseUtil save(@RequestBody LyHdDto lyHdDto) {
+        if (!lyHdAdminService.saveHd(lyHdDto)) {
             throw new WebException(INSERT_FAIL);
         }
         return ResponseUtil.success("报名成功");
     }
 /*    *
      * 更新课程
-     *
+                *
      * @param lyBm
-     * @return
+                * @return
      * @throws WebException*/
 
-    @PutMapping("/update")
-    @ApiOperation(value = "更新报名")
-    public ResponseUtil update(@RequestBody LyHd lyHd) throws WebException {
-        Long id = lyHd.getId();
-        //检查参数是否合法
-        if (id == null ) {
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        //检查数据库中是否存在要更新的数据
-        if (lyHdAdminService.getById(id) == null) {
-            throw new WebException(SYSTEM_NOT_FIND_ERROR);
-        }
-        //更新数据
+        @PutMapping("/update")
+        @ApiOperation(value = "更新报名")
+        public ResponseUtil update(@RequestBody LyHd lyHd) throws WebException {
+            Long id = lyHd.getId();
+            //检查参数是否合法
+            if (id == null ) {
+                throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            }
+            //检查数据库中是否存在要更新的数据
+            if (lyHdAdminService.getById(id) == null) {
+                throw new WebException(SYSTEM_NOT_FIND_ERROR);
+            }
+            //更新数据
         if (!lyHdAdminService.updateById(lyHd)) {
             throw new WebException(UPDATE_FAIL);
         }

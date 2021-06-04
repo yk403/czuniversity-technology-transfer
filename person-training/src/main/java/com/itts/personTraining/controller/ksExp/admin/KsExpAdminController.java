@@ -16,6 +16,8 @@ import java.util.List;
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
+import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
+import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
 
 /**
  * <p>
@@ -62,24 +64,21 @@ public class KsExpAdminController {
 
     /**
      * 更新考试扩展信息
-     * @param ksExpDTO
+     * @param ksExpDTOs
      * @return
      * @throws WebException
      */
     @PutMapping("/update")
     @ApiOperation(value = "更新考试扩展信息")
-    public ResponseUtil update(@RequestBody KsExpDTO ksExpDTO) throws WebException {
-        Long id = ksExpDTO.getId();
-        //检查参数是否合法
-        if (id == null ) {
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+    public ResponseUtil update(@RequestBody List<KsExpDTO> ksExpDTOs) throws WebException {
+        String jylx = ksExpDTOs.get(0).getJylx();
+        if (jylx == null) {
+            throw new WebException(TEACH_TYPE_ISEMPTY_ERROR);
         }
-        //检查数据库中是否存在要更新的数据
-        List<KsExpDTO> ksExpDTOS = ksExpService.get( id,null);
-        if (ksExpDTOS == null || ksExpDTOS.size() == 0) {
-            throw new WebException(SYSTEM_NOT_FIND_ERROR);
+        if (!ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx) && !ADULT_EDUCATION.getKey().equals((jylx))) {
+            throw new WebException(EDU_TYPE_ERROR);
         }
-        if (!ksExpService.update(ksExpDTO)) {
+        if (!ksExpService.update(ksExpDTOs,jylx)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新考试扩展信息成功!");

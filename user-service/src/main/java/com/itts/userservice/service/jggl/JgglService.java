@@ -2,7 +2,6 @@ package com.itts.userservice.service.jggl;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.userservice.model.jggl.Jggl;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.itts.userservice.vo.JgglVO;
 
 import java.util.List;
@@ -51,6 +50,7 @@ public interface JgglService  {
      * 查询，通过机构代码
      */
     Jggl selectByJgbm(String jgbm);
+
     PageInfo<Jggl> selectByString(Integer pageNum,Integer pageSize,String string);
     /**
      * 新增

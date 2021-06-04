@@ -4,12 +4,15 @@ package com.itts.personTraining.controller.ks.admin;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.KsDTO;
+import com.itts.personTraining.mapper.ks.KsMapper;
+import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.service.ks.KsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
@@ -29,6 +32,8 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 public class KsAdminController {
     @Autowired
     private KsService ksService;
+    @Resource
+    private KsMapper ksMapper;
 
     /**
      * 查询考试列表
@@ -113,12 +118,15 @@ public class KsAdminController {
     @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "删除考试")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
-        KsDTO ksDTO = ksService.get(id);
-        if (ksDTO == null) {
+        Ks ks = ksMapper.selectById(id);
+        if (ks == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
+        if (ks.getSfxf()) {
+            throw new WebException(ISSUEBATCH_DELETE_ERROR);
+        }
         //更新删除状态
-        if (!ksService.delete(ksDTO)) {
+        if (!ksService.delete(ks)) {
             throw new WebException(DELETE_FAIL);
         }
         return ResponseUtil.success("删除考试成功!");

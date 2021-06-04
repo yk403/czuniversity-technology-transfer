@@ -46,25 +46,19 @@ public class KssjAdminController {
     @GetMapping("/list/")
     public ResponseUtil list(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                              @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                             @ApiParam(value = "教育类型") @RequestParam(value = "educationType", required = false) String educationType,
+                             @ApiParam(value = "学员类型") @RequestParam(value = "studentType", required = false) String studentType,
                              @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
                              @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition) {
 
         PageHelper.startPage(pageNum, pageSize);
 
-        QueryWrapper query = new QueryWrapper();
-        query.eq("sfsc", false);
-
-        if (courseId != null) {
-            query.eq("kc_id", courseId);
-        }
-
-        if (StringUtils.isNotBlank(condition)) {
-            query.like("sjmc", condition);
-        }
-
-        query.orderByDesc("cjsj");
-
-        List kssjs = kssjService.list(query);
+        List kssjs = kssjService.list(new QueryWrapper<Kssj>()
+                .eq("sfsc", false)
+                .eq(StringUtils.isNotBlank(educationType), "jylx", educationType)
+                .eq(StringUtils.isNotBlank(studentType), "xylx", studentType)
+                .like(StringUtils.isNotBlank(condition), "sjmc", condition)
+                .orderByDesc("cjsj"));
 
         PageInfo<Kssj> pageInfo = new PageInfo<>(kssjs);
 
