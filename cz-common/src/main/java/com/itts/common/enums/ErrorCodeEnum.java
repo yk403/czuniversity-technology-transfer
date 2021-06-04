@@ -40,6 +40,11 @@ public enum ErrorCodeEnum {
     INSERT_FAIL(-41009, "新增失败"),
     DELETE_FAIL(-41010, "删除失败"),
     NAME_REPEAT(-41011, "交易商品名称重复"),
+    MAX_BIDHISTORY_ERROR(-41012,"出价价格不能小于等于最高价格"),
+    USER_SIGNUP_ERROR(-41013,"用户未报名无法叫价"),
+    BID_UPDATE_ERROR(-41014,"保存失败，叫价错误"),
+    BID_OVERTIME_ERROR(-41015,"叫价超时"),
+
     //====================      技术交易服务错误提示  END     ====================
 
 

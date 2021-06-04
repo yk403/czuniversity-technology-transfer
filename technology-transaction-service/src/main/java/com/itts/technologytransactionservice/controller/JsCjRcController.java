@@ -28,6 +28,9 @@ import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.enums.ErrorCodeEnum.USER_SIGNUP_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.BID_UPDATE_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.BID_OVERTIME_ERROR;
 
 /**
  * @Author: Austin
@@ -95,16 +98,16 @@ public class JsCjRcController extends BaseController {
                 if(list.size()==1){
                     tJsCjRcDto.setBmId(list.get(0).getId());
                 }else{
-                    throw new ServiceException("用户未报名无法叫价");
+                    throw new ServiceException(USER_SIGNUP_ERROR);
                 }
-                if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
+                if (jsCjRcService.saveCjRc(tJsCjRcDto,list.get(0))) {
                     bidController.onMessage("叫价成功，调用刷新出价记录方法");
                     return ResponseUtil.success("叫价成功");
                 } else {
-                    return ResponseUtil.error(400, "保存失败，叫价错误");
+                    return ResponseUtil.error(BID_UPDATE_ERROR);
                 }
             } else {
-                return ResponseUtil.error(400, "叫价超时");
+                return ResponseUtil.error(BID_OVERTIME_ERROR);
             }
         }
         //暂定可以不传时间，等前端完成后注掉
