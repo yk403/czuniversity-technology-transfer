@@ -30,6 +30,12 @@ public class GetKssjVO implements Serializable {
     private Long id;
 
     /**
+     * 课程ID
+     */
+    @ApiModelProperty(value = "课程ID", required = true)
+    private Long kcId;
+
+    /**
      * 课程名称
      */
     @ApiModelProperty(value = "课程名称")
