@@ -53,7 +53,7 @@ public class FastDFSClient {
             //获取配置文件中自定义的fastdfs_config.path值
             //String filePath=(String)g/AchievementsetCommonYml("dictionary.confFilePath");
             //System.out.println("测试打印"+filePath);
-            String fdfsClientConfigFilePath = FastDFSClient.class.getClassLoader().getResource("classpath:fdfs_client.conf").getPath();
+            String fdfsClientConfigFilePath = FastDFSClient.class.getClassLoader().getResource("fdfs_client.conf").getPath();
             logger.info("Fast DFS configuration file path:" + fdfsClientConfigFilePath);
             ClientGlobal.init(fdfsClientConfigFilePath);
         } catch (Exception e) {
