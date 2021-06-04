@@ -38,6 +38,12 @@ public class Zj implements Serializable {
     private String xm;
 
     /**
+     * 头像
+     */
+    @ApiModelProperty(value = "头像")
+    private String tx;
+
+    /**
      * 身份证号
      */
     @ApiModelProperty(value = "身份证号")

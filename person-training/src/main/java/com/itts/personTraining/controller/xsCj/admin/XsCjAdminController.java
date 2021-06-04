@@ -72,7 +72,7 @@ public class XsCjAdminController {
     @GetMapping("/get/{id}")
     @ApiOperation(value = "根据id查询学生成绩详情")
     public ResponseUtil get(@PathVariable("id") Long id) {
-        return ResponseUtil.success(kcService.get(id));
+        return ResponseUtil.success(xsCjService.get(id));
     }
 
     /**
