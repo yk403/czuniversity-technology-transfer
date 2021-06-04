@@ -35,31 +35,36 @@ public class Jggl implements Serializable {
     /**
      * 机构名称
      */
-    @ApiModelProperty(value = "父级字段code",required = true)
+    @ApiModelProperty(value = "父级字段code", required = true)
     private String jgmc;
 
     /**
      * 机构编码
      */
-    @ApiModelProperty(value = "父级字段code",required = true)
+    @ApiModelProperty(value = "父级字段code", required = true)
     private String jgbm;
 
     /**
      * 机构类别code
      */
-    @ApiModelProperty(value = "父级字段code",required = true)
+    @ApiModelProperty(value = "父级字段code", required = true)
     private String jglbbm;
 
     /**
      * 机构类别
      */
-    @ApiModelProperty(value = "父级字段code",required = true)
+    @ApiModelProperty(value = "父级字段code", required = true)
     private String jglb;
 
     /**
      * 父机构code
      */
     private String fjbm;
+
+    /**
+     * 父机构名称
+     */
+    private String fjmc;
 
     /**
      * 菜单层级, 以“-”分隔
