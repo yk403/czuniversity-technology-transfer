@@ -25,7 +25,7 @@ import java.util.Date;
 @ColumnWidth(20)
 public class XsDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 5978711483112131859L;
 
     /**
      * 学号

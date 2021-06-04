@@ -57,4 +57,35 @@ public class ExcelAdminController {
             return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);
         }
     }
+
+    /**
+     * 学历学位成绩导入
+     */
+    @PostMapping("/importXlXwCj")
+    @ApiOperation(value = "学历学位成绩导入")
+    public ResponseUtil importXlXwCj(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, @RequestParam(value = "pcId")Long pcId, @RequestParam(value = "jylx")String jylx, HttpServletRequest request){
+        try{
+            return excelService.importXlXwCj(file, headRowNumber, pcId, jylx, request.getHeader("token"));
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);
+        }
+    }
+
+    /**
+     * 继续教育成绩导入
+     */
+    @PostMapping("/importJxjyCj")
+    @ApiOperation(value = "继续教育成绩导入")
+    public ResponseUtil importJxjyCj(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, @RequestParam(value = "pcId")Long pcId, @RequestParam(value = "jylx")String jylx, HttpServletRequest request){
+        try{
+            return excelService.importJxjyCj(file, headRowNumber, pcId, jylx, request.getHeader("token"));
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);
+        }
+    }
+
 }

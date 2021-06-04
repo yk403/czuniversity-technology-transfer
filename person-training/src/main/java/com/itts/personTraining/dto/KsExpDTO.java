@@ -46,6 +46,12 @@ public class KsExpDTO {
     private Long xxjsId;
 
     /**
+     * 教育类型
+     */
+    @ApiModelProperty(value = "教育类型")
+    private String jylx;
+
+    /**
      * 教学楼名称
      */
     private String jxlmc;
