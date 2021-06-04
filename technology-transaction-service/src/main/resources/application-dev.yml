@@ -71,14 +71,44 @@ pagehelper:
   params: count=countSql
 
 #配置plus打印sql日志
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #设置日志级别,ERROR/WARN/INFO/DEBUG,默认是INFO以上才显示
 logging:
   level:
-    root: INFO
+    com:
+      itts:
+        technologytransactionservice:
+          config: DEBUG
+          controller: DEBUG
+          feign: DEBUG
+          model: DEBUG
+          service: DEBUG
+          utils: DEBUG
+          mapper:
+            JsHdMapper: INFO
+            BackOssMapper: DEBUG
+            CdMapper: DEBUG
+            FjzyMapper: DEBUG
+            JsBmMapper: DEBUG
+            JsCgMapper: DEBUG
+            JsCjRcMapper: DEBUG
+            JsLbMapper: DEBUG
+            JsLcKzMapper: DEBUG
+            JsLyMapper: DEBUG
+            JsShMapper: DEBUG
+            JsXqMapper: DEBUG
+            LyBmMapper: DEBUG
+            LyHdMapper: INFO
+            LyHzMapper: DEBUG
+            LyLtMapper: DEBUG
+            LyLyMapper: DEBUG
+            LyZpMapper: DEBUG
+            LyZwMapper: DEBUG
+
+
 #设置文件上传静态变量
 dictionary:
   confFilePath: fdfs_client.conf
