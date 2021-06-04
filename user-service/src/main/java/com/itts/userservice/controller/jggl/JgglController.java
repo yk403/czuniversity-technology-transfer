@@ -80,6 +80,7 @@ public class JgglController {
                                 @RequestParam(value = "jgbm", required = false) String jgbm) {
 
         PageInfo<Jggl> byPage = jgglService.findByPage(pageNum, pageSize, jgbm);
+
         return ResponseUtil.success(byPage);
     }
 
