@@ -89,10 +89,10 @@ public class JxjyCjListener extends AnalysisEventListener<JxjyCjDTO> {
             //综合成绩
             if (!StringUtils.isBlank(data.getZhcj())) {
                 xsCj.setZhcj(data.getZhcj());
+                xsCj.setPcId(pcId);
+                xsCj.setXsId(stuDTO.getId());
+                save(xsCj);
             }
-            xsCj.setPcId(pcId);
-            xsCj.setXsId(stuDTO.getId());
-            save(xsCj);
         }
     }
 
@@ -114,8 +114,14 @@ public class JxjyCjListener extends AnalysisEventListener<JxjyCjDTO> {
         XsCj xsCj1 = xsCjMapper.selectByPcIdAndXsId(xsCj.getPcId(),xsCj.getXsId());
         if (xsCj1 == null) {
             //新增
+            xsCj.setCjr(getUserId());
+            xsCj.setGxr(getUserId());
+            xsCjMapper.insert(xsCj);
         } else {
             //更新
+            xsCj.setId(xsCj1.getId());
+            xsCj.setGxr(getUserId());
+            xsCjMapper.updateById(xsCj);
         }
 
     }
