@@ -114,4 +114,8 @@ public class TJsHd implements Serializable {
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date hddqsj;
+	/**
+	 * 按钮状态
+	 */
+	private String anzt;
 }
