@@ -146,6 +146,7 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
 
         Date now = new Date();
 
+        tkzy.setCtr(loginUser.getRealName());
         tkzy.setCjr(userId);
         tkzy.setGxr(userId);
         tkzy.setCjsj(now);

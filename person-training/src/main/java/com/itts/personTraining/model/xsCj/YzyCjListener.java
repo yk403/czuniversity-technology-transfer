@@ -62,6 +62,7 @@ public class YzyCjListener extends AnalysisEventListener<YzyCjDTO> {
         log.info("解析第" + rowIndex + "行数据:{}", JSON.toJSONString(data));
         //原专业
 
+
     }
 
     @Override
