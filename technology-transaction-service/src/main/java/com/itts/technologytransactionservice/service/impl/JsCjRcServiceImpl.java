@@ -80,11 +80,14 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             cjrcmap.put("cgId",tJsCjRcDto.getCgId());
             List<TJsCjRc> tJsCjRcs = jsCjRcMapper.listMax(cjrcmap);
             if(tJsCjRcs.size()>0){
-                tJsCjRcs.get(0).getJjje();
-                if(tJsCjRc.getJjje().compareTo(tJsCjRcs.get(0).getJjje())== 1){
+                if(tJsCjRcs.get(0)==null){
 
                 }else{
-                    throw new ServiceException(MAX_BIDHISTORY_ERROR);
+                    if(tJsCjRc.getJjje().compareTo(tJsCjRcs.get(0).getJjje())== 1){
+
+                    }else{
+                        throw new ServiceException(MAX_BIDHISTORY_ERROR);
+                    }
                 }
             }
             Map<String,Object> cjmap=new HashMap<String,Object>();
@@ -103,11 +106,14 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             cjrcmap.put("xqId",tJsCjRcDto.getXqId());
             List<TJsCjRc> tJsCjRcs = jsCjRcMapper.listMax(cjrcmap);
             if(tJsCjRcs.size()>0){
-                tJsCjRcs.get(0).getJjje();
-                if(tJsCjRc.getJjje().compareTo(tJsCjRcs.get(0).getJjje())== 1){
+                if(tJsCjRcs.get(0)==null){
 
                 }else{
-                    throw new ServiceException(MAX_BIDHISTORY_ERROR);
+                    if(tJsCjRc.getJjje().compareTo(tJsCjRcs.get(0).getJjje())== 1){
+
+                    }else{
+                        throw new ServiceException(MAX_BIDHISTORY_ERROR);
+                    }
                 }
             }
             Map<String,Object> xqmap=new HashMap<String,Object>();
