@@ -60,5 +60,11 @@ public interface ZjService extends IService<Zj> {
      */
     boolean delete(Zj zj);
 
-
+    /**
+     * 根据姓名电话查询专家信息
+     * @param xm
+     * @param dh
+     * @return
+     */
+    Zj getByXmDh(String xm, String dh);
 }
