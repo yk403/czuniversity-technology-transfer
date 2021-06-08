@@ -2,17 +2,18 @@ package com.itts.personTraining.controller.xxzy.user;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.service.xxzy.XxzyService;
 import com.itts.personTraining.vo.xxzy.GetXxzyVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,5 +45,25 @@ public class XxzyController {
 
         return ResponseUtil.success(result);
 
+    }
+
+    @ApiOperation(value = "获取详情")
+    @GetMapping("/get/{id}")
+    public ResponseUtil get(@PathVariable("id") Long id) {
+
+        Xxzy xxzy = xxzyService.getById(id);
+
+        if (xxzy == null || xxzy.getSfsc() || !xxzy.getSfsj()) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        GetXxzyVO vo = new GetXxzyVO();
+        BeanUtils.copyProperties(xxzy, vo);
+
+        xxzy.setLll(xxzy.getLll().intValue() + 1);
+
+        xxzyService.updateById(xxzy);
+
+        return ResponseUtil.success(vo);
     }
 }

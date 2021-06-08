@@ -99,17 +99,42 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
     public PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
                                       String secondCategory, Long courseId, String condition, String token) {
 
-        PageInfo<Xxzy> page = this.list(pageNum, pageSize, type, firstCategory, secondCategory, courseId, condition);
+        PageHelper.startPage(pageNum, pageSize);
+
+        QueryWrapper<Xxzy> query = new QueryWrapper();
+
+        query.eq("zylb", type);
+        query.eq("sfsc", false);
+        query.eq("sfsj", true);
+
+        if (StringUtils.isNotBlank(firstCategory)) {
+            query.eq("zyyjfl", firstCategory);
+        }
+
+        if (StringUtils.isNotBlank(secondCategory)) {
+            query.eq("zyejfl", secondCategory);
+        }
+
+        if (courseId != null) {
+            query.eq("kc_id", courseId);
+        }
+
+        if (StringUtils.isNotBlank(condition)) {
+            query.like("mc", condition);
+        }
+
+        query.orderByDesc("cjsj");
+
+        List<Xxzy> list = xxzyMapper.selectList(query);
 
         PageInfo<GetXxzyVO> pageInfo = new PageInfo<>();
-        BeanUtils.copyProperties(page, pageInfo);
 
-        if (CollectionUtils.isEmpty(page.getList())) {
+        if (CollectionUtils.isEmpty(list)) {
 
             return pageInfo;
         }
 
-        List<GetXxzyVO> voList = page.getList().stream().map(obj -> {
+        List<GetXxzyVO> voList = list.stream().map(obj -> {
 
             GetXxzyVO vo = new GetXxzyVO();
             BeanUtils.copyProperties(obj, vo);
