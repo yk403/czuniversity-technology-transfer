@@ -12,7 +12,7 @@
             <if test="map.id != null"> and id = #{map.id} </if>
             <if test="map.gszzmc != null"> and gszzmc = #{map.gszzmc} </if>
             <if test="map.hdId != null"> and hd_id = #{map.hdId} </if>
-            <if test="map.dwmc != null and map.dwmc != ''"> and dwmc = #{map.dwmc} </if>
+            <if test="map.dwmc != null and map.dwmc != ''"> and bm.dwmc like concat('%',trim(#{map.dwmc}),'%') </if>
             <if test="map.dz != null and map.dz != ''"> and dz = #{map.dz} </if>
             <if test="map.fr != null and map.fr != ''"> and fr = #{map.fr} </if>
             <if test="map.jgdm != null and map.jgdm != ''"> and jgdm = #{map.jgdm} </if>
