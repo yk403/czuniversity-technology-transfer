@@ -4,21 +4,10 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
-import com.itts.common.exception.WebException;
-import com.itts.personTraining.dto.SzDTO;
-import com.itts.personTraining.dto.ZjDTO;
-import com.itts.personTraining.enums.ZzmmEnum;
 import com.itts.personTraining.mapper.sz.SzMapper;
-import com.itts.personTraining.model.sz.Sz;
-import com.itts.personTraining.model.sz.SzListener;
-import com.itts.personTraining.model.xy.Xy;
-import com.itts.personTraining.model.yh.GetYhVo;
-import com.itts.personTraining.model.yh.Yh;
-import com.itts.personTraining.service.sz.SzService;
 import com.itts.personTraining.service.xy.XyService;
 import com.itts.personTraining.service.yh.YhService;
 import com.itts.personTraining.service.zj.ZjService;
@@ -29,13 +18,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-
 import java.util.Date;
-import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.*;
-import static com.itts.personTraining.enums.UserTypeEnum.IN;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 import static com.itts.personTraining.enums.ZzmmEnum.*;
 
 /**

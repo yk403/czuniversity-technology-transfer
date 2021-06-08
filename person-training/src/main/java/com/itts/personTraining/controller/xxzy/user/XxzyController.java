@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @Description：
  * @Author：lym
@@ -35,9 +37,10 @@ public class XxzyController {
                              @ApiParam(value = "一级分类") @RequestParam(value = "firstCategory", required = false) String firstCategory,
                              @ApiParam(value = "二级分类") @RequestParam(value = "secondCategory", required = false) String secondCategory,
                              @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
-                             @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition) {
+                             @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
+                             HttpServletRequest request) {
 
-        PageInfo<GetXxzyVO> result = xxzyService.listVO(pageNum, pageSize, type, firstCategory, secondCategory, courseId, condition);
+        PageInfo<GetXxzyVO> result = xxzyService.listVO(pageNum, pageSize, type, firstCategory, secondCategory, courseId, condition, request.getHeader("token"));
 
         return ResponseUtil.success(result);
 

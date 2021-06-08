@@ -56,6 +56,20 @@ public class DdxfjlController {
         return ResponseUtil.success(pageInfo);
     }
 
+    @ApiOperation("获取用户订单")
+    @GetMapping("/rpc/by/user/")
+    public ResponseUtil getByUserRpc(){
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser == null) {
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        List<Ddxfjl> list = ddxfjlService.list(new QueryWrapper<Ddxfjl>().eq("cjr", loginUser.getUserId()));
+
+        return ResponseUtil.success(list);
+    }
+
     @ApiOperation(value = "获取详情")
     @GetMapping("/get/{id}")
     public ResponseUtil list(@PathVariable("id") Long id) {

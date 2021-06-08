@@ -1,5 +1,7 @@
 package com.itts.personTraining.service.xxzy.impl;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -17,6 +19,7 @@ import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
 import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
+import com.itts.personTraining.vo.ddxfjl.GetDdxfjlVO;
 import com.itts.personTraining.vo.xxzy.GetXxzyVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +29,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -91,7 +96,8 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory, String secondCategory, Long courseId, String condition) {
+    public PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
+                                      String secondCategory, Long courseId, String condition, String token) {
 
         PageInfo<Xxzy> page = this.list(pageNum, pageSize, type, firstCategory, secondCategory, courseId, condition);
 
@@ -121,13 +127,32 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             return pageInfo;
         }
 
-        ResponseUtil response = orderFeignService.getByUserId(loginUser.getUserId());
+        ResponseUtil response = orderFeignService.getByUserId(token);
         if (response.getErrCode().intValue() != 0) {
 
             return pageInfo;
         }
 
-        Object data = response.getData();
+        //解析响应结果
+        String dataStr = response.getData().toString();
+        JSONArray jsonArr = JSONUtil.parseArray(dataStr);
+
+        List<GetDdxfjlVO> ddxfjls = JSONUtil.toList(jsonArr, GetDdxfjlVO.class);
+
+        //获取订单中商品ID
+        List<Long> spIds = ddxfjls.stream().map(GetDdxfjlVO::getSpId).collect(Collectors.toList());
+
+        //获取当前查询列表的商品是否为已支付订单
+        Map<Long, GetXxzyVO> xxzyMap = voList.stream().collect(Collectors.toMap(GetXxzyVO::getId, Function.identity()));
+
+        spIds.forEach(spId->{
+
+            GetXxzyVO xxzy = xxzyMap.get(spId);
+            if(xxzy != null){
+
+                xxzy.setBuyFlag(true);
+            }
+        });
 
         return pageInfo;
     }
