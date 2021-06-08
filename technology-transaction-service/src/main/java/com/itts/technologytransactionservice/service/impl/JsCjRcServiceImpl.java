@@ -80,6 +80,14 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             Map<String,Object> cjrcmap=new HashMap<>();
             cjrcmap.put("cgId",tJsCjRcDto.getCgId());
             List<TJsCjRc> tJsCjRcs = jsCjRcMapper.listMax(cjrcmap);
+            Map<String,Object> cjmap=new HashMap<String,Object>();
+            cjmap.put("type",1);
+            cjmap.put("cgId",tJsCjRcDto.getCgId());
+            List<TJsLcKz> listLckz = jsLcKzMapper.list(cjmap);
+            listLckz.get(0).setDqzgjg(tJsCjRcDto.getJjje());
+            //如果有新的叫价，将叫价间隔状态置为0
+            listLckz.get(0).setJjjgzt(0);
+                listLckz.get(0).setBmId(tJsBm.getId());
             if(tJsCjRcs.size()>0){
                 if(tJsCjRcs.get(0)==null){
 
@@ -91,14 +99,6 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
                     }
                 }
             }
-            Map<String,Object> cjmap=new HashMap<String,Object>();
-            cjmap.put("type",1);
-            cjmap.put("cgId",tJsCjRcDto.getCgId());
-            List<TJsLcKz> listLckz = jsLcKzMapper.list(cjmap);
-            listLckz.get(0).setDqzgjg(tJsCjRcDto.getJjje());
-            //如果有新的叫价，将叫价间隔状态置为0
-            listLckz.get(0).setJjjgzt(0);
-                listLckz.get(0).setBmId(tJsBm.getId());
             jsLcKzMapper.updateById(listLckz.get(0));
         }
         if(tJsCjRcDto.getXqId()!=null){
@@ -106,6 +106,14 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             Map<String,Object> cjrcmap=new HashMap<>();
             cjrcmap.put("xqId",tJsCjRcDto.getXqId());
             List<TJsCjRc> tJsCjRcs = jsCjRcMapper.listMax(cjrcmap);
+            Map<String,Object> xqmap=new HashMap<String,Object>();
+            xqmap.put("type",0);
+            xqmap.put("xqId",tJsCjRcDto.getXqId());
+            List<TJsLcKz> listLckz = jsLcKzMapper.list(xqmap);
+            listLckz.get(0).setDqzgjg(tJsCjRcDto.getJjje());
+            //如果有新的叫价，将叫价间隔状态置为0
+            listLckz.get(0).setJjjgzt(0);
+                listLckz.get(0).setBmId(tJsBm.getId());
             if(tJsCjRcs.size()>0){
                 if(tJsCjRcs.get(0)==null){
 
@@ -117,14 +125,6 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
                     }
                 }
             }
-            Map<String,Object> xqmap=new HashMap<String,Object>();
-            xqmap.put("type",0);
-            xqmap.put("xqId",tJsCjRcDto.getXqId());
-            List<TJsLcKz> listLckz = jsLcKzMapper.list(xqmap);
-            listLckz.get(0).setDqzgjg(tJsCjRcDto.getJjje());
-            //如果有新的叫价，将叫价间隔状态置为0
-            listLckz.get(0).setJjjgzt(0);
-                listLckz.get(0).setBmId(tJsBm.getId());
             jsLcKzMapper.updateById(listLckz.get(0));
         }
         return save(tJsCjRc);

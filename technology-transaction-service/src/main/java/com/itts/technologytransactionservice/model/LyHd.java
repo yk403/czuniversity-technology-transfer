@@ -124,4 +124,12 @@ public class LyHd implements Serializable {
      * 活动详情
      */
     private String hdxq;
+    /**
+    * @Description: 富文本内容
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/8
+    */
+    private String fwbnr;
 }
