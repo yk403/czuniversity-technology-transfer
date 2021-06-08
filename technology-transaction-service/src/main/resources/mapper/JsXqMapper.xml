@@ -102,6 +102,7 @@
 		<where>
 		    a.is_delete = 0
 			<if test="map.name != null and map.name != ''"> and a.xqmc like concat('%',trim(#{map.name}),'%') </if>
+			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and d.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 			<if test="map.jylx != null "> and d.jylx = #{map.jylx} </if>
 			<if test="map.lyId != null "> and a.ly_id = #{map.lyId} </if>
 		</where>
@@ -115,6 +116,7 @@
 		<where>
 		    e.is_delete = 0
 			<if test="map.lyId != null"> and e.ly_id = #{map.lyId} </if>
+			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and d.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 			<if test="map.name != null and map.name != ''"> and e.cgmc like concat('%',trim(#{map.name}),'%') </if>
 			<if test="map.jylx != null"> and d.jylx = #{map.jylx} </if>
 		</where>
