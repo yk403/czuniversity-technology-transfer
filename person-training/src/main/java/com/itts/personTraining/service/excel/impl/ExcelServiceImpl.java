@@ -76,6 +76,7 @@ public class ExcelServiceImpl implements ExcelService {
         xsListener.setXyService(xyService);
         xsListener.setYhService(yhService);
         xsListener.setRedisTemplate(redisTemplate);
+        xsListener.setSzService(szService);
         xsListener.setPc(pc);
         xsListener.setToken(token);
         xsListener.setJgId(jgId);

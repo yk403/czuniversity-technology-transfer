@@ -33,10 +33,16 @@ public class StuDTO {
     private Long yhId;
 
     /**
-     * 师资ID
+     * 企业导师ID
      */
-    @ApiModelProperty(value = "师资ID", required = true)
-    private Long szId;
+    @ApiModelProperty(value = "企业导师ID", required = true)
+    private Long qydsId;
+
+    /**
+     * 原专业导师ID
+     */
+    @ApiModelProperty(value = "原专业导师ID", required = true)
+    private Long yzydsId;
 
     /**
      * 批次Id
@@ -160,18 +166,28 @@ public class StuDTO {
     private String xz;
 
     /**
-     * 导师编号
+     * 原专业导师编号
      */
-    @ApiModelProperty(value = "导师编号", required = true)
-    private String dsbh;
+    @ApiModelProperty(value = "原专业导师编号")
+    private String yzydsbh;
 
     /**
-     * 导师姓名
+     * 原专业导师导师姓名
      */
-    @ApiModelProperty(value = "导师姓名", required = true)
-    private String dsxm;
+    @ApiModelProperty(value = "原专业导师导师姓名")
+    private String yzydsxm;
 
+    /**
+     * 企业导师编号
+     */
+    @ApiModelProperty(value = "企业导师编号")
+    private String qydsbh;
 
+    /**
+     * 企业导师姓名
+     */
+    @ApiModelProperty(value = "企业导师姓名")
+    private String qydsxm;
 
     /**
      * 学习形式
