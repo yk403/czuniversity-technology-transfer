@@ -12,6 +12,7 @@ import com.itts.common.utils.DateUtils;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
+import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.model.pc.Pc;
@@ -174,6 +175,17 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             stuDTOList.add(stuDTO);
         }
         return stuDTOList;
+    }
+
+    /**
+     * 查询学生综合信息
+     * @return
+     */
+    @Override
+    public XsMsgDTO getByYhId() {
+        log.info("【人才培养 - 查询学生综合信息】");
+
+        return null;
     }
 
     /**

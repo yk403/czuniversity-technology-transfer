@@ -149,6 +149,21 @@ public class XsCjAdminController {
     }
 
     /**
+     * 学生成绩批量下发
+     *
+     * @param ids
+     * @return
+     */
+    @PutMapping("/update/issueBatch")
+    @ApiOperation(value = "学生成绩批量下发")
+    public ResponseUtil issueBatch(@RequestBody List<Long> ids) {
+        if (!xsCjService.issueBatch(ids)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("学生成绩统一下发成功!");
+    }
+
+    /**
      * 校验参数
      */
     private void checkRequest(XsCjDTO xsCjDTO) throws WebException {

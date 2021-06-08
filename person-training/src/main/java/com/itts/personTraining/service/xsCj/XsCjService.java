@@ -70,4 +70,11 @@ public interface XsCjService extends IService<XsCj> {
      * @return
      */
     boolean update(XsCjDTO xsCjDTO);
+
+    /**
+     * 学生成绩批量下发
+     * @param ids
+     * @return
+     */
+    boolean issueBatch(List<Long> ids);
 }

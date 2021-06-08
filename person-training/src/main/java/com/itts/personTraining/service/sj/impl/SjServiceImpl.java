@@ -7,6 +7,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.SjDTO;
 import com.itts.personTraining.model.sj.Sj;
 import com.itts.personTraining.mapper.sj.SjMapper;
+import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.service.sj.SjService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -70,6 +71,23 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
         Sj sj = new Sj();
         BeanUtils.copyProperties(sjDTO,sj);
         return sjService.updateById(sj);
+    }
+
+    /**
+     * 实践批量下发
+     * @param ids
+     * @return
+     */
+    @Override
+    public boolean issueBatch(List<Long> ids) {
+        log.info("【人才培养 - 实践批量下发,ids:{}】",ids);
+        List<Sj> sjList = sjMapper.selectBatchIds(ids);
+        Long userId = getUserId();
+        for (Sj sj : sjList) {
+            sj.setGxr(userId);
+            sj.setSfxf(true);
+        }
+        return sjService.updateBatchById(sjList);
     }
 
     /**

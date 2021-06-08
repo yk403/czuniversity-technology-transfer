@@ -1,13 +1,9 @@
 package com.itts.personTraining.controller.xs.user;
 
-
-import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
-import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.StuDTO;
-import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.service.xs.XsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,15 +23,14 @@ public class XsController {
     private XsService xsService;
 
     /**
-     * 查询学员详情
-     *
+     * 查询学员综合信息
      *
      * @return
      */
-    @GetMapping("/get/")
-    @ApiOperation(value = "获取学员详情")
-    public ResponseUtil get(@RequestParam(value = "xh") String xh) {
-        return ResponseUtil.success(xsService.selectByCondition(xh,null,null));
+    @GetMapping("/getByYhId/")
+    @ApiOperation(value = "查询学员综合信息")
+    public ResponseUtil getByYhId() {
+        return ResponseUtil.success(xsService.getByYhId());
     }
 
     /**

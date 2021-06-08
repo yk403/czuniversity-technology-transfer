@@ -17,6 +17,7 @@
         <result column="zhcj" property="zhcj" />
         <result column="zxf" property="zxf" />
         <result column="lwcj" property="lwcj" />
+        <result column="sfxf" property="sfxf" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
