@@ -38,9 +38,14 @@ public class Xs implements Serializable {
     private Long yhId;
 
     /**
-     * 师资ID
+     * 企业导师ID
      */
-    private Long szId;
+    private Long qydsId;
+
+    /**
+     * 原专业导师ID
+     */
+    private Long yzydsId;
 
     /**
      * 机构ID
@@ -128,16 +133,6 @@ public class Xs implements Serializable {
      * 学制
      */
     private String xz;
-
-    /**
-     * 导师编号
-     */
-    private String dsbh;
-
-    /**
-     * 导师姓名
-     */
-    private String dsxm;
 
     /**
      * 学习形式

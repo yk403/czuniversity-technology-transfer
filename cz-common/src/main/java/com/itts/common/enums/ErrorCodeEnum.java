@@ -106,6 +106,7 @@ public enum ErrorCodeEnum {
     BATCH_ID_ISEMPTY_ERROR(-45037, "批次ID不可为空!"),
     BATCH_STUDENT_EXISTS_ERROR(-45038, "该批次学生成绩已存在!"),
     COURSE_TYPE_ERROR(-45039, "课程类型不正确!"),
+    NAME_PHONE_ISEMPTY_ERROR(-45040, "姓名电话不可都为空!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

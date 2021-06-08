@@ -15,9 +15,11 @@ import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pcXs.PcXs;
+import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.xy.Xy;
 import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.model.yh.Yh;
+import com.itts.personTraining.service.sz.SzService;
 import com.itts.personTraining.service.xs.XsService;
 import com.itts.personTraining.service.xy.XyService;
 import com.itts.personTraining.service.yh.YhService;
@@ -64,6 +66,8 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
     private XyService xyService;
     @Autowired
     private YhService yhService;
+    @Resource
+    private SzService szService;
     @Resource
     private RedisTemplate redisTemplate;
 
@@ -128,12 +132,14 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         if(!StringUtils.isBlank(data.getXz())){
             xs.setXz(data.getXz());
         }
-        if(!StringUtils.isBlank(data.getDsbh())){
-            xs.setDsbh(data.getDsbh());
+        if(!StringUtils.isBlank(data.getYzydsbh())){
+            Sz sz = szService.selectByCondition(data.getYzydsbh(), null, null);
+            if (sz != null) {
+                xs.setYzydsId(sz.getId());
+            }
+            //TODO:如果为空则跳过
         }
-        if(!StringUtils.isBlank(data.getDsxm())){
-            xs.setDsxm(data.getDsxm());
-        }
+
         if(!StringUtils.isBlank(data.getYx())){
             Xy xy = xyService.getByCondition(data.getYx());
             xs.setXyId(xy.getId());

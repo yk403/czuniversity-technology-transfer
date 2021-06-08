@@ -38,6 +38,12 @@ public class Zj implements Serializable {
     private String xm;
 
     /**
+     * 头像
+     */
+    @ApiModelProperty(value = "头像")
+    private String tx;
+
+    /**
      * 身份证号
      */
     @ApiModelProperty(value = "身份证号")
@@ -75,10 +81,10 @@ public class Zj implements Serializable {
     private String xl;
 
     /**
-     * 类型(1:校内;2:校外)
+     * 类型(校内; 校外)
      */
-    @ApiModelProperty(value = "类型(1:校内;2:校外)", required = true)
-    private Integer lx;
+    @ApiModelProperty(value = "类型(校内;校外)", required = true)
+    private String lx;
 
     /**
      * 专业技术职位
@@ -101,7 +107,7 @@ public class Zj implements Serializable {
     /**
      * 电话
      */
-    @ApiModelProperty(value = "电话")
+    @ApiModelProperty(value = "电话", required = true)
     private String dh;
 
     /**

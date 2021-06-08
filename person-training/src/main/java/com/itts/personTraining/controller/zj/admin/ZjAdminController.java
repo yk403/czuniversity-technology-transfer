@@ -62,6 +62,23 @@ public class ZjAdminController {
     }
 
     /**
+     * 根据姓名/电话查询专家信息
+     *
+     * @param xm
+     * @param dh
+     * @return
+     */
+    @GetMapping("/getByXmDh")
+    @ApiOperation(value = "根据姓名/电话查询专家信息")
+    public ResponseUtil getByXmDh(@RequestParam(value = "xm", required = false) String xm,
+                                  @RequestParam(value = "dh", required = false) String dh) {
+        if (xm == null && dh == null) {
+            throw new WebException(NAME_PHONE_ISEMPTY_ERROR);
+        }
+        return ResponseUtil.success(zjService.getByXmDh(xm,dh));
+    }
+
+    /**
      * 查询所有专家
      */
     @GetMapping("/getAll")
