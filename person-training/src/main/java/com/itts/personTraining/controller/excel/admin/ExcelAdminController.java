@@ -88,4 +88,19 @@ public class ExcelAdminController {
         }
     }
 
+    /**
+     * 专家导入
+     */
+    @PostMapping("/importZj")
+    @ApiOperation(value = "专家导入")
+    public ResponseUtil importZj(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, HttpServletRequest request){
+        try{
+            return excelService.importZj(file, headRowNumber, request.getHeader("token"));
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);
+        }
+    }
+
 }

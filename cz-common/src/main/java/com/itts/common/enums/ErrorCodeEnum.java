@@ -44,6 +44,7 @@ public enum ErrorCodeEnum {
     USER_SIGNUP_ERROR(-41013,"用户未报名无法叫价"),
     BID_UPDATE_ERROR(-41014,"保存失败，叫价错误"),
     BID_OVERTIME_ERROR(-41015,"叫价超时"),
+    MIN_BIDHISTORY_ERROR(-41016,"出价价格不能大于等于最高价格"),
 
     //====================      技术交易服务错误提示  END     ====================
 
@@ -106,6 +107,7 @@ public enum ErrorCodeEnum {
     BATCH_ID_ISEMPTY_ERROR(-45037, "批次ID不可为空!"),
     BATCH_STUDENT_EXISTS_ERROR(-45038, "该批次学生成绩已存在!"),
     COURSE_TYPE_ERROR(-45039, "课程类型不正确!"),
+    NAME_PHONE_ISEMPTY_ERROR(-45040, "姓名电话不可都为空!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

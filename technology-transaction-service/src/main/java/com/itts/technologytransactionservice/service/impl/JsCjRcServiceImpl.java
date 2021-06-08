@@ -28,6 +28,7 @@ import java.util.*;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.MAX_BIDHISTORY_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.MIN_BIDHISTORY_ERROR;
 
 
 @Service
@@ -79,14 +80,6 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             Map<String,Object> cjrcmap=new HashMap<>();
             cjrcmap.put("cgId",tJsCjRcDto.getCgId());
             List<TJsCjRc> tJsCjRcs = jsCjRcMapper.listMax(cjrcmap);
-            if(tJsCjRcs.size()>0){
-                tJsCjRcs.get(0).getJjje();
-                if(tJsCjRc.getJjje().compareTo(tJsCjRcs.get(0).getJjje())== 1){
-
-                }else{
-                    throw new ServiceException(MAX_BIDHISTORY_ERROR);
-                }
-            }
             Map<String,Object> cjmap=new HashMap<String,Object>();
             cjmap.put("type",1);
             cjmap.put("cgId",tJsCjRcDto.getCgId());
@@ -95,21 +88,24 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             //如果有新的叫价，将叫价间隔状态置为0
             listLckz.get(0).setJjjgzt(0);
                 listLckz.get(0).setBmId(tJsBm.getId());
+            if(tJsCjRcs.size()>0){
+                if(tJsCjRcs.get(0)==null){
+
+                }else{
+                    if(tJsCjRc.getJjje().compareTo(tJsCjRcs.get(0).getJjje())== 1){
+
+                    }else{
+                        throw new ServiceException(MAX_BIDHISTORY_ERROR);
+                    }
+                }
+            }
             jsLcKzMapper.updateById(listLckz.get(0));
         }
         if(tJsCjRcDto.getXqId()!=null){
-            //查询当前商品的最高出价，判断当前要出价的价格必须大于这个价格
+            //查询当前商品的最低出价，判断当前要出价的价格必须小于这个价格
             Map<String,Object> cjrcmap=new HashMap<>();
             cjrcmap.put("xqId",tJsCjRcDto.getXqId());
             List<TJsCjRc> tJsCjRcs = jsCjRcMapper.listMax(cjrcmap);
-            if(tJsCjRcs.size()>0){
-                tJsCjRcs.get(0).getJjje();
-                if(tJsCjRc.getJjje().compareTo(tJsCjRcs.get(0).getJjje())== 1){
-
-                }else{
-                    throw new ServiceException(MAX_BIDHISTORY_ERROR);
-                }
-            }
             Map<String,Object> xqmap=new HashMap<String,Object>();
             xqmap.put("type",0);
             xqmap.put("xqId",tJsCjRcDto.getXqId());
@@ -118,6 +114,17 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             //如果有新的叫价，将叫价间隔状态置为0
             listLckz.get(0).setJjjgzt(0);
                 listLckz.get(0).setBmId(tJsBm.getId());
+            if(tJsCjRcs.size()>0){
+                if(tJsCjRcs.get(0)==null){
+
+                }else{
+                    if(tJsCjRc.getJjje().compareTo(tJsCjRcs.get(0).getJjje())== -1){
+
+                    }else{
+                        throw new ServiceException(MIN_BIDHISTORY_ERROR);
+                    }
+                }
+            }
             jsLcKzMapper.updateById(listLckz.get(0));
         }
         return save(tJsCjRc);

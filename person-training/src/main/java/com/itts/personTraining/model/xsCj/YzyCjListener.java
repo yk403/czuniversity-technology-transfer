@@ -23,6 +23,8 @@ import javax.annotation.Resource;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
+import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
 
 /**
  * @Author: Austin
@@ -60,7 +62,11 @@ public class YzyCjListener extends AnalysisEventListener<YzyCjDTO> {
         ReadRowHolder rrh = analysisContext.readRowHolder();
         int rowIndex = rrh.getRowIndex() + 1;
         log.info("解析第" + rowIndex + "行数据:{}", JSON.toJSONString(data));
-        //原专业
+        //判断是否是学历学位
+        if (!ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
+            throw new WebException(EDU_TYPE_ERROR);
+        }
+
 
     }
 

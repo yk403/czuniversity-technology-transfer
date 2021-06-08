@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.technologytransactionservice.mapper.LyMsgMapper">
+
+    <select id="findLyMsgFront" resultType="com.itts.technologytransactionservice.model.LyMsg">
+        select msg.id as id,msg.yh_id,msg.gxsj,msg.cjsj,msg.ry_id,msg.lynr,msg.hfnr,msg.lysj,msg.lyzt,yh.yhtx as yhtx,yh.yhm as yhm,yh.zsxm as zsxm,yh.yhlx as yhlx
+        from t_ly_msg msg left join t_yh yh on (yh.id = msg.yh_id) left join t_ly_ry ry on(ry.id = msg.ry_id)
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            msg.is_delete != 2
+            <if test="map.yhId != null"> and msg.yh_id != #{map.yhId} </if>
+            <if test="map.ryId != null"> and msg.ry_id != #{map.ryId} </if>
+            <if test="map.lynr != null"> and msg.lynr != #{map.lynr} </if>
+            <if test="map.hfnr != null"> and msg.hfnr != #{map.hfnr} </if>
+            <if test="map.lyzt != null"> and msg.lyzt != #{map.lyzt} </if>
+            <if test="map.lysj != null"> and msg.lysj != #{map.lysj} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
+    <select id="findLyMsgBack" resultType="com.itts.technologytransactionservice.model.LyMsg">
+        select msg.id as id,msg.yh_id,msg.gxsj,msg.cjsj,msg.ry_id,msg.lynr,msg.hfnr,msg.lysj,msg.lyzt,yh.yhtx as yhtx,yh.yhm as yhm,yh.zsxm as zsxm,yh.yhlx as yhlx
+        from t_ly_msg msg left join t_yh yh on (yh.id = msg.yh_id) left join t_ly_ry ry on(ry.id = msg.ry_id)
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            msg.is_delete != 2
+            <if test="map.yhId != null"> and msg.yh_id != #{map.yhId} </if>
+            <if test="map.ryId != null"> and msg.ry_id != #{map.ryId} </if>
+            <if test="map.lynr != null"> and msg.lynr != #{map.lynr} </if>
+            <if test="map.hfnr != null"> and msg.hfnr != #{map.hfnr} </if>
+            <if test="map.lyzt != null"> and msg.lyzt != #{map.lyzt} </if>
+            <if test="map.lysj != null"> and msg.lysj != #{map.lysj} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
+<!--
+    &lt;!&ndash; 通用查询映射结果 &ndash;&gt;
+    <resultMap id="BaseResultMap" type="com.itts.technologytransactionservice.model.LyZw">
+        <id column="id" property="id" />
+        <result column="cjsj" property="cjsj" />
+        <result column="gxsj" property="gxsj" />
+        <result column="is_delete" property="isDelete" />
+        <result column="zwjj" property="zwjj" />
+        <result column="hz_id" property="hzId" />
+    </resultMap>
+
+    &lt;!&ndash; 通用查询结果列 &ndash;&gt;
+    <sql id="Base_Column_List">
+        id, cjsj, gxsj, is_delete, zwjj, hz_id
+    </sql>
+-->
+
+</mapper>

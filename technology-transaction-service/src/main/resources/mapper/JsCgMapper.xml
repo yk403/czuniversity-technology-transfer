@@ -12,7 +12,7 @@
 			<if test="map.cjjg != null"> and cjjg = #{map.cjjg} </if>
 		  		  <if test="map.cgqsr != null and map.cgqsr != ''"> and cgqsr = #{map.cgqsr} </if>
 		  		  <if test="map.qsrlxdh != null and map.qsrlxdh != ''"> and qsrlxdh = #{map.qsrlxdh} </if>
-		  		  <if test="map.cgmc != null and map.cgmc != ''"> and cgmc = #{map.cgmc} </if>
+		  		  <if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',trim(#{map.cgmc}),'%') </if>
 		  		  <if test="map.gjc != null and map.gjc != ''"> and gjc = #{map.gjc} </if>
 		  		  <if test="map.cgwcsj != null and map.cgwcsj != ''"> and cgwcsj = #{map.cgwcsj} </if>
 		  		  <if test="map.zzqk != null and map.zzqk != ''"> and zzqk = #{map.zzqk} </if>
@@ -66,7 +66,7 @@
 			<if test="map.cgId != null and map.cgId != ''"> and sh.cg_id = #{map.cgId} </if>
 			<if test="map.cjjg != null"> and cg.cjjg = #{map.cjjg} </if>
 			<if test="map.xqId != null and map.xqId != ''"> and sh.xq_id = #{map.xqId} </if>
-			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc = concat('%',#{map.cgmc},'%') </if>
+			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',trim(#{map.cgmc}),'%') </if>
 			<if test="map.cgspmc != null and map.cgspmc != ''"> and cg.cgspmc = concat('%',#{map.cgspmc},'%') </if>
 			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
@@ -100,7 +100,7 @@
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
 			<if test="map.cjjg != null"> and cg.cjjg = #{map.cjjg} </if>
-			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',#{map.cgmc},'%') </if>
+			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',trim(#{map.cgmc}),'%') </if>
 			<if test="map.cgspmc != null and map.cgspmc != ''"> and cg.cgspmc = concat('%',#{map.cgspmc},'%') </if>
 			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
@@ -136,7 +136,7 @@
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
 			<if test="map.cjjg != null"> and cg.cjjg = #{map.cjjg} </if>
-			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',#{map.cgmc},'%') </if>
+			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',trim(#{map.cgmc}),'%') </if>
 			<if test="map.cgspmc != null and map.cgspmc != ''"> and cg.cgspmc = concat('%',#{map.cgspmc},'%') </if>
 			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>
@@ -173,7 +173,7 @@
 			<if test="map.lbId != null and map.lbId != ''"> and cg.lb_id = #{map.lbId} </if>
 			<if test="map.cgId != null and map.cgId != ''"> and cg.id = #{map.cgId} </if>
 			<if test="map.cjjg != null"> and cg.cjjg = #{map.cjjg} </if>
-			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',#{map.cgmc},'%') </if>
+			<if test="map.cgmc != null and map.cgmc != ''"> and cg.cgmc like concat('%',trim(#{map.cgmc}),'%') </if>
 			<if test="map.cgspmc != null and map.cgspmc != ''"> and cg.cgspmc = concat('%',#{map.cgspmc},'%') </if>
 			<if test="map.cgfjmc != null and map.cgfjmc != ''"> and cg.cgfjmc = concat('%',#{map.cgfjmc},'%') </if>
 			<if test="map.cjsj != null and map.cjsj != ''"> and cg.cjsj = #{map.cjsj} </if>

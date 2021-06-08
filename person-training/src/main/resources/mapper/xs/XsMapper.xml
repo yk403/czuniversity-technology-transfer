@@ -5,6 +5,8 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.xs.Xs">
         <id column="id" property="id" />
+        <result column="qyds_id" property="qydsId" />
+        <result column="yzyds_id" property="yzydsId" />
         <result column="xh" property="xh" />
         <result column="xm" property="xm" />
         <result column="nj" property="nj" />
@@ -20,8 +22,6 @@
         <result column="rxfs" property="rxfs" />
         <result column="ybyyx" property="ybyyx" />
         <result column="xz" property="xz" />
-        <result column="dsbh" property="dsbh" />
-        <result column="dsxm" property="dsxm" />
         <result column="xy_id" property="xyId" />
         <result column="xxxs" property="xxxs" />
         <result column="byjl" property="byjl" />
@@ -156,9 +156,9 @@
         order by xs.cjsj desc
     </select>
     <select id="findXsList" resultType="com.itts.personTraining.dto.StuDTO">
-        select xs.*
-        from t_xs xs
-        where xs.sfsc = false
+        select xs.*, sz.dsbh as yzydsbh, sz.dsxm as yzydsxm, tsz.dsbh as qydsbh, tsz.dsxm as qydsxm
+        from t_xs xs left join t_sz sz on (xs.yzyds_id=sz.id) left join t_sz tsz on (xs.qyds_id=tsz.id)
+        where xs.sfsc = false and sz.sfsc = false and tsz.sfsc = false
             <if test="pcId != null">and xs.pc_id = #{pcId}</if>
             <if test="xslbmc != null and xslbmc != ''">and xs.xslbmc like concat('%',#{xslbmc},'%')</if>
             <if test="jyxs != null and jyxs != ''" >and xs.jyxs like concat('%',#{jyxs},'%')</if>

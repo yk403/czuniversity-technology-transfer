@@ -43,14 +43,19 @@ public class JgglServiceImpl implements JgglService {
      */
     @Override
     public PageInfo<Jggl> findByPage(Integer pageNum, Integer pageSize,String jgbm) {
+
         log.info("【机构管理 - 分页查询】");
+
         if(!StringUtils.isBlank(jgbm)){
             String cj = jgglMapper.selectByCode(jgbm).getCj();
             jgbm=cj;
         }
+
         PageHelper.startPage(pageNum,pageSize);
+
         List<Jggl> list = jgglMapper.findThisAndChildByCode(jgbm);
         PageInfo<Jggl> pageInfo = new PageInfo<>(list);
+
         return pageInfo;
     }
 
