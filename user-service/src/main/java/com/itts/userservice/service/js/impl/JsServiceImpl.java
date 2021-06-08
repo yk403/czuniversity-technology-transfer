@@ -102,6 +102,16 @@ public class JsServiceImpl implements JsService {
     }
 
     /**
+     * 通过用户ID获取
+     */
+    @Override
+    public List<Js> findByUserId(Long userId) {
+
+        List<Js> jsList = jsMapper.findByYhId(userId);
+        return jsList;
+    }
+
+    /**
      * 获取详情
      */
     @Override

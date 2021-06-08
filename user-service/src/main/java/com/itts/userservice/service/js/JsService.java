@@ -26,12 +26,17 @@ public interface JsService {
     /**
      * 通过系统类型是否为默认角色获取角色信息
      *
-     * @param userType  用户类型
+     * @param userType    用户类型
      * @param defaultFlag 是否为默认角色
      * @return
      * @author liuyingming
      */
     List<Js> findByUserTypeAndDefault(String userType, Boolean defaultFlag);
+
+    /**
+     * 通过用户ID获取
+     */
+    List<Js> findByUserId(Long userId);
 
     /**
      * 获取详情

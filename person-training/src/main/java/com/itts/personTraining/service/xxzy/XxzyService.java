@@ -24,6 +24,12 @@ public interface XxzyService extends IService<Xxzy> {
                         String secondCategory, Long courseId, String condition);
 
     /**
+     * 获取列表 - 分页
+     */
+    PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
+                        String secondCategory, Long courseId, String condition);
+
+    /**
      * 获取详情
      */
     GetXxzyVO get(Long id);

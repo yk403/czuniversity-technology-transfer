@@ -7,6 +7,8 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.common.CommonUtils;
+import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.feign.paymentservice.OrderFeignService;
 import com.itts.personTraining.mapper.fjzy.FjzyMapper;
 import com.itts.personTraining.mapper.xxzy.XxzyMapper;
 import com.itts.personTraining.model.fjzy.Fjzy;
@@ -43,6 +45,9 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
     @Autowired
     private FjzyMapper fjzyMapper;
 
+    @Autowired
+    private OrderFeignService orderFeignService;
+
     /**
      * 获取列表 - 分页
      */
@@ -78,6 +83,51 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         List xxzys = xxzyMapper.selectList(query);
 
         PageInfo pageInfo = new PageInfo(xxzys);
+
+        return pageInfo;
+    }
+
+    /**
+     * 获取列表 - 分页
+     */
+    @Override
+    public PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory, String secondCategory, Long courseId, String condition) {
+
+        PageInfo<Xxzy> page = this.list(pageNum, pageSize, type, firstCategory, secondCategory, courseId, condition);
+
+        PageInfo<GetXxzyVO> pageInfo = new PageInfo<>();
+        BeanUtils.copyProperties(page, pageInfo);
+
+        if (CollectionUtils.isEmpty(page.getList())) {
+
+            return pageInfo;
+        }
+
+        List<GetXxzyVO> voList = page.getList().stream().map(obj -> {
+
+            GetXxzyVO vo = new GetXxzyVO();
+            BeanUtils.copyProperties(obj, vo);
+
+            vo.setBuyFlag(false);
+
+            return vo;
+        }).collect(Collectors.toList());
+
+        pageInfo.setList(voList);
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser == null) {
+
+            return pageInfo;
+        }
+
+        ResponseUtil response = orderFeignService.getByUserId(loginUser.getUserId());
+        if (response.getErrCode().intValue() != 0) {
+
+            return pageInfo;
+        }
+
+        Object data = response.getData();
 
         return pageInfo;
     }

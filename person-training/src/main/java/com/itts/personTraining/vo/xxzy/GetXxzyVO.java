@@ -173,4 +173,10 @@ public class GetXxzyVO implements Serializable {
      */
     @ApiModelProperty(value = "附件资源")
     private List<AddFjzyRequest> fjzys;
+
+    /**
+     * 是否已购买
+     */
+    @ApiModelProperty(value = "是否已购买")
+    private Boolean buyFlag;
 }

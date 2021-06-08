@@ -1,4 +1,4 @@
-package com.itts.userservice.controller.js;
+package com.itts.userservice.controller.js.admin;
 
 
 import com.github.pagehelper.PageInfo;
@@ -14,7 +14,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,7 +29,7 @@ import javax.annotation.Resource;
 @Api(tags = "角色管理")
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/js")
-public class JsController {
+public class JsAdminController {
 
     @Resource
     private JsService jsService;

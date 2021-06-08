@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(value = "user-service")
-public interface UserInfoService {
+public interface UserFeignService {
 
     /**
      * 获取当前登陆用户信息
