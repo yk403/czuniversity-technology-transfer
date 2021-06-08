@@ -13,4 +13,6 @@ public interface ExcelService {
     ResponseUtil importXlXwCj(MultipartFile file, Integer headRowNumber, Long pcId, String jylx, String token);
 
     ResponseUtil importJxjyCj(MultipartFile file, Integer headRowNumber, Long pcId, String jylx, String token);
+
+    ResponseUtil importZj(MultipartFile file, Integer headRowNumber, String token);
 }

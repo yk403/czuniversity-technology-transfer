@@ -2,10 +2,7 @@ package com.itts.personTraining.service.excel.impl;
 
 import com.alibaba.excel.EasyExcel;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.personTraining.dto.JxjyCjDTO;
-import com.itts.personTraining.dto.SzDTO;
-import com.itts.personTraining.dto.XlXwCjDTO;
-import com.itts.personTraining.dto.XsDTO;
+import com.itts.personTraining.dto.*;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
@@ -15,11 +12,13 @@ import com.itts.personTraining.model.sz.SzListener;
 import com.itts.personTraining.model.xs.XsListener;
 import com.itts.personTraining.model.xsCj.JxjyCjListener;
 import com.itts.personTraining.model.xsCj.XlXwCjListener;
+import com.itts.personTraining.model.zj.ZjListener;
 import com.itts.personTraining.service.excel.ExcelService;
 import com.itts.personTraining.service.sz.SzService;
 import com.itts.personTraining.service.xs.XsService;
 import com.itts.personTraining.service.xy.XyService;
 import com.itts.personTraining.service.yh.YhService;
+import com.itts.personTraining.service.zj.ZjService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -58,6 +57,8 @@ public class ExcelServiceImpl implements ExcelService {
     private XyService xyService;
     @Resource
     private YhService yhService;
+    @Resource
+    private ZjService zjService;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -75,6 +76,7 @@ public class ExcelServiceImpl implements ExcelService {
         xsListener.setXyService(xyService);
         xsListener.setYhService(yhService);
         xsListener.setRedisTemplate(redisTemplate);
+        xsListener.setSzService(szService);
         xsListener.setPc(pc);
         xsListener.setToken(token);
         xsListener.setJgId(jgId);
@@ -150,6 +152,26 @@ public class ExcelServiceImpl implements ExcelService {
         try{
             EasyExcel.read(file.getInputStream(), JxjyCjDTO.class, jxjyCjListener).headRowNumber(headRowNumber).sheet().doRead();
             return ResponseUtil.success(jxjyCjListener.getResult());
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);
+        }
+    }
+
+    /**
+     * 导入专家Excel
+     * @param file
+     * @param headRowNumber
+     * @param token
+     * @return
+     */
+    @Override
+    public ResponseUtil importZj(MultipartFile file, Integer headRowNumber, String token) {
+        ZjListener zjListener = new ZjListener();
+        zjListener.setZjService(zjService);
+        try{
+            EasyExcel.read(file.getInputStream(), ZjDTO.class, zjListener).headRowNumber(headRowNumber).sheet().doRead();
+            return ResponseUtil.success(zjListener.getResult());
         } catch (IOException e) {
             log.error(e.getMessage());
             return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);

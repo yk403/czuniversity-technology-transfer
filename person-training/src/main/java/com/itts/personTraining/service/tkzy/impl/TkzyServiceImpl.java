@@ -50,7 +50,7 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
      * 列表 - 有题目选项
      */
     @Override
-    public PageInfo listByDetail(Integer pageNum, Integer pageSize, String firstCategory, String secondCategory, Long courseId, Integer score, String type) {
+    public PageInfo listByDetail(Integer pageNum, Integer pageSize, String firstCategory, String secondCategory, Long courseId, Integer score, String type, Boolean putOnShelf) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -59,6 +59,7 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
                 .eq(StringUtils.isNotBlank(secondCategory), "tmejfl", secondCategory)
                 .eq(courseId != null, "kc_id", courseId)
                 .eq(score != null, "fz", score)
+                .eq(putOnShelf != null, "sfsj", putOnShelf)
                 .eq(StringUtils.isNotBlank(type), "tmlx", type));
 
         if (CollectionUtils.isEmpty(tkzys)) {
