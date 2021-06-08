@@ -137,6 +137,21 @@ public class SjAdminController {
     }
 
     /**
+     * 实践批量下发
+     *
+     * @param ids
+     * @return
+     */
+    @PutMapping("/update/issueBatch")
+    @ApiOperation(value = "实践批量下发")
+    public ResponseUtil issueBatch(@RequestBody List<Long> ids) {
+        if (!sjService.issueBatch(ids)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("实践统一下发成功!");
+    }
+
+    /**
      * 校验参数
      */
     private void checkRequest(SjDTO sjDTO) throws WebException {

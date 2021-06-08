@@ -62,4 +62,10 @@ public interface SjService extends IService<Sj> {
      */
     boolean delete(SjDTO sjDTO);
 
+    /**
+     * 实践批量下发
+     * @param ids
+     * @return
+     */
+    boolean issueBatch(List<Long> ids);
 }
