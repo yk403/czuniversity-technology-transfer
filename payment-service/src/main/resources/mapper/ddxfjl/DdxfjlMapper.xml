@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.paymentservice.mapper.ddxfjl.DdxfjlMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.paymentservice.model.ddxfjl.Ddxfjl">
+        <id column="id" property="id" />
+        <result column="bh" property="bh" />
+        <result column="ddmc" property="ddmc" />
+        <result column="sp_id" property="spId" />
+        <result column="spmc" property="spmc" />
+        <result column="yhj_id" property="yhjId" />
+        <result column="xtlx" property="xtlx" />
+        <result column="xflx" property="xflx" />
+        <result column="xfsm" property="xfsm" />
+        <result column="zffs" property="zffs" />
+        <result column="zsl" property="zsl" />
+        <result column="zje" property="zje" />
+        <result column="sjzfje" property="sjzfje" />
+        <result column="yhje" property="yhje" />
+        <result column="zfbje" property="zfbje" />
+        <result column="wxje" property="wxje" />
+        <result column="jfje" property="jfje" />
+        <result column="yeje" property="yeje" />
+        <result column="zt" property="zt" />
+        <result column="lxdh" property="lxdh" />
+        <result column="sf" property="sf" />
+        <result column="cs" property="cs" />
+        <result column="qx" property="qx" />
+        <result column="xxdz" property="xxdz" />
+        <result column="tkly" property="tkly" />
+        <result column="zfsj" property="zfsj" />
+        <result column="sqtksj" property="sqtksj" />
+        <result column="tksj" property="tksj" />
+        <result column="qxsj" property="qxsj" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, bh, ddmc, sp_id, spmc, yhj_id, xtlx, xflx, xfsm, zffs, zsl, zje, sjzfje, yhje, zfbje, wxje, jfje, yeje, zt, lxdh, sf, cs, qx, xxdz, tkly, zfsj, sqtksj, tksj, qxsj, cjsj, cjr, gxsj, gxr
+    </sql>
+
+</mapper>
