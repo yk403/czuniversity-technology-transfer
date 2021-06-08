@@ -28,6 +28,7 @@ import java.util.*;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.MAX_BIDHISTORY_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.MIN_BIDHISTORY_ERROR;
 
 
 @Service
@@ -101,7 +102,7 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             jsLcKzMapper.updateById(listLckz.get(0));
         }
         if(tJsCjRcDto.getXqId()!=null){
-            //查询当前商品的最高出价，判断当前要出价的价格必须大于这个价格
+            //查询当前商品的最低出价，判断当前要出价的价格必须小于这个价格
             Map<String,Object> cjrcmap=new HashMap<>();
             cjrcmap.put("xqId",tJsCjRcDto.getXqId());
             List<TJsCjRc> tJsCjRcs = jsCjRcMapper.listMax(cjrcmap);
@@ -109,10 +110,10 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
                 if(tJsCjRcs.get(0)==null){
 
                 }else{
-                    if(tJsCjRc.getJjje().compareTo(tJsCjRcs.get(0).getJjje())== 1){
+                    if(tJsCjRc.getJjje().compareTo(tJsCjRcs.get(0).getJjje())== -1){
 
                     }else{
-                        throw new ServiceException(MAX_BIDHISTORY_ERROR);
+                        throw new ServiceException(MIN_BIDHISTORY_ERROR);
                     }
                 }
             }

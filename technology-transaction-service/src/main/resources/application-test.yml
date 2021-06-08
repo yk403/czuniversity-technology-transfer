@@ -75,6 +75,10 @@ pagehelper:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+#feign配置全局超时时间
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
 #设置日志级别,ERROR/WARN/INFO/DEBUG,默认是INFO以上才显示
 logging:
   level:
