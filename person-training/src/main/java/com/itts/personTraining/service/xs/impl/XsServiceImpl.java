@@ -13,8 +13,11 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.mapper.ksXs.KsXsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
+import com.itts.personTraining.mapper.sj.SjMapper;
+import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pcXs.PcXs;
 import com.itts.personTraining.model.xs.Xs;
@@ -68,6 +71,12 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     private PcXsMapper pcXsMapper;
     @Autowired
     private YhService yhService;
+    @Resource
+    private KsXsMapper ksXsMapper;
+    @Resource
+    private XsCjMapper xsCjMapper;
+    @Resource
+    private SjMapper sjMapper;
     @Autowired
     private RedisTemplate redisTemplate;
     @Resource
@@ -184,8 +193,18 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     @Override
     public XsMsgDTO getByYhId() {
         log.info("【人才培养 - 查询学生综合信息】");
-
-        return null;
+        XsMsgDTO xsMsgDTO = xsMapper.getByYhId(getUserId());
+        Long xsId = xsMsgDTO.getId();
+        if (xsId == null) {
+            throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+        }
+        xsMsgDTO.setKstz(ksXsMapper.getNumByXsId(xsId));
+        xsMsgDTO.setCjtz(xsCjMapper.getNumByXsId(xsId));
+        xsMsgDTO.setSjtz(sjMapper.getNumByXsId(xsId));
+        //TODO: 暂时假数据
+        xsMsgDTO.setXftz(0L);
+        xsMsgDTO.setQttz(0L);
+        return xsMsgDTO;
     }
 
     /**

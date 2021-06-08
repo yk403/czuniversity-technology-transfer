@@ -22,4 +22,12 @@ public interface KsXsMapper extends BaseMapper<KsXs> {
      * @return
      */
     List<Long> selectByKsId(@Param("ksId") Long ksId);
+
+    /**
+     * 通过学生id查询考试通知数量
+     * @param xsId
+     * @return
+     */
+    Long getNumByXsId(@Param("xsId") Long xsId);
+
 }

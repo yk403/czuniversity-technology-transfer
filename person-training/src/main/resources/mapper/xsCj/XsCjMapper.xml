@@ -81,5 +81,10 @@
         <if test="pcId != null"> and txc.pc_id = #{pcId} </if>
         <if test="xsId != null"> and txc.xs_id = #{xsId} </if>
     </select>
+    <select id="getNumByXsId" resultType="java.lang.Long">
+        select count(id)
+        from t_xs_cj txc
+        where txc.xs_id = #{xsId} and txc.sfsc = false and txc.sfxf = true and txc.sfck = false
+    </select>
 
 </mapper>

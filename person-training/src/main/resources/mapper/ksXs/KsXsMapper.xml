@@ -20,5 +20,10 @@
             tkx.ks_id = #{ksId}
         </where>
     </select>
+    <select id="getNumByXsId" resultType="java.lang.Long">
+        select count(id)
+        from t_ks_xs tkx
+        where tkx.xs_id = #{xsId} and tkx.sfck = false
+    </select>
 
 </mapper>

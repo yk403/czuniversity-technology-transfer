@@ -165,6 +165,12 @@
             <if test="name != null and name != ''">and (xs.xh like concat('%',#{name},'%') or xs.xm like concat('%',#{name},'%'))</if>
         order by xs.cjsj desc
     </select>
+    <select id="getByYhId" resultType="com.itts.personTraining.dto.XsMsgDTO">
+        select xs.*,xy.xymc
+        from t_xs xs left join t_xy xy on (xs.xy_id=xy.id)
+        where xs.sfsc = false and xy.sfsc = false
+        <if test="yhId != null">and xs.yh_id = #{yhId}</if>
+    </select>
 
     <!--新增学生课程关联-->
     <insert id="addKcList">
