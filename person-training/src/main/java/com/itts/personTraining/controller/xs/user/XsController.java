@@ -23,12 +23,12 @@ public class XsController {
     private XsService xsService;
 
     /**
-     * 查询学员详情
+     * 查询学员综合信息
      *
      * @return
      */
     @GetMapping("/getByYhId/")
-    @ApiOperation(value = "获取学员详情")
+    @ApiOperation(value = "查询学员综合信息")
     public ResponseUtil getByYhId() {
         return ResponseUtil.success(xsService.getByYhId());
     }

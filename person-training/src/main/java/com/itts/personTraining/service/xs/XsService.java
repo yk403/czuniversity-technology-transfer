@@ -3,6 +3,7 @@ package com.itts.personTraining.service.xs;
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
+import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.model.xs.Xs;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -87,8 +88,8 @@ public interface XsService extends IService<Xs> {
     List<StuDTO> getAll();
 
     /**
-     * 查询用户信息
+     * 查询学生综合信息
      * @return
      */
-    StuDTO getByYhId();
+    XsMsgDTO getByYhId();
 }
