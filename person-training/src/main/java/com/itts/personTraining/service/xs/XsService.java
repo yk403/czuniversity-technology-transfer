@@ -85,4 +85,10 @@ public interface XsService extends IService<Xs> {
      * @return
      */
     List<StuDTO> getAll();
+
+    /**
+     * 查询用户信息
+     * @return
+     */
+    StuDTO getByYhId();
 }

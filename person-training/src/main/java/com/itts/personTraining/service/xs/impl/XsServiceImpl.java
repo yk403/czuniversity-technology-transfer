@@ -177,6 +177,15 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     }
 
     /**
+     * 用户查询信息
+     * @return
+     */
+    @Override
+    public StuDTO getByYhId() {
+        return null;
+    }
+
+    /**
      * 新增学员
      * @param stuDTO
      * @return

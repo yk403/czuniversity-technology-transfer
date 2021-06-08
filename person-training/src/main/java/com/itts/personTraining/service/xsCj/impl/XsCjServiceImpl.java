@@ -7,6 +7,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
+import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
@@ -196,6 +198,23 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         xsCjDTO.setGxr(getUserId());
         BeanUtils.copyProperties(xsCjDTO,xsCj);
         return xsCjService.updateById(xsCj);
+    }
+
+    /**
+     * 学生成绩批量下发
+     * @param ids
+     * @return
+     */
+    @Override
+    public boolean issueBatch(List<Long> ids) {
+        log.info("【人才培养 - 学生成绩批量下发,ids:{}】",ids);
+        List<XsCj> xsCjList = xsCjMapper.selectBatchIds(ids);
+        Long userId = getUserId();
+        for (XsCj xsCj : xsCjList) {
+            xsCj.setGxr(userId);
+            xsCj.setSfxf(true);
+        }
+        return xsCjService.updateBatchById(xsCjList);
     }
 
     /**
