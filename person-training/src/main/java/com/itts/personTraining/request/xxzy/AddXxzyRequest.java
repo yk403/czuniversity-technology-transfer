@@ -77,6 +77,12 @@ public class AddXxzyRequest implements Serializable {
     private String jj;
 
     /**
+     * 展示图片
+     */
+    @ApiModelProperty(value = "展示图片")
+    private String zstp;
+
+    /**
      * 价格
      */
     @ApiModelProperty(value = "价格")
