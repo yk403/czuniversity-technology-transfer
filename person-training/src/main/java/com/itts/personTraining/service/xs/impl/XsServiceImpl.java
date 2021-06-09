@@ -241,13 +241,18 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
                     StuDTO dto = xsService.selectByCondition(null, null, getYhVo.getId());
-                    stuDTO.setId(dto.getId());
-                    if (updateXsAndAddPcXs(stuDTO)) {
-                        //TODO 后期优化选择用mq同步
-                        yhService.update(yh, token);
-                        return true;
+                    if (dto != null) {
+                        //说明学生表存在
+                        throw new ServiceException(STUDENT_NUMBER_EXISTS_ERROR);
+                    } else {
+                        //说明学生表不存在
+                        stuDTO.setYhId(getYhVo.getId());
+                        if (addXsAndPcXs(stuDTO)) {
+                            yhService.update(yh, token);
+                            return true;
+                        }
+                        return false;
                     }
-                    return false;
                 } else {
                     //说明用户表不存在该用户信息,则用户表新增,学生表查询判断是否存在
                     String xh = stuDTO.getXh();
