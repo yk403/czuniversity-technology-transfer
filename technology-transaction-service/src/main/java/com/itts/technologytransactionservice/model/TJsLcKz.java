@@ -90,4 +90,8 @@ public class TJsLcKz implements Serializable {
      * 报名id
      */
     private Integer bmId;
+    /**
+     * 成果需求状态
+     */
+    private Integer aStatus;
 }

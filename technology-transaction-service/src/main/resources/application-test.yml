@@ -97,13 +97,13 @@ logging:
             CdMapper: DEBUG
             FjzyMapper: DEBUG
             JsBmMapper: DEBUG
-            JsCgMapper: DEBUG
-            JsCjRcMapper: DEBUG
+            JsCgMapper: INFO
+            JsCjRcMapper: INFO
             JsLbMapper: DEBUG
-            JsLcKzMapper: DEBUG
+            JsLcKzMapper: INFO
             JsLyMapper: DEBUG
             JsShMapper: DEBUG
-            JsXqMapper: DEBUG
+            JsXqMapper: INFO
             LyBmMapper: DEBUG
             LyHdMapper: INFO
             LyHzMapper: DEBUG
