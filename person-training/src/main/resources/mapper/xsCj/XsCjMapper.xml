@@ -59,9 +59,9 @@
         join t_xy xy on (xy.id=xs.xy_id) left join t_kc kc on (kc.id=txkc.kc_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
         where txc.sfsc = false and txkc.sfsc = false and xs.sfsc = false and xs.sfsc = false and xy.sfsc = false and kc.sfsc = false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
-        <if test="xh != null and xh != ''"> and xs.xh like concat('%',#{xh},'%') </if>
-        <if test="xm != null and xm != ''"> and xs.xm like concat('%',#{xm},'%') </if>
-        <if test="xymc != null and xymc != ''"> and xy.xymc like concat('%',#{xymc},'%') </if>
+        <if test="xh != null and xh != ''"> and xs.xh like concat('%',trim(#{xh}),'%') </if>
+        <if test="xm != null and xm != ''"> and xs.xm like concat('%',trim(#{xm}),'%') </if>
+        <if test="xymc != null and xymc != ''"> and xy.xymc like concat('%',trim(#{xymc}),'%') </if>
         order by txc.cjsj desc
     </select>
     <select id="findXsCj" resultType="com.itts.personTraining.dto.XsCjDTO">
@@ -69,9 +69,9 @@
         from t_xs_cj txc left join t_xs xs on (txc.xs_id=xs.id) left join t_xy xy on (xy.id=xs.xy_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
         where txc.sfsc = false and xs.sfsc = false and xy.sfsc = false and pc.sfsc = false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
-        <if test="xh != null and xh != ''"> and xs.xh like concat('%',#{xh},'%') </if>
-        <if test="xm != null and xm != ''"> and xs.xm like concat('%',#{xm},'%') </if>
-        <if test="xymc != null and xymc != ''"> and xy.xymc like concat('%',#{xymc},'%') </if>
+        <if test="xh != null and xh != ''"> and xs.xh like concat('%',trim(#{xh}),'%') </if>
+        <if test="xm != null and xm != ''"> and xs.xm like concat('%',trim(#{xm}),'%') </if>
+        <if test="xymc != null and xymc != ''"> and xy.xymc like concat('%',trim(#{xymc}),'%') </if>
         order by txc.cjsj desc
     </select>
     <select id="selectByPcIdAndXsId" resultType="com.itts.personTraining.model.xsCj.XsCj">

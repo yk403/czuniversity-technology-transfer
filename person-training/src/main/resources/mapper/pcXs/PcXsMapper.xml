@@ -27,6 +27,7 @@
         select tpx.xs_id as id, xs.xh, xs.xm, xs.yzy
         from t_pc_xs tpx left join t_xs xs on (xs.id=tpx.xs_id)
         where pc_id = #{pcId} and xs.sfsc = false
+        order by xs.cjsj desc
     </select>
 
 </mapper>

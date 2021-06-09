@@ -144,7 +144,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     }
 
     /**
-     * 根据piId查询XsCj对象
+     * 根据pcId查询XsCj对象
      * @param pcId
      * @return
      */
@@ -215,6 +215,16 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             xsCj.setSfxf(true);
         }
         return xsCjService.updateBatchById(xsCjList);
+    }
+
+    /**
+     * 根据用户id查询学生成绩信息(前)
+     * @return
+     */
+    @Override
+    public XsCjDTO getByYhId() {
+
+        return null;
     }
 
     /**

@@ -34,8 +34,7 @@
         where sj.sfsc = false and xs.sfsc = false and pc.sfsc = false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
         <if test="sjlx != null and sjlx != ''"> and sj.sjlx = #{sjlx} </if>
-        <if test="name != null and name != ''"> and xs.xm like concat('%',#{name},'%') </if>
-        <if test="name != null and name != ''"> or xs.xh like concat('%',#{name},'%') </if>
+        <if test="name != null and name != ''"> and (xs.xm like concat('%',trim#{name},'%') or xs.xh like concat('%',trim(#{name}),'%'))</if>
         order by sj.cjsj desc
     </select>
     <select id="getById" resultType="com.itts.personTraining.dto.SjDTO">
