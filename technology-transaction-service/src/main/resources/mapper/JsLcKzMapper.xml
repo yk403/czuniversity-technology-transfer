@@ -4,7 +4,21 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsLcKzMapper">
 
     <select id="list" resultType="com.itts.technologytransactionservice.model.TJsLcKz">
-    select kz.id,kz.cjsj,kz.gxsj,lcsj,kz.hdzt,dqzgjg,fdjg,jjjgzt,lcdj,cg_id,xq_id,kz.dj,kz.bm_id
+    select kz.id,
+    kz.cjsj,
+    kz.gxsj,
+    lcsj,
+    kz.hdzt,
+    dqzgjg,
+    fdjg,
+    jjjgzt,
+    lcdj,
+    cg_id,
+    xq_id,
+    kz.dj,
+    kz.bm_id
+        <if test="map.type == 0">,xq.auction_status as aStatus</if>
+        <if test="map.type == 1">,cg.auction_status as aStatus</if>
     from t_js_lc_kz kz
         <if test="map.type == 0">left join t_js_xq xq on( xq.id = kz.xq_id )</if>
         <if test="map.type == 1">left join t_js_cg cg on( cg.id = kz.cg_id )</if>

@@ -118,4 +118,12 @@ public class TJsHd implements Serializable {
 	 * 按钮状态
 	 */
 	private String anzt;
+	/**
+	 * 流拍状态
+	 */
+	private Integer lpzt;
+	/**
+	 * 活动正在进行中的技术商品的soft(序号)
+	 */
+	private Integer zzjxz;
 }
