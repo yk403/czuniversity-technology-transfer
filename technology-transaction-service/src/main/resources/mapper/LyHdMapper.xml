@@ -8,17 +8,17 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             hd.is_delete != 2
-            <if test="map.hdmc != null"> and hd.hdmc != #{map.hdmc} </if>
-            <if test="map.hdtp != null"> and hd.hdtp != #{map.hdtp} </if>
-            <if test="map.hdtpmc != null"> and hd.hdtpmc != #{map.hdtpmc} </if>
-            <if test="map.hdzt != null"> and hd.hdzt != #{map.hdzt} </if>
-            <if test="map.hdnr != null"> and hd.hdnr != #{map.hdnr} </if>
-            <if test="map.bmjzsj != null"> and hd.bmjzsj != #{map.bmjzsj} </if>
-            <if test="map.hdfbzt != null"> and hd.hdfbzt != #{map.hdfbzt} </if>
-            <if test="map.zxdh != null"> and hd.zxdh != #{map.zxdh} </if>
-            <if test="map.hdgz != null"> and hd.hdgz != #{map.hdgz} </if>
-            <if test="map.hdlbt != null"> and hd.hdlbt != #{map.hdlbt} </if>
-            <if test="map.hdxq != null"> and hd.hdxq != #{map.hdxq} </if>
+            <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
+            <if test="map.hdtp != null"> and hd.hdtp = #{map.hdtp} </if>
+            <if test="map.hdtpmc != null"> and hd.hdtpmc = #{map.hdtpmc} </if>
+            <if test="map.hdzt != null"> and hd.hdzt = #{map.hdzt} </if>
+            <if test="map.hdnr != null"> and hd.hdnr = #{map.hdnr} </if>
+            <if test="map.bmjzsj != null"> and hd.bmjzsj = #{map.bmjzsj} </if>
+            <if test="map.hdfbzt != null"> and hd.hdfbzt = #{map.hdfbzt} </if>
+            <if test="map.zxdh != null"> and hd.zxdh = #{map.zxdh} </if>
+            <if test="map.hdgz != null"> and hd.hdgz = #{map.hdgz} </if>
+            <if test="map.hdlbt != null"> and hd.hdlbt = #{map.hdlbt} </if>
+            <if test="map.hdxq != null"> and hd.hdxq = #{map.hdxq} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -35,13 +35,13 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             hd.is_delete != 2
-            <if test="map.hdmc != null"> and hd.hdmc != #{map.hdmc} </if>
-            <if test="map.hdtp != null"> and hd.hdtp != #{map.hdtp} </if>
-            <if test="map.hdtpmc != null"> and hd.hdtpmc != #{map.hdtpmc} </if>
-            <if test="map.hdzt != null"> and hd.hdzt != #{map.hdzt} </if>
-            <if test="map.hdnr != null"> and hd.hdnr != #{map.hdnr} </if>
-            <if test="map.bmjzsj != null"> and hd.bmjzsj != #{map.bmjzsj} </if>
-            <if test="map.hdfbzt != null"> and hd.hdfbzt != #{map.hdfbzt} </if>
+            <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
+            <if test="map.hdtp != null"> and hd.hdtp = #{map.hdtp} </if>
+            <if test="map.hdtpmc != null"> and hd.hdtpmc = #{map.hdtpmc} </if>
+            <if test="map.hdzt != null"> and hd.hdzt = #{map.hdzt} </if>
+            <if test="map.hdnr != null"> and hd.hdnr = #{map.hdnr} </if>
+            <if test="map.bmjzsj != null"> and hd.bmjzsj = #{map.bmjzsj} </if>
+            <if test="map.hdfbzt != null"> and hd.hdfbzt = #{map.hdfbzt} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">

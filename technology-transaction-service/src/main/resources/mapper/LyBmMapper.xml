@@ -8,10 +8,10 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             bm.is_delete != 2
-            <if test="map.userId != null"> and bm.user_id != #{map.userId} </if>
-            <if test="map.hdId != null"> and bm.hd_id != #{map.hdId} </if>
-            <if test="map.shzt != null"> and bm.shzt != #{map.shzt} </if>
-            <if test="map.dwmc != null"> and bm.dwmc != #{map.dwmc} </if>
+            <if test="map.userId != null"> and bm.user_id = #{map.userId} </if>
+            <if test="map.hdId != null"> and bm.hd_id = #{map.hdId} </if>
+            <if test="map.shzt != null"> and bm.shzt = #{map.shzt} </if>
+            <if test="map.dwmc != null"> and bm.dwmc = #{map.dwmc} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -28,10 +28,10 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             bm.is_delete != 2
-            <if test="map.userId != null"> and bm.user_id != #{map.userId} </if>
-            <if test="map.hdId != null"> and bm.hd_id != #{map.hdId} </if>
-            <if test="map.shzt != null"> and bm.shzt != #{map.shzt} </if>
-            <if test="map.dwmc != null"> and bm.dwmc != #{map.dwmc} </if>
+            <if test="map.userId != null"> and bm.user_id = #{map.userId} </if>
+            <if test="map.hdId != null"> and bm.hd_id = #{map.hdId} </if>
+            <if test="map.shzt != null"> and bm.shzt = #{map.shzt} </if>
+            <if test="map.dwmc != null"> and bm.dwmc = #{map.dwmc} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">

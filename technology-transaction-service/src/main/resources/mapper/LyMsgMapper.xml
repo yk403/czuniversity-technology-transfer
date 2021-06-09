@@ -8,12 +8,12 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             msg.is_delete != 2
-            <if test="map.yhId != null"> and msg.yh_id != #{map.yhId} </if>
-            <if test="map.ryId != null"> and msg.ry_id != #{map.ryId} </if>
-            <if test="map.lynr != null"> and msg.lynr != #{map.lynr} </if>
-            <if test="map.hfnr != null"> and msg.hfnr != #{map.hfnr} </if>
-            <if test="map.lyzt != null"> and msg.lyzt != #{map.lyzt} </if>
-            <if test="map.lysj != null"> and msg.lysj != #{map.lysj} </if>
+            <if test="map.yhId != null"> and msg.yh_id = #{map.yhId} </if>
+            <if test="map.ryId != null"> and msg.ry_id = #{map.ryId} </if>
+            <if test="map.lynr != null"> and msg.lynr = #{map.lynr} </if>
+            <if test="map.hfnr != null"> and msg.hfnr = #{map.hfnr} </if>
+            <if test="map.lyzt != null"> and msg.lyzt = #{map.lyzt} </if>
+            <if test="map.lysj != null"> and msg.lysj = #{map.lysj} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -30,12 +30,12 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             msg.is_delete != 2
-            <if test="map.yhId != null"> and msg.yh_id != #{map.yhId} </if>
-            <if test="map.ryId != null"> and msg.ry_id != #{map.ryId} </if>
-            <if test="map.lynr != null"> and msg.lynr != #{map.lynr} </if>
-            <if test="map.hfnr != null"> and msg.hfnr != #{map.hfnr} </if>
-            <if test="map.lyzt != null"> and msg.lyzt != #{map.lyzt} </if>
-            <if test="map.lysj != null"> and msg.lysj != #{map.lysj} </if>
+            <if test="map.yhId != null"> and msg.yh_id = #{map.yhId} </if>
+            <if test="map.ryId != null"> and msg.ry_id = #{map.ryId} </if>
+            <if test="map.lynr != null"> and msg.lynr = #{map.lynr} </if>
+            <if test="map.hfnr != null"> and msg.hfnr = #{map.hfnr} </if>
+            <if test="map.lyzt != null"> and msg.lyzt = #{map.lyzt} </if>
+            <if test="map.lysj != null"> and msg.lysj = #{map.lysj} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">

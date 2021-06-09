@@ -8,10 +8,10 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             ry.is_delete != 2
-            <if test="map.zjId != null"> and ry.zj_id != #{map.zjId} </if>
-            <if test="map.hdId != null"> and ry.hd_id != #{map.hdId} </if>
-            <if test="map.zxkssj != null"> and ry.zxkssj != #{map.zxkssj} </if>
-            <if test="map.zxkssj != null"> and ry.zxkssj != #{map.zxkssj} </if>
+            <if test="map.zjId != null"> and ry.zj_id = #{map.zjId} </if>
+            <if test="map.hdId != null"> and ry.hd_id = #{map.hdId} </if>
+            <if test="map.zxkssj != null"> and ry.zxkssj = #{map.zxkssj} </if>
+            <if test="map.zxkssj != null"> and ry.zxkssj = #{map.zxkssj} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -28,10 +28,10 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             ry.is_delete != 2
-            <if test="map.zjId != null"> and ry.zj_id != #{map.zjId} </if>
-            <if test="map.hdId != null"> and ry.hd_id != #{map.hdId} </if>
-            <if test="map.zxkssj != null"> and ry.zxkssj != #{map.zxkssj} </if>
-            <if test="map.zxkssj != null"> and ry.zxkssj != #{map.zxkssj} </if>
+            <if test="map.zjId != null"> and ry.zj_id = #{map.zjId} </if>
+            <if test="map.hdId != null"> and ry.hd_id = #{map.hdId} </if>
+            <if test="map.zxkssj != null"> and ry.zxkssj = #{map.zxkssj} </if>
+            <if test="map.zxkssj != null"> and ry.zxkssj = #{map.zxkssj} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">

@@ -8,14 +8,14 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             ly.is_delete != 2
-            <if test="map.lyxq != null"> and ly.lyxq != #{map.lyxq} </if>
-            <if test="map.lymc != null"> and ly.lymc != #{map.lymc} </if>
-            <if test="map.lytp != null"> and ly.lytp != #{map.lytp} </if>
-            <if test="map.lytpmc != null"> and ly.lytpmc != #{map.lytpmc} </if>
-            <if test="map.hdId != null"> and ly.hd_id != #{map.hdId} </if>
-            <if test="map.lybt != null"> and ly.lybt != #{map.lybt} </if>
-            <if test="map.lyjj != null"> and ly.lyjj != #{map.lyjj} </if>
-            <if test="map.zbdz != null"> and ly.zbdz != #{map.zbdz} </if>
+            <if test="map.lyxq != null"> and ly.lyxq = #{map.lyxq} </if>
+            <if test="map.lymc != null"> and ly.lymc = #{map.lymc} </if>
+            <if test="map.lytp != null"> and ly.lytp = #{map.lytp} </if>
+            <if test="map.lytpmc != null"> and ly.lytpmc = #{map.lytpmc} </if>
+            <if test="map.hdId != null"> and ly.hd_id = #{map.hdId} </if>
+            <if test="map.lybt != null"> and ly.lybt = #{map.lybt} </if>
+            <if test="map.lyjj != null"> and ly.lyjj = #{map.lyjj} </if>
+            <if test="map.zbdz != null"> and ly.zbdz = #{map.zbdz} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -32,9 +32,9 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             ly.is_delete != 2
-            <if test="map.lyxq != null"> and ly.lyxq != #{map.lyxq} </if>
-            <if test="map.lymc != null"> and ly.lymc != #{map.lymc} </if>
-            <if test="map.lytp != null"> and ly.lytp != #{map.lytp} </if>
+            <if test="map.lyxq != null"> and ly.lyxq = #{map.lyxq} </if>
+            <if test="map.lymc != null"> and ly.lymc = #{map.lymc} </if>
+            <if test="map.lytp != null"> and ly.lytp = #{map.lytp} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">

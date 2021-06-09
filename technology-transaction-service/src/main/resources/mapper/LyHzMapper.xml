@@ -8,11 +8,11 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             hz.is_delete != 2
-            <if test="map.hzjs != null"> and hz.hzjs != #{map.hzjs} </if>
-            <if test="map.hztp != null"> and hz.hztp != #{map.hztp} </if>
-            <if test="map.hztpmc != null"> and hz.hztpmc != #{map.hztpmc} </if>
-            <if test="map.hzmc != null"> and hz.hzmc != #{map.hzmc} </if>
-                <if test="map.hdId != null"> and hz.hd_id != #{map.hdId} </if>
+            <if test="map.hzjs != null"> and hz.hzjs = #{map.hzjs} </if>
+            <if test="map.hztp != null"> and hz.hztp = #{map.hztp} </if>
+            <if test="map.hztpmc != null"> and hz.hztpmc = #{map.hztpmc} </if>
+            <if test="map.hzmc != null"> and hz.hzmc = #{map.hzmc} </if>
+                <if test="map.hdId != null"> and hz.hd_id = #{map.hdId} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -29,9 +29,9 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             hz.is_delete != 2
-            <if test="map.hzjs != null"> and hz.hzjs != #{map.hzjs} </if>
-            <if test="map.hztp != null"> and hz.hztp != #{map.hztp} </if>
-            <if test="map.hztpmc != null"> and hz.hztpmc != #{map.hztpmc} </if>
+            <if test="map.hzjs != null"> and hz.hzjs = #{map.hzjs} </if>
+            <if test="map.hztp != null"> and hz.hztp = #{map.hztp} </if>
+            <if test="map.hztpmc != null"> and hz.hztpmc = #{map.hztpmc} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">

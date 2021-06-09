@@ -7,8 +7,8 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             zp.is_delete != 2
-            <if test="map.zpjj != null"> and zp.zpjj != #{map.zpjj} </if>
-            <if test="map.zplb != null"> and zp.zplb != #{map.zplb} </if>
+            <if test="map.zpjj != null"> and zp.zpjj = #{map.zpjj} </if>
+            <if test="map.zplb != null"> and zp.zplb = #{map.zplb} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -25,8 +25,8 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             zp.is_delete != 2
-            <if test="map.zpjj != null"> and zp.zpjj != #{map.zpjj} </if>
-            <if test="map.zplb != null"> and zp.zplb != #{map.zplb} </if>
+            <if test="map.zpjj != null"> and zp.zpjj = #{map.zpjj} </if>
+            <if test="map.zplb != null"> and zp.zplb = #{map.zplb} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">

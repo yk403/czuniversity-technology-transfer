@@ -54,7 +54,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
      */
     @Override
     public PageInfo<TJsCg> findJsCgFront(Map<String, Object> params) {
-        log.info("【技术交易 - 分页条件查询成果(前台)】");
+        //log.info("【技术交易 - 分页条件查询成果(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsCg> list = jsCgMapper.findJsCgFront(query);

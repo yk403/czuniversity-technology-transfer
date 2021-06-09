@@ -92,7 +92,7 @@ logging:
             BackOssMapper: DEBUG
             CdMapper: DEBUG
             FjzyMapper: DEBUG
-            JsBmMapper: DEBUG
+            JsBmMapper: INFO
             JsCgMapper: INFO
             JsCjRcMapper: INFO
             JsLbMapper: DEBUG
@@ -101,7 +101,7 @@ logging:
             JsShMapper: DEBUG
             JsXqMapper: INFO
             LyBmMapper: DEBUG
-            LyHdMapper: INFO
+            LyHdMapper: DEBUG
             LyHzMapper: DEBUG
             LyLtMapper: DEBUG
             LyLyMapper: DEBUG
