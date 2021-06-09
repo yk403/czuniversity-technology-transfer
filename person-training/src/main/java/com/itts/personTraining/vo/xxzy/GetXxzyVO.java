@@ -80,6 +80,12 @@ public class GetXxzyVO implements Serializable {
     private String jj;
 
     /**
+     * 展示图片
+     */
+    @ApiModelProperty(value = "展示图片")
+    private String zstp;
+
+    /**
      * 浏览量
      */
     @ApiModelProperty(value = "浏览量")
