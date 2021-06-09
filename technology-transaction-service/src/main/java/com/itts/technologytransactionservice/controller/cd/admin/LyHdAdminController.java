@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
@@ -63,7 +64,7 @@ public class LyHdAdminController {
         if (!lyHdAdminService.saveHd(lyHdDto)) {
             throw new WebException(INSERT_FAIL);
         }
-        return ResponseUtil.success("报名成功");
+        return ResponseUtil.success("保存成功");
     }
 /*    *
      * 更新课程
@@ -74,8 +75,8 @@ public class LyHdAdminController {
 
         @PutMapping("/update")
         @ApiOperation(value = "更新报名")
-        public ResponseUtil update(@RequestBody LyHd lyHd) throws WebException {
-            Long id = lyHd.getId();
+        public ResponseUtil update(@RequestBody LyHdDto lyHdDto) throws WebException {
+            Long id = lyHdDto.getId();
             //检查参数是否合法
             if (id == null ) {
                 throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
@@ -85,12 +86,33 @@ public class LyHdAdminController {
                 throw new WebException(SYSTEM_NOT_FIND_ERROR);
             }
             //更新数据
-        if (!lyHdAdminService.updateById(lyHd)) {
+        if (!lyHdAdminService.updateHd(lyHdDto)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新课程成功!");
 
     }
+    /**
+    * @Description: 发布活动接口
+    * @Param: [lyHdDto]
+    * @return: com.itts.common.utils.common.ResponseUtil
+    * @Author: yukai
+    * @Date: 2021/6/9
+    */
+    /**
+     * 培养计划批量下发
+     * @param ids
+     * @return
+     */
+    @PutMapping("/update/issueBatch")
+    @ApiOperation(value = "路演活动批量下发")
+    public ResponseUtil issueBatch(@RequestBody List<Long> ids) {
+        if (!lyHdAdminService.issueBatch(ids)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("培养计划统一下发成功!");
+    }
+
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete/{id}")
     public ResponseUtil delete(@PathVariable("id") Long id) {

@@ -7,7 +7,7 @@
         from t_ly_msg msg left join t_yh yh on (yh.id = msg.yh_id) left join t_ly_ry ry on(ry.id = msg.ry_id)
         <where>
             <!--后台能查询0或者1的数据 -->
-            msg.is_delete != 2
+            msg.is_delete = 0
             <if test="map.yhId != null"> and msg.yh_id = #{map.yhId} </if>
             <if test="map.ryId != null"> and msg.ry_id = #{map.ryId} </if>
             <if test="map.lynr != null"> and msg.lynr = #{map.lynr} </if>
@@ -29,7 +29,7 @@
         from t_ly_msg msg left join t_yh yh on (yh.id = msg.yh_id) left join t_ly_ry ry on(ry.id = msg.ry_id)
         <where>
             <!--后台能查询0或者1的数据 -->
-            msg.is_delete != 2
+            msg.is_delete = 0
             <if test="map.yhId != null"> and msg.yh_id = #{map.yhId} </if>
             <if test="map.ryId != null"> and msg.ry_id = #{map.ryId} </if>
             <if test="map.lynr != null"> and msg.lynr = #{map.lynr} </if>

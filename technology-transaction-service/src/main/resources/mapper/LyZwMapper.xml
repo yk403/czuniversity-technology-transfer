@@ -7,7 +7,7 @@
         from t_ly_zw zw
         <where>
             <!--后台能查询0或者1的数据 -->
-            zw.is_delete != 2
+            zw.is_delete = 0
             <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
         </where>
         <choose>
@@ -24,7 +24,7 @@
         from t_ly_zw zw
         <where>
             <!--后台能查询0或者1的数据 -->
-            zw.is_delete != 2
+            zw.is_delete = 0
             <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
         </where>
         <choose>

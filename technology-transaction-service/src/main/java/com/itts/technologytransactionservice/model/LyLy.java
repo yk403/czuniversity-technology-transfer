@@ -84,4 +84,8 @@ public class  LyLy implements Serializable {
      * 直播地址
      */
     private String zbdz;
+    /**
+     * 企业类型
+     */
+    private String qylx;
 }

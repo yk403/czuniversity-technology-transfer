@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,6 +81,60 @@ public class LyHdAdminServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implemen
             return false;
         }
     }
+
+    /**
+     * 更新活动
+     * @param
+     * @return
+     */
+    @Override
+    public boolean updateHd(LyHdDto lyHdDto) {
+        LyHd lyHd = new LyHd();
+        BeanUtils.copyProperties(lyHdDto,lyHd);
+        //保存附件
+        if (!CollectionUtils.isEmpty(lyHdDto.getFjzyList())) {
+            //前端传过来的附件列表
+            //后端查询出附件列表
+            Map<String,Object> fjzymap=new HashMap<>();
+            fjzymap.put("fjzyId",lyHdDto.getHdlbt());
+            List<Fjzy> dblist = fjzyMapper.list(fjzymap);
+            //判空，删除掉旧的附件
+            if(dblist.size()>0) {
+                dblist.forEach(item->{
+                    fjzyMapper.deleteById(item);
+                });
+            }
+            String fjzyId = CommonUtils.generateUUID();
+            lyHd.setHdlbt(fjzyId);
+            List<Fjzy>fjzyList=lyHdDto.getFjzyList();
+            for (Fjzy fjzyDto: fjzyList) {
+                Fjzy fjzy = new Fjzy();
+                BeanUtils.copyProperties(fjzyDto, fjzy);
+
+                fjzy.setFjzyId(fjzyId);
+                fjzyMapper.insert(fjzy);
+
+            }
+
+            };
+
+
+        if(updateById(lyHd)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean issueBatch(List<Long> ids) {
+        log.info("【人才培养 - 培养计划批量下发,ids:{}】",ids);
+        List<LyHd> lyHds = lyHdMapper.selectBatchIds(ids);
+        for (LyHd lyHd : lyHds) {
+            lyHd.setHdfbzt(1);
+        }
+        return updateBatchById(lyHds);
+    }
 //    *
 //     * 获取当前用户id
 //     * @return
@@ -93,4 +149,5 @@ public class LyHdAdminServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implemen
         }
         return userId;
     }
+
 }

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.technologytransactionservice.model.LyHd;
 import com.itts.technologytransactionservice.model.LyHdDto;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,4 +21,8 @@ public interface LyHdAdminService extends IService<LyHd> {
 
     Boolean saveHd(LyHdDto lyHdDto);
     Long getUserId();
+
+    boolean updateHd(LyHdDto lyHdDto);
+
+    boolean issueBatch(List<Long> ids);
 }

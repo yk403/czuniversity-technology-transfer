@@ -7,7 +7,7 @@
         from t_ly_bm bm left join t_ly_hd hd on (bm.hd_id = hd.id)
         <where>
             <!--后台能查询0或者1的数据 -->
-            bm.is_delete != 2
+            bm.is_delete = 0
             <if test="map.userId != null"> and bm.user_id = #{map.userId} </if>
             <if test="map.hdId != null"> and bm.hd_id = #{map.hdId} </if>
             <if test="map.shzt != null"> and bm.shzt = #{map.shzt} </if>
@@ -27,7 +27,7 @@
         from t_ly_bm bm
         <where>
             <!--后台能查询0或者1的数据 -->
-            bm.is_delete != 2
+            bm.is_delete = 0
             <if test="map.userId != null"> and bm.user_id = #{map.userId} </if>
             <if test="map.hdId != null"> and bm.hd_id = #{map.hdId} </if>
             <if test="map.shzt != null"> and bm.shzt = #{map.shzt} </if>

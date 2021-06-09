@@ -7,7 +7,7 @@
         from t_ly_hd hd
         <where>
             <!--后台能查询0或者1的数据 -->
-            hd.is_delete != 2
+            hd.is_delete = 0
             <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
             <if test="map.hdtp != null"> and hd.hdtp = #{map.hdtp} </if>
             <if test="map.hdtpmc != null"> and hd.hdtpmc = #{map.hdtpmc} </if>
@@ -30,11 +30,11 @@
         </choose>
     </select>
     <select id="findLyHdBack" resultType="com.itts.technologytransactionservice.model.LyHd">
-        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt,bmkssj,hdjssj,hdkssj,hdfbzt,hdnr,lyqy,czqy,zplb,fwbnr
+        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt,bmkssj,hdjssj,hdkssj,hdfbzt,hdnr,lyqy,czqy,zplb,zxdh,hdgz,hdlbt,hdxq,fwbnr
         from t_ly_hd hd
         <where>
             <!--后台能查询0或者1的数据 -->
-            hd.is_delete != 2
+            hd.is_delete = 0
             <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
             <if test="map.hdtp != null"> and hd.hdtp = #{map.hdtp} </if>
             <if test="map.hdtpmc != null"> and hd.hdtpmc = #{map.hdtpmc} </if>

@@ -7,7 +7,7 @@
         from t_ly_ry ry left join t_ly_hd hd on (hd.id = ry.hd_id) left join t_zj zj on (zj.id = ry.zj_id)
         <where>
             <!--后台能查询0或者1的数据 -->
-            ry.is_delete != 2
+            ry.is_delete = 0
             <if test="map.zjId != null"> and ry.zj_id = #{map.zjId} </if>
             <if test="map.hdId != null"> and ry.hd_id = #{map.hdId} </if>
             <if test="map.zxkssj != null"> and ry.zxkssj = #{map.zxkssj} </if>
@@ -27,7 +27,7 @@
         from t_ly_ry ry left join t_ly_hd hd on (hd.id = ry.hd_id) left join t_zj zj on (zj.id = ry.zj_id)
         <where>
             <!--后台能查询0或者1的数据 -->
-            ry.is_delete != 2
+            ry.is_delete = 0
             <if test="map.zjId != null"> and ry.zj_id = #{map.zjId} </if>
             <if test="map.hdId != null"> and ry.hd_id = #{map.hdId} </if>
             <if test="map.zxkssj != null"> and ry.zxkssj = #{map.zxkssj} </if>

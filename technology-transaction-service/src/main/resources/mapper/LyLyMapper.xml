@@ -7,7 +7,7 @@
         from t_ly_ly ly
         <where>
             <!--后台能查询0或者1的数据 -->
-            ly.is_delete != 2
+            ly.is_delete = 0
             <if test="map.lyxq != null"> and ly.lyxq = #{map.lyxq} </if>
             <if test="map.lymc != null"> and ly.lymc = #{map.lymc} </if>
             <if test="map.lytp != null"> and ly.lytp = #{map.lytp} </if>
@@ -31,7 +31,7 @@
         from t_ly_ly ly
         <where>
             <!--后台能查询0或者1的数据 -->
-            ly.is_delete != 2
+            ly.is_delete = 0
             <if test="map.lyxq != null"> and ly.lyxq = #{map.lyxq} </if>
             <if test="map.lymc != null"> and ly.lymc = #{map.lymc} </if>
             <if test="map.lytp != null"> and ly.lytp = #{map.lytp} </if>

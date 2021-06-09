@@ -63,7 +63,7 @@ public class LyBmAdminController {
         return ResponseUtil.success("报名成功");
     }
     /**
-     * 更新课程
+     * 更新报名
      *
      * @param lyBm
      * @return

@@ -7,7 +7,7 @@
         from t_ly_hz hz
         <where>
             <!--后台能查询0或者1的数据 -->
-            hz.is_delete != 2
+            hz.is_delete = 0
             <if test="map.hzjs != null"> and hz.hzjs = #{map.hzjs} </if>
             <if test="map.hztp != null"> and hz.hztp = #{map.hztp} </if>
             <if test="map.hztpmc != null"> and hz.hztpmc = #{map.hztpmc} </if>
@@ -28,7 +28,7 @@
         from t_ly_hz hz
         <where>
             <!--后台能查询0或者1的数据 -->
-            hz.is_delete != 2
+            hz.is_delete = 0
             <if test="map.hzjs != null"> and hz.hzjs = #{map.hzjs} </if>
             <if test="map.hztp != null"> and hz.hztp = #{map.hztp} </if>
             <if test="map.hztpmc != null"> and hz.hztpmc = #{map.hztpmc} </if>

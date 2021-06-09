@@ -2,7 +2,12 @@ package com.itts.technologytransactionservice.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.technologytransactionservice.model.Fjzy;
+import com.itts.technologytransactionservice.model.TJsBm;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -14,5 +19,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface FjzyMapper extends BaseMapper<Fjzy> {
-
+    List<Fjzy> list(@Param("map") Map map);
 }

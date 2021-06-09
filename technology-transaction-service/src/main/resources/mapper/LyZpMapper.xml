@@ -6,7 +6,7 @@
         from t_ly_zp zp
         <where>
             <!--后台能查询0或者1的数据 -->
-            zp.is_delete != 2
+            zp.is_delete = 0
             <if test="map.zpjj != null"> and zp.zpjj = #{map.zpjj} </if>
             <if test="map.zplb != null"> and zp.zplb = #{map.zplb} </if>
         </where>
@@ -24,7 +24,7 @@
         from t_ly_zp zp
         <where>
             <!--后台能查询0或者1的数据 -->
-            zp.is_delete != 2
+            zp.is_delete = 0
             <if test="map.zpjj != null"> and zp.zpjj = #{map.zpjj} </if>
             <if test="map.zplb != null"> and zp.zplb = #{map.zplb} </if>
         </where>
