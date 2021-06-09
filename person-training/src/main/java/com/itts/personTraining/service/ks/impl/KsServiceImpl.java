@@ -4,13 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KsDTO;
 import com.itts.personTraining.dto.KsExpDTO;
+import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.ksExp.KsExpMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.szKs.SzKsMapper;
 import com.itts.personTraining.mapper.szKsExp.SzKsExpMapper;
+import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.mapper.ks.KsMapper;
 import com.itts.personTraining.model.ksExp.KsExp;
@@ -37,6 +40,7 @@ import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.STUDENT_MSG_NOT_EXISTS_ERROR;
 
 /**
  * <p>
@@ -71,6 +75,8 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     private SzKsMapper szKsMapper;
     @Resource
     private PcXsMapper pcXsMapper;
+    @Resource
+    private XsMapper xsMapper;
 
     /**
      * 查询考试列表
@@ -259,6 +265,22 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             return true;
         }
         return false;
+    }
+
+    /**
+     * 根据用户id查询考试详情
+     * @return
+     */
+    @Override
+    public List<KsDTO> getByYhId() {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询考试详情】",userId);
+        XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
+        if (xsMsgDTO == null) {
+            throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+        }
+        List<KsDTO> ksDTOs = ksMapper.getByXsId(xsMsgDTO.getId());
+        return ksDTOs;
     }
 
     /**

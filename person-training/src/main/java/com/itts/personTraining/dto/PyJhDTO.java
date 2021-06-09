@@ -2,6 +2,7 @@ package com.itts.personTraining.dto;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -91,16 +92,10 @@ public class PyJhDTO {
     private String pygl;
 
     /**
-     * 附件
+     * 附件资源
      */
-    @ApiModelProperty(value = "附件")
-    private String fj;
-
-    /**
-     * 附件名称
-     */
-    @ApiModelProperty(value = "附件名称")
-    private String fjmc;
+    @ApiModelProperty(value = "附件资源")
+    private List<AddFjzyRequest> fjzys;
 
     /**
      * 是否下发(0:否;1:是)

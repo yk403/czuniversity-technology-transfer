@@ -34,6 +34,11 @@ public class PyJh implements Serializable {
     private Long pcId;
 
     /**
+     * 附件资源ID
+     */
+    private String fjzyId;
+
+    /**
      * 计划名称
      */
     private String jhmc;

@@ -40,5 +40,6 @@
             <if test="id != null">and ks.id = #{id}</if>
         </where>
     </select>
+    <select id="getByXsId" resultType="com.itts.personTraining.dto.KsDTO"></select>
 
 </mapper>
