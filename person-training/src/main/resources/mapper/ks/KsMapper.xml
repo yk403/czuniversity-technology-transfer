@@ -3,11 +3,18 @@
 <mapper namespace="com.itts.personTraining.mapper.ks.KsMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.ks.Ks">
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.dto.KsDTO">
         <id column="id" property="id" />
         <result column="pc_id" property="pcId" />
+        <result column="sj_id" property="sjId" />
+        <result column="type" property="type" />
+        <result column="pch" property="pch" />
         <result column="ksmc" property="ksmc" />
         <result column="kslx" property="kslx" />
+        <result column="ksrq" property="ksrq" />
+        <result column="ksdd" property="ksdd" />
+        <result column="kskssj" property="kskssj" />
+        <result column="ksjssj" property="ksjssj" />
         <result column="sfxf" property="sfxf" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
@@ -15,8 +22,39 @@
         <result column="gxsj" property="gxsj" />
         <result column="gxr" property="gxr" />
         <result column="xfsj" property="xfsj" />
+        <collection property="szIds" ofType="long">
+            <constructor>
+                <arg column="sz_id"/>
+            </constructor>
+        </collection>
+        <collection property="ksExps" resultMap="KsExpDTOListResultMap"/>
     </resultMap>
 
+    <resultMap id="KsExpDTOListResultMap" type="com.itts.personTraining.dto.KsExpDTO">
+        <id column="ks_exp_id" property="id" />
+        <id column="ks_id" property="ksId" />
+        <id column="xxjs_id" property="xxjsId" />
+        <id column="jylx" property="jylx" />
+        <id column="jxlmc" property="jxlmc" />
+        <id column="jsbh" property="jsbh" />
+        <id column="kc_id" property="kcId" />
+        <id column="kcdm" property="kcdm" />
+        <id column="kcmc" property="kcmc" />
+        <id column="ksrq" property="ksrq" />
+        <id column="kskssj" property="kskssj" />
+        <id column="ksjssj" property="ksjssj" />
+        <id column="sfsc" property="sfsc" />
+        <id column="cjsj" property="cjsj" />
+        <id column="cjr" property="cjr" />
+        <id column="gxsj" property="gxsj" />
+        <id column="gxr" property="gxr" />
+        <id column="xfsj" property="xfsj" />
+        <collection property="szIds" ofType="long">
+            <constructor>
+                <arg column="exp_sz_id"/>
+            </constructor>
+        </collection>
+    </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, pc_id, ksmc, kslx, sfxf, sfsc, cjsj, cjr, gxsj, gxr, xfsj
@@ -40,6 +78,8 @@
             <if test="id != null">and ks.id = #{id}</if>
         </where>
     </select>
-    <select id="getByXsId" resultType="com.itts.personTraining.dto.KsDTO"></select>
+    <select id="getByXsId" resultMap="BaseResultMap">
+
+    </select>
 
 </mapper>

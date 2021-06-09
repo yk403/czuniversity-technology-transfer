@@ -10,6 +10,7 @@ import com.itts.personTraining.dto.KsDTO;
 import com.itts.personTraining.dto.KsExpDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.ksExp.KsExpMapper;
+import com.itts.personTraining.mapper.ksXs.KsXsMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.szKs.SzKsMapper;
 import com.itts.personTraining.mapper.szKsExp.SzKsExpMapper;
@@ -26,6 +27,7 @@ import com.itts.personTraining.service.ksExp.KsExpService;
 import com.itts.personTraining.service.ksXs.KsXsService;
 import com.itts.personTraining.service.szKs.SzKsService;
 import com.itts.personTraining.service.szKsExp.SzKsExpService;
+import io.jsonwebtoken.lang.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +73,8 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     private SzKsService szKsService;
     @Autowired
     private KsXsService ksXsService;
+    @Resource
+    private KsXsMapper ksXsMapper;
     @Resource
     private SzKsMapper szKsMapper;
     @Resource
@@ -268,18 +272,27 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     }
 
     /**
-     * 根据用户id查询考试详情
+     * 根据用户id查询考试详情(前)
      * @return
      */
     @Override
     public List<KsDTO> getByYhId() {
         Long userId = getUserId();
         log.info("【人才培养 - 根据用户id:{}查询考试详情】",userId);
-        XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
-        if (xsMsgDTO == null) {
-            throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+        List<Ks> ksList = ksXsMapper.getKsIdAndTypeByYhId(userId);
+        if (Collections.isEmpty(ksList)) {
+            return java.util.Collections.EMPTY_LIST;
         }
-        List<KsDTO> ksDTOs = ksMapper.getByXsId(xsMsgDTO.getId());
+        List<KsDTO> ksDTOs = new ArrayList<>();
+        for (Ks ks : ksList) {
+            KsDTO ksDTO = get(ks.getId());
+            if (ks.getType() == 2) {
+                //继续教育考试
+                List<KsExpDTO> ksExpDTOs = ksExpMapper.getByCondition(null, ks.getId());
+                ksDTO.setKsExps(ksExpDTOs);
+            }
+            ksDTOs.add(ksDTO);
+        }
         return ksDTOs;
     }
 

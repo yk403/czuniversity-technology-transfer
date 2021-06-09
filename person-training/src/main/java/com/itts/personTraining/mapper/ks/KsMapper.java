@@ -34,7 +34,7 @@ public interface KsMapper extends BaseMapper<Ks> {
     KsDTO findById(@Param("id") Long id);
 
     /**
-     * 根据学生id查询考试详情
+     *
      * @param xsId
      * @return
      */

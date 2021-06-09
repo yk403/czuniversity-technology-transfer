@@ -32,6 +32,12 @@ public class PyJhDTO {
     private Long pcId;
 
     /**
+     * 附件资源ID
+     */
+    @ApiModelProperty(value = "附件资源ID")
+    private String fjzyId;
+
+    /**
      * 批次号
      */
     @ApiModelProperty(value = "批次号", required = true)

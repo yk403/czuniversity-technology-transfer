@@ -3,7 +3,6 @@ package com.itts.personTraining.controller.sj.admin;
 
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.personTraining.dto.KcDTO;
 import com.itts.personTraining.dto.SjDTO;
 import com.itts.personTraining.service.kc.KcService;
 import com.itts.personTraining.service.sj.SjService;

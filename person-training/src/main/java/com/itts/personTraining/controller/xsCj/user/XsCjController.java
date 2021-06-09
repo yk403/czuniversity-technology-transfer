@@ -10,10 +10,10 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
  * @Author: Austin
  * @Data: 2021/6/8
  * @Version: 1.0.0
- * @Description: 学生成绩前台
+ * @Description: 学生成绩门户
  */
 @RestController
 @RequestMapping(BASE_URL + "/v1/xsCj")
-@Api(value = "XsCjController", tags = "学生成绩前台")
+@Api(value = "XsCjController", tags = "学生成绩-门户")
 public class XsCjController {
 }

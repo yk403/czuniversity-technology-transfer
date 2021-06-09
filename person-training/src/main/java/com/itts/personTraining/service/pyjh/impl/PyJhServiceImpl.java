@@ -156,6 +156,35 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         pyJhDTO.setGxr(getUserId());
         PyJh pyJh = new PyJh();
         BeanUtils.copyProperties(pyJhDTO,pyJh);
+        if (!CollectionUtils.isEmpty(pyJhDTO.getFjzys())) {
+
+            List<AddFjzyRequest> fjzys = pyJhDTO.getFjzys();
+
+            String fjzyId = pyJh.getFjzyId();
+
+            //判断当前学习资源是否有附件资源
+            if (StringUtils.isNotBlank(fjzyId)) {
+
+                //删除当前所有的附件资源，增加新的附件资源
+                fjzyMapper.delete(new QueryWrapper<Fjzy>().eq("fjzy_id", pyJh.getFjzyId()));
+
+            } else {
+
+                fjzyId = CommonUtils.generateUUID();
+            }
+
+            for (AddFjzyRequest addFjzy : fjzys) {
+
+                Fjzy fjzy = new Fjzy();
+                BeanUtils.copyProperties(addFjzy, fjzy);
+
+                fjzy.setFjzyId(fjzyId);
+                fjzy.setCjr(getUserId());
+                fjzy.setCjsj(new Date());
+
+                fjzyMapper.insert(fjzy);
+            }
+        }
         return pyJhService.updateById(pyJh);
     }
 

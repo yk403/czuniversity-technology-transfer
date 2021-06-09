@@ -1,5 +1,7 @@
 package com.itts.personTraining.mapper.ksXs;
 
+import com.itts.personTraining.dto.KsDTO;
+import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.model.ksXs.KsXs;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -30,4 +32,10 @@ public interface KsXsMapper extends BaseMapper<KsXs> {
      */
     Long getNumByXsId(@Param("xsId") Long xsId);
 
+    /**
+     * 根据用户id查询考试id和类型集合
+     * @param yhId
+     * @return
+     */
+    List<Ks> getKsIdAndTypeByYhId(@Param("yhId") Long yhId);
 }
