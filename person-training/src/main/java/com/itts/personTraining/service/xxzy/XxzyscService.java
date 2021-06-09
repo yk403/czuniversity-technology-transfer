@@ -14,4 +14,14 @@ import com.itts.personTraining.model.xxzy.Xxzysc;
  */
 public interface XxzyscService extends IService<Xxzysc> {
 
+    /**
+     * 新增
+     */
+    Xxzysc add(Xxzysc xxzysc, Long userId);
+
+    /**
+     * 取消收藏
+     */
+    void delete(Long id);
+
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -26,7 +27,7 @@ public class Xxzysc implements Serializable {
     /**
      * 主键ID
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -59,5 +60,8 @@ public class Xxzysc implements Serializable {
      */
     private String kcmc;
 
-
+    /**
+     * 创建时间
+     */
+    private Date cjsj;
 }
