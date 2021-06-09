@@ -44,8 +44,8 @@
 	</select>
 
 	<select id="findJsXq" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status,sh.jszt as jszt
-		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id)
+		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status,sh.jszt as jszt,kz.lcdj as lcdj
+		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id) left join t_js_lc_kz kz on (xq.id = kz.xq_id)
 		<where>
 		<!--后台能查询0或者1的数据 -->
 		    xq.is_delete != 2

@@ -88,4 +88,8 @@ public class  LyLy implements Serializable {
      * 企业类型
      */
     private String qylx;
+    /**
+     * 联系方式
+     */
+    private String lxfs;
 }
