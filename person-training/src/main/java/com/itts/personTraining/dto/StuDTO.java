@@ -51,16 +51,16 @@ public class StuDTO {
     private List<Long> pcIds;
 
     /**
-     * 学院ID
-     */
-    @ApiModelProperty(value = "学院ID", required = true)
-    private Long xyId;
-
-    /**
      * 机构ID
      */
     @ApiModelProperty(value = "机构ID", required = true)
     private Long jgId;
+
+    /**
+     * 院系
+     */
+    @ApiModelProperty(value = "院系", required = true)
+    private String yx;
 
     /**
      * 教育类型（学历学位教育；职业教育；继续教育）

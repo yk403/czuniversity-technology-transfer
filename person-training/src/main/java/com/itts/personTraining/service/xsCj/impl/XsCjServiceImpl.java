@@ -165,22 +165,22 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
      * @param pcId
      * @param xh
      * @param xm
-     * @param xymc
+     * @param yx
      * @return
      */
     @Override
-    public PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String xymc) {
-        log.info("【人才培养 - 根据条件批次ID:{},学号:{},姓名:{},学院名称:{}分页查询学生成绩】",pcId,xh,xm,xymc);
+    public PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String yx) {
+        log.info("【人才培养 - 根据条件批次ID:{},学号:{},姓名:{},学院名称:{}分页查询学生成绩】",pcId,xh,xm,yx);
         //前台第一次展示暂无数据,以后批次ID必传
         PageHelper.startPage(pageNum,pageSize);
         List<XsCjDTO> xsCjDTOs = null;
         Pc pc = pcService.get(pcId);
         if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
             //学历学位教育
-            xsCjDTOs = xsCjMapper.findXsKcCj(pcId,xh,xm,xymc);
+            xsCjDTOs = xsCjMapper.findXsKcCj(pcId,xh,xm,yx);
         } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
             //继续教育
-            xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,xymc);
+            xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,yx);
         }
         return new PageInfo<>(xsCjDTOs);
     }
