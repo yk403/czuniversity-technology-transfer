@@ -3,7 +3,6 @@ package com.itts.personTraining.model.yh;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -79,6 +78,11 @@ public class Yh implements Serializable {
      * 用户邮箱
      */
     private String yhyx;
+
+    /**
+     * 用户积分
+     */
+    private Integer yhjf;
 
     /**
      * 是否删除

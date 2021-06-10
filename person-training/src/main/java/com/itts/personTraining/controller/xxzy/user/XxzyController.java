@@ -1,16 +1,20 @@
 package com.itts.personTraining.controller.xxzy.user;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.xxzy.Xxzy;
+import com.itts.personTraining.request.ddxfjl.PayDdxfjlRequest;
+import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
 import com.itts.personTraining.vo.xxzy.GetXxzyVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -65,5 +69,73 @@ public class XxzyController {
         xxzyService.updateById(xxzy);
 
         return ResponseUtil.success(vo);
+    }
+
+    @ApiOperation(value = "购买学习资源")
+    @PostMapping("/buy/")
+    public ResponseUtil buy(@RequestBody BuyXxzyRequest buyXxzyRequest, HttpServletRequest request) {
+
+        checkBuyRequest(buyXxzyRequest);
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if(loginUser == null){
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        ResponseUtil result = xxzyService.buy(buyXxzyRequest, request.getHeader("token"));
+
+        return result;
+    }
+
+    @ApiOperation(value = "支付金额")
+    @PostMapping("/pay/")
+    public ResponseUtil pay(@RequestBody PayDdxfjlRequest payDdxfjlRequest, HttpServletRequest request){
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if(loginUser == null){
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        ResponseUtil result = xxzyService.pay(payDdxfjlRequest, request.getHeader("token"));
+
+        return result;
+    }
+
+    /**
+     * 校验购买参数是否合法
+     */
+    private void checkBuyRequest(BuyXxzyRequest buyXxzyRequest) {
+
+        if (buyXxzyRequest == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (buyXxzyRequest.getSpId() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(buyXxzyRequest.getSpmc())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(buyXxzyRequest.getZffs())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (buyXxzyRequest.getZsl() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (buyXxzyRequest.getZje() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (buyXxzyRequest.getSjzfje() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(buyXxzyRequest.getLxdh())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
     }
 }
