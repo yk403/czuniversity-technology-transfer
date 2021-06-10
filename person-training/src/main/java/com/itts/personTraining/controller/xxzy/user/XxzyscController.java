@@ -87,8 +87,8 @@ public class XxzyscController {
 
         List<Xxzysc> list = xxzyscService.list(new QueryWrapper<Xxzysc>().
                 eq("yh_id", loginUser.getUserId())
-                .like(StringUtils.isNotBlank(courseName), "kcmc", courseName)
-                .like(StringUtils.isNotBlank(name), "xxzy_mc", name)
+                .like(StringUtils.isNotBlank(courseName), "kcmc", courseName.trim())
+                .like(StringUtils.isNotBlank(name), "xxzy_mc", name.trim())
                 .orderByDesc("cjsj"));
 
         PageInfo pageInfo = new PageInfo(list);

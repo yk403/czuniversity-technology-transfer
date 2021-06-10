@@ -80,7 +80,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         }
 
         if (StringUtils.isNotBlank(condition)) {
-            query.like("mc", condition);
+            query.like("mc", condition.trim());
         }
 
         query.orderByDesc("cjsj");
@@ -120,7 +120,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         }
 
         if (StringUtils.isNotBlank(condition)) {
-            query.like("mc", condition);
+            query.like("mc", condition.trim());
         }
 
         query.orderByDesc("cjsj");
