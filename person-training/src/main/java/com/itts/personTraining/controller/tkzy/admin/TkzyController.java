@@ -88,7 +88,7 @@ public class TkzyController {
         }
 
         if (StringUtils.isNotBlank(condition)) {
-            query.like("mc", condition);
+            query.like("mc", condition.trim());
         }
 
         query.orderByDesc("cjsj");

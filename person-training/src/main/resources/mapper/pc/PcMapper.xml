@@ -32,6 +32,12 @@
         </foreach>
 
     </select>
+    <select id="findKcListById" resultType="com.itts.personTraining.model.kc.Kc">
+        select kc.*
+        from t_kc kc
+        where kc.sfsc = false
+          and kc.xylx = (select pc.xylx from t_pc pc where pc.sfsc = false and pc.id = #{id})
+    </select>
 
     <update id="updatePcList"  parameterType="java.util.List">
         update sfsc =true

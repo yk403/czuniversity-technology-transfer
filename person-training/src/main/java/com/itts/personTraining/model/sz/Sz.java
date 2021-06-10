@@ -36,9 +36,9 @@ public class Sz implements Serializable {
     private Long yhId;
 
     /**
-     * 学院id
+     * 院系
      */
-    private Long xyId;
+    private String yx;
 
     /**
      * 所属机构id

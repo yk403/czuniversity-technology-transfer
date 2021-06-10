@@ -88,13 +88,7 @@ public class JjrpxjhServiceImpl extends ServiceImpl<JjrpxjhMapper, Jjrpxjh> impl
 
                     GetJjrpxjhSzVO szVO = new GetJjrpxjhSzVO();
                     BeanUtils.copyProperties(obj, szVO);
-
-                    Xy xy = xyMapper.selectById(obj.getXyId());
-
-                    if (xy != null) {
-                        szVO.setXyMc(xy.getXymc());
-                    }
-
+                    szVO.setXyMc(obj.getYx());
                     return szVO;
                 }).collect(Collectors.toList());
 

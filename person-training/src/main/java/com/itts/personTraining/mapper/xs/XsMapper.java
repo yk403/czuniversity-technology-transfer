@@ -2,6 +2,7 @@ package com.itts.personTraining.mapper.xs;
 
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
+import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.model.xs.Xs;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -33,4 +34,11 @@ public interface XsMapper extends BaseMapper<Xs> {
      * @return
      */
     List<StuDTO> findXsList(@Param("pcId") Long pcId, @Param("xslbmc") String xslbmc, @Param("jyxs") String jyxs, @Param("name") String name);
+
+    /**
+     * 通过用户id查询学生信息
+     * @param yhId
+     * @return
+     */
+    XsMsgDTO getByYhId(@Param("yhId") Long yhId);
 }

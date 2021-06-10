@@ -80,6 +80,12 @@ public class GetXxzyVO implements Serializable {
     private String jj;
 
     /**
+     * 展示图片
+     */
+    @ApiModelProperty(value = "展示图片")
+    private String zstp;
+
+    /**
      * 浏览量
      */
     @ApiModelProperty(value = "浏览量")
@@ -178,5 +184,11 @@ public class GetXxzyVO implements Serializable {
      * 是否已购买
      */
     @ApiModelProperty(value = "是否已购买")
-    private Boolean buyFlag;
+    private Boolean sfgm;
+
+    /**
+     * 是否已收藏
+     */
+    @ApiModelProperty(value = "是否已收藏")
+    private Boolean sfshouc;
 }

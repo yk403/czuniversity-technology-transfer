@@ -4,13 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KsDTO;
 import com.itts.personTraining.dto.KsExpDTO;
+import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.ksExp.KsExpMapper;
+import com.itts.personTraining.mapper.ksXs.KsXsMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.szKs.SzKsMapper;
 import com.itts.personTraining.mapper.szKsExp.SzKsExpMapper;
+import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.mapper.ks.KsMapper;
 import com.itts.personTraining.model.ksExp.KsExp;
@@ -23,6 +27,7 @@ import com.itts.personTraining.service.ksExp.KsExpService;
 import com.itts.personTraining.service.ksXs.KsXsService;
 import com.itts.personTraining.service.szKs.SzKsService;
 import com.itts.personTraining.service.szKsExp.SzKsExpService;
+import io.jsonwebtoken.lang.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +42,7 @@ import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.STUDENT_MSG_NOT_EXISTS_ERROR;
 
 /**
  * <p>
@@ -68,9 +74,13 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     @Autowired
     private KsXsService ksXsService;
     @Resource
+    private KsXsMapper ksXsMapper;
+    @Resource
     private SzKsMapper szKsMapper;
     @Resource
     private PcXsMapper pcXsMapper;
+    @Resource
+    private XsMapper xsMapper;
 
     /**
      * 查询考试列表
@@ -259,6 +269,32 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             return true;
         }
         return false;
+    }
+
+    /**
+     * 根据用户id查询考试详情(前)
+     * @return
+     */
+    @Override
+    public List<KsDTO> getByYhId() {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询考试详情】",userId);
+        List<Ks> ksList = ksXsMapper.getKsIdAndTypeByYhId(userId);
+        if (Collections.isEmpty(ksList)) {
+            return java.util.Collections.EMPTY_LIST;
+        }
+        List<KsDTO> ksDTOs = new ArrayList<>();
+        for (Ks ks : ksList) {
+            KsDTO ksDTO = get(ks.getId());
+            if (ks.getType() == 2) {
+                //继续教育考试
+                List<KsExpDTO> ksExpDTOs = ksExpMapper.getByCondition(null, ks.getId());
+                ksDTO.setKsExps(ksExpDTOs);
+            }
+            ksDTOs.add(ksDTO);
+        }
+
+        return ksDTOs;
     }
 
     /**

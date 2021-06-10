@@ -18,6 +18,7 @@
         <result column="jg" property="jg"/>
         <result column="zz" property="zz"/>
         <result column="fjzy_id" property="fjzyId"/>
+        <result column="zstp" property="zstp" />
         <result column="sffx" property="sffx"/>
         <result column="sfsj" property="sfsj"/>
         <result column="sjsj" property="sjsj"/>
@@ -30,8 +31,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id
-        , mc, bm, kc_id, kcmc, zylb, zyyjfl, zyejfl, zylx, jj, lll, jg, zz, fjzy_id, sffx, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
+        id, mc, bm, kc_id, kcmc, zylb, zyyjfl, zyejfl, zylx, jj, lll, jg, zz, fjzy_id, sffx, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

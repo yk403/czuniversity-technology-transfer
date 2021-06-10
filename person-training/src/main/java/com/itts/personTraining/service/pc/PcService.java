@@ -2,6 +2,7 @@ package com.itts.personTraining.service.pc;
 
 
 import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pc.Pc;
 
 import java.util.List;
@@ -62,4 +63,10 @@ public interface PcService  {
      */
     List<Pc> getAll();
 
+    /**
+     * 根据id查询课程信息列表
+     * @param id
+     * @return
+     */
+    List<Kc> getKcListById(Long id);
 }

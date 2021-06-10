@@ -62,16 +62,10 @@ public class XsCjDTO {
     private String xm;
 
     /**
-     * 学院id
+     * 院系
      */
-    @ApiModelProperty(value = "学院id")
-    private Long xyId;
-
-    /**
-     * 学院名称
-     */
-    @ApiModelProperty(value = "学院名称")
-    private String xymc;
+    @ApiModelProperty(value = "院系")
+    private String yx;
 
     /**
      * 原专业

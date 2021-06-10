@@ -13,8 +13,11 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.mapper.ksXs.KsXsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
+import com.itts.personTraining.mapper.sj.SjMapper;
+import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pcXs.PcXs;
 import com.itts.personTraining.model.xs.Xs;
@@ -68,6 +71,12 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     private PcXsMapper pcXsMapper;
     @Autowired
     private YhService yhService;
+    @Resource
+    private KsXsMapper ksXsMapper;
+    @Resource
+    private XsCjMapper xsCjMapper;
+    @Resource
+    private SjMapper sjMapper;
     @Autowired
     private RedisTemplate redisTemplate;
     @Resource
@@ -184,8 +193,18 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     @Override
     public XsMsgDTO getByYhId() {
         log.info("【人才培养 - 查询学生综合信息】");
-
-        return null;
+        XsMsgDTO xsMsgDTO = xsMapper.getByYhId(getUserId());
+        Long xsId = xsMsgDTO.getId();
+        if (xsId == null) {
+            throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+        }
+        xsMsgDTO.setKstz(ksXsMapper.getNumByXsId(xsId));
+        xsMsgDTO.setCjtz(xsCjMapper.getNumByXsId(xsId));
+        xsMsgDTO.setSjtz(sjMapper.getNumByXsId(xsId));
+        //TODO: 暂时假数据
+        xsMsgDTO.setXftz(0L);
+        xsMsgDTO.setQttz(0L);
+        return xsMsgDTO;
     }
 
     /**
@@ -222,13 +241,19 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
                     StuDTO dto = xsService.selectByCondition(null, null, getYhVo.getId());
-                    stuDTO.setId(dto.getId());
-                    if (updateXsAndAddPcXs(stuDTO)) {
-                        //TODO 后期优化选择用mq同步
-                        yhService.update(yh, token);
-                        return true;
+                    if (dto != null) {
+                        //说明学生表存在,则更新
+                        stuDTO.setId(dto.getId());
+                        return updateXsAndAddPcXs(stuDTO);
+                    } else {
+                        //说明学生表不存在
+                        stuDTO.setYhId(getYhVo.getId());
+                        if (addXsAndPcXs(stuDTO)) {
+                            yhService.update(yh, token);
+                            return true;
+                        }
+                        return false;
                     }
-                    return false;
                 } else {
                     //说明用户表不存在该用户信息,则用户表新增,学生表查询判断是否存在
                     String xh = stuDTO.getXh();

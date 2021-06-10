@@ -43,8 +43,10 @@ public class KcAdminController {
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "kclx", required = false) String kclx,
-                                   @RequestParam(value = "name", required = false) String name) {
-        return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name));
+                                   @RequestParam(value = "name", required = false) String name,
+                                   @RequestParam(value = "jylx", required = false) String jylx,
+                                   @RequestParam(value = "xylx", required = false) String xylx) {
+        return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name,jylx,xylx));
     }
 
     /**

@@ -114,6 +114,12 @@ public class Xxzy implements Serializable {
     private String fjzyId;
 
     /**
+     * 展示图片
+     */
+    @ApiModelProperty(value = "展示图片")
+    private String zstp;
+
+    /**
      * 是否分享
      */
     @ApiModelProperty(value = "是否分享")
