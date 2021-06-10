@@ -50,9 +50,9 @@ public class  LyLy implements Serializable {
     private String lyxq;
 
     /**
-     * 路演名称
+     * 企业名称
      */
-    private String lymc;
+    private String qymc;
 
     /**
      * 路演图片

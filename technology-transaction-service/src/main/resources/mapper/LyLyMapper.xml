@@ -3,13 +3,13 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyLyMapper">
 
     <select id="findLyLyFront" resultType="com.itts.technologytransactionservice.model.LyLy">
-        select ly.id as id,cjsj,gxsj,lyxq,lymc,lytp,lytpmc,hd_id,lybt,lyjj,zbdz,qylx,lxfs
+        select ly.id as id,cjsj,gxsj,lyxq,qymc,lytp,lytpmc,hd_id,lybt,lyjj,zbdz,qylx,lxfs
         from t_ly_ly ly
         <where>
             <!--后台能查询0或者1的数据 -->
             ly.is_delete = 0
             <if test="map.lyxq != null"> and ly.lyxq = #{map.lyxq} </if>
-            <if test="map.lymc != null"> and ly.lymc = #{map.lymc} </if>
+            <if test="map.qymc != null"> and ly.qymc = #{map.qymc} </if>
             <if test="map.lxfs != null"> and ly.lxfs = #{map.lxfs} </if>
             <if test="map.qylx != null"> and ly.qylx = #{map.qylx} </if>
             <if test="map.lytp != null"> and ly.lytp = #{map.lytp} </if>
@@ -29,13 +29,13 @@
         </choose>
     </select>
     <select id="findLyLyBack" resultType="com.itts.technologytransactionservice.model.LyLy">
-        select ly.id as id,cjsj,gxsj,lyxq,lymc,lytp,lytpmc,hd_id,lybt,lyjj,zbdz,qylx,lxfs
+        select ly.id as id,cjsj,gxsj,lyxq,qymc,lytp,lytpmc,hd_id,lybt,lyjj,zbdz,qylx,lxfs
         from t_ly_ly ly
         <where>
             <!--后台能查询0或者1的数据 -->
             ly.is_delete = 0
             <if test="map.lyxq != null"> and ly.lyxq = #{map.lyxq} </if>
-            <if test="map.lymc != null"> and ly.lymc = #{map.lymc} </if>
+            <if test="map.qymc != null"> and ly.qymc = #{map.qymc} </if>
             <if test="map.lxfs != null"> and ly.lxfs = #{map.lxfs} </if>
             <if test="map.qylx != null"> and ly.qylx = #{map.qylx} </if>
             <if test="map.lytp != null"> and ly.lytp = #{map.lytp} </if>
