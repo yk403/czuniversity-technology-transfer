@@ -58,6 +58,13 @@ spring:
   sleuth:
     sampler:
       probability: 1.0 #采样的百分比
+  #rabbitMQ
+  rabbitmq:
+    host: 172.21.25.6
+    port: 5672
+    virtual-host: /test
+    password: root
+    username: root
 #设置日志级别,ERROR/WARN/INFO/DEBUG,默认是INFO以上才显示
 logging:
   level:

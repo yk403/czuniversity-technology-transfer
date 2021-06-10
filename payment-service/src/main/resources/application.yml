@@ -18,3 +18,18 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     # 设置时区
     time-zone: GMT+8
+
+#订单支付消息队列配置
+mqconfig:
+  #延迟队列，不能被监听消费
+  order_release_delay_queue: order.release.delay.queue
+  #延迟队列的消息过期后转发的队列
+  ordern_release_queue: order.release.queue
+  #交换机
+  order_event_exchange: order.event.exchange
+  #进入延迟队列的路由key
+  order_release_delay_routing_key: order.release.delay.routing.key
+  #消息过期，进入释放死信队列的key
+  order_release_routing_key: order.release.routing.key
+  #消息过期时间,毫秒,30分钟
+  ttl: 1800000
