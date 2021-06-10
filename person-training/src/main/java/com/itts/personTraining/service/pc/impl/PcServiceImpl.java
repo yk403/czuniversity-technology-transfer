@@ -154,6 +154,18 @@ public class PcServiceImpl implements PcService {
     }
 
     /**
+     * 根据id查询课程信息列表
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Kc> getKcListById(Long id) {
+        log.info("【人才培养 - 根据id:{}查询课程信息列表】",id);
+        List<Kc> kcList = pcMapper.findKcListById(id);
+        return kcList;
+    }
+
+    /**
      * 根据教育类型查询批次信息
      * @param jylx
      * @return

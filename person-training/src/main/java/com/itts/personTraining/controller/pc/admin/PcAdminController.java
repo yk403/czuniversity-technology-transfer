@@ -3,6 +3,7 @@ package com.itts.personTraining.controller.pc.admin;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.sjzd.SjzdService;
@@ -56,6 +57,18 @@ public class PcAdminController {
     public ResponseUtil getByOne(@PathVariable("id")Long id){
         Pc pc = pcService.get(id);
         return ResponseUtil.success(pc);
+    }
+
+    /**
+     * 根据id查询课程信息列表
+     * @param id
+     * @return
+     */
+    @GetMapping("/getKcListById/{id}")
+    @ApiOperation(value = "根据id查询课程信息列表")
+    public ResponseUtil getKcListById(@PathVariable("id")Long id){
+        List<Kc> kcList = pcService.getKcListById(id);
+        return ResponseUtil.success(kcList);
     }
 
     /**
