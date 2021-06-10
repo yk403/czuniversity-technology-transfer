@@ -62,4 +62,10 @@ public interface KsService extends IService<Ks> {
      * @return
      */
     boolean issueBatch(List<Long> ids);
+
+    /**
+     * 根据用户id查询考试详情
+     * @return
+     */
+    List<KsDTO> getByYhId();
 }

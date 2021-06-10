@@ -32,4 +32,11 @@ public interface KsMapper extends BaseMapper<Ks> {
      * @return
      */
     KsDTO findById(@Param("id") Long id);
+
+    /**
+     *
+     * @param xsId
+     * @return
+     */
+    List<KsDTO> getByXsId(@Param("xsId") Long xsId);
 }

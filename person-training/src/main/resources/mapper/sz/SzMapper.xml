@@ -14,7 +14,7 @@
         <result column="mz" property="mz" />
         <result column="zzmm" property="zzmm" />
         <result column="whcd" property="whcd" />
-        <result column="xy_id" property="xyId" />
+        <result column="yx" property="yx" />
         <result column="gbzw" property="gbzw" />
         <result column="cszy_one" property="cszyOne" />
         <result column="cszy_two" property="cszyTwo" />
@@ -34,7 +34,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, dsbh, dsxm, xb, sfzh, jg, csrq, mz, zzmm, whcd, yx, gbzw, cszy_one, cszy_two, cszy_three, jszc, dwdh, zzdh, hxwsj, hxlyx, hxlsj, sxzy, zgxl, pzsdny, pzbdny, dssqsny, dbsqsny, zgzt, dslb, sczt, cjsj, cjr, gxsj, gxr
+        id, yx, dsbh, dsxm, xb, sfzh, jg, csrq, mz, zzmm, whcd, yx, gbzw, cszy_one, cszy_two, cszy_three, jszc, dwdh, zzdh, hxwsj, hxlyx, hxlsj, sxzy, zgxl, pzsdny, pzbdny, dssqsny, dbsqsny, zgzt, dslb, sczt, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

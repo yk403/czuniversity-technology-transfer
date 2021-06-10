@@ -20,16 +20,10 @@ public class XsMsgDTO {
     private Long id;
 
     /**
-     * 学院ID
+     * 院系
      */
-    @ApiModelProperty(value = "学院ID", required = true)
-    private Long xyId;
-
-    /**
-     * 学院名称
-     */
-    @ApiModelProperty(value = "学院名称")
-    private String xymc;
+    @ApiModelProperty(value = "院系")
+    private String yx;
 
     /**
      * 学号

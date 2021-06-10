@@ -1,7 +1,9 @@
 package com.itts.personTraining.mapper.pc;
 
+import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pc.Pc;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,4 +26,11 @@ public interface PcMapper extends BaseMapper<Pc> {
      * @return
      */
     Boolean updatePcList(List<Long> ids);
+
+    /**
+     * 根据id查询课程信息列表
+     * @return
+     */
+    List<Kc> findKcListById(@Param("id") Long id);
+
 }

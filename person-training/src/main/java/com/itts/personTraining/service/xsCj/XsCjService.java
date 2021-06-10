@@ -77,4 +77,10 @@ public interface XsCjService extends IService<XsCj> {
      * @return
      */
     boolean issueBatch(List<Long> ids);
+
+    /**
+     * 根据用户id查询学生成绩信息
+     * @return
+     */
+    XsCjDTO getByYhId();
 }
