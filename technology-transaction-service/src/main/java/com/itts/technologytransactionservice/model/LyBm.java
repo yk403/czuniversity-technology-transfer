@@ -86,12 +86,16 @@ public class LyBm implements Serializable {
     /**
      * 审核状态（0默认、1拒绝、2通过）
      */
-    private Boolean shzt;
+    private Integer shzt;
 
     /**
      * 当前登录用户id
      */
     private Long userId;
+    /**
+     * 活动名称
+     */
+    //private String hdmc;
 
 
 }
