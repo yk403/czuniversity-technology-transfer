@@ -3,6 +3,7 @@ package com.itts.technologytransactionservice.service.cd;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.technologytransactionservice.model.LyBm;
+import com.itts.technologytransactionservice.model.TJsXq;
 
 import java.util.Map;
 
@@ -20,4 +21,5 @@ public interface LyBmAdminService extends IService<LyBm> {
 
     Boolean saveBm(LyBm lyBm);
     Long getUserId();
+    boolean updateLyBm(LyBm lyBm);
 }

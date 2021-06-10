@@ -132,4 +132,36 @@ public class LyHd implements Serializable {
     * @Date: 2021/6/8
     */
     private String fwbnr;
+    /**
+    * @Description: 会展介绍
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/10
+    */
+    private String hzjs;
+    /**
+    * @Description: 会展图片
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/10
+    */
+    private String hztp;
+    /**
+     * @Description: 会展图片名称
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/10
+     */
+    private String hztpmc;
+    /**
+     * @Description: 会展名称
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/10
+     */
+    private String hzmc;
 }

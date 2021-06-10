@@ -2,13 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyZpMapper">
     <select id="findLyZpFront" resultType="com.itts.technologytransactionservice.model.LyZp">
-        select zp.id as id,cjsj,gxsj,zpjj,zplb
-        from t_ly_zp zp
+        select zp.id as id,cjsj,gxsj,zpjj,zplb,zplx,sjzd.zdmc as lymc,zp.dwmc,zp.hzjg,zp.lxfs
+        from t_ly_zp zp left join t_sjzd sjzd on (sjzd.id = zp.ly_id) left join t_ly_zw zw on (zw.id = zp.zw_id) left join t_ly_hd hd on (hd.id = zw.hd_id)
         <where>
             <!--后台能查询0或者1的数据 -->
             zp.is_delete = 0
             <if test="map.zpjj != null"> and zp.zpjj = #{map.zpjj} </if>
             <if test="map.zplb != null"> and zp.zplb = #{map.zplb} </if>
+            <if test="map.zplx != null"> and zp.zplx = #{map.zplx} </if>
+            <if test="map.hdId != null"> and hd.id = #{map.hdId} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -20,13 +22,15 @@
         </choose>
     </select>
     <select id="findLyZpBack" resultType="com.itts.technologytransactionservice.model.LyZp">
-        select zp.id as id,cjsj,gxsj,zpjj,zplb
-        from t_ly_zp zp
+        select zp.id as id,zp.cjsj,zp.gxsj,zp.zpjj,zp.zplb,zp.zplx,sjzd.zdmc as lymc,zp.dwmc,zp.hzjg,zp.lxfs
+        from t_ly_zp zp left join t_sjzd sjzd on (sjzd.id = zp.ly_id) left join t_ly_zw zw on (zw.id = zp.zw_id) left join t_ly_hd hd on (hd.id = zw.hd_id)
         <where>
             <!--后台能查询0或者1的数据 -->
             zp.is_delete = 0
             <if test="map.zpjj != null"> and zp.zpjj = #{map.zpjj} </if>
             <if test="map.zplb != null"> and zp.zplb = #{map.zplb} </if>
+            <if test="map.zplx != null"> and zp.zplx = #{map.zplx} </if>
+            <if test="map.hdId != null"> and hd.id = #{map.hdId} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">

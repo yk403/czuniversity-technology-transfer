@@ -56,6 +56,10 @@ public class LyZw implements Serializable {
      * 关联会展id
      */
     private Long hzId;
+    /**
+     * 关联活动id
+     */
+    private Long hdId;
 
 
 }
