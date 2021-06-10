@@ -72,6 +72,12 @@ public class Pk implements Serializable {
     private String pkmc;
 
     /**
+     * 开学日期
+     */
+    @ApiModelProperty(value = "开学日期", required = true)
+    private String kxrq;
+
+    /**
      * 上课起始年月日
      */
     @ApiModelProperty(value = "上课起始年月日", required = true)

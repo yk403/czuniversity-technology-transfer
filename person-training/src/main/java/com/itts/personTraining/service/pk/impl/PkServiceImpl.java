@@ -2,6 +2,7 @@ package com.itts.personTraining.service.pk.impl;
 
 
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.KcDTO;
@@ -100,6 +101,16 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
         BeanUtils.copyProperties(pkDTO, pk);
+        Integer qsz = pkDTO.getQsz();
+        if (qsz != null) {
+            String skqsnyr = null;
+            try {
+                skqsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getKxrq(), qsz*7);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            pk.setSkqsnyr(skqsnyr);
+        }
         Integer jsz = pkDTO.getJsz();
         if (jsz != null) {
             String skjsnyr = null;
@@ -128,6 +139,22 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         Long userId = getUserId();
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
+        if (pkDTO.getKxrq() != null || pkDTO.getQsz() != null || pkDTO.getJsz() != null) {
+            String skqsnyr = null;
+            try {
+                skqsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getKxrq(), pkDTO.getQsz()*7);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            pkDTO.setSkqsnyr(skqsnyr);
+            String skjsnyr = null;
+            try {
+                skjsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getSkqsnyr(), pkDTO.getJsz()*7);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            pkDTO.setSkjsnyr(skjsnyr);
+        }
         BeanUtils.copyProperties(pkDTO, pk);
         if (pkService.updateById(pk)) {
             List<KcDTO> kcDTOs = pkDTO.getKcDTOs();

@@ -77,15 +77,21 @@ public class PkDTO {
     private String pkmc;
 
     /**
+     * 开学日期
+     */
+    @ApiModelProperty(value = "开学日期", required = true)
+    private String kxrq;
+
+    /**
      * 上课起始年月日
      */
-    @ApiModelProperty(value = "上课起始年月日", required = true)
+    @ApiModelProperty(value = "上课起始年月日")
     private String skqsnyr;
 
     /**
      * 上课结束年月日
      */
-    @ApiModelProperty(value = "上课结束年月日", required = true)
+    @ApiModelProperty(value = "上课结束年月日")
     private String skjsnyr;
 
     /**

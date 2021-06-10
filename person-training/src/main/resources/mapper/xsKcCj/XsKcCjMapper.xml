@@ -35,7 +35,7 @@
         where txkc.sfsc = false and kc.sfsc = false and txc.sfsc = false
         <if test="xsCjId != null"> and txkc.xs_cj_id = trim(#{xsCjId}) </if>
         <if test="kclx != null"> and txkc.kclx = trim(#{kclx}) </if>
-        order by txkc desc
+        order by txkc.cjsj desc
     </select>
     <select id="selectYzyByXsCjId" resultType="com.itts.personTraining.dto.XsKcCjDTO">
         select *
@@ -43,7 +43,7 @@
         where txkc.sfsc = false and txc.sfsc = false
         <if test="xsCjId != null"> and txkc.xs_cj_id = #{xsCjId} </if>
         <if test="kclx != null"> and txkc.kclx = #{kclx} </if>
-        order by txkc desc
+        order by txkc.cjsj desc
     </select>
 
 </mapper>
