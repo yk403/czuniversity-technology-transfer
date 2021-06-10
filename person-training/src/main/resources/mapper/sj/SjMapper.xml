@@ -15,6 +15,8 @@
         <result column="jcjxj_two" property="jcjxjTwo" />
         <result column="jdjj_one" property="jdjjOne" />
         <result column="jdjj_two" property="jdjjTwo" />
+        <result column="sfxf" property="sfxf" />
+        <result column="sfck" property="sfck" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
@@ -32,8 +34,7 @@
         where sj.sfsc = false and xs.sfsc = false and pc.sfsc = false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
         <if test="sjlx != null and sjlx != ''"> and sj.sjlx = #{sjlx} </if>
-        <if test="name != null and name != ''"> and xs.xm like concat('%',#{name},'%') </if>
-        <if test="name != null and name != ''"> or xs.xh like concat('%',#{name},'%') </if>
+        <if test="name != null and name != ''"> and (xs.xm like concat('%',trim#{name},'%') or xs.xh like concat('%',trim(#{name}),'%'))</if>
         order by sj.cjsj desc
     </select>
     <select id="getById" resultType="com.itts.personTraining.dto.SjDTO">
@@ -41,6 +42,11 @@
         from t_sj sj left join t_xs xs on (xs.id=sj.xs_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=sj.pc_id)
         where sj.sfsc = false and xs.sfsc = false and pc.sfsc = false
         <if test="id != null">and sj.id = #{id}</if>
+    </select>
+    <select id="getNumByXsId" resultType="java.lang.Long">
+        select count(id)
+        from t_sj sj
+        where sj.xs_id = #{xsId} and sj.sfsc = false and sj.sfxf = true and sj.sfck = false
     </select>
 
 </mapper>

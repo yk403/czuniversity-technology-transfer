@@ -64,7 +64,8 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         szQueryWrapper.eq("sfsc",false)
                       .like(StringUtils.isNotBlank(dsxm),"dsxm", dsxm)
                       .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
-                      .eq(StringUtils.isNotBlank(hyly),"hyly", hyly);
+                      .eq(StringUtils.isNotBlank(hyly),"hyly", hyly)
+                      .orderByDesc("cjsj");
         return new PageInfo<>(szMapper.selectList(szQueryWrapper));
     }
 

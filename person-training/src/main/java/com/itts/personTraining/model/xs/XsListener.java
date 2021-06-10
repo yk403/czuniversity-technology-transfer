@@ -141,8 +141,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         }
 
         if(!StringUtils.isBlank(data.getYx())){
-            Xy xy = xyService.getByCondition(data.getYx());
-            xs.setXyId(xy.getId());
+            xs.setYx(data.getYx());
         }
         if(!StringUtils.isBlank(data.getXxxs())){
             xs.setXxxs(data.getXxxs());
@@ -213,20 +212,32 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
                     StuDTO dto = xsService.selectByCondition(null, null, getYhVo.getId());
-                    xs.setId(dto.getId());
-                    try {
-                        updateXsAndAddPcXs(xs,pc.getId());
-                        //TODO 后期优化选择用mq同步
+                    if (dto != null) {
+                        //学生表存在
+                        xs.setId(dto.getId());
                         try {
-                            yhService.update(yh, token);
-                            count++;
+                            updateXsAndAddPcXs(xs,pc.getId());
+                            //TODO 后期优化选择用mq同步
+                            try {
+                                yhService.update(yh, token);
+                                count++;
+                            } catch (Exception e) {
+                                log.info(e.getMessage());
+                            }
                         } catch (Exception e) {
                             log.info(e.getMessage());
                         }
-                    } catch (Exception e) {
-                        log.info(e.getMessage());
+                    } else {
+                        //学生表不存在
+                        //不存在.则新增
+                        xs.setCjsj(new Date());
+                        xs.setGxsj(new Date());
+                        if (addXsAndPcXs(xs, pc.getId())) {
+                            count++;
+                        } else {
+                            throw new WebException(INSERT_FAIL);
+                        }
                     }
-
                 } else {
                     //说明用户表不存在该用户信息,则用户表新增,学生表查询判断是否存在
                     String xh = xs.getXh();
@@ -324,7 +335,6 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     if (dto != null) {
                         //存在,则更新
                         xs.setId(dto.getId());
-                        xs.setGxsj(new Date());
                         if (updateXsAndAddPcXs(xs,pc.getId())) {
                             count++;
                         } else {
@@ -332,8 +342,6 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                         }
                     } else {
                         //不存在.则新增
-                        xs.setCjsj(new Date());
-                        xs.setGxsj(new Date());
                         if (addXsAndPcXs(xs,pc.getId())) {
                             count++;
                         } else {
@@ -359,8 +367,6 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                 }
             } else {
                 try {
-                    xs.setCjsj(new Date());
-                    xs.setGxsj(new Date());
                     xsMapper.insert(xs);
                     count++;
                 } catch (Exception e) {

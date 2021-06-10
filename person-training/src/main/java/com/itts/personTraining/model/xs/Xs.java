@@ -53,9 +53,9 @@ public class Xs implements Serializable {
     private Long jgId;
 
     /**
-     * 学院ID
+     * 院系
      */
-    private Long xyId;
+    private String yx;
 
     /**
      * 学号

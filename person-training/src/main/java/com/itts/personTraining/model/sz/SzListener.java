@@ -108,8 +108,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
         }
         //院系
         if (!StringUtils.isBlank(data.getYx())) {
-            Xy xy = xyService.getByCondition(data.getYx());
-            sz.setXyId(xy.getId());
+            sz.setYx(data.getYx());
         }
         //干部职务
         if (!StringUtils.isBlank(data.getGbzw())) {

@@ -23,6 +23,11 @@ public class RedisConstant {
     public static final Long USER_MENU_EXPIRE_DATE = 3L;
 
     /**
+     * 用户学习资源收藏缓存过去时间（3天）
+     */
+    public static final Long USER_LEARNING_RESOURCES_FAVORITES_EXPIRE = 3L;
+
+    /**
      * 用户登录token存放redis前缀
      */
     public static final String REDIS_USER_LOGIN_TOKEN_PREFIX = "itts:user:login:token:";
@@ -41,4 +46,9 @@ public class RedisConstant {
      * 拍卖大厅存放redis前缀
      */
     public static final String BID_ACTIVITY_PREFIX = "itts:bis:websocket:";
+
+    /**
+     * 用户学习资源收藏前缀
+     */
+    public static final String USER_LEARNING_RESOURCES_FAVORITES_PREFIX = "itts:persontraining:resources:favorites:";
 }

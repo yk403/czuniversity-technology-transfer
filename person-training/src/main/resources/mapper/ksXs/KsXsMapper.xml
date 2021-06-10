@@ -20,5 +20,18 @@
             tkx.ks_id = #{ksId}
         </where>
     </select>
+    <select id="getNumByXsId" resultType="java.lang.Long">
+        select count(id)
+        from t_ks_xs tkx
+        where tkx.xs_id = #{xsId} and tkx.sfck = false
+    </select>
+    <select id="getKsIdAndTypeByYhId" resultType="com.itts.personTraining.model.ks.Ks">
+        select tkx.ks_id as id, ks.type
+        from t_ks_xs tkx left join t_xs xs on (xs.id=tkx.xs_id) left join t_ks ks on (ks.id=tkx.ks_id)
+        where xs.sfsc = false and ks.sfsc = false and ks.sfxf = true
+        <if test="yhId != null">and xs.yh_id = #{yhId}</if>
+        order by ks.cjsj asc
+    </select>
+
 
 </mapper>

@@ -31,13 +31,14 @@
     </sql>
 
     <select id="findByPage" resultType="com.itts.personTraining.dto.KcDTO">
-        select kc.id as id,xylx,zsmk_id as zsmkId,jylx,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfbx,bz,sfxf,cjsj,cjr,gxsj,gxr
+        select kc.id as id,xylx,zsmk_id as zsmkId,jylx,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfsc,sfbx,bz,sfxf,cjsj,cjr,gxsj,gxr
         from t_kc kc
         <where>
             kc.sfsc = false
-            <if test="kclx != null and kclx != ''"> and kc.kclx like #{kclx} </if>
-            <if test="name != null and name != ''"> and kc.kcdm like concat('%',#{name},'%') </if>
-            <if test="name != null and name != ''"> or kc.kcmc like concat('%',#{name},'%') </if>
+            <if test="kclx != null and kclx != ''"> and kc.kclx like trim(#{kclx}) </if>
+            <if test="jylx != null and jylx != ''"> and kc.jylx like trim(#{jylx}) </if>
+            <if test="xylx != null and xylx != ''"> and kc.xylx like trim(#{xylx}) </if>
+            <if test="name != null and name != ''"> and (kc.kcdm like concat('%',trim(#{name}),'%') or kc.kcmc like concat('%',trim(#{name}),'%'))</if>
         </where>
         order by kc.cjsj desc
     </select>
