@@ -7,6 +7,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.xxzy.Xxzy;
+import com.itts.personTraining.request.ddxfjl.PayDdxfjlRequest;
 import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
 import com.itts.personTraining.vo.xxzy.GetXxzyVO;
@@ -84,7 +85,20 @@ public class XxzyController {
         ResponseUtil result = xxzyService.buy(buyXxzyRequest, request.getHeader("token"));
 
         return result;
+    }
 
+    @ApiOperation(value = "支付金额")
+    @PostMapping("/pay/")
+    public ResponseUtil pay(@RequestBody PayDdxfjlRequest payDdxfjlRequest, HttpServletRequest request){
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if(loginUser == null){
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        ResponseUtil result = xxzyService.pay(payDdxfjlRequest, request.getHeader("token"));
+
+        return result;
     }
 
     /**

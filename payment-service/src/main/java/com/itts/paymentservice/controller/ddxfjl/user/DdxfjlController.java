@@ -58,7 +58,7 @@ public class DdxfjlController {
 
     @ApiOperation("获取用户订单")
     @GetMapping("/rpc/by/user/")
-    public ResponseUtil getByUserRpc(){
+    public ResponseUtil getByUserRpc() {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser == null) {
@@ -68,6 +68,22 @@ public class DdxfjlController {
         List<Ddxfjl> list = ddxfjlService.list(new QueryWrapper<Ddxfjl>().eq("cjr", loginUser.getUserId()));
 
         return ResponseUtil.success(list);
+    }
+
+    @ApiOperation(value = "通过订单编号获取数据")
+    @GetMapping("/get/by/code/")
+    public ResponseUtil getByCode(@RequestParam("code") String code) {
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser == null) {
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        Ddxfjl ddxfjl = ddxfjlService.getOne(new QueryWrapper<Ddxfjl>()
+                .eq("cjr", loginUser.getUserId())
+                .eq("bh", code));
+
+        return ResponseUtil.success(ddxfjl);
     }
 
     @ApiOperation(value = "获取详情")

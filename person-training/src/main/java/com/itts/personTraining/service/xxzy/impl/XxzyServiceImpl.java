@@ -8,10 +8,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.enums.SystemTypeEnum;
 import com.itts.common.utils.common.CommonUtils;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.feign.paymentservice.OrderFeignService;
+import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.mapper.fjzy.FjzyMapper;
 import com.itts.personTraining.mapper.xxzy.XxzyMapper;
 import com.itts.personTraining.mapper.xxzy.XxzyscMapper;
@@ -19,6 +21,7 @@ import com.itts.personTraining.model.fjzy.Fjzy;
 import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.model.xxzy.Xxzysc;
 import com.itts.personTraining.request.ddxfjl.AddDdxfjlRequest;
+import com.itts.personTraining.request.ddxfjl.PayDdxfjlRequest;
 import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
 import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
@@ -60,6 +63,9 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
     @Autowired
     private OrderFeignService orderFeignService;
+    
+    @Autowired
+    private UserFeignService userFeignService;
 
     /**
      * 获取列表 - 分页
@@ -360,5 +366,26 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         ResponseUtil result = orderFeignService.createOrder(request, token);
 
         return result;
+    }
+
+    /**
+     * 支付金额
+     */
+    @Override
+    public ResponseUtil pay(PayDdxfjlRequest payDdxfjlRequest, String token) {
+
+        ResponseUtil response = orderFeignService.getByCode(payDdxfjlRequest.getBh(), token);
+        if (response.getErrCode().intValue() != 0) {
+
+            return response;
+        }
+
+        if(response.getData() == null){
+            return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR.getCode(), "订单不存在");
+        }
+
+        //如果是微信支付、支付宝支付调用三方支付接口 TODO
+
+        return ResponseUtil.success();
     }
 }

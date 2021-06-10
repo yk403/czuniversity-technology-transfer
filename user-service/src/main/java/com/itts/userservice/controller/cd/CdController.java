@@ -74,7 +74,7 @@ public class CdController {
 
             if (Objects.equals(systemType, UserTypeEnum.IN_USER.getCode())) {
 
-                systemType = SystemTypeEnum.TALENT_TRAINING_PORTAL.getKey();
+                systemType = SystemTypeEnum.TALENT_TRAINING.getKey();
             } else if (Objects.equals(systemType, UserTypeEnum.OUT_USER.getCode())) {
 
                 systemType = null;
