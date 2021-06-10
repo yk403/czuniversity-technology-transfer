@@ -41,8 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
-import static com.itts.common.enums.ErrorCodeEnum.STUDENT_MSG_NOT_EXISTS_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
  * <p>
@@ -283,6 +282,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         if (Collections.isEmpty(ksList)) {
             return java.util.Collections.EMPTY_LIST;
         }
+        List<Long> ksIds = new ArrayList<>();
         List<KsDTO> ksDTOs = new ArrayList<>();
         for (Ks ks : ksList) {
             KsDTO ksDTO = get(ks.getId());
@@ -292,8 +292,12 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 ksDTO.setKsExps(ksExpDTOs);
             }
             ksDTOs.add(ksDTO);
+            ksIds.add(ks.getId());
         }
-
+        //考试学生表是否查看更新成是,即已查看
+        if (ksXsMapper.updateSfckByKsIds(ksIds) == 0) {
+           throw new ServiceException(UPDATE_FAIL);
+        }
         return ksDTOs;
     }
 
