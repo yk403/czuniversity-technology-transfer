@@ -13,8 +13,10 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.feign.paymentservice.OrderFeignService;
 import com.itts.personTraining.mapper.fjzy.FjzyMapper;
 import com.itts.personTraining.mapper.xxzy.XxzyMapper;
+import com.itts.personTraining.mapper.xxzy.XxzyscMapper;
 import com.itts.personTraining.model.fjzy.Fjzy;
 import com.itts.personTraining.model.xxzy.Xxzy;
+import com.itts.personTraining.model.xxzy.Xxzysc;
 import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
 import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
@@ -49,6 +51,9 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
     @Autowired
     private FjzyMapper fjzyMapper;
+
+    @Autowired
+    private XxzyscMapper xxzyscMapper;
 
     @Autowired
     private OrderFeignService orderFeignService;
@@ -139,7 +144,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             GetXxzyVO vo = new GetXxzyVO();
             BeanUtils.copyProperties(obj, vo);
 
-            vo.setBuyFlag(false);
+            vo.setSfgm(false);
 
             return vo;
         }).collect(Collectors.toList());
@@ -170,12 +175,27 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         //获取当前查询列表的商品是否为已支付订单
         Map<Long, GetXxzyVO> xxzyMap = voList.stream().collect(Collectors.toMap(GetXxzyVO::getId, Function.identity()));
 
-        spIds.forEach(spId->{
+        spIds.forEach(spId -> {
 
             GetXxzyVO xxzy = xxzyMap.get(spId);
-            if(xxzy != null){
+            if (xxzy != null) {
 
-                xxzy.setBuyFlag(true);
+                xxzy.setSfgm(true);
+            }
+        });
+
+        //获取我收藏的学习资源
+        List<Xxzysc> xxzyscs = xxzyscMapper.selectList(new QueryWrapper<Xxzysc>()
+                .eq("yh_id", loginUser.getUserId()));
+
+        List<Long> xxzyscIds = xxzyscs.stream().map(Xxzysc::getXxzyId).collect(Collectors.toList());
+
+        xxzyscIds.forEach(xxzyscId -> {
+
+            GetXxzyVO xxzy = xxzyMap.get(xxzyscId);
+
+            if (xxzy != null) {
+                xxzy.setSfshouc(true);
             }
         });
 

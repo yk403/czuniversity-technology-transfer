@@ -184,5 +184,11 @@ public class GetXxzyVO implements Serializable {
      * 是否已购买
      */
     @ApiModelProperty(value = "是否已购买")
-    private Boolean buyFlag;
+    private Boolean sfgm;
+
+    /**
+     * 是否已收藏
+     */
+    @ApiModelProperty(value = "是否已收藏")
+    private Boolean sfshouc;
 }
