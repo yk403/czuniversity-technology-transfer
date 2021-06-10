@@ -8,6 +8,8 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.LyBmMapper;
 import com.itts.technologytransactionservice.model.LyBm;
+import com.itts.technologytransactionservice.model.LyBmDto;
+import com.itts.technologytransactionservice.model.TJsXq;
 import com.itts.technologytransactionservice.service.LyBmService;
 import com.itts.technologytransactionservice.service.cd.LyBmAdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +44,7 @@ public class LyBmAdminServiceImpl extends ServiceImpl<LyBmMapper, LyBm> implemen
        log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyBm> list = lyBmMapper.findLyBmBack(query);
+        List<LyBmDto> list = lyBmMapper.findLyBmBack(query);
         return new PageInfo<>(list);
     }
 
@@ -55,6 +57,18 @@ public class LyBmAdminServiceImpl extends ServiceImpl<LyBmMapper, LyBm> implemen
         }else{
             return false;
         }
+    }
+    /**
+     * 更新报名信息
+     *
+     * @param
+     * @return
+     */
+    @Override
+    public boolean updateLyBm(LyBm lyBm) {
+        log.info("【技术交易 - 更新需求信息:{}】", lyBm);
+        lyBmMapper.updateLyBm(lyBm);
+        return true;
     }
     /**
      * 获取当前用户id

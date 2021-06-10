@@ -47,7 +47,18 @@ public class LyBmServiceImpl extends ServiceImpl<LyBmMapper, LyBm> implements Ly
         List<LyBmDto> list = lyBmMapper.findLyBmFront(query);
         return new PageInfo<>(list);
     }
-
+    /**
+     * 更新报名信息
+     *
+     * @param
+     * @return
+     */
+    @Override
+    public boolean updateLyBm(LyBm lyBm) {
+        log.info("【技术交易 - 更新需求信息:{}】", lyBm);
+        lyBmMapper.updateLyBm(lyBm);
+        return true;
+    }
     @Override
     public Boolean saveBm(LyBm lyBm) {
         if(save(lyBm)){

@@ -31,5 +31,11 @@ public interface LyBmMapper extends BaseMapper<LyBm> {
      * @param map
      * @return
      */
-    List<LyBm> findLyBmBack(@Param("map") Map map);
+    List<LyBmDto> findLyBmBack(@Param("map") Map map);
+    /**
+     * 更新报名表
+     *
+     * @param tJsXq
+     */
+    boolean updateLyBm(LyBm lyBm);
 }
