@@ -21,7 +21,7 @@ import java.util.Objects;
  * @Author：lym
  * @Date: 2021/6/10
  */
-@RabbitListener(queues = "${mqconfig.coupon_release_queue}")
+@RabbitListener(queues = "${mqconfig.order_release_queue}")
 @Component
 @Slf4j
 public class OrderMqListerner {
