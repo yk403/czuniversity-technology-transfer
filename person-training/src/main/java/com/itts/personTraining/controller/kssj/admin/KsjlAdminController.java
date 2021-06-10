@@ -48,7 +48,7 @@ public class KsjlAdminController {
 
         List<Ksjl> list = ksjlService.list(new QueryWrapper<Ksjl>().like(StringUtils.isNotBlank(sjmc), "sjmc", sjmc)
                 .eq(StringUtils.isNotBlank(xsbm), "xsbm", xsbm)
-                .like(StringUtils.isNotBlank(xsmc), "xsmc", xsmc));
+                .like(StringUtils.isNotBlank(xsmc), "xsmc", xsmc.trim()));
 
         PageInfo<Ksjl> pageInfo = new PageInfo<>(list);
 

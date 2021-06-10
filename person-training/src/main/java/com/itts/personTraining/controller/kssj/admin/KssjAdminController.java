@@ -58,7 +58,7 @@ public class KssjAdminController {
                 .eq(StringUtils.isNotBlank(educationType), "jylx", educationType)
                 .eq(StringUtils.isNotBlank(studentType), "xylx", studentType)
                 .eq(courseId != null, "kc_id", courseId)
-                .like(StringUtils.isNotBlank(condition), "sjmc", condition)
+                .like(StringUtils.isNotBlank(condition), "sjmc", condition.trim())
                 .orderByDesc("cjsj"));
 
         PageInfo<Kssj> pageInfo = new PageInfo<>(kssjs);
