@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.common.enums.SystemTypeEnum;
 import com.itts.common.utils.common.CommonUtils;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.feign.paymentservice.OrderFeignService;
@@ -17,8 +18,10 @@ import com.itts.personTraining.mapper.xxzy.XxzyscMapper;
 import com.itts.personTraining.model.fjzy.Fjzy;
 import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.model.xxzy.Xxzysc;
+import com.itts.personTraining.request.ddxfjl.AddDdxfjlRequest;
 import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
+import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
 import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
 import com.itts.personTraining.vo.ddxfjl.GetDdxfjlVO;
@@ -338,5 +341,24 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
         fjzyMapper.deleteById(fjzyId);
 
+    }
+
+    /**
+     * 购买学习资源
+     */
+    @Override
+    public ResponseUtil buy(BuyXxzyRequest buyXxzyRequest, String token) {
+
+        AddDdxfjlRequest request = new AddDdxfjlRequest();
+        BeanUtils.copyProperties(buyXxzyRequest, request);
+
+        request.setXtlx(SystemTypeEnum.TALENT_TRAINING.getKey());
+        request.setDdmc("购买" + buyXxzyRequest.getSpmc() + "学习资源");
+        request.setXflx("购买学习资源");
+        request.setXfsm("购买" + buyXxzyRequest.getSpmc() + "学习资源");
+
+        ResponseUtil result = orderFeignService.createOrder(request, token);
+
+        return result;
     }
 }
