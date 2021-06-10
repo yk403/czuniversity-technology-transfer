@@ -278,6 +278,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     public List<KsDTO> getByYhId() {
         Long userId = getUserId();
         log.info("【人才培养 - 根据用户id:{}查询考试详情】",userId);
+        XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
         List<Ks> ksList = ksXsMapper.getKsIdAndTypeByYhId(userId);
         if (Collections.isEmpty(ksList)) {
             return java.util.Collections.EMPTY_LIST;
@@ -295,7 +296,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             ksIds.add(ks.getId());
         }
         //考试学生表是否查看更新成是,即已查看
-        if (ksXsMapper.updateSfckByKsIds(ksIds) == 0) {
+        if (ksXsMapper.updateSfckByXsId(xsMsgDTO.getId()) == 0) {
            throw new ServiceException(UPDATE_FAIL);
         }
         return ksDTOs;

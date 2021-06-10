@@ -40,9 +40,9 @@ public interface KsXsMapper extends BaseMapper<KsXs> {
     List<Ks> getKsIdAndTypeByYhId(@Param("yhId") Long yhId);
 
     /**
-     * 根据考试ids更新是否查看状态
-     * @param ksIds
+     * 根据学生id更新是否查看状态
+     * @param xsId
      * @return
      */
-    int updateSfckByKsIds(@Param("ksIds") List<Long> ksIds);
+    int updateSfckByXsId(@Param("xsId") Long xsId);
 }

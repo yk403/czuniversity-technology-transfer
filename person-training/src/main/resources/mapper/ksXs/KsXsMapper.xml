@@ -13,9 +13,10 @@
     <sql id="Base_Column_List">
         id, ks_id, xs_id
     </sql>
-    <update id="updateSfckByKsIds">
-        update
+    <update id="updateSfckByXsId">
+        update t_ks_xs tkx set tkx.sfck = true where tkx.xs_id = #{xsId}
     </update>
+
     <select id="selectByKsId" resultType="java.lang.Long">
         select xs_id
         from t_ks_xs tkx
