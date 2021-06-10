@@ -63,6 +63,10 @@ public class LyZp implements Serializable {
      * 关联展位id
      */
     private Long zwId;
+    /**
+     * 展品类型(0:需求1:成果)
+     */
+    private Integer zplx;
 
 
 }

@@ -3,7 +3,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyHdMapper">
 
     <select id="findLyHdFront" resultType="com.itts.technologytransactionservice.model.LyHd">
-        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt,bmkssj,hdjssj,hdkssj,hdfbzt,hdnr,lyqy,czqy,zplb,zxdh,hdgz,hdlbt,hdxq,fwbnr
+        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt,bmkssj,hdjssj,hdkssj,hdfbzt,hdnr,lyqy,czqy,zplb,zxdh,hdgz,hdlbt,hdxq,fwbnr,hzjs,hztp,hztpmc,hzmc
         from t_ly_hd hd
         <where>
             <!--后台能查询0或者1的数据 -->
@@ -19,6 +19,10 @@
             <if test="map.hdgz != null"> and hd.hdgz = #{map.hdgz} </if>
             <if test="map.hdlbt != null"> and hd.hdlbt = #{map.hdlbt} </if>
             <if test="map.hdxq != null"> and hd.hdxq = #{map.hdxq} </if>
+            <if test="map.hzjs != null"> and hd.hzjs = #{map.hzjs} </if>
+            <if test="map.hztp != null"> and hd.hztp = #{map.hztp} </if>
+            <if test="map.hztpmc != null"> and hd.hztpmc = #{map.hztpmc} </if>
+            <if test="map.hzmc != null"> and hd.hzmc = #{map.hzmc} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -30,7 +34,7 @@
         </choose>
     </select>
     <select id="findLyHdBack" resultType="com.itts.technologytransactionservice.model.LyHd">
-        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt,bmkssj,hdjssj,hdkssj,hdfbzt,hdnr,lyqy,czqy,zplb,zxdh,hdgz,hdlbt,hdxq,fwbnr
+        select hd.id as id,cjsj,gxsj,hdmc,hdjj,hdtp,hdtpmc,bmjzsj,hdzt,bmkssj,hdjssj,hdkssj,hdfbzt,hdnr,lyqy,czqy,zplb,zxdh,hdgz,hdlbt,hdxq,fwbnr,hzjs,hztp,hztpmc,hzmc
         from t_ly_hd hd
         <where>
             <!--后台能查询0或者1的数据 -->
@@ -42,6 +46,14 @@
             <if test="map.hdnr != null"> and hd.hdnr = #{map.hdnr} </if>
             <if test="map.bmjzsj != null"> and hd.bmjzsj = #{map.bmjzsj} </if>
             <if test="map.hdfbzt != null"> and hd.hdfbzt = #{map.hdfbzt} </if>
+            <if test="map.zxdh != null"> and hd.zxdh = #{map.zxdh} </if>
+            <if test="map.hdgz != null"> and hd.hdgz = #{map.hdgz} </if>
+            <if test="map.hdlbt != null"> and hd.hdlbt = #{map.hdlbt} </if>
+            <if test="map.hdxq != null"> and hd.hdxq = #{map.hdxq} </if>
+            <if test="map.hzjs != null"> and hd.hzjs = #{map.hzjs} </if>
+            <if test="map.hztp != null"> and hd.hztp = #{map.hztp} </if>
+            <if test="map.hztpmc != null"> and hd.hztpmc = #{map.hztpmc} </if>
+            <if test="map.hzmc != null"> and hd.hzmc = #{map.hzmc} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
