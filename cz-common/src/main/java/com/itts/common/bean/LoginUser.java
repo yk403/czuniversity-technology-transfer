@@ -35,6 +35,16 @@ public class LoginUser implements Serializable {
     private String userLevel;
 
     /**
+     * 用户类别：研究生；经纪人；导师；企业导师；任课教师；管理员
+     */
+    private String userCategory;
+
+    /**
+     * 积分
+     */
+    private Integer integral;
+
+    /**
      * 用户头像
      */
     private String theme;
@@ -43,5 +53,4 @@ public class LoginUser implements Serializable {
      * 系统类型
      */
     private String systemType;
-
 }

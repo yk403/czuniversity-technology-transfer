@@ -1,5 +1,6 @@
 package com.itts.personTraining.controller.xxzy.user;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
@@ -78,8 +79,17 @@ public class XxzyController {
         checkBuyRequest(buyXxzyRequest);
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
-        if(loginUser == null){
+        if (loginUser == null) {
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        Xxzy xxzy = xxzyService.getOne(new QueryWrapper<Xxzy>()
+                .eq("id", buyXxzyRequest.getSpId())
+                .eq("sfsc", false)
+                .eq("sfsj", true));
+
+        if (xxzy == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
         ResponseUtil result = xxzyService.buy(buyXxzyRequest, request.getHeader("token"));
@@ -89,10 +99,10 @@ public class XxzyController {
 
     @ApiOperation(value = "支付金额")
     @PostMapping("/pay/")
-    public ResponseUtil pay(@RequestBody PayDdxfjlRequest payDdxfjlRequest, HttpServletRequest request){
+    public ResponseUtil pay(@RequestBody PayDdxfjlRequest payDdxfjlRequest, HttpServletRequest request) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
-        if(loginUser == null){
+        if (loginUser == null) {
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
         }
 
