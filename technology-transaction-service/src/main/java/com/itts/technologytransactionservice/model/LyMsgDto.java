@@ -17,9 +17,7 @@ import java.util.Date;
  * @since 2021-05-18
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("t_ly_msg")
-public class LyMsg implements Serializable {
+public class LyMsgDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -72,4 +70,36 @@ public class LyMsg implements Serializable {
      * 留言状态(0:未回复,1:已回复)
      */
     private Integer lyzt;
+    /**
+    * @Description: 用户头像
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/6/7
+    */
+    private String yhtx;
+    /**
+     * @Description: 用户名
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/7
+     */
+    private String yhm;
+    /**
+     * @Description: 真实姓名
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/7
+     */
+    private String zsxm;
+    /**
+     * @Description: 用户类型
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/7
+     */
+    private String yhlx;
 }
