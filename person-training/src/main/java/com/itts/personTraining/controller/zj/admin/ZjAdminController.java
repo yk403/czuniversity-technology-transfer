@@ -98,7 +98,7 @@ public class ZjAdminController {
     @ApiOperation(value = "新增专家")
     public ResponseUtil add(@RequestBody Zj zj) throws WebException {
         //检查参数是否合法
-        checkRequest(zj);
+        checkAddRequest(zj);
         if (!zjService.add(zj)) {
             throw new WebException(INSERT_FAIL);
         }
@@ -119,7 +119,7 @@ public class ZjAdminController {
         if (zjOld == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        checkRequest(zj);
+        checkUpdateRequest(zj);
         if (!zjService.update(zj)) {
             throw new WebException(UPDATE_FAIL);
         }
@@ -148,9 +148,9 @@ public class ZjAdminController {
     }
 
     /**
-     * 校验参数
+     * 新增校验参数
      */
-    private void checkRequest(Zj zj) throws WebException {
+    private void checkAddRequest(Zj zj) throws WebException {
         if (zj == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
@@ -158,6 +158,24 @@ public class ZjAdminController {
         for (Zj zj1 : zjList) {
             if (zj1.getDh().equals(zj.getDh())) {
                 throw new WebException(PROFESSOR_PHONE_EXISTS_ERROR);
+            }
+        }
+    }
+
+    /**
+     * 更新校验参数
+     */
+    private void checkUpdateRequest(Zj zj) throws WebException {
+        Zj zjOld = zjService.get(zj.getId());
+        if (zjOld == null) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (!zjOld.getDh().equals(zj.getDh())) {
+            List<Zj> zjList = zjService.getAll();
+            for (Zj zj1 : zjList) {
+                if (zj1.getDh().equals(zj.getDh())) {
+                    throw new WebException(PROFESSOR_PHONE_EXISTS_ERROR);
+                }
             }
         }
     }
