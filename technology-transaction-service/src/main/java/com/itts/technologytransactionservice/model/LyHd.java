@@ -139,6 +139,7 @@ public class LyHd implements Serializable {
     * @Author: yukai
     * @Date: 2021/6/10
     */
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String hzjs;
     /**
     * @Description: 会展图片
@@ -147,6 +148,7 @@ public class LyHd implements Serializable {
     * @Author: yukai
     * @Date: 2021/6/10
     */
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String hztp;
     /**
      * @Description: 会展图片名称
@@ -155,6 +157,7 @@ public class LyHd implements Serializable {
      * @Author: yukai
      * @Date: 2021/6/10
      */
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String hztpmc;
     /**
      * @Description: 会展名称
@@ -163,5 +166,6 @@ public class LyHd implements Serializable {
      * @Author: yukai
      * @Date: 2021/6/10
      */
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String hzmc;
 }

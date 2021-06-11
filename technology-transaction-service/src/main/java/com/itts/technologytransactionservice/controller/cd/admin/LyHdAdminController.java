@@ -135,5 +135,31 @@ public class LyHdAdminController {
 
         return ResponseUtil.success(old);
     }
+    //删除会展(也就是删除活动表里的会展内容)
+    @ApiOperation(value = "删除")
+    @DeleteMapping("/delete/{id}")
+    public ResponseUtil deleteHz(@PathVariable("id") Long id) {
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+
+        if (loginUser == null) {
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        LyHd old = lyHdAdminService.getById(id);
+        if (old == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        old.setHzmc(null);
+        old.setHzjs(null);
+        old.setHztp(null);
+        old.setHztpmc(null);
+        old.setGxsj(new Date());
+
+        lyHdAdminService.updateById(old);
+
+        return ResponseUtil.success(old);
+    }
 }
 

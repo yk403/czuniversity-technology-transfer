@@ -8,6 +8,7 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             hd.is_delete = 0
+            <if test="map.hztype !=null and map.hztype == 0">and (hd.hzmc != null and hd.hzmc != '')</if>
             <if test="map.hdmc != null"> and hd.hdmc like concat('%',trim(#{map.hdmc}),'%') </if>
             <if test="map.hdtp != null"> and hd.hdtp = #{map.hdtp} </if>
             <if test="map.hdtpmc != null"> and hd.hdtpmc = #{map.hdtpmc} </if>
@@ -39,6 +40,7 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             hd.is_delete = 0
+            <if test="map.hztype !=null and map.hztype == 0">and (hd.hzmc != null and hd.hzmc != '')</if>
             <if test="map.hdmc != null"> and hd.hdmc like concat('%',trim(#{map.hdmc}),'%') </if>
             <if test="map.hdtp != null"> and hd.hdtp = #{map.hdtp} </if>
             <if test="map.hdtpmc != null"> and hd.hdtpmc = #{map.hdtpmc} </if>
