@@ -52,34 +52,6 @@
             </otherwise>
         </choose>
     </select>
-    <!--根据出价记录查询活动信息-->
-    <!--<select id="listRcHd" resultType="com.itts.technologytransactionservice.model.TJsCjRcDto">
-        select rc.id,rc.cjsj,rc.gxsj,jjsj,jjje,rc.bm_id,cg_id,xq_id,ppmc,cjf,rc.is_delete,hd.hdkssj as hdkssj,hd.hdjssj as hdjssj
-        from t_js_cj_rc rc
-        <if test="map.type == 0">left join t_js_xq xq on( xq.id = rc.xq_id ) left join t_js_hd hd on( hd.id = xq.jshd_id)</if>
-        <if test="map.type == 1">left join t_js_cg cg on( cg.id = rc.cg_id ) left join t_js_hd hd on( hd.id = cg.jshd_id)</if>
-        <where>
-            rc.is_delete = 0
-            <if test="map.id != null and map.id != ''"> and rc.id = #{map.id} </if>
-            <if test="map.jjsj != null and map.jjsj != ''"> and rc.jjsj = #{map.jjsj} </if>
-            <if test="map.jjje != null and map.jjje != ''"> and rc.jjje = #{map.jjje} </if>
-            <if test="map.bmId != null and map.bmId != ''"> and rc.bm_id = #{map.bmId} </if>
-            <if test="map.cgId != null and map.cgId != ''"> and rc.cg_id = #{map.cgId} </if>
-            <if test="map.xqId != null and map.xqId != ''"> and rc.xq_id = #{map.xqId} </if>
-            <if test="map.ppmc != null and map.ppmc != ''"> and rc.ppmc = #{map.ppmc} </if>
-            <if test="map.cjf != null and map.cjf != ''"> and rc.cjf = #{map.cjf} </if>
-            <if test="map.jshdId != null"> and hd.id = #{map.jshdId} </if>
-        </where>
-        <choose>
-            <when test="map.sort != null and map.sort.trim() != ''">
-                order by ${map.sort} ${map.order}
-            </when>
-            <otherwise>
-                order by id desc
-            </otherwise>
-        </choose>
-    </select>-->
-
     <!--交易大厅用查询出价记录-->
     <select id="listRcJy" resultType="com.itts.technologytransactionservice.model.TJsCjRc">
         select rc.id,rc.cjsj,rc.gxsj,rc.jjsj,rc.jjje,rc.bm_id,rc.cg_id,rc.xq_id,rc.ppmc,rc.is_delete,yh.yhm as yhm,bm.dwmc as cjf,hd.hdkssj as hdkssj,hd.hdjssj as hdjssj
@@ -107,4 +79,52 @@
             </otherwise>
         </choose>
     </select>
+    <insert id="saveTJsCjRcCg" parameterType="com.itts.technologytransactionservice.model.TJsCjRc">
+        INSERT INTO t_js_cj_rc (
+	ppmc,
+	cjf,
+	jjje,
+	jjsj,
+	cg_id,
+	xq_id,
+	bm_id,
+	cjsj,
+	gxsj
+)
+select
+	#{ppmc},#{cjf},#{jjje},#{jjsj},#{cgId},#{xqId},#{bmId},#{cjsj},#{gxsj}
+from dual
+where not exists(
+	SELECT
+		*
+	FROM
+		t_js_cj_rc rc
+	WHERE
+		jjje &gt;= #{jjje}
+and cg_id = #{cgId})
+    </insert>
+    <insert id="saveTJsCjRcXq" parameterType="com.itts.technologytransactionservice.model.TJsCjRc">
+        INSERT INTO t_js_cj_rc (
+	ppmc,
+	cjf,
+	jjje,
+	jjsj,
+	cg_id,
+	xq_id,
+	bm_id,
+	cjsj,
+	gxsj
+)
+select
+	#{ppmc},#{cjf},#{jjje},#{jjsj},#{cgId},#{xqId},#{bmId},#{cjsj},#{gxsj}
+from dual
+where not exists(
+	SELECT
+		*
+	FROM
+		t_js_cj_rc rc
+	WHERE
+		jjje &lt;= #{jjje}
+and xq_id = #{xqId})
+    </insert>
 </mapper>

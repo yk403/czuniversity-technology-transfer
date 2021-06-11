@@ -88,6 +88,8 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             //如果有新的叫价，将叫价间隔状态置为0
             listLckz.get(0).setJjjgzt(0);
                 listLckz.get(0).setBmId(tJsBm.getId());
+            tJsCjRc.setCjsj(new Date());
+            tJsCjRc.setGxsj(new Date());
             if(tJsCjRcs.size()>0){
                 if(tJsCjRcs.get(0)==null){
 
@@ -99,7 +101,11 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
                     }
                 }
             }
-            jsLcKzMapper.updateById(listLckz.get(0));
+            jsCjRcMapper.saveTJsCjRcCg(tJsCjRc);
+            jsLcKzMapper.updateTJsLcKzCg(listLckz.get(0));
+            //save(tJsCjRc);
+            //jsLcKzMapper.updateById(listLckz.get(0));
+            return true;
         }
         if(tJsCjRcDto.getXqId()!=null){
             //查询当前商品的最低出价，判断当前要出价的价格必须小于这个价格
@@ -114,6 +120,8 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
             //如果有新的叫价，将叫价间隔状态置为0
             listLckz.get(0).setJjjgzt(0);
                 listLckz.get(0).setBmId(tJsBm.getId());
+            tJsCjRc.setCjsj(new Date());
+            tJsCjRc.setGxsj(new Date());
             if(tJsCjRcs.size()>0){
                 if(tJsCjRcs.get(0)==null){
 
@@ -125,9 +133,13 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
                     }
                 }
             }
-            jsLcKzMapper.updateById(listLckz.get(0));
+            jsCjRcMapper.saveTJsCjRcXq(tJsCjRc);
+            jsLcKzMapper.updateTJsLcKzXq(listLckz.get(0));
+            //save(tJsCjRc);
+            //jsLcKzMapper.updateById(listLckz.get(0));
+            return true;
         }
-        return save(tJsCjRc);
+        return false;
     }
     /**
      * 获取当前用户id

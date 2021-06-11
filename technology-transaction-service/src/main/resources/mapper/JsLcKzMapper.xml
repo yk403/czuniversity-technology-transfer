@@ -59,5 +59,29 @@
             #{item}
         </foreach>
     </delete>
+    <update id="updateTJsLcKzCg">
+        update t_js_lc_kz
+        <set>
+            <if test="dqzgjg != null">dqzgjg = #{dqzgjg},</if>
+            <if test="jjjgzt != null">jjjgzt = #{jjjgzt},</if>
+            <if test="bmId != null">bm_id = #{bmId},</if>
+        </set>
+        where id = #{id} and
+        EXISTS(select 1 from
+        (select * from t_js_lc_kz kz
+        where kz.dqzgjg &lt; #{dqzgjg} and kz.cg_id = #{cgId}) a)
+    </update>
+    <update id="updateTJsLcKzXq">
+        update t_js_lc_kz
+        <set>
+            <if test="dqzgjg != null">dqzgjg = #{dqzgjg},</if>
+            <if test="jjjgzt != null">jjjgzt = #{jjjgzt},</if>
+            <if test="bmId != null">bm_id = #{bmId},</if>
+        </set>
+        where id = #{id} and
+        EXISTS(select 1 from
+        (select * from t_js_lc_kz kz
+        where kz.dqzgjg &gt; #{dqzgjg} and kz.xq_id = #{xqId}) a)
+    </update>
 
 </mapper>

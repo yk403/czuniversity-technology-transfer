@@ -15,7 +15,7 @@
             <if test="map.lytp != null"> and ly.lytp = #{map.lytp} </if>
             <if test="map.lytpmc != null"> and ly.lytpmc = #{map.lytpmc} </if>
             <if test="map.hdId != null"> and ly.hd_id = #{map.hdId} </if>
-            <if test="map.lybt != null"> and ly.lybt = #{map.lybt} </if>
+            <if test="map.lybt != null"> and ly.lybt like concat('%',trim(#{map.lybt}),'%') </if>
             <if test="map.lyjj != null"> and ly.lyjj = #{map.lyjj} </if>
             <if test="map.zbdz != null"> and ly.zbdz = #{map.zbdz} </if>
         </where>
@@ -41,7 +41,7 @@
             <if test="map.lytp != null"> and ly.lytp = #{map.lytp} </if>
             <if test="map.lytpmc != null"> and ly.lytpmc = #{map.lytpmc} </if>
             <if test="map.hdId != null"> and ly.hd_id = #{map.hdId} </if>
-            <if test="map.lybt != null"> and ly.lybt = #{map.lybt} </if>
+            <if test="map.lybt != null"> and ly.lybt like concat('%',trim(#{map.lybt}),'%') </if>
             <if test="map.lyjj != null"> and ly.lyjj = #{map.lyjj} </if>
             <if test="map.zbdz != null"> and ly.zbdz = #{map.zbdz} </if>
         </where>

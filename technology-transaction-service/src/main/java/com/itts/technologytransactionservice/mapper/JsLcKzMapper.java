@@ -21,4 +21,12 @@ public interface JsLcKzMapper extends BaseMapper<TJsLcKz> {
 	List<TJsLcKz> list(@Param("map") Map map);
 	List<TJsLcKz> deleteLcKzByCgIds(@Param("list") List<Integer> tJsLcKzList);
 	List<TJsLcKz> deleteLcKzByXqIds(@Param("list") List<Integer> tJsLcKzList);
+	/*
+	叫价专用(成果)
+	 */
+	void updateTJsLcKzCg(TJsLcKz tJsLcKz);
+	/*
+叫价专用(需求)
+ */
+	void updateTJsLcKzXq(TJsLcKz tJsLcKz);
 }
