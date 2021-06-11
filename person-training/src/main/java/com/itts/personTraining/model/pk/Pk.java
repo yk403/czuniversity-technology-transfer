@@ -56,6 +56,12 @@ public class Pk implements Serializable {
     private Long kcsjId;
 
     /**
+     * 课程ID
+     */
+    @ApiModelProperty(value = "课程ID", required = true)
+    private Long kcId;
+
+    /**
      * 类型(1:学历学位排课;2:继续教育排课)
      */
     private Integer type;

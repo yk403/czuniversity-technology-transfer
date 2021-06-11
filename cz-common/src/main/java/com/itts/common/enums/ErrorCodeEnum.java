@@ -108,6 +108,9 @@ public enum ErrorCodeEnum {
     BATCH_STUDENT_EXISTS_ERROR(-45038, "该批次学生成绩已存在!"),
     COURSE_TYPE_ERROR(-45039, "课程类型不正确!"),
     NAME_PHONE_ISEMPTY_ERROR(-45040, "姓名电话不可都为空!"),
+    SCHOOL_BE_OCCUPIED(-45041,"当前日期时段该教室已有排课,不可添加!"),
+    PLACE_BE_OCCUPIED(-45042,"当前日期时段该地点已有排课,不可添加!"),
+    TEACHER_BE_OCCUPIED(-45043,"当前日期时段该教师已有排课,不可添加!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

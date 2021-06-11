@@ -5,6 +5,7 @@ import com.itts.personTraining.dto.PkDTO;
 import com.itts.personTraining.model.pk.Pk;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -60,4 +61,12 @@ public interface PkService extends IService<Pk> {
      * @return
      */
     boolean addList(List<PkDTO> pkDTOs);
+
+    /**
+     * 根据开学日期查询所有排课信息
+     * @param kxrq
+     * @return
+     */
+    List<PkDTO> findPkByKxrq(Date kxrq);
+
 }

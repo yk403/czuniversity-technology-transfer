@@ -1,6 +1,7 @@
 package com.itts.personTraining.service.pk.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
@@ -84,7 +85,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     @Override
     public PkDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询排课信息】", id);
-        return pkMapper.getById(id);
+        return pkMapper.getPkById(id);
     }
 
     /**
@@ -101,6 +102,101 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
         BeanUtils.copyProperties(pkDTO, pk);
+        Pk pk1 = changeSknyr(pkDTO, pk);
+        return pkService.save(pk1);
+    }
+
+    /**
+     * 更新排课
+     *
+     * @param pkDTO
+     * @return
+     */
+    @Override
+    public boolean update(PkDTO pkDTO) {
+        log.info("【人才培养 - 更新排课:{}】", pkDTO);
+        Long userId = getUserId();
+        pkDTO.setGxr(userId);
+        Pk pk = new Pk();
+        BeanUtils.copyProperties(pkDTO, pk);
+        Pk pk1 = changeSknyr(pkDTO, pk);
+        return pkService.updateById(pk1);
+    }
+
+    /**
+     * 删除排课
+     *
+     * @param pkDTO
+     * @return
+     */
+    @Override
+    public boolean delete(PkDTO pkDTO) {
+        log.info("【人才培养 - 删除排课:{}】", pkDTO);
+        //设置删除状态
+        pkDTO.setSfsc(true);
+        pkDTO.setGxr(getUserId());
+        Pk pk = new Pk();
+        BeanUtils.copyProperties(pkDTO, pk);
+        return pkService.updateById(pk);
+    }
+
+    /**
+     * 批量新增排课
+     *
+     * @param pkDTOs
+     * @return
+     */
+    @Override
+    public boolean addList(List<PkDTO> pkDTOs) {
+        log.info("【人才培养 - 批量新增排课:{}】", pkDTOs);
+        Long userId = getUserId();
+        List<Pk> pks = new ArrayList<>();
+        for (PkDTO pkDTO : pkDTOs) {
+            Pk pk = new Pk();
+            pkDTO.setCjr(userId);
+            pkDTO.setGxr(userId);
+            BeanUtils.copyProperties(pkDTO, pk);
+            Pk pk1 = changeSknyr(pkDTO, pk);
+            pks.add(pk1);
+        }
+        return pkService.saveBatch(pks);
+    }
+
+    /**
+     * 根据开学日期查询所有排课信息
+     * @param kxrq
+     * @return
+     */
+    @Override
+    public List<PkDTO> findPkByKxrq(Date kxrq) {
+        log.info("【人才培养 - 根据开学日期:{}查询所有排课信息】", kxrq);
+        List<PkDTO> pkDTOs = pkMapper.findPkByCondition(kxrq);
+        return pkDTOs;
+    }
+
+    /**
+     * 获取当前用户id
+     *
+     * @return
+     */
+    public Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
+    }
+
+    /**
+     * 将起始周结束周转换成上课起始年月日和上课结束年月日
+     * @param pkDTO
+     * @param pk
+     * @return
+     */
+    private Pk changeSknyr(PkDTO pkDTO, Pk pk) {
         Integer qsz = pkDTO.getQsz();
         if (qsz != null) {
             Date skqsnyr = null;
@@ -121,109 +217,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
             }
             pk.setSkjsnyr(skjsnyr);
         }
-        if (pkService.save(pk)) {
-            return savePkKc(pkDTO, pk);
-        }
-        return false;
-    }
-
-    /**
-     * 更新排课
-     *
-     * @param pkDTO
-     * @return
-     */
-    @Override
-    public boolean update(PkDTO pkDTO) {
-        log.info("【人才培养 - 更新排课:{}】", pkDTO);
-        Long userId = getUserId();
-        pkDTO.setGxr(userId);
-        Pk pk = new Pk();
-        if (pkDTO.getKxrq() != null || pkDTO.getQsz() != null || pkDTO.getJsz() != null) {
-            Date skqsnyr = null;
-            try {
-                skqsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getKxrq(), pkDTO.getQsz()*7);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            pkDTO.setSkqsnyr(skqsnyr);
-            Date skjsnyr = null;
-            try {
-                skjsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getSkqsnyr(), pkDTO.getJsz()*7);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            pkDTO.setSkjsnyr(skjsnyr);
-        }
-        BeanUtils.copyProperties(pkDTO, pk);
-        if (pkService.updateById(pk)) {
-            List<KcDTO> kcDTOs = pkDTO.getKcDTOs();
-            if (kcDTOs != null && kcDTOs.size() > 0) {
-                if (removePkKc(pkDTO)) {
-                    return savePkKc(pkDTO, pk);
-                }
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 删除排课
-     *
-     * @param pkDTO
-     * @return
-     */
-    @Override
-    public boolean delete(PkDTO pkDTO) {
-        log.info("【人才培养 - 删除排课:{}】", pkDTO);
-        //设置删除状态
-        pkDTO.setSfsc(true);
-        pkDTO.setGxr(getUserId());
-        Pk pk = new Pk();
-        BeanUtils.copyProperties(pkDTO, pk);
-        if (pkService.updateById(pk)) {
-            return removePkKc(pkDTO);
-        }
-        return false;
-    }
-
-    /**
-     * 批量新增排课
-     *
-     * @param pkDTOs
-     * @return
-     */
-    @Override
-    public boolean addList(List<PkDTO> pkDTOs) {
-        log.info("【人才培养 - 批量新增排课:{}】", pkDTOs);
-        Long userId = getUserId();
-        List<Pk> pks = new ArrayList<>();
-        for (PkDTO pkDTO : pkDTOs) {
-            Pk pk = new Pk();
-            pkDTO.setCjr(userId);
-            pkDTO.setGxr(userId);
-            BeanUtils.copyProperties(pkDTO, pk);
-            pks.add(pk);
-        }
-        return pkService.saveBatch(pks);
-    }
-
-    /**
-     * 获取当前用户id
-     *
-     * @return
-     */
-    public Long getUserId() {
-        LoginUser loginUser = threadLocal.get();
-        Long userId;
-        if (loginUser != null) {
-            userId = loginUser.getUserId();
-        } else {
-            throw new ServiceException(GET_THREADLOCAL_ERROR);
-        }
-        return userId;
+        return pk;
     }
 
     /**
@@ -232,7 +226,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
      * @param pk
      * @return
      */
-    private boolean savePkKc(PkDTO pkDTO, Pk pk) {
+    /*private boolean savePkKc(PkDTO pkDTO, Pk pk) {
         List<KcDTO> kcDTOs = pkDTO.getKcDTOs();
         List<PkKc> pkKcList = new ArrayList<>();
         for (KcDTO kcDTO : kcDTOs) {
@@ -242,17 +236,17 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
             pkKcList.add(pkKc);
         }
         return pkKcService.saveBatch(pkKcList);
-    }
+    }*/
 
     /**
      * 删除排课课程关系
      * @param pkDTO
      * @return
      */
-    private boolean removePkKc(PkDTO pkDTO) {
+    /*private boolean removePkKc(PkDTO pkDTO) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("pk_id", pkDTO.getId());
         return pkKcService.removeByMap(map);
-    }
+    }*/
 
 }

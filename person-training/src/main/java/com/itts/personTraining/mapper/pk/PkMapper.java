@@ -6,6 +6,7 @@ import com.itts.personTraining.model.pk.Pk;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,7 +20,14 @@ import java.util.List;
 @Repository
 public interface PkMapper extends BaseMapper<Pk> {
 
-    PkDTO getById(@Param("id") Long id);
+    PkDTO getPkById(@Param("id") Long id);
 
     List<PkDTO> findPkInfo(@Param("skqsnyr") String skqsnyr,@Param("skjsnyr") String skjsnyr,@Param("pcId") Long pcId);
+
+    /**
+     * 根据开学日期查询所有排课信息
+     * @param kxrq
+     * @return
+     */
+    List<PkDTO> findPkByCondition(@Param("kxrq") Date kxrq);
 }

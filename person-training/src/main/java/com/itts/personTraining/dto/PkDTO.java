@@ -36,10 +36,10 @@ public class PkDTO {
     private Long pcId;
 
     /**
-     * 课程DTO
+     * 课程ID
      */
-    @ApiModelProperty(value = "课程IDS", required = true)
-    private List<KcDTO> kcDTOs;
+    @ApiModelProperty(value = "课程ID", required = true)
+    private Long kcId;
 
     /**
      * 师资ID
@@ -100,6 +100,7 @@ public class PkDTO {
     /**
      * 起始周
      */
+    @ApiModelProperty(value = "起始周", required = true)
     private Integer qsz;
 
     /**
