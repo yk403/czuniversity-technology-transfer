@@ -49,6 +49,7 @@ public class KssjAdminController {
                              @ApiParam(value = "教育类型") @RequestParam(value = "educationType", required = false) String educationType,
                              @ApiParam(value = "学员类型") @RequestParam(value = "studentType", required = false) String studentType,
                              @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
+                             @ApiParam(value = "试卷类型") @RequestParam(value = "paperType", required = false) String paperType,
                              @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition) {
 
         PageHelper.startPage(pageNum, pageSize);
@@ -57,6 +58,7 @@ public class KssjAdminController {
                 .eq("sfsc", false)
                 .eq(StringUtils.isNotBlank(educationType), "jylx", educationType)
                 .eq(StringUtils.isNotBlank(studentType), "xylx", studentType)
+                .eq(StringUtils.isNotBlank(paperType), "sjlx", paperType)
                 .eq(courseId != null, "kc_id", courseId)
                 .like(StringUtils.isNotBlank(condition), "sjmc", condition.trim())
                 .orderByDesc("cjsj"));
