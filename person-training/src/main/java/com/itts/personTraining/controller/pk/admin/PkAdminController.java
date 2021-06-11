@@ -37,9 +37,8 @@ public class PkAdminController {
      */
     @GetMapping("/list")
     @ApiOperation(value = "查询排课信息")
-    public ResponseUtil findPkInfo(@RequestParam(value = "skkssj") String skkssj,
-                                   @RequestParam(value = "pcId", required = false) Long pcId) {
-        return ResponseUtil.success(pkService.findPkInfo(skkssj, pcId));
+    public ResponseUtil findPkInfo(@RequestParam(value = "pcId", required = false) Long pcId) {
+        return ResponseUtil.success(pkService.findPkInfo(pcId));
     }
 
     /**

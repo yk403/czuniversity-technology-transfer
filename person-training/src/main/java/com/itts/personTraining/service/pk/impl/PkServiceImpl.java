@@ -52,14 +52,13 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     /**
      * 查询排课信息
      *
-     * @param skqsnyr
      * @param pcId
      * @return
      */
     @Override
-    public Map<String, List<PkDTO>> findPkInfo(String skqsnyr, Long pcId) {
-        log.info("【人才培养 - 查询排课信息,上课开始时间:{},批次id:{}】", skqsnyr, pcId);
-        List<PkDTO> pkDTOs = pkMapper.findPkInfo(skqsnyr, getDateAfterNDays(skqsnyr, 7), pcId);
+    public Map<String, List<PkDTO>> findPkInfo(Long pcId) {
+        log.info("【人才培养 - 查询排课信息,上课开始时间:{},批次id:{}】", pcId);
+        List<PkDTO> pkDTOs = pkMapper.findPkInfo(pcId);
         Map<String, List<PkDTO>> groupByXqs = pkDTOs.stream().collect(Collectors.groupingBy(PkDTO::getXqs));
         //遍历分组
         List<String> xqsList = new ArrayList<>();

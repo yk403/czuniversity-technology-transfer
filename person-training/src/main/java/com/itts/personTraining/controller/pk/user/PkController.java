@@ -43,6 +43,6 @@ public class PkController {
         if(pcId==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        return ResponseUtil.success(pkService.findPkInfo(skqsnyr, pcId));
+        return ResponseUtil.success(pkService.findPkInfo(pcId));
     }
 }

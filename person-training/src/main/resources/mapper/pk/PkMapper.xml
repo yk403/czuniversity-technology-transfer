@@ -56,7 +56,6 @@
         from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_pk_kc tpk on(pk.id=pk.pk_id) left join t_kc kc on(kc.id=tpk.kc_id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id) left join t_kcsj kcsj on(pk.kcsj_id=kcsj.id)
         <where>
             pk.sfsc = false and pc.sfsc = false and kc.sfsc = false and sz.sfsc = false and xxjs.sfsc = false and kcsj.sfsc = false
-            and pk.skjsnyr &gt;= #{skqsnyr} and pk.skqsnyr &lt;= #{skjsnyr}
             <if test="pcId != null"> and pc.id = #{pcId} </if>
         </where>
     </select>

@@ -119,9 +119,7 @@ public class ZjAdminController {
         if (zjOld == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        if (!zjOld.getSfzh().equals(zj.getSfzh())) {
-            checkRequest(zj);
-        }
+        checkRequest(zj);
         if (!zjService.update(zj)) {
             throw new WebException(UPDATE_FAIL);
         }
@@ -158,12 +156,9 @@ public class ZjAdminController {
         }
         List<Zj> zjList = zjService.getAll();
         for (Zj zj1 : zjList) {
-            if (zj1.getSfzh().equals(zj.getSfzh())) {
-                throw new WebException(PROFESSOR_EXISTS_ERROR);
-            }
-            /*if (zj1.getDh().equals(zj.getDh())) {
+            if (zj1.getDh().equals(zj.getDh())) {
                 throw new WebException(PROFESSOR_PHONE_EXISTS_ERROR);
-            }*/
+            }
         }
     }
 }

@@ -22,7 +22,7 @@ public interface PkMapper extends BaseMapper<Pk> {
 
     PkDTO getPkById(@Param("id") Long id);
 
-    List<PkDTO> findPkInfo(@Param("skqsnyr") String skqsnyr,@Param("skjsnyr") String skjsnyr,@Param("pcId") Long pcId);
+    List<PkDTO> findPkInfo(@Param("pcId") Long pcId);
 
     /**
      * 根据开学日期查询所有排课信息
