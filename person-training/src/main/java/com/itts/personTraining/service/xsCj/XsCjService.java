@@ -60,9 +60,10 @@ public interface XsCjService extends IService<XsCj> {
      * @param xh
      * @param xm
      * @param xymc
+     * @param jylx
      * @return
      */
-    PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String xymc);
+    PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String xymc, String jylx);
 
     /**
      * 更新学生成绩

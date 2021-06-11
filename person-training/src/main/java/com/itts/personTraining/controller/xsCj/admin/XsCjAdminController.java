@@ -57,11 +57,9 @@ public class XsCjAdminController {
                                    @RequestParam(value = "pcId", required = false) Long pcId,
                                    @RequestParam(value = "xh", required = false) String xh,
                                    @RequestParam(value = "xm", required = false) String xm,
-                                   @RequestParam(value = "xymc", required = false) String xymc) {
-        if (pcId == null) {
-            return ResponseUtil.success(Collections.EMPTY_LIST);
-        }
-        return ResponseUtil.success(xsCjService.findByPage(pageNum, pageSize, pcId, xh, xm, xymc));
+                                   @RequestParam(value = "xymc", required = false) String xymc,
+                                   @RequestParam(value = "jylx", required = false) String jylx) {
+        return ResponseUtil.success(xsCjService.findByPage(pageNum, pageSize, pcId, xh, xm, xymc, jylx));
     }
 
     /**
