@@ -229,8 +229,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         Long userId = getUserId();
         log.info("【人才培养 - 根据用户id:{}查询学生成绩信息】",userId);
         XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
-        xsCjMapper.findXsKcCj(null,null,null,null,xsMsgDTO.getId());
-        return null;
+        List<XsCjDTO> xsKcCj = xsCjMapper.findXsKcCj(null, null, null, null, xsMsgDTO.getId());
+        return xsKcCj;
     }
 
     /**

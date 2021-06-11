@@ -44,7 +44,7 @@ public interface SzService extends IService<Sz> {
      * @param sz
      * @return
      */
-    boolean update(Sz sz);
+    boolean update(Sz sz,String token);
 
     /**
      * 删除师资

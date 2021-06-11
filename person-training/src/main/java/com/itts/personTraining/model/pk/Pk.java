@@ -81,13 +81,13 @@ public class Pk implements Serializable {
      * 上课起始年月日
      */
     @ApiModelProperty(value = "上课起始年月日", required = true)
-    private String skqsnyr;
+    private Date skqsnyr;
 
     /**
      * 上课结束年月日
      */
     @ApiModelProperty(value = "上课结束年月日", required = true)
-    private String skjsnyr;
+    private Date skjsnyr;
 
     /**
      * 起始周

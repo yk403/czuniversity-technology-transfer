@@ -103,7 +103,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         BeanUtils.copyProperties(pkDTO, pk);
         Integer qsz = pkDTO.getQsz();
         if (qsz != null) {
-            String skqsnyr = null;
+            Date skqsnyr = null;
             try {
                 skqsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getKxrq(), qsz*7);
             } catch (ParseException e) {
@@ -113,7 +113,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         }
         Integer jsz = pkDTO.getJsz();
         if (jsz != null) {
-            String skjsnyr = null;
+            Date skjsnyr = null;
             try {
                 skjsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getSkqsnyr(), jsz*7);
             } catch (ParseException e) {
@@ -140,14 +140,14 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
         if (pkDTO.getKxrq() != null || pkDTO.getQsz() != null || pkDTO.getJsz() != null) {
-            String skqsnyr = null;
+            Date skqsnyr = null;
             try {
                 skqsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getKxrq(), pkDTO.getQsz()*7);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             pkDTO.setSkqsnyr(skqsnyr);
-            String skjsnyr = null;
+            Date skjsnyr = null;
             try {
                 skjsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getSkqsnyr(), pkDTO.getJsz()*7);
             } catch (ParseException e) {

@@ -109,6 +109,9 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
             Yh yh = new Yh();
             yh.setId(getYhVo.getId());
+            yh.setYhbh(dsbh);
+            yh.setYhm(dsbh);
+            yh.setMm(dsbh);
             yh.setZsxm(dsxm);
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
@@ -124,7 +127,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
                 return szService.save(sz);
             }
         } else {
-            //用户表没有用户信息,新增用户信息,学员表查询是否存在
+            //用户表没有用户信息,新增用户信息,师资表查询是否存在
             Yh yh = new Yh();
             yh.setYhbh(dsbh);
             yh.setYhm(dsbh);
@@ -192,10 +195,66 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
      * @return
      */
     @Override
-    public boolean update(Sz sz) {
+    public boolean update(Sz sz,String token) {
         log.info("【人才培养 - 更新学员:{}】",sz);
-        sz.setGxr(getUserId());
-        return szService.updateById(sz);
+        Long userId = getUserId();
+        sz.setGxr(userId);
+        //通过用户编号查询
+        Object data = yhService.getByCode(sz.getDsbh(), token).getData();
+        String yhlx = IN.getKey();
+        String yhlb = sz.getDslb();
+        Long ssjgId = sz.getSsjgId();
+        String dsbh = sz.getDsbh();
+        String dsxm = sz.getDsxm();
+        if (data != null) {
+            //用户表存在用户信息,更新用户信息,师资表判断是否存在
+            GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
+            Yh yh = new Yh();
+            yh.setId(getYhVo.getId());
+            yh.setYhbh(dsbh);
+            yh.setYhm(dsbh);
+            yh.setMm(dsbh);
+            yh.setZsxm(dsxm);
+            yh.setYhlx(yhlx);
+            yh.setYhlb(yhlb);
+            yh.setJgId(ssjgId);
+            yhService.update(yh,token);
+            Sz sz1 = szService.selectByCondition(dsbh,null, null);
+            if (sz1 != null) {
+                //存在,则更新
+                sz.setId(sz1.getId());
+                return szService.updateById(sz);
+            } else {
+                //不存在,则新增
+                return szService.save(sz);
+            }
+        } else {
+            //用户表没有用户信息,新增用户信息,师资表查询是否存在
+            Yh yh = new Yh();
+            yh.setYhbh(dsbh);
+            yh.setYhm(dsbh);
+            yh.setMm(dsbh);
+            yh.setZsxm(dsxm);
+            yh.setYhlx(yhlx);
+            yh.setYhlb(yhlb);
+            yh.setJgId(ssjgId);
+            Object data1 = yhService.rpcAdd(yh, token).getData();
+            if (data1 == null) {
+                throw new ServiceException(USER_INSERT_ERROR);
+            }
+            Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
+            Long yh1Id = yh1.getId();
+            sz.setYhId(yh1Id);
+            Sz sz1 = szService.selectByCondition(dsbh,null, null);
+            if (sz1 != null) {
+                //存在,则更新
+                sz.setId(sz1.getId());
+                return updateById(sz);
+            } else {
+                //不存在.则新增
+                return save(sz);
+            }
+        }
     }
 
 

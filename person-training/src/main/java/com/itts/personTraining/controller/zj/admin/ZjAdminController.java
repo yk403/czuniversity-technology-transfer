@@ -114,14 +114,13 @@ public class ZjAdminController {
     @PutMapping("/update")
     @ApiOperation(value = "更新专家信息")
     public ResponseUtil update(@RequestBody Zj zj) throws WebException {
-        Long id = zj.getId();
-        //检查参数是否合法
-        if (id == null ) {
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
         //检查数据库中是否存在要更新的数据
-        if (zjService.get(id) == null) {
+        Zj zjOld = zjService.get(zj.getId());
+        if (zjOld == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
+        }
+        if (!zjOld.getSfzh().equals(zj.getSfzh())) {
+            checkRequest(zj);
         }
         if (!zjService.update(zj)) {
             throw new WebException(UPDATE_FAIL);
@@ -162,9 +161,9 @@ public class ZjAdminController {
             if (zj1.getSfzh().equals(zj.getSfzh())) {
                 throw new WebException(PROFESSOR_EXISTS_ERROR);
             }
-            if (zj1.getDh().equals(zj.getDh())) {
+            /*if (zj1.getDh().equals(zj.getDh())) {
                 throw new WebException(PROFESSOR_PHONE_EXISTS_ERROR);
-            }
+            }*/
         }
     }
 }

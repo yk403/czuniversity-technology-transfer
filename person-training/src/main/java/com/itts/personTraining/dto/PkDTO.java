@@ -80,19 +80,22 @@ public class PkDTO {
      * 开学日期
      */
     @ApiModelProperty(value = "开学日期", required = true)
-    private String kxrq;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date kxrq;
 
     /**
      * 上课起始年月日
      */
     @ApiModelProperty(value = "上课起始年月日")
-    private String skqsnyr;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date skqsnyr;
 
     /**
      * 上课结束年月日
      */
     @ApiModelProperty(value = "上课结束年月日")
-    private String skjsnyr;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date skjsnyr;
 
     /**
      * 起始周
