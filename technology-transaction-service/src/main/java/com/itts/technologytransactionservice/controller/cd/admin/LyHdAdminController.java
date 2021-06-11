@@ -136,8 +136,8 @@ public class LyHdAdminController {
         return ResponseUtil.success(old);
     }
     //删除会展(也就是删除活动表里的会展内容)
-    @ApiOperation(value = "删除")
-    @DeleteMapping("/delete/{id}")
+    @ApiOperation(value = "删除会展")
+    @DeleteMapping("/deleteHz/{id}")
     public ResponseUtil deleteHz(@PathVariable("id") Long id) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
