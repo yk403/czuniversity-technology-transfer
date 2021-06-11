@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.io.Serializable;
 
@@ -63,6 +64,45 @@ public class LyZp implements Serializable {
      * 关联展位id
      */
     private Long zwId;
-
+    /**
+     * 展品类型(0:需求1:成果)
+     */
+    private Integer zplx;
+    /**
+    * @Description: 展品名称
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/10
+    */
+    private String zpmc;
+    /**
+     * 关联领域id
+     */
+    private Long lyId;
+    /**
+    * @Description: 单位名称
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/6/10
+    */
+    private String dwmc;
+    /**
+     * 领域名称
+     */
+    private String lymc;
+    /**
+     * 联系方式
+     */
+    private String lxfs;
+    /**
+    * @Description: 合作价格
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/10
+    */
+    private BigDecimal hzjg;
 
 }

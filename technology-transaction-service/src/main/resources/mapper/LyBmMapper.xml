@@ -3,7 +3,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyBmMapper">
 
     <select id="findLyBmFront" resultType="com.itts.technologytransactionservice.model.LyBmDto">
-        select bm.id as id,cjsj,gxsj,dwmc,fr,dz,lxdh,bmly,yyzz,frsfz,lxr,hd_id,shzt,user_id,hd.hdmc as hdmc
+        select bm.id as id,bm.cjsj,bm.gxsj,bm.dwmc,bm.fr,bm.dz,bm.lxdh,bm.bmly,bm.yyzz,bm.frsfz,bm.lxr,bm.hd_id,bm.shzt,bm.user_id,hd.hdmc as hdmc
         from t_ly_bm bm left join t_ly_hd hd on (bm.hd_id = hd.id)
         <where>
             <!--后台能查询0或者1的数据 -->
@@ -11,7 +11,8 @@
             <if test="map.userId != null"> and bm.user_id = #{map.userId} </if>
             <if test="map.hdId != null"> and bm.hd_id = #{map.hdId} </if>
             <if test="map.shzt != null"> and bm.shzt = #{map.shzt} </if>
-            <if test="map.dwmc != null"> and bm.dwmc = #{map.dwmc} </if>
+            <if test="map.dwmc != null"> and bm.dwmc like concat('%',trim(#{map.dwmc}),'%') </if>
+            <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -22,16 +23,17 @@
             </otherwise>
         </choose>
     </select>
-    <select id="findLyBmBack" resultType="com.itts.technologytransactionservice.model.LyBm">
-        select bm.id as id,cjsj,gxsj,dwmc,fr,dz,lxdh,bmly,yyzz,frsfz,lxr,hd_id,shzt,user_id
-        from t_ly_bm bm
+    <select id="findLyBmBack" resultType="com.itts.technologytransactionservice.model.LyBmDto">
+        select bm.id as id,bm.cjsj,bm.gxsj,bm.dwmc,bm.fr,bm.dz,bm.lxdh,bm.bmly,bm.yyzz,bm.frsfz,bm.lxr,bm.hd_id,bm.shzt,bm.user_id,hd.hdmc as hdmc
+        from t_ly_bm bm left join t_ly_hd hd on (bm.hd_id = hd.id)
         <where>
             <!--后台能查询0或者1的数据 -->
             bm.is_delete = 0
             <if test="map.userId != null"> and bm.user_id = #{map.userId} </if>
             <if test="map.hdId != null"> and bm.hd_id = #{map.hdId} </if>
             <if test="map.shzt != null"> and bm.shzt = #{map.shzt} </if>
-            <if test="map.dwmc != null"> and bm.dwmc = #{map.dwmc} </if>
+            <if test="map.dwmc != null"> and bm.dwmc like concat('%',trim(#{map.dwmc}),'%') </if>
+            <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -42,7 +44,25 @@
             </otherwise>
         </choose>
     </select>
-
+    <update id="updateLyBm">
+        update t_ly_bm
+        <set>
+            <if test="cjsj != null">cjsj = #{cjsj},</if>
+            <if test="gxsj != null">gxsj = #{gxsj},</if>
+            <if test="dwmc != null">dwmc = #{dwmc},</if>
+            <if test="fr != null">fr = #{fr},</if>
+            <if test="dz != null">dz = #{dz},</if>
+            <if test="lxdh != null">lxdh = #{lxdh},</if>
+            <if test="bmly != null">bmly = #{bmly},</if>
+            <if test="yyzz != null">yyzz = #{yyzz},</if>
+            <if test="frsfz != null">frsfz = #{frsfz},</if>
+            <if test="lxr != null">lxr = #{lxr},</if>
+            <if test="hdId != null">hd_id = #{hdId},</if>
+            <if test="shzt != null">shzt = #{shzt},</if>
+            <if test="userId != null">user_id = #{userId}</if>
+        </set>
+        where id = #{id}
+    </update>
 
 
 <!--    &lt;!&ndash; 通用查询映射结果 &ndash;&gt;

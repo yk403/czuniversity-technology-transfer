@@ -3,12 +3,13 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyZwMapper">
 
     <select id="findLyZwFront" resultType="com.itts.technologytransactionservice.model.LyZw">
-        select zw.id as id,cjsj,gxsj,zwjj
+        select zw.id as id,cjsj,gxsj,zwjj,hd_id
         from t_ly_zw zw
         <where>
             <!--后台能查询0或者1的数据 -->
             zw.is_delete = 0
             <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
+            <if test="map.hdId != null"> and zw.hd_id = #{map.hdId} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -20,12 +21,13 @@
         </choose>
     </select>
     <select id="findLyZwBack" resultType="com.itts.technologytransactionservice.model.LyZw">
-        select zw.id as id,cjsj,gxsj,zwjj
+        select zw.id as id,cjsj,gxsj,zwjj,hd_id
         from t_ly_zw zw
         <where>
             <!--后台能查询0或者1的数据 -->
             zw.is_delete = 0
             <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
+            <if test="map.hdId != null"> and zw.hd_id = #{map.hdId} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">

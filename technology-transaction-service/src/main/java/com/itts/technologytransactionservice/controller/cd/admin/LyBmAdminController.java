@@ -82,7 +82,7 @@ public class LyBmAdminController {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新数据
-       if (!lyBmAdminService.updateById(lyBm)) {
+       if (!lyBmAdminService.updateLyBm(lyBm)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新课程成功!");
@@ -105,7 +105,7 @@ public class LyBmAdminController {
 
         old.setIsDelete(true);
         old.setGxsj(new Date());
-        old.setUserId(loginUser.getUserId());
+        //old.setUserId(loginUser.getUserId());
 
         lyBmAdminService.updateById(old);
 

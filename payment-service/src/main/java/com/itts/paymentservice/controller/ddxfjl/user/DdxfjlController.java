@@ -192,9 +192,5 @@ public class DdxfjlController {
         if (addDdxfjlRequest.getSjzfje() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-
-        if (StringUtils.isBlank(addDdxfjlRequest.getZt())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
     }
 }

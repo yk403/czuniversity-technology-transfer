@@ -2,12 +2,14 @@ package com.itts.paymentservice.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.common.bean.LoginUser;
+import com.itts.paymentservice.MqConfig;
 import com.itts.paymentservice.enums.OrderStatusEnum;
 import com.itts.paymentservice.mapper.ddxfjl.DdxfjlMapper;
 import com.itts.paymentservice.model.ddxfjl.Ddxfjl;
 import com.itts.paymentservice.request.ddxfjl.AddDdxfjlRequest;
 import com.itts.paymentservice.service.DdxfjlService;
 import com.itts.paymentservice.utils.PaymentUtils;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,12 @@ public class DdxfjlServiceImpl extends ServiceImpl<DdxfjlMapper, Ddxfjl> impleme
     @Autowired
     private DdxfjlMapper ddxfjlMapper;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private MqConfig mqConfig;
+
     /**
      * 新增
      */
@@ -44,10 +52,13 @@ public class DdxfjlServiceImpl extends ServiceImpl<DdxfjlMapper, Ddxfjl> impleme
         ddxfjl.setCjsj(now);
         ddxfjl.setGxsj(now);
 
-        ddxfjl.setBh(PaymentUtils.generateOrderNo());
+        String orderNo = PaymentUtils.generateOrderNo();
+        ddxfjl.setBh(orderNo);
         ddxfjl.setZt(OrderStatusEnum.PENDING.getKey());
 
         ddxfjlMapper.insert(ddxfjl);
+
+        rabbitTemplate.convertAndSend(mqConfig.getEventExchange(), mqConfig.getOrderReleaseDelayRoutingKey(), orderNo);
 
         return ddxfjl;
     }
@@ -63,7 +74,7 @@ public class DdxfjlServiceImpl extends ServiceImpl<DdxfjlMapper, Ddxfjl> impleme
         old.setZt(status);
         old.setGxsj(now);
 
-        switch (status){
+        switch (status) {
 
             case "paid":
                 old.setZfsj(now);

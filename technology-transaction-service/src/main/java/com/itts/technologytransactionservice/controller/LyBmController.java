@@ -87,7 +87,7 @@ public class LyBmController {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新数据
-       if (!lyBmService.updateById(lyBm)) {
+       if (!lyBmService.updateLyBm(lyBm)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新课程成功!");
