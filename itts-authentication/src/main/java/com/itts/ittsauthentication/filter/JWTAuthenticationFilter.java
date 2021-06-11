@@ -5,9 +5,10 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.RedisConstant;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
-import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.JwtUtil;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.ittsauthentication.bean.AuthoritionUser;
+import com.itts.ittsauthentication.mapper.AuthoritionUserMapper;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -35,9 +36,12 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
     private RedisTemplate redisTemplate;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, RedisTemplate redisTemplate) {
+    private AuthoritionUserMapper authoritionUserMapper;
+
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, RedisTemplate redisTemplate, AuthoritionUserMapper authoritionUserMapper) {
         super(authenticationManager);
         this.redisTemplate = redisTemplate;
+        this.authoritionUserMapper = authoritionUserMapper;
     }
 
     @Override
@@ -100,6 +104,15 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
         }
 
         LoginUser loginUser = JSONUtil.toBean(claims.get("data").toString(), LoginUser.class);
+
+        AuthoritionUser user = authoritionUserMapper.getByUserName(loginUser.getUserName());
+        if(user != null){
+
+            loginUser.setUserCategory(user.getYhlb());
+            loginUser.setIntegral(user.getYhjf());
+            loginUser.setUserLevel(user.getYhjb());
+            loginUser.setTheme(user.getYhtx());
+        }
 
         //将用户信息设置到threadLocal
         SystemConstant.threadLocal.set(loginUser);

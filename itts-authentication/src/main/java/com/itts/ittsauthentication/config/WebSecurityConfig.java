@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(new Http403AuthenticationEntryPoint())
                 .and()
                 .addFilter(new JWTLoginFilter(authenticationManager(), redisTemplate, authoritionUserMapper))
-                .addFilter(new JWTAuthenticationFilter(authenticationManager(), redisTemplate))
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(), redisTemplate, authoritionUserMapper))
                 .logout().logoutUrl("/api/logout/").logoutSuccessHandler(new SecurityLogoutHandler(redisTemplate)).permitAll();
     }
 
