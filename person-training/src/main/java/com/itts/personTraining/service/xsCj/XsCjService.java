@@ -33,17 +33,17 @@ public interface XsCjService extends IService<XsCj> {
 
     /**
      * 删除学生成绩
-     * @param xsCj
+     * @param xsCjDTO
      * @return
      */
-    boolean delete(XsCj xsCj);
+    boolean delete(XsCjDTO xsCjDTO);
 
     /**
      * 根据id查询XsCj对象
      * @param id
      * @return
      */
-    XsCj get(Long id);
+    XsCjDTO get(Long id);
 
     /**
      * 根据piId查询XsCj对象
@@ -79,8 +79,8 @@ public interface XsCjService extends IService<XsCj> {
     boolean issueBatch(List<Long> ids);
 
     /**
-     * 根据用户id查询学生成绩信息
+     * 根据用户id查询学生成绩信息列表
      * @return
      */
-    XsCjDTO getByYhId();
+    List<XsCjDTO> getByYhId();
 }

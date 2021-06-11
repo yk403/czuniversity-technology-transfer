@@ -13,6 +13,7 @@ import com.itts.personTraining.service.pcXs.PcXsService;
 import com.itts.personTraining.service.xsCj.XsCjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -137,12 +138,12 @@ public class XsCjAdminController {
     @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "删除学生成绩")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
-        XsCj xsCj = xsCjService.get(id);
-        if (xsCj == null) {
+        XsCjDTO xsCjDTO = xsCjService.get(id);
+        if (xsCjDTO == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新删除状态
-        if (!xsCjService.delete(xsCj)) {
+        if (!xsCjService.delete(xsCjDTO)) {
             throw new WebException(DELETE_FAIL);
         }
         return ResponseUtil.success("删除学生成绩成功!");

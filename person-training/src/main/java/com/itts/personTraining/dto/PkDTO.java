@@ -36,10 +36,10 @@ public class PkDTO {
     private Long pcId;
 
     /**
-     * 课程DTO
+     * 课程ID
      */
-    @ApiModelProperty(value = "课程IDS", required = true)
-    private List<KcDTO> kcDTOs;
+    @ApiModelProperty(value = "课程ID", required = true)
+    private Long kcId;
 
     /**
      * 师资ID
@@ -77,20 +77,30 @@ public class PkDTO {
     private String pkmc;
 
     /**
+     * 开学日期
+     */
+    @ApiModelProperty(value = "开学日期", required = true)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date kxrq;
+
+    /**
      * 上课起始年月日
      */
-    @ApiModelProperty(value = "上课起始年月日", required = true)
-    private String skqsnyr;
+    @ApiModelProperty(value = "上课起始年月日")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date skqsnyr;
 
     /**
      * 上课结束年月日
      */
-    @ApiModelProperty(value = "上课结束年月日", required = true)
-    private String skjsnyr;
+    @ApiModelProperty(value = "上课结束年月日")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date skjsnyr;
 
     /**
      * 起始周
      */
+    @ApiModelProperty(value = "起始周", required = true)
     private Integer qsz;
 
     /**

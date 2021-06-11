@@ -23,9 +23,10 @@ public interface XsCjMapper extends BaseMapper<XsCj> {
      * @param xh
      * @param xm
      * @param yx
+     * @param xsId
      * @return
      */
-    List<XsCjDTO> findXsKcCj(@Param("pcId") Long pcId, @Param("xh") String xh, @Param("xm") String xm, @Param("yx") String yx);
+    List<XsCjDTO> findXsKcCj(@Param("pcId") Long pcId, @Param("xh") String xh, @Param("xm") String xm, @Param("yx") String yx, @Param("xsId") Long xsId);
 
     /**
      * 查询所有学生成绩(继续教育)
@@ -51,4 +52,11 @@ public interface XsCjMapper extends BaseMapper<XsCj> {
      * @return
      */
     Long getNumByXsId(@Param("xsId") Long xsId);
+
+    /**
+     * 根据id查询XsCjDTO对象
+     * @param id
+     * @return
+     */
+    XsCjDTO getById(@Param("id") Long id);
 }

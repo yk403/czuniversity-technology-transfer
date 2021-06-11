@@ -9,6 +9,7 @@
         <result column="sz_id" property="szId" />
         <result column="xxjs_id" property="xxjsId" />
         <result column="kcsj_id" property="kcsjId" />
+        <result column="kc_id" property="kcId" />
         <result column="type" property="type" />
         <result column="skdd" property="skdd" />
         <result column="pkmc" property="pkmc" />
@@ -28,7 +29,7 @@
         <result column="cjr" property="cjr" />
         <result column="gxsj" property="gxsj" />
         <result column="gxr" property="gxr" />
-        <collection property="kcDTOs" resultMap="KcDTOListResultMap"/>
+        <!--<collection property="kcDTOs" resultMap="KcDTOListResultMap"/>-->
     </resultMap>
 
     <resultMap id="KcDTOListResultMap" type="com.itts.personTraining.dto.KcDTO">
@@ -41,9 +42,9 @@
         id, pc_id, kc_id, sz_id, xxjs_id, pkmc, skqsnyr, skjsnyr, kcsj_id, xqs, sfxf, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
-    <select id="getById" resultMap="BaseResultMap">
+    <select id="getPkById" resultMap="BaseResultMap">
         select pk.*,kc.id as kc_id,kc.kcdm as kcdm,kc.kcmc as kcmc,sz.*,xxjs.*
-        from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_pk_kc tpk on(pk.id=tpk.pk_id) left join t_kc kc on(kc.id=tpk.kc_id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id) left join t_kcsj kcsj on(pk.kcsj_id=kcsj.id)
+        from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_kc kc on(kc.id=pk.kc_id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id) left join t_kcsj kcsj on(pk.kcsj_id=kcsj.id)
         <where>
             pk.sfsc = false and pc.sfsc = false and kc.sfsc = false and sz.sfsc = false and xxjs.sfsc = false and kcsj.sfsc = false
             <if test="id != null"> and pk.id = #{id} </if>
@@ -52,11 +53,18 @@
 
     <select id="findPkInfo" resultMap="BaseResultMap">
         select pk.*,kc.id as kc_id,kc.kcdm as kcdm,kc.kcmc as kcmc,sz.*,xxjs.*
-        from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_pk_kc tpk on(pk.id=tpk.pk_id) left join t_kc kc on(kc.id=tpk.kc_id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id) left join t_kcsj kcsj on(pk.kcsj_id=kcsj.id)
+        from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_pk_kc tpk on(pk.id=pk.pk_id) left join t_kc kc on(kc.id=tpk.kc_id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id) left join t_kcsj kcsj on(pk.kcsj_id=kcsj.id)
         <where>
             pk.sfsc = false and pc.sfsc = false and kc.sfsc = false and sz.sfsc = false and xxjs.sfsc = false and kcsj.sfsc = false
-            and pk.skjsnyr &gt;= #{skqsnyr} and pk.skqsnyr &lt;= #{skjsnyr}
             <if test="pcId != null"> and pc.id = #{pcId} </if>
+        </where>
+    </select>
+    <select id="findPkByCondition" resultMap="BaseResultMap">
+        select pk.*,kc.id as kc_id,kc.kcdm as kcdm,kc.kcmc as kcmc,sz.*,xxjs.*
+        from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_kc kc on(kc.id=pk.kc_id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id) left join t_kcsj kcsj on(pk.kcsj_id=kcsj.id)
+        <where>
+            pk.sfsc = false and pc.sfsc = false and kc.sfsc = false and sz.sfsc = false and xxjs.sfsc = false and kcsj.sfsc = false
+            <if test="kxrq != null and kxrq != ''"> and pk.kxrq = #{kxrq} </if>
         </where>
     </select>
 

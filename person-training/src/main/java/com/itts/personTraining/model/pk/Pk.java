@@ -56,6 +56,12 @@ public class Pk implements Serializable {
     private Long kcsjId;
 
     /**
+     * 课程ID
+     */
+    @ApiModelProperty(value = "课程ID", required = true)
+    private Long kcId;
+
+    /**
      * 类型(1:学历学位排课;2:继续教育排课)
      */
     private Integer type;
@@ -72,16 +78,22 @@ public class Pk implements Serializable {
     private String pkmc;
 
     /**
+     * 开学日期
+     */
+    @ApiModelProperty(value = "开学日期", required = true)
+    private String kxrq;
+
+    /**
      * 上课起始年月日
      */
     @ApiModelProperty(value = "上课起始年月日", required = true)
-    private String skqsnyr;
+    private Date skqsnyr;
 
     /**
      * 上课结束年月日
      */
     @ApiModelProperty(value = "上课结束年月日", required = true)
-    private String skjsnyr;
+    private Date skjsnyr;
 
     /**
      * 起始周

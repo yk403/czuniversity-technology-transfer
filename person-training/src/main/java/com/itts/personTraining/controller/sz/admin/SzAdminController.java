@@ -88,6 +88,9 @@ public class SzAdminController {
     public ResponseUtil add(@RequestBody Sz sz, HttpServletRequest request) throws WebException {
         //检查参数是否合法
         checkRequest(sz);
+        if (szService.selectByCondition(sz.getDsbh(),null,null) != null) {
+            throw new WebException(TEACHER_NUMBER_EXISTS_ERROR);
+        }
         if (!szService.add(sz,request.getHeader("token"))) {
             throw new WebException(INSERT_FAIL);
         }
@@ -121,17 +124,24 @@ public class SzAdminController {
      */
     @PutMapping("/update")
     @ApiOperation(value = "更新师资")
-    public ResponseUtil update(@RequestBody Sz sz) throws WebException {
+    public ResponseUtil update(@RequestBody Sz sz, HttpServletRequest request) throws WebException {
+        checkRequest(sz);
         Long id = sz.getId();
         //检查参数是否合法
         if (id == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //检查数据库中是否存在要更新的数据
-        if (szService.get(id) == null) {
+        Sz szOld = szService.get(id);
+        if (szOld == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        if (!szService.update(sz)) {
+        if (!szOld.getDsbh().equals(sz.getDsbh())) {
+            if (szService.selectByCondition(sz.getDsbh(),null,null) != null) {
+                throw new WebException(TEACHER_NUMBER_EXISTS_ERROR);
+            }
+        }
+        if (!szService.update(sz,request.getHeader("token"))) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新师资成功!");
@@ -179,9 +189,6 @@ public class SzAdminController {
     private void checkRequest(Sz sz) throws WebException {
         if (sz == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        if (szService.selectByCondition(sz.getDsbh(),sz.getXb(),null) != null) {
-            throw new WebException(TEACHER_NUMBER_EXISTS_ERROR);
         }
         String dslb = sz.getDslb();
         if (dslb == null) {

@@ -55,7 +55,8 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
         QueryWrapper<Zj> zjQueryWrapper = new QueryWrapper<>();
         zjQueryWrapper.eq("sfsc",false)
                       .eq(StringUtils.isNotBlank(yjly),"yjly",yjly)
-                      .like(StringUtils.isNotBlank(name),"xm",name);
+                      .like(StringUtils.isNotBlank(name),"xm",name)
+                      .orderByDesc("cjsj");
         List<Zj> zjList = zjMapper.selectList(zjQueryWrapper);
         return new PageInfo<>(zjList);
     }

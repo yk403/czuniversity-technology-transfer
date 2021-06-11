@@ -1,7 +1,9 @@
 package com.itts.personTraining.service.pk.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.KcDTO;
@@ -50,14 +52,13 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     /**
      * 查询排课信息
      *
-     * @param skqsnyr
      * @param pcId
      * @return
      */
     @Override
-    public Map<String, List<PkDTO>> findPkInfo(String skqsnyr, Long pcId) {
-        log.info("【人才培养 - 查询排课信息,上课开始时间:{},批次id:{}】", skqsnyr, pcId);
-        List<PkDTO> pkDTOs = pkMapper.findPkInfo(skqsnyr, getDateAfterNDays(skqsnyr, 7), pcId);
+    public Map<String, List<PkDTO>> findPkInfo(Long pcId) {
+        log.info("【人才培养 - 查询排课信息,上课开始时间:{},批次id:{}】", pcId);
+        List<PkDTO> pkDTOs = pkMapper.findPkInfo(pcId);
         Map<String, List<PkDTO>> groupByXqs = pkDTOs.stream().collect(Collectors.groupingBy(PkDTO::getXqs));
         //遍历分组
         List<String> xqsList = new ArrayList<>();
@@ -83,7 +84,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     @Override
     public PkDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询排课信息】", id);
-        return pkMapper.getById(id);
+        return pkMapper.getPkById(id);
     }
 
     /**
@@ -100,20 +101,8 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
         BeanUtils.copyProperties(pkDTO, pk);
-        Integer jsz = pkDTO.getJsz();
-        if (jsz != null) {
-            String skjsnyr = null;
-            try {
-                skjsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getSkqsnyr(), jsz*7);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            pk.setSkjsnyr(skjsnyr);
-        }
-        if (pkService.save(pk)) {
-            return savePkKc(pkDTO, pk);
-        }
-        return false;
+        Pk pk1 = changeSknyr(pkDTO, pk);
+        return pkService.save(pk1);
     }
 
     /**
@@ -129,17 +118,8 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
         BeanUtils.copyProperties(pkDTO, pk);
-        if (pkService.updateById(pk)) {
-            List<KcDTO> kcDTOs = pkDTO.getKcDTOs();
-            if (kcDTOs != null && kcDTOs.size() > 0) {
-                if (removePkKc(pkDTO)) {
-                    return savePkKc(pkDTO, pk);
-                }
-                return false;
-            }
-            return true;
-        }
-        return false;
+        Pk pk1 = changeSknyr(pkDTO, pk);
+        return pkService.updateById(pk1);
     }
 
     /**
@@ -156,10 +136,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         pkDTO.setGxr(getUserId());
         Pk pk = new Pk();
         BeanUtils.copyProperties(pkDTO, pk);
-        if (pkService.updateById(pk)) {
-            return removePkKc(pkDTO);
-        }
-        return false;
+        return pkService.updateById(pk);
     }
 
     /**
@@ -178,9 +155,22 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
             pkDTO.setCjr(userId);
             pkDTO.setGxr(userId);
             BeanUtils.copyProperties(pkDTO, pk);
-            pks.add(pk);
+            Pk pk1 = changeSknyr(pkDTO, pk);
+            pks.add(pk1);
         }
         return pkService.saveBatch(pks);
+    }
+
+    /**
+     * 根据开学日期查询所有排课信息
+     * @param kxrq
+     * @return
+     */
+    @Override
+    public List<PkDTO> findPkByKxrq(Date kxrq) {
+        log.info("【人才培养 - 根据开学日期:{}查询所有排课信息】", kxrq);
+        List<PkDTO> pkDTOs = pkMapper.findPkByCondition(kxrq);
+        return pkDTOs;
     }
 
     /**
@@ -200,12 +190,42 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     }
 
     /**
+     * 将起始周结束周转换成上课起始年月日和上课结束年月日
+     * @param pkDTO
+     * @param pk
+     * @return
+     */
+    private Pk changeSknyr(PkDTO pkDTO, Pk pk) {
+        Integer qsz = pkDTO.getQsz();
+        if (qsz != null) {
+            Date skqsnyr = null;
+            try {
+                skqsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getKxrq(), qsz*7);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            pk.setSkqsnyr(skqsnyr);
+        }
+        Integer jsz = pkDTO.getJsz();
+        if (jsz != null) {
+            Date skjsnyr = null;
+            try {
+                skjsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getSkqsnyr(), jsz*7);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            pk.setSkjsnyr(skjsnyr);
+        }
+        return pk;
+    }
+
+    /**
      * 新增排课课程关系
      * @param pkDTO
      * @param pk
      * @return
      */
-    private boolean savePkKc(PkDTO pkDTO, Pk pk) {
+    /*private boolean savePkKc(PkDTO pkDTO, Pk pk) {
         List<KcDTO> kcDTOs = pkDTO.getKcDTOs();
         List<PkKc> pkKcList = new ArrayList<>();
         for (KcDTO kcDTO : kcDTOs) {
@@ -215,17 +235,17 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
             pkKcList.add(pkKc);
         }
         return pkKcService.saveBatch(pkKcList);
-    }
+    }*/
 
     /**
      * 删除排课课程关系
      * @param pkDTO
      * @return
      */
-    private boolean removePkKc(PkDTO pkDTO) {
+    /*private boolean removePkKc(PkDTO pkDTO) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("pk_id", pkDTO.getId());
         return pkKcService.removeByMap(map);
-    }
+    }*/
 
 }

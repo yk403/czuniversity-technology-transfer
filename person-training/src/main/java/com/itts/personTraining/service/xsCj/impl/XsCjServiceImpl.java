@@ -7,6 +7,8 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
+import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.xsCj.XsCj;
@@ -53,6 +55,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     private XsKcCjService xsKcCjService;
     @Autowired
     private PcService pcService;
+    @Resource
+    private XsMapper xsMapper;
 
     /**
      * 根据批次id查询所有学生成绩
@@ -66,7 +70,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         Pc pc = pcService.get(pcId);
         if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
             //学历学位教育
-            xsCjDTOs = xsCjMapper.findXsKcCj(pcId,null,null,null);
+            xsCjDTOs = xsCjMapper.findXsKcCj(pcId,null,null,null,null);
         } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
             //继续教育
             xsCjDTOs = xsCjMapper.findXsCj(pcId,null,null,null);
@@ -117,30 +121,29 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
 
     /**
      * 删除学生成绩
-     * @param xsCj
+     * @param xsCjDTO
      * @return
      */
     @Override
-    public boolean delete(XsCj xsCj) {
-        log.info("【人才培养 - 删除学生成绩:{}】",xsCj);
+    public boolean delete(XsCjDTO xsCjDTO) {
+        log.info("【人才培养 - 删除学生成绩:{}】",xsCjDTO);
+        XsCj xsCj = new XsCj();
+        BeanUtils.copyProperties(xsCjDTO,xsCj);
         xsCj.setSfsc(true);
         xsCj.setGxr(getUserId());
         return xsCjService.updateById(xsCj);
     }
 
     /**
-     * 根据id查询XsCj对象
+     * 根据id查询XsCjDTO对象
      * @param id
      * @return
      */
     @Override
-    public XsCj get(Long id) {
+    public XsCjDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询XsCj对象】",id);
-        QueryWrapper<XsCj> xsCjQueryWrapper = new QueryWrapper<>();
-        xsCjQueryWrapper.eq("sfsc",false)
-                .eq("id",id);
-        XsCj xsCj = xsCjMapper.selectOne(xsCjQueryWrapper);
-        return xsCj;
+        XsCjDTO xsCjDTO = xsCjMapper.getById(id);
+        return xsCjDTO;
     }
 
     /**
@@ -177,7 +180,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         Pc pc = pcService.get(pcId);
         if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
             //学历学位教育
-            xsCjDTOs = xsCjMapper.findXsKcCj(pcId,xh,xm,yx);
+            xsCjDTOs = xsCjMapper.findXsKcCj(pcId,xh,xm,yx,null);
         } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
             //继续教育
             xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,yx);
@@ -218,13 +221,16 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     }
 
     /**
-     * 根据用户id查询学生成绩信息(前)
+     * 根据用户id查询学生成绩信息列表(前)
      * @return
      */
     @Override
-    public XsCjDTO getByYhId() {
-
-        return null;
+    public List<XsCjDTO> getByYhId() {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询学生成绩信息】",userId);
+        XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
+        List<XsCjDTO> xsKcCj = xsCjMapper.findXsKcCj(null, null, null, null, xsMsgDTO.getId());
+        return xsKcCj;
     }
 
     /**

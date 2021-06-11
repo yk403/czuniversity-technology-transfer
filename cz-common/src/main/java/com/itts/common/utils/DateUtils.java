@@ -172,14 +172,15 @@ public class DateUtils {
                 + "-" + calendar.get(Calendar.DAY_OF_MONTH);
     }
 
-    public static String getBeforeOrAfterDate(String time, int num) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        java.sql.Date date = java.sql.Date.valueOf(time);
+    public static Date getBeforeOrAfterDate(Date date, int num) throws ParseException {
+        /*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        java.sql.Date date = java.sql.Date.valueOf(time);*/
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DATE, num);
         Date d = calendar.getTime();
-        return formatter.format(d);
+        //formatter.format(d)
+        return d;
     }
 
 }
