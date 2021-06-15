@@ -84,4 +84,10 @@ public interface XsCjService extends IService<XsCj> {
      * @return
      */
     List<XsCjDTO> getByYhId();
+
+    /**
+     * 查询学生成绩信息(综合信息)
+     * @return
+     */
+    List<XsCjDTO> getByCategory();
 }

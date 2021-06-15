@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.SjDTO;
+import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.model.sj.Sj;
 import com.itts.personTraining.mapper.sj.SjMapper;
 import com.itts.personTraining.model.xsCj.XsCj;
@@ -133,14 +134,25 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     }
 
     /**
-     * 根据创建人查询实践信息(前)
+     * 根据用户类别查询实践信息(前)
      * @return
      */
     @Override
-    public List<SjDTO> findByCjr() {
+    public List<SjDTO> findByCategory() {
         Long userId = getUserId();
-        log.info("【人才培养 - 根据创建人:{}查询实践信息(前)】",userId);
-        List<SjDTO> sjDTOs = sjMapper.findByCondition(null,userId);
+        String userCategory = getUserCategory();
+        log.info("【人才培养 - 根据创建人:{}查询实践信息(前),类别:{}】",userId,userCategory);
+        List<SjDTO> sjDTOs = null;
+        switch (userCategory) {
+            case "postgraduate":
+                sjDTOs = sjMapper.findByCondition(userId,null);
+                break;
+            case "corporate_mentor":
+                sjDTOs = sjMapper.findByCondition(null,userId);
+                break;
+            default:
+                break;
+        }
         return sjDTOs;
     }
 
@@ -210,6 +222,21 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    /**
+     * 获取当前用户id所属类别
+     * @return
+     */
+    private String getUserCategory() {
+        LoginUser loginUser = threadLocal.get();
+        String userCategory;
+        if (loginUser != null) {
+            userCategory = loginUser.getUserCategory();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userCategory;
     }
 
 }

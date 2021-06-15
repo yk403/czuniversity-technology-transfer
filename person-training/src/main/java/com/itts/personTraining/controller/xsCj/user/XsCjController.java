@@ -27,13 +27,25 @@ public class XsCjController {
     private XsCjService xsCjService;
 
     /**
-     * 根据用户id查询学生成绩详情
+     * 根据用户id查询学生成绩详情(成绩通知)
      *
      * @return
      */
     @GetMapping("/getByYhId")
-    @ApiOperation(value = "根据用户id查询学生成绩详情")
+    @ApiOperation(value = "根据用户id查询学生成绩详情(成绩通知)")
     public ResponseUtil getByYhId() {
         return ResponseUtil.success(xsCjService.getByYhId());
     }
+
+    /**
+     * 查询学生成绩信息(综合信息)
+     *
+     * @return
+     */
+    @GetMapping("/getByCategory")
+    @ApiOperation(value = "查询学生成绩信息(综合信息)")
+    public ResponseUtil getByCategory() {
+        return ResponseUtil.success(xsCjService.getByCategory());
+    }
+
 }

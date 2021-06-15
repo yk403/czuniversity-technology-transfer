@@ -43,6 +43,7 @@ public interface SjMapper extends BaseMapper<Sj> {
     /**
      * 根据条件查询实践信息列表
      * @param yhId
+     * @param cjr
      * @return
      */
     List<SjDTO> findByCondition(@Param("yhId") Long yhId, @Param("cjr") Long cjr);

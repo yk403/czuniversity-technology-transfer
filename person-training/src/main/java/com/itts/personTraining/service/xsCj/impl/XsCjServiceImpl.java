@@ -8,6 +8,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.model.pc.Pc;
@@ -226,9 +227,72 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     @Override
     public List<XsCjDTO> getByYhId() {
         Long userId = getUserId();
-        log.info("【人才培养 - 根据用户id:{}查询学生成绩信息】",userId);
-        XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
-        List<XsCjDTO> xsKcCj = xsCjMapper.findXsKcCj(null, null, null, null, xsMsgDTO.getId());
+        String userCategory = getUserCategory();
+        log.info("【人才培养 - 根据用户id:{}查询学生成绩信息,用户所属分类:{}】",userId,userCategory);
+        List<XsCjDTO> xsKcCj = null;
+        switch (userCategory) {
+            case "postgraduate":
+            case "broker":
+                XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
+                xsKcCj = xsCjMapper.findXsKcCj(null, null, null, null, xsMsgDTO.getId());
+                break;
+            case "tutor":
+                ;
+                break;
+            case "corporate_mentor":
+                ;
+                break;
+            case "teacher":
+                ;
+                break;
+            case "administrator":
+                ;
+                break;
+            case "school_leader":
+                ;
+                break;
+            default:
+                break;
+        }
+        return xsKcCj;
+    }
+
+    /**
+     * 查询学生成绩信息(综合信息)
+     * @return
+     */
+    @Override
+    public List<XsCjDTO> getByCategory() {
+        Long userId = getUserId();
+        String userCategory = getUserCategory();
+        log.info("【人才培养 - 通过用户类别:{}查询学生成绩信息(综合信息)】",userId,userCategory);
+        List<XsCjDTO> xsKcCj = null;
+        switch (userCategory) {
+            case "postgraduate":
+                XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
+                xsKcCj = xsCjMapper.findXsKcCj(null, null, null, null, xsMsgDTO.getId());
+                break;
+            case "broker":
+                ;
+                break;
+            case "tutor":
+                ;
+                break;
+            case "corporate_mentor":
+                ;
+                break;
+            case "teacher":
+                ;
+                break;
+            case "administrator":
+                ;
+                break;
+            case "school_leader":
+                ;
+                break;
+            default:
+                break;
+        }
         return xsKcCj;
     }
 
@@ -245,5 +309,20 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    /**
+     * 获取当前用户id所属类别
+     * @return
+     */
+    private String getUserCategory() {
+        LoginUser loginUser = threadLocal.get();
+        String userCategory;
+        if (loginUser != null) {
+            userCategory = loginUser.getUserCategory();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userCategory;
     }
 }

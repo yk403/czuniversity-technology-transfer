@@ -40,14 +40,14 @@ public class SjController {
     }
 
     /**
-     * 根据创建人查询实践信息(前)
+     * 根据用户类别查询实践信息(前)
      *
      * @return
      */
-    @GetMapping("/findByCjr")
-    @ApiOperation(value = "根据创建人查询实践信息(前)")
-    public ResponseUtil findByCjr() {
-        return ResponseUtil.success(sjService.findByCjr());
+    @GetMapping("/findByCategory")
+    @ApiOperation(value = "根据用户类别查询实践信息(前)")
+    public ResponseUtil findByCategory() {
+        return ResponseUtil.success(sjService.findByCategory());
     }
 
     /**
