@@ -166,7 +166,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             return pageInfo;
         }
 
-        ResponseUtil response = orderFeignService.getByUserId(token);
+        ResponseUtil response = orderFeignService.getByUserId();
         if (response.getErrCode().intValue() != 0) {
 
             return pageInfo;
@@ -353,7 +353,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      * 购买学习资源
      */
     @Override
-    public ResponseUtil buy(BuyXxzyRequest buyXxzyRequest, String token) {
+    public ResponseUtil buy(BuyXxzyRequest buyXxzyRequest) {
 
         AddDdxfjlRequest request = new AddDdxfjlRequest();
         BeanUtils.copyProperties(buyXxzyRequest, request);
@@ -363,7 +363,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         request.setXflx("购买学习资源");
         request.setXfsm("购买" + buyXxzyRequest.getSpmc() + "学习资源");
 
-        ResponseUtil result = orderFeignService.createOrder(request, token);
+        ResponseUtil result = orderFeignService.createOrder(request);
 
         return result;
     }
@@ -372,9 +372,9 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      * 支付金额
      */
     @Override
-    public ResponseUtil pay(PayDdxfjlRequest payDdxfjlRequest, String token) {
+    public ResponseUtil pay(PayDdxfjlRequest payDdxfjlRequest) {
 
-        ResponseUtil response = orderFeignService.getByCode(payDdxfjlRequest.getBh(), token);
+        ResponseUtil response = orderFeignService.getByCode(payDdxfjlRequest.getBh());
         if (response.getErrCode().intValue() != 0) {
 
             return response;
