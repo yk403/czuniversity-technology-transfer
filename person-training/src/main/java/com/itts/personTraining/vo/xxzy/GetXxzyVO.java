@@ -74,6 +74,12 @@ public class GetXxzyVO implements Serializable {
     private String zylx;
 
     /**
+     * 资源方向：ability - 能力；knowledge - 知识；skill - 技能
+     */
+    @ApiModelProperty(value = "资源方向：ability - 能力；knowledge - 知识；skill - 技能")
+    private String zyfx;
+
+    /**
      * 资源简介
      */
     @ApiModelProperty(value = "资源简介")
