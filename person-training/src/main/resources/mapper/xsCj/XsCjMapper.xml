@@ -56,7 +56,7 @@
         select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yzy, xs.yx, txkc.id as xs_kc_cj_id, txkc.xs_cj_id, txkc.kc_id, txkc.kclx, txkc.dqxf, txkc.cj, txkc.cjsx, txkc.bkcj, txkc.bz, kc.kcdm, kc.kcmc, kc.kcxs, kc.kcxf, kc.sfbx, pc.pch
         from t_xs_cj txc left join t_xs_kc_cj txkc on (txc.id=txkc.xs_cj_id) left join t_xs xs on (txc.xs_id=xs.id) left
         join t_kc kc on (kc.id=txkc.kc_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
-        where txc.sfsc = false and txkc.sfsc = false and xs.sfsc = false and xs.sfsc = false and kc.sfsc = false
+        where txc.sfsc = false and txkc.sfsc = false and xs.sfsc = false and pc.sfsc = false and kc.sfsc = false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
         <if test="xsId != null"> and txc.xs_id = #{xsId} </if>
         <if test="xh != null and xh != ''"> and xs.xh like concat('%',trim(#{xh}),'%') </if>
@@ -69,6 +69,7 @@
         from t_xs_cj txc left join t_xs xs on (txc.xs_id=xs.id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
         where txc.sfsc = false and xs.sfsc = false and pc.sfsc = false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
+        <if test="jylx != null and jylx != ''"> and txc.type = 2 </if>
         <if test="xh != null and xh != ''"> and xs.xh like concat('%',trim(#{xh}),'%') </if>
         <if test="xm != null and xm != ''"> and xs.xm like concat('%',trim(#{xm}),'%') </if>
         <if test="yx != null and yx != ''"> and xs.yx like concat('%',trim(#{yx}),'%') </if>

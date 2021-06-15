@@ -73,7 +73,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             xsCjDTOs = xsCjMapper.findXsKcCj(pcId,null,null,null,null);
         } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
             //继续教育
-            xsCjDTOs = xsCjMapper.findXsCj(pcId,null,null,null);
+            xsCjDTOs = xsCjMapper.findXsCj(pcId,null,null,null,pc.getJylx());
         }
         return xsCjDTOs;
     }
@@ -182,7 +182,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             xsCjDTOs = xsCjMapper.findXsKcCj(pcId,xh,xm,yx,null);
         } else if (ADULT_EDUCATION.getKey().equals(jylx)) {
             //继续教育
-            xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,yx);
+            xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,yx,jylx);
         }
         return new PageInfo<>(xsCjDTOs);
     }
