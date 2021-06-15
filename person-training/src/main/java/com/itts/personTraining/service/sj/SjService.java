@@ -68,4 +68,10 @@ public interface SjService extends IService<Sj> {
      * @return
      */
     boolean issueBatch(List<Long> ids);
+
+    /**
+     * 根据用户id查询实践信息列表
+     * @return
+     */
+    List<SjDTO> findByYhId();
 }

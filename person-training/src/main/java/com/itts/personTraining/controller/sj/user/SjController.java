@@ -2,6 +2,7 @@ package com.itts.personTraining.controller.sj.user;
 
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.service.ks.KsService;
+import com.itts.personTraining.service.sj.SjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,16 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
 @Api(value = "sjController", tags = "实践-门户")
 public class SjController {
     @Autowired
-    private KsService ksService;
+    private SjService sjService;
 
     /**
-     * 根据用户id查询考试详情
+     * 根据用户id查询实践信息
      *
      * @return
      */
     @GetMapping("/getByYhId")
-    @ApiOperation(value = "根据用户id查询考试详情")
+    @ApiOperation(value = "根据用户id查询实践信息")
     public ResponseUtil getByYhId() {
-        return ResponseUtil.success(ksService.getByYhId());
+        return ResponseUtil.success(sjService.findByYhId());
     }
 }

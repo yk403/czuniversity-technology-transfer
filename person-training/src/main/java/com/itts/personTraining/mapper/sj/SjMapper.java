@@ -39,4 +39,12 @@ public interface SjMapper extends BaseMapper<Sj> {
      * @return
      */
     Long getNumByXsId(@Param("xsId") Long xsId);
+
+    /**
+     * 根据用户id查询实践信息列表
+     * @param yhId
+     * @return
+     */
+    List<SjDTO> findByYhId(@Param("yhId") Long yhId);
+
 }

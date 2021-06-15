@@ -91,6 +91,18 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     }
 
     /**
+     * 根据用户id查询实践信息列表
+     * @return
+     */
+    @Override
+    public List<SjDTO> findByYhId() {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询实践信息列表】",userId);
+        List<SjDTO> sjDTOs = sjMapper.findByYhId(userId);
+        return sjDTOs;
+    }
+
+    /**
      * 查询所有实践
      * @return
      */
