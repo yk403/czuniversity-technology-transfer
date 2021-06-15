@@ -9,6 +9,7 @@ import com.itts.technologytransactionservice.mapper.LyLyMapper;
 import com.itts.technologytransactionservice.model.LyLy;
 import com.itts.technologytransactionservice.model.LyZw;
 import com.itts.technologytransactionservice.mapper.LyZwMapper;
+import com.itts.technologytransactionservice.model.LyZwDto;
 import com.itts.technologytransactionservice.service.LyZwService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class LyZwServiceImpl extends ServiceImpl<LyZwMapper, LyZw> implements Ly
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyZw> list = lyZwMapper.findLyZwFront(query);
+        List<LyZwDto> list = lyZwMapper.findLyZwFront(query);
         return new PageInfo<>(list);
     }
 

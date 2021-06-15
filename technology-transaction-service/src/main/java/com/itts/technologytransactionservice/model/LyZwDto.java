@@ -1,13 +1,12 @@
 package com.itts.technologytransactionservice.model;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.util.Date;
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -18,9 +17,7 @@ import lombok.EqualsAndHashCode;
  * @since 2021-05-18
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("t_ly_zw")
-public class LyZw implements Serializable {
+public class LyZwDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -61,36 +58,52 @@ public class LyZw implements Serializable {
      */
     private Long hdId;
     /**
-    * @Description: 展位名称
-    * @Param: 
-    * @return: 
-    * @Author: yukai
-    * @Date: 2021/6/15
-    */
+     * @Description: 展位名称
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/15
+     */
     private String zwmc;
     /**
-    * @Description: 展位图片
-    * @Param: 
-    * @return: 
-    * @Author: yukai
-    * @Date: 2021/6/15
-    */
+     * @Description: 展位图片
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/15
+     */
     private String zwtp;
     /**
-    * @Description: 展位图片名称
-    * @Param: 
-    * @return: 
-    * @Author: yukai
-    * @Date: 2021/6/15
-    */
+     * @Description: 展位图片名称
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/15
+     */
     private String zwtpmc;
     /**
-    * @Description: 展位分类关联数据字典id
+     * @Description: 展位分类关联数据字典id
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/15
+     */
+    private Long sjzdId;
+    /**
+    * @Description: 活动名称
     * @Param: 
     * @return: 
     * @Author: yukai
     * @Date: 2021/6/15
     */
-    private Long sjzdId;
+    private String hdmc;
+/**
+* @Description: 字典名称(展位分类)
+* @Param: 
+* @return: 
+* @Author: yukai
+* @Date: 2021/6/15
+*/
+    private String zdmc;
 
 }
