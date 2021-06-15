@@ -87,7 +87,7 @@ public class LyMsgAdminController {
         if (!lyMsgAdminService.updateById(lyMsg)) {
             throw new WebException(UPDATE_FAIL);
         }
-        return ResponseUtil.success("更新课程成功!");
+        return ResponseUtil.success("回复成功!");
 
     }
     @ApiOperation(value = "删除")

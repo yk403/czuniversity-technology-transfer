@@ -2,13 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyMsgMapper">
 
-    <select id="findLyMsgFront" resultType="com.itts.technologytransactionservice.model.LyMsg">
-        select msg.id as id,msg.yh_id,msg.gxsj,msg.cjsj,msg.ry_id,msg.lynr,msg.hfnr,msg.lysj,msg.lyzt,yh.yhtx as yhtx,yh.yhm as yhm,yh.zsxm as zsxm,yh.yhlx as yhlx
-        from t_ly_msg msg left join t_yh yh on (yh.id = msg.yh_id) left join t_ly_ry ry on(ry.id = msg.ry_id)
+    <select id="findLyMsgFront" resultType="com.itts.technologytransactionservice.model.LyMsgDto">
+        select msg.id as id,msg.yh_id,msg.gxsj,msg.cjsj,msg.ry_id,msg.lynr,msg.hfnr,msg.lysj,msg.lyzt,yh.yhtx as yhtx,yh.yhm as yhm,yh.zsxm as zsxm,yh.yhlx as yhlx,zd.zdmc AS yhlb
+        from t_ly_msg msg left join t_ly_ry ry on(ry.id = msg.ry_id) left join t_yh yh on (yh.id = msg.yh_id) LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
         <where>
             <!--后台能查询0或者1的数据 -->
             msg.is_delete = 0
             <if test="map.yhId != null"> and msg.yh_id = #{map.yhId} </if>
+            <if test="map.yhm != null"> and yh.yhm like concat('%',trim(#{map.yhm}),'%') </if>
+            <if test="map.yhlb != null"> and yh.yhlb = #{map.yhlb} </if>
             <if test="map.ryId != null"> and msg.ry_id = #{map.ryId} </if>
             <if test="map.lynr != null"> and msg.lynr = #{map.lynr} </if>
             <if test="map.hfnr != null"> and msg.hfnr = #{map.hfnr} </if>
@@ -24,13 +26,15 @@
             </otherwise>
         </choose>
     </select>
-    <select id="findLyMsgBack" resultType="com.itts.technologytransactionservice.model.LyMsg">
-        select msg.id as id,msg.yh_id,msg.gxsj,msg.cjsj,msg.ry_id,msg.lynr,msg.hfnr,msg.lysj,msg.lyzt,yh.yhtx as yhtx,yh.yhm as yhm,yh.zsxm as zsxm,yh.yhlx as yhlx
-        from t_ly_msg msg left join t_yh yh on (yh.id = msg.yh_id) left join t_ly_ry ry on(ry.id = msg.ry_id)
+    <select id="findLyMsgBack" resultType="com.itts.technologytransactionservice.model.LyMsgDto">
+        select msg.id as id,msg.yh_id,msg.gxsj,msg.cjsj,msg.ry_id,msg.lynr,msg.hfnr,msg.lysj,msg.lyzt,yh.yhtx as yhtx,yh.yhm as yhm,yh.zsxm as zsxm,yh.yhlx as yhlx,zd.zdmc AS yhlb
+        from t_ly_msg msg left join t_ly_ry ry on(ry.id = msg.ry_id) left join t_yh yh on (yh.id = msg.yh_id) LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
         <where>
             <!--后台能查询0或者1的数据 -->
             msg.is_delete = 0
             <if test="map.yhId != null"> and msg.yh_id = #{map.yhId} </if>
+            <if test="map.yhm != null"> and yh.yhm like concat('%',trim(#{map.yhm}),'%') </if>
+            <if test="map.yhlb != null"> and yh.yhlb = #{map.yhlb} </if>
             <if test="map.ryId != null"> and msg.ry_id = #{map.ryId} </if>
             <if test="map.lynr != null"> and msg.lynr = #{map.lynr} </if>
             <if test="map.hfnr != null"> and msg.hfnr = #{map.hfnr} </if>

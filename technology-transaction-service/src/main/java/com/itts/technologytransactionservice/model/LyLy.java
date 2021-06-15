@@ -92,4 +92,8 @@ public class  LyLy implements Serializable {
      * 联系方式
      */
     private String lxfs;
+    /**
+     * 发布状态
+     */
+    private Integer fbzt;
 }

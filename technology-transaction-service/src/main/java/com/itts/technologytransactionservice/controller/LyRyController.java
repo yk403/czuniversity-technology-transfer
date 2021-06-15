@@ -7,7 +7,6 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.LyRy;
-import com.itts.technologytransactionservice.model.LyZw;
 import com.itts.technologytransactionservice.service.LyRyService;
 import com.itts.technologytransactionservice.service.LyZwService;
 import io.swagger.annotations.Api;

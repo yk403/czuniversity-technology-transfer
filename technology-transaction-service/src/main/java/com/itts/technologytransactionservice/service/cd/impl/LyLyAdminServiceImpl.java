@@ -7,6 +7,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.LyLyMapper;
+import com.itts.technologytransactionservice.model.LyHd;
 import com.itts.technologytransactionservice.model.LyLy;
 import com.itts.technologytransactionservice.service.LyLyService;
 import com.itts.technologytransactionservice.service.cd.LyLyAdminService;
@@ -67,5 +68,14 @@ public class LyLyAdminServiceImpl extends ServiceImpl<LyLyMapper, LyLy> implemen
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+    @Override
+    public boolean issueBatch(List<Long> ids) {
+        log.info("【人才培养 - 培养计划批量下发,ids:{}】",ids);
+        List<LyLy> lylys = lyLyMapper.selectBatchIds(ids);
+        for (LyLy lyly : lylys) {
+            lyly.setFbzt(1);
+        }
+        return updateBatchById(lylys);
     }
 }
