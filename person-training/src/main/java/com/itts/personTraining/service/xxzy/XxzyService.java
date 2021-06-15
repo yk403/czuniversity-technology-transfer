@@ -55,10 +55,10 @@ public interface XxzyService extends IService<Xxzy> {
     /**
      * 购买学习资源
      */
-    ResponseUtil buy(BuyXxzyRequest buyXxzyRequest, String token);
+    ResponseUtil buy(BuyXxzyRequest buyXxzyRequest);
 
     /**
      * 支付金额
      */
-    ResponseUtil pay(PayDdxfjlRequest payDdxfjlRequest, String token);
+    ResponseUtil pay(PayDdxfjlRequest payDdxfjlRequest);
 }
