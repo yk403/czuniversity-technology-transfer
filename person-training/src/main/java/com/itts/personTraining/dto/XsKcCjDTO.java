@@ -77,6 +77,12 @@ public class XsKcCjDTO {
     private Boolean xwk;
 
     /**
+     * 原专业学分
+     */
+    @ApiModelProperty(value = "原专业学分")
+    private Integer yzyxf;
+
+    /**
      * 当前学分
      */
     @ApiModelProperty(value = "当前学分")

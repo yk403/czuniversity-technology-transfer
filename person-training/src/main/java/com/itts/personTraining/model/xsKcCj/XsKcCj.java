@@ -64,6 +64,11 @@ public class XsKcCj implements Serializable {
     private Boolean xwk;
 
     /**
+     * 原专业学分
+     */
+    private Integer yzyxf;
+
+    /**
      * 当前学分
      */
     private Integer dqxf;
