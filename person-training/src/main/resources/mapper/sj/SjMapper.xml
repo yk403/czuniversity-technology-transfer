@@ -48,11 +48,13 @@
         from t_sj sj
         where sj.xs_id = #{xsId} and sj.sfsc = false and sj.sfxf = true and sj.sfck = false
     </select>
-    <select id="findByYhId" resultType="com.itts.personTraining.dto.SjDTO">
+    <select id="findByCondition" resultType="com.itts.personTraining.dto.SjDTO">
         select sj.*, xs.id as xsId, xs.xh, xs.xm, xs.yzy, pc.id as pcId, pc.pch
         from t_sj sj left join t_xs xs on (xs.id=sj.xs_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=sj.pc_id)
         where sj.sfsc = false and xs.sfsc = false and pc.sfsc = false
         <if test="yhId != null">and xs.yh_id = #{yhId}</if>
+        <if test="cjr != null">and sj.cjr = #{cjr}</if>
+        order by sj.cjsj desc
     </select>
 
 </mapper>

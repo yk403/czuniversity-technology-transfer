@@ -98,7 +98,49 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     public List<SjDTO> findByYhId() {
         Long userId = getUserId();
         log.info("【人才培养 - 根据用户id:{}查询实践信息列表】",userId);
-        List<SjDTO> sjDTOs = sjMapper.findByYhId(userId);
+        List<SjDTO> sjDTOs = sjMapper.findByCondition(userId,null);
+        return sjDTOs;
+    }
+
+    /**
+     * 新增实践(前)
+     * @param sjDTO
+     * @return
+     */
+    @Override
+    public boolean userAdd(SjDTO sjDTO) {
+        log.info("【人才培养 - 新增实践(前):{}】",sjDTO);
+        Long userId = getUserId();
+        sjDTO.setCjr(userId);
+        sjDTO.setGxr(userId);
+        Sj sj = new Sj();
+        BeanUtils.copyProperties(sjDTO,sj);
+        return sjService.save(sj);
+    }
+
+    /**
+     * 更新实践(前)
+     * @param sjDTO
+     * @return
+     */
+    @Override
+    public boolean userUpdate(SjDTO sjDTO) {
+        log.info("【人才培养 - 更新实践:{}】",sjDTO);
+        sjDTO.setGxr(getUserId());
+        Sj sj = new Sj();
+        BeanUtils.copyProperties(sjDTO,sj);
+        return sjService.updateById(sj);
+    }
+
+    /**
+     * 根据创建人查询实践信息(前)
+     * @return
+     */
+    @Override
+    public List<SjDTO> findByCjr() {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据创建人:{}查询实践信息(前)】",userId);
+        List<SjDTO> sjDTOs = sjMapper.findByCondition(null,userId);
         return sjDTOs;
     }
 

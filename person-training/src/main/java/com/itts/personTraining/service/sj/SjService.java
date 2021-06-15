@@ -74,4 +74,24 @@ public interface SjService extends IService<Sj> {
      * @return
      */
     List<SjDTO> findByYhId();
+
+    /**
+     * 新增实践(前)
+     * @param sjDTO
+     * @return
+     */
+    boolean userAdd(SjDTO sjDTO);
+
+    /**
+     * 更新实践(前)
+     * @param sjDTO
+     * @return
+     */
+    boolean userUpdate(SjDTO sjDTO);
+
+    /**
+     * 根据创建人查询实践信息(前)
+     * @return
+     */
+    List<SjDTO> findByCjr();
 }
