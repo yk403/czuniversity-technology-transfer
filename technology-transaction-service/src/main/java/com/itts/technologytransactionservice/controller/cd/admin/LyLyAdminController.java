@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
@@ -110,6 +111,19 @@ public class LyLyAdminController {
         lyLyAdminService.updateById(old);
 
         return ResponseUtil.success(old);
+    }
+    /**
+     * 培养计划批量下发
+     * @param ids
+     * @return
+     */
+    @PutMapping("/update/issueBatch")
+    @ApiOperation(value = "路演活动批量下发")
+    public ResponseUtil issueBatch(@RequestBody List<Long> ids) {
+        if (!lyLyAdminService.issueBatch(ids)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("培养计划统一下发成功!");
     }
 }
 

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.technologytransactionservice.model.LyLy;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,4 +20,6 @@ public interface LyLyAdminService extends IService<LyLy> {
 
     Boolean saveLy(LyLy lyLy);
     Long getUserId();
+
+    boolean issueBatch(List<Long> ids);
 }
