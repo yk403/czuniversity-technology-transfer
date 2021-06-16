@@ -103,4 +103,19 @@ public class ExcelAdminController {
         }
     }
 
+    /**
+     * 实践导入
+     */
+    @PostMapping("/importSj")
+    @ApiOperation(value = "实践导入")
+    public ResponseUtil importSj(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, HttpServletRequest request){
+        try{
+            return excelService.importSj(file, headRowNumber, request.getHeader("token"));
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);
+        }
+    }
+
 }

@@ -41,4 +41,12 @@ public interface XsMapper extends BaseMapper<Xs> {
      * @return
      */
     XsMsgDTO getByYhId(@Param("yhId") Long yhId);
+
+    /**
+     * 通过学号和姓名查询学生信息
+     * @param xh
+     * @param xm
+     * @return
+     */
+    Xs getByXhAndXm(@Param("xh") String xh, @Param("xm") String xm);
 }

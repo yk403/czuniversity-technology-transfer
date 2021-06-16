@@ -112,6 +112,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     public boolean userAdd(SjDTO sjDTO) {
         log.info("【人才培养 - 新增实践(前):{}】",sjDTO);
         Long userId = getUserId();
+
         sjDTO.setCjr(userId);
         sjDTO.setGxr(userId);
         Sj sj = new Sj();
@@ -176,11 +177,21 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     public boolean add(SjDTO sjDTO) {
         log.info("【人才培养 - 新增实践:{}】",sjDTO);
         Long userId = getUserId();
-        sjDTO.setCjr(userId);
-        sjDTO.setGxr(userId);
-        Sj sj = new Sj();
-        BeanUtils.copyProperties(sjDTO,sj);
-        return sjService.save(sj);
+        String userCategory = getUserCategory();
+        boolean flag = false;
+        switch (userCategory) {
+            case "postgraduate":
+            case "corporate_mentor":
+                sjDTO.setCjr(userId);
+                sjDTO.setGxr(userId);
+                Sj sj = new Sj();
+                BeanUtils.copyProperties(sjDTO, sj);
+                flag = sjService.save(sj);
+                break;
+            default:
+                break;
+        }
+        return flag;
     }
 
     /**

@@ -1,8 +1,12 @@
 package com.itts.personTraining.controller.sj.user;
 
+import com.itts.common.bean.LoginUser;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.SjDTO;
+import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.service.ks.KsService;
 import com.itts.personTraining.service.sj.SjService;
 import io.swagger.annotations.Api;
@@ -10,9 +14,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
@@ -27,6 +33,8 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 public class SjController {
     @Autowired
     private SjService sjService;
+    @Resource
+    private XsMapper xsMapper;
 
     /**
      * 根据用户id查询实践信息(实践通知)
@@ -60,6 +68,10 @@ public class SjController {
     @PostMapping("/add")
     @ApiOperation(value = "新增实践")
     public ResponseUtil userAdd(@RequestBody SjDTO sjDTO) throws WebException {
+        Long userId = getUserId();
+        XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
+        sjDTO.setXsId(xsMsgDTO.getId());
+        sjDTO.setXh(xsMsgDTO.getXh());
         //检查参数是否合法
         checkRequest(sjDTO);
         if (!sjService.userAdd(sjDTO)) {
@@ -143,4 +155,20 @@ public class SjController {
             }
         }
     }
+
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    private Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
+    }
+
 }

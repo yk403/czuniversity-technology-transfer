@@ -171,6 +171,13 @@
         where xs.sfsc = false
         <if test="yhId != null">and xs.yh_id = #{yhId}</if>
     </select>
+    <select id="getByXhAndXm" resultType="com.itts.personTraining.model.xs.Xs">
+        select *
+        from t_xs xs
+        where xs.sfsc = false
+        <if test="xh != null and xh != ''" >and xs.xh like concat('%',trim(#{xh}),'%')</if>
+        <if test="xm != null and xm != ''" >and xs.xm like concat('%',trim(#{xm}),'%')</if>
+    </select>
 
     <!--新增学生课程关联-->
     <insert id="addKcList">

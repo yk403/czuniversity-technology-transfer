@@ -8,12 +8,14 @@ import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.pc.Pc;
+import com.itts.personTraining.model.sj.SjListener;
 import com.itts.personTraining.model.sz.SzListener;
 import com.itts.personTraining.model.xs.XsListener;
 import com.itts.personTraining.model.xsCj.JxjyCjListener;
 import com.itts.personTraining.model.xsCj.XlXwCjListener;
 import com.itts.personTraining.model.zj.ZjListener;
 import com.itts.personTraining.service.excel.ExcelService;
+import com.itts.personTraining.service.sj.SjService;
 import com.itts.personTraining.service.sz.SzService;
 import com.itts.personTraining.service.xs.XsService;
 import com.itts.personTraining.service.xy.XyService;
@@ -59,6 +61,8 @@ public class ExcelServiceImpl implements ExcelService {
     private YhService yhService;
     @Resource
     private ZjService zjService;
+    @Resource
+    private SjService sjService;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -172,6 +176,28 @@ public class ExcelServiceImpl implements ExcelService {
         try{
             EasyExcel.read(file.getInputStream(), ZjDTO.class, zjListener).headRowNumber(headRowNumber).sheet().doRead();
             return ResponseUtil.success(zjListener.getResult());
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);
+        }
+    }
+
+    /**
+     * 导入实践Excel
+     * @param file
+     * @param headRowNumber
+     * @param token
+     * @return
+     */
+    @Override
+    public ResponseUtil importSj(MultipartFile file, Integer headRowNumber, String token) {
+        SjListener sjListener = new SjListener();
+        sjListener.setSjService(sjService);
+        sjListener.setXsMapper(xsMapper);
+        sjListener.setToken(token);
+        try{
+            EasyExcel.read(file.getInputStream(), SjDrDTO.class, sjListener).headRowNumber(headRowNumber).sheet().doRead();
+            return ResponseUtil.success(sjListener.getResult());
         } catch (IOException e) {
             log.error(e.getMessage());
             return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);
