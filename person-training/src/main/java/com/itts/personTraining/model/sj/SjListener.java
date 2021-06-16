@@ -80,41 +80,40 @@ public class SjListener extends AnalysisEventListener<SjDrDTO> {
             if (xs.getId() != null) {
                 sj.setXsId(xs.getId());
             }
-            //批次号
-            if (StringUtils.isNotBlank(data.getPch())) {
+            //批次号和实践单位
+            if (StringUtils.isNotBlank(data.getPch()) && StringUtils.isNotBlank(data.getSjdw())) {
+                sj.setSjdw(data.getSjdw());
                 Pc pc = pcMapper.getByPch(data.getPch());
                 if (pc.getId() != null) {
                     sj.setPcId(pc.getId());
+                    sj.setSjmc(data.getSjdw()+xs.getXm()+xs.getXh());
+                    //实践类型
+                    if (StringUtils.isNotBlank(data.getSjlx())) {
+                        sj.setSjlx(data.getSjlx());
+                    }
+                    //实践成绩
+                    if (StringUtils.isNotBlank(data.getSjcj())) {
+                        sj.setSjcj(data.getSjcj());
+                    }
+                    //集萃奖学金1
+                    if (StringUtils.isNotBlank(data.getJcjxjOne())) {
+                        sj.setJcjxjOne(data.getJcjxjOne());
+                    }
+                    //集萃奖学金2
+                    if (StringUtils.isNotBlank(data.getJcjxjTwo())) {
+                        sj.setJcjxjTwo(data.getJcjxjTwo());
+                    }
+                    //基地基金1
+                    if (StringUtils.isNotBlank(data.getJdjjOne())) {
+                        sj.setJdjjOne(data.getJdjjOne());
+                    }
+                    //基地基金2
+                    if (StringUtils.isNotBlank(data.getJdjjTwo())) {
+                        sj.setJdjjTwo(data.getJdjjTwo());
+                    }
+                    save(sj);
                 }
-                //实践类型
-                if (StringUtils.isNotBlank(data.getSjlx())) {
-                    sj.setSjlx(data.getSjlx());
-                }
-                //实践单位
-                if (StringUtils.isNotBlank(data.getSjdw())) {
-                    sj.setSjdw(data.getSjdw());
-                }
-                //实践成绩
-                if (StringUtils.isNotBlank(data.getSjcj())) {
-                    sj.setSjcj(data.getSjcj());
-                }
-                //集萃奖学金1
-                if (StringUtils.isNotBlank(data.getJcjxjOne())) {
-                    sj.setJcjxjOne(data.getJcjxjOne());
-                }
-                //集萃奖学金2
-                if (StringUtils.isNotBlank(data.getJcjxjTwo())) {
-                    sj.setJcjxjTwo(data.getJcjxjTwo());
-                }
-                //基地基金1
-                if (StringUtils.isNotBlank(data.getJdjjOne())) {
-                    sj.setJdjjOne(data.getJdjjOne());
-                }
-                //基地基金2
-                if (StringUtils.isNotBlank(data.getJdjjTwo())) {
-                    sj.setJdjjTwo(data.getJdjjTwo());
-                }
-                save(sj);
+
             }
         }
     }

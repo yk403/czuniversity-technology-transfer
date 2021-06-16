@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -60,6 +61,12 @@ public class SjDTO {
      */
     @ApiModelProperty(value = "批次号")
     private String pch;
+
+    /**
+     * 实践名称
+     */
+    @ApiModelProperty(value = "实践名称", required = true)
+    private String sjmc;
 
     /**
      * 实践类型
@@ -126,6 +133,18 @@ public class SjDTO {
      */
     @ApiModelProperty(value = "基地基金2")
     private String jdjjTwo;
+
+    /**
+     * 开始日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ksrq;
+
+    /**
+     * 结束日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date jsrq;
 
     /**
      * 是否删除(0:否;1:是)

@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -37,6 +39,11 @@ public class Sj implements Serializable {
      * 学生ID
      */
     private Long xsId;
+
+    /**
+     * 实践名称
+     */
+    private String sjmc;
 
     /**
      * 实践类型
@@ -92,6 +99,18 @@ public class Sj implements Serializable {
      * 基地基金2
      */
     private String jdjjTwo;
+
+    /**
+     * 开始日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ksrq;
+
+    /**
+     * 结束日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date jsrq;
 
     /**
      * 是否下发(0:否;1:是)

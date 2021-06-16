@@ -58,7 +58,10 @@
     </select>
     <select id="getByPcIdAndXsId" resultType="com.itts.personTraining.model.sj.Sj">
         select *
-        from
+        from t_sj sj left join t_pc pc on (sj.pc_id=pc.id) left join t_xs xs on (xs.id=sj.xs_id)
+        where sj.sfsc = false and pc.sfsc = false and xs.sfsc = false
+        <if test="pcId != null"> and sj.pc_id = #{pcId} </if>
+        <if test="xsId != null"> and sj.xs_id = #{xsId} </if>
     </select>
 
 </mapper>
