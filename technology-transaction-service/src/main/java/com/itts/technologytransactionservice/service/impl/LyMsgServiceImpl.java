@@ -7,6 +7,7 @@ import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.LyMsgMapper;
 import com.itts.technologytransactionservice.mapper.LyRyMapper;
 import com.itts.technologytransactionservice.model.LyMsg;
+import com.itts.technologytransactionservice.model.LyMsgDto;
 import com.itts.technologytransactionservice.model.LyRy;
 import com.itts.technologytransactionservice.service.LyMsgService;
 import com.itts.technologytransactionservice.service.LyRyService;
@@ -39,7 +40,7 @@ public class LyMsgServiceImpl extends ServiceImpl<LyMsgMapper, LyMsg> implements
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyMsg> list = lyMsgMapper.findLyMsgFront(query);
+        List<LyMsgDto> list = lyMsgMapper.findLyMsgFront(query);
         return new PageInfo<>(list);
     }
 

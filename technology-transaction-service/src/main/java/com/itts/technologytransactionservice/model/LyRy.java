@@ -70,44 +70,19 @@ public class LyRy implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date zxjssj;
     /**
-     * @Description:活动名称
-     * @Param:
-     * @return:
-     * @Author: yukai
-     * @Date: 2021/6/4
-     */
-    private String hdmc;
+    * @Description: 人员简介
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/6/11
+    */
+    private String ryjj;
     /**
-     * @Description: 专家头像
-     * @Param:
-     * @return:
-     * @Author: yukai
-     * @Date: 2021/6/4
-     */
-    private String tx;
-    /**
-     * @Description: 专家姓名
-     * @Param:
-     * @return:
-     * @Author: yukai
-     * @Date: 2021/6/4
-     */
-    private String xm;
-    /**
-     * @Description: 专家电话
-     * @Param:
-     * @return:
-     * @Author: yukai
-     * @Date: 2021/6/4
-     */
-    private String dh;
-    /**
-     * @Description: 专家地址
-     * @Param:
-     * @return:
-     * @Author: yukai
-     * @Date: 2021/6/4
-     */
-    private String dz;
-
+    * @Description: 联系电话
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/6/11
+    */
+    private String lxdh;
 }

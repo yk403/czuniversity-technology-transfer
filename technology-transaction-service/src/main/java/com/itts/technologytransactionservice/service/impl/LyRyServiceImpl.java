@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.LyRyMapper;
 import com.itts.technologytransactionservice.model.LyRy;
+import com.itts.technologytransactionservice.model.LyRyDto;
 import com.itts.technologytransactionservice.service.LyRyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class LyRyServiceImpl extends ServiceImpl<LyRyMapper, LyRy> implements Ly
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyRy> list = lyRyMapper.findLyRyFront(query);
+        List<LyRyDto> list = lyRyMapper.findLyRyFront(query);
         return new PageInfo<>(list);
     }
 

@@ -72,7 +72,7 @@ public class LyRyAdminController {
      * @throws WebException*/
 
     @PutMapping("/update")
-    @ApiOperation(value = "更新报名")
+    @ApiOperation(value = "更新人员")
     public ResponseUtil update(@RequestBody LyRy lyRy) throws WebException {
         Long id = lyRy.getId();
         //检查参数是否合法
@@ -87,7 +87,7 @@ public class LyRyAdminController {
         if (!lyRyAdminService.updateById(lyRy)) {
             throw new WebException(UPDATE_FAIL);
         }
-        return ResponseUtil.success("更新课程成功!");
+        return ResponseUtil.success("更新人员信息成功!");
 
     }
     @ApiOperation(value = "删除")

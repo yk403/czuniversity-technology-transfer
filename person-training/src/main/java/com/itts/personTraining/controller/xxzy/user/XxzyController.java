@@ -74,7 +74,7 @@ public class XxzyController {
 
     @ApiOperation(value = "购买学习资源")
     @PostMapping("/buy/")
-    public ResponseUtil buy(@RequestBody BuyXxzyRequest buyXxzyRequest, HttpServletRequest request) {
+    public ResponseUtil buy(@RequestBody BuyXxzyRequest buyXxzyRequest) {
 
         checkBuyRequest(buyXxzyRequest);
 
@@ -92,21 +92,21 @@ public class XxzyController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        ResponseUtil result = xxzyService.buy(buyXxzyRequest, request.getHeader("token"));
+        ResponseUtil result = xxzyService.buy(buyXxzyRequest);
 
         return result;
     }
 
     @ApiOperation(value = "支付金额")
     @PostMapping("/pay/")
-    public ResponseUtil pay(@RequestBody PayDdxfjlRequest payDdxfjlRequest, HttpServletRequest request) {
+    public ResponseUtil pay(@RequestBody PayDdxfjlRequest payDdxfjlRequest) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser == null) {
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
         }
 
-        ResponseUtil result = xxzyService.pay(payDdxfjlRequest, request.getHeader("token"));
+        ResponseUtil result = xxzyService.pay(payDdxfjlRequest);
 
         return result;
     }

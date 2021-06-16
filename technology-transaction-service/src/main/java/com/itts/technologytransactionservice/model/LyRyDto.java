@@ -107,5 +107,22 @@ public class LyRyDto implements Serializable {
      * @Date: 2021/6/4
      */
     private String dz;
+    /**
+     * @Description: 人员简介
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/11
+     */
+    private String ryjj;
+    /**
+     * @Description: 联系电话
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/11
+     */
+    private String lxdh;
+
 
 }

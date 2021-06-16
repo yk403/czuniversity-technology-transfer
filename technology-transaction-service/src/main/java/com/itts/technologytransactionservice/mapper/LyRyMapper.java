@@ -3,7 +3,6 @@ package com.itts.technologytransactionservice.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.technologytransactionservice.model.LyRy;
 import com.itts.technologytransactionservice.model.LyRyDto;
-import com.itts.technologytransactionservice.model.LyZw;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -24,12 +23,12 @@ public interface LyRyMapper extends BaseMapper<LyRy> {
      * @param map
      * @return
      */
-    List<LyRy> findLyRyFront(@Param("map") Map map);
+    List<LyRyDto> findLyRyFront(@Param("map") Map map);
     /**
      * 分页条件查询需求(后台)
      *
      * @param map
      * @return
      */
-    List<LyRy> findLyRyBack(@Param("map") Map map);
+    List<LyRyDto> findLyRyBack(@Param("map") Map map);
 }

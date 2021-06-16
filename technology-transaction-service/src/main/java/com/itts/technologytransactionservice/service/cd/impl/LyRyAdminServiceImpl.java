@@ -8,6 +8,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.LyRyMapper;
 import com.itts.technologytransactionservice.model.LyRy;
+import com.itts.technologytransactionservice.model.LyRyDto;
 import com.itts.technologytransactionservice.service.cd.LyRyAdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class LyRyAdminServiceImpl extends ServiceImpl<LyRyMapper, LyRy> implemen
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyRy> list = lyRyMapper.findLyRyBack(query);
+        List<LyRyDto> list = lyRyMapper.findLyRyBack(query);
         return new PageInfo<>(list);
     }
 
