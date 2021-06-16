@@ -267,6 +267,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         xxzy.setGxr(userId);
         xxzy.setCjsj(now);
         xxzy.setGxsj(now);
+        xxzy.setZz(loginUser.getRealName());
 
         if (!CollectionUtils.isEmpty(addXxzyRequest.getFjzys())) {
 
