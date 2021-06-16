@@ -56,5 +56,9 @@
         <if test="cjr != null">and sj.cjr = #{cjr}</if>
         order by sj.cjsj desc
     </select>
+    <select id="getByPcIdAndXsId" resultType="com.itts.personTraining.model.sj.Sj">
+        select *
+        from
+    </select>
 
 </mapper>

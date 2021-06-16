@@ -3,7 +3,9 @@ package com.itts.personTraining.service.excel.impl;
 import com.alibaba.excel.EasyExcel;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.*;
+import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
+import com.itts.personTraining.mapper.sj.SjMapper;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
@@ -51,6 +53,10 @@ public class ExcelServiceImpl implements ExcelService {
     private PcXsMapper pcXsMapper;
     @Resource
     private XsCjMapper xsCjMapper;
+    @Resource
+    private PcMapper pcMapper;
+    @Resource
+    private SjMapper sjMapper;
     @Resource
     private XsService xsService;
     @Resource
@@ -193,7 +199,9 @@ public class ExcelServiceImpl implements ExcelService {
     public ResponseUtil importSj(MultipartFile file, Integer headRowNumber, String token) {
         SjListener sjListener = new SjListener();
         sjListener.setSjService(sjService);
+        sjListener.setSjMapper(sjMapper);
         sjListener.setXsMapper(xsMapper);
+        sjListener.setPcMapper(pcMapper);
         sjListener.setToken(token);
         try{
             EasyExcel.read(file.getInputStream(), SjDrDTO.class, sjListener).headRowNumber(headRowNumber).sheet().doRead();

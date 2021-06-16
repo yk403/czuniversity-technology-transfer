@@ -5,11 +5,17 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.exception.WebException;
+import com.itts.personTraining.dto.SjDTO;
 import com.itts.personTraining.dto.SjDrDTO;
+import com.itts.personTraining.mapper.pc.PcMapper;
+import com.itts.personTraining.mapper.sj.SjMapper;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.model.zj.Zj;
 import com.itts.personTraining.model.zj.ZjListener;
@@ -26,7 +32,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
  * @Author: Austin
@@ -43,6 +49,10 @@ public class SjListener extends AnalysisEventListener<SjDrDTO> {
     private String token;
     @Resource
     private XsMapper xsMapper;
+    @Resource
+    private PcMapper pcMapper;
+    @Resource
+    private SjMapper sjMapper;
     @Resource
     private SjService sjService;
     @Resource
@@ -65,15 +75,48 @@ public class SjListener extends AnalysisEventListener<SjDrDTO> {
         log.info("解析第" + rowIndex + "行数据:{}", JSON.toJSONString(data));
         Sj sj = new Sj();
         //姓名
-        if (!StringUtils.isBlank(data.getXh()) && !StringUtils.isBlank(data.getXm())) {
+        if (StringUtils.isNotBlank(data.getXh()) && StringUtils.isNotBlank(data.getXm())) {
             Xs xs = xsMapper.getByXhAndXm(data.getXh(),data.getXm());
             if (xs.getId() != null) {
                 sj.setXsId(xs.getId());
             }
-
+            //批次号
+            if (StringUtils.isNotBlank(data.getPch())) {
+                Pc pc = pcMapper.getByPch(data.getPch());
+                if (pc.getId() != null) {
+                    sj.setPcId(pc.getId());
+                }
+                //实践类型
+                if (StringUtils.isNotBlank(data.getSjlx())) {
+                    sj.setSjlx(data.getSjlx());
+                }
+                //实践单位
+                if (StringUtils.isNotBlank(data.getSjdw())) {
+                    sj.setSjdw(data.getSjdw());
+                }
+                //实践成绩
+                if (StringUtils.isNotBlank(data.getSjcj())) {
+                    sj.setSjcj(data.getSjcj());
+                }
+                //集萃奖学金1
+                if (StringUtils.isNotBlank(data.getJcjxjOne())) {
+                    sj.setJcjxjOne(data.getJcjxjOne());
+                }
+                //集萃奖学金2
+                if (StringUtils.isNotBlank(data.getJcjxjTwo())) {
+                    sj.setJcjxjTwo(data.getJcjxjTwo());
+                }
+                //基地基金1
+                if (StringUtils.isNotBlank(data.getJdjjOne())) {
+                    sj.setJdjjOne(data.getJdjjOne());
+                }
+                //基地基金2
+                if (StringUtils.isNotBlank(data.getJdjjTwo())) {
+                    sj.setJdjjTwo(data.getJdjjTwo());
+                }
+                save(sj);
+            }
         }
-
-        save(sj);
     }
 
     @Override
@@ -91,7 +134,23 @@ public class SjListener extends AnalysisEventListener<SjDrDTO> {
     }
 
     private void save(Sj sj) {
-
+        Sj sj1 = sjMapper.getByPcIdAndXsId(sj.getPcId(),sj.getXsId());
+        if (sj1 == null) {
+            //新增
+            if (sjService.save(sj)) {
+                count++;
+            } else {
+                throw new WebException(INSERT_FAIL);
+            }
+        } else {
+            //更新
+            sj.setId(sj1.getId());
+            if (sjService.updateById(sj)) {
+                count++;
+            } else {
+                throw new WebException(UPDATE_FAIL);
+            }
+        }
     }
 
     public String getResult() {

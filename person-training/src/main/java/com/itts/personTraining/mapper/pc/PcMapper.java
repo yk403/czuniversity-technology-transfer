@@ -33,4 +33,10 @@ public interface PcMapper extends BaseMapper<Pc> {
      */
     List<Kc> findKcListById(@Param("id") Long id);
 
+    /**
+     * 根据批次号查询批次信息
+     * @param pch
+     * @return
+     */
+    Pc getByPch(@Param("pch") String pch);
 }

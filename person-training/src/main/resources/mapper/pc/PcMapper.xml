@@ -38,6 +38,12 @@
         where kc.sfsc = false
           and kc.xylx = (select pc.xylx from t_pc pc where pc.sfsc = false and pc.id = #{id})
     </select>
+    <select id="getByPch" resultType="com.itts.personTraining.model.pc.Pc">
+        select *
+        from t_pc pc
+        where pc.sfsc = false
+        <if test="pch != null and pch != ''"> and pc.pch = #{pch} </if>
+    </select>
 
     <update id="updatePcList"  parameterType="java.util.List">
         update sfsc =true
