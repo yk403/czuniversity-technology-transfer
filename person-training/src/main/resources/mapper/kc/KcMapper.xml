@@ -42,4 +42,10 @@
         </where>
         order by kc.cjsj desc
     </select>
+    <select id="findKcByPcId" resultType="com.itts.personTraining.model.kc.Kc">
+        select kc.*
+        from t_kc kc
+        where kc.sfsc = false
+        and kc.xylx = (select pc.xylx from t_pc pc where pc.sfsc = false and pc.id = #{pcId})
+    </select>
 </mapper>

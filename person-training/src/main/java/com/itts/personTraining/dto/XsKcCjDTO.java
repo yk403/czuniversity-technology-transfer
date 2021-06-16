@@ -41,6 +41,12 @@ public class XsKcCjDTO {
     private Integer kclx;
 
     /**
+     * 知识模块ID
+     */
+    @ApiModelProperty(value = "知识模块ID")
+    private Long zsmkId;
+
+    /**
      * 课程学时(如总学时为36学时)
      */
     @ApiModelProperty(value = "课程学时(如总学时为36学时)")

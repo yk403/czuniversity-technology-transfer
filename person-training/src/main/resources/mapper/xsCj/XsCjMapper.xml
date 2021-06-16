@@ -76,10 +76,10 @@
         <if test="yx != null and yx != ''"> and xs.yx like concat('%',trim(#{yx}),'%') </if>
         order by txc.cjsj desc
     </select>
-    <select id="selectByPcIdAndXsId" resultType="com.itts.personTraining.model.xsCj.XsCj">
-        select *
-        from t_xs_cj txc
-        where txc.sfsc = false
+    <select id="selectByPcIdAndXsId" resultType="com.itts.personTraining.dto.XsCjDTO">
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch
+        from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
+        where txc.sfsc = false and xs.sfsc = false and pc.sfsc = false
         <if test="pcId != null"> and txc.pc_id = #{pcId} </if>
         <if test="xsId != null"> and txc.xs_id = #{xsId} </if>
     </select>

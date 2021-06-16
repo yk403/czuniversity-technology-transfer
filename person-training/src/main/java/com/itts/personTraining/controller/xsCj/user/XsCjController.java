@@ -6,9 +6,7 @@ import com.itts.personTraining.service.xsCj.XsCjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 
@@ -44,8 +42,11 @@ public class XsCjController {
      */
     @GetMapping("/getByCategory")
     @ApiOperation(value = "查询学生成绩信息(综合信息)")
-    public ResponseUtil getByCategory() {
-        return ResponseUtil.success(xsCjService.getByCategory());
+    public ResponseUtil getByCategory(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                      @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                      @RequestParam(value = "pcId",required = false) Long pcId,
+                                      @RequestParam(value = "name",required = false) String name) {
+        return ResponseUtil.success(xsCjService.getByCategory(pageNum,pageSize,pcId,name));
     }
 
 }

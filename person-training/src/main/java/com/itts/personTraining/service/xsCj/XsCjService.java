@@ -6,6 +6,7 @@ import com.itts.personTraining.model.xsCj.XsCj;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -87,7 +88,11 @@ public interface XsCjService extends IService<XsCj> {
 
     /**
      * 查询学生成绩信息(综合信息)
+     * @param pageNum
+     * @param pageSize
+     * @param pcId
+     * @param name
      * @return
      */
-    List<XsCjDTO> getByCategory();
+    Map<String, Object> getByCategory(Integer pageNum,Integer pageSize,Long pcId,String name);
 }

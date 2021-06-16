@@ -29,9 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
@@ -270,41 +268,72 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
 
     /**
      * 查询学生成绩信息(综合信息)
+     * @param pageNum
+     * @param pageSize
+     * @param pcId
+     * @param name
      * @return
      */
     @Override
-    public List<XsCjDTO> getByCategory() {
+    public Map<String, Object> getByCategory(Integer pageNum,Integer pageSize,Long pcId,String name) {
+        PageHelper.startPage(pageNum,pageSize);
+        Map<String, Object> map = new HashMap<>();
         Long userId = getUserId();
         String userCategory = getUserCategory();
-        log.info("【人才培养 - 通过用户类别:{}查询学生成绩信息(综合信息)】",userId,userCategory);
-        List<XsCjDTO> xsKcCj = null;
+        log.info("【人才培养 - 通过用户id:{},用户类别:{},批次id:{},学号/姓名:{}查询学生成绩信息(综合信息)】",userId,userCategory,pcId,name);
+        List<XsCjDTO> xsKcCj;
         switch (userCategory) {
+            //研究生
             case "postgraduate":
                 XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
                 xsKcCj = xsCjMapper.findXsKcCj(null, null, null, null, xsMsgDTO.getId());
+                PageInfo<XsCjDTO> xsCjDTOPageInfo = new PageInfo<>(xsKcCj);
+                map.put("postgraduate", xsCjDTOPageInfo);
                 break;
+            //经纪人
             case "broker":
-                ;
+                XsMsgDTO xsMsgDTO1 = xsMapper.getByYhId(userId);
+                if (xsMsgDTO1 != null) {
+                    XsCjDTO xsCjDTO = xsCjMapper.selectByPcIdAndXsId(pcId, xsMsgDTO1.getId());
+                    if (xsCjDTO != null) {
+                        List<Kc> kcList = kcMapper.findKcByPcId(pcId);
+                        List<XsKcCjDTO> xsKcCjDTOList = new ArrayList<>();
+                        for (Kc kc : kcList) {
+                            XsKcCjDTO xsKcCjDTO = new XsKcCjDTO();
+                            BeanUtils.copyProperties(kc,xsKcCjDTO,"kclx");
+                            xsKcCjDTOList.add(xsKcCjDTO);
+                        }
+                        xsCjDTO.setXsKcCjDTOList(xsKcCjDTOList);
+                        map.put("broker",xsCjDTO);
+                    }
+                } else {
+                    map.put("broker",null);
+                }
                 break;
+            //研究生导师
             case "tutor":
                 ;
                 break;
+            //企业导师
             case "corporate_mentor":
                 ;
                 break;
+            //任课教师
             case "teacher":
                 ;
                 break;
+            //管理员
             case "administrator":
                 ;
                 break;
+            //校领导
             case "school_leader":
                 ;
                 break;
             default:
                 break;
         }
-        return xsKcCj;
+        return map;
     }
 
     /**

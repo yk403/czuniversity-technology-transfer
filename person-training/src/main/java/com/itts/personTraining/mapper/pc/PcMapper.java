@@ -39,4 +39,11 @@ public interface PcMapper extends BaseMapper<Pc> {
      * @return
      */
     Pc getByPch(@Param("pch") String pch);
+
+    /**
+     * 根据用户id查询批次信息(前)
+     * @param userId
+     * @return
+     */
+    List<Pc> findPcByYhId(@Param("userId") Long userId);
 }

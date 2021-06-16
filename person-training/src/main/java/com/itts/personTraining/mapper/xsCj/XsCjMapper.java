@@ -45,7 +45,7 @@ public interface XsCjMapper extends BaseMapper<XsCj> {
      * @param xsId
      * @return
      */
-    XsCj selectByPcIdAndXsId(@Param("pcId") Long pcId, @Param("xsId") Long xsId);
+    XsCjDTO selectByPcIdAndXsId(@Param("pcId") Long pcId, @Param("xsId") Long xsId);
 
     /**
      * 根据学生id查询成绩通知数量

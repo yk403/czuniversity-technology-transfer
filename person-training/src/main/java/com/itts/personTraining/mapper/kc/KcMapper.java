@@ -28,4 +28,11 @@ public interface KcMapper extends BaseMapper<Kc> {
      * @return
      */
     List<KcDTO> findByPage(@Param("kclx") String kclx, @Param("name") String name, @Param("jylx") String jylx, @Param("xylx") String xylx);
+
+    /**
+     * 根据批次id查询课程集合
+     * @param pcId
+     * @return
+     */
+    List<Kc> findKcByPcId(@Param("pcId") Long pcId);
 }
