@@ -56,6 +56,11 @@ public class XsCj implements Serializable {
     private Integer zxf;
 
     /**
+     * 技术转移课程总分总分
+     */
+    private Integer jszykczf;
+
+    /**
      * 论文成绩
      */
     private String lwcj;

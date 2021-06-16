@@ -9,7 +9,9 @@ import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.enums.UserTypeEnum;
+import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
+import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.xsCj.XsCj;
@@ -20,6 +22,7 @@ import com.itts.personTraining.service.xsCj.XsCjService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.xsKcCj.XsKcCjService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +61,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     private PcService pcService;
     @Resource
     private XsMapper xsMapper;
+    @Resource
+    private KcMapper kcMapper;
 
     /**
      * 根据批次id查询所有学生成绩
@@ -98,6 +103,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 Long id = xsCj.getId();
                 List<XsKcCj> xsKcCjs = new ArrayList<>();
                 int totalNum = 0;
+                int jszykczf = 0;
                 for (XsKcCjDTO xsKcCjDTO : xsKcCjDTOList) {
                     XsKcCj xsKcCj = new XsKcCj();
                     xsKcCjDTO.setXsCjId(id);
@@ -108,9 +114,14 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                     totalNum += dqxf;
                     BeanUtils.copyProperties(xsKcCjDTO,xsKcCj);
                     xsKcCjs.add(xsKcCj);
+                    Kc kc = kcMapper.selectById(xsKcCjDTO.getKcId());
+                    jszykczf += kc.getKcxf();
                 }
                 if (xsKcCjService.saveBatch(xsKcCjs)) {
+                    //获得总分
                     xsCj.setZxf(totalNum);
+                    //课程总分
+                    xsCj.setJszykczf(jszykczf);
                     return xsCjService.updateById(xsCj);
                 }
                 return false;
