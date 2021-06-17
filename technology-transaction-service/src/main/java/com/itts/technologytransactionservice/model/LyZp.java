@@ -336,5 +336,21 @@ public class LyZp implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date cgwcsj;
+    /**
+    * @Description: 成果权属人
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/6/17
+    */
+    private String cgqsr;
+    /**
+     * @Description: 权属人联系电话
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String qsrlxdh;
 
 }
