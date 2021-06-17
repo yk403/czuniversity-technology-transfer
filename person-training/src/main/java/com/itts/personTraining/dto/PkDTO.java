@@ -60,6 +60,18 @@ public class PkDTO {
     private Long kcsjId;
 
     /**
+     * 课程代码
+     */
+    @ApiModelProperty(value = "课程代码")
+    private String kcdm;
+
+    /**
+     * 课程名称
+     */
+    @ApiModelProperty(value = "课程名称")
+    private String kcmc;
+
+    /**
      * 类型(1:学历学位排课;2:继续教育排课)
      */
     @ApiModelProperty(value = "类型(1:学历学位排课;2:继续教育排课)", required = true)

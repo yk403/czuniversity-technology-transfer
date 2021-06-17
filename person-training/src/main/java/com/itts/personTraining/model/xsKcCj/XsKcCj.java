@@ -29,6 +29,11 @@ public class XsKcCj implements Serializable {
     private Long id;
 
     /**
+     * 学生ID
+     */
+    private Long xsId;
+
+    /**
      * 学生成绩ID
      */
     private Long xsCjId;

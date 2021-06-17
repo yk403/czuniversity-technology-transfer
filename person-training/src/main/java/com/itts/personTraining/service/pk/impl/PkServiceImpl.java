@@ -1,16 +1,14 @@
 package com.itts.personTraining.service.pk.impl;
 
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.bean.LoginUser;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
-import com.itts.personTraining.dto.KcDTO;
 import com.itts.personTraining.dto.PkDTO;
+import com.itts.personTraining.mapper.sz.SzMapper;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pk.Pk;
 import com.itts.personTraining.mapper.pk.PkMapper;
-import com.itts.personTraining.model.pkKc.PkKc;
+import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.service.pk.PkService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.pkKc.PkKcService;
@@ -27,7 +25,6 @@ import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
-import static com.itts.common.utils.DateUtils.getDateAfterNDays;
 
 /**
  * <p>
@@ -48,6 +45,8 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     private PkService pkService;
     @Autowired
     private PkKcService pkKcService;
+    @Resource
+    private SzMapper szMapper;
 
     /**
      * 查询排课信息
@@ -56,10 +55,10 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
      * @return
      */
     @Override
-    public Map<String, List<PkDTO>> findPkInfo(Long pcId) {
+    public List<PkDTO> findPkInfo(Long pcId) {
         log.info("【人才培养 - 查询排课信息,上课开始时间:{},批次id:{}】", pcId);
         List<PkDTO> pkDTOs = pkMapper.findPkInfo(pcId);
-        Map<String, List<PkDTO>> groupByXqs = pkDTOs.stream().collect(Collectors.groupingBy(PkDTO::getXqs));
+        /*Map<String, List<PkDTO>> groupByXqs = pkDTOs.stream().collect(Collectors.groupingBy(PkDTO::getXqs));
         //遍历分组
         List<String> xqsList = new ArrayList<>();
         for (Map.Entry<String, List<PkDTO>> entryPkDTO : groupByXqs.entrySet()) {
@@ -69,10 +68,10 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
             if (xqsList.contains(String.valueOf(i))) {
                 continue;
             } else {
-                groupByXqs.put(String.valueOf(i), null);
+                groupByXqs.put(String.valueOf(i), Collections.EMPTY_LIST);
             }
-        }
-        return groupByXqs;
+        }*/
+        return pkDTOs;
     }
 
     /**
@@ -174,6 +173,29 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     }
 
     /**
+     * 根据用户id查询批次ids(前)
+     * @return
+     */
+    @Override
+    public List<Pc> getPcsByYhId() {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询批次ids(前)】", userId);
+        String userCategory = getUserCategory();
+        List<Pc> pcs = null;
+        switch (userCategory) {
+            case "teacher":
+                Sz sz = szMapper.getSzByYhId(userId);
+                if (sz != null) {
+                    pcs = pkMapper.findPcsBySzId(sz.getId());
+                }
+                break;
+            default:
+                break;
+        }
+        return pcs;
+    }
+
+    /**
      * 获取当前用户id
      *
      * @return
@@ -187,6 +209,21 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    /**
+     * 获取当前用户id所属类别
+     * @return
+     */
+    private String getUserCategory() {
+        LoginUser loginUser = threadLocal.get();
+        String userCategory;
+        if (loginUser != null) {
+            userCategory = loginUser.getUserCategory();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userCategory;
     }
 
     /**

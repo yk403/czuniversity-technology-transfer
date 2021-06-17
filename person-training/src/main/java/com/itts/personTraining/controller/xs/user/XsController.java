@@ -27,10 +27,21 @@ public class XsController {
      *
      * @return
      */
-    @GetMapping("/getByYhId/")
+    @GetMapping("/getByYhId")
     @ApiOperation(value = "查询学员综合信息")
     public ResponseUtil getByYhId() {
         return ResponseUtil.success(xsService.getByYhId());
+    }
+
+    /**
+     * 根据用户id查询批次信息(前)
+     *
+     * @return
+     */
+    @GetMapping("/getPcByYhId")
+    @ApiOperation(value = "根据用户id查询批次信息(前)")
+    public ResponseUtil getPcByYhId() {
+        return ResponseUtil.success(xsService.getPcByYhId());
     }
 
     /**
@@ -39,7 +50,7 @@ public class XsController {
      * @return
      * @throws WebException
      */
-    @PutMapping("/update/")
+    @PutMapping("/update")
     @ApiOperation(value = "更新学生")
     public ResponseUtil update(@RequestBody StuDTO stuDTO) throws WebException{
         checkRequest(stuDTO);
@@ -68,7 +79,5 @@ public class XsController {
         if (StringUtils.isBlank(stuDTO.getXm())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-
-
     }
 }

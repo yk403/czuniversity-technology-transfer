@@ -33,4 +33,24 @@ public interface PcMapper extends BaseMapper<Pc> {
      */
     List<Kc> findKcListById(@Param("id") Long id);
 
+    /**
+     * 根据批次号查询批次信息
+     * @param pch
+     * @return
+     */
+    Pc getByPch(@Param("pch") String pch);
+
+    /**
+     * 根据用户id查询批次信息(前)
+     * @param userId
+     * @return
+     */
+    List<Pc> findPcByYhId(@Param("userId") Long userId);
+
+    /**
+     * 根据年份查询批次ids(前)
+     * @param currentYear
+     * @return
+     */
+    List<Long> findPcIdsByYear(@Param("currentYear") String currentYear);
 }

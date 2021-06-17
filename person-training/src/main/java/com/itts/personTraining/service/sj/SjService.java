@@ -90,8 +90,8 @@ public interface SjService extends IService<Sj> {
     boolean userUpdate(SjDTO sjDTO);
 
     /**
-     * 根据创建人查询实践信息(前)
+     * 根据用户类别查询实践信息(前)
      * @return
      */
-    List<SjDTO> findByCjr();
+    List<SjDTO> findByCategory();
 }

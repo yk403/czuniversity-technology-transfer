@@ -42,10 +42,12 @@ public class XsKcCjServiceImpl extends ServiceImpl<XsKcCjMapper, XsKcCj> impleme
     /**
      * 根据学生成绩id和课程类型查询学生课程成绩集合
      * @param xsCjId
+     * @param kclx
+     * @param xsId
      * @return
      */
     @Override
-    public List<XsKcCjDTO> getByXsCjId(Long xsCjId,Integer kclx) {
+    public List<XsKcCjDTO> getByXsCjId(Long xsCjId,Integer kclx,Long xsId) {
         log.info("【人才培养 - 根据学生成绩id:{},课程类型:{}查询学生课程成绩集合】",xsCjId,kclx);
         List<XsKcCjDTO> xsKcCjDTOs;
         if (TECHNOLOGY_TRANSFER_COURSE.getKey().equals(kclx)) {
@@ -53,7 +55,7 @@ public class XsKcCjServiceImpl extends ServiceImpl<XsKcCjMapper, XsKcCj> impleme
             xsKcCjDTOs = xsKcCjMapper.selectByXsCjId(xsCjId,kclx);
         } else {
             //原专业课程
-            xsKcCjDTOs = xsKcCjMapper.selectYzyByXsCjId(xsCjId,kclx);
+            xsKcCjDTOs = xsKcCjMapper.selectYzyByXsId(xsId,kclx);
         }
         return xsKcCjDTOs;
     }

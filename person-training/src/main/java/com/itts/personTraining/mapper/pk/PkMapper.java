@@ -2,6 +2,7 @@ package com.itts.personTraining.mapper.pk;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.personTraining.dto.PkDTO;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pk.Pk;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -30,4 +31,11 @@ public interface PkMapper extends BaseMapper<Pk> {
      * @return
      */
     List<PkDTO> findPkByCondition(@Param("kxrq") Date kxrq);
+
+    /**
+     * 根据师资id(授课教师)查询批次列表(前)
+     * @param szId
+     * @return
+     */
+    List<Pc> findPcsBySzId(@Param("szId") Long szId);
 }

@@ -10,6 +10,8 @@
         <result column="xxjs_id" property="xxjsId" />
         <result column="kcsj_id" property="kcsjId" />
         <result column="kc_id" property="kcId" />
+        <result column="kcdm" property="kcdm" />
+        <result column="kcmc" property="kcmc" />
         <result column="type" property="type" />
         <result column="skdd" property="skdd" />
         <result column="pkmc" property="pkmc" />
@@ -53,7 +55,7 @@
 
     <select id="findPkInfo" resultMap="BaseResultMap">
         select pk.*,kc.id as kc_id,kc.kcdm as kcdm,kc.kcmc as kcmc,sz.*,xxjs.*
-        from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_pk_kc tpk on(pk.id=pk.pk_id) left join t_kc kc on(kc.id=tpk.kc_id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id) left join t_kcsj kcsj on(pk.kcsj_id=kcsj.id)
+        from t_pk pk left join t_pc pc on(pk.pc_id=pc.id) left join t_kc kc on(kc.id=pk.kc_id) left join t_sz sz on(pk.sz_id=sz.id) left join t_xxjs xxjs on(pk.xxjs_id=xxjs.id) left join t_kcsj kcsj on(pk.kcsj_id=kcsj.id)
         <where>
             pk.sfsc = false and pc.sfsc = false and kc.sfsc = false and sz.sfsc = false and xxjs.sfsc = false and kcsj.sfsc = false
             <if test="pcId != null"> and pc.id = #{pcId} </if>
@@ -66,6 +68,11 @@
             pk.sfsc = false and pc.sfsc = false and kc.sfsc = false and sz.sfsc = false and xxjs.sfsc = false and kcsj.sfsc = false
             <if test="kxrq != null and kxrq != ''"> and pk.kxrq = #{kxrq} </if>
         </where>
+    </select>
+    <select id="findPcsBySzId" resultType="com.itts.personTraining.model.pc.Pc">
+        select pk.pc_id as id, pc.pch
+        from t_pk pk left join t_pc pc on (pc.id=pk.pc_id)
+        where pk.sfsc = false and pc.sfsc = false and pk.sfxf = true and pk.sz_id = #{szId} group by pk.pc_id
     </select>
 
 </mapper>

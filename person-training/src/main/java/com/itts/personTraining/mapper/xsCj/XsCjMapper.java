@@ -45,7 +45,7 @@ public interface XsCjMapper extends BaseMapper<XsCj> {
      * @param xsId
      * @return
      */
-    XsCj selectByPcIdAndXsId(@Param("pcId") Long pcId, @Param("xsId") Long xsId);
+    XsCjDTO selectByPcIdAndXsId(@Param("pcId") Long pcId, @Param("xsId") Long xsId);
 
     /**
      * 根据学生id查询成绩通知数量
@@ -60,4 +60,29 @@ public interface XsCjMapper extends BaseMapper<XsCj> {
      * @return
      */
     XsCjDTO getById(@Param("id") Long id);
+
+    /**
+     * 根据学生ids和批次ids/学号/姓名查询学生成绩集合(前)
+     * @param xsIds
+     * @param pcIds
+     * @param name
+     * @return
+     */
+    List<XsCjDTO> findXsCjByXsIdsAndPcIds(@Param("xsIds") List<Long> xsIds, @Param("pcIds") List<Long> pcIds, @Param("name") String name);
+
+    /**
+     * 通过批次id和学号/姓名查询学生成绩集合(前)(学历学位教育)
+     * @param pcId
+     * @param name
+     * @return
+     */
+    List<XsCjDTO> findXsKcCjByPcIdAndName(@Param("pcId") Long pcId, @Param("name") String name);
+
+    /**
+     * 通过批次id和学号/姓名查询学生成绩集合(前)(继续教育)
+     * @param pcId
+     * @param name
+     * @return
+     */
+    List<XsCjDTO> findXsCjByPcIdAndName(@Param("pcId") Long pcId, @Param("name") String name);
 }

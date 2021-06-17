@@ -86,6 +86,12 @@ public class XsCjDTO {
     private Integer zxf;
 
     /**
+     * 技术转移课程总分
+     */
+    @ApiModelProperty(value = "技术转移课程总分")
+    private Integer jszykczf;
+
+    /**
      * 论文成绩
      */
     @ApiModelProperty(value = "论文成绩")

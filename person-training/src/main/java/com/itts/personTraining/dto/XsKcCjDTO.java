@@ -23,6 +23,12 @@ public class XsKcCjDTO {
     private Long id;
 
     /**
+     * 学生ID
+     */
+    @ApiModelProperty(value = "学生ID")
+    private Long xsId;
+
+    /**
      * 学生成绩ID
      */
     @ApiModelProperty(value = "学生成绩ID")
@@ -39,6 +45,12 @@ public class XsKcCjDTO {
      */
     @ApiModelProperty(value = "课程类型(1:原专业课程;2:技术转移专业课程)")
     private Integer kclx;
+
+    /**
+     * 知识模块ID
+     */
+    @ApiModelProperty(value = "知识模块ID")
+    private Long zsmkId;
 
     /**
      * 课程学时(如总学时为36学时)
