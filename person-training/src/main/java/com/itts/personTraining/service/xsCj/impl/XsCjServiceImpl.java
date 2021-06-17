@@ -335,7 +335,21 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 break;
             //任课教师
             case "teacher":
-                ;
+                if (pcId == null) {
+                    throw new ServiceException("批次号不可为空!");
+                }
+                //先调排课接口查询该任课教师所有的批次号,通过批次号查询对应成绩列表
+                Pc pc = pcMapper.selectById(pcId);
+                List<XsCjDTO> xsCjDTOs = null;
+                if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
+                    xsCjDTOs = xsCjMapper.findXsKcCjByPcIdAndName(pcId,name);
+                    PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
+                    map.put("teacher",xsCjPageInfo);
+                } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
+                    xsCjDTOs = xsCjMapper.findXsCjByPcIdAndName(pcId,name);
+                }
+                PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
+                map.put("teacher",xsCjPageInfo);
                 break;
             //管理员
             case "administrator":

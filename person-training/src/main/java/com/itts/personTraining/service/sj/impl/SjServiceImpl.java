@@ -155,10 +155,10 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
         List<SjDTO> sjDTOs = null;
         switch (userCategory) {
             case "postgraduate":
-                sjDTOs = sjMapper.findByCondition(userId,null);
+                sjDTOs = sjMapper.findByCategory(userId,null);
                 break;
             case "corporate_mentor":
-                sjDTOs = sjMapper.findByCondition(null,userId);
+                sjDTOs = sjMapper.findByCategory(null,userId);
                 break;
             default:
                 break;

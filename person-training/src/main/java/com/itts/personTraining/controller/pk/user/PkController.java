@@ -45,4 +45,15 @@ public class PkController {
         }
         return ResponseUtil.success(pkService.findPkInfo(pcId));
     }
+
+    /**
+     * 根据用户id查询批次集合(前)
+     *
+     * @return
+     */
+    @GetMapping("/getPcsByYhId")
+    @ApiOperation(value = "根据用户id查询批次集合(前)")
+    public ResponseUtil getPcsByYhId() {
+        return ResponseUtil.success(pkService.getPcsByYhId());
+    }
 }

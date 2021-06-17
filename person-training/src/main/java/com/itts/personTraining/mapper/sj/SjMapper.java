@@ -55,4 +55,12 @@ public interface SjMapper extends BaseMapper<Sj> {
      * @return
      */
     Sj getByPcIdAndXsId(@Param("pcId") Long pcId, @Param("xsId") Long xsId);
+
+    /**
+     * 根据条件查询实践信息列表(前)
+     * @param yhId
+     * @param cjr
+     * @return
+     */
+    List<SjDTO> findByCategory(@Param("yhId") Long yhId, @Param("cjr") Long cjr);
 }
