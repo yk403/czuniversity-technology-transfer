@@ -10,6 +10,7 @@ import com.itts.common.utils.Query;
 import com.itts.common.utils.common.CommonUtils;
 import com.itts.technologytransactionservice.mapper.FjzyMapper;
 import com.itts.technologytransactionservice.mapper.LyHdMapper;
+import com.itts.technologytransactionservice.mapper.LyZwMapper;
 import com.itts.technologytransactionservice.model.Fjzy;
 import com.itts.technologytransactionservice.model.LyHd;
 import com.itts.technologytransactionservice.model.LyHdDto;
@@ -48,12 +49,14 @@ public class LyHdAdminServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implemen
     private LyHdMapper lyHdMapper;
     @Autowired
     private FjzyMapper fjzyMapper;
+    @Autowired
+    private LyZwMapper lyZwMapper;
     @Override
     public PageInfo findLyHdBack(Map<String, Object> params) {
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyHd> list = lyHdMapper.findLyHdBack(query);
+        List<LyHdDto> list = lyHdMapper.findLyHdBack(query);
         return new PageInfo<>(list);
     }
 
@@ -134,6 +137,15 @@ public class LyHdAdminServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implemen
             lyHd.setHdfbzt(1);
         }
         return updateBatchById(lyHds);
+    }
+
+    @Override
+    public PageInfo findLyHzBack(Map<String, Object> params) {
+        log.info("【技术交易 - 分页条件查询(前台)】");
+        Query query = new Query(params);
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<LyHdDto> list = lyHdMapper.findLyHzBack(query);
+        return new PageInfo<>(list);
     }
 //    *
 //     * 获取当前用户id

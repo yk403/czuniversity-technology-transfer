@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyHzMapper">
 
-    <select id="findLyHzFront" resultType="com.itts.technologytransactionservice.model.LyHz">
+    <select id="findLyHzFront" resultType="com.itts.technologytransactionservice.model.LyHzDto">
         select hz.id as id,cjsj,gxsj,hzjs,hztp,hztpmc,hzmc,hd_id
         from t_ly_hz hz
         <where>
@@ -23,16 +23,129 @@
             </otherwise>
         </choose>
     </select>
-    <select id="findLyHzBack" resultType="com.itts.technologytransactionservice.model.LyHz">
+<!--    <select id="findLyHzBack" resultType="com.itts.technologytransactionservice.model.LyHz">
         select hz.id as id,cjsj,gxsj,hzjs,hztp,hztpmc
         from t_ly_hz hz
         <where>
-            <!--后台能查询0或者1的数据 -->
+            &lt;!&ndash;后台能查询0或者1的数据 &ndash;&gt;
             hz.is_delete = 0
             <if test="map.hzjs != null"> and hz.hzjs = #{map.hzjs} </if>
             <if test="map.hztp != null"> and hz.hztp = #{map.hztp} </if>
             <if test="map.hztpmc != null"> and hz.hztpmc = #{map.hztpmc} </if>
         </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>-->
+    <resultMap id="BaseResultMap1" type="com.itts.technologytransactionservice.model.LyHzDto">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="cjsj" property="cjsj" jdbcType="DATE" />
+        <result column="gxsj" property="gxsj" jdbcType="DATE" />
+        <result column="hdmc" property="hdmc" jdbcType="VARCHAR" />
+        <result column="hzjs" property="hzjs" jdbcType="LONGVARCHAR" />
+        <result column="hztp" property="hztp" jdbcType="VARCHAR" />
+        <result column="hztpmc" property="hztpmc" jdbcType="VARCHAR" />
+        <result column="hzmc" property="hzmc" jdbcType="VARCHAR" />
+        <result column="hdmc" property="hdmc" jdbcType="VARCHAR" />
+        <result column="hzlbt" property="hzlbt" jdbcType="LONGVARCHAR" />
+        <result column="hzsp" property="hzsp" jdbcType="VARCHAR" />
+        <result column="hzspmc" property="hzspmc" jdbcType="VARCHAR" />
+        <result column="hzgg" property="hzgg" jdbcType="LONGVARCHAR" />
+        <result column="ltst" property="ltst" jdbcType="VARCHAR" />
+        <result column="ltstmc" property="ltstmc" jdbcType="VARCHAR" />
+        <result column="ltnr" property="ltnr" jdbcType="LONGVARCHAR" />
+
+        <collection property="lyZwDtoList" ofType="com.itts.technologytransactionservice.model.LyZwDto">
+            <id column="zw_id" property="id" jdbcType="BIGINT" />
+            <result column="zw_zwjj" property="zwjj" jdbcType="LONGVARCHAR" />
+            <result column="zw_hzId" property="hzId" jdbcType="BIGINT" />
+            <result column="zw_zwmc" property="zwmc" jdbcType="VARCHAR" />
+            <result column="zw_sjzdId" property="sjzdId" jdbcType="BIGINT" />
+        </collection>
+    </resultMap>
+ <!--   <select id="findLyHzBack" resultMap="BaseResultMap1">
+        SELECT
+        hz.id AS id,
+        zw.id AS zw_id,
+        hz.cjsj AS cjsj,
+        hz.gxsj AS gxsj,
+        hz.hzjs AS hzjs,
+        hz.hztp AS hztp,
+        hz.hztpmc AS hztpmc,
+        hz.hzmc AS hzmc,
+        hd.hdmc as hdmc,
+        hz.hzlbt as hzlbt,
+        hz.hzsp as hzsp,
+        hz.hzspmc as hzspmc,
+        hz.hzgg as hzgg,
+        hz.ltst as ltst,
+        hz.ltstmc as ltstmc,
+        hz.ltnr as ltnr,
+
+        zw.id as zw_id,
+        zw.zwjj as zw_zwjj,
+        zw.hz_id as zw_hzId,
+        zw.zwmc as zw_zwmc,
+        zw.sjzd_id as zw_sjzdId
+
+        FROM
+        t_ly_hz hz LEFT JOIN t_ly_hd hd on(hd.id = hz.hd_id) LEFT JOIN t_zw_hz zwhz on(hz.id = zwhz.hz_id) LEFT JOIN t_ly_zw zw on(zwhz.zw_id = zw.id)
+        <where>
+            &lt;!&ndash;后台能查询0或者1的数据 &ndash;&gt;
+            hz.is_delete = 0
+            <if test="map.hzjs != null"> and hz.hzjs = #{map.hzjs} </if>
+            <if test="map.hztp != null"> and hz.hztp = #{map.hztp} </if>
+            <if test="map.hztpmc != null"> and hz.hztpmc = #{map.hztpmc} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>-->
+    <select id="findLyHzBack" resultType="com.itts.technologytransactionservice.model.LyHzDto">
+        SELECT
+        hz.id AS id,
+        hz.hd_id AS hdId,
+        hz.cjsj AS cjsj,
+        hz.gxsj AS gxsj,
+        hz.hzjs AS hzjs,
+        hz.hztp AS hztp,
+        hz.hztpmc AS hztpmc,
+        hz.hzmc AS hzmc,
+        hd.hdmc as hdmc,
+        hz.hzlbt as hzlbt,
+        hz.hzsp as hzsp,
+        hz.hzspmc as hzspmc,
+        hz.hzgg as hzgg,
+        hz.ltst as ltst,
+        hz.ltstmc as ltstmc,
+        hz.ltnr as ltnr,
+        group_concat(zw.zwmc) AS zwmc,
+        group_concat(zw.id) AS zwId
+
+        FROM
+        t_ly_hz hz
+        LEFT JOIN t_ly_hd hd ON (hd.id = hz.hd_id)
+        LEFT JOIN t_zw_hz zwhz ON (hz.id = zwhz.hz_id)
+        LEFT JOIN t_ly_zw zw ON (zwhz.zw_id = zw.id)
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            hz.is_delete = 0
+            <if test="map.hzjs != null"> and hz.hzjs = #{map.hzjs} </if>
+            <if test="map.hdmc != null"> and hd.hdmc like concat('%',trim(#{map.hdmc}),'%') </if>
+            <if test="map.hztp != null"> and hz.hztp = #{map.hztp} </if>
+            <if test="map.hztpmc != null"> and hz.hztpmc = #{map.hztpmc} </if>
+        </where>
+        group by hz.id
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
                 order by ${map.sort} ${map.order}

@@ -25,4 +25,6 @@ public interface LyHdAdminService extends IService<LyHd> {
     boolean updateHd(LyHdDto lyHdDto);
 
     boolean issueBatch(List<Long> ids);
+
+    PageInfo findLyHzBack(Map<String, Object> params);
 }

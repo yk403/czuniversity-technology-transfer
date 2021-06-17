@@ -85,4 +85,9 @@ public class Fjzy implements Serializable {
     @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
+    /**
+     * 附件资源链接
+     */
+    @ApiModelProperty(value = "附件资源链接")
+    private String fjzylj;
 }

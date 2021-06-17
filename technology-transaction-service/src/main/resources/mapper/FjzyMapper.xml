@@ -20,7 +20,7 @@
         id, fjzy_id, fjzymc, fjzydz, fjzylx, fjzydx, fjzysc, cjr, cjsj
     </sql>-->
     <select id="list" resultType="com.itts.technologytransactionservice.model.Fjzy">
-        select fj.id as id,fj.fjzy_id as fjzy_id,fj.fjzymc as fjzymc,fj.fjzydz as fjzydz,fj.fjzylx as fjzylx,fj.fjzydx as fjzydx,fj.fjzysc as fjzysc,fj.cjr as cjr,fj.cjsj as cjsj from t_fjzy fj
+        select fj.id as id,fj.fjzy_id as fjzy_id,fj.fjzymc as fjzymc,fj.fjzydz as fjzydz,fj.fjzylx as fjzylx,fj.fjzydx as fjzydx,fj.fjzysc as fjzysc,fj.cjr as cjr,fj.cjsj as cjsj,fj.fjzylj as fjzylj from t_fjzy fj
         <where>
             <if test="map.id != null"> and fj.id = #{map.id} </if>
             <if test="map.fjzyId != null"> and fj.fjzy_id  = #{map.fjzyId} </if>
@@ -29,6 +29,7 @@
             <if test="map.fjzylx != null"> and fj.fjzylx = #{map.fjzylx} </if>
             <if test="map.fjzydx != null"> and fj.fjzydx = #{map.fjzydx} </if>
             <if test="map.fjzysc != null"> and fj.fjzysc = #{map.fjzysc} </if>
+            <if test="map.fjzylj != null"> and fj.fjzylj = #{map.fjzylj} </if>
             <if test="map.cjr != null"> and fj.cjr = #{map.cjr} </if>
             <if test="map.cjsj != null"> and fj.cjsj = #{map.cjsj} </if>
         </where>

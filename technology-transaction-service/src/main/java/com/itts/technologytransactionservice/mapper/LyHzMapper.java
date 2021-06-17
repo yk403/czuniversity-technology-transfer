@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.mapper;
 
 import com.itts.technologytransactionservice.model.LyHz;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itts.technologytransactionservice.model.LyHzDto;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,12 +23,12 @@ public interface LyHzMapper extends BaseMapper<LyHz> {
      * @param map
      * @return
      */
-    List<LyHz> findLyHzFront(@Param("map") Map map);
+    List<LyHzDto> findLyHzFront(@Param("map") Map map);
     /**
      * 分页条件查询需求(后台)
      *
      * @param map
      * @return
      */
-    List<LyHz> findLyHzBack(@Param("map") Map map);
+    List<LyHzDto> findLyHzBack(@Param("map") Map map);
 }
