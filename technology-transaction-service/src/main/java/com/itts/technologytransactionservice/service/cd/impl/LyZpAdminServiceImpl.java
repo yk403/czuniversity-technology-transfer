@@ -8,6 +8,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.LyZpMapper;
 import com.itts.technologytransactionservice.model.LyZp;
+import com.itts.technologytransactionservice.model.LyZpDto;
 import com.itts.technologytransactionservice.service.LyZpService;
 import com.itts.technologytransactionservice.service.cd.LyZpAdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,7 @@ public class LyZpAdminServiceImpl extends ServiceImpl<LyZpMapper, LyZp> implemen
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyZp> list = lyZpMapper.findLyZpBack(query);
+        List<LyZpDto> list = lyZpMapper.findLyZpBack(query);
         return new PageInfo<>(list);
     }
 

@@ -104,5 +104,53 @@ public class LyZp implements Serializable {
     * @Date: 2021/6/10
     */
     private BigDecimal hzjg;
+    /**
+    * @Description: 类别id
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/17
+    */
+    private Long lbId;
+    /**
+     * @Description: 关联活动id
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private Long hdId;
+    /**
+     * @Description: 出让方
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String crf;
+    /**
+     * @Description: 协议管理
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String xygl;
+    /**
+     * @Description: 协议管理名称
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String xyglmc;
+    /**
+     * @Description: 发布审核状态（0待提交、1待审核、2通过、3整改中、4拒绝、5整改完成）
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private Integer fbshzt;
 
 }
