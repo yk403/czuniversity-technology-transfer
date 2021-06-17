@@ -48,10 +48,11 @@ public class XxzyAdminController {
                              @ApiParam(value = "资源类型：in-内部资源；out-外部资源") @RequestParam(value = "type") String type,
                              @ApiParam(value = "一级分类") @RequestParam(value = "firstCategory", required = false) String firstCategory,
                              @ApiParam(value = "二级分类") @RequestParam(value = "secondCategory", required = false) String secondCategory,
+                             @ApiParam(value = "资源类型: video - 视频; textbook - 教材; courseware - 课件") @RequestParam(value = "category", required = false) String category,
                              @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
                              @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition) {
 
-        PageInfo<Xxzy> pageInfo = xxzyService.list(pageNum, pageSize, type, firstCategory, secondCategory, courseId, condition);
+        PageInfo<Xxzy> pageInfo = xxzyService.list(pageNum, pageSize, type, firstCategory, secondCategory, category, courseId, condition);
 
         return ResponseUtil.success(pageInfo);
     }

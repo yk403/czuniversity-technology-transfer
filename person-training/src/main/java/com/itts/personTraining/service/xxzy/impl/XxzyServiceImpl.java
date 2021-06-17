@@ -63,7 +63,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
     @Autowired
     private OrderFeignService orderFeignService;
-    
+
     @Autowired
     private UserFeignService userFeignService;
 
@@ -72,7 +72,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      */
     @Override
     public PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type,
-                               String firstCategory, String secondCategory, Long courseId, String condition) {
+                               String firstCategory, String secondCategory, String category, Long courseId, String condition) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -95,6 +95,10 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
         if (StringUtils.isNotBlank(condition)) {
             query.like("mc", condition.trim());
+        }
+
+        if (StringUtils.isNotBlank(category)) {
+            query.eq("zylx", category);
         }
 
         query.orderByDesc("cjsj");
@@ -381,7 +385,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             return response;
         }
 
-        if(response.getData() == null){
+        if (response.getData() == null) {
             return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR.getCode(), "订单不存在");
         }
 

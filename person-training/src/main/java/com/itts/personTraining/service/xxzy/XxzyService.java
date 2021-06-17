@@ -24,7 +24,7 @@ public interface XxzyService extends IService<Xxzy> {
      * 获取列表 - 分页
      */
     PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type, String firstCategory,
-                        String secondCategory, Long courseId, String condition);
+                        String secondCategory, String category, Long courseId, String condition);
 
     /**
      * 获取列表 - 分页
