@@ -69,7 +69,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
             if (xqsList.contains(String.valueOf(i))) {
                 continue;
             } else {
-                groupByXqs.put(String.valueOf(i), null);
+                groupByXqs.put(String.valueOf(i), Collections.EMPTY_LIST);
             }
         }
         return groupByXqs;

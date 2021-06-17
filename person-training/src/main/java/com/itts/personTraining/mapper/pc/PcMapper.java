@@ -46,4 +46,11 @@ public interface PcMapper extends BaseMapper<Pc> {
      * @return
      */
     List<Pc> findPcByYhId(@Param("userId") Long userId);
+
+    /**
+     * 根据年份查询批次ids(前)
+     * @param currentYear
+     * @return
+     */
+    List<Long> findPcIdsByYear(@Param("currentYear") String currentYear);
 }

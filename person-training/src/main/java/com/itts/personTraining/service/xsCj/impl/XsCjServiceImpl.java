@@ -10,6 +10,7 @@ import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.mapper.kc.KcMapper;
+import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.ks.Ks;
@@ -21,7 +22,9 @@ import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.xsCj.XsCjService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.xsKcCj.XsKcCjService;
+import io.jsonwebtoken.lang.Collections;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
@@ -61,6 +65,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     private XsMapper xsMapper;
     @Resource
     private KcMapper kcMapper;
+    @Resource
+    private PcMapper pcMapper;
 
     /**
      * 根据批次id查询所有学生成绩
@@ -312,7 +318,18 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 break;
             //研究生导师
             case "tutor":
-
+                //根据师资用户id查询学生ids
+                List<Long> xsIds = xsMapper.findXsIdsBySzYhId(userId);
+                //默认查询当前年份的批次号
+                String currentYear = getCurrentYear();
+                List<Long> pcIds = pcMapper.findPcIdsByYear(currentYear);
+                if (CollectionUtils.isNotEmpty(xsIds) && CollectionUtils.isNotEmpty(pcIds)) {
+                    List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByXsIdsAndPcIds(xsIds,pcIds);
+                    PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
+                    map.put("tutor",xsCjPageInfo);
+                } else {
+                    map.put("tutor",null);
+                }
                 break;
             //企业导师
             case "corporate_mentor":
@@ -335,6 +352,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         }
         return map;
     }
+
 
     /**
      * 获取当前用户id
@@ -364,5 +382,16 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userCategory;
+    }
+
+
+    /**
+     * 获取当前年份
+     * @return
+     */
+    public static String getCurrentYear() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+        Date date = new Date();
+        return sdf.format(date);
     }
 }

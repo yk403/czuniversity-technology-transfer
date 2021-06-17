@@ -51,6 +51,12 @@
         <if test="yhId != null"> and xs.yh_id = #{yhId} </if>
         order by pc.cjsj desc
     </select>
+    <select id="findPcIdsByYear" resultType="java.lang.Long">
+        select pc.id
+        from t_pc pc
+        where pc.sfsc = false
+          and pc.pch like concat('%', #{currentYear}, '%')
+    </select>
 
     <update id="updatePcList"  parameterType="java.util.List">
         update sfsc =true
