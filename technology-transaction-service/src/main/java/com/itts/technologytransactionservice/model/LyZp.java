@@ -152,5 +152,189 @@ public class LyZp implements Serializable {
      * @Date: 2021/6/17
      */
     private Integer fbshzt;
+    /**
+     * @Description: 联系人
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String lxr;
+    /**
+     * @Description: 组织机构代码
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String zzjgdm;
+    /**
+     * @Description: 法人
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String fr;
+    /**
+     * @Description: 座机
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String zj;
+    /**
+     * @Description: 电子邮箱
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String dzyx;
+    /**
+     * @Description: 单位地址
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String dz;
+    /**
+     * @Description: 有效期
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String yxq;
+    /**
+     * @Description: 关键词
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String gjc;
+    /**
+     * @Description: 关键字
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String gjz;
+    /**
+     * @Description: 发布审核备注
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
+    private String fbshbz;
+    /**
+     * @Description: 合作方式
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String hzfs;
+    /**
+     * @Description: 意向合作单位
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String yxhzdw;
+    /**
+     * @Description: 意向合作专家
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String yxhzzj;
+    /**
+     * @Description: 展品图片
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String zptp;
+    /**
+     * @Description: 展品图片名称
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String zptpmc;
+    /**
+     * @Description: 手机号码
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String sjhm;
+    /**
+     * @Description: 展品视频
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String zpsp;
+    /**
+     * @Description: 展品视频名称
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String zpspmc;
+    /**
+     * 有效期开始时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date yxqkssj;
+    /**
+     * 有效期结束时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date yxqjssj;
+    /**
+     * @Description: 展品详情
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String zpxq;
+    /**
+     * @Description: 技术指标
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String jszb;
+    /**
+     * @Description: 备注
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String remarks;
+    /**
+     * 成果完成时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date cgwcsj;
 
 }
