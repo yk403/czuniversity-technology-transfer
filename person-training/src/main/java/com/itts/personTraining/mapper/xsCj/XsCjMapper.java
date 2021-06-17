@@ -62,10 +62,11 @@ public interface XsCjMapper extends BaseMapper<XsCj> {
     XsCjDTO getById(@Param("id") Long id);
 
     /**
-     * 根据学生ids和批次ids查询学生成绩集合(前)
+     * 根据学生ids和批次ids/学号/姓名查询学生成绩集合(前)
      * @param xsIds
      * @param pcIds
+     * @param name
      * @return
      */
-    List<XsCjDTO> findXsCjByXsIdsAndPcIds(@Param("xsIds") List<Long> xsIds, @Param("pcIds") List<Long> pcIds);
+    List<XsCjDTO> findXsCjByXsIdsAndPcIds(@Param("xsIds") List<Long> xsIds, @Param("pcIds") List<Long> pcIds, @Param("name") String name);
 }

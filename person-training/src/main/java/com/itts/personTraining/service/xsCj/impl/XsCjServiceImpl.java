@@ -324,7 +324,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 String currentYear = getCurrentYear();
                 List<Long> pcIds = pcMapper.findPcIdsByYear(currentYear);
                 if (CollectionUtils.isNotEmpty(xsIds) && CollectionUtils.isNotEmpty(pcIds)) {
-                    List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByXsIdsAndPcIds(xsIds,pcIds);
+                    List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByXsIdsAndPcIds(xsIds,pcIds,name);
                     PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
                     map.put("tutor",xsCjPageInfo);
                 } else {
