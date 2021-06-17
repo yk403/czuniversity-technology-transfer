@@ -99,6 +99,7 @@
         select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch
         from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
         where txc.sfsc = false and txc.sfxf = true and xs.sfsc = false and pc.sfsc = false
+          and txc.type = 1
         <if test="name != null and name != ''">and (xs.xh like concat('%',trim(#{name}),'%') or xs.xm like concat('%',trim(#{name}),'%'))</if>
           and txc.xs_id in
         <foreach collection="xsIds" open="(" close=")" separator="," item="xsIds">

@@ -318,6 +318,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 break;
             //研究生导师
             case "tutor":
+            //企业导师
+            case "corporate_mentor":
                 //根据师资用户id查询学生ids
                 List<Long> xsIds = xsMapper.findXsIdsBySzYhId(userId);
                 //默认查询当前年份的批次号
@@ -330,10 +332,6 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 } else {
                     map.put("tutor",null);
                 }
-                break;
-            //企业导师
-            case "corporate_mentor":
-                ;
                 break;
             //任课教师
             case "teacher":
