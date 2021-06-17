@@ -111,5 +111,22 @@ public class LyZpAdminController {
 
         return ResponseUtil.success(old);
     }
+    /**
+     * 发布审核需求(1待审核;2通过;3整改;4拒绝)
+     *
+     * @param params
+     * @return
+     */
+    @RequestMapping("/audit")
+    public ResponseUtil audit(@RequestBody Map<String, Object> params) {
+        Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
+        if (fbshzt != 2 && fbshzt != 3 && fbshzt != 4) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (!lyZpAdminService.audit(params, fbshzt)) {
+            throw new WebException(AUDIT_MSG_ISEMPTY);
+        }
+        return ResponseUtil.success("审核需求完成!");
+    }
 }
 

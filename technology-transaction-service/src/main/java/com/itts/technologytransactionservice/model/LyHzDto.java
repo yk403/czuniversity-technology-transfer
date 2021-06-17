@@ -1,13 +1,13 @@
 package com.itts.technologytransactionservice.model;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.util.Date;
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_ly_hz")
-public class LyHz implements Serializable {
+public class LyHzDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -73,8 +73,20 @@ public class LyHz implements Serializable {
      */
     private String hzmc;
     /*
-会展轮播图
+活动名称
  */
+    private String hdmc;
+    /**
+     * @Description: 展位子表
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/16
+     */
+    private List<LyZwDto> lyZwDtoList;
+    /*
+会展轮播图
+*/
     private String hzlbt;
     /*
 会展视频
@@ -97,11 +109,40 @@ public class LyHz implements Serializable {
 */
     private String ltstmc;
     /**
-    * @Description: 论坛内容
+     * @Description: 论坛内容
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/16
+     */
+    private String ltnr;
+    /**
+     * 会展轮播图列表
+     */
+    private List<Fjzy> fjzyList;
+    /**
+     * 会展广告列表
+     */
+    private List<Fjzy> ggList;
+    /**
+     * 会展展位列表
+     */
+    private List<TZwHz> zwHzList;
+    /**
+    * @Description: 展位名称集合
     * @Param: 
     * @return: 
     * @Author: yukai
     * @Date: 2021/6/16
     */
-    private String ltnr;
+    private String zwmc;
+    /**
+     * @Description: 展位id集合
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/16
+     */
+    private String zwId;
+
 }

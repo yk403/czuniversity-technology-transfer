@@ -166,4 +166,12 @@ public class LyHdDto implements Serializable {
      * @Date: 2021/6/10
      */
     private String hzmc;
+    /**
+    * @Description: 展位子表
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/16
+    */
+    private List<LyZwDto> lyZwDtoList;
 }

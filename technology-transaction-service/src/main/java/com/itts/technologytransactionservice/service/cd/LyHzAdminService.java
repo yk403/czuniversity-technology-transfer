@@ -3,6 +3,7 @@ package com.itts.technologytransactionservice.service.cd;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.technologytransactionservice.model.LyHz;
+import com.itts.technologytransactionservice.model.LyHzDto;
 
 import java.util.Map;
 
@@ -17,6 +18,8 @@ import java.util.Map;
 public interface LyHzAdminService extends IService<LyHz> {
     PageInfo findLyHzBack(Map<String, Object> params);
 
-    Boolean saveHz(LyHz lyHz);
+    Boolean saveHz(LyHzDto lyHzDto);
     Long getUserId();
+
+    boolean updateHz(LyHzDto lyHzDto);
 }

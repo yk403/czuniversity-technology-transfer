@@ -61,7 +61,7 @@ public class LyZwAdminController {
         if (!lyZwAdminService.saveZw(lyZw)) {
             throw new WebException(INSERT_FAIL);
         }
-        return ResponseUtil.success("报名成功");
+        return ResponseUtil.success("新增展位成功");
     }
     /*    *
      * 更新课程
@@ -71,7 +71,7 @@ public class LyZwAdminController {
      * @throws WebException*/
 
     @PutMapping("/update")
-    @ApiOperation(value = "更新报名")
+    @ApiOperation(value = "更新展位")
     public ResponseUtil update(@RequestBody LyZw lyZw) throws WebException {
         Long id = lyZw.getId();
         //检查参数是否合法
@@ -86,7 +86,7 @@ public class LyZwAdminController {
         if (!lyZwAdminService.updateById(lyZw)) {
             throw new WebException(UPDATE_FAIL);
         }
-        return ResponseUtil.success("更新课程成功!");
+        return ResponseUtil.success("更新展位成功!");
 
     }
     @ApiOperation(value = "删除")

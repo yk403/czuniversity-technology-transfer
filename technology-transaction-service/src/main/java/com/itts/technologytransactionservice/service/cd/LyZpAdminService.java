@@ -19,4 +19,6 @@ public interface LyZpAdminService extends IService<LyZp> {
 
     Boolean saveZp(LyZp lyZp);
     Long getUserId();
+
+    Boolean audit(Map<String, Object> params, Integer fbshzt);
 }

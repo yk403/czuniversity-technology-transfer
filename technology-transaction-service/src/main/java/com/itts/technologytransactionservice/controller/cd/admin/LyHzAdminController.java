@@ -7,6 +7,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.LyHz;
+import com.itts.technologytransactionservice.model.LyHzDto;
 import com.itts.technologytransactionservice.service.cd.LyHzAdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -57,8 +58,8 @@ public class LyHzAdminController {
 
     @PostMapping("/save")
     @ApiOperation(value ="新增")
-    public ResponseUtil save(@RequestBody LyHz lyHz) {
-        if (!lyHzAdminService.saveHz(lyHz)) {
+    public ResponseUtil save(@RequestBody LyHzDto lyHzDto) {
+        if (!lyHzAdminService.saveHz(lyHzDto)) {
             throw new WebException(INSERT_FAIL);
         }
         return ResponseUtil.success("报名成功");
@@ -72,8 +73,8 @@ public class LyHzAdminController {
 
     @PutMapping("/update")
     @ApiOperation(value = "更新报名")
-    public ResponseUtil update(@RequestBody LyHz lyHz) throws WebException {
-        Long id = lyHz.getId();
+    public ResponseUtil update(@RequestBody LyHzDto lyHzDto) throws WebException {
+        Long id = lyHzDto.getId();
         //检查参数是否合法
         if (id == null ) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
@@ -83,7 +84,7 @@ public class LyHzAdminController {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新数据
-        if (!lyHzAdminService.updateById(lyHz)) {
+        if (!lyHzAdminService.updateHz(lyHzDto)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新课程成功!");

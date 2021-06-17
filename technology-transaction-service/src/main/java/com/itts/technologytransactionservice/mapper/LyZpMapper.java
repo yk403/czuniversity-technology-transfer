@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.mapper;
 
 import com.itts.technologytransactionservice.model.LyZp;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itts.technologytransactionservice.model.LyZpDto;
 import com.itts.technologytransactionservice.model.LyZw;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,12 +24,12 @@ public interface LyZpMapper extends BaseMapper<LyZp> {
      * @param map
      * @return
      */
-    List<LyZp> findLyZpFront(@Param("map") Map map);
+    List<LyZpDto> findLyZpFront(@Param("map") Map map);
     /**
      * 分页条件查询需求(后台)
      *
      * @param map
      * @return
      */
-    List<LyZp> findLyZpBack(@Param("map") Map map);
+    List<LyZpDto> findLyZpBack(@Param("map") Map map);
 }

@@ -9,6 +9,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.LyHdMapper;
 import com.itts.technologytransactionservice.model.LyHd;
+import com.itts.technologytransactionservice.model.LyHdDto;
 import com.itts.technologytransactionservice.service.LyHdService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class LyHdServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implements Ly
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyHd> list = lyHdMapper.findLyHdFront(query);
+        List<LyHdDto> list = lyHdMapper.findLyHdFront(query);
         return new PageInfo<>(list);
     }
 

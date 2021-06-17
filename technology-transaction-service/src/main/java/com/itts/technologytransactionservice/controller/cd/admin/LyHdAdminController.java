@@ -46,6 +46,19 @@ public class LyHdAdminController {
 //return null;
         return ResponseUtil.success(lyHdAdminService.findLyHdBack(params));
     }
+    /**
+    * @Description: 会展查询(会展和活动公用一张表)
+    * @Param: [params]
+    * @return: com.itts.common.utils.common.ResponseUtil
+    * @Author: yukai
+    * @Date: 2021/6/15
+    */
+    @ApiOperation(value = "获取列表")
+    @PostMapping("/Hzlist")
+    public ResponseUtil findHz(@RequestBody Map<String, Object> params) {
+//return null;
+        return ResponseUtil.success(lyHdAdminService.findLyHzBack(params));
+    }
 //    *
 //     * 根据ID查询
 //     * @param id

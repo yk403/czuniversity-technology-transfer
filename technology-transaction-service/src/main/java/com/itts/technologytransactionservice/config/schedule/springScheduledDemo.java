@@ -3,6 +3,7 @@ package com.itts.technologytransactionservice.config.schedule;
 import com.itts.technologytransactionservice.mapper.*;
 import com.itts.technologytransactionservice.model.*;
 import com.itts.technologytransactionservice.service.cd.JsLcKzAdminService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -93,9 +94,9 @@ public class springScheduledDemo {
     @Scheduled(cron = "5 0/1 * * * ?")
     public void startRoadShow(){
         Map<String,Object> map=new HashMap<>();
-        List<LyHd> lyHdBack = lyHdMapper.findLyHdBack(map);
+        List<LyHdDto> lyHdBack = lyHdMapper.findLyHdBack(map);
         if(lyHdBack.size()>0){
-            for (LyHd item:lyHdBack){
+            for (LyHdDto item:lyHdBack){
                 Date startTime=item.getHdkssj();
                 Date nowDate = new Date();
                 //判断如果活动开始时
@@ -103,13 +104,17 @@ public class springScheduledDemo {
                     if(startTime.before(nowDate)){
                         if(item.getHdzt()==0 && item.getHdfbzt() == 1){
                             item.setHdzt(1);
-                            lyHdMapper.updateById(item);
+                            LyHd lyHd= new LyHd();
+                            BeanUtils.copyProperties(item,lyHd);
+                            lyHdMapper.updateById(lyHd);
                         }else if(item.getHdzt()==1 && item.getHdfbzt() == 1){
                             if(item.getHdjssj()!=null){
                                 //如果活动时间已结束则置活动状态为已结束
                                 if(item.getHdjssj().before(nowDate)){
                                     item.setHdzt(2);
-                                    lyHdMapper.updateById(item);
+                                    LyHd lyHd= new LyHd();
+                                    BeanUtils.copyProperties(item,lyHd);
+                                    lyHdMapper.updateById(lyHd);
                                 }
                             }
                         }

@@ -8,6 +8,8 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.LyZpMapper;
 import com.itts.technologytransactionservice.model.LyZp;
+import com.itts.technologytransactionservice.model.LyZpDto;
+import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.service.LyZpService;
 import com.itts.technologytransactionservice.service.cd.LyZpAdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +44,7 @@ public class LyZpAdminServiceImpl extends ServiceImpl<LyZpMapper, LyZp> implemen
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyZp> list = lyZpMapper.findLyZpBack(query);
+        List<LyZpDto> list = lyZpMapper.findLyZpBack(query);
         return new PageInfo<>(list);
     }
 
@@ -67,5 +69,29 @@ public class LyZpAdminServiceImpl extends ServiceImpl<LyZpMapper, LyZp> implemen
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+    /**
+     * 发布审核需求(0待提交;1待审核;2通过;3整改;4拒绝)
+     *
+     * @param params
+     * @param fbshzt
+     * @return
+     */
+    @Override
+    public Boolean audit(Map<String, Object> params, Integer fbshzt) {
+        //TJsSh tJsSh = jsShMapper.selectByXqId(Integer.parseInt(params.get("id").toString()));
+        LyZp lyZp = lyZpMapper.selectById(Long.valueOf(params.get("id").toString()));
+        Object fbshbz = params.get("fbshbz");
+        if (fbshzt != 2 && fbshbz == null) {
+            return false;
+        }
+        if (fbshbz != null) {
+            lyZp.setFbshbz(params.get("fbshbz").toString());
+        }
+        lyZp.setFbshzt(fbshzt);
+        if (!updateById(lyZp)) {
+            throw new ServiceException("审核操作失败!");
+        }
+        return true;
     }
 }
