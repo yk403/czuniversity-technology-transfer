@@ -37,11 +37,11 @@
         <if test="kclx != null"> and txkc.kclx = trim(#{kclx}) </if>
         order by txkc.cjsj desc
     </select>
-    <select id="selectYzyByXsCjId" resultType="com.itts.personTraining.dto.XsKcCjDTO">
+    <select id="selectYzyByXsId" resultType="com.itts.personTraining.dto.XsKcCjDTO">
         select *
-        from t_xs_kc_cj txkc left join t_xs_cj txc on (txc.id=txkc.xs_cj_id)
-        where txkc.sfsc = false and txc.sfsc = false
-        <if test="xsCjId != null"> and txkc.xs_cj_id = #{xsCjId} </if>
+        from t_xs_kc_cj txkc left join t_xs xs on (xs.id=txkc.xs_id)
+        where txkc.sfsc = false and xs.sfsc = false
+        <if test="xsId != null"> and txkc.xs_id = #{xsId} </if>
         <if test="kclx != null"> and txkc.kclx = #{kclx} </if>
         order by txkc.cjsj desc
     </select>

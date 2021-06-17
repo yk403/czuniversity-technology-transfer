@@ -23,6 +23,12 @@ public class XsKcCjDTO {
     private Long id;
 
     /**
+     * 学生ID
+     */
+    @ApiModelProperty(value = "学生ID")
+    private Long xsId;
+
+    /**
      * 学生成绩ID
      */
     @ApiModelProperty(value = "学生成绩ID")

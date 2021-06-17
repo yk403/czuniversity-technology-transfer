@@ -20,9 +20,10 @@ public interface XsKcCjService extends IService<XsKcCj> {
      * 根据学生成绩id查询学生课程成绩集合
      * @param xsCjId
      * @param kclx
+     * @param xsId
      * @return
      */
-    List<XsKcCjDTO> getByXsCjId(Long xsCjId,Integer kclx);
+    List<XsKcCjDTO> getByXsCjId(Long xsCjId,Integer kclx,Long xsId);
 
     /**
      * 更新学生课程成绩

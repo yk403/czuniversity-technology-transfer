@@ -48,10 +48,11 @@ public class XsKcCjAdminController {
      */
     @GetMapping("/getByXsCjId")
     @ApiOperation(value = "根据学生成绩id和课程类型查询学生课程成绩集合")
-    public ResponseUtil getByXsCjId(@RequestParam(value = "xsCjId") Long xsCjId,
-                                    @RequestParam(value = "kclx") Integer kclx) {
+    public ResponseUtil getByXsCjId(@RequestParam(value = "xsCjId",required = false) Long xsCjId,
+                                    @RequestParam(value = "kclx") Integer kclx,
+                                    @RequestParam(value = "xsId",required = false) Long xsId) {
         checkRequest(kclx);
-        return ResponseUtil.success(xsKcCjService.getByXsCjId(xsCjId,kclx));
+        return ResponseUtil.success(xsKcCjService.getByXsCjId(xsCjId,kclx,xsId));
     }
 
     /**
