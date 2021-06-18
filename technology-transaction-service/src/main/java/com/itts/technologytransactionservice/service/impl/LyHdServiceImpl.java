@@ -45,6 +45,15 @@ public class LyHdServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implements Ly
         List<LyHdDto> list = lyHdMapper.findLyHdFront(query);
         return new PageInfo<>(list);
     }
+    @Override
+    public PageInfo findLyHdFrontUser(Map<String, Object> params) {
+        log.info("【技术交易 - 分页条件查询(前台)】");
+        Query query = new Query(params);
+        query.put("userId",getUserId());
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<LyHdDto> list = lyHdMapper.findLyHdFrontUser(query);
+        return new PageInfo<>(list);
+    }
 
     @Override
     public Boolean saveHd(LyHd lyHd) {
@@ -53,5 +62,19 @@ public class LyHdServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implements Ly
         }else{
             return false;
         }
+    }
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    public Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
     }
 }

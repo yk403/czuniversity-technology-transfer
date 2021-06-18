@@ -46,6 +46,15 @@ public class LyHdController {
 //return null;
         return ResponseUtil.success(lyHdService.findLyHdFront(params));
     }
+    //    *
+//     * 获取列表
+
+    @ApiOperation(value = "获取报名活动列表")
+    @PostMapping("/listUser")
+    public ResponseUtil findUser(@RequestBody Map<String, Object> params) {
+//return null;
+        return ResponseUtil.success(lyHdService.findLyHdFrontUser(params));
+    }
 //    *
 //     * 根据ID查询
 //     * @param id
