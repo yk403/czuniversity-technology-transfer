@@ -309,7 +309,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         xxzy.setGxsj(now);
         xxzy.setGxr(userId);
 
-        xxzyMapper.updateById(xxzy);
+        xxzyMapper.update(xxzy, new QueryWrapper<Xxzy>().eq("id", xxzy.getId()));
 
         if (!CollectionUtils.isEmpty(updateXxzyRequest.getFjzys())) {
 
