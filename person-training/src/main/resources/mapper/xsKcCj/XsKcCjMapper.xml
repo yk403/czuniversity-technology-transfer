@@ -45,5 +45,10 @@
         <if test="kclx != null"> and txkc.kclx = #{kclx} </if>
         order by txkc.cjsj desc
     </select>
+    <select id="findXsKcCjByXsId" resultType="com.itts.personTraining.dto.XsKcCjDTO">
+        select *
+        from t_xs_kc_cj txkc
+        where txkc.sfsc = false and txkc.xs_id = #{xsId}
+    </select>
 
 </mapper>

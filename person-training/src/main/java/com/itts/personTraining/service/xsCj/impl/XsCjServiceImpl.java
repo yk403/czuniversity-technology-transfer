@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.dto.XfDTO;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
@@ -12,6 +13,7 @@ import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
+import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.model.pc.Pc;
@@ -36,7 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 import static com.itts.personTraining.enums.CourseTypeEnum.TECHNOLOGY_TRANSFER_COURSE;
 import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
 import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
@@ -59,6 +61,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     private XsCjService xsCjService;
     @Autowired
     private XsKcCjService xsKcCjService;
+    @Resource
+    private XsKcCjMapper xsKcCjMapper;
     @Autowired
     private PcService pcService;
     @Resource
@@ -292,9 +296,38 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             //研究生
             case "postgraduate":
                 XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
-                xsKcCj = xsCjMapper.findXsKcCj(null, null, null, null, xsMsgDTO.getId());
-                PageInfo<XsCjDTO> xsCjDTOPageInfo = new PageInfo<>(xsKcCj);
-                map.put("postgraduate", xsCjDTOPageInfo);
+                Long xsId = xsMsgDTO.getId();
+                if (xsId != null) {
+                    XfDTO xsDTO = xsCjMapper.getXfByXsId(xsId);
+                    //TODO:实践和实训待确认
+                    xsDTO.setSxxf(0);
+                    xsDTO.setSjxf(0);
+                    //TODO:互认学分暂时为0
+                    xsDTO.setHrxf(0);
+                    Integer zxf = xsDTO.getZxzyxf()+xsDTO.getHrxf()+xsDTO.getJszylyxf()+xsDTO.getSjxf()+xsDTO.getSxxf();
+                    xsDTO.setZxf(zxf);
+                    map.put("xf",xsDTO);
+                    if (pcId != null) {
+                        Pc pc = pcMapper.selectById(pcId);
+                        XsCjDTO xsCjDTO = null;
+                        if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
+                            //学历学位教育
+                             xsCjDTO = xsCjMapper.findXsKcCjByPcIdAndXsId(pcId,xsId);
+                             List<XsKcCjDTO> xsKcCjDTOs = xsKcCjMapper.findXsKcCjByXsId(xsId);
+                             if (xsCjDTO != null) {
+                                 xsCjDTO.getXsKcCjDTOList().addAll(xsKcCjDTOs);
+                             }
+                        } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
+                            //继续教育
+                            xsCjDTO = xsCjMapper.findXsCjByPcIdAndXsId(pcId,xsId);
+                        }
+                        map.put("postgraduate",xsCjDTO);
+                    } else {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                } else {
+                    throw new ServiceException(NO_STUDENT_MSG_ERROR);
+                }
                 break;
             //经纪人
             case "broker":

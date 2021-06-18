@@ -32,4 +32,11 @@ public interface XsKcCjMapper extends BaseMapper<XsKcCj> {
      * @return
      */
     List<XsKcCjDTO> selectYzyByXsId(@Param("xsId") Long xsId, @Param("kclx") Integer kclx);
+
+    /**
+     * 根据学生id查询学生课程成绩(原专业)
+     * @param xsId
+     * @return
+     */
+    List<XsKcCjDTO> findXsKcCjByXsId(@Param("xsId") Long xsId);
 }

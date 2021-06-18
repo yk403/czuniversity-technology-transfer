@@ -1,5 +1,6 @@
 package com.itts.personTraining.mapper.xsCj;
 
+import com.itts.personTraining.dto.XfDTO;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -85,4 +86,27 @@ public interface XsCjMapper extends BaseMapper<XsCj> {
      * @return
      */
     List<XsCjDTO> findXsCjByPcIdAndName(@Param("pcId") Long pcId, @Param("name") String name);
+
+    /**
+     * 通过学生id查询学分
+     * @param xsId
+     * @return
+     */
+    XfDTO getXfByXsId(@Param("xsId") Long xsId);
+
+    /**
+     * 通过批次id和学生id查询学生成绩信息(前)(学历学位教育)
+     * @param pcId
+     * @param xsId
+     * @return
+     */
+    XsCjDTO findXsKcCjByPcIdAndXsId(@Param("pcId") Long pcId, @Param("xsId") Long xsId);
+
+    /**
+     * 通过批次id和学生id查询学生成绩信息(前)(继续教育)
+     * @param pcId
+     * @param xsId
+     * @return
+     */
+    XsCjDTO findXsCjByPcIdAndXsId(@Param("pcId") Long pcId, @Param("xsId") Long xsId);
 }
