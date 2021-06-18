@@ -2,6 +2,7 @@ package com.itts.personTraining.mapper.xsCj;
 
 import com.itts.personTraining.dto.XfDTO;
 import com.itts.personTraining.dto.XsCjDTO;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -109,4 +110,11 @@ public interface XsCjMapper extends BaseMapper<XsCj> {
      * @return
      */
     XsCjDTO findXsCjByPcIdAndXsId(@Param("pcId") Long pcId, @Param("xsId") Long xsId);
+
+    /**
+     * 根据学生id查询批次信息(前)
+     * @param xsId
+     * @return
+     */
+    List<Pc> findPcByXsId(@Param("xsId") Long xsId);
 }

@@ -125,14 +125,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                     Kc kc = kcMapper.selectById(xsKcCjDTO.getKcId());
                     jszykczf += kc.getKcxf();
                 }
-                if (xsKcCjService.saveBatch(xsKcCjs)) {
-                    //获得总分
-                    xsCj.setZxf(totalNum);
-                    //课程总分
-                    xsCj.setJszykczf(jszykczf);
-                    return xsCjService.updateById(xsCj);
-                }
-                return false;
+                return xsKcCjService.saveBatch(xsKcCjs);
             }
             return true;
         }
@@ -286,6 +279,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
      */
     @Override
     public Map<String, Object> getByCategory(Integer pageNum,Integer pageSize,Long pcId,String name) {
+        log.info("【人才培养 - 查询学生成绩信息(综合信息)】");
         PageHelper.startPage(pageNum,pageSize);
         Map<String, Object> map = new HashMap<>();
         Long userId = getUserId();
@@ -298,12 +292,13 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
                 Long xsId = xsMsgDTO.getId();
                 if (xsId != null) {
-                    XfDTO xsDTO = xsCjMapper.getXfByXsId(xsId);
+                    XfDTO xsDTO = new XfDTO();
                     //TODO:实践和实训待确认
                     xsDTO.setSxxf(0);
                     xsDTO.setSjxf(0);
                     //TODO:互认学分暂时为0
                     xsDTO.setHrxf(0);
+
                     Integer zxf = xsDTO.getZxzyxf()+xsDTO.getHrxf()+xsDTO.getJszylyxf()+xsDTO.getSjxf()+xsDTO.getSxxf();
                     xsDTO.setZxf(zxf);
                     map.put("xf",xsDTO);
@@ -369,7 +364,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             //任课教师
             case "teacher":
                 if (pcId == null) {
-                    throw new ServiceException("批次号不可为空!");
+                    throw new ServiceException(BATCH_NUMBER_ISEMPTY_ERROR);
                 }
                 //先调排课接口查询该任课教师所有的批次号,通过批次号查询对应成绩列表
                 Pc pc = pcMapper.selectById(pcId);
@@ -396,6 +391,30 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 break;
         }
         return map;
+    }
+
+    /**
+     * 根据用户id查询批次集合
+     * @return
+     */
+    @Override
+    public List<Pc> findPcByYhId() {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询批次集合】",userId);
+        XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
+        String userCategory = getUserCategory();
+        List<Pc> pcs = null;
+        switch (userCategory) {
+            //研究生
+            case "postgraduate":
+                if (xsMsgDTO.getId() != null) {
+                    pcs = xsCjMapper.findPcByXsId(xsMsgDTO.getId());
+                }
+                break;
+            default:
+                break;
+        }
+        return pcs;
     }
 
 

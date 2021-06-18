@@ -80,9 +80,15 @@ public class XsCjDTO {
     private String zhcj;
 
     /**
-     * 总学分
+     * 主修专业总学分(获得)
      */
-    @ApiModelProperty(value = "总学分")
+    @ApiModelProperty(value = "主修专业总学分(获得)")
+    private Integer zxzyzxf;
+
+    /**
+     * 总学分(技术转移获得)
+     */
+    @ApiModelProperty(value = "总学分(技术转移获得)")
     private Integer zxf;
 
     /**

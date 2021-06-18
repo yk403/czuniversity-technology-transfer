@@ -2,6 +2,7 @@ package com.itts.personTraining.service.xsCj;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.dto.XsCjDTO;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -95,4 +96,10 @@ public interface XsCjService extends IService<XsCj> {
      * @return
      */
     Map<String, Object> getByCategory(Integer pageNum,Integer pageSize,Long pcId,String name);
+
+    /**
+     * 根据用户id查询批次集合
+     * @return
+     */
+    List<Pc> findPcByYhId();
 }

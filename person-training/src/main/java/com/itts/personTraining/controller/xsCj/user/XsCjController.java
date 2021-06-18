@@ -36,6 +36,17 @@ public class XsCjController {
     }
 
     /**
+     * 根据用户id查询批次集合
+     *
+     * @return
+     */
+    @GetMapping("/findPcIdsByYhId")
+    @ApiOperation(value = "根据学生id查询批次ids")
+    public ResponseUtil findPcIdsByYhId() {
+        return ResponseUtil.success(xsCjService.findPcByYhId());
+    }
+
+    /**
      * 查询学生成绩信息(综合信息)
      *
      * @return

@@ -15,6 +15,8 @@
         <result column="yzy" property="yzy" />
         <result column="zhcj" property="zhcj" />
         <result column="zxf" property="zxf" />
+        <result column="zxzyzxf" property="zxzyzxf" />
+        <result column="jszykczf" property="jszykczf" />
         <result column="lwcj" property="lwcj" />
         <result column="sfxf" property="sfxf" />
         <result column="sfsc" property="sfsc" />
@@ -142,7 +144,15 @@
         <if test="xsId != null"> and txc.xs_id = #{xsId} </if>
     </select>
     <select id="findXsCjByPcIdAndXsId" resultType="com.itts.personTraining.dto.XsCjDTO">
-
+        select *
+        from t_xs_cj txc
+        where txc.sfsc = false and txc.sfxf = true and txc.pc_id = #{pcId} and txc.xs_id = #{xsId}
+    </select>
+    <select id="findPcByXsId" resultType="com.itts.personTraining.model.pc.Pc">
+        select pc.id, pc.pch
+        from t_xs_cj txc left join t_pc pc on (txc.pc_id=pc.id)
+        where txc.sfsc = false and pc.sfsc = false and txc.sfxf = true and txc.xs_id = #{xsId}
+        order by pc.cjsj desc
     </select>
 
 </mapper>

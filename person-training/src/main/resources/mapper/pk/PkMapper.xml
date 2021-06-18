@@ -70,9 +70,10 @@
         </where>
     </select>
     <select id="findPcsBySzId" resultType="com.itts.personTraining.model.pc.Pc">
-        select pk.pc_id as id, pc.pch
+        select pk.pc_id as id, pc.pch, pc.pcmc
         from t_pk pk left join t_pc pc on (pc.id=pk.pc_id)
         where pk.sfsc = false and pc.sfsc = false and pk.sfxf = true and pk.sz_id = #{szId} group by pk.pc_id
+        order by pc.cjsj desc
     </select>
 
 </mapper>
