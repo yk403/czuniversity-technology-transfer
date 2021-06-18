@@ -138,14 +138,14 @@ public class GetXxzyVO implements Serializable {
      * 公开开始时间
      */
     @ApiModelProperty(value = "公开开始时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date gkkssj;
 
     /**
      * 公开结束时间
      */
     @ApiModelProperty(value = "公开结束时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date gkjssj;
 
     /**
