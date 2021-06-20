@@ -50,5 +50,17 @@
         from t_xs_kc_cj txkc
         where txkc.sfsc = false and txkc.xs_id = #{xsId}
     </select>
+    <select id="getCountYzy" resultType="java.lang.Integer">
+        select SUM(txkc.yzyxf)
+        from t_xs_kc_cj txkc
+        where txkc.sfsc = false
+          and txkc.xs_id = #{xsId}
+    </select>
+    <select id="getCountDqxf" resultType="java.lang.Integer">
+        select SUM(txkc.dqxf)
+        from t_xs_kc_cj txkc
+        where txkc.sfsc = false
+          and txkc.xs_cj_id = #{xsCjId}
+    </select>
 
 </mapper>
