@@ -9,6 +9,7 @@
         <result column="pc_id" property="pcId" />
         <result column="type" property="type" />
         <result column="pch" property="pch" />
+        <result column="pcmc" property="pcmc" />
         <result column="xh" property="xh" />
         <result column="xm" property="xm" />
         <result column="yx" property="yx" />
@@ -57,7 +58,7 @@
         id, xs_id, zhcj, zxf, lwcj, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
     <select id="findXsKcCj" resultMap="BaseResultMap">
-        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yzy, xs.yx, txkc.id as xs_kc_cj_id, txkc.xs_cj_id, txkc.kc_id, txkc.kclx, txkc.yzyxf, txkc.dqxf, txkc.cj, txkc.cjsx, txkc.bkcj, txkc.bz, kc.kcdm, kc.kcmc, kc.kcxs, kc.kcxf, kc.sfbx, pc.pch
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yzy, xs.yx, txkc.id as xs_kc_cj_id, txkc.xs_cj_id, txkc.kc_id, txkc.kclx, txkc.yzyxf, txkc.dqxf, txkc.cj, txkc.cjsx, txkc.bkcj, txkc.bz, kc.kcdm, kc.kcmc, kc.kcxs, kc.kcxf, kc.sfbx, pc.pch, pc.pcmc
         from t_xs_cj txc left join t_xs_kc_cj txkc on (txc.id=txkc.xs_cj_id) left join t_xs xs on (txc.xs_id=xs.id) left
         join t_kc kc on (kc.id=txkc.kc_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
         where txc.sfsc = false and txkc.sfsc = false and xs.sfsc = false and pc.sfsc = false and kc.sfsc = false
@@ -69,7 +70,7 @@
         order by txc.cjsj desc
     </select>
     <select id="findXsCj" resultType="com.itts.personTraining.dto.XsCjDTO">
-        select txc.*, pc.pch, xs.xm, xs.xh, xs.yx
+        select txc.*, pc.pch, pc.pcmc, xs.xm, xs.xh, xs.yx
         from t_xs_cj txc left join t_xs xs on (txc.xs_id=xs.id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
         where txc.sfsc = false and xs.sfsc = false and pc.sfsc = false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
@@ -80,7 +81,7 @@
         order by txc.cjsj desc
     </select>
     <select id="selectByPcIdAndXsId" resultType="com.itts.personTraining.dto.XsCjDTO">
-        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch, pc.pcmc
         from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
         where txc.sfsc = false and txc.sfxf = true and xs.sfsc = false and pc.sfsc = false
         <if test="pcId != null"> and txc.pc_id = #{pcId} </if>
@@ -92,13 +93,13 @@
         where txc.xs_id = #{xsId} and txc.sfsc = false and txc.sfxf = true and txc.sfck = false
     </select>
     <select id="getById" resultType="com.itts.personTraining.dto.XsCjDTO">
-        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch, pc.pcmc
         from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
         where txc.sfsc = false and xs.sfsc = false and pc.sfsc = false
         <if test="id != null"> and txc.id = #{id} </if>
     </select>
     <select id="findXsCjByXsIdsAndPcIds" resultType="com.itts.personTraining.dto.XsCjDTO">
-        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch, pc.pcmc
         from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
         where txc.sfsc = false and txc.sfxf = true and xs.sfsc = false and pc.sfsc = false
           and txc.type = 1
@@ -114,7 +115,7 @@
         order by txc.cjsj desc
     </select>
     <select id="findXsKcCjByPcIdAndName" resultMap="BaseResultMap">
-        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yzy, xs.yx, txkc.id as xs_kc_cj_id, txkc.xs_cj_id, txkc.kc_id, txkc.kclx, txkc.yzyxf, txkc.dqxf, txkc.cj, txkc.cjsx, txkc.bkcj, txkc.bz, kc.kcdm, kc.kcmc, kc.kcxs, kc.kcxf, kc.sfbx, pc.pch
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yzy, xs.yx, txkc.id as xs_kc_cj_id, txkc.xs_cj_id, txkc.kc_id, txkc.kclx, txkc.yzyxf, txkc.dqxf, txkc.cj, txkc.cjsx, txkc.bkcj, txkc.bz, kc.kcdm, kc.kcmc, kc.kcxs, kc.kcxf, kc.sfbx, pc.pch, pc.pcmc
         from t_xs_cj txc left join t_xs_kc_cj txkc on (txc.id=txkc.xs_cj_id) left join t_xs xs on (txc.xs_id=xs.id) left
         join t_kc kc on (kc.id=txkc.kc_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
         where txc.sfsc = false and txkc.sfsc = false and xs.sfsc = false and pc.sfsc = false and kc.sfsc = false and txc.sfxf = true
@@ -123,7 +124,7 @@
         order by txc.cjsj desc
     </select>
     <select id="findXsCjByPcIdAndName" resultType="com.itts.personTraining.dto.XsCjDTO">
-        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch, pc.pcmc
         from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
         where txc.sfsc = false and txc.sfxf = true and xs.sfsc = false and pc.sfsc = false and txc.sfxf = true
         <if test="pcId != null"> and txc.pc_id = #{pcId} </if>
@@ -136,7 +137,7 @@
         where txc.sfsc = false and txc.sfxf = true and txc.type = 1 and txc.xs_id = #{xsId}
     </select>
     <select id="findXsKcCjByPcIdAndXsId" resultMap="BaseResultMap">
-        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yzy, xs.yx, txkc.id as xs_kc_cj_id, txkc.xs_cj_id, txkc.kc_id, txkc.kclx, txkc.yzyxf, txkc.dqxf, txkc.cj, txkc.cjsx, txkc.bkcj, txkc.bz, kc.kcdm, kc.kcmc, kc.kcxs, kc.kcxf, kc.sfbx, pc.pch
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yzy, xs.yx, txkc.id as xs_kc_cj_id, txkc.xs_cj_id, txkc.kc_id, txkc.kclx, txkc.yzyxf, txkc.dqxf, txkc.cj, txkc.cjsx, txkc.bkcj, txkc.bz, kc.kcdm, kc.kcmc, kc.kcxs, kc.kcxf, kc.sfbx, pc.pch, pc.pcmc
         from t_xs_cj txc left join t_xs_kc_cj txkc on (txc.id=txkc.xs_cj_id) left join t_xs xs on (txc.xs_id=xs.id) left
         join t_kc kc on (kc.id=txkc.kc_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
         where txc.sfsc = false and txkc.sfsc = false and xs.sfsc = false and pc.sfsc = false and kc.sfsc = false and txc.sfxf = true
@@ -149,7 +150,7 @@
         where txc.sfsc = false and txc.sfxf = true and txc.pc_id = #{pcId} and txc.xs_id = #{xsId}
     </select>
     <select id="findPcByXsId" resultType="com.itts.personTraining.model.pc.Pc">
-        select pc.id, pc.pch
+        select pc.id, pc.pch, pc.pcmc
         from t_xs_cj txc left join t_pc pc on (txc.pc_id=pc.id)
         where txc.sfsc = false and pc.sfsc = false and txc.sfxf = true and txc.xs_id = #{xsId}
         order by pc.cjsj desc
