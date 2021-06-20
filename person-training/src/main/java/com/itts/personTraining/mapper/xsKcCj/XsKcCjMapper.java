@@ -53,4 +53,11 @@ public interface XsKcCjMapper extends BaseMapper<XsKcCj> {
      * @return
      */
     Integer getCountDqxf(@Param("xsCjId") Long xsCjId);
+
+    /**
+     * 根据学生成绩id查询技术转移课程总分(前)
+     * @param xsCjId
+     * @return
+     */
+    Integer getCountJszykczf(@Param("xsCjId") Long xsCjId);
 }

@@ -52,15 +52,21 @@
     </select>
     <select id="getCountYzy" resultType="java.lang.Integer">
         select SUM(txkc.yzyxf)
-        from t_xs_kc_cj txkc
-        where txkc.sfsc = false
+        from t_xs_kc_cj txkc left join t_xs xs on (xs.id=txkc.xs_id)
+        where txkc.sfsc = false and xs.sfsc = false
           and txkc.xs_id = #{xsId}
     </select>
     <select id="getCountDqxf" resultType="java.lang.Integer">
         select SUM(txkc.dqxf)
-        from t_xs_kc_cj txkc
-        where txkc.sfsc = false
+        from t_xs_kc_cj txkc left join t_xs_cj txc on (txc.id=txkc.xs_cj_id)
+        where txkc.sfsc = false and txc.sfsc = false and txc.sfxf = true
           and txkc.xs_cj_id = #{xsCjId}
+    </select>
+    <select id="getCountJszykczf" resultType="java.lang.Integer">
+        select SUM(kc.kcxf)
+        from t_xs_kc_cj txkc left join t_kc kc on (kc.id=txkc.kc_id) left join t_xs_cj txc on (txc.id=txkc.xs_cj_id)
+        where txkc.sfsc = false and kc.sfsc = false and txc.sfsc = false and txc.sfxf = true
+        and txkc.xs_cj_id = #{xsCjId}
     </select>
 
 </mapper>

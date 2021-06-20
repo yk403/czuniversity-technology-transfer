@@ -2,7 +2,9 @@ package com.itts.personTraining.service.xsKcCj.impl;
 
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
+import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
 import com.itts.personTraining.service.xsKcCj.XsKcCjService;
@@ -15,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
@@ -47,17 +51,23 @@ public class XsKcCjServiceImpl extends ServiceImpl<XsKcCjMapper, XsKcCj> impleme
      * @return
      */
     @Override
-    public List<XsKcCjDTO> getByXsCjId(Long xsCjId,Integer kclx,Long xsId) {
+    public XsCjDTO getByXsCjId(Long xsCjId, Integer kclx, Long xsId) {
         log.info("【人才培养 - 根据学生成绩id:{},课程类型:{}查询学生课程成绩集合】",xsCjId,kclx);
+        XsCjDTO xsCjDTO = new XsCjDTO();
         List<XsKcCjDTO> xsKcCjDTOs;
+        HashMap<String, Object> map = new HashMap<>();
         if (TECHNOLOGY_TRANSFER_COURSE.getKey().equals(kclx)) {
             //技术转移专业课程
             xsKcCjDTOs = xsKcCjMapper.selectByXsCjId(xsCjId,kclx);
+            xsCjDTO.setZxf(xsKcCjMapper.getCountDqxf(xsCjId));
+            xsCjDTO.setJszykczf(xsKcCjMapper.getCountJszykczf(xsCjId));
         } else {
             //原专业课程
             xsKcCjDTOs = xsKcCjMapper.selectYzyByXsId(xsId,kclx);
+            xsCjDTO.setZxzyzxf(xsKcCjMapper.getCountYzy(xsId));
         }
-        return xsKcCjDTOs;
+        xsCjDTO.setXsKcCjDTOList(xsKcCjDTOs);
+        return xsCjDTO;
     }
 
     /**
