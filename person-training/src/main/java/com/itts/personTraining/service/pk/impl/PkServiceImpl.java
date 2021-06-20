@@ -247,7 +247,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         if (jsz != null) {
             Date skjsnyr = null;
             try {
-                skjsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getSkqsnyr(), jsz*7);
+                skjsnyr = DateUtils.getBeforeOrAfterDate(pk.getSkqsnyr(), jsz*7);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
