@@ -1,10 +1,12 @@
 package com.itts.personTraining.service.xsKcCj;
 
+import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -23,7 +25,7 @@ public interface XsKcCjService extends IService<XsKcCj> {
      * @param xsId
      * @return
      */
-    List<XsKcCjDTO> getByXsCjId(Long xsCjId,Integer kclx,Long xsId);
+    XsCjDTO getByXsCjId(Long xsCjId, Integer kclx, Long xsId);
 
     /**
      * 更新学生课程成绩

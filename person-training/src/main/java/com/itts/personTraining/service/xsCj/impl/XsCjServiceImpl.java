@@ -292,31 +292,41 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
                 Long xsId = xsMsgDTO.getId();
                 if (xsId != null) {
-                    XfDTO xsDTO = new XfDTO();
-                    //TODO:实践和实训待确认
-                    xsDTO.setSxxf(0);
-                    xsDTO.setSjxf(0);
-                    //TODO:互认学分暂时为0
-                    xsDTO.setHrxf(0);
-
-                    Integer zxf = xsDTO.getZxzyxf()+xsDTO.getHrxf()+xsDTO.getJszylyxf()+xsDTO.getSjxf()+xsDTO.getSxxf();
-                    xsDTO.setZxf(zxf);
-                    map.put("xf",xsDTO);
                     if (pcId != null) {
                         Pc pc = pcMapper.selectById(pcId);
+                        XfDTO xsDTO = new XfDTO();
+                        //TODO:实践和实训待确认
+                        xsDTO.setSxxf(0);
+                        xsDTO.setSjxf(0);
+                        //TODO:互认学分暂时为0
+                        xsDTO.setHrxf(0);
                         XsCjDTO xsCjDTO = null;
                         if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
                             //学历学位教育
-                             xsCjDTO = xsCjMapper.findXsKcCjByPcIdAndXsId(pcId,xsId);
-                             List<XsKcCjDTO> xsKcCjDTOs = xsKcCjMapper.findXsKcCjByXsId(xsId);
-                             if (xsCjDTO != null) {
-                                 xsCjDTO.getXsKcCjDTOList().addAll(xsKcCjDTOs);
-                             }
+                            xsCjDTO = xsCjMapper.findXsKcCjByPcIdAndXsId(pcId, xsId);
+                            List<XsKcCjDTO> xsKcCjDTOs = xsKcCjMapper.findXsKcCjByXsId(xsId);
+                            if (xsCjDTO != null) {
+                                xsCjDTO.getXsKcCjDTOList().addAll(xsKcCjDTOs);
+                            }
+                            //统计原专业学分(获得)
+                            Integer zxzyxf = xsKcCjMapper.getCountYzy(xsId);
+                            xsDTO.setZxzyxf(zxzyxf);
+                            XsCjDTO xsCjDTO1 = xsCjMapper.selectByPcIdAndXsId(pcId, xsId);
+                            if (xsCjDTO1 != null) {
+                                //统计技术转移专业获得学分
+                                Integer jszylyxf = xsKcCjMapper.getCountDqxf(xsCjDTO1.getId());
+                                xsDTO.setJszylyxf(jszylyxf);
+                            } else {
+                                throw new ServiceException(NO_STUDENT_MSG_ERROR);
+                            }
                         } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
                             //继续教育
-                            xsCjDTO = xsCjMapper.findXsCjByPcIdAndXsId(pcId,xsId);
+                            xsCjDTO = xsCjMapper.findXsCjByPcIdAndXsId(pcId, xsId);
                         }
-                        map.put("postgraduate",xsCjDTO);
+                        Integer zxf = xsDTO.getZxzyxf() + xsDTO.getHrxf() + xsDTO.getJszylyxf() + xsDTO.getSjxf() + xsDTO.getSxxf();
+                        xsDTO.setZxf(zxf);
+                        map.put("xf", xsDTO);
+                        map.put("postgraduate", xsCjDTO);
                     } else {
                         throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
                     }
@@ -326,6 +336,9 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 break;
             //经纪人
             case "broker":
+                if (pcId == null) {
+                    throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                }
                 XsMsgDTO xsMsgDTO1 = xsMapper.getByYhId(userId);
                 if (xsMsgDTO1 != null) {
                     XsCjDTO xsCjDTO = xsCjMapper.selectByPcIdAndXsId(pcId, xsMsgDTO1.getId());
@@ -366,16 +379,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 if (pcId == null) {
                     throw new ServiceException(BATCH_NUMBER_ISEMPTY_ERROR);
                 }
-                //先调排课接口查询该任课教师所有的批次号,通过批次号查询对应成绩列表
-                Pc pc = pcMapper.selectById(pcId);
-                List<XsCjDTO> xsCjDTOs = null;
-                if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
-                    xsCjDTOs = xsCjMapper.findXsKcCjByPcIdAndName(pcId,name);
-                    PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
-                    map.put("teacher",xsCjPageInfo);
-                } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
-                    xsCjDTOs = xsCjMapper.findXsCjByPcIdAndName(pcId,name);
-                }
+                List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByPcIdAndName(pcId,name);
                 PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
                 map.put("teacher",xsCjPageInfo);
                 break;

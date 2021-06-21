@@ -47,7 +47,7 @@ public class PkController {
     }
 
     /**
-     * 根据用户id查询批次集合(前)
+     * 根据用户id查询批次集合(前)(老师)
      *
      * @return
      */
