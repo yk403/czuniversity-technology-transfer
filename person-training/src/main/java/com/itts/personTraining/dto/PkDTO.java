@@ -150,12 +150,6 @@ public class PkDTO {
     private String dsbh;
 
     /**
-     * 是否下发(0:未下发;1:已下发)
-     */
-    @ApiModelProperty(value = "是否下发")
-    private Boolean sfxf;
-
-    /**
      * 是否删除(0:未删除;1已删除)
      */
     private Boolean sfsc;

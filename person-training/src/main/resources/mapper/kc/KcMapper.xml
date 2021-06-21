@@ -48,4 +48,10 @@
         where kc.sfsc = false
         and kc.xylx = (select pc.xylx from t_pc pc where pc.sfsc = false and pc.id = #{pcId})
     </select>
+    <select id="findXsKcCjByPcId" resultType="com.itts.personTraining.dto.XsKcCjDTO">
+        select kc.id as kcId, kc.zsmk_id, kc.kcdm, kc.kcmc, kc.kcxs
+        from t_kc kc
+        where kc.sfsc = false
+        and kc.xylx = (select xylx from t_pc pc where pc.sfsc = false and pc.id = #{pcId})
+    </select>
 </mapper>

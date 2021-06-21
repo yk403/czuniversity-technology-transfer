@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -110,20 +111,14 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             if (xsKcCjDTOList != null && xsKcCjDTOList.size() > 0) {
                 Long id = xsCj.getId();
                 List<XsKcCj> xsKcCjs = new ArrayList<>();
-                int totalNum = 0;
-                int jszykczf = 0;
                 for (XsKcCjDTO xsKcCjDTO : xsKcCjDTOList) {
                     XsKcCj xsKcCj = new XsKcCj();
                     xsKcCjDTO.setXsCjId(id);
                     xsKcCjDTO.setKclx(TECHNOLOGY_TRANSFER_COURSE.getKey());
                     xsKcCjDTO.setCjr(userId);
                     xsKcCjDTO.setGxr(userId);
-                    Integer dqxf = xsKcCjDTO.getDqxf();
-                    totalNum += dqxf;
                     BeanUtils.copyProperties(xsKcCjDTO,xsKcCj);
                     xsKcCjs.add(xsKcCj);
-                    Kc kc = kcMapper.selectById(xsKcCjDTO.getKcId());
-                    jszykczf += kc.getKcxf();
                 }
                 return xsKcCjService.saveBatch(xsKcCjs);
             }
@@ -189,11 +184,19 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         log.info("【人才培养 - 根据条件批次ID:{},学号:{},姓名:{},学院名称:{},教育类型:{}分页查询学生成绩】",pcId,xh,xm,yx,jylx);
         //前台第一次展示暂无数据,以后批次ID必传
         PageHelper.startPage(pageNum,pageSize);
+        Pc pc = pcMapper.selectById(pcId);
         List<XsCjDTO> xsCjDTOs = null;
-        if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
+        if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
             //学历学位教育
             xsCjDTOs = xsCjMapper.findXsKcCj(pcId,xh,xm,yx,null);
-        } else if (ADULT_EDUCATION.getKey().equals(jylx)) {
+            if (CollectionUtils.isNotEmpty(xsCjDTOs)) {
+                for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                    List<XsKcCjDTO> xsKcCjDTOList = xsCjDTO.getXsKcCjDTOList();
+                    Integer zxf = xsKcCjDTOList.stream().collect(Collectors.summingInt(XsKcCjDTO::getDqxf));
+                    xsCjDTO.setZxf(zxf);
+                }
+            }
+        } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
             //继续教育
             xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,yx,jylx);
         }
@@ -322,6 +325,9 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                         } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
                             //继续教育
                             xsCjDTO = xsCjMapper.findXsCjByPcIdAndXsId(pcId, xsId);
+                            //通过批次id查询出对应所有课程
+                            List<XsKcCjDTO> xsKcCjDTOs = kcMapper.findXsKcCjByPcId(pcId);
+                            xsCjDTO.setXsKcCjDTOList(xsKcCjDTOs);
                         }
                         Integer zxf = xsDTO.getZxzyxf() + xsDTO.getHrxf() + xsDTO.getJszylyxf() + xsDTO.getSjxf() + xsDTO.getSxxf();
                         xsDTO.setZxf(zxf);
@@ -343,16 +349,11 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 if (xsMsgDTO1 != null) {
                     XsCjDTO xsCjDTO = xsCjMapper.selectByPcIdAndXsId(pcId, xsMsgDTO1.getId());
                     if (xsCjDTO != null) {
-                        List<Kc> kcList = kcMapper.findKcByPcId(pcId);
-                        List<XsKcCjDTO> xsKcCjDTOList = new ArrayList<>();
-                        for (Kc kc : kcList) {
-                            XsKcCjDTO xsKcCjDTO = new XsKcCjDTO();
-                            BeanUtils.copyProperties(kc,xsKcCjDTO,"kclx");
-                            xsKcCjDTOList.add(xsKcCjDTO);
-                        }
-                        xsCjDTO.setXsKcCjDTOList(xsKcCjDTOList);
-                        map.put("broker",xsCjDTO);
+                        //通过批次id查询出对应所有课程
+                        List<XsKcCjDTO> xsKcCjDTOs = kcMapper.findXsKcCjByPcId(pcId);
+                        xsCjDTO.setXsKcCjDTOList(xsKcCjDTOs);
                     }
+                    map.put("broker",xsCjDTO);
                 } else {
                     map.put("broker",null);
                 }
