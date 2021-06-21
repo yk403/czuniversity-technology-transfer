@@ -9,13 +9,10 @@ import com.itts.personTraining.dto.XfDTO;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
-import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
-import com.itts.personTraining.model.kc.Kc;
-import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
@@ -24,10 +21,8 @@ import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.xsCj.XsCjService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.xsKcCj.XsKcCjService;
-import io.jsonwebtoken.lang.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -180,7 +175,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
      * @return
      */
     @Override
-    public PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String yx, String jylx) {
+    public Object findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String yx, String jylx) {
         log.info("【人才培养 - 根据条件批次ID:{},学号:{},姓名:{},学院名称:{},教育类型:{}分页查询学生成绩】",pcId,xh,xm,yx,jylx);
         //前台不传教育类型和批次id,默认给学历学位成绩
         PageHelper.startPage(pageNum,pageSize);
@@ -196,10 +191,11 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,yx,jylx);
             }
         }
+        if (CollectionUtils.isEmpty(xsCjDTOs)) {
+            return Collections.EMPTY_LIST;
+        }
         return new PageInfo<>(xsCjDTOs);
     }
-
-
 
     /**
      * 更新学生成绩
