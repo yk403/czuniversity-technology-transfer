@@ -245,7 +245,6 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             vo.setFjzys(fjzys);
         }
 
-
         return vo;
     }
 
