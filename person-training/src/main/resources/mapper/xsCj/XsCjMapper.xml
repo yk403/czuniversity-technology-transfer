@@ -10,6 +10,7 @@
         <result column="type" property="type" />
         <result column="pch" property="pch" />
         <result column="pcmc" property="pcmc" />
+        <result column="jylx" property="jylx" />
         <result column="xh" property="xh" />
         <result column="xm" property="xm" />
         <result column="yx" property="yx" />
@@ -124,7 +125,7 @@
         order by txc.cjsj desc
     </select>
     <select id="findXsCjByPcIdAndName" resultType="com.itts.personTraining.dto.XsCjDTO">
-        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch, pc.pcmc
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch, pc.pcmc, pc.jylx
         from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
         where txc.sfsc = false and txc.sfxf = true and xs.sfsc = false and pc.sfsc = false and txc.sfxf = true
         <if test="pcId != null"> and txc.pc_id = #{pcId} </if>
@@ -150,7 +151,7 @@
         where txc.sfsc = false and txc.sfxf = true and txc.pc_id = #{pcId} and txc.xs_id = #{xsId}
     </select>
     <select id="findPcByXsId" resultType="com.itts.personTraining.model.pc.Pc">
-        select pc.id, pc.pch, pc.pcmc
+        select pc.id, pc.pch, pc.pcmc, pc.jylx, pc.xylx
         from t_xs_cj txc left join t_pc pc on (txc.pc_id=pc.id)
         where txc.sfsc = false and pc.sfsc = false and txc.sfxf = true and txc.xs_id = #{xsId}
         order by pc.cjsj desc
