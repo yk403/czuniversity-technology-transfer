@@ -3,6 +3,7 @@ package com.itts.userservice.controller.jggl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
@@ -14,6 +15,7 @@ import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.vo.JgglVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,8 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
 
 /**
  * <p>
@@ -40,6 +44,7 @@ public class JgglController {
 
     @Resource
     private JgglMapper jgglMapper;
+
     /**
      * 查询机构，通过名称和编码
      */
@@ -47,8 +52,8 @@ public class JgglController {
     @ApiOperation(value = "通过名称和编码查询机构")
     public ResponseUtil getBynameandcode(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-            @RequestParam("string") String string) throws WebException {
-        if(string==null){
+                                         @RequestParam("string") String string) throws WebException {
+        if (string == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         PageInfo<Jggl> jggls = jgglService.selectByString(pageNum, pageSize, string);
@@ -72,12 +77,12 @@ public class JgglController {
     @ApiOperation(value = "获取机构列表")
     public ResponseUtil getlist(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                @RequestParam(value = "jgbm",required = false) String jgbm) {
+                                @RequestParam(value = "jgbm", required = false) String jgbm) {
 
         PageInfo<Jggl> byPage = jgglService.findByPage(pageNum, pageSize, jgbm);
+
         return ResponseUtil.success(byPage);
     }
-
 
 
     /**
@@ -101,7 +106,9 @@ public class JgglController {
     public ResponseUtil add(@RequestBody Jggl jggl) throws WebException {
 
         checkPequest(jggl);
-        if(jgglService.selectByJgmc(jggl.getJgbm())!=null){
+
+        Jggl checkJgbm = jgglService.selectByJgbm(jggl.getJgbm());
+        if (checkJgbm != null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_FIND_ERROR);
         }
 
@@ -117,11 +124,20 @@ public class JgglController {
 
             //生成层级
             String jgbm = jggl.getJgbm();
-            cj = cj + "-"+jgbm;
+            cj = cj + "-" + jgbm;
             jggl.setCj(cj);
+            jggl.setFjmc(jggl1.getJgmc());
         }
+
         jggl.setGxsj(new Date());
         jggl.setCjsj(new Date());
+
+        LoginUser loginUser = threadLocal.get();
+        if (loginUser.getUserId() != null) {
+            jggl.setCjr(loginUser.getUserId());
+            jggl.setGxr(loginUser.getUserId());
+        }
+
         Jggl add = jgglService.add(jggl);
         return ResponseUtil.success(add);
     }
@@ -153,18 +169,27 @@ public class JgglController {
         String fjbm = jggl.getFjbm();
         String cj;
         Jggl fatherGroup;
-        //机构移入自身的子机构
-        boolean flag = false;
+        //判断机构是否移入自身的子机构
+        boolean flagold = false;
 
-        List<Jggl> jgglList=null;
-        //判断子机构是否直属为下一级
         for (Jggl jggl1 : list) {
-            if(jggl1.getJgbm().equals(jggl.getFjbm())){
-                flag=true;
-                jgglList.add(jggl1);
+            if (jggl.getFjbm().equals(jggl1.getJgbm())) {
+                flagold = true;
             }
         }
-        if(flag){
+        boolean flag = false;
+
+        List<Jggl> jgglList = null;
+        //判断子机构是否直属为下一级
+        if (flagold) {
+            for (Jggl jggl1 : list) {
+                if (jggl1.getFjbm().equals(jggl.getJgbm())) {
+                    flag = true;
+                    jgglList.add(jggl1);
+                }
+            }
+        }
+        if (flag) {
             //修改机构自身下一级的所有子机构的fjbm
             for (int i = 0; i < jgglList.size(); i++) {
                 Jggl jggl1 = jgglList.get(i);
@@ -172,41 +197,40 @@ public class JgglController {
                 jgglService.update(jggl1);
             }
             //修改所有子机构的父机构编码和层级
-            list.forEach(Jggl ->{
-                if(Jggl.getJgbm()!=group.getJgbm()){
-                    Jggl.setCj(Jggl.getCj().replace(group.getCj(),jgglService.selectByJgbm(group.getFjbm()).getCj()));
+            list.forEach(Jggl -> {
+                if (Jggl.getJgbm() != group.getJgbm()) {
+                    Jggl.setCj(StringUtils.strip(Jggl.getCj(), jggl.getJgbm() + "-"));
                     jgglService.update(Jggl);
                 }
             });
             //修改自身层级
-            jggl.setCj(group.getCj().replace(jgglService.selectByJgbm(group.getFjbm()).getCj(),jgglService.selectByJgbm(jggl.getFjbm()).getCj()));
+            jggl.setCj(jgglService.selectByJgbm(jggl.getFjbm()).getCj() + "-" + jggl.getJgbm());
             jgglService.update(jggl);
             return ResponseUtil.success(jggl);
         }
         //机构移入上级或平级无关的机构
-        if(fjbm.equals("000")){
-            cj=jggl.getJgbm();
-            fatherGroup=jggl;
-        }else {
+        if (fjbm.equals(UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
+            cj = jggl.getJgbm();
+            fatherGroup = jggl;
+        } else {
             fatherGroup = jgglService.selectByJgbm(fjbm);
             cj = fatherGroup.getCj();
+            jggl.setFjmc(fatherGroup.getJgmc());
         }
 
-        if(jggl.getFjbm().equals(jggl.getJgbm())){
-            BeanUtils.copyProperties(jggl, group, "id", "cjsj", "cjr","fjbm");
-        }else {
+        if (jggl.getFjbm().equals(jggl.getJgbm())) {
+            BeanUtils.copyProperties(jggl, group, "id", "cjsj", "cjr", "fjbm");
+        } else {
             BeanUtils.copyProperties(jggl, group, "id", "cjsj", "cjr");
         }
 
         if (!Objects.equals(fjbm, UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
 
-
             //生成层级
+            if (list != null) {
 
-            if(list!=null){
-
-                list.forEach(Jggl ->{
-                    if(cjold==Jggl.getCj()){
+                list.forEach(Jggl -> {
+                    if (cjold == Jggl.getCj()) {
                         return;
                     }
                     Jggl.setCj(Jggl.getCj().replace(cjold, fatherGroup.getCj()));
@@ -214,15 +238,13 @@ public class JgglController {
                 });
             }
 
-
-            cj = cj +"-"+ jggl.getJgbm();
+            cj = cj + "-" + jggl.getJgbm();
             jggl.setCj(cj);
 
-
         } else {
-            if(list!=null){
-                list.forEach(Jggl ->{
-                    if(cjold==Jggl.getCj()){
+            if (list != null) {
+                list.forEach(Jggl -> {
+                    if (cjold == Jggl.getCj()) {
                         return;
                     }
                     Jggl.setCj(Jggl.getCj().replace(cjold, fatherGroup.getCj()));
@@ -255,15 +277,15 @@ public class JgglController {
         //查询机构是否有子机构
         String jgbm = jggl.getJgbm();
         QueryWrapper<Jggl> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.eq("fjbm",jgbm)
-        .eq("sfsc",false);
+        objectQueryWrapper.eq("fjbm", jgbm)
+                .eq("sfsc", false);
         Jggl jggl1 = jgglMapper.selectOne(objectQueryWrapper);
-        if(jggl1!=null){
+        if (jggl1 != null) {
             return ResponseUtil.error(ErrorCodeEnum.USER_DELETE_GROUP_HAVE_CHILD_ERROR);
         }
-            jggl.setSfsc(true);
-            jggl.setGxsj(new Date());
-            jgglService.update(jggl);
+        jggl.setSfsc(true);
+        jggl.setGxsj(new Date());
+        jgglService.update(jggl);
         return ResponseUtil.success();
     }
 
@@ -292,9 +314,14 @@ public class JgglController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
+        if (Objects.equals(jggl.getJgbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_FIND_ERROR);
+        }
+
         if (jggl.getFjbm() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+
         if (jggl.getJgmc() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }

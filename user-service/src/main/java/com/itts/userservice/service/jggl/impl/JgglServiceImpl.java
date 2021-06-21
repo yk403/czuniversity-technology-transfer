@@ -5,11 +5,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.userservice.common.UserServiceCommon;
-import com.itts.userservice.dto.JgglDTO;
-import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.mapper.jggl.JgglMapper;
+import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.service.jggl.JgglService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.userservice.vo.JgglVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -45,14 +43,19 @@ public class JgglServiceImpl implements JgglService {
      */
     @Override
     public PageInfo<Jggl> findByPage(Integer pageNum, Integer pageSize,String jgbm) {
+
         log.info("【机构管理 - 分页查询】");
+
         if(!StringUtils.isBlank(jgbm)){
             String cj = jgglMapper.selectByCode(jgbm).getCj();
             jgbm=cj;
         }
+
         PageHelper.startPage(pageNum,pageSize);
+
         List<Jggl> list = jgglMapper.findThisAndChildByCode(jgbm);
         PageInfo<Jggl> pageInfo = new PageInfo<>(list);
+
         return pageInfo;
     }
 
@@ -147,14 +150,7 @@ public class JgglServiceImpl implements JgglService {
      */
     @Override
     public Jggl add(Jggl jggl) {
-        LoginUser loginUser = threadLocal.get();
-        if(loginUser.getUserId()!=null){
-            jggl.setCjr(loginUser.getUserId());
-            jggl.setGxr(loginUser.getUserId());
-        }
-        Date date = new Date();
-        jggl.setCjsj(date);
-        jggl.setGxsj(date);
+
         jgglMapper.insert(jggl);
         return jggl;
     }

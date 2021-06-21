@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @TableName("t_py_jh")
 public class PyJh implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4184012652910218503L;
 
     /**
      * 主键
@@ -34,39 +34,59 @@ public class PyJh implements Serializable {
     private Long pcId;
 
     /**
+     * 附件资源ID
+     */
+    private String fjzyId;
+
+    /**
+     * 计划名称
+     */
+    private String jhmc;
+
+    /**
+     * 培养目标
+     */
+    private String pymb;
+
+    /**
+     * 学制与学习年限
+     */
+    private String xzyxxnx;
+
+    /**
+     * 培养方式和方法
+     */
+    private String pyfshff;
+
+    /**
+     * 培养方案与培养计划
+     */
+    private String pyfaypyjh;
+
+    /**
+     * 课程设置和学分规定
+     */
+    private String kcszhxfgd;
+
+    /**
+     * 实践论文
+     */
+    private String sjlw;
+
+    /**
+     * 培养管理
+     */
+    private String pygl;
+
+    /**
      * 是否下发(0:否;1:是)
      */
     private Boolean sfxf;
 
     /**
-     * 培养方案
-     */
-    private String pyfa;
-
-    /**
-     * 培养计划
-     */
-    private String pyjh;
-
-    /**
-     * 教学大纲
-     */
-    private String jxdg;
-
-    /**
-     * 学生类别名称
-     */
-    private String xslbmc;
-
-    /**
      * 是否删除(0:未删除;1已删除)
      */
     private Boolean sfsc;
-
-    /**
-     * 上传时间
-     */
-    private Date scsj;
 
     /**
      * 下发时间

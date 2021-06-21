@@ -92,6 +92,21 @@
             #{xqId}
         </foreach>
     </select>
-
+    <update id="updateTJsShs">
+        update t_js_sh
+        <set>
+            <if test="assistanceStatus != null">assistance_status = #{assistanceStatus},</if>
+            <if test="fbshzt != null">fbshzt = #{fbshzt},</if>
+            <if test="releaseStatus != null">release_status = #{releaseStatus},</if>
+            <if test="lx != null">lx = #{lx},</if>
+            <if test="jylx != null">jylx = #{jylx},</if>
+            <if test="hdsqzt != null">hdsqzt = #{hdsqzt},</if>
+            <if test="fbshbz != null">fbshbz = #{fbshbz},</if>
+            <if test="slxbbz != null">slxbbz = #{slxbbz},</if>
+            <if test="jszt != null">jszt = #{jszt},</if>
+            <if test="releaseAssistanceStatus != null">release_assistance_status = #{releaseAssistanceStatus},</if>
+        </set>
+        where id = #{id}
+    </update>
 
 </mapper>

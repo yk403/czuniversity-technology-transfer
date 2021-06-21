@@ -22,5 +22,4 @@ public interface AuthoritionUserMapper extends BaseMapper<AuthoritionUser> {
      */
     @Select("SELECT * FROM t_yh WHERE yhm = #{userName}")
     AuthoritionUser getByUserName(String userName);
-
 }

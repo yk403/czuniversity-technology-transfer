@@ -1,19 +1,16 @@
 package com.itts.userservice.model.js;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.TableId;
-
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -21,15 +18,15 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author liuyingming
- * @since 2021-04-19
+ * @since 2021-05-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_js")
-@ApiModel("角色对象")
+@ApiModel(value = "角色管理")
 public class Js implements Serializable {
 
-    private static final long serialVersionUID = -409494400980209645L;
+    private static final long serialVersionUID = -5659070268888720520L;
 
     /**
      * 主键ID
@@ -46,13 +43,13 @@ public class Js implements Serializable {
     /**
      * 角色编码
      */
-    @ApiModelProperty(value = "角色编码",required = true)
+    @ApiModelProperty(value = "角色编码", required = true)
     private String jsbm;
 
     /**
      * 是否为默认角色
      */
-    @ApiModelProperty(value = "是否为默认角色",required = true)
+    @ApiModelProperty(value = "是否为默认角色", required = true)
     private Boolean sfmr;
 
     /**
@@ -62,36 +59,40 @@ public class Js implements Serializable {
     private String yhjslx;
 
     /**
+     * 角色类别（内部用户角色使用）：研究生；经纪人；导师；企业导师；任课教师；校领导；管理员
+     */
+    @ApiModelProperty(value = "角色类别（内部用户角色使用）：研究生；经纪人；导师；企业导师；任课教师；校领导；管理员")
+    private String jslb;
+
+    /**
      * 是否删除
      */
-    @ApiModelProperty("是否删除")
+    @ApiModelProperty(value = "是否删除")
     private Boolean sfsc;
 
     /**
      * 创建时间
      */
-    @ApiModelProperty("创建时间")
+    @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
      * 创建人
      */
-    @ApiModelProperty("创建人")
+    @ApiModelProperty(value = "创建人")
     private Long cjr;
 
     /**
      * 更新时间
      */
-    @ApiModelProperty("更新时间")
+    @ApiModelProperty(value = "更新时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**
      * 更新人
      */
-    @ApiModelProperty("更新人")
+    @ApiModelProperty(value = "更新人")
     private Long gxr;
-
-
 }

@@ -34,4 +34,10 @@ public class GetSjzdItemRequest implements Serializable {
      */
     @ApiModelProperty(value = "字典编码", required = true)
     private String zdbm;
+
+    /**
+     * 排序
+     */
+    @ApiModelProperty(value = "排序")
+    private Integer px;
 }

@@ -18,6 +18,7 @@ import java.math.BigInteger;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 
 
 /**

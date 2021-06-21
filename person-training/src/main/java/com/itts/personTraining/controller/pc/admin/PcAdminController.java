@@ -1,9 +1,9 @@
 package com.itts.personTraining.controller.pc.admin;
 
-import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.sjzd.SjzdService;
@@ -41,8 +41,10 @@ public class PcAdminController {
     @GetMapping("/list/")
     @ApiModelProperty(value = "查询批次列表")
     public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
-        return ResponseUtil.success(pcService.findByPage(pageNum, pageSize));
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                @RequestParam(value = "pch", required = false) String pch,
+                                @RequestParam(value = "pcmc", required = false) String pcmc){
+        return ResponseUtil.success(pcService.findByPage(pageNum, pageSize, pch, pcmc));
     }
 
     /**
@@ -55,6 +57,18 @@ public class PcAdminController {
     public ResponseUtil getByOne(@PathVariable("id")Long id){
         Pc pc = pcService.get(id);
         return ResponseUtil.success(pc);
+    }
+
+    /**
+     * 根据id查询课程信息列表
+     * @param id
+     * @return
+     */
+    @GetMapping("/getKcListById/{id}")
+    @ApiOperation(value = "根据id查询课程信息列表")
+    public ResponseUtil getKcListById(@PathVariable("id")Long id){
+        List<Kc> kcList = pcService.getKcListById(id);
+        return ResponseUtil.success(kcList);
     }
 
     /**
@@ -132,7 +146,6 @@ public class PcAdminController {
     @ApiOperation(value = "更新批次")
     @PutMapping("/update")
     public ResponseUtil update(@RequestBody Pc pc)throws WebException{
-        checkRequset(pc);
         Pc old = pcService.get(pc.getId());
         if(old==null){
             throw new WebException(SYSTEM_NOT_FIND_ERROR);

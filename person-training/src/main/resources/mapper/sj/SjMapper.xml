@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personTraining.mapper.sj.SjMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.sj.Sj">
+        <id column="id" property="id" />
+        <result column="xs_id" property="xsId" />
+        <result column="sjlx" property="sjlx" />
+        <result column="sjdw" property="sjdw" />
+        <result column="bg" property="bg" />
+        <result column="pjb" property="pjb" />
+        <result column="sjcj" property="sjcj" />
+        <result column="jcjxj_one" property="jcjxjOne" />
+        <result column="jcjxj_two" property="jcjxjTwo" />
+        <result column="jdjj_one" property="jdjjOne" />
+        <result column="jdjj_two" property="jdjjTwo" />
+        <result column="sfxf" property="sfxf" />
+        <result column="sfck" property="sfck" />
+        <result column="sfsc" property="sfsc" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, xs_id, sjlx, sjdw, bg, pjb, sjcj, jcjxj_one, jcjxj_two, jdjj_one, jdjj_two, sfsc, cjsj, cjr, gxsj, gxr
+    </sql>
+    <select id="getByCondition" resultType="com.itts.personTraining.dto.SjDTO">
+        select sj.*, xs.id as xsId, xs.xh, xs.xm, xs.yzy, pc.id as pcId, pc.pch
+        from t_sj sj left join t_xs xs on (xs.id=sj.xs_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=sj.pc_id)
+        where sj.sfsc = false and xs.sfsc = false and pc.sfsc = false
+        <if test="pcId != null"> and pc.id = #{pcId} </if>
+        <if test="sjlx != null and sjlx != ''"> and sj.sjlx = #{sjlx} </if>
+        <if test="name != null and name != ''"> and (xs.xm like concat('%',trim(#{name}),'%') or xs.xh like concat('%',trim(#{name}),'%'))</if>
+        order by sj.cjsj desc
+    </select>
+    <select id="getById" resultType="com.itts.personTraining.dto.SjDTO">
+        select sj.*, xs.id as xsId, xs.xh, xs.xm, xs.yzy, pc.id as pcId, pc.pch
+        from t_sj sj left join t_xs xs on (xs.id=sj.xs_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=sj.pc_id)
+        where sj.sfsc = false and xs.sfsc = false and pc.sfsc = false
+        <if test="id != null">and sj.id = #{id}</if>
+    </select>
+    <select id="getNumByXsId" resultType="java.lang.Long">
+        select count(id)
+        from t_sj sj
+        where sj.xs_id = #{xsId} and sj.sfsc = false and sj.sfxf = true and sj.sfck = false
+    </select>
+    <select id="findByCondition" resultType="com.itts.personTraining.dto.SjDTO">
+        select sj.*, xs.id as xsId, xs.xh, xs.xm, xs.yzy, pc.id as pcId, pc.pch
+        from t_sj sj left join t_xs xs on (xs.id=sj.xs_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=sj.pc_id)
+        where sj.sfsc = false and xs.sfsc = false and pc.sfsc = false
+        <if test="yhId != null">and xs.yh_id = #{yhId}</if>
+        <if test="cjr != null">and sj.cjr = #{cjr}</if>
+        order by sj.cjsj desc
+    </select>
+    <select id="getByPcIdAndXsId" resultType="com.itts.personTraining.model.sj.Sj">
+        select *
+        from t_sj sj left join t_pc pc on (sj.pc_id=pc.id) left join t_xs xs on (xs.id=sj.xs_id)
+        where sj.sfsc = false and pc.sfsc = false and xs.sfsc = false
+        <if test="pcId != null"> and sj.pc_id = #{pcId} </if>
+        <if test="xsId != null"> and sj.xs_id = #{xsId} </if>
+    </select>
+    <select id="findByCategory" resultType="com.itts.personTraining.dto.SjDTO">
+        select sj.*, xs.id as xsId, xs.xh, xs.xm, xs.yzy, pc.id as pcId, pc.pch
+        from t_sj sj left join t_xs xs on (xs.id=sj.xs_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=sj.pc_id)
+        where sj.sfsc = false and xs.sfsc = false and pc.sfsc = false and sj.sfxf = true
+        <if test="yhId != null">and xs.yh_id = #{yhId}</if>
+        <if test="cjr != null">and sj.cjr = #{cjr}</if>
+        order by sj.cjsj desc
+    </select>
+</mapper>

@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.controller;
 
 
 import ch.qos.logback.core.joran.util.beans.BeanUtil;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
@@ -25,8 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
-
+import static com.itts.common.enums.ErrorCodeEnum.USER_SIGNUP_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.BID_UPDATE_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.BID_OVERTIME_ERROR;
 
 /**
  * @Author: Austin
@@ -42,6 +46,9 @@ public class JsCjRcController extends BaseController {
     private BidController bidController;
     @Autowired
     private JsCjRcService jsCjRcService;
+    @Autowired
+    private JsBmMapper jsBmMapper;
+
 
     /**
     *websocket监听程序
@@ -84,26 +91,35 @@ public class JsCjRcController extends BaseController {
             long startTime = tJsCjRcDto.getHdkssj().getTime();
             if (startTime < now ) {
                 tJsCjRcDto.setJjsj(nowDate);
-                if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
+                HashMap<String, Object> bmquery = new HashMap<>();
+                bmquery.put("userId",jsCjRcService.getUserId());
+                bmquery.put("hdId",tJsCjRcDto.getHdId());
+                List<TJsBm> list = jsBmMapper.list(bmquery);
+                if(list.size()==1){
+                    tJsCjRcDto.setBmId(list.get(0).getId());
+                }else{
+                    throw new ServiceException(USER_SIGNUP_ERROR);
+                }
+                if (jsCjRcService.saveCjRc(tJsCjRcDto,list.get(0))) {
                     bidController.onMessage("叫价成功，调用刷新出价记录方法");
                     return ResponseUtil.success("叫价成功");
                 } else {
-                    return ResponseUtil.error(400, "叫价错误");
+                    return ResponseUtil.error(BID_UPDATE_ERROR);
                 }
             } else {
-                return ResponseUtil.error(400, "叫价超时");
+                return ResponseUtil.error(BID_OVERTIME_ERROR);
             }
         }
         //暂定可以不传时间，等前端完成后注掉
-        Date nowDate = new Date();
-        tJsCjRcDto.setJjsj(nowDate);
-        if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
-            bidController.onMessage("叫价成功，调用刷新出价记录方法");
-            return ResponseUtil.success("叫价成功");
-        } else {
-            return ResponseUtil.error(400, "叫价错误");
-        }
-
+//        Date nowDate = new Date();
+//        tJsCjRcDto.setJjsj(nowDate);
+//        if (jsCjRcService.saveCjRc(tJsCjRcDto)) {
+//            bidController.onMessage("叫价成功，调用刷新出价记录方法");
+//            return ResponseUtil.success("叫价成功");
+//        } else {
+//            return ResponseUtil.error(400, "叫价错误");
+//        }
+        return ResponseUtil.error(400, "活动没有开始时间，叫价错误");
     }
 
     /**

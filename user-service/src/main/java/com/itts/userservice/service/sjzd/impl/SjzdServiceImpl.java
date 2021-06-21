@@ -65,7 +65,11 @@ public class SjzdServiceImpl implements SjzdService {
      */
     @Override
     public PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType, String dictionary, String zdbm, Long parentId) {
-        PageHelper.startPage(pageNum, pageSize);
+
+        if (pageSize != -1) {
+            PageHelper.startPage(pageNum, pageSize);
+        }
+
         QueryWrapper<Sjzd> objectQueryWrapper = new QueryWrapper<>();
         objectQueryWrapper.eq("sfsc", false);
 
@@ -127,6 +131,7 @@ public class SjzdServiceImpl implements SjzdService {
         getSjzdRequest.setSsmkmc(sjzds.get(0).getSsmkmc());
         getSjzdRequest.setSsmk(sjzds.get(0).getSsmk());
         getSjzdRequest.setFjId(sjzds.get(0).getFjId());
+        getSjzdRequest.setFjBm(sjzds.get(0).getFjBm());
         getSjzdRequest.setFjmc(sjzds.get(0).getFjmc());
 
         List<GetSjzdItemRequest> getSjzdItemRequests = Lists.newArrayList();
@@ -180,7 +185,10 @@ public class SjzdServiceImpl implements SjzdService {
             userId = loginUser.getUserId();
         }
 
-        Sjzd fjzd = sjzdMapper.selectById(sjzd.getFjId());
+        QueryWrapper query = new QueryWrapper();
+        query.eq("zdbm", sjzd.getFjBm());
+
+        Sjzd fjzd = sjzdMapper.selectOne(query);
 
         Date now = new Date();
 
@@ -192,14 +200,16 @@ public class SjzdServiceImpl implements SjzdService {
             BeanUtils.copyProperties(sjzd, addSjzd);
 
             addSjzd.setZdmc(sjzdItem.getZdmc());
-            addSjzd.setZdbm(sjzdItem.getZdbm());
-            addSjzd.setFjId(sjzd.getFjId());
+            addSjzd.setPx(sjzdItem.getPx());
 
             if (fjzd != null) {
 
+                addSjzd.setFjId(fjzd.getId());
+                addSjzd.setFjBm(fjzd.getZdbm());
                 addSjzd.setFjmc(fjzd.getZdmc());
                 addSjzd.setZdbm(fjzd.getZdbm() + sjzdItem.getZdbm());
             } else {
+
                 addSjzd.setZdbm(sjzdItem.getZdbm());
             }
 
@@ -239,14 +249,14 @@ public class SjzdServiceImpl implements SjzdService {
             //删除所有旧的数据字典
             for (Sjzd oldSjzd : oldSjzds) {
 
-                oldSjzd.setSfsc(true);
-                oldSjzd.setGxr(userId);
-                oldSjzd.setGxsj(now);
-                sjzdMapper.updateById(oldSjzd);
+                sjzdMapper.deleteById(oldSjzd.getId());
             }
         }
 
-        Sjzd fjzd = sjzdMapper.selectById(sjzd.getFjId());
+        QueryWrapper query = new QueryWrapper();
+        query.eq("zdbm", sjzd.getFjBm());
+
+        Sjzd fjzd = sjzdMapper.selectOne(query);
 
         //增加新的数据字典
         for (UpdateSjzdItemRequest sjzdItem : sjzd.getSjzdItems()) {
@@ -256,16 +266,19 @@ public class SjzdServiceImpl implements SjzdService {
             BeanUtils.copyProperties(sjzd, addSjzd);
 
             addSjzd.setZdmc(sjzdItem.getZdmc());
-            addSjzd.setZdbm(sjzdItem.getZdbm());
-            addSjzd.setFjId(sjzd.getFjId());
 
             if (fjzd != null) {
 
+                addSjzd.setFjId(fjzd.getId());
+                addSjzd.setFjBm(fjzd.getZdbm());
                 addSjzd.setFjmc(fjzd.getZdmc());
                 addSjzd.setZdbm(fjzd.getZdbm() + sjzdItem.getZdbm());
             } else {
+
                 addSjzd.setZdbm(sjzdItem.getZdbm());
             }
+
+            addSjzd.setPx(sjzdItem.getPx());
 
             //新增时设置更新时间和更新人
             addSjzd.setCjsj(now);

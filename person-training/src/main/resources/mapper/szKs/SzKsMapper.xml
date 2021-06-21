@@ -13,12 +13,10 @@
     <sql id="Base_Column_List">
         id, sz_id, ks_id
     </sql>
-    <select id="selectByKsId" resultType="java.lang.Long">
+    <select id="getByKsId" resultType="java.lang.Long">
         select sz_id
-        from t_sz_ks tsk
-        <where>
-            tsk.ks_id = #{ksId}
-        </where>
+        from t_sz_ks
+        where ks_id = #{ksId}
     </select>
 
 </mapper>

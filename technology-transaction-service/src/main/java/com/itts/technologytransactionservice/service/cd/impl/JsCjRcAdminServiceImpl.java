@@ -35,7 +35,7 @@ public class JsCjRcAdminServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> i
 	@Override
 	public PageInfo page(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		List<TJsCjRcDto> list = jsCjRcMapper.listRcHd(query);
+		List<TJsCjRcDto> list = jsCjRcMapper.listRcJy(query);
 		PageInfo<TJsCjRcDto> page = new PageInfo<>(list);
 		return page;
 	}

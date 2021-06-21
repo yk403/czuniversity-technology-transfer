@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.technologytransactionservice.mapper.LyBmMapper">
+
+    <select id="findLyBmFront" resultType="com.itts.technologytransactionservice.model.LyBmDto">
+        select bm.id as id,bm.cjsj,bm.gxsj,bm.dwmc,bm.fr,bm.dz,bm.lxdh,bm.bmly,bm.yyzz,bm.frsfz,bm.lxr,bm.hd_id,bm.shzt,bm.user_id,hd.hdmc as hdmc
+        from t_ly_bm bm left join t_ly_hd hd on (bm.hd_id = hd.id)
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            bm.is_delete = 0
+            <if test="map.userId != null"> and bm.user_id = #{map.userId} </if>
+            <if test="map.hdId != null"> and bm.hd_id = #{map.hdId} </if>
+            <if test="map.shzt != null"> and bm.shzt = #{map.shzt} </if>
+            <if test="map.dwmc != null"> and bm.dwmc like concat('%',trim(#{map.dwmc}),'%') </if>
+            <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
+    <select id="findLyBmBack" resultType="com.itts.technologytransactionservice.model.LyBmDto">
+        select bm.id as id,bm.cjsj,bm.gxsj,bm.dwmc,bm.fr,bm.dz,bm.lxdh,bm.bmly,bm.yyzz,bm.frsfz,bm.lxr,bm.hd_id,bm.shzt,bm.user_id,hd.hdmc as hdmc
+        from t_ly_bm bm left join t_ly_hd hd on (bm.hd_id = hd.id)
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            bm.is_delete = 0
+            <if test="map.userId != null"> and bm.user_id = #{map.userId} </if>
+            <if test="map.hdId != null"> and bm.hd_id = #{map.hdId} </if>
+            <if test="map.shzt != null"> and bm.shzt = #{map.shzt} </if>
+            <if test="map.dwmc != null"> and bm.dwmc like concat('%',trim(#{map.dwmc}),'%') </if>
+            <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
+    <update id="updateLyBm">
+        update t_ly_bm
+        <set>
+            <if test="cjsj != null">cjsj = #{cjsj},</if>
+            <if test="gxsj != null">gxsj = #{gxsj},</if>
+            <if test="dwmc != null">dwmc = #{dwmc},</if>
+            <if test="fr != null">fr = #{fr},</if>
+            <if test="dz != null">dz = #{dz},</if>
+            <if test="lxdh != null">lxdh = #{lxdh},</if>
+            <if test="bmly != null">bmly = #{bmly},</if>
+            <if test="yyzz != null">yyzz = #{yyzz},</if>
+            <if test="frsfz != null">frsfz = #{frsfz},</if>
+            <if test="lxr != null">lxr = #{lxr},</if>
+            <if test="hdId != null">hd_id = #{hdId},</if>
+            <if test="shzt != null">shzt = #{shzt},</if>
+            <if test="userId != null">user_id = #{userId}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+<!--    &lt;!&ndash; 通用查询映射结果 &ndash;&gt;
+    <resultMap id="BaseResultMap" type="com.itts.technologytransactionservice.model.LyBm">
+        <id column="id" property="id" />
+        <result column="cjsj" property="cjsj" />
+        <result column="gxsj" property="gxsj" />
+        <result column="dwmc" property="dwmc" />
+        <result column="fr" property="fr" />
+        <result column="dz" property="dz" />
+        <result column="lxdh" property="lxdh" />
+        <result column="bmly" property="bmly" />
+        <result column="yyzz" property="yyzz" />
+        <result column="frsfz" property="frsfz" />
+        <result column="lxr" property="lxr" />
+        <result column="hd_id" property="hdId" />
+        <result column="is_delete" property="isDelete" />
+        <result column="shzt" property="shzt" />
+        <result column="user_id" property="userId" />
+    </resultMap>
+
+    &lt;!&ndash; 通用查询结果列 &ndash;&gt;
+    <sql id="Base_Column_List">
+        id, cjsj, gxsj, dwmc, fr, dz, lxdh, bmly, yyzz, frsfz, lxr, hd_id, is_delete, shzt, user_id
+    </sql>-->
+
+</mapper>

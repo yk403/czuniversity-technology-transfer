@@ -21,16 +21,8 @@
         <result column="cszy_three" property="cszyThree" />
         <result column="jszc" property="jszc" />
         <result column="dwdh" property="dwdh" />
-        <result column="zzdh" property="zzdh" />
-        <result column="hxwsj" property="hxwsj" />
-        <result column="hxlyx" property="hxlyx" />
-        <result column="hxlsj" property="hxlsj" />
-        <result column="sxzy" property="sxzy" />
-        <result column="zgxl" property="zgxl" />
         <result column="pzsdny" property="pzsdny" />
         <result column="pzbdny" property="pzbdny" />
-        <result column="dssqsny" property="dssqsny" />
-        <result column="dbsqsny" property="dbsqsny" />
         <result column="zgzt" property="zgzt" />
         <result column="dslb" property="dslb" />
         <result column="sfsc" property="sfsc" />
@@ -42,7 +34,12 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, dsbh, dsxm, xb, sfzh, jg, csrq, mz, zzmm, whcd, yx, gbzw, cszy_one, cszy_two, cszy_three, jszc, dwdh, zzdh, hxwsj, hxlyx, hxlsj, sxzy, zgxl, pzsdny, pzbdny, dssqsny, dbsqsny, zgzt, dslb, sczt, cjsj, cjr, gxsj, gxr
+        id, yx, dsbh, dsxm, xb, sfzh, jg, csrq, mz, zzmm, whcd, yx, gbzw, cszy_one, cszy_two, cszy_three, jszc, dwdh, zzdh, hxwsj, hxlyx, hxlsj, sxzy, zgxl, pzsdny, pzbdny, dssqsny, dbsqsny, zgzt, dslb, sczt, cjsj, cjr, gxsj, gxr
     </sql>
+    <select id="getSzByYhId" resultType="com.itts.personTraining.model.sz.Sz">
+        select *
+        from t_sz sz
+        where sz.sfsc = false and sz.yh_id = #{yhId}
+    </select>
 
 </mapper>

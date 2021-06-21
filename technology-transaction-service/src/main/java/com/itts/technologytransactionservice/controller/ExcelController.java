@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 
 
 @RestController

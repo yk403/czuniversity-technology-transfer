@@ -53,3 +53,7 @@ huawei:
   # 访问的endPoint
     access:
       endPoint: cdspzb.obs.cn-north-4.myhuaweicloud.com
+
+ribbon:
+  ConnectTimeout: 10000 # ribbon链接超时时长
+  ReadTimeout: 10000 # ribbon读取超时时间长

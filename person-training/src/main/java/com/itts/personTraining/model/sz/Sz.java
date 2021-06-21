@@ -1,14 +1,13 @@
 package com.itts.personTraining.model.sz;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.util.Date;
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -23,13 +22,28 @@ import lombok.EqualsAndHashCode;
 @TableName("t_sz")
 public class Sz implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 7996143002138221691L;
 
     /**
      * 主键
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
+    /**
+     * 用户id
+     */
+    private Long yhId;
+
+    /**
+     * 院系
+     */
+    private String yx;
+
+    /**
+     * 所属机构id
+     */
+    private Long ssjgId;
 
     /**
      * 导师编号
@@ -79,11 +93,6 @@ public class Sz implements Serializable {
     private String whcd;
 
     /**
-     * 院系
-     */
-    private String yx;
-
-    /**
      * 干部职务
      */
     private String gbzw;
@@ -114,36 +123,6 @@ public class Sz implements Serializable {
     private String dwdh;
 
     /**
-     * 住宅电话
-     */
-    private String zzdh;
-
-    /**
-     * 获学位时间
-     */
-    private Date hxwsj;
-
-    /**
-     * 获学历院校
-     */
-    private String hxlyx;
-
-    /**
-     * 获学历时间
-     */
-    private Date hxlsj;
-
-    /**
-     * 所学专业
-     */
-    private String sxzy;
-
-    /**
-     * 最高学历
-     */
-    private String zgxl;
-
-    /**
      * 批准硕导年月
      */
     private String pzsdny;
@@ -154,22 +133,12 @@ public class Sz implements Serializable {
     private String pzbdny;
 
     /**
-     * 带硕士起始年月
-     */
-    private String dssqsny;
-
-    /**
-     * 带博士起始年月
-     */
-    private String dbsqsny;
-
-    /**
      * 在岗状态
      */
     private String zgzt;
 
     /**
-     * 导师类别:	tutor - 研究生导师;	corporate_mentor - 企业导师;	teacher - 授课教师
+     * 导师类别:	tutor - 导师;	corporate_mentor - 企业导师;	teacher - 授课教师
      */
     private String dslb;
 
@@ -209,11 +178,6 @@ public class Sz implements Serializable {
      * 行业领域
      */
     private String hyly;
-
-    /**
-     * 所属机构
-     */
-    private String ssjg;
 
     /**
      * 专属资格证

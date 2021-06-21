@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.kc.Kc">
         <id column="id" property="id" />
         <result column="jylx" property="jylx" />
-        <result column="zdbm" property="zdbm" />
+        <result column="xylx" property="xylx" />
         <result column="zsmk_id" property="zsmkId" />
         <result column="kcmc" property="kcmc" />
         <result column="kcdm" property="kcdm" />
@@ -27,18 +27,25 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, js_id, jylx, zdbm, zsmk_id, jsxm, zsmkmc, kcmc, kcdm, kclx, kcxs, kcxf, kkxq, kkxy, skfs, sfbx, bz, sczt, cjsj, cjr, gxsj, gxr
+        id, js_id, jylx, xylx, zsmk_id, jsxm, zsmkmc, kcmc, kcdm, kclx, kcxs, kcxf, kkxq, kkxy, skfs, sfbx, bz, sczt, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="findByPage" resultType="com.itts.personTraining.dto.KcDTO">
-        select kc.id as id,zdbm,zsmk_id as zsmkId,jylx,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfbx,bz,sfxf,cjsj,cjr,gxsj,gxr
+        select kc.id as id,xylx,zsmk_id as zsmkId,jylx,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfsc,sfbx,bz,sfxf,cjsj,cjr,gxsj,gxr
         from t_kc kc
         <where>
             kc.sfsc = false
-            <if test="kclx != null and kclx != ''"> and kc.kclx like #{kclx} </if>
-            <if test="name != null and name != ''"> and kc.kcdm = #{name} </if>
-            <if test="name != null and name != ''"> or kc.kcmc like concat('%',#{name},'%') </if>
+            <if test="kclx != null and kclx != ''"> and kc.kclx like trim(#{kclx}) </if>
+            <if test="jylx != null and jylx != ''"> and kc.jylx like trim(#{jylx}) </if>
+            <if test="xylx != null and xylx != ''"> and kc.xylx like trim(#{xylx}) </if>
+            <if test="name != null and name != ''"> and (kc.kcdm like concat('%',trim(#{name}),'%') or kc.kcmc like concat('%',trim(#{name}),'%'))</if>
         </where>
-        order by kc.id desc
+        order by kc.cjsj desc
+    </select>
+    <select id="findKcByPcId" resultType="com.itts.personTraining.model.kc.Kc">
+        select kc.*
+        from t_kc kc
+        where kc.sfsc = false
+        and kc.xylx = (select pc.xylx from t_pc pc where pc.sfsc = false and pc.id = #{pcId})
     </select>
 </mapper>

@@ -25,7 +25,7 @@ import java.util.Date;
 @ColumnWidth(20)
 public class XsDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 5978711483112131859L;
 
     /**
      * 学号
@@ -68,229 +68,94 @@ public class XsDTO implements Serializable {
     @ExcelProperty(value = "身份证号", index = 7)
     private String sfzh;
     /**
-     * 毕业证号
-     */
-    @ExcelProperty(value = "毕业证号", index = 8)
-    private String byzh;
-    /**
-     * 学位证号
-     */
-    @ExcelProperty(value = "学位证号", index = 9)
-    private String xwzh;
-    /**
      * 研究方向
      */
-    @ExcelProperty(value = "研究方向", index = 10)
+    @ExcelProperty(value = "研究方向", index = 8)
     private String yjfx;
-    /**
-     * 培养类别ID
-     */
-    @ExcelProperty(value = "培养类别ID", index = 11)
-    private String pylbId;
-    /**
-     * 培养类别名称
-     */
-    @ExcelProperty(value = "培养类别名称", index = 12)
-    private String pylbmc;
     /**
      * 籍贯
      */
-    @ExcelProperty(value = "籍贯", index = 13)
+    @ExcelProperty(value = "籍贯", index = 9)
     private String jg;
     /**
      * 民族
      */
-    @ExcelProperty(value = "民族", index = 14)
+    @ExcelProperty(value = "民族", index = 10)
     private String mz;
     /**
      * 政治面貌
      */
-    @ExcelProperty(value = "政治面貌", index = 15)
+    @ExcelProperty(value = "政治面貌", index = 11)
     private String zzmm;
     /**
      * 入学方式
      */
-    @ExcelProperty(value = "入学方式", index = 16)
+    @ExcelProperty(value = "入学方式", index = 12)
     private String rxfs;
     /**
      * 原毕业院校
      */
-    @ExcelProperty(value = "原毕业院校", index = 17)
+    @ExcelProperty(value = "原毕业院校", index = 13)
     private String ybyyx;
-    /**
-     * 原工作单位
-     */
-    @ExcelProperty(value = "原工作单位", index = 18)
-    private String ygzdw;
-    /**
-     * 原工作单位地址
-     */
-    @ExcelProperty(value = "原工作单位地址", index = 19)
-    private String ygzdwdz;
-    /**
-     * 现工作单位
-     */
-    @ExcelProperty(value = "现工作单位", index = 20)
-    private String xgzdw;
-    /**
-     * 现工作单位地址
-     */
-    @ExcelProperty(value = "现工作单位地址", index = 21)
-    private String xgzdwdz;
-    /**
-     * 现工作单位邮编
-     */
-    @ExcelProperty(value = "现工作单位邮编", index = 22)
-    private String xgzdwyb;
     /**
      * 学制
      */
-    @ExcelProperty(value = "学制", index = 23)
+    @ExcelProperty(value = "学制", index = 14)
     private String xz;
     /**
-     * 学习地点
+     * 原专业导师编号
      */
-    @ExcelProperty(value = "学习地点", index = 24)
-    private String xxdd;
+    @ExcelProperty(value = "原专业导师编号", index = 15)
+    private String yzydsbh;
     /**
-     * 本科毕业证号
+     * 原专业导师姓名
      */
-    @ExcelProperty(value = "本科毕业证号", index = 25)
-    private String bkbyzh;
-    /**
-     * 本科学位证号
-     */
-    @ExcelProperty(value = "本科学位证号", index = 26)
-    private String bkxwzh;
-    /**
-     * 论文题目
-     */
-    @ExcelProperty(value = "论文题目", index = 27)
-    private String lwtm;
-    /**
-     * 论文主题词
-     */
-    @ExcelProperty(value = "论文主题词", index = 28)
-    private String lwztc;
-    /**
-     * 答辩日期
-     */
-    @ExcelProperty(value = "答辩日期", index = 29)
-    private Date dbrq;
-    /**
-     * 毕业日期
-     */
-    @ExcelProperty(value = "毕业日期", index = 30)
-    private Date byrq;
-    /**
-     * 授学位日期
-     */
-    @ExcelProperty(value = "授学位日期", index = 31)
-    private Date sxwrq;
-    /**
-     * 学位类型
-     */
-    @ExcelProperty(value = "学位类型", index = 32)
-    private String xwlx;
-    /**
-     * 导师编号
-     */
-    @ExcelProperty(value = "导师编号", index = 33)
-    private String dsbh;
-    /**
-     * 导师姓名
-     */
-    @ExcelProperty(value = "导师姓名", index = 34)
-    private String dsxm;
+    @ExcelProperty(value = "原专业导师姓名", index = 16)
+    private String yzydsxm;
     /**
      * 院系
      */
-    @ExcelProperty(value = "院系", index = 35)
+    @ExcelProperty(value = "院系", index = 17)
     private String yx;
-    /**
-     * 教委专业代码
-     */
-    @ExcelProperty(value = "教委专业代码", index = 36)
-    private String jwzydm;
     /**
      * 学习形式
      */
-    @ExcelProperty(value = "学习形式", index = 37)
+    @ExcelProperty(value = "学习形式", index = 18)
     private String xxxs;
     /**
      * 毕业结论
      */
-    @ExcelProperty(value = "毕业结论", index = 38)
+    @ExcelProperty(value = "毕业结论", index = 19)
     private String byjl;
-    /**
-     * 校长姓名
-     */
-    @ExcelProperty(value = "校长姓名", index = 39)
-    private String xzxm;
-    /**
-     * 办学类型
-     */
-    @ExcelProperty(value = "办学类型", index = 40)
-    private String bxlx;
-    /**
-     * 培养单位码
-     */
-    @ExcelProperty(value = "培养单位码", index = 41)
-    private String pydwm;
-    /**
-     * 培养单位
-     */
-    @ExcelProperty(value = "培养单位", index = 42)
-    private String pydw;
-    /**
-     * 招生季节
-     */
-    @ExcelProperty(value = "招生季节", index = 43)
-    private String zsjj;
     /**
      * 入学日期
      */
-    @ExcelProperty(value = "入学日期", index = 44)
+    @ExcelProperty(value = "入学日期", index = 20)
     private Date rxrq;
-    /**
-     * 学制
-     */
-    @ExcelProperty(value = "学制", index = 45)
-    private String xzTwo;
-    /**
-     * 准考证号
-     */
-    @ExcelProperty(value = "准考证号", index = 46)
-    private String zkzh;
     /**
      * 联系电话(手机)
      */
-    @ExcelProperty(value = "联系电话(手机)", index = 47)
+    @ExcelProperty(value = "联系电话(手机)", index = 21)
     private String lxdh;
     /**
      * 家庭地址
      */
-    @ExcelProperty(value = "家庭地址", index = 48)
+    @ExcelProperty(value = "家庭地址", index = 22)
     private String jtdz;
-    /**
-     * 备注
-     */
-    @ExcelProperty(value = "备注", index = 49)
-    private String bz;
     /**
      * 专业代码
      */
-    @ExcelProperty(value = "原专业代码", index = 50)
+    @ExcelProperty(value = "原专业代码", index = 23)
     private String yzydm;
     /**
      * 专业
      */
-    @ExcelProperty(value = "原专业", index = 51)
+    @ExcelProperty(value = "原专业", index = 24)
     private String yzy;
     /**
      * 教育形式
      */
-    @ExcelProperty(value = "教育形式", index = 52)
+    @ExcelProperty(value = "教育形式", index = 25)
     private String jyxs;
 
 }

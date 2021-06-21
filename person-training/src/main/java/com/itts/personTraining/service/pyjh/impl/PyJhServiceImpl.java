@@ -5,12 +5,18 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.common.CommonUtils;
 import com.itts.personTraining.dto.PyJhDTO;
+import com.itts.personTraining.mapper.fjzy.FjzyMapper;
 import com.itts.personTraining.mapper.jhKc.JhKcMapper;
+import com.itts.personTraining.model.fjzy.Fjzy;
 import com.itts.personTraining.model.jhKc.JhKc;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pyjh.PyJh;
 import com.itts.personTraining.mapper.pyjh.PyJhMapper;
+import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import com.itts.personTraining.service.jhKc.JhKcService;
+import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.pyjh.PyJhService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +26,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
@@ -47,31 +56,25 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     @Autowired
     private PyJhService pyJhService;
     @Autowired
-    private JhKcService jhKcService;
+    private PcService pcService;
     @Resource
-    private JhKcMapper jhKcMapper;
+    private FjzyMapper fjzyMapper;
 
     /**
      * 查询培养计划列表
      * @param pageNum
      * @param pageSize
-     * @param xslbmc
-     * @param name
-     * @param pcId
+     * @param pch
+     * @param jylx
+     * @param jhmc
      * @return
      */
     @Override
-    public PageInfo<PyJh> findByPage(Integer pageNum, Integer pageSize, String xslbmc, String name, Long pcId) {
-        log.info("【人才培养 - 分页条件查询培养计划列表,学生类别名称:{},培养方案/培养计划/教学大纲:{},批次id:{}】",xslbmc,name,pcId);
+    public PageInfo<PyJhDTO> findByPage(Integer pageNum, Integer pageSize, String pch, String jylx, String jhmc) {
+        log.info("【人才培养 - 分页条件查询培养计划列表,批次号:{},教育类型:{},计划名称:{}】",pch,jylx,jhmc);
         PageHelper.startPage(pageNum, pageSize);
-        QueryWrapper<PyJh> pyJhQueryWrapper = new QueryWrapper<>();
-        pyJhQueryWrapper.eq("sfsc",false)
-                .eq(pcId != null,"pc_id",pcId)
-                .eq(StringUtils.isNotBlank(xslbmc),"xslbmc",xslbmc)
-                .like(StringUtils.isNotBlank(name), "pyfa", name)
-                .or().like(StringUtils.isNotBlank(name), "pyjh", name)
-                .or().like(StringUtils.isNotBlank(name), "jxdg", name);
-        return new PageInfo<>(pyJhMapper.selectList(pyJhQueryWrapper));
+        List<PyJhDTO> pyJhDTOList = pyJhMapper.findByPage(pch,jylx,jhmc);
+        return new PageInfo<>(pyJhDTOList);
     }
 
     /**
@@ -88,7 +91,22 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         PyJhDTO pyJhDTO = new PyJhDTO();
         PyJh pyJh = pyJhMapper.selectOne(pyJhQueryWrapper);
         BeanUtils.copyProperties(pyJh,pyJhDTO);
-        pyJhDTO.setKcIds(jhKcMapper.selectByJhId(pyJh.getId()));
+        Pc pc = pcService.get(pyJhDTO.getPcId());
+        pyJhDTO.setPch(pc.getPch());
+        pyJhDTO.setJylx(pc.getJylx());
+        if (StringUtils.isNotBlank(pyJh.getFjzyId())) {
+
+            List<AddFjzyRequest> fjzys = fjzyMapper.selectList(new QueryWrapper<Fjzy>().eq("fjzy_id", pyJh.getFjzyId()))
+                    .stream().map(obj -> {
+
+                        AddFjzyRequest request = new AddFjzyRequest();
+                        BeanUtils.copyProperties(obj, request);
+                        return request;
+
+                    }).collect(Collectors.toList());
+
+            pyJhDTO.setFjzys(fjzys);
+        }
         return pyJhDTO;
     }
 
@@ -105,19 +123,26 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         pyJhDTO.setCjr(userId);
         pyJhDTO.setGxr(userId);
         BeanUtils.copyProperties(pyJhDTO,pyJh);
-        if (pyJhService.save(pyJh)) {
-            List<JhKc> jhKcList = new ArrayList<>();
-            Long jhId = pyJh.getId();
-            List<Long> kcIds = pyJhDTO.getKcIds();
-            for (Long kcId : kcIds) {
-                JhKc jhKc = new JhKc();
-                jhKc.setKcId(kcId);
-                jhKc.setJhId(jhId);
-                jhKcList.add(jhKc);
+        if (!CollectionUtils.isEmpty(pyJhDTO.getFjzys())) {
+
+            String fjzyId = CommonUtils.generateUUID();
+            pyJh.setFjzyId(fjzyId);
+
+            List<AddFjzyRequest> fjzys = pyJhDTO.getFjzys();
+
+            for (AddFjzyRequest addFjzy : fjzys) {
+
+                Fjzy fjzy = new Fjzy();
+                BeanUtils.copyProperties(addFjzy, fjzy);
+
+                fjzy.setFjzyId(fjzyId);
+                fjzy.setCjr(userId);
+                fjzy.setCjsj(new Date());
+
+                fjzyMapper.insert(fjzy);
             }
-            return jhKcService.saveBatch(jhKcList);
         }
-        return false;
+        return pyJhService.save(pyJh);
     }
 
     /**
@@ -131,26 +156,36 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         pyJhDTO.setGxr(getUserId());
         PyJh pyJh = new PyJh();
         BeanUtils.copyProperties(pyJhDTO,pyJh);
-        if (pyJhService.updateById(pyJh)) {
-            List<Long> kcIds = pyJhDTO.getKcIds();
-            if (kcIds != null) {
-                HashMap<String, Object> map = new HashMap<>();
-                Long jhId = pyJh.getId();
-                map.put("jh_id",jhId);
-                if (jhKcService.removeByMap(map)) {
-                    List<JhKc> kcList = new ArrayList<>();
-                    for (Long kcId : kcIds) {
-                        JhKc jhKc = new JhKc();
-                        jhKc.setJhId(jhId);
-                        jhKc.setKcId(kcId);
-                        kcList.add(jhKc);
-                    }
-                    return jhKcService.saveBatch(kcList);
-                }
+        if (!CollectionUtils.isEmpty(pyJhDTO.getFjzys())) {
+
+            List<AddFjzyRequest> fjzys = pyJhDTO.getFjzys();
+
+            String fjzyId = pyJh.getFjzyId();
+
+            //判断当前学习资源是否有附件资源
+            if (StringUtils.isNotBlank(fjzyId)) {
+
+                //删除当前所有的附件资源，增加新的附件资源
+                fjzyMapper.delete(new QueryWrapper<Fjzy>().eq("fjzy_id", pyJh.getFjzyId()));
+
+            } else {
+
+                fjzyId = CommonUtils.generateUUID();
             }
-            return true;
+
+            for (AddFjzyRequest addFjzy : fjzys) {
+
+                Fjzy fjzy = new Fjzy();
+                BeanUtils.copyProperties(addFjzy, fjzy);
+
+                fjzy.setFjzyId(fjzyId);
+                fjzy.setCjr(getUserId());
+                fjzy.setCjsj(new Date());
+
+                fjzyMapper.insert(fjzy);
+            }
         }
-        return false;
+        return pyJhService.updateById(pyJh);
     }
 
     /**
@@ -166,12 +201,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         pyJhDTO.setGxr(getUserId());
         PyJh pyJh = new PyJh();
         BeanUtils.copyProperties(pyJhDTO,pyJh);
-        if (pyJhService.updateById(pyJh)) {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("jh_id",pyJh.getId());
-            return jhKcService.removeByMap(map);
-        }
-        return false;
+        return pyJhService.updateById(pyJh);
     }
 
     /**
@@ -186,6 +216,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         Long userId = getUserId();
         for (PyJh pyJh : pyJhs) {
             pyJh.setSfxf(true);
+            pyJh.setXfsj(new Date());
             pyJh.setGxr(userId);
         }
         return pyJhService.updateBatchById(pyJhs);

@@ -12,9 +12,14 @@
         <result column="lxdh" property="lxdh"/>
         <result column="yhtx" property="yhtx"/>
         <result column="yhlx" property="yhlx"/>
+        <result column="yhlb" property="yhlb"/>
         <result column="yhjb" property="yhjb"/>
         <result column="jg_id" property="jgId"/>
+        <result column="jgmc" property="jgmc"/>
         <result column="yhyx" property="yhyx"/>
+        <result column="yhjf" property="yhjf"/>
+        <result column="sfhy" property="sfhy"/>
+        <result column="hylx" property="hylx"/>
         <result column="sfsc" property="sfsc"/>
         <result column="cjsj" property="cjsj"/>
         <result column="cjr" property="cjr"/>
@@ -25,7 +30,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id
-        , yhm, mm, yhbh, zsxm, lxdh, yhtx, yhlx, yhjb, jg_id, yhyx, sfsc, cjsj, cjr, gxsj, gxr
+        , yhm, mm, yhbh, zsxm, lxdh, yhtx, yhlx, yhlb, yhjb, jg_id, jgmc, yhyx, yhjf, sfhy, hylx, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
     <!-- 通用查询映射结果 -->
@@ -38,9 +43,13 @@
         <result column="lxdh" property="lxdh"/>
         <result column="yhtx" property="yhtx"/>
         <result column="yhlx" property="yhlx"/>
+        <result column="yhlb" property="yhlb"/>
         <result column="yhjb" property="yhjb"/>
         <result column="jg_id" property="jgId"/>
         <result column="yhyx" property="yhyx"/>
+        <result column="yhjf" property="yhjf"/>
+        <result column="sfhy" property="sfhy"/>
+        <result column="hylx" property="hylx"/>
         <result column="sfsc" property="sfsc"/>
         <result column="cjsj" property="cjsj"/>
         <result column="cjr" property="cjr"/>
@@ -95,13 +104,14 @@
             AND yh.yhlx =#{type}
         </if>
         <if test="groupIds != null and groupIds.size > 0">
-            AND  yh.jg_id IN
+            AND yh.jg_id IN
             <foreach collection="groupIds" item="groupId" separator="," open="(" close=")">
-               #{groupId}
+                #{groupId}
             </foreach>
         </if>
         <if test="condition != null and condition != ''">
-            AND (yh.yhm LIKE CONCAT('%', #{condition}, '%') OR yh.zsxm LIKE CONCAT('%', #{condition}, '%') OR  yh.yhbh LIKE CONCAT('%', #{condition}, '%'))
+            AND (yh.yhm LIKE CONCAT('%', #{condition}, '%') OR yh.zsxm LIKE CONCAT('%', #{condition}, '%') OR yh.yhbh
+            LIKE CONCAT('%', #{condition}, '%'))
         </if>
         ORDER BY yh.cjsj DESC
     </select>
@@ -115,7 +125,7 @@
         <if test="type != null and type != ''">
             AND yh.yhlx =#{type}
         </if>
-        and (yh.yhm like concat('%',#{string},'%')  or yh.yhbh like concat('%',#{string},'%') )
+        and (yh.yhm like concat('%',#{string},'%') or yh.yhbh like concat('%',#{string},'%') )
         ORDER BY yh.cjsj DESC
     </select>
 </mapper>

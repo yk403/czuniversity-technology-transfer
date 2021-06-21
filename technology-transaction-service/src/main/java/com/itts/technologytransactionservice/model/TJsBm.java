@@ -62,6 +62,10 @@ public class TJsBm implements Serializable {
      */
     private String gszz;
     /**
+     * 公司资质名称
+     */
+    private String gszzmc;
+    /**
      * 设计方案
      */
     private String sjfa;
@@ -113,4 +117,8 @@ public class TJsBm implements Serializable {
      * 机构代码
      */
     private String jgdm;
+    /**
+     * 用户名
+     */
+    private String yhm;
 }

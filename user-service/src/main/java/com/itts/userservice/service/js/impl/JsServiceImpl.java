@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.userservice.enmus.UserTypeEnum;
 import com.itts.userservice.mapper.cz.CzMapper;
 import com.itts.userservice.mapper.js.JsCdCzGlMapper;
 import com.itts.userservice.mapper.js.JsCdGlMapper;
@@ -101,6 +102,16 @@ public class JsServiceImpl implements JsService {
     }
 
     /**
+     * 通过用户ID获取
+     */
+    @Override
+    public List<Js> findByUserId(Long userId) {
+
+        List<Js> jsList = jsMapper.findByYhId(userId);
+        return jsList;
+    }
+
+    /**
      * 获取详情
      */
     @Override
@@ -173,6 +184,33 @@ public class JsServiceImpl implements JsService {
     @Override
     public Js add(AddJsRequest request) {
 
+        //如果当前角色为默认角色
+        if (request.getSfmr()) {
+
+            if (StringUtils.equals(request.getYhjslx(), UserTypeEnum.IN_USER.getCode())) {
+
+
+                Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>().eq("jslb", request.getJslb())
+                        .eq("yhjslx", UserTypeEnum.IN_USER.getCode()).eq("sfmr", true));
+
+                if (updateDefaultJs != null) {
+
+                    updateDefaultJs.setSfmr(false);
+                    jsMapper.updateById(updateDefaultJs);
+                }
+
+            } else {
+
+                Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>()
+                        .eq("yhjslx", UserTypeEnum.OUT_USER.getCode()).eq("sfmr", true));
+
+                if (updateDefaultJs != null) {
+                    updateDefaultJs.setSfmr(false);
+                    jsMapper.updateById(updateDefaultJs);
+                }
+            }
+        }
+
         Js js = new Js();
         BeanUtils.copyProperties(request, js);
 
@@ -243,6 +281,34 @@ public class JsServiceImpl implements JsService {
      */
     @Override
     public Js update(Js Js) {
+
+        //如果当前角色为默认角色
+        if (Js.getSfmr()) {
+
+            if (StringUtils.equals(Js.getYhjslx(), UserTypeEnum.IN_USER.getCode())) {
+
+
+                Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>().eq("jslb", Js.getJslb())
+                        .eq("yhjslx", UserTypeEnum.IN_USER.getCode()).eq("sfmr", true));
+
+                if (updateDefaultJs != null) {
+
+                    updateDefaultJs.setSfmr(false);
+                    jsMapper.updateById(updateDefaultJs);
+                }
+            } else {
+
+                Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>()
+                        .eq("yhjslx", UserTypeEnum.OUT_USER.getCode()).eq("sfmr", true));
+
+                if (updateDefaultJs != null) {
+
+                    updateDefaultJs.setSfmr(false);
+                    jsMapper.updateById(updateDefaultJs);
+                }
+            }
+        }
+
         jsMapper.updateById(Js);
         return Js;
     }
@@ -272,6 +338,32 @@ public class JsServiceImpl implements JsService {
      */
     @Override
     public Js updateJsCdCzGl(AddJsRequest request) {
+
+        //如果当前角色为默认角色
+        if (request.getSfmr()) {
+
+            if (StringUtils.equals(request.getYhjslx(), UserTypeEnum.IN_USER.getCode())) {
+
+
+                Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>().eq("jslb", request.getJslb())
+                        .eq("yhjslx", UserTypeEnum.IN_USER.getCode()).eq("sfmr", true));
+
+                if (updateDefaultJs != null) {
+
+                    updateDefaultJs.setSfmr(false);
+                    jsMapper.updateById(updateDefaultJs);
+                }
+            } else {
+
+                Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>()
+                        .eq("yhjslx", UserTypeEnum.OUT_USER.getCode()).eq("sfmr", true));
+
+                if (updateDefaultJs != null) {
+                    updateDefaultJs.setSfmr(false);
+                    jsMapper.updateById(updateDefaultJs);
+                }
+            }
+        }
 
         //设置角色更新后的信息
         Js js = new Js();

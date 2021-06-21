@@ -58,7 +58,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         log.info("【技术交易 - 分页查询成果(后台审批管理)】");
         //前端传输标识type(0：审批管理;1：信息采集)
         //TODO 从ThreadLocal中获取管理员id 暂时是假数据
-        params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
+        //params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsCg> list = jsCgMapper.findJsCg(query);
@@ -140,11 +140,19 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         List<TJsCg> hdJsCg = jsCgMapper.findHdJsCg(queryMap);
         //置顶
         if (type == 0) {
-            for(int i=0;i<soft-1;i++){
+            int k=0;
+            //判断状态为即将开始的成果或需求的第一个技术商品的序号
+            for(int j=0;j<hdJsCg.size();j++){
+                if(hdJsCg.get(j).getAuctionStatus()==0){
+                    k=j;
+                }
+            }
+            //将选中的那项的序号置为即将开始的第一个其他所有在此项之前的即将开始的项目往后移一位
+            for(int i=k;i<soft-1;i++){
                 hdJsCg.get(i).setSoft(hdJsCg.get(i).getSoft()+1);
                 tempList.add(hdJsCg.get(i));
             }
-            byId.setSoft(0);
+            byId.setSoft(k);
             tempList.add(byId);
         }
         //置底

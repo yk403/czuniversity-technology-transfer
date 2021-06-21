@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personTraining.mapper.zj.ZjMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.zj.Zj">
+        <id column="id" property="id" />
+        <result column="xm" property="xm" />
+        <result column="tx" property="tx" />
+        <result column="sfzh" property="sfzh" />
+        <result column="xb" property="xb" />
+        <result column="sr" property="sr" />
+        <result column="mz" property="mz" />
+        <result column="zzmm" property="zzmm" />
+        <result column="xl" property="xl" />
+        <result column="lx" property="lx" />
+        <result column="zyjszw" property="zyjszw" />
+        <result column="dw" property="dw" />
+        <result column="dz" property="dz" />
+        <result column="dh" property="dh" />
+        <result column="zjh" property="zjh" />
+        <result column="sshy" property="sshy" />
+        <result column="csxk" property="csxk" />
+        <result column="zcfx" property="zcfx" />
+        <result column="yjcg" property="yjcg" />
+        <result column="dzyj" property="dzyj" />
+        <result column="yjly" property="yjly" />
+        <result column="zscq" property="zscq" />
+        <result column="zjxm" property="zjxm" />
+        <result column="lw" property="lw" />
+        <result column="zlh" property="zlh" />
+        <result column="bz" property="bz" />
+        <result column="sfsc" property="sfsc" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, xm, xt, sfzh, xb, sr, mz, zzmm, xl, lx, zyjszw, dw, dz, dh, zjh, sshy, csxk, zcfx, yjcg, dzyj, yjly, zscq, zjxm, lw, zlh, bz, sfsc, cjsj, cjr, gxsj, gxr
+    </sql>
+
+</mapper>

@@ -37,9 +37,8 @@ public class PkAdminController {
      */
     @GetMapping("/list")
     @ApiOperation(value = "查询排课信息")
-    public ResponseUtil findPkInfo(@RequestParam(value = "skqsnyr") String skqsnyr,
-                                   @RequestParam(value = "pcId", required = false) Long pcId) {
-        return ResponseUtil.success(pkService.findPkInfo(skqsnyr, pcId));
+    public ResponseUtil findPkInfo(@RequestParam(value = "pcId", required = false) Long pcId) {
+        return ResponseUtil.success(pkService.findPkInfo(pcId));
     }
 
     /**
@@ -65,6 +64,9 @@ public class PkAdminController {
     @ApiOperation(value = "新增排课")
     public ResponseUtil add(@RequestBody PkDTO pkDTO) throws WebException {
         //检查参数是否合法
+        if (pkDTO.getId() != null) {
+            throw new WebException(SCHEDUING_EXISTS_ERROR);
+        }
         checkRequest(pkDTO);
         if (!pkService.add(pkDTO)) {
             throw new WebException(INSERT_FAIL);
@@ -84,6 +86,9 @@ public class PkAdminController {
     public ResponseUtil add(@RequestBody List<PkDTO> pkDTOs) throws WebException {
         //检查参数是否合法
         for (PkDTO pkDTO : pkDTOs) {
+            if (pkDTO.getId() != null) {
+                throw new WebException(SCHEDUING_EXISTS_ERROR);
+            }
             checkRequest(pkDTO);
         }
         if (!pkService.addList(pkDTOs)) {
@@ -149,8 +154,26 @@ public class PkAdminController {
         if (pkDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (pkDTO.getId() != null) {
-            throw new WebException(SCHEDUING_EXISTS_ERROR);
+        //查询出该开学日期的所有排课信息
+        List<PkDTO> pkDTOs = pkService.findPkByKxrq(pkDTO.getKxrq());
+        for (PkDTO dto : pkDTOs) {
+            if (dto.getXqs().equals(pkDTO.getXqs()) && dto.getKcsjId().equals(pkDTO.getKcsjId())) {
+                if ((pkDTO.getQsz() > dto.getQsz() && pkDTO.getJsz() < dto.getJsz()) || (pkDTO.getJsz() > dto.getQsz() && pkDTO.getJsz() <dto.getJsz())) {
+                    if (pkDTO.getXxjsId() != null) {
+                        if (pkDTO.getXxjsId().equals(dto.getXxjsId())) {
+                            throw new WebException(SCHOOL_BE_OCCUPIED);
+                        }
+                    }
+                    if (pkDTO.getSkdd() != null) {
+                        if (pkDTO.getSkdd().equals(dto.getSkdd())) {
+                            throw new WebException(PLACE_BE_OCCUPIED);
+                        }
+                    }
+                    if (pkDTO.getSzId().equals(dto.getSzId())) {
+                        throw new WebException(TEACHER_BE_OCCUPIED);
+                    }
+                }
+            }
         }
     }
 

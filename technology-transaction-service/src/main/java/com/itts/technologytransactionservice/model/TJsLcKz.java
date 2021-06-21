@@ -86,4 +86,12 @@ public class TJsLcKz implements Serializable {
      * 服务费(默认为落锤金额的5%)
      */
     private BigDecimal fwf;
+    /**
+     * 报名id
+     */
+    private Integer bmId;
+    /**
+     * 成果需求状态
+     */
+    private Integer aStatus;
 }

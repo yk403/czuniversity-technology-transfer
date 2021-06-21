@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.util.Date;
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,13 +23,20 @@ import lombok.EqualsAndHashCode;
 @TableName("t_pc")
 public class Pc implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 723841754888857561L;
 
     /**
      * 主键
      */
       @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
+    /**
+     * 入学日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @ApiModelProperty(value = "入学日期", required = true)
+    private Date rxrq;
 
     /**
      * 批次名称
@@ -53,12 +61,6 @@ public class Pc implements Serializable {
      */
     @ApiModelProperty(value = "学员类型", required = true)
     private String xylx;
-
-    /**
-     * 课程类型
-     */
-    @ApiModelProperty(value = "课程类型", required = true)
-    private String kclx;
 
     /**
      * 是否删除(0:未删除;1已删除)

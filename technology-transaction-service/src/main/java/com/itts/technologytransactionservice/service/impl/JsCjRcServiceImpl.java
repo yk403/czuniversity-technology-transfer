@@ -27,7 +27,8 @@ import java.math.BigInteger;
 import java.util.*;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.MAX_BIDHISTORY_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.MIN_BIDHISTORY_ERROR;
 
 
 @Service
@@ -44,7 +45,7 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
 	@Override
 	public PageInfo page(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		List<TJsCjRcDto> list = jsCjRcMapper.listRcHd(query);
+		List<TJsCjRcDto> list = jsCjRcMapper.listRcJy(query);
 		PageInfo<TJsCjRcDto> page = new PageInfo<>(list);
 		return page;
 	}
@@ -66,36 +67,79 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
     }
     //叫价逻辑
     @Override
-    public boolean saveCjRc(TJsCjRcDto tJsCjRcDto) {
-        Map<String,Object> map=new HashMap<>();
+    public boolean saveCjRc(TJsCjRcDto tJsCjRcDto,TJsBm tJsBm) {
+/*        Map<String,Object> map=new HashMap<>();
         map.put("hdId",tJsCjRcDto.getHdId());
-        map.put("userId",Integer.parseInt(String.valueOf(getUserId())));
+        map.put("userId",tJsCjRcDto.getUserId());
+        List<TJsBm> list = jsBmMapper.list(map);*/
+        TJsCjRc tJsCjRc=new TJsCjRc();
+        BeanUtils.copyProperties(tJsCjRcDto,tJsCjRc);
         //判断是成果活动还是需求活动，并把流程状态控制表当前最高价格置为当前叫价金额
         if(tJsCjRcDto.getCgId()!=null){
+            //查询当前商品的最高出价，判断当前要出价的价格必须大于这个价格
+            Map<String,Object> cjrcmap=new HashMap<>();
+            cjrcmap.put("cgId",tJsCjRcDto.getCgId());
+            List<TJsCjRc> tJsCjRcs = jsCjRcMapper.listMax(cjrcmap);
             Map<String,Object> cjmap=new HashMap<String,Object>();
             cjmap.put("type",1);
             cjmap.put("cgId",tJsCjRcDto.getCgId());
-            List<TJsLcKz> list = jsLcKzMapper.list(cjmap);
-            list.get(0).setDqzgjg(tJsCjRcDto.getJjje());
-            jsLcKzMapper.updateById(list.get(0));
+            List<TJsLcKz> listLckz = jsLcKzMapper.list(cjmap);
+            listLckz.get(0).setDqzgjg(tJsCjRcDto.getJjje());
+            //如果有新的叫价，将叫价间隔状态置为0
+            listLckz.get(0).setJjjgzt(0);
+                listLckz.get(0).setBmId(tJsBm.getId());
+            tJsCjRc.setCjsj(new Date());
+            tJsCjRc.setGxsj(new Date());
+            if(tJsCjRcs.size()>0){
+                if(tJsCjRcs.get(0)==null){
+
+                }else{
+                    if(tJsCjRc.getJjje().compareTo(tJsCjRcs.get(0).getJjje())== 1){
+
+                    }else{
+                        throw new ServiceException(MAX_BIDHISTORY_ERROR);
+                    }
+                }
+            }
+            jsCjRcMapper.saveTJsCjRcCg(tJsCjRc);
+            jsLcKzMapper.updateTJsLcKzCg(listLckz.get(0));
+            //save(tJsCjRc);
+            //jsLcKzMapper.updateById(listLckz.get(0));
+            return true;
         }
         if(tJsCjRcDto.getXqId()!=null){
+            //查询当前商品的最低出价，判断当前要出价的价格必须小于这个价格
+            Map<String,Object> cjrcmap=new HashMap<>();
+            cjrcmap.put("xqId",tJsCjRcDto.getXqId());
+            List<TJsCjRc> tJsCjRcs = jsCjRcMapper.listMax(cjrcmap);
             Map<String,Object> xqmap=new HashMap<String,Object>();
             xqmap.put("type",0);
             xqmap.put("xqId",tJsCjRcDto.getXqId());
-            List<TJsLcKz> list = jsLcKzMapper.list(xqmap);
-            list.get(0).setDqzgjg(tJsCjRcDto.getJjje());
-            jsLcKzMapper.updateById(list.get(0));
+            List<TJsLcKz> listLckz = jsLcKzMapper.list(xqmap);
+            listLckz.get(0).setDqzgjg(tJsCjRcDto.getJjje());
+            //如果有新的叫价，将叫价间隔状态置为0
+            listLckz.get(0).setJjjgzt(0);
+                listLckz.get(0).setBmId(tJsBm.getId());
+            tJsCjRc.setCjsj(new Date());
+            tJsCjRc.setGxsj(new Date());
+            if(tJsCjRcs.size()>0){
+                if(tJsCjRcs.get(0)==null){
+
+                }else{
+                    if(tJsCjRc.getJjje().compareTo(tJsCjRcs.get(0).getJjje())== -1){
+
+                    }else{
+                        throw new ServiceException(MIN_BIDHISTORY_ERROR);
+                    }
+                }
+            }
+            jsCjRcMapper.saveTJsCjRcXq(tJsCjRc);
+            jsLcKzMapper.updateTJsLcKzXq(listLckz.get(0));
+            //save(tJsCjRc);
+            //jsLcKzMapper.updateById(listLckz.get(0));
+            return true;
         }
-        List<TJsBm> list = jsBmMapper.list(map);
-        TJsCjRc tJsCjRc=new TJsCjRc();
-        BeanUtils.copyProperties(tJsCjRcDto,tJsCjRc);
-        //暂时设定单个活动多个报名信息默认显示最新的那个
-        if(list.size()>0){
-            tJsCjRc.setBmId(list.get(0).getId());
-            tJsCjRc.setCjf(list.get(0).getDwmc());
-        }
-        return save(tJsCjRc);
+        return false;
     }
     /**
      * 获取当前用户id
@@ -107,10 +151,10 @@ public class JsCjRcServiceImpl extends ServiceImpl<JsCjRcMapper, TJsCjRc> implem
         if (loginUser != null) {
             userId = loginUser.getUserId();
         } else {
-            throw new ServiceException(GET_THREADLOCAL_ERROR);
+            //throw new ServiceException(GET_THREADLOCAL_ERROR);
+            userId=null;
         }
         return userId;
     }
-
 
 }

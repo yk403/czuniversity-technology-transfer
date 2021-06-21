@@ -44,6 +44,11 @@ public class AuthoritionUser implements Serializable {
     private String yhbh;
 
     /**
+     * 用户头像
+     */
+    private String yhtx;
+
+    /**
      * 真实姓名
      */
     private String zsxm;
@@ -54,9 +59,19 @@ public class AuthoritionUser implements Serializable {
     private String lxdh;
 
     /**
-     * 用户类型
+     * 用户类别：研究生；经纪人；导师；企业导师；任课教师；管理员
      */
     private String yhlx;
+
+    /**
+     * 用户类别
+     */
+    private String yhlb;
+
+    /**
+     * 用户积分
+     */
+    private Integer yhjf;
 
     /**
      * 用户级别

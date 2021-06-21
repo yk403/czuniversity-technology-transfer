@@ -34,6 +34,7 @@ public class TJsXq implements Serializable {
 	/**
 	 * soft(排序使用)
 	 */
+	@TableField(updateStrategy = FieldStrategy.IGNORED)
 	private Integer soft;
 	/**
 	 * 技术需求id
@@ -122,6 +123,7 @@ public class TJsXq implements Serializable {
 	/**
  	* 技术活动id
  	*/
+	@TableField(updateStrategy = FieldStrategy.IGNORED)
 	private Integer jshdId;
 	/**
 	 * 发布需求审核状态(0待提交、1待审核、2通过、3整改、4拒绝)
@@ -276,4 +278,28 @@ public class TJsXq implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date yxqjssj;
+	/**
+	 * 服务费(默认为落锤金额的5%)
+	 */
+	private BigDecimal fwf;
+	/**
+	 * 落锤定价
+	 */
+	private Integer lcdj;
+	/**
+	 * 受让方
+	 */
+	private String srfmc;
+	/**
+	 * 受让方联系电话
+	 */
+	private String srfhm;
+	/**
+	 * 底价
+	 */
+	private BigDecimal dj;
+	/**
+	 * 活动名称
+	 */
+	private String hdmc;
 }

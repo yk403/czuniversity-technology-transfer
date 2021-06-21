@@ -4,29 +4,35 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.userservice.model.sjzd.Sjzd">
-        <id column="id" property="id" />
-        <result column="zdmc" property="zdmc" />
-        <result column="zdbm" property="zdbm" />
-        <result column="xtlb" property="xtlb" />
-        <result column="mklx" property="mklx" />
-        <result column="ssmkmc" property="ssmkmc" />
-        <result column="ssmk" property="ssmk" />
-        <result column="fj_id" property="fjId" />
-        <result column="fjmc" property="fjmc" />
-        <result column="sfsc" property="sfsc" />
-        <result column="cjsj" property="cjsj" />
-        <result column="cjr" property="cjr" />
-        <result column="gxsj" property="gxsj" />
-        <result column="gxr" property="gxr" />
+        <id column="id" property="id"/>
+        <result column="zdmc" property="zdmc"/>
+        <result column="zdbm" property="zdbm"/>
+        <result column="xtlb" property="xtlb"/>
+        <result column="mklx" property="mklx"/>
+        <result column="ssmkmc" property="ssmkmc"/>
+        <result column="ssmk" property="ssmk"/>
+        <result column="fj_id" property="fjId"/>
+        <result column="fj_bm" property="fjBm"/>
+        <result column="fjmc" property="fjmc"/>
+        <result column="px" property="px"/>
+        <result column="sfsc" property="sfsc"/>
+        <result column="cjsj" property="cjsj"/>
+        <result column="cjr" property="cjr"/>
+        <result column="gxsj" property="gxsj"/>
+        <result column="gxr" property="gxr"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, zdmc, zdbm, xtlb, mklx, ssmkmc, ssmk, fj_id, fjmc, sfsc, cjsj, cjr, gxsj, gxr
+        id
+        , zdmc, zdbm, xtlb, mklx, ssmkmc, ssmk, fj_id, fj_bm, fjmc, px, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="selectByCode" resultMap="BaseResultMap">
-        select * from t_sjzd where zdbm= #{zdbm} and sfsc = false
+        select *
+        from t_sjzd
+        where zdbm = #{zdbm}
+          and sfsc = false
     </select>
 
 
@@ -44,7 +50,9 @@
     <select id="selectByNameOrCode" resultType="com.itts.userservice.model.sjzd.Sjzd">
         select *
         from t_sjzd
-        where (zdmc like concat('%',#{string},'%') or zdbm like concat('%',#{string},'%')) and sfsc =false and ssmk =#{ssmk}
+        where (zdmc like concat('%', #{string}, '%') or zdbm like concat('%', #{string}, '%'))
+          and sfsc = false
+          and ssmk = #{ssmk}
         order by cjsj desc
     </select>
 

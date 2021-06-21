@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
@@ -154,9 +155,9 @@ public class JsCgController extends BaseController {
     @PutMapping("/auditCg")
     public ResponseUtil auditCg(@RequestBody Map<String, Object> params) {
         Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
-        if (fbshzt != 1) {
+/*        if (fbshzt != 1) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
+        }*/
         return ResponseUtil.success("申请审核成功", jsCgService.auditCg(params, fbshzt));
     }
 

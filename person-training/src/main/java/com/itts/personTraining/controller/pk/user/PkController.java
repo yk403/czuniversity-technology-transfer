@@ -38,10 +38,22 @@ public class PkController {
     @ApiOperation(value = "查询排课信息")
     public ResponseUtil findPkInfo(@RequestParam(value = "skqsnyr") String skqsnyr,
                                    @RequestParam(value = "xh") String xh) {
-        Long pcId = xsService.getByXh(xh).getPcId();
+        //TODO: 暂定,等会处理
+        Long pcId = null; //xsService.getByXh(xh).getPcId();
         if(pcId==null){
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        return ResponseUtil.success(pkService.findPkInfo(skqsnyr, pcId));
+        return ResponseUtil.success(pkService.findPkInfo(pcId));
+    }
+
+    /**
+     * 根据用户id查询批次集合(前)(老师)
+     *
+     * @return
+     */
+    @GetMapping("/getPcsByYhId")
+    @ApiOperation(value = "根据用户id查询批次集合(前)")
+    public ResponseUtil getPcsByYhId() {
+        return ResponseUtil.success(pkService.getPcsByYhId());
     }
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.util.Date;
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,7 +23,7 @@ import lombok.EqualsAndHashCode;
 @TableName("t_pk")
 public class Pk implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -2972604277123643798L;
 
     /**
      * 主键
@@ -35,12 +36,6 @@ public class Pk implements Serializable {
      */
     @ApiModelProperty(value = "批次ID", required = true)
     private Long pcId;
-
-    /**
-     * 课程ID
-     */
-    @ApiModelProperty(value = "课程ID", required = true)
-    private Long kcId;
 
     /**
      * 师资ID
@@ -61,22 +56,54 @@ public class Pk implements Serializable {
     private Long kcsjId;
 
     /**
+     * 课程ID
+     */
+    @ApiModelProperty(value = "课程ID", required = true)
+    private Long kcId;
+
+    /**
+     * 类型(1:学历学位排课;2:继续教育排课)
+     */
+    private Integer type;
+
+    /**
+     * 上课地点
+     */
+    private String skdd;
+
+    /**
      * 排课名称
      */
     @ApiModelProperty(value = "排课名称", required = true)
     private String pkmc;
 
     /**
+     * 开学日期
+     */
+    @ApiModelProperty(value = "开学日期", required = true)
+    private String kxrq;
+
+    /**
      * 上课起始年月日
      */
     @ApiModelProperty(value = "上课起始年月日", required = true)
-    private String skqsnyr;
+    private Date skqsnyr;
 
     /**
      * 上课结束年月日
      */
     @ApiModelProperty(value = "上课结束年月日", required = true)
-    private String skjsnyr;
+    private Date skjsnyr;
+
+    /**
+     * 起始周
+     */
+    private Integer qsz;
+
+    /**
+     * 结束周
+     */
+    private Integer jsz;
 
     /**
      * 星期数

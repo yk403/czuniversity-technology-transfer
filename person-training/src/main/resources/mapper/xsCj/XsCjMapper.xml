@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personTraining.mapper.xsCj.XsCjMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.dto.XsCjDTO">
+        <id column="id" property="id" />
+        <result column="xs_id" property="xsId" />
+        <result column="pc_id" property="pcId" />
+        <result column="type" property="type" />
+        <result column="pch" property="pch" />
+        <result column="pcmc" property="pcmc" />
+        <result column="xh" property="xh" />
+        <result column="xm" property="xm" />
+        <result column="yx" property="yx" />
+        <result column="yzy" property="yzy" />
+        <result column="zhcj" property="zhcj" />
+        <result column="zxf" property="zxf" />
+        <result column="zxzyzxf" property="zxzyzxf" />
+        <result column="jszykczf" property="jszykczf" />
+        <result column="lwcj" property="lwcj" />
+        <result column="sfxf" property="sfxf" />
+        <result column="sfsc" property="sfsc" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+        <collection property="xsKcCjDTOList" resultMap="xsKcCjDTOListResultMap"/>
+    </resultMap>
+
+    <resultMap id="xsKcCjDTOListResultMap" type="com.itts.personTraining.dto.XsKcCjDTO">
+        <id column="xs_kc_cj_id" property="id" />
+        <id column="xs_cj_id" property="xsCjId" />
+        <id column="xs_id" property="xsId" />
+        <id column="kc_id" property="kcId" />
+        <id column="kclx" property="kclx" />
+        <id column="kcxs" property="kcxs" />
+        <id column="kcxf" property="kcxf" />
+        <id column="kcdm" property="kcdm" />
+        <id column="kcmc" property="kcmc" />
+        <id column="sfbx" property="sfbx" />
+        <id column="xwk" property="xwk" />
+        <id column="yzyxf" property="yzyxf" />
+        <id column="dqxf" property="dqxf" />
+        <id column="cj" property="cj" />
+        <id column="xxxq" property="xxxq" />
+        <id column="cjsx" property="cjsx" />
+        <id column="bkcj" property="bkcj" />
+        <id column="sfsc" property="sfsc" />
+        <id column="bz" property="bz" />
+        <id column="cjsj" property="cjsj" />
+        <id column="cjr" property="cjr" />
+        <id column="gxsj" property="gxsj" />
+        <id column="gxr" property="gxr" />
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, xs_id, zhcj, zxf, lwcj, sfsc, cjsj, cjr, gxsj, gxr
+    </sql>
+    <select id="findXsKcCj" resultMap="BaseResultMap">
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yzy, xs.yx, txkc.id as xs_kc_cj_id, txkc.xs_cj_id, txkc.kc_id, txkc.kclx, txkc.yzyxf, txkc.dqxf, txkc.cj, txkc.cjsx, txkc.bkcj, txkc.bz, kc.kcdm, kc.kcmc, kc.kcxs, kc.kcxf, kc.sfbx, pc.pch, pc.pcmc
+        from t_xs_cj txc left join t_xs_kc_cj txkc on (txc.id=txkc.xs_cj_id) left join t_xs xs on (txc.xs_id=xs.id) left
+        join t_kc kc on (kc.id=txkc.kc_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
+        where txc.sfsc = false and txkc.sfsc = false and xs.sfsc = false and pc.sfsc = false and kc.sfsc = false
+        <if test="pcId != null"> and pc.id = #{pcId} </if>
+        <if test="xsId != null"> and txc.xs_id = #{xsId} </if>
+        <if test="xh != null and xh != ''"> and xs.xh like concat('%',trim(#{xh}),'%') </if>
+        <if test="xm != null and xm != ''"> and xs.xm like concat('%',trim(#{xm}),'%') </if>
+        <if test="yx != null and yx != ''"> and xs.yx like concat('%',trim(#{yx}),'%') </if>
+        order by txc.cjsj desc
+    </select>
+    <select id="findXsCj" resultType="com.itts.personTraining.dto.XsCjDTO">
+        select txc.*, pc.pch, pc.pcmc, xs.xm, xs.xh, xs.yx
+        from t_xs_cj txc left join t_xs xs on (txc.xs_id=xs.id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
+        where txc.sfsc = false and xs.sfsc = false and pc.sfsc = false
+        <if test="pcId != null"> and pc.id = #{pcId} </if>
+        <if test="jylx != null and jylx != ''"> and txc.type = 2 </if>
+        <if test="xh != null and xh != ''"> and xs.xh like concat('%',trim(#{xh}),'%') </if>
+        <if test="xm != null and xm != ''"> and xs.xm like concat('%',trim(#{xm}),'%') </if>
+        <if test="yx != null and yx != ''"> and xs.yx like concat('%',trim(#{yx}),'%') </if>
+        order by txc.cjsj desc
+    </select>
+    <select id="selectByPcIdAndXsId" resultType="com.itts.personTraining.dto.XsCjDTO">
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch, pc.pcmc
+        from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
+        where txc.sfsc = false and txc.sfxf = true and xs.sfsc = false and pc.sfsc = false
+        <if test="pcId != null"> and txc.pc_id = #{pcId} </if>
+        <if test="xsId != null"> and txc.xs_id = #{xsId} </if>
+    </select>
+    <select id="getNumByXsId" resultType="java.lang.Long">
+        select count(id)
+        from t_xs_cj txc
+        where txc.xs_id = #{xsId} and txc.sfsc = false and txc.sfxf = true and txc.sfck = false
+    </select>
+    <select id="getById" resultType="com.itts.personTraining.dto.XsCjDTO">
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch, pc.pcmc
+        from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
+        where txc.sfsc = false and xs.sfsc = false and pc.sfsc = false
+        <if test="id != null"> and txc.id = #{id} </if>
+    </select>
+    <select id="findXsCjByXsIdsAndPcIds" resultType="com.itts.personTraining.dto.XsCjDTO">
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch, pc.pcmc
+        from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
+        where txc.sfsc = false and txc.sfxf = true and xs.sfsc = false and pc.sfsc = false
+          and txc.type = 1
+        <if test="name != null and name != ''">and (xs.xh like concat('%',trim(#{name}),'%') or xs.xm like concat('%',trim(#{name}),'%'))</if>
+          and txc.xs_id in
+        <foreach collection="xsIds" open="(" close=")" separator="," item="xsIds">
+            #{xsIds}
+        </foreach>
+          and txc.pc_id in
+        <foreach collection="pcIds" open="(" close=")" separator="," item="pcIds">
+            #{pcIds}
+        </foreach>
+        order by txc.cjsj desc
+    </select>
+    <select id="findXsKcCjByPcIdAndName" resultMap="BaseResultMap">
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yzy, xs.yx, txkc.id as xs_kc_cj_id, txkc.xs_cj_id, txkc.kc_id, txkc.kclx, txkc.yzyxf, txkc.dqxf, txkc.cj, txkc.cjsx, txkc.bkcj, txkc.bz, kc.kcdm, kc.kcmc, kc.kcxs, kc.kcxf, kc.sfbx, pc.pch, pc.pcmc
+        from t_xs_cj txc left join t_xs_kc_cj txkc on (txc.id=txkc.xs_cj_id) left join t_xs xs on (txc.xs_id=xs.id) left
+        join t_kc kc on (kc.id=txkc.kc_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
+        where txc.sfsc = false and txkc.sfsc = false and xs.sfsc = false and pc.sfsc = false and kc.sfsc = false and txc.sfxf = true
+        <if test="pcId != null"> and pc.id = #{pcId} </if>
+        <if test="name != null and name != ''">and (xs.xh like concat('%',trim(#{name}),'%') or xs.xm like concat('%',trim(#{name}),'%'))</if>
+        order by txc.cjsj desc
+    </select>
+    <select id="findXsCjByPcIdAndName" resultType="com.itts.personTraining.dto.XsCjDTO">
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch, pc.pcmc
+        from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
+        where txc.sfsc = false and txc.sfxf = true and xs.sfsc = false and pc.sfsc = false and txc.sfxf = true
+        <if test="pcId != null"> and txc.pc_id = #{pcId} </if>
+        <if test="name != null and name != ''">and (xs.xh like concat('%',trim(#{name}),'%') or xs.xm like concat('%',trim(#{name}),'%'))</if>
+        order by txc.cjsj desc
+    </select>
+    <select id="getXfByXsId" resultType="com.itts.personTraining.dto.XfDTO">
+        select txc.zxzyzxf as zxzyxf, txc.zxf as jszylyxf
+        from t_xs_cj txc
+        where txc.sfsc = false and txc.sfxf = true and txc.type = 1 and txc.xs_id = #{xsId}
+    </select>
+    <select id="findXsKcCjByPcIdAndXsId" resultMap="BaseResultMap">
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yzy, xs.yx, txkc.id as xs_kc_cj_id, txkc.xs_cj_id, txkc.kc_id, txkc.kclx, txkc.yzyxf, txkc.dqxf, txkc.cj, txkc.cjsx, txkc.bkcj, txkc.bz, kc.kcdm, kc.kcmc, kc.kcxs, kc.kcxf, kc.sfbx, pc.pch, pc.pcmc
+        from t_xs_cj txc left join t_xs_kc_cj txkc on (txc.id=txkc.xs_cj_id) left join t_xs xs on (txc.xs_id=xs.id) left
+        join t_kc kc on (kc.id=txkc.kc_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
+        where txc.sfsc = false and txkc.sfsc = false and xs.sfsc = false and pc.sfsc = false and kc.sfsc = false and txc.sfxf = true
+        <if test="pcId != null"> and txc.pc_id = #{pcId} </if>
+        <if test="xsId != null"> and txc.xs_id = #{xsId} </if>
+    </select>
+    <select id="findXsCjByPcIdAndXsId" resultType="com.itts.personTraining.dto.XsCjDTO">
+        select *
+        from t_xs_cj txc
+        where txc.sfsc = false and txc.sfxf = true and txc.pc_id = #{pcId} and txc.xs_id = #{xsId}
+    </select>
+    <select id="findPcByXsId" resultType="com.itts.personTraining.model.pc.Pc">
+        select pc.id, pc.pch, pc.pcmc
+        from t_xs_cj txc left join t_pc pc on (txc.pc_id=pc.id)
+        where txc.sfsc = false and pc.sfsc = false and txc.sfxf = true and txc.xs_id = #{xsId}
+        order by pc.cjsj desc
+    </select>
+
+</mapper>

@@ -1,7 +1,8 @@
 package com.itts.personTraining.mapper.xy;
 
-import com.itts.personTraining.model.xy.Xy;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itts.personTraining.model.xy.Xy;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author Austin
  * @since 2021-04-23
  */
+@Repository
 public interface XyMapper extends BaseMapper<Xy> {
 
 }

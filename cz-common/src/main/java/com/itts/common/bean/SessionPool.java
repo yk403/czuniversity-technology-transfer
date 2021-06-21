@@ -3,6 +3,7 @@ package com.itts.common.bean;
 import javax.websocket.Session;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -13,10 +14,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SessionPool {
 
     /**
-     * 链接池
+     * 用户链接池
      */
     public static Map<String, Session> sessions = new ConcurrentHashMap<>();
-
+    /**
+     * 房间链接池
+     */
+    public static Map<String, Set> rooms = new ConcurrentHashMap(8);
     /**
      * 建立链接
      */

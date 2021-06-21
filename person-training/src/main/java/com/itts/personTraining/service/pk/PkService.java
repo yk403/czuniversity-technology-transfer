@@ -2,9 +2,11 @@ package com.itts.personTraining.service.pk;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.dto.PkDTO;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pk.Pk;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,11 +22,10 @@ public interface PkService extends IService<Pk> {
 
     /**
      * 查询排课信息
-     * @param skqsnyr
      * @param pcId
      * @return
      */
-    Map<String, List<PkDTO>> findPkInfo(String skqsnyr, Long pcId);
+    List<PkDTO> findPkInfo(Long pcId);
 
     /**
      * 根据id查询排课详情
@@ -60,4 +61,17 @@ public interface PkService extends IService<Pk> {
      * @return
      */
     boolean addList(List<PkDTO> pkDTOs);
+
+    /**
+     * 根据开学日期查询所有排课信息
+     * @param kxrq
+     * @return
+     */
+    List<PkDTO> findPkByKxrq(Date kxrq);
+
+    /**
+     * 根据用户id查询批次ids(前)
+     * @return
+     */
+    List<Pc> getPcsByYhId();
 }

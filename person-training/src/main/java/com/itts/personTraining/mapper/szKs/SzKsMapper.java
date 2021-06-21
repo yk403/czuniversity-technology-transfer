@@ -12,14 +12,14 @@ import java.util.List;
  * </p>
  *
  * @author Austin
- * @since 2021-05-06
+ * @since 2021-05-27
  */
 public interface SzKsMapper extends BaseMapper<SzKs> {
 
     /**
-     * 根据考试id查询师资ids
+     * 根据ksId查询szIds
      * @param ksId
      * @return
      */
-    List<Long> selectByKsId(@Param("ksId") Long ksId);
+    List<Long> getByKsId(@Param("ksId") Long ksId);
 }

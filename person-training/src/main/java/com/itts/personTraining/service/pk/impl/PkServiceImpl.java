@@ -1,13 +1,17 @@
 package com.itts.personTraining.service.pk.impl;
 
-
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.PkDTO;
+import com.itts.personTraining.mapper.sz.SzMapper;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pk.Pk;
 import com.itts.personTraining.mapper.pk.PkMapper;
+import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.service.pk.PkService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.personTraining.service.pkKc.PkKcService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +19,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
-import static com.itts.common.utils.DateUtils.getDateAfterNDays;
 
 /**
  * <p>
@@ -32,26 +36,29 @@ import static com.itts.common.utils.DateUtils.getDateAfterNDays;
  */
 @Service
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkService {
 
     @Resource
     private PkMapper pkMapper;
     @Autowired
     private PkService pkService;
+    @Autowired
+    private PkKcService pkKcService;
+    @Resource
+    private SzMapper szMapper;
 
     /**
      * 查询排课信息
      *
-     * @param skqsnyr
      * @param pcId
      * @return
      */
     @Override
-    public Map<String, List<PkDTO>> findPkInfo(String skqsnyr, Long pcId) {
-        log.info("【人才培养 - 查询排课信息,上课起始年月日:{},批次id:{}】", skqsnyr, pcId);
-        List<PkDTO> pkDTOs = pkMapper.findPkInfo(skqsnyr, getDateAfterNDays(skqsnyr, 7), pcId);
-        Map<String, List<PkDTO>> groupByXqs = pkDTOs.stream().collect(Collectors.groupingBy(PkDTO::getXqs));
+    public List<PkDTO> findPkInfo(Long pcId) {
+        log.info("【人才培养 - 查询排课信息,上课开始时间:{},批次id:{}】", pcId);
+        List<PkDTO> pkDTOs = pkMapper.findPkInfo(pcId);
+        /*Map<String, List<PkDTO>> groupByXqs = pkDTOs.stream().collect(Collectors.groupingBy(PkDTO::getXqs));
         //遍历分组
         List<String> xqsList = new ArrayList<>();
         for (Map.Entry<String, List<PkDTO>> entryPkDTO : groupByXqs.entrySet()) {
@@ -61,10 +68,10 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
             if (xqsList.contains(String.valueOf(i))) {
                 continue;
             } else {
-                groupByXqs.put(String.valueOf(i), null);
+                groupByXqs.put(String.valueOf(i), Collections.EMPTY_LIST);
             }
-        }
-        return groupByXqs;
+        }*/
+        return pkDTOs;
     }
 
     /**
@@ -76,7 +83,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     @Override
     public PkDTO get(Long id) {
         log.info("【人才培养 - 根据id:{}查询排课信息】", id);
-        return pkMapper.getById(id);
+        return pkMapper.getPkById(id);
     }
 
     /**
@@ -93,7 +100,8 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
         BeanUtils.copyProperties(pkDTO, pk);
-        return pkService.save(pk);
+        Pk pk1 = changeSknyr(pkDTO, pk);
+        return pkService.save(pk1);
     }
 
     /**
@@ -109,7 +117,8 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         pkDTO.setGxr(userId);
         Pk pk = new Pk();
         BeanUtils.copyProperties(pkDTO, pk);
-        return pkService.updateById(pk);
+        Pk pk1 = changeSknyr(pkDTO, pk);
+        return pkService.updateById(pk1);
     }
 
     /**
@@ -145,9 +154,45 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
             pkDTO.setCjr(userId);
             pkDTO.setGxr(userId);
             BeanUtils.copyProperties(pkDTO, pk);
-            pks.add(pk);
+            Pk pk1 = changeSknyr(pkDTO, pk);
+            pks.add(pk1);
         }
         return pkService.saveBatch(pks);
+    }
+
+    /**
+     * 根据开学日期查询所有排课信息
+     * @param kxrq
+     * @return
+     */
+    @Override
+    public List<PkDTO> findPkByKxrq(Date kxrq) {
+        log.info("【人才培养 - 根据开学日期:{}查询所有排课信息】", kxrq);
+        List<PkDTO> pkDTOs = pkMapper.findPkByCondition(kxrq);
+        return pkDTOs;
+    }
+
+    /**
+     * 根据用户id查询批次ids(前)
+     * @return
+     */
+    @Override
+    public List<Pc> getPcsByYhId() {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询批次ids(前)】", userId);
+        String userCategory = getUserCategory();
+        List<Pc> pcs = null;
+        switch (userCategory) {
+            case "teacher":
+                Sz sz = szMapper.getSzByYhId(userId);
+                if (sz != null) {
+                    pcs = pkMapper.findPcsBySzId(sz.getId());
+                }
+                break;
+            default:
+                break;
+        }
+        return pcs;
     }
 
     /**
@@ -165,5 +210,79 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
         }
         return userId;
     }
+
+    /**
+     * 获取当前用户id所属类别
+     * @return
+     */
+    private String getUserCategory() {
+        LoginUser loginUser = threadLocal.get();
+        String userCategory;
+        if (loginUser != null) {
+            userCategory = loginUser.getUserCategory();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userCategory;
+    }
+
+    /**
+     * 将起始周结束周转换成上课起始年月日和上课结束年月日
+     * @param pkDTO
+     * @param pk
+     * @return
+     */
+    private Pk changeSknyr(PkDTO pkDTO, Pk pk) {
+        Integer qsz = pkDTO.getQsz();
+        if (qsz != null) {
+            Date skqsnyr = null;
+            try {
+                skqsnyr = DateUtils.getBeforeOrAfterDate(pkDTO.getKxrq(), qsz*7);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            pk.setSkqsnyr(skqsnyr);
+        }
+        Integer jsz = pkDTO.getJsz();
+        if (jsz != null) {
+            Date skjsnyr = null;
+            try {
+                skjsnyr = DateUtils.getBeforeOrAfterDate(pk.getSkqsnyr(), jsz*7);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            pk.setSkjsnyr(skjsnyr);
+        }
+        return pk;
+    }
+
+    /**
+     * 新增排课课程关系
+     * @param pkDTO
+     * @param pk
+     * @return
+     */
+    /*private boolean savePkKc(PkDTO pkDTO, Pk pk) {
+        List<KcDTO> kcDTOs = pkDTO.getKcDTOs();
+        List<PkKc> pkKcList = new ArrayList<>();
+        for (KcDTO kcDTO : kcDTOs) {
+            PkKc pkKc = new PkKc();
+            pkKc.setKcId(kcDTO.getId());
+            pkKc.setPkId(pk.getId());
+            pkKcList.add(pkKc);
+        }
+        return pkKcService.saveBatch(pkKcList);
+    }*/
+
+    /**
+     * 删除排课课程关系
+     * @param pkDTO
+     * @return
+     */
+    /*private boolean removePkKc(PkDTO pkDTO) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("pk_id", pkDTO.getId());
+        return pkKcService.removeByMap(map);
+    }*/
 
 }

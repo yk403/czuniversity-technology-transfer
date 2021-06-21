@@ -67,11 +67,15 @@ public class TJsCjRc implements Serializable {
      */
     private String ppmc;
     /**
-     * 出价方
+     * 出价方(对应报名表的单位名称)
      */
     private String cjf;
     /**
      * 删除状态(0:未删除;1:已删除)
      */
     private Integer isDelete;
+    /**
+     * 用户名(对应用户表的用户名)
+     */
+    private String yhm;
 }

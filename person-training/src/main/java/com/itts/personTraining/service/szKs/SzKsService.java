@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author Austin
- * @since 2021-05-06
+ * @since 2021-05-27
  */
 public interface SzKsService extends IService<SzKs> {
 

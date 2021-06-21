@@ -4,7 +4,21 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsLcKzMapper">
 
     <select id="list" resultType="com.itts.technologytransactionservice.model.TJsLcKz">
-    select kz.id,kz.cjsj,kz.gxsj,lcsj,kz.hdzt,dqzgjg,fdjg,jjjgzt,lcdj,cg_id,xq_id,kz.dj
+    select kz.id,
+    kz.cjsj,
+    kz.gxsj,
+    lcsj,
+    kz.hdzt,
+    dqzgjg,
+    fdjg,
+    jjjgzt,
+    lcdj,
+    cg_id,
+    xq_id,
+    kz.dj,
+    kz.bm_id
+        <if test="map.type == 0">,xq.auction_status as aStatus</if>
+        <if test="map.type == 1">,cg.auction_status as aStatus</if>
     from t_js_lc_kz kz
         <if test="map.type == 0">left join t_js_xq xq on( xq.id = kz.xq_id )</if>
         <if test="map.type == 1">left join t_js_cg cg on( cg.id = kz.cg_id )</if>
@@ -13,6 +27,7 @@
         <if test="map.id != null and map.id != ''"> and id = #{map.id} </if>
         <if test="map.cjsj != null and map.cjsj != ''"> and cjsj = #{map.cjsj} </if>
         <if test="map.gxsj != null and map.gxsj != ''"> and gxsj = #{map.gxsj} </if>
+
         <if test="map.lcsj != null and map.lcsj != ''"> and lcsj = #{map.lcsj} </if>
         <if test="map.dj != null"> and dj = #{map.dj} </if>
         <if test="map.hdzt != null and map.hdzt != ''"> and hdzt = #{map.hdzt} </if>
@@ -32,5 +47,41 @@
         </otherwise>
     </choose>
 </select>
+    <delete id="deleteLcKzByCgIds" parameterType="java.util.List">
+        delete from t_js_lc_kz where cg_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <delete id="deleteLcKzByXqIds" parameterType="java.util.List">
+        delete from t_js_lc_kz where xq_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <update id="updateTJsLcKzCg">
+        update t_js_lc_kz
+        <set>
+            <if test="dqzgjg != null">dqzgjg = #{dqzgjg},</if>
+            <if test="jjjgzt != null">jjjgzt = #{jjjgzt},</if>
+            <if test="bmId != null">bm_id = #{bmId},</if>
+        </set>
+        where id = #{id} and
+        EXISTS(select 1 from
+        (select * from t_js_lc_kz kz
+        where kz.dqzgjg &lt; #{dqzgjg} and kz.cg_id = #{cgId}) a)
+    </update>
+    <update id="updateTJsLcKzXq">
+        update t_js_lc_kz
+        <set>
+            <if test="dqzgjg != null">dqzgjg = #{dqzgjg},</if>
+            <if test="jjjgzt != null">jjjgzt = #{jjjgzt},</if>
+            <if test="bmId != null">bm_id = #{bmId},</if>
+        </set>
+        where id = #{id} and
+        EXISTS(select 1 from
+        (select * from t_js_lc_kz kz
+        where kz.dqzgjg &gt; #{dqzgjg} and kz.xq_id = #{xqId}) a)
+    </update>
 
 </mapper>

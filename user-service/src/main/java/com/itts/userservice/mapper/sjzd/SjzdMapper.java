@@ -31,10 +31,11 @@ public interface SjzdMapper extends BaseMapper<Sjzd> {
             "       AND xtlb = #{systemType} " +
             "   </if>" +
             "   <if test=\"condition != null and condition != ''\"> " +
-            "       AND (zdmc LIKE CONCAT('%', #{condition}, '%') OR zdbm LIKE CONCAT('%', #{condition}, '%'))" +
+            "       AND (ssmkmc LIKE CONCAT('%', #{condition}, '%') OR ssmk LIKE CONCAT('%', #{condition}, '%'))" +
             "   </if>" +
             "</where> " +
             "GROUP BY ssmk " +
+            "ORDER BY cjsj DESC" +
             "</script>")
     List<SjzdModelVO> findDictionaryModel(@Param("model") String model, @Param("systemType") String systemType, @Param("condition") String condition);
 
@@ -51,6 +52,7 @@ public interface SjzdMapper extends BaseMapper<Sjzd> {
             "   <if test=\"ssmk != null and ssmk != ''\"> " +
             "       AND ssmk = #{ssmk} " +
             "   </if>" +
+            "ORDER BY px" +
             "</script>")
     List<Sjzd> findBySsmk(@Param("xtlb") String xtlb, @Param("mklx") String mklx, @Param("ssmk") String ssmk);
 

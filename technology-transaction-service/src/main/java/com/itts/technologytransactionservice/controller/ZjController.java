@@ -1,88 +1,43 @@
 package com.itts.technologytransactionservice.controller;
 
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.itts.common.utils.Query;
-import com.itts.common.utils.R;
-import com.itts.technologytransactionservice.model.TZj;
-import com.itts.technologytransactionservice.service.ZjService;
+import com.itts.common.utils.common.ResponseUtil;
+import com.itts.technologytransactionservice.feign.persontraining.ZjService;
+import com.itts.technologytransactionservice.feign.userservice.UserInfoService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 
-
-/**
- * @Author: Austin
- * @Data: 2021/3/26
- * @Description: 专家管理
+/*
+ *@Auther: yukai
+ *@Date: 2021/06/03/14:41
+ *@Desription:
  */
-
-@RequestMapping(BASE_URL + "/v1/Zj")
-@Api(value = "ZjController", tags = "专家管理")
+@RequestMapping(BASE_URL+"/v1/zj")
+@Api(value = "ZjController", tags = "双创路演专家服务")
 @RestController
-public class ZjController extends BaseController {
+public class ZjController {
     @Autowired
     private ZjService zjService;
-
     /**
-     * 分页查询
-     *
-     * @param params
-     * @return
+     * @Description:
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/2
      */
-    @PostMapping("/page")
-    public R page(@RequestBody Map<String, Object> params) {
-        //查询列表数据
-        Query query = new Query(params);
-        return success(zjService.page(query));
+    @GetMapping("/list/")
+    @ApiOperation(value = "获取专家列表")
+    public ResponseUtil getList(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                @ApiParam(value = "研究领域(与技术领域数据字典相关)") @RequestParam(value = "yjly", required = false) String yjly,
+                                @ApiParam(value = "名称") @RequestParam(value = "name", required = false) String name) {
+        return zjService.getList(pageNum, pageSize, yjly, name);
     }
-
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    @GetMapping("/getById/{id}")
-    public R getById(@PathVariable("id") Long id) {
-        return success(zjService.getById(id));
-    }
-
-    /**
-     * 保存
-     */
-    @PostMapping("/save")
-    public R save(@RequestBody TZj tZj) {
-        return save(zjService.save(tZj));
-    }
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/update")
-    public R update(@RequestBody TZj tZj) {
-        return update(zjService.updateById(tZj));
-    }
-
-    /**
-     * 删除
-     */
-    @GetMapping("/remove/{id}")
-    public R remove(@PathVariable("id") Long id) {
-        return remove(zjService.removeById(id));
-    }
-
-    /**
-     * 批量删除
-     */
-    @PostMapping("/removeBatch")
-    public R removeBatch(@RequestBody List<Long> ids) {
-        return remove(zjService.removeByIds(ids));
-    }
-
 }

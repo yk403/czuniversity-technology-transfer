@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -34,14 +37,14 @@ public class Ks implements Serializable {
     private Long pcId;
 
     /**
-     * 学校教室ID
+     * 类型 (1:学历学位考试;2:继续教育考试)
      */
-    private Long xxjsId;
+    private Integer type;
 
     /**
-     * 课程ID
+     * 试卷id
      */
-    private Long kcId;
+    private Long sjId;
 
     /**
      * 考试名称
@@ -49,19 +52,30 @@ public class Ks implements Serializable {
     private String ksmc;
 
     /**
+     * 考试类型(统一考试;补考)
+     */
+    private String kslx;
+
+    /**
+     * 考试日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ksrq;
+
+    /**
+     * 考试地点
+     */
+    private String ksdd;
+
+    /**
      * 考试开始时间
      */
-    private Date kskssj;
+    private String kskssj;
 
     /**
      * 考试结束时间
      */
-    private Date ksjssj;
-
-    /**
-     * 考试类型(0:统一考试;1:实训考试;2:证书考试;3:补考)
-     */
-    private Integer kslx;
+    private String ksjssj;
 
     /**
      * 是否下发(0:否;1:是)

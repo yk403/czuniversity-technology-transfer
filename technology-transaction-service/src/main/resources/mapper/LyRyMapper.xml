@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.technologytransactionservice.mapper.LyRyMapper">
+
+    <select id="findLyRyFront" resultType="com.itts.technologytransactionservice.model.LyRyDto">
+        select ry.id as id,ry.zj_id,ry.gxsj,ry.cjsj,ry.hd_id,ry.zxkssj,ry.zxjssj,ry.zxlx,ry.ryjj,ry.lxdh,hd.hdmc as hdmc,zj.tx as tx,zj.xm as xm,zj.dh as dh,zj.dz as dz
+        from t_ly_ry ry left join t_ly_hd hd on (hd.id = ry.hd_id) left join t_zj zj on (zj.id = ry.zj_id)
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            ry.is_delete = 0
+            <if test="map.hdId != null"> and ry.hd_id = #{map.hdId} </if>
+            <if test="map.zjId != null"> and ry.zj_id = #{map.zjId} </if>
+            <if test="map.hdmc != null"> and hd.hdmc like concat('%',trim(#{map.hdmc}),'%') </if>
+            <if test="map.zxkssj != null"> and ry.zxkssj = #{map.zxkssj} </if>
+            <if test="map.zxjssj != null"> and ry.zxjssj = #{map.zxjssj} </if>
+            <if test="map.lxdh != null"> and ry.lxdh = #{map.lxdh} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
+    <select id="findLyRyBack" resultType="com.itts.technologytransactionservice.model.LyRyDto">
+        select ry.id as id,ry.zj_id,ry.gxsj,ry.cjsj,ry.hd_id,ry.zxkssj,ry.zxjssj,ry.zxlx,ry.ryjj,ry.lxdh,hd.hdmc as hdmc,zj.tx as tx,zj.xm as xm,zj.dh as dh,zj.dz as dz
+        from t_ly_ry ry left join t_ly_hd hd on (hd.id = ry.hd_id) left join t_zj zj on (zj.id = ry.zj_id)
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            ry.is_delete = 0
+            <if test="map.zjId != null"> and ry.zj_id = #{map.zjId} </if>
+            <if test="map.hdId != null"> and ry.hd_id = #{map.hdId} </if>
+            <if test="map.hdmc != null"> and hd.hdmc like concat('%',trim(#{map.hdmc}),'%') </if>
+            <if test="map.zxkssj != null"> and ry.zxkssj = #{map.zxkssj} </if>
+            <if test="map.zxjssj != null"> and ry.zxjssj = #{map.zxjssj} </if>
+            <if test="map.lxdh != null"> and ry.lxdh = #{map.lxdh} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
+<!--
+    &lt;!&ndash; 通用查询映射结果 &ndash;&gt;
+    <resultMap id="BaseResultMap" type="com.itts.technologytransactionservice.model.LyZw">
+        <id column="id" property="id" />
+        <result column="cjsj" property="cjsj" />
+        <result column="gxsj" property="gxsj" />
+        <result column="is_delete" property="isDelete" />
+        <result column="zwjj" property="zwjj" />
+        <result column="hz_id" property="hzId" />
+    </resultMap>
+
+    &lt;!&ndash; 通用查询结果列 &ndash;&gt;
+    <sql id="Base_Column_List">
+        id, cjsj, gxsj, is_delete, zwjj, hz_id
+    </sql>
+-->
+
+</mapper>

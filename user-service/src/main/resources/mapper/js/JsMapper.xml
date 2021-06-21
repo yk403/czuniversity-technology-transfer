@@ -8,6 +8,8 @@
         <result column="jsmc" property="jsmc" />
         <result column="jsbm" property="jsbm" />
         <result column="sfmr" property="sfmr" />
+        <result column="yhjslx" property="yhjslx" />
+        <result column="jslb" property="jslb" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
@@ -17,7 +19,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, jsmc, jsbm, sfmr, sfsc, cjsj, cjr, gxsj, gxr
+        id, jsmc, jsbm, sfmr, yhjslx, jslb, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

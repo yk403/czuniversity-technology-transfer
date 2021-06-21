@@ -5,11 +5,11 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.pc.Pc">
         <id column="id" property="id" />
+        <result column="rxrq" property="rxrq" />
         <result column="pcmc" property="pcmc" />
         <result column="pch" property="pch" />
         <result column="jylx" property="jylx" />
         <result column="xylx" property="xylx" />
-        <result column="kclx" property="kclx" />
         <result column="sfsc" property="sfsc" />
         <result column="pcnf" property="pcnf" />
         <result column="cjsj" property="cjsj" />
@@ -20,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pcmc, pch, jylx, xylx, kclx, sfsc, pcnf, cjsj, cjr, gxsj, gxr
+        id, rxrq, pcmc, pch, jylx, xylx, sfsc, pcnf, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="selectPcList" parameterType="java.util.List">
@@ -31,6 +31,31 @@
              #{ids}
         </foreach>
 
+    </select>
+    <select id="findKcListById" resultType="com.itts.personTraining.model.kc.Kc">
+        select kc.*
+        from t_kc kc
+        where kc.sfsc = false
+          and kc.xylx = (select pc.xylx from t_pc pc where pc.sfsc = false and pc.id = #{id})
+    </select>
+    <select id="getByPch" resultType="com.itts.personTraining.model.pc.Pc">
+        select *
+        from t_pc pc
+        where pc.sfsc = false
+        <if test="pch != null and pch != ''"> and pc.pch = #{pch} </if>
+    </select>
+    <select id="findPcByYhId" resultType="com.itts.personTraining.model.pc.Pc">
+        select pc.*
+        from t_pc pc left join t_pc_xs tpx on (tpx.pc_id=pc.id) left join t_xs xs on (xs.id=tpx.xs_id)
+        where pc.sfsc = false and xs.sfsc = false
+        <if test="yhId != null"> and xs.yh_id = #{yhId} </if>
+        order by pc.cjsj desc
+    </select>
+    <select id="findPcIdsByYear" resultType="java.lang.Long">
+        select pc.id
+        from t_pc pc
+        where pc.sfsc = false
+          and pc.pch like concat('%', #{currentYear}, '%')
     </select>
 
     <update id="updatePcList"  parameterType="java.util.List">

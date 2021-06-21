@@ -14,5 +14,5 @@ public interface UserInfoService {
      * 获取数据字典
      */
     @GetMapping(SystemConstant.BASE_URL + "/v1/yh/get/")
-    ResponseUtil get();
+    ResponseUtil get(@RequestHeader(name = "token") String token);
 }

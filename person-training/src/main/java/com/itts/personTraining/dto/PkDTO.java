@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -48,7 +49,7 @@ public class PkDTO {
     /**
      * 教室ID
      */
-    @ApiModelProperty(value = "教室ID", required = true)
+    @ApiModelProperty(value = "教室ID")
     private Long xxjsId;
 
     /**
@@ -56,12 +57,6 @@ public class PkDTO {
      */
     @ApiModelProperty(value = "课程时间ID", required = true)
     private Long kcsjId;
-
-    /**
-     * 排课名称
-     */
-    @ApiModelProperty(value = "排课名称", required = true)
-    private String pkmc;
 
     /**
      * 课程代码
@@ -76,17 +71,53 @@ public class PkDTO {
     private String kcmc;
 
     /**
+     * 类型(1:学历学位排课;2:继续教育排课)
+     */
+    @ApiModelProperty(value = "类型(1:学历学位排课;2:继续教育排课)", required = true)
+    private Integer type;
+
+    /**
+     * 上课地点
+     */
+    private String skdd;
+
+    /**
+     * 排课名称
+     */
+    @ApiModelProperty(value = "排课名称")
+    private String pkmc;
+
+    /**
+     * 开学日期
+     */
+    @ApiModelProperty(value = "开学日期", required = true)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date kxrq;
+
+    /**
      * 上课起始年月日
      */
-    @ApiModelProperty(value = "上课起始年月日", required = true)
-    private String skqsnyr;
+    @ApiModelProperty(value = "上课起始年月日")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date skqsnyr;
 
     /**
      * 上课结束年月日
      */
-    @ApiModelProperty(value = "上课结束年月日", required = true)
-    private String skjsnyr;
+    @ApiModelProperty(value = "上课结束年月日")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date skjsnyr;
 
+    /**
+     * 起始周
+     */
+    @ApiModelProperty(value = "起始周", required = true)
+    private Integer qsz;
+
+    /**
+     * 结束周
+     */
+    private Integer jsz;
 
     /**
      * 星期数

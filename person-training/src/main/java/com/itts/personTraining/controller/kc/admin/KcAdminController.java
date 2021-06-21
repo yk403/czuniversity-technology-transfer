@@ -39,12 +39,14 @@ public class KcAdminController {
      * @return
      */
     @GetMapping("/list")
-    @ApiOperation(value = "获取列表")
+    @ApiOperation(value = "查询课程列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "kclx", required = false) String kclx,
-                                   @RequestParam(value = "name", required = false) String name) {
-        return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name));
+                                   @RequestParam(value = "name", required = false) String name,
+                                   @RequestParam(value = "jylx", required = false) String jylx,
+                                   @RequestParam(value = "xylx", required = false) String xylx) {
+        return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name,jylx,xylx));
     }
 
     /**
@@ -60,12 +62,12 @@ public class KcAdminController {
     }
 
     /**
-     * 查询所有课程
+     * 根据条件查询课程
      */
-    @GetMapping("/getAll")
-    @ApiOperation(value = "查询所有课程")
-    public ResponseUtil getAll() {
-        return ResponseUtil.success(kcService.getAll());
+    @GetMapping("/getByCondition")
+    @ApiOperation(value = "根据条件查询课程")
+    public ResponseUtil getByCondition(@RequestParam(value = "xylx", required = false) String xylx) {
+        return ResponseUtil.success(kcService.getByCondition(xylx));
     }
 
     /**
@@ -158,9 +160,10 @@ public class KcAdminController {
         if (kcDTO.getKcdm() == null) {
             throw new WebException(TEACH_TYPE_ISEMPTY_ERROR);
         }
-        List<Kc> kcList = kcService.getAll();
-        for (Kc kc : kcList) {
-            if (kc.getKcdm().equals(kcDTO.getKcdm()) || kc.getKcmc().equals(kcDTO.getKcmc())) {
+        List<KcDTO> kcList = kcService.getByCondition(null);
+
+        for (KcDTO kcDTO1 : kcList) {
+            if (kcDTO1.getKcdm().equals(kcDTO.getKcdm()) || kcDTO1.getKcmc().equals(kcDTO.getKcmc())) {
                 throw new WebException(COURSE_EXISTS_ERROR);
             }
         }

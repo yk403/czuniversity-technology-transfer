@@ -21,13 +21,12 @@ public interface KsService extends IService<Ks> {
      * 查询考试列表
      * @param pageNum
      * @param pageSize
-     * @param kslx
      * @param pcId
-     * @param pclx
-     * @param kcmc
+     * @param ksmc
+     * @param kslx
      * @return
      */
-    PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, String kslx, Long pcId, String pclx, String kcmc);
+    PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String ksmc, String kslx);
 
     /**
      * 根据id查询考试详情
@@ -52,10 +51,10 @@ public interface KsService extends IService<Ks> {
 
     /**
      * 删除考试
-     * @param ksDTO
+     * @param ks
      * @return
      */
-    boolean delete(KsDTO ksDTO);
+    boolean delete(Ks ks);
 
     /**
      * 考试批量下发
@@ -63,4 +62,10 @@ public interface KsService extends IService<Ks> {
      * @return
      */
     boolean issueBatch(List<Long> ids);
+
+    /**
+     * 根据用户id查询考试详情
+     * @return
+     */
+    List<KsDTO> getByYhId();
 }

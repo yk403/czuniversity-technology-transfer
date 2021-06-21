@@ -57,10 +57,25 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     public PageInfo<TJsXq> findJsXq(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询需求(后台审批管理)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据,1表示管理员
-        params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
+        //params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsXq> list = jsXqMapper.findJsXq(query);
+        return new PageInfo<>(list);
+    }
+    /**
+     * 分页查询成果(后台管理归档清算用)
+     * @param params
+     * @return
+     */
+    @Override
+    public PageInfo<TJsXq> findGdJsXq(Map<String, Object> params) {
+        log.info("【技术交易 - 分页查询成果(后台审批管理)】");
+        //前端传输标识type(0：审批管理;1：信息采集)
+        params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
+        Query query = new Query(params);
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<TJsXq> list = jsXqMapper.findGdJsXq(query);
         return new PageInfo<>(list);
     }
 
@@ -249,11 +264,19 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         List<TJsXq> hdJsXq = jsXqMapper.findHdJsXq(queryMap);
         //置顶
         if (type == 0) {
-            for(int i=0;i<soft-1;i++){
+            int k=0;
+            //判断状态为即将开始的成果或需求的第一个技术商品的序号
+            for(int j=0;j<hdJsXq.size();j++){
+                if(hdJsXq.get(j).getAuctionStatus()==0){
+                    k=j;
+                }
+            }
+            //将选中的那项的序号置为即将开始的第一个其他所有在此项之前的即将开始的项目往后移一位
+            for(int i=k;i<soft-1;i++){
                 hdJsXq.get(i).setSoft(hdJsXq.get(i).getSoft()+1);
                 tempList.add(hdJsXq.get(i));
             }
-            byId.setSoft(0);
+            byId.setSoft(k);
             tempList.add(byId);
         }
         //置底

@@ -22,7 +22,7 @@
     <dependencies>
 
         <!-- 通用模块 -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.itts</groupId>
             <artifactId>cz-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
@@ -44,6 +44,13 @@
                     <artifactId>spring-boot-starter-jdbc</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>-->
+
+        <!-- 鉴权 -->
+        <dependency>
+            <groupId>com.itts</groupId>
+            <artifactId>itts-authentication</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- spring2.X集成redis所需common-pool2-->

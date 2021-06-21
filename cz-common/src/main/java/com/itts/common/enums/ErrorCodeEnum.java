@@ -40,6 +40,12 @@ public enum ErrorCodeEnum {
     INSERT_FAIL(-41009, "新增失败"),
     DELETE_FAIL(-41010, "删除失败"),
     NAME_REPEAT(-41011, "交易商品名称重复"),
+    MAX_BIDHISTORY_ERROR(-41012,"出价价格不能小于等于最高价格"),
+    USER_SIGNUP_ERROR(-41013,"用户未报名无法叫价"),
+    BID_UPDATE_ERROR(-41014,"保存失败，叫价错误"),
+    BID_OVERTIME_ERROR(-41015,"叫价超时"),
+    MIN_BIDHISTORY_ERROR(-41016,"出价价格不能大于等于最高价格"),
+
     //====================      技术交易服务错误提示  END     ====================
 
 
@@ -56,6 +62,8 @@ public enum ErrorCodeEnum {
     REGISTER_SYSTEM_TYPE_PARAMS_ILLEGAL_ERROR(-430006, "用户注册系统类型为空"),
     REGISTER_USERNAME_EXISTS_ERROR(-430007, "用户注册账号已存在"),
     REGISTER_DEFAULT_ROLE_NOT_FIND_ERROR(-430008, "用户注册默认角色不存在"),
+    NOT_LOGIN_ERROR(-430009, "用户未登录"),
+    NOT_PERMISSION_ERROR(-430010, "用户权限不足"),
     //====================       登录、登出、注册错误提示END     ====================
 
     //====================      人才培养服务错误提示（服务码450）      ====================
@@ -78,6 +86,33 @@ public enum ErrorCodeEnum {
     BATCH_NUMBER_ISEMPTY_ERROR(-45016, "批次号不可为空!"),
     COURSE_ISEMPTY_ERROR(-45017, "课程不可为空!"),
     TEACH_TYPE_ISEMPTY_ERROR(-45018,"教育类型不可为空!"),
+    TEACHING_NAME_OR_BH_ISEMPTY_ERROR(-45019,"教学楼名称或教室编号不可为空!"),
+    STUDENT_MSG_NOT_EXISTS_ERROR(-45020,"学生信息不存在!"),
+    USER_EXISTS_ERROR(-45021,"用户已存在!"),
+    PHONE_NUMBER_EXISTS_ERROR(-45022,"手机号已存在!"),
+    PHONE_NUMBER_ISEMPTY_ERROR(-45023,"手机号不可为空!"),
+    EDU_TYPE_ERROR(-45024,"教育类型不合法!"),
+    NUMBER_AND_PHONE_ISEMPTY_ERROR(-45025,"学号和联系电话不可都为空!"),
+    STUDENT_MSG_EXISTS_ERROR(-45026, "学员信息已存在,不可新增!"),
+    TEACHER_TYPE_ISEMPTY_ERROR(-45027, "导师类别不可为空!"),
+    TEACHER_TYPE_ERROR(-45028, "导师类别不正确!"),
+    ORGANIZATION_ISEMPTY_ERROR(-45029, "机构不可为空!"),
+    USER_INSERT_ERROR(-45030, "用户表新增用户失败!"),
+    STUDENT_NUMBER_ISEMPTY_ERROR(-45031, "学号不可为空!"),
+    USER_UPDATE_ERROR(-45032, "用户表更新用户失败!"),
+    TEACHER_NUMBER_ISEMPTY_ERROR(-45033, "导师编号不可为空!"),
+    PROFESSOR_EXISTS_ERROR(-45034, "专家信息已存在,不可新增!"),
+    PROFESSOR_PHONE_EXISTS_ERROR(-45035, "专家手机号已存在,不可新增!"),
+    ISSUEBATCH_DELETE_ERROR(-45036, "已下发,不可删除!"),
+    BATCH_ID_ISEMPTY_ERROR(-45037, "批次ID不可为空!"),
+    BATCH_STUDENT_EXISTS_ERROR(-45038, "该批次学生成绩已存在!"),
+    COURSE_TYPE_ERROR(-45039, "课程类型不正确!"),
+    NAME_PHONE_ISEMPTY_ERROR(-45040, "姓名电话不可都为空!"),
+    SCHOOL_BE_OCCUPIED(-45041,"当前日期时段该教室已有排课,不可添加!"),
+    PLACE_BE_OCCUPIED(-45042,"当前日期时段该地点已有排课,不可添加!"),
+    TEACHER_BE_OCCUPIED(-45043,"当前日期时段该教师已有排课,不可添加!"),
+    NO_STUDENT_MSG_ERROR(-45044,"暂无该学生成绩信息!"),
+    BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR(-45016, "批次号为空,暂无信息"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

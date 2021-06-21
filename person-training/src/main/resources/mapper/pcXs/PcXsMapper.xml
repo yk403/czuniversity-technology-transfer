@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personTraining.mapper.pcXs.PcXsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.pcXs.PcXs">
+        <id column="id" property="id" />
+        <result column="pc_id" property="pcId" />
+        <result column="xs_id" property="xsId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, pc_id, xs_id
+    </sql>
+    <select id="selectByXsId" resultType="java.lang.Long">
+        select pc_id
+        from t_pc_xs
+        where xs_id = #{xsId}
+    </select>
+    <select id="selectByPcId" resultType="java.lang.Long">
+        select xs_id
+        from t_pc_xs
+        where pc_id = #{pcId}
+    </select>
+    <select id="selectStuByPcId" resultType="com.itts.personTraining.dto.StuDTO">
+        select tpx.xs_id as id, xs.xh, xs.xm, xs.yzy
+        from t_pc_xs tpx left join t_xs xs on (xs.id=tpx.xs_id)
+        where pc_id = #{pcId} and xs.sfsc = false
+        order by xs.cjsj desc
+    </select>
+
+</mapper>

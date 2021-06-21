@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,40 +34,27 @@ public class KsDTO {
     private Long pcId;
 
     /**
-     * 学校教室ID
-     */
-    @ApiModelProperty(value = "学校教室ID", required = true)
-    private Long xxjsId;
-
-    /**
-     * 课程ID
-     */
-    @ApiModelProperty(value = "课程ID", required = true)
-    private Long kcId;
-
-    /**
-     * 课程名称
-     */
-    @ApiModelProperty(value = "课程名称")
-    private String kcmc;
-
-    /**
      * 师资ids
      */
-    @ApiModelProperty(value = "师资ids", required = true)
+    @ApiModelProperty(value = "师资ids")
     private List<Long> szIds;
 
     /**
-     * 教学楼名称
+     * 试卷id
      */
-    @ApiModelProperty(value = "教学楼名称")
-    private String jxlmc;
+    @ApiModelProperty(value = "试卷id")
+    private Long sjId;
+
 
     /**
-     * 教室编号
+     * 类型 (1:学历学位考试;2:继续教育考试)
      */
-    @ApiModelProperty(value = "教室编号")
-    private String jsbh;
+    private Integer type;
+
+    /**
+     * 批次号
+     */
+    private String pch;
 
     /**
      * 考试名称
@@ -75,22 +63,31 @@ public class KsDTO {
     private String ksmc;
 
     /**
+     * 考试类型(统一考试;补考)
+     */
+    @ApiModelProperty(value = "试类型(统一考试;补考)", required = true)
+    private String kslx;
+
+    /**
+     * 考试日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ksrq;
+
+    /**
+     * 考试地点
+     */
+    private String ksdd;
+
+    /**
      * 考试开始时间
      */
-    @ApiModelProperty(value = "考试开始时间", required = true)
-    private Date kskssj;
+    private String kskssj;
 
     /**
      * 考试结束时间
      */
-    @ApiModelProperty(value = "考试结束时间", required = true)
-    private Date ksjssj;
-
-    /**
-     * 考试类型(0:统一考试;1:实训考试;2:证书考试;3:补考)
-     */
-    @ApiModelProperty(value = "试类型(0:统一考试;1:实训考试;2:证书考试;3:补考)", required = true)
-    private Integer kslx;
+    private String ksjssj;
 
     /**
      * 是否下发(0:否;1:是)
@@ -130,4 +127,9 @@ public class KsDTO {
      * 下发时间
      */
     private Date xfsj;
+
+    /**
+     * 课程集合
+     */
+    private List<KsExpDTO> ksExps;
 }

@@ -17,9 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ERROR;
 
-/**
+/*
  * <p>
  * 文件上传 前端控制器
  * </p>
@@ -27,6 +28,7 @@ import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ERROR;
  * @author lyh
  * @since 2020-06-19
  */
+
 @RestController
 @RequestMapping(BASE_URL + "/v1/oss/back-oss")
 @Api(tags = "文件上传")

@@ -1,7 +1,6 @@
 package com.itts.userservice.controller.yh.admin;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
@@ -9,18 +8,17 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.enmus.UserTypeEnum;
-import com.itts.userservice.mapper.yh.YhJsGlMapper;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
-import com.itts.userservice.model.yh.YhJsGl;
 import com.itts.userservice.request.yh.AddYhRequest;
+import com.itts.userservice.request.yh.RpcAddYhRequest;
 import com.itts.userservice.service.jggl.JgglService;
-import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.yh.GetYhVO;
 import com.itts.userservice.vo.yh.YhListVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -28,9 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -52,12 +48,6 @@ public class YhAdminController {
     @Autowired
     private JgglService jgglService;
 
-    @Autowired
-    private JsService jsService;
-
-    @Resource
-    private YhJsGlMapper yhJsGlMapper;
-
     /**
      * 获取列表 - 分页
      *
@@ -70,7 +60,7 @@ public class YhAdminController {
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "type", required = false) String type,
                                    @RequestParam(value = "groupId", required = false) Long groupId,
-                                   @RequestParam(value = "condition", required = false) String condition ) {
+                                   @RequestParam(value = "condition", required = false) String condition) {
         Jggl group = null;
 
         if (groupId != null) {
@@ -127,7 +117,11 @@ public class YhAdminController {
 
         Yh yh = yhService.get(id);
 
-        if(yh == null){
+        if (yh == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if(yh.getSfsc()){
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
@@ -137,6 +131,32 @@ public class YhAdminController {
         return ResponseUtil.success(getYhVO);
     }
 
+    @ApiOperation(value = "通过用户编号查询")
+    @GetMapping("/get/by/code/")
+    public ResponseUtil getByCode(@ApiParam("用户编号") @RequestParam("code") String code) {
+
+        GetYhVO yh = yhService.getByCode(code);
+
+        if (yh == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        return ResponseUtil.success(yh);
+    }
+
+    @ApiOperation(value = "通过用户手机号查询")
+    @GetMapping("/get/by/phone/")
+    public ResponseUtil getByPhone(@ApiParam("用户手机号") @RequestParam("phone") String phone) {
+
+        GetYhVO yh = yhService.getByphone(phone);
+
+        if (yh == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        return ResponseUtil.success(yh);
+    }
+
     /**
      * 新增
      *
@@ -144,25 +164,49 @@ public class YhAdminController {
      */
     @PostMapping("/add/")
     @ApiOperation(value = "新增")
-    public ResponseUtil add(@RequestBody AddYhRequest addYhRequest) throws WebException {
+    public ResponseUtil add(@RequestBody AddYhRequest addYhRequest, HttpServletRequest request) throws WebException {
 
+        //检查参数是否合法
         checkRequest(addYhRequest);
 
-        //检查参数是否合法
-        Yh Yh = new Yh();
-        BeanUtils.copyProperties(addYhRequest, Yh);
+        GetYhVO result = yhService.add(addYhRequest, request.getHeader(SystemConstant.TOKEN_PREFIX));
+
+        return ResponseUtil.success(result);
+    }
+
+    /**
+     * 新增
+     *
+     * @author fl
+     */
+    @PostMapping("/rpc/add/")
+    @ApiOperation(value = "新增")
+    public ResponseUtil rpcAdd(@RequestBody RpcAddYhRequest yh) throws WebException {
 
         //检查参数是否合法
-        List<Long> jsidlist = addYhRequest.getJsidlist();
-        if (jsidlist == null) {
+        if (yh == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        jsidlist.forEach(jsid -> {
-            Boolean flag = yhService.addYhAndJsmc(Yh, jsid);
-        });
+        if (StringUtils.isBlank(yh.getYhlx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
 
-        return ResponseUtil.success(addYhRequest);
+        if (StringUtils.isBlank(yh.getYhlb())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(yh.getYhm())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(yh.getMm())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        GetYhVO result = yhService.rpcAdd(yh);
+
+        return ResponseUtil.success(result);
     }
 
     /**
@@ -176,40 +220,38 @@ public class YhAdminController {
     public ResponseUtil update(@RequestBody AddYhRequest addYhRequest) throws WebException {
 
         //检查参数是否合法
-        checkRequest(addYhRequest);
-
-        Long id = addYhRequest.getId();
-        //检查参数是否合法
-        if (id == null) {
+        if (addYhRequest.getId() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+
+        if (addYhRequest == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(addYhRequest.getYhlx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
         //检查数据库中是否存在要更新的数据
-        Yh Yh1 = yhService.get(id);
-        if (Yh1 == null) {
+        Yh old = yhService.get(addYhRequest.getId());
+
+        GetYhVO result = yhService.update(addYhRequest, old);
+
+        return ResponseUtil.success(result);
+    }
+
+    @ApiOperation(value = "重置密码")
+    @PutMapping("/reset/password/{id}")
+    public ResponseUtil resetPassword(@PathVariable("id") Long id) {
+
+        Yh yh = yhService.get(id);
+        if (yh == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        Yh Yh = new Yh();
-        BeanUtils.copyProperties(addYhRequest, Yh);
 
-        //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
-        BeanUtils.copyProperties(Yh, Yh1, "id", "yhjb", "cjsj", "cjr", "mm");
-        //逻辑删除此用户的所有角色
-        Long yhid = Yh.getId();
-        QueryWrapper<YhJsGl> QueryWrapper = new QueryWrapper<>();
-        QueryWrapper.eq("yh_id", yhid);
-        List<YhJsGl> yhJsGls = yhJsGlMapper.selectList(QueryWrapper);
+        yhService.resetPassword(yh);
 
-        List<Long> jsidlist = addYhRequest.getJsidlist();
-        yhJsGls.forEach(YhJsGl -> {
-            YhJsGl.setSfsc(true);
-            YhJsGl.setGxsj(new Date());
-            yhJsGlMapper.updateById(YhJsGl);
-        });
-        jsidlist.forEach(jsid -> {
-            yhService.updateByYhAndJsmc(Yh1, jsid);
-        });
         return ResponseUtil.success();
-
     }
 
     /**
@@ -226,41 +268,12 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        Yh Yh = yhService.get(id);
-        if (Yh == null) {
+        Yh yh = yhService.get(id);
+        if (yh == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        //设置删除状态，更新删除时间
-        Yh.setSfsc(true);
-        Yh.setGxsj(new Date());
-        //更新
-        yhService.update(Yh);
-
-        return ResponseUtil.success();
-    }
-
-    /**
-     * 批量删除
-     *
-     * @author fl
-     */
-    @ApiOperation(value = "批量删除")
-    @DeleteMapping("/deletemore/")
-    public ResponseUtil deletemore(@RequestBody List<Long> ids) throws WebException {
-        //检查参数是否为空
-        if (ids == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        ids.forEach(id -> {
-            Yh Yh = yhService.get(id);
-            //设置删除状态，更新删除时间
-            Yh.setSfsc(true);
-            Yh.setGxsj(new Date());
-            //更新
-            yhService.update(Yh);
-        });
-
+        yhService.delete(yh);
 
         return ResponseUtil.success();
     }
@@ -269,21 +282,27 @@ public class YhAdminController {
      * 校验参数是否合法
      */
     private void checkRequest(AddYhRequest yh) throws WebException {
+
         //如果参数为空，抛出异常
         if (yh == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        if (yh.getYhlx() == null) {
+        if (StringUtils.isBlank(yh.getYhlx())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (yh.getYhm() == null) {
+
+        if (StringUtils.equals(yh.getYhlx(), UserTypeEnum.IN_USER.getCode())) {
+            if (StringUtils.isBlank(yh.getYhlb())) {
+                throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            }
+        }
+
+        if (StringUtils.isBlank(yh.getYhm())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (yh.getMm() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        if (yh.getZsxm() == null) {
+
+        if (StringUtils.isBlank(yh.getMm())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
     }

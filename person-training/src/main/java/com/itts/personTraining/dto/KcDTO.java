@@ -24,6 +24,11 @@ public class KcDTO {
     private Long id;
 
     /**
+     * 转化给前端使用
+     */
+    private Long kcId;
+
+    /**
      * 师资ids
      */
     @ApiModelProperty(value = "师资ids", required = true)
@@ -42,10 +47,10 @@ public class KcDTO {
     private String jylx;
 
     /**
-     * 字典编码
+     * 学员类型
      */
-    @ApiModelProperty(value = "字典编码", required = true)
-    private String zdbm;
+    @ApiModelProperty(value = "学员类型", required = true)
+    private String xylx;
 
     /**
      * 课程类型(theory_class：理论课；practical_training：实训课；practice_course：实践课)
