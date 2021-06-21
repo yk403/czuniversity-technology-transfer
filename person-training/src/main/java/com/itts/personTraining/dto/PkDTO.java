@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @Author: Austin
@@ -58,6 +57,18 @@ public class PkDTO {
      */
     @ApiModelProperty(value = "课程时间ID", required = true)
     private Long kcsjId;
+
+    /**
+     * 课程代码
+     */
+    @ApiModelProperty(value = "课程代码")
+    private String kcdm;
+
+    /**
+     * 课程名称
+     */
+    @ApiModelProperty(value = "课程名称")
+    private String kcmc;
 
     /**
      * 类型(1:学历学位排课;2:继续教育排课)

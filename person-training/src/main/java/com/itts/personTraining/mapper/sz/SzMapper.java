@@ -2,6 +2,7 @@ package com.itts.personTraining.mapper.sz;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.personTraining.model.sz.Sz;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,4 +16,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SzMapper extends BaseMapper<Sz> {
 
+    /**
+     * 通过用户id查询师资信息
+     * @param yhId
+     * @return
+     */
+    Sz getSzByYhId(@Param("yhId") Long yhId);
 }

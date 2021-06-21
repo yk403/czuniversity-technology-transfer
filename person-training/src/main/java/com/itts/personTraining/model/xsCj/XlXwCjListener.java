@@ -72,11 +72,7 @@ public class XlXwCjListener extends AnalysisEventListener<XlXwCjDTO> {
         log.info("解析第" + rowIndex + "行数据:{}", JSON.toJSONString(data));
         Sz sz = new Sz();
         //所属机构Id
-        //导师编号
-        /*if (!StringUtils.isBlank(data.getDsbh())) {
-            sz.setDsbh(data.getDsbh());
-        }
-        sz.setSsjgId(jgId);*/
+
         save(sz);
     }
 

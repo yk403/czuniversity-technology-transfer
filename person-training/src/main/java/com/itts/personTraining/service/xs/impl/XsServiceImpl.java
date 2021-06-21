@@ -208,6 +208,18 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     }
 
     /**
+     * 根据用户id查询批次信息(前)
+     * @return
+     */
+    @Override
+    public List<Pc> getPcByYhId() {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询批次信息(前)】",userId);
+        List<Pc> pcList = pcMapper.findPcByYhId(userId);
+        return pcList;
+    }
+
+    /**
      * 新增学员
      * @param stuDTO
      * @return

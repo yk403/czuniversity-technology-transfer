@@ -50,6 +50,12 @@ public class XsCjDTO {
     private String pch;
 
     /**
+     * 批次名称
+     */
+    @ApiModelProperty(value = "批次名称")
+    private String pcmc;
+
+    /**
      * 类型(1:学历学位教育;2:继续教育)
      */
     @ApiModelProperty(value = "类型(1:学历学位教育;2:继续教育)")
@@ -80,10 +86,22 @@ public class XsCjDTO {
     private String zhcj;
 
     /**
-     * 总学分
+     * 主修专业总学分(获得)
      */
-    @ApiModelProperty(value = "总学分")
+    @ApiModelProperty(value = "主修专业总学分(获得)")
+    private Integer zxzyzxf;
+
+    /**
+     * 总学分(技术转移获得)
+     */
+    @ApiModelProperty(value = "总学分(技术转移获得)")
     private Integer zxf;
+
+    /**
+     * 技术转移课程总分
+     */
+    @ApiModelProperty(value = "技术转移课程总分")
+    private Integer jszykczf;
 
     /**
      * 论文成绩

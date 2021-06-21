@@ -116,9 +116,15 @@ public class XxzyscController {
 
     @ApiOperation(value = "取消收藏")
     @DeleteMapping("/delete/{id}")
-    public ResponseUtil delete(@PathVariable("id") Long id){
+    public ResponseUtil delete(@PathVariable("xxzyId") Long xxzyId){
 
-        xxzyscService.delete(id);
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if(loginUser == null){
+
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        xxzyscService.remove(new QueryWrapper<Xxzysc>().eq("xxzy_id", xxzyId).eq("yh_id", loginUser.getUserId()));
 
         return ResponseUtil.success();
     }

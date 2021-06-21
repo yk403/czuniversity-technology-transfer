@@ -38,6 +38,25 @@
         where kc.sfsc = false
           and kc.xylx = (select pc.xylx from t_pc pc where pc.sfsc = false and pc.id = #{id})
     </select>
+    <select id="getByPch" resultType="com.itts.personTraining.model.pc.Pc">
+        select *
+        from t_pc pc
+        where pc.sfsc = false
+        <if test="pch != null and pch != ''"> and pc.pch = #{pch} </if>
+    </select>
+    <select id="findPcByYhId" resultType="com.itts.personTraining.model.pc.Pc">
+        select pc.*
+        from t_pc pc left join t_pc_xs tpx on (tpx.pc_id=pc.id) left join t_xs xs on (xs.id=tpx.xs_id)
+        where pc.sfsc = false and xs.sfsc = false
+        <if test="yhId != null"> and xs.yh_id = #{yhId} </if>
+        order by pc.cjsj desc
+    </select>
+    <select id="findPcIdsByYear" resultType="java.lang.Long">
+        select pc.id
+        from t_pc pc
+        where pc.sfsc = false
+          and pc.pch like concat('%', #{currentYear}, '%')
+    </select>
 
     <update id="updatePcList"  parameterType="java.util.List">
         update sfsc =true

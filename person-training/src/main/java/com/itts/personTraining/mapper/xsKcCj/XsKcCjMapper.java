@@ -26,10 +26,38 @@ public interface XsKcCjMapper extends BaseMapper<XsKcCj> {
     List<XsKcCjDTO> selectByXsCjId(@Param("xsCjId") Long xsCjId, @Param("kclx") Integer kclx);
 
     /**
-     * 根据学生成绩id和课程类型查询学生原专业课程成绩集合
-     * @param xsCjId
+     * 根据学生id和课程类型查询学生原专业课程成绩集合
+     * @param xsId
      * @param kclx
      * @return
      */
-    List<XsKcCjDTO> selectYzyByXsCjId(@Param("xsCjId") Long xsCjId, @Param("kclx") Integer kclx);
+    List<XsKcCjDTO> selectYzyByXsId(@Param("xsId") Long xsId, @Param("kclx") Integer kclx);
+
+    /**
+     * 根据学生id查询学生课程成绩(原专业)
+     * @param xsId
+     * @return
+     */
+    List<XsKcCjDTO> findXsKcCjByXsId(@Param("xsId") Long xsId);
+
+    /**
+     * 统计原专业学分(获得)
+     * @param xsId
+     * @return
+     */
+    Integer getCountYzy(@Param("xsId") Long xsId);
+
+    /**
+     * 根据学生成绩id查询当前学分总分(技术转移)
+     * @param xsCjId
+     * @return
+     */
+    Integer getCountDqxf(@Param("xsCjId") Long xsCjId);
+
+    /**
+     * 根据学生成绩id查询技术转移课程总分(前)
+     * @param xsCjId
+     * @return
+     */
+    Integer getCountJszykczf(@Param("xsCjId") Long xsCjId);
 }
