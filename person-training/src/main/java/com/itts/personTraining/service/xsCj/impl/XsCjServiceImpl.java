@@ -182,26 +182,24 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     @Override
     public PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String yx, String jylx) {
         log.info("【人才培养 - 根据条件批次ID:{},学号:{},姓名:{},学院名称:{},教育类型:{}分页查询学生成绩】",pcId,xh,xm,yx,jylx);
-        //前台第一次展示暂无数据,以后批次ID必传
+        //前台不传教育类型和批次id,默认给学历学位成绩
         PageHelper.startPage(pageNum,pageSize);
-        Pc pc = pcMapper.selectById(pcId);
         List<XsCjDTO> xsCjDTOs = null;
-        if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
-            //学历学位教育
-            xsCjDTOs = xsCjMapper.findXsKcCj(pcId,xh,xm,yx,null);
-            if (CollectionUtils.isNotEmpty(xsCjDTOs)) {
-                for (XsCjDTO xsCjDTO : xsCjDTOs) {
-                    List<XsKcCjDTO> xsKcCjDTOList = xsCjDTO.getXsKcCjDTOList();
-                    Integer zxf = xsKcCjDTOList.stream().collect(Collectors.summingInt(XsKcCjDTO::getDqxf));
-                    xsCjDTO.setZxf(zxf);
-                }
+        if (pcId == null && jylx == null) {
+            xsCjDTOs = getXsCjDTOS(pcId, xh, xm, yx);
+        } else {
+            if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
+                //学历学位教育
+                xsCjDTOs = getXsCjDTOS(pcId, xh, xm, yx);
+            } else if (ADULT_EDUCATION.getKey().equals(jylx)) {
+                //继续教育
+                xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,yx,jylx);
             }
-        } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
-            //继续教育
-            xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,yx,jylx);
         }
         return new PageInfo<>(xsCjDTOs);
     }
+
+
 
     /**
      * 更新学生成绩
@@ -463,5 +461,28 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
         Date date = new Date();
         return sdf.format(date);
+    }
+
+    /**
+     * 通过条件查询学生成绩列表(方法)
+     * @param pcId
+     * @param xh
+     * @param xm
+     * @param yx
+     * @return
+     */
+    private List<XsCjDTO> getXsCjDTOS(Long pcId, String xh, String xm, String yx) {
+        List<XsCjDTO> xsCjDTOs;//学历学位教育
+        xsCjDTOs = xsCjMapper.findXsKcCj(pcId, xh, xm, yx, null);
+        if (CollectionUtils.isNotEmpty(xsCjDTOs)) {
+            for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                List<XsKcCjDTO> xsKcCjDTOList = xsCjDTO.getXsKcCjDTOList();
+                Integer zxf = xsKcCjDTOList.stream().collect(Collectors.summingInt(XsKcCjDTO::getDqxf));
+                xsCjDTO.setZxf(zxf);
+            }
+        } else {
+            return null;
+        }
+        return xsCjDTOs;
     }
 }
