@@ -411,6 +411,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         switch (userCategory) {
             //研究生
             case "postgraduate":
+            case "broker":
                 if (xsMsgDTO.getId() != null) {
                     pcs = xsCjMapper.findPcByXsId(xsMsgDTO.getId());
                 }
