@@ -16,6 +16,6 @@ import java.util.Map;
  */
 public interface LyZwService extends IService<LyZw> {
     PageInfo findLyZwFront(Map<String, Object> params);
-
+    PageInfo findLyZwFrontSelect(Map<String, Object> params);
     Boolean saveZw(LyZw lyZw);
 }
