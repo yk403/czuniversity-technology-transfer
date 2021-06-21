@@ -16,7 +16,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,15 +55,18 @@ public class XxzyController {
     @GetMapping("/get/{id}")
     public ResponseUtil get(@PathVariable("id") Long id) {
 
-        Xxzy xxzy = xxzyService.getById(id);
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser == null) {
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
 
-        if (xxzy == null || xxzy.getSfsc() || !xxzy.getSfsj()) {
+        GetXxzyVO vo = xxzyService.get(id);
+
+        if (vo == null || vo.getSfsc() || !vo.getSfsj()) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        GetXxzyVO vo = new GetXxzyVO();
-        BeanUtils.copyProperties(xxzy, vo);
-
+        Xxzy xxzy = xxzyService.getById(id);
         xxzy.setLll(xxzy.getLll().intValue() + 1);
 
         xxzyService.updateById(xxzy);
