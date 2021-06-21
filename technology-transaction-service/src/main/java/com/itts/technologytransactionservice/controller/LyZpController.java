@@ -72,7 +72,7 @@ public class LyZpController {
      * @throws WebException*/
 
     @PutMapping("/update")
-    @ApiOperation(value = "更新报名")
+    @ApiOperation(value = "更新展品")
     public ResponseUtil update(@RequestBody LyZp lyZp) throws WebException {
         Long id = lyZp.getId();
         //检查参数是否合法
@@ -87,7 +87,7 @@ public class LyZpController {
         if (!lyZpService.updateById(lyZp)) {
             throw new WebException(UPDATE_FAIL);
         }
-        return ResponseUtil.success("更新课程成功!");
+        return ResponseUtil.success("更新展品成功!");
 
     }
     @ApiOperation(value = "删除")
@@ -111,6 +111,20 @@ public class LyZpController {
         lyZpService.updateById(old);
 
         return ResponseUtil.success(old);
+    }
+    /**
+     * 个人发布审核成果申请(0待提交;1待审核;2通过;3整改;4拒绝)
+     *
+     * @param params
+     * @return
+     */
+    @PutMapping("/audit")
+    public ResponseUtil auditCg(@RequestBody Map<String, Object> params) {
+        Integer fbshzt = Integer.parseInt(params.get("fbshzt").toString());
+/*        if (fbshzt != 1) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }*/
+        return ResponseUtil.success("申请审核成功", lyZpService.audit(params, fbshzt));
     }
 }
 

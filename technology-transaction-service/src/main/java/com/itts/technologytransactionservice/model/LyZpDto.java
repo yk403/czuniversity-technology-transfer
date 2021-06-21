@@ -27,6 +27,14 @@ public class LyZpDto extends LyZp implements Serializable {
 * @Date: 2021/6/17
 */
 private String hdmc;
+    /**
+     * @Description: 展位名称(领域名称)
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/21
+     */
+    private String zwmc;
 
 
 }

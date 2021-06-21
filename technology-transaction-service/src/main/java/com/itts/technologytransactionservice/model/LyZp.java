@@ -352,5 +352,6 @@ public class LyZp implements Serializable {
      * @Date: 2021/6/17
      */
     private String qsrlxdh;
+    private Long userId;
 
 }
