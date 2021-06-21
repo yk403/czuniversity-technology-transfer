@@ -1,5 +1,6 @@
 package com.itts.personTraining.service.xxzy.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -25,6 +26,7 @@ import com.itts.personTraining.request.xxzy.AddXxzyRequest;
 import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
 import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
+import com.itts.personTraining.vo.ddxfjl.GetDdxfjlVO;
 import com.itts.personTraining.vo.xxzy.GetXxzyVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -170,32 +172,32 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             return pageInfo;
         }
 
-        /*ResponseUtil response = orderFeignService.getByUserId();
+        ResponseUtil response = orderFeignService.getByUserId();
         if (response.getErrCode().intValue() != 0) {
 
             return pageInfo;
         }
 
-        //解析响应结果
-        String dataStr = response.getData().toString();
-        JSONArray jsonArr = JSONUtil.parseArray(dataStr);
+        if (response.getData() == null) {
+            return pageInfo;
+        }
 
-        List<GetDdxfjlVO> ddxfjls = JSONUtil.toList(jsonArr, GetDdxfjlVO.class);
+        List<GetDdxfjlVO> ddxfjls = response.conversionData(new TypeReference<List<GetDdxfjlVO>>(){});
 
         //获取订单中商品ID
-        List<Long> spIds = ddxfjls.stream().map(GetDdxfjlVO::getSpId).collect(Collectors.toList());*/
+        List<Long> spIds = ddxfjls.stream().map(GetDdxfjlVO::getSpId).collect(Collectors.toList());
 
         //获取当前查询列表的商品是否为已支付订单
         Map<Long, GetXxzyVO> xxzyMap = voList.stream().collect(Collectors.toMap(GetXxzyVO::getId, Function.identity()));
 
-        /*spIds.forEach(spId -> {
+        spIds.forEach(spId -> {
 
             GetXxzyVO xxzy = xxzyMap.get(spId);
             if (xxzy != null) {
 
                 xxzy.setSfgm(true);
             }
-        });*/
+        });
 
         //获取我收藏的学习资源
         List<Xxzysc> xxzyscs = xxzyscMapper.selectList(new QueryWrapper<Xxzysc>()
