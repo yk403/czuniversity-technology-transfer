@@ -20,6 +20,11 @@ public class DateUtils {
      */
     public final static String DATE_PATTERN = "yyyy-MM-dd";
     /**
+     * 时间格式(yyyyMMdd)
+     */
+    public final static String DATE_FORMAT = "yyyyMMdd";
+
+    /**
      * 时间格式(yyyy-MM-dd HH:mm:ss)
      */
     public final static String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
@@ -181,6 +186,12 @@ public class DateUtils {
         Date d = calendar.getTime();
         //formatter.format(d)
         return d;
+    }
+
+    public static String getDateFormat(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+        String format = formatter.format(date);
+        return format;
     }
 
 }

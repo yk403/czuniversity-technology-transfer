@@ -5,22 +5,29 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.XfDTO;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
+import com.itts.personTraining.mapper.tz.TzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
 import com.itts.personTraining.model.pc.Pc;
+import com.itts.personTraining.model.tz.Tz;
+import com.itts.personTraining.model.tzXs.TzXs;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.itts.personTraining.service.pc.PcService;
+import com.itts.personTraining.service.tz.TzService;
+import com.itts.personTraining.service.tzXs.TzXsService;
 import com.itts.personTraining.service.xsCj.XsCjService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.xsKcCj.XsKcCjService;
+import jdk.internal.org.objectweb.asm.commons.SerialVersionUIDAdder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -29,6 +36,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -61,12 +69,18 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     private XsKcCjMapper xsKcCjMapper;
     @Autowired
     private PcService pcService;
+    @Autowired
+    private TzService tzService;
+    @Autowired
+    private TzXsService tzXsService;
     @Resource
     private XsMapper xsMapper;
     @Resource
     private KcMapper kcMapper;
     @Resource
     private PcMapper pcMapper;
+    @Resource
+    private TzMapper tzMapper;
 
     /**
      * 根据批次id查询所有学生成绩
@@ -220,13 +234,35 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     @Override
     public boolean issueBatch(List<Long> ids) {
         log.info("【人才培养 - 学生成绩批量下发,ids:{}】",ids);
-        List<XsCj> xsCjList = xsCjMapper.selectBatchIds(ids);
+        List<XsCj> xsCjList = new ArrayList<>();
+        List<XsCjDTO> xsCjDTOList = xsCjMapper.findXsCjByIds(ids);
         Long userId = getUserId();
-        for (XsCj xsCj : xsCjList) {
-            xsCj.setGxr(userId);
-            xsCj.setSfxf(true);
+        for (XsCjDTO xsCjDTO : xsCjDTOList) {
+            XsCj xsCj = new XsCj();
+            xsCjDTO.setGxr(userId);
+            xsCjDTO.setSfxf(true);
+            BeanUtils.copyProperties(xsCjDTO,xsCj);
+            xsCjList.add(xsCj);
+            Tz tz = new Tz();
+            tz.setTzmc(xsCjDTO.getPch() + "成绩通知" + DateUtils.getDateFormat(new Date()));
+            tz.setNr("您好,您的批次:"+ xsCjDTO.getPch() +"成绩结果已出,请悉知!");
+            //根据学生成绩Id查询学生id
+            Long xsId = xsCjMapper.findXsIdsByXsCjId(xsCjDTO.getId());
+            if (tzService.save(tz)) {
+                TzXs tzXs = new TzXs();
+                tzXs.setXsId(xsId);
+                tzXs.setTzId(tz.getId());
+                if (!tzXsService.save(tzXs)) {
+                    throw new ServiceException(INSERT_FAIL);
+                }
+            } else {
+                throw new ServiceException(INSERT_FAIL);
+            }
         }
-        return xsCjService.updateBatchById(xsCjList);
+        if (!xsCjService.updateBatchById(xsCjList)) {
+            throw new ServiceException(UPDATE_FAIL);
+        }
+        return true;
     }
 
     /**

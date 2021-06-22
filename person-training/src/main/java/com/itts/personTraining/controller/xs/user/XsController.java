@@ -4,6 +4,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.StuDTO;
+import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.service.xs.XsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,8 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 public class XsController {
     @Autowired
     private XsService xsService;
+    @Autowired
+    private UserFeignService userFeignService;
 
     /**
      * 查询学员综合信息
@@ -67,6 +70,16 @@ public class XsController {
         }
         return ResponseUtil.success("更新学生成功!");
     }
+
+    /**
+     * 获取当前登陆用户信息
+     */
+    @GetMapping("/yh/get")
+    @ApiOperation(value = "获取当前登陆用户信息")
+    public ResponseUtil get() {
+        return userFeignService.get();
+    }
+
     /**
      * 校验参数
      */
