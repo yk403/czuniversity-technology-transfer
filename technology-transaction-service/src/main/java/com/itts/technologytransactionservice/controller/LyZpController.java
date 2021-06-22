@@ -44,6 +44,15 @@ public class LyZpController {
 //return null;
         return ResponseUtil.success(lyZpService.findLyZpFront(params));
     }
+    //    *
+//     * 获取列表
+
+    @ApiOperation(value = "获取列表")
+    @PostMapping("/listUser")
+    public ResponseUtil findUser(@RequestBody Map<String, Object> params) {
+//return null;
+        return ResponseUtil.success(lyZpService.findLyZpFrontUser(params));
+    }
 //    *
 //     * 根据ID查询
 //     * @param id

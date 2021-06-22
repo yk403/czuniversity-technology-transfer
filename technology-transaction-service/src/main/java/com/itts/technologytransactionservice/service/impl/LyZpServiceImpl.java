@@ -46,6 +46,15 @@ public class LyZpServiceImpl extends ServiceImpl<LyZpMapper, LyZp> implements Ly
         List<LyZpDto> list = lyZpMapper.findLyZpFront(query);
         return new PageInfo<>(list);
     }
+    @Override
+    public PageInfo findLyZpFrontUser(Map<String, Object> params) {
+        log.info("【技术交易 - 分页条件查询(前台)】");
+        Query query = new Query(params);
+        query.put("userId",getUserId());
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<LyZpDto> list = lyZpMapper.findLyZpFront(query);
+        return new PageInfo<>(list);
+    }
 
     @Override
     public Boolean saveZp(LyZp lyZp) {
