@@ -36,5 +36,10 @@
     <sql id="Base_Column_List">
         id, yx, dsbh, dsxm, xb, sfzh, jg, csrq, mz, zzmm, whcd, yx, gbzw, cszy_one, cszy_two, cszy_three, jszc, dwdh, zzdh, hxwsj, hxlyx, hxlsj, sxzy, zgxl, pzsdny, pzbdny, dssqsny, dbsqsny, zgzt, dslb, sczt, cjsj, cjr, gxsj, gxr
     </sql>
+    <select id="getSzByYhId" resultType="com.itts.personTraining.model.sz.Sz">
+        select *
+        from t_sz sz
+        where sz.sfsc = false and sz.yh_id = #{yhId}
+    </select>
 
 </mapper>

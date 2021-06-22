@@ -2,6 +2,7 @@ package com.itts.personTraining.service.pk;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.dto.PkDTO;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pk.Pk;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -24,7 +25,7 @@ public interface PkService extends IService<Pk> {
      * @param pcId
      * @return
      */
-    Map<String, List<PkDTO>> findPkInfo(Long pcId);
+    List<PkDTO> findPkInfo(Long pcId);
 
     /**
      * 根据id查询排课详情
@@ -68,4 +69,9 @@ public interface PkService extends IService<Pk> {
      */
     List<PkDTO> findPkByKxrq(Date kxrq);
 
+    /**
+     * 根据用户id查询批次ids(前)
+     * @return
+     */
+    List<Pc> getPcsByYhId();
 }

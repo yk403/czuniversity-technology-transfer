@@ -3,6 +3,7 @@ package com.itts.personTraining.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 用户类型枚举
@@ -20,6 +21,10 @@ public enum UserTypeEnum {
     CORPORATE_MENTOR("corporate_mentor","企业导师"),
 
     TEACHER("teacher","任课教师"),
+
+    ADMINISTRATOR("administrator", "管理员"),
+
+    SCHOOL_LEADER("school_leader", "校领导"),
 
     IN("in","内部用户");
 

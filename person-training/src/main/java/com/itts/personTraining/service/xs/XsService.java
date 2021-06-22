@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.xs.Xs;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -92,4 +93,11 @@ public interface XsService extends IService<Xs> {
      * @return
      */
     XsMsgDTO getByYhId();
+
+    /**
+     * 根据用户id查询批次信息(前)
+     * @return
+     */
+    List<Pc> getPcByYhId();
+
 }

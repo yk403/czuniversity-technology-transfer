@@ -1,7 +1,6 @@
 package com.itts.personTraining.service.xxzy.impl;
 
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -144,8 +143,11 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         query.orderByDesc("cjsj");
 
         List<Xxzy> list = xxzyMapper.selectList(query);
+        PageInfo<Xxzy> page = new PageInfo<>(list);
 
         PageInfo<GetXxzyVO> pageInfo = new PageInfo<>();
+
+        BeanUtils.copyProperties(page, pageInfo);
 
         if (CollectionUtils.isEmpty(list)) {
 
@@ -176,11 +178,11 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             return pageInfo;
         }
 
-        //解析响应结果
-        String dataStr = response.getData().toString();
-        JSONArray jsonArr = JSONUtil.parseArray(dataStr);
+        if (response.getData() == null) {
+            return pageInfo;
+        }
 
-        List<GetDdxfjlVO> ddxfjls = JSONUtil.toList(jsonArr, GetDdxfjlVO.class);
+        List<GetDdxfjlVO> ddxfjls = response.conversionData(new TypeReference<List<GetDdxfjlVO>>(){});
 
         //获取订单中商品ID
         List<Long> spIds = ddxfjls.stream().map(GetDdxfjlVO::getSpId).collect(Collectors.toList());
@@ -245,7 +247,6 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             vo.setFjzys(fjzys);
         }
 
-
         return vo;
     }
 
@@ -309,7 +310,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         xxzy.setGxsj(now);
         xxzy.setGxr(userId);
 
-        xxzyMapper.updateById(xxzy);
+        xxzyMapper.update(xxzy);
 
         if (!CollectionUtils.isEmpty(updateXxzyRequest.getFjzys())) {
 

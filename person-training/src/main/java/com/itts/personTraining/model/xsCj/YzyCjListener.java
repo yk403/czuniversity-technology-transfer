@@ -9,6 +9,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.personTraining.dto.JxjyCjDTO;
 import com.itts.personTraining.dto.StuDTO;
+import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.YzyCjDTO;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
@@ -85,15 +86,15 @@ public class YzyCjListener extends AnalysisEventListener<YzyCjDTO> {
     }
 
     private void save(XsCj xsCj) {
-        XsCj xsCj1 = xsCjMapper.selectByPcIdAndXsId(xsCj.getPcId(),xsCj.getXsId());
-        if (xsCj1 == null) {
+        XsCjDTO xsCjDTO = xsCjMapper.selectByPcIdAndXsId(xsCj.getPcId(),xsCj.getXsId());
+        if (xsCjDTO == null) {
             //新增
             xsCj.setCjr(getUserId());
             xsCj.setGxr(getUserId());
             xsCjMapper.insert(xsCj);
         } else {
             //更新
-            xsCj.setId(xsCj1.getId());
+            xsCj.setId(xsCjDTO.getId());
             xsCj.setGxr(getUserId());
             xsCjMapper.updateById(xsCj);
         }
