@@ -101,6 +101,7 @@
             <if test="map.hdtp != null"> and hd.hdtp = #{map.hdtp} </if>
             <if test="map.hdtpmc != null"> and hd.hdtpmc = #{map.hdtpmc} </if>
             <if test="map.hdzt != null"> and hd.hdzt = #{map.hdzt} </if>
+            <if test="map.hdEnd != null and map.hdEnd == 1"> and hd.hdzt != 3 </if>
             <if test="map.hdnr != null"> and hd.hdnr = #{map.hdnr} </if>
             <if test="map.bmjzsj != null"> and hd.bmjzsj = #{map.bmjzsj} </if>
             <if test="map.hdfbzt != null"> and hd.hdfbzt = #{map.hdfbzt} </if>
@@ -160,6 +161,7 @@
             <if test="map.hdtp != null"> and hd.hdtp = #{map.hdtp} </if>
             <if test="map.hdtpmc != null"> and hd.hdtpmc = #{map.hdtpmc} </if>
             <if test="map.hdzt != null"> and hd.hdzt = #{map.hdzt} </if>
+            <if test="map.hdEnd != null and map.hdEnd == 1"> and hd.hdzt != 3 </if>
             <if test="map.hdnr != null"> and hd.hdnr = #{map.hdnr} </if>
             <if test="map.bmjzsj != null"> and hd.bmjzsj = #{map.bmjzsj} </if>
             <if test="map.hdfbzt != null"> and hd.hdfbzt = #{map.hdfbzt} </if>
