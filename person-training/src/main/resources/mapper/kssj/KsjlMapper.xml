@@ -16,11 +16,17 @@
         <result column="sjlx" property="sjlx" />
         <result column="ksdtsj" property="ksdtsj" />
         <result column="jsdtsj" property="jsdtsj" />
+        <result column="pdzf" property="pdzf" />
+        <result column="pddf" property="pddf" />
+        <result column="danxzf" property="danxzf" />
+        <result column="danxdf" property="danxdf" />
+        <result column="duoxzf" property="duoxzf" />
+        <result column="duoxdf" property="duoxdf" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, sj_id, xs_id, xsbm, xsmc, sjmc, sjzf, zzcj, tmzs, sjlx, ksdtsj, jsdtsj
+        id, sj_id, xs_id, xsbm, xsmc, sjmc, sjzf, zzcj, tmzs, sjlx, ksdtsj, jsdtsj, pdzf, pddf, danxzf, danxdf, duoxzf, duoxdf
     </sql>
 
 </mapper>

@@ -134,6 +134,10 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         Ksjl ksjl = new Ksjl();
         BeanUtils.copyProperties(kssj, ksjl);
 
+        ksjl.setPdzf(kssj.getPdzf());
+        ksjl.setDanxzf(kssj.getDanzf());
+        ksjl.setDuoxdf(kssj.getDuozf());
+
         ksjl.setXsId(loginUser.getUserId());
         ksjl.setXsmc(loginUser.getRealName());
         ksjl.setXsbm("");
@@ -227,6 +231,9 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         Map<Long, List<CommitKsjlXxRequest>> commitKsjlxxMap = commitKsjlxxs.stream().collect(Collectors.groupingBy(CommitKsjlXxRequest::getTmId));
 
         AtomicInteger totalScore = new AtomicInteger();
+        AtomicInteger pdScore = new AtomicInteger();
+        AtomicInteger duoxScore = new AtomicInteger();
+        AtomicInteger danxScore = new AtomicInteger();
 
         ksjlxxMap.forEach((k, v) -> {
 
@@ -271,7 +278,26 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
                 if (CollectionUtils.isEmpty(zqIdList)) {
 
+                    //设置总分最终得分
                     totalScore.addAndGet(tmMap.get(k).getFz());
+
+                    //设置判断最终得分
+                    if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.JUDGMENT.getKey())) {
+
+                        pdScore.addAndGet(tmMap.get(k).getFz());
+                    }
+
+                    //设置单选最终得分
+                    if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.SINGLE_CHOICE.getKey())) {
+
+                        danxScore.addAndGet(tmMap.get(k).getFz());
+                    }
+
+                    //设置多选最终得分
+                    if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.MULTIPLE_CHOICE.getKey())) {
+
+                        duoxScore.addAndGet(tmMap.get(k).getFz());
+                    }
                 }
             }
 
@@ -286,10 +312,31 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             if (CollectionUtils.isEmpty(xzIdList)) {
 
                 totalScore.addAndGet(tmMap.get(k).getFz() / 2);
+
+                //设置判断最终得分
+                if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.JUDGMENT.getKey())) {
+
+                    pdScore.addAndGet(tmMap.get(k).getFz());
+                }
+
+                //设置单选最终得分
+                if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.SINGLE_CHOICE.getKey())) {
+
+                    danxScore.addAndGet(tmMap.get(k).getFz());
+                }
+
+                //设置多选最终得分
+                if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.MULTIPLE_CHOICE.getKey())) {
+
+                    duoxScore.addAndGet(tmMap.get(k).getFz());
+                }
             }
         });
 
         ksjl.setZzcj(totalScore.get());
+        ksjl.setPddf(pdScore.get());
+        ksjl.setDanxdf(danxScore.get());
+        ksjl.setDuoxdf(duoxScore.get());
 
         ksjlMapper.updateById(ksjl);
 
