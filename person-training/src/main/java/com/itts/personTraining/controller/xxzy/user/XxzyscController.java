@@ -115,7 +115,7 @@ public class XxzyscController {
     }
 
     @ApiOperation(value = "取消收藏")
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{xxzyId}")
     public ResponseUtil delete(@PathVariable("xxzyId") Long xxzyId){
 
         LoginUser loginUser = SystemConstant.threadLocal.get();

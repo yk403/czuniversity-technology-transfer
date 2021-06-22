@@ -4,6 +4,7 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.common.ResponseUtil;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @FeignClient(value = "user-service")
 public interface UserFeignService {
@@ -13,4 +14,10 @@ public interface UserFeignService {
      */
     @GetMapping(SystemConstant.BASE_URL + "/v1/yh/get/")
     ResponseUtil get();
+
+    /**
+     * 更新用户信息
+     */
+    @PutMapping(SystemConstant.BASE_URL + "/v1/yh/update/")
+    ResponseUtil update();
 }
