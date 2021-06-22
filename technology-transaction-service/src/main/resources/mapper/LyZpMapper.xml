@@ -12,6 +12,7 @@
         zp.zplx,
         hd.hdmc,
         sjzd.zdmc as lymc,
+        zw.zwmc as zwmc,
         zp.dwmc,
         zp.hzjg,
         zp.lxfs,
@@ -46,12 +47,17 @@
         zp.zpxq,
         zp.jszb,
         zp.remarks,
-        zp.cgwcsj
+        zp.cgwcsj,
+        zp.cgqsr,
+        zp.qsrlxdh,
+        zp.user_id,
+        zp.zw_id
         from t_ly_zp zp left join t_sjzd sjzd on (sjzd.id = zp.ly_id) left join t_ly_zw zw on (zw.id = zp.zw_id) left join t_ly_hd hd on (hd.id = zp.hd_id)
         <where>
             <!--后台能查询0或者1的数据 -->
             zp.is_delete = 0
             <if test="map.zgzt == 0"> and (zp.fbshzt = 3 or zp.fbshzt = 5) </if>
+            <if test="map.userId != null"> and zp.user_id = #{map.userId} </if>
             <if test="map.zpjj != null"> and zp.zpjj = #{map.zpjj} </if>
             <if test="map.lyId != null and map.lyId neq 255"> and zp.ly_id = #{map.lyId} </if>
             <if test="map.lbId != null and map.lbId neq 254"> and zp.lb_id = #{map.lbId} </if>
@@ -81,6 +87,7 @@
         zp.zplx,
         hd.hdmc,
         sjzd.zdmc as lymc,
+        zw.zwmc as zwmc,
         zp.dwmc,
         zp.hzjg,
         zp.lxfs,
@@ -115,7 +122,11 @@
         zp.zpxq,
         zp.jszb,
         zp.remarks,
-        zp.cgwcsj
+        zp.cgwcsj,
+        zp.cgqsr,
+        zp.qsrlxdh,
+        zp.user_id,
+        zp.zw_id
         from t_ly_zp zp left join t_sjzd sjzd on (sjzd.id = zp.ly_id) left join t_ly_zw zw on (zw.id = zp.zw_id) left join t_ly_hd hd on (hd.id = zp.hd_id)
         <where>
             <!--后台能查询0或者1的数据 -->

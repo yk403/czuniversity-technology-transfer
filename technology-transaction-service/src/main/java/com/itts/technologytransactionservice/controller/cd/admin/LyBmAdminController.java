@@ -85,7 +85,7 @@ public class LyBmAdminController {
        if (!lyBmAdminService.updateLyBm(lyBm)) {
             throw new WebException(UPDATE_FAIL);
         }
-        return ResponseUtil.success("更新课程成功!");
+        return ResponseUtil.success("报名审核成功!");
 
     }
     @ApiOperation(value = "删除")

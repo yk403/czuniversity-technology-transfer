@@ -19,8 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * @Description：
  * @Author：lym
@@ -41,11 +39,12 @@ public class XxzyController {
                              @ApiParam(value = "资源类型：in-内部资源；out-外部资源") @RequestParam(value = "type") String type,
                              @ApiParam(value = "一级分类") @RequestParam(value = "firstCategory", required = false) String firstCategory,
                              @ApiParam(value = "二级分类") @RequestParam(value = "secondCategory", required = false) String secondCategory,
+                             @ApiParam(value = "资源类型: video - 视频; textbook - 教材; courseware - 课件") @RequestParam(value = "category", required = false) String category,
+                             @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction,
                              @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
-                             @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
-                             HttpServletRequest request) {
+                             @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition) {
 
-        PageInfo<GetXxzyVO> result = xxzyService.listVO(pageNum, pageSize, type, firstCategory, secondCategory, courseId, condition, request.getHeader("token"));
+        PageInfo<GetXxzyVO> result = xxzyService.listVO(pageNum, pageSize, type, firstCategory, secondCategory, category, direction, courseId, condition);
 
         return ResponseUtil.success(result);
 
