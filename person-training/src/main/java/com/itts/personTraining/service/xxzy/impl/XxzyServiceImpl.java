@@ -114,7 +114,8 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      */
     @Override
     public PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
-                                      String secondCategory, Long courseId, String condition, String token) {
+                                      String secondCategory, String category, String direction, Long courseId,
+                                      String condition) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -130,6 +131,14 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
         if (StringUtils.isNotBlank(secondCategory)) {
             query.eq("zyejfl", secondCategory);
+        }
+
+        if (StringUtils.isNotBlank(category)) {
+            query.eq("zylx", category);
+        }
+
+        if (StringUtils.isNotBlank(direction)) {
+            query.eq("zyfx", direction);
         }
 
         if (courseId != null) {
@@ -182,7 +191,8 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             return pageInfo;
         }
 
-        List<GetDdxfjlVO> ddxfjls = response.conversionData(new TypeReference<List<GetDdxfjlVO>>(){});
+        List<GetDdxfjlVO> ddxfjls = response.conversionData(new TypeReference<List<GetDdxfjlVO>>() {
+        });
 
         //获取订单中商品ID
         List<Long> spIds = ddxfjls.stream().map(GetDdxfjlVO::getSpId).collect(Collectors.toList());
