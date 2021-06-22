@@ -72,15 +72,6 @@ public class XsController {
     }
 
     /**
-     * 获取当前登陆用户信息
-     */
-    @GetMapping("/yh/get")
-    @ApiOperation(value = "获取当前登陆用户信息")
-    public ResponseUtil get() {
-        return userFeignService.get();
-    }
-
-    /**
      * 校验参数
      */
     private void checkRequest(StuDTO stuDTO) throws WebException {

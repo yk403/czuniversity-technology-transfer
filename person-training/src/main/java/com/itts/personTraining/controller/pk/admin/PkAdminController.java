@@ -1,6 +1,7 @@
 package com.itts.personTraining.controller.pk.admin;
 
 
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.PkDTO;
@@ -37,7 +38,10 @@ public class PkAdminController {
      */
     @GetMapping("/list")
     @ApiOperation(value = "查询排课信息")
-    public ResponseUtil findPkInfo(@RequestParam(value = "pcId", required = false) Long pcId) {
+    public ResponseUtil findPkInfo(@RequestParam(value = "pcId") Long pcId) {
+        if (pcId == null) {
+            throw new WebException(BATCH_ID_ISEMPTY_ERROR);
+        }
         return ResponseUtil.success(pkService.findPkInfo(pcId));
     }
 
