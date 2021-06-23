@@ -17,7 +17,10 @@
     <select id="getTzCountByXsIdAndTzlx" resultType="java.lang.Long">
         select count(ttx.id)
         from t_tz_xs ttx left join t_tz tz on (tz.id=ttx.tz_id) left join t_xs xs on (xs.id=ttx.xs_id)
-        where tz.sfsc and xs.sfsc and ttx.xs_id = #{xsId} and tz.tzlx = #{tzlx}
+        where tz.sfsc = false and xs.sfsc = false
+        <if test="xsId != null">and ttx.xs_id = #{xsId}</if>
+        <if test="tzlx != null and tzlx != ''">and tz.tzlx = #{tzlx}</if>
+        <if test="sfdq != null">and ttx.sfdq = #{sfdq}</if>
     </select>
 
 </mapper>

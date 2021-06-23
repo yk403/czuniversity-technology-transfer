@@ -211,9 +211,9 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         }
         GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
         });
-        xsMsgDTO.setKstz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"考试通知"));
-        xsMsgDTO.setCjtz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"成绩通知"));
-        xsMsgDTO.setSjtz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"实践通知"));
+        xsMsgDTO.setKstz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"考试通知",false));
+        xsMsgDTO.setCjtz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"成绩通知",false));
+        xsMsgDTO.setSjtz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"实践通知",false));
         //TODO: 暂时假数据
         xsMsgDTO.setXftz(0L);
         xsMsgDTO.setQttz(0L);

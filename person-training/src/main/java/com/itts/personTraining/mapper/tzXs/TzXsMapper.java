@@ -15,9 +15,9 @@ import org.apache.ibatis.annotations.Param;
 public interface TzXsMapper extends BaseMapper<TzXs> {
 
     /**
-     * 通过学生id和通知类型查询未读取的通知数量
+     * 通过学生id,通知类型和读取状态查询通知数量
      * @param xsId
      * @return
      */
-    Long getTzCountByXsIdAndTzlx(@Param("xsId") Long xsId,@Param("tzlx") String tzlx);
+    Long getTzCountByXsIdAndTzlx(@Param("xsId") Long xsId,@Param("tzlx") String tzlx,@Param("sfdq") boolean sfdq);
 }
