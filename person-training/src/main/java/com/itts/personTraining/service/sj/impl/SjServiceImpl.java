@@ -4,13 +4,21 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.SjDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.mapper.pc.PcMapper;
+import com.itts.personTraining.mapper.xs.XsMapper;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.sj.Sj;
 import com.itts.personTraining.mapper.sj.SjMapper;
+import com.itts.personTraining.model.tz.Tz;
+import com.itts.personTraining.model.tzXs.TzXs;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.service.sj.SjService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.personTraining.service.tz.TzService;
+import com.itts.personTraining.service.tzXs.TzXsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +27,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.INSERT_FAIL;
 
 /**
  * <p>
@@ -39,8 +51,16 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
 
     @Autowired
     private  SjService sjService;
+    @Autowired
+    private TzXsService tzXsService;
+    @Autowired
+    private TzService tzService;
     @Resource
     private SjMapper sjMapper;
+    @Resource
+    private PcMapper pcMapper;
+    @Resource
+    private XsMapper xsMapper;
 
 
     /**
@@ -87,6 +107,24 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
         for (Sj sj : sjList) {
             sj.setGxr(userId);
             sj.setSfxf(true);
+            Pc pc = pcMapper.getPcById(sj.getPcId());
+            Tz tz = new Tz();
+            tz.setTzlx("实践通知");
+            tz.setTzmc(pc.getPch() + "实践通知" + DateUtils.getDateFormat(new Date()));
+            List<Long> xsIds = xsMapper.findXsIdsByPcId(pc.getId());
+            tz.setNr("您好,您此批次:"+pc.getPch()+sj.getSjmc()+"实践单位为:"+sj.getSjdw()+",实践时间为:"+DateUtils.getDateFormat(sj.getKsrq())+"-"+DateUtils.getDateFormat(sj.getJsrq())+",请悉知!");
+            if (tzService.save(tz)) {
+                TzXs tzXs = new TzXs();
+                tzXs.setXsId(sj.getXsId());
+                tzXs.setTzId(tz.getId());
+                if (tzXsService.save(tzXs)) {
+                    continue;
+                } else {
+                    throw new ServiceException(INSERT_FAIL);
+                }
+            } else {
+                throw new ServiceException(INSERT_FAIL);
+            }
         }
         return sjService.updateBatchById(sjList);
     }
