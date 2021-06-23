@@ -42,9 +42,9 @@ public class Ks implements Serializable {
     private Integer type;
 
     /**
-     * 试卷id
+     * 考试试卷id
      */
-    private Long sjId;
+    private Long kssjId;
 
     /**
      * 考试名称

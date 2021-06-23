@@ -25,7 +25,6 @@
         <result column="jsbh" property="jsbh" />
         <result column="dsxm" property="dsxm" />
         <result column="dsbh" property="dsbh" />
-        <result column="sfxf" property="sfxf" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
@@ -41,7 +40,7 @@
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pc_id, kc_id, sz_id, xxjs_id, pkmc, skqsnyr, skjsnyr, kcsj_id, xqs, sfxf, sfsc, cjsj, cjr, gxsj, gxr
+        id, pc_id, kc_id, sz_id, xxjs_id, pkmc, skqsnyr, skjsnyr, kcsj_id, xqs, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="getPkById" resultMap="BaseResultMap">
@@ -72,7 +71,7 @@
     <select id="findPcsBySzId" resultType="com.itts.personTraining.model.pc.Pc">
         select pk.pc_id as id, pc.pch, pc.pcmc
         from t_pk pk left join t_pc pc on (pc.id=pk.pc_id)
-        where pk.sfsc = false and pc.sfsc = false and pk.sfxf = true and pk.sz_id = #{szId} group by pk.pc_id
+        where pk.sfsc = false and pc.sfsc = false and pk.sz_id = #{szId} group by pk.pc_id
         order by pc.cjsj desc
     </select>
 

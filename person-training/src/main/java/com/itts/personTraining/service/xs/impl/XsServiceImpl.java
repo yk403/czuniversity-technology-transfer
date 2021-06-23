@@ -13,6 +13,7 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.mapper.ksXs.KsXsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
@@ -24,6 +25,7 @@ import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.model.yh.Yh;
+import com.itts.personTraining.request.feign.UpdateUserRequest;
 import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.pcXs.PcXsService;
 import com.itts.personTraining.service.xs.XsService;
@@ -83,6 +85,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     private PcMapper pcMapper;
     @Autowired
     private PcService pcService;
+    @Autowired
+    private UserFeignService userFeignService;
 
     /**
      * 查询学员列表
@@ -198,12 +202,14 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         if (xsId == null) {
             throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
         }
+        Object data = userFeignService.get().getData();
         xsMsgDTO.setKstz(ksXsMapper.getNumByXsId(xsId));
         xsMsgDTO.setCjtz(xsCjMapper.getNumByXsId(xsId));
         xsMsgDTO.setSjtz(sjMapper.getNumByXsId(xsId));
         //TODO: 暂时假数据
         xsMsgDTO.setXftz(0L);
         xsMsgDTO.setQttz(0L);
+        xsMsgDTO.setYhMsg(data);
         return xsMsgDTO;
     }
 
@@ -217,6 +223,28 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         log.info("【人才培养 - 根据用户id:{}查询批次信息(前)】",userId);
         List<Pc> pcList = pcMapper.findPcByYhId(userId);
         return pcList;
+    }
+
+    /**
+     * 更新学生信息(前)
+     * @param stuDTO
+     * @return
+     */
+    @Override
+    public boolean updateUser(StuDTO stuDTO) {
+        log.info("【人才培养 - 更新学生信息(前):{}】",stuDTO);
+        Long userId = getUserId();
+        stuDTO.setGxr(userId);
+        Xs xs = new Xs();
+        BeanUtils.copyProperties(stuDTO,xs);
+        if (xsService.updateById(xs)) {
+            UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+            updateUserRequest.setLxdh(stuDTO.getLxdh());
+            updateUserRequest.setYhyx(stuDTO.getYhyx());
+            updateUserRequest.setYhtx(stuDTO.getYhtx());
+            return userFeignService.update(updateUserRequest).getErrCode() == 0;
+        }
+        return false;
     }
 
     /**

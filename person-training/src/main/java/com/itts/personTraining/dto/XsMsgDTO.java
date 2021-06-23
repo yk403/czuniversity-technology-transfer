@@ -19,6 +19,8 @@ public class XsMsgDTO {
      */
     private Long id;
 
+    private Object yhMsg;
+
     /**
      * 院系
      */

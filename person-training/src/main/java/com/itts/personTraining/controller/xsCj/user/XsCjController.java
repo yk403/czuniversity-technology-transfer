@@ -40,7 +40,7 @@ public class XsCjController {
      *
      * @return
      */
-    @GetMapping("/findPcIdsByYhId")
+    @GetMapping("/findPcByYhId")
     @ApiOperation(value = "根据学生id查询批次信息")
     public ResponseUtil findPcIdsByYhId() {
         return ResponseUtil.success(xsCjService.findPcByYhId());

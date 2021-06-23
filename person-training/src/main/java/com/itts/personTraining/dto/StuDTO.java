@@ -56,6 +56,12 @@ public class StuDTO {
     @ApiModelProperty(value = "机构ID", required = true)
     private Long jgId;
 
+    @ApiModelProperty(value = "用户邮箱")
+    private String yhyx;
+
+    @ApiModelProperty(value = "用户头像")
+    private String yhtx;
+
     /**
      * 院系
      */

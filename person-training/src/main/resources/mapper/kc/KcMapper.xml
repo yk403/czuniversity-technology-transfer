@@ -40,12 +40,18 @@
             <if test="xylx != null and xylx != ''"> and kc.xylx like trim(#{xylx}) </if>
             <if test="name != null and name != ''"> and (kc.kcdm like concat('%',trim(#{name}),'%') or kc.kcmc like concat('%',trim(#{name}),'%'))</if>
         </where>
-        order by kc.cjsj desc
+        order by field(kc.kclx,'theory_class','practice_course','practical_training'), kc.cjsj desc
     </select>
     <select id="findKcByPcId" resultType="com.itts.personTraining.model.kc.Kc">
         select kc.*
         from t_kc kc
         where kc.sfsc = false
         and kc.xylx = (select pc.xylx from t_pc pc where pc.sfsc = false and pc.id = #{pcId})
+    </select>
+    <select id="findXsKcCjByPcId" resultType="com.itts.personTraining.dto.XsKcCjDTO">
+        select kc.id as kcId, kc.zsmk_id, kc.kcdm, kc.kcmc, kc.kcxs
+        from t_kc kc
+        where kc.sfsc = false
+        and kc.xylx = (select xylx from t_pc pc where pc.sfsc = false and pc.id = #{pcId})
     </select>
 </mapper>

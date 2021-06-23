@@ -40,10 +40,10 @@ public class KsDTO {
     private List<Long> szIds;
 
     /**
-     * 试卷id
+     * 考试试卷id
      */
-    @ApiModelProperty(value = "试卷id")
-    private Long sjId;
+    @ApiModelProperty(value = "考试试卷id")
+    private Long kssjId;
 
 
     /**
