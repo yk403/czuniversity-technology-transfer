@@ -1,5 +1,8 @@
 package com.itts.personTraining.service.tz;
 
+import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.StuDTO;
+import com.itts.personTraining.dto.TzDTO;
 import com.itts.personTraining.model.tz.Tz;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,7 +18,10 @@ public interface TzService extends IService<Tz> {
 
     /**
      * 根据用户类别查询通知信息(前)
+     * @param pageNum
+     * @param pageSize
+     * @param tzlx
      * @return
      */
-    Tz findByCategory();
+    PageInfo<TzDTO> findByCategory(Integer pageNum,Integer pageSize,String tzlx);
 }

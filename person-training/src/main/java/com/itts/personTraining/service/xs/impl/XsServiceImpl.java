@@ -61,7 +61,7 @@ import static com.itts.personTraining.enums.UserTypeEnum.*;
  */
 @Service
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsService {
     
     @Resource

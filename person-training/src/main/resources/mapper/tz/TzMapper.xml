@@ -19,5 +19,10 @@
     <sql id="Base_Column_List">
         id, tzmc, tzlx, nr, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
+    <select id="findTzDTOByXsIdAndTzlx" resultType="com.itts.personTraining.dto.TzDTO">
+        select tz.*, ttx.sfdq
+        from t_tz tz left join t_tz_xs ttx on (ttx.tz_id=tz.id) left join t_xs xs on (xs.id=ttx.xs_id)
+        where tz.sfsc = false and xs.sfsc = false and ttx.xs_id = #{xsId} and tz.tzlx = #{tzlx}
+    </select>
 
 </mapper>
