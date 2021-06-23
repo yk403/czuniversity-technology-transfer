@@ -5,10 +5,7 @@ import com.itts.personTraining.service.tz.TzService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 
@@ -38,4 +35,16 @@ public class TzController {
                                        @RequestParam(value = "tzlx") String tzlx) {
         return ResponseUtil.success(tzService.findByCategory(pageNum,pageSize,tzlx));
     }
+
+    /**
+     * 根据通知id查询通知信息(前)
+     *
+     * @return
+     */
+    @GetMapping("/getTzDTO/{id}")
+    @ApiOperation(value = "根据通知id查询通知信息(前)")
+    public ResponseUtil getTzDTOById(@PathVariable(value = "id") Long id) {
+        return ResponseUtil.success(tzService.getTzDTOById(id));
+    }
+
 }

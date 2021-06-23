@@ -20,4 +20,12 @@ public interface TzXsMapper extends BaseMapper<TzXs> {
      * @return
      */
     Long getTzCountByXsIdAndTzlx(@Param("xsId") Long xsId,@Param("tzlx") String tzlx,@Param("sfdq") boolean sfdq);
+
+    /**
+     * 根据通知id和学生id更新通知学生表读取状态
+     * @param tzId
+     * @param xsId
+     * @return
+     */
+    int updateByTzIdAndXsId(@Param("tzId") Long tzId, @Param("xsId") Long xsId);
 }

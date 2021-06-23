@@ -6,6 +6,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.TzDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.mapper.tzXs.TzXsMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.tz.Tz;
 import com.itts.personTraining.mapper.tz.TzMapper;
@@ -20,7 +21,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
  * <p>
@@ -39,28 +40,51 @@ public class TzServiceImpl extends ServiceImpl<TzMapper, Tz> implements TzServic
     private TzMapper tzMapper;
     @Resource
     private XsMapper xsMapper;
+    @Resource
+    private TzXsMapper tzXsMapper;
 
     /**
-     * 根据用户类别查询通知信息(前)
+     * 根据用户类别分页条件查询通知信息(前)
      * @return
      */
     @Override
     public PageInfo<TzDTO> findByCategory(Integer pageNum, Integer pageSize, String tzlx) {
-        log.info("【人才培养 - 分页条件查询学员列表,通知类型:{}】",tzlx);
+        log.info("【人才培养 - 根据用户类别分页条件查询通知信息(前),通知类型:{}】",tzlx);
         PageHelper.startPage(pageNum, pageSize);
         Long userId = getUserId();
-        XsMsgDTO xsId = xsMapper.getByYhId(userId);
+        XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
+        if (xsMsgDTO == null) {
+            throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+        }
         String userCategory = getUserCategory();
         List<TzDTO> tzDTOList = null;
         switch (userCategory) {
             case "postgraduate":
             case "corporate_mentor":
-                tzDTOList = tzMapper.findTzDTOByXsIdAndTzlx(xsId,tzlx);
+                tzDTOList = tzMapper.findTzDTOByXsIdAndTzlx(xsMsgDTO.getId(),tzlx);
                 break;
             default:
                 break;
         }
         return new PageInfo<>(tzDTOList);
+    }
+
+    /**
+     * 根据通知id查询通知信息
+     * @param id
+     * @return
+     */
+    @Override
+    public TzDTO getTzDTOById(Long id) {
+        log.info("【人才培养 - 根据通知id:{}查询通知信息,通知类型:{}】",id);
+        Long userId = getUserId();
+        XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
+        if (xsMsgDTO == null) {
+            throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+        }
+        TzDTO TzDTO = tzMapper.getTzDTOByIdAndXsId(id,xsMsgDTO.getId());
+        tzXsMapper.updateByTzIdAndXsId(id, xsMsgDTO.getId());
+        return TzDTO;
     }
 
     /**

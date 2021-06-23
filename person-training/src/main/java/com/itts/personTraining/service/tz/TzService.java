@@ -24,4 +24,11 @@ public interface TzService extends IService<Tz> {
      * @return
      */
     PageInfo<TzDTO> findByCategory(Integer pageNum,Integer pageSize,String tzlx);
+
+    /**
+     * 根据通知id查询通知信息
+     * @param id
+     * @return
+     */
+    TzDTO getTzDTOById(Long id);
 }

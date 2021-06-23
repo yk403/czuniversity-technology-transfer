@@ -24,5 +24,14 @@ public interface TzMapper extends BaseMapper<Tz> {
      * @param tzlx
      * @return
      */
-    List<TzDTO> findTzDTOByXsIdAndTzlx(@Param("xsId") XsMsgDTO xsId, @Param("tzlx") String tzlx);
+    List<TzDTO> findTzDTOByXsIdAndTzlx(@Param("xsId") Long xsId, @Param("tzlx") String tzlx);
+
+    /**
+     * 根据id和学生id查询通知信息
+     * @param id
+     * @param xsId
+     * @return
+     */
+    TzDTO getTzDTOByIdAndXsId(@Param("id") Long id, @Param("xsId") Long xsId);
+
 }
