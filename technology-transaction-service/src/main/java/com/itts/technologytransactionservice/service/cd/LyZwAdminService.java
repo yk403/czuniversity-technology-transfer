@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public interface LyZwAdminService extends IService<LyZw> {
     PageInfo findLyZwBack(Map<String, Object> params);
-
+    PageInfo findLyZwBackSelect(Map<String, Object> params);
     Boolean saveZw(LyZw lyZw);
     Long getUserId();
 }

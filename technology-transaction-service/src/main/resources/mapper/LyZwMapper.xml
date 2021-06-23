@@ -61,6 +61,34 @@
             </otherwise>
         </choose>
     </select>
+    <select id="findLyZwBackSelect" resultType="com.itts.technologytransactionservice.model.LyZwDto">
+        select
+        zw.id as id,
+        zw.cjsj,
+        zw.gxsj,
+        zw.zwjj,
+        zw.hd_id,
+        zw.zwmc,
+        zw.zwtp,
+        zw.zwtpmc,
+        zw.sjzd_id
+        from t_ly_zw zw
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            zw.is_delete = 0
+            <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
+            <if test="map.zwmc != null"> and zw.zwmc like concat('%',trim(#{map.zwmc}),'%') </if>
+            <if test="map.hdId != null"> and zw.hd_id = #{map.hdId} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
     <select id="findLyZwBack" resultType="com.itts.technologytransactionservice.model.LyZwDto">
         select zw.id as id,zw.cjsj,zw.gxsj,zw.zwjj,zw.hd_id,hd.hdmc,zw.zwmc,zw.zwtp,zw.zwtpmc,zw.sjzd_id,zd.zdmc as zdmc
         from t_ly_zw zw left join t_ly_hd hd on (hd.id = zw.hd_id) left join t_sjzd zd on (zd.id = zw.sjzd_id)
