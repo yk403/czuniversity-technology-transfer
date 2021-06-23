@@ -2,11 +2,11 @@ package com.itts.personTraining.service.xs.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
 import com.itts.common.utils.common.ResponseUtil;
@@ -202,14 +202,19 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         if (xsId == null) {
             throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
         }
-        Object data = userFeignService.get().getData();
+        ResponseUtil response = userFeignService.get();
+        if(response.getErrCode() != 0 ){
+            throw new ServiceException(USER_NOT_FIND_ERROR);
+        }
+        GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
+        });
         xsMsgDTO.setKstz(ksXsMapper.getNumByXsId(xsId));
         xsMsgDTO.setCjtz(xsCjMapper.getNumByXsId(xsId));
         xsMsgDTO.setSjtz(sjMapper.getNumByXsId(xsId));
         //TODO: 暂时假数据
         xsMsgDTO.setXftz(0L);
         xsMsgDTO.setQttz(0L);
-        xsMsgDTO.setYhMsg(data);
+        xsMsgDTO.setYhMsg(vo);
         return xsMsgDTO;
     }
 
@@ -240,8 +245,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         if (xsService.updateById(xs)) {
             UpdateUserRequest updateUserRequest = new UpdateUserRequest();
             updateUserRequest.setLxdh(stuDTO.getLxdh());
-            updateUserRequest.setYhyx(stuDTO.getYhyx());
-            updateUserRequest.setYhtx(stuDTO.getYhtx());
+            updateUserRequest.setYhyx(stuDTO.getYhMsg().getYhyx());
+            updateUserRequest.setYhtx(stuDTO.getYhMsg().getYhtx());
             return userFeignService.update(updateUserRequest).getErrCode() == 0;
         }
         return false;

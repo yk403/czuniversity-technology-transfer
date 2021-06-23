@@ -269,28 +269,22 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             tz.setTzlx("考试通知");
             tz.setTzmc(pc.getPch() + "考试通知" + DateUtils.getDateFormat(new Date()));
             if (ks.getType() == 1) {
-                //学历学位教育
-
+                //学历学位教育,通过批次id查询学员ids(研究生)
+                List<Long> xsIds = xsMapper.findXsIdsByPcId(pc.getId());
+                //通过考试id查询考试扩展集合
+                List<KsExpDTO> ksExpDTOs = ksExpMapper.findByCondition(null, ks.getId());
+                String nr = "您好,您此批次:"+pc.getPch()+ks.getKsmc()+"的";
+                for (KsExpDTO ksExpDTO : ksExpDTOs) {
+                    nr += ksExpDTO.getKcmc()+"课程将于"+DateUtils.getDateFormat(ksExpDTO.getKsrq())+","+ksExpDTO.getKskssj()+"-"+ksExpDTO.getKsjssj()+"在"+ksExpDTO.getJxlmc()+ksExpDTO.getJsbh()+"进行考试,";
+                }
+                nr += "请悉知!";
+                tz.setNr(nr);
+                saveTzAndTzXs(tz, xsIds);
             } else if (ks.getType() == 2) {
                 //继续教育,通过批次id和报名方式(线下)查询学员ids(经纪人)
                 List<Long> xsIds = xsMapper.findXsIdsByPcIdAndBmfs(pc.getId(),"线下");
                 tz.setNr("您好,您此批次:"+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsrq())+","+ks.getKskssj()+"-"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行考试,请悉知!");
-                if (tzService.save(tz)) {
-                    List<TzXs> tzXsList = new ArrayList<>();
-                    for (Long xsId : xsIds) {
-                        TzXs tzXs = new TzXs();
-                        tzXs.setTzId(tz.getId());
-                        tzXs.setXsId(xsId);
-                        tzXsList.add(tzXs);
-                    }
-                    if (tzXsService.saveBatch(tzXsList)) {
-                        continue;
-                    } else {
-                        throw new ServiceException(INSERT_FAIL);
-                    }
-                } else {
-                    throw new ServiceException(INSERT_FAIL);
-                }
+                saveTzAndTzXs(tz, xsIds);
             }
         }
         if (ksService.updateBatchById(ksList)) {
@@ -312,6 +306,8 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         }
         return false;
     }
+
+
 
     /**
      * 根据用户id查询考试详情(前)
@@ -406,6 +402,30 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             szKsList.add(szKs);
         }
         return szKsService.saveBatch(szKsList);
+    }
+
+    /**
+     * 保存通知和通知学生信息
+     * @param tz
+     * @param xsIds
+     */
+    private void saveTzAndTzXs(Tz tz, List<Long> xsIds) {
+        if (tzService.save(tz)) {
+            List<TzXs> tzXsList = new ArrayList<>();
+            for (Long xsId : xsIds) {
+                TzXs tzXs = new TzXs();
+                tzXs.setTzId(tz.getId());
+                tzXs.setXsId(xsId);
+                tzXsList.add(tzXs);
+            }
+            if (tzXsService.saveBatch(tzXsList)) {
+                return;
+            } else {
+                throw new ServiceException(INSERT_FAIL);
+            }
+        } else {
+            throw new ServiceException(INSERT_FAIL);
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.itts.personTraining.dto;
 
+import com.itts.personTraining.model.yh.GetYhVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class XsMsgDTO {
      */
     private Long id;
 
-    private Object yhMsg;
+    private GetYhVo yhMsg;
 
     /**
      * 院系

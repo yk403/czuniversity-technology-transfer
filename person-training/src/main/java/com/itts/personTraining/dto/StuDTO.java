@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.itts.personTraining.model.yh.GetYhVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,6 +26,8 @@ public class StuDTO {
      * 主键
      */
     private Long id;
+
+    private GetYhVo yhMsg;
 
     /**
      * 用户ID
@@ -55,12 +58,6 @@ public class StuDTO {
      */
     @ApiModelProperty(value = "机构ID", required = true)
     private Long jgId;
-
-    @ApiModelProperty(value = "用户邮箱")
-    private String yhyx;
-
-    @ApiModelProperty(value = "用户头像")
-    private String yhtx;
 
     /**
      * 院系

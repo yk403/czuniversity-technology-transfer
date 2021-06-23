@@ -190,6 +190,11 @@
           and xs.bmfs = #{bmfs}
           and xs.id in (select tpx.xs_id from t_pc_xs tpx where tpx.pc_id = #{pcId})
     </select>
+    <select id="findXsIdsByPcId" resultType="java.lang.Long">
+        select tpx.xs_id
+        from t_pc_xs tpx
+        where tpx.pc_id = #{pcId}
+    </select>
 
     <!--新增学生课程关联-->
     <insert id="addKcList">

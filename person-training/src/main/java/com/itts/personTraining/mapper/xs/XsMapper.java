@@ -64,4 +64,11 @@ public interface XsMapper extends BaseMapper<Xs> {
      * @return
      */
     List<Long> findXsIdsByPcIdAndBmfs(@Param("pcId") Long pcId, @Param("bmfs") String bmfs);
+
+    /**
+     * 通过批次id查询学员ids(研究生)
+     * @param pcId
+     * @return
+     */
+    List<Long> findXsIdsByPcId(@Param("pcId") Long pcId);
 }
