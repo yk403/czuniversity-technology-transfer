@@ -57,6 +57,10 @@
         where pc.sfsc = false
           and pc.pch like concat('%', #{currentYear}, '%')
     </select>
+    <select id="getPcById" resultType="com.itts.personTraining.model.pc.Pc">
+        select *
+        from t_pc pc where pc.sfsc = false and pc.id = #{pcId}
+    </select>
 
     <update id="updatePcList"  parameterType="java.util.List">
         update sfsc =true

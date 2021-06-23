@@ -65,7 +65,7 @@ public class XsController {
         if(old==null){
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        if(!xsService.update(stuDTO)){
+        if(!xsService.updateUser(stuDTO)){
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新学生成功!");

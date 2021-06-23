@@ -226,6 +226,28 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     }
 
     /**
+     * 更新学生信息(前)
+     * @param stuDTO
+     * @return
+     */
+    @Override
+    public boolean updateUser(StuDTO stuDTO) {
+        log.info("【人才培养 - 更新学生信息(前):{}】",stuDTO);
+        Long userId = getUserId();
+        stuDTO.setGxr(userId);
+        Xs xs = new Xs();
+        BeanUtils.copyProperties(stuDTO,xs);
+        if (xsService.updateById(xs)) {
+            UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+            updateUserRequest.setLxdh(stuDTO.getLxdh());
+            updateUserRequest.setYhyx(stuDTO.getYhyx());
+            updateUserRequest.setYhtx(stuDTO.getYhtx());
+            return userFeignService.update(updateUserRequest).getErrCode() == 0;
+        }
+        return false;
+    }
+
+    /**
      * 新增学员
      * @param stuDTO
      * @return
@@ -409,13 +431,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                         pcXs.setXsId(xs.getId());
                         pcXsList.add(pcXs);
                     }
-                    if (pcXsService.saveBatch(pcXsList)) {
-                        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-                        updateUserRequest.setLxdh(stuDTO.getLxdh());
-                        updateUserRequest.setYhyx(stuDTO.getYhyx());
-                        updateUserRequest.setYhtx(stuDTO.getYhtx());
-                        return userFeignService.update(updateUserRequest).getErrCode() == 0;
-                    }
+                    return pcXsService.saveBatch(pcXsList);
                 }
                 return false;
             }

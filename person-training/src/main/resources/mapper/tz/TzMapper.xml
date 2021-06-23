@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.tz.Tz">
         <id column="id" property="id" />
         <result column="tzmc" property="tzmc" />
+        <result column="tzlx" property="tzlx" />
         <result column="nr" property="nr" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
@@ -15,7 +16,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, tzmc, nr, cjsj, cjr, gxsj, gxr
+        id, tzmc, tzlx, nr, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

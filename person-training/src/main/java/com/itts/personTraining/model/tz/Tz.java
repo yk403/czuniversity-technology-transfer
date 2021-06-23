@@ -34,6 +34,11 @@ public class Tz implements Serializable {
     private String tzmc;
 
     /**
+     * 通知类型
+     */
+    private String tzlx;
+
+    /**
      * 内容
      */
     private String nr;
