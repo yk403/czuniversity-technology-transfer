@@ -106,10 +106,26 @@ public class  LyLy implements Serializable {
     private String lysp;
     /**
     * @Description: 路演视频名称
-    * @Param: 
-    * @return: 
+    * @Param:
+    * @return:
     * @Author: yukai
     * @Date: 2021/6/23
     */
     private String lyspmc;
+    /**
+     * @Description: 路演开始时间
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/23
+     */
+    private String lykssj;
+    /**
+     * @Description: 路演地址
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/23
+     */
+    private String lydz;
 }

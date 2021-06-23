@@ -20,6 +20,8 @@
         ly.fbzt,
         ly.lysp,
         ly.lyspmc,
+        ly.lykssj,
+        ly.lydz,
         hd.hdmc
         from t_ly_ly ly left join t_ly_hd hd on (hd.id = ly.hd_id)
         <where>
@@ -64,6 +66,8 @@
         ly.fbzt,
         ly.lysp,
         ly.lyspmc,
+        ly.lykssj,
+        ly.lydz,
         hd.hdmc
         from t_ly_ly ly left join t_ly_hd hd on (hd.id = ly.hd_id)
         <where>
