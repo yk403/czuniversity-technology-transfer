@@ -7,17 +7,23 @@ import com.google.common.collect.Maps;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.enums.EduTypeEnum;
 import com.itts.personTraining.enums.KsjlXxbhEnum;
 import com.itts.personTraining.enums.TkzyTypeEnum;
 import com.itts.personTraining.mapper.kssj.KsjlMapper;
 import com.itts.personTraining.mapper.kssj.KsjlxxMapper;
+import com.itts.personTraining.mapper.kssj.KssjMapper;
+import com.itts.personTraining.mapper.pc.PcMapper;
+import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.tkzy.TkzyMapper;
 import com.itts.personTraining.mapper.tkzy.TmxxMapper;
+import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.kssj.Ksjl;
 import com.itts.personTraining.model.kssj.Ksjlxx;
 import com.itts.personTraining.model.kssj.Kssj;
 import com.itts.personTraining.model.tkzy.Tkzy;
 import com.itts.personTraining.model.tkzy.Tmxx;
+import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.request.kssj.CommitKsjlRequest;
 import com.itts.personTraining.request.kssj.CommitKsjlXxRequest;
 import com.itts.personTraining.service.kssj.KsjlService;
@@ -56,6 +62,18 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
     @Autowired
     private KsjlxxMapper ksjlxxMapper;
+
+    @Autowired
+    private PcXsMapper pcXsMapper;
+
+    @Autowired
+    private KssjMapper kssjMapper;
+
+    @Autowired
+    private PcMapper pcMapper;
+
+    @Autowired
+    private XsCjMapper xsCjMapper;
 
     /**
      * 获取详情
@@ -339,6 +357,30 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         ksjl.setDuoxdf(duoxScore.get());
 
         ksjlMapper.updateById(ksjl);
+
+        Kssj kssj = kssjMapper.selectById(ksjl.getSjId());
+        if (kssj == null) {
+            return ResponseUtil.success(totalScore.get());
+        }
+
+        //获取批次ID
+        Long pcId = pcXsMapper.findByXsIdAndXslx(loginUser.getUserId(), kssj.getXylx());
+
+        XsCj xsCj = new XsCj();
+        xsCj.setPcId(pcId);
+        xsCj.setXsId(loginUser.getUserId());
+        xsCj.setType(Objects.equals(kssj.getJylx(), EduTypeEnum.ACADEMIC_DEGREE_EDUCATION.getKey()) ? 1 : 2);
+        xsCj.setZhcj(totalScore.get() + "");
+
+        xsCj.setCjr(loginUser.getUserId());
+        xsCj.setGxr(loginUser.getUserId());
+
+        Date now = new Date();
+        xsCj.setCjsj(now);
+        xsCj.setGxsj(now);
+
+        //插入学生成绩
+        xsCjMapper.insert(xsCj);
 
         return ResponseUtil.success(totalScore.get());
     }
