@@ -44,6 +44,11 @@ public class Tz implements Serializable {
     private String nr;
 
     /**
+     * 是否删除
+     */
+    private Boolean sfsc;
+
+    /**
      * 创建时间
      */
     @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行

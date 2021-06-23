@@ -8,6 +8,7 @@
         <result column="tzmc" property="tzmc" />
         <result column="tzlx" property="tzlx" />
         <result column="nr" property="nr" />
+        <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
         <result column="gxsj" property="gxsj" />
@@ -16,7 +17,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, tzmc, tzlx, nr, cjsj, cjr, gxsj, gxr
+        id, tzmc, tzlx, nr, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

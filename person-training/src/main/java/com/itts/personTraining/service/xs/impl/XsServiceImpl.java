@@ -18,6 +18,7 @@ import com.itts.personTraining.mapper.ksXs.KsXsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.sj.SjMapper;
+import com.itts.personTraining.mapper.tzXs.TzXsMapper;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pcXs.PcXs;
@@ -73,6 +74,10 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     private PcXsMapper pcXsMapper;
     @Autowired
     private YhService yhService;
+    @Autowired
+    private PcService pcService;
+    @Autowired
+    private UserFeignService userFeignService;
     @Resource
     private KsXsMapper ksXsMapper;
     @Resource
@@ -83,10 +88,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     private RedisTemplate redisTemplate;
     @Resource
     private PcMapper pcMapper;
-    @Autowired
-    private PcService pcService;
-    @Autowired
-    private UserFeignService userFeignService;
+    @Resource
+    private TzXsMapper tzXsMapper;
 
     /**
      * 查询学员列表
@@ -208,9 +211,9 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         }
         GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
         });
-        xsMsgDTO.setKstz(ksXsMapper.getNumByXsId(xsId));
-        xsMsgDTO.setCjtz(xsCjMapper.getNumByXsId(xsId));
-        xsMsgDTO.setSjtz(sjMapper.getNumByXsId(xsId));
+        xsMsgDTO.setKstz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"考试通知"));
+        xsMsgDTO.setCjtz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"成绩通知"));
+        xsMsgDTO.setSjtz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"实践通知"));
         //TODO: 暂时假数据
         xsMsgDTO.setXftz(0L);
         xsMsgDTO.setQttz(0L);

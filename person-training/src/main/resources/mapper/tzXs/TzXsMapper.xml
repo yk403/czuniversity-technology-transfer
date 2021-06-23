@@ -14,5 +14,10 @@
     <sql id="Base_Column_List">
         id, tz_id, xs_id, sfdq
     </sql>
+    <select id="getTzCountByXsIdAndTzlx" resultType="java.lang.Long">
+        select count(ttx.id)
+        from t_tz_xs ttx left join t_tz tz on (tz.id=ttx.tz_id) left join t_xs xs on (xs.id=ttx.xs_id)
+        where tz.sfsc and xs.sfsc and ttx.xs_id = #{xsId} and tz.tzlx = #{tzlx}
+    </select>
 
 </mapper>
