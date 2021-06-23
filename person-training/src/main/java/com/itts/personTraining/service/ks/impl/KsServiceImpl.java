@@ -266,14 +266,15 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             ks.setSfxf(true);
             ks.setXfsj(new Date());
             Tz tz = new Tz();
+            tz.setTzlx("考试通知");
             tz.setTzmc(pc.getPch() + "考试通知" + DateUtils.getDateFormat(new Date()));
-            if (ACADEMIC_DEGREE_EDUCATION.equals(pc.getJylx())) {
+            if (ks.getType() == 1) {
                 //学历学位教育
 
-            } else if (ADULT_EDUCATION.equals(pc.getJylx())) {
+            } else if (ks.getType() == 2) {
                 //继续教育,通过批次id和报名方式(线下)查询学员ids(经纪人)
                 List<Long> xsIds = xsMapper.findXsIdsByPcIdAndBmfs(pc.getId(),"线下");
-                tz.setNr("您好,您此批次:"+pc.getPch()+"的"+ks.getKsmc()+"(类型:"+ks.getKslx()+")将于"+ks.getKsrq()+","+ks.getKskssj()+"-"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行考试,请悉知!");
+                tz.setNr("您好,您此批次:"+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsrq())+","+ks.getKskssj()+"-"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行考试,请悉知!");
                 if (tzService.save(tz)) {
                     List<TzXs> tzXsList = new ArrayList<>();
                     for (Long xsId : xsIds) {
@@ -283,7 +284,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                         tzXsList.add(tzXs);
                     }
                     if (tzXsService.saveBatch(tzXsList)) {
-                        return true;
+                        continue;
                     } else {
                         throw new ServiceException(INSERT_FAIL);
                     }
