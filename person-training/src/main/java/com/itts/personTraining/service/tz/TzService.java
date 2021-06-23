@@ -13,4 +13,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TzService extends IService<Tz> {
 
+    /**
+     * 根据用户类别查询通知信息(前)
+     * @return
+     */
+    Tz findByCategory();
 }
