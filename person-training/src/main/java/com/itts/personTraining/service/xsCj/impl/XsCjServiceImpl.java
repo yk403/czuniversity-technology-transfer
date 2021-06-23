@@ -27,7 +27,6 @@ import com.itts.personTraining.service.tzXs.TzXsService;
 import com.itts.personTraining.service.xsCj.XsCjService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.xsKcCj.XsKcCjService;
-import jdk.internal.org.objectweb.asm.commons.SerialVersionUIDAdder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -36,7 +35,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
