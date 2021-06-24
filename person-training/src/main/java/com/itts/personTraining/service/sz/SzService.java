@@ -1,6 +1,7 @@
 package com.itts.personTraining.service.sz;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.SzMsgDTO;
 import com.itts.personTraining.model.sz.Sz;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -75,4 +76,10 @@ public interface SzService extends IService<Sz> {
      * @return
      */
     Sz selectByCondition(String dsbh,String xb, Long yhId);
+
+    /**
+     * 根据用户id查询师资综合信息
+     * @return
+     */
+    SzMsgDTO getByYhId();
 }

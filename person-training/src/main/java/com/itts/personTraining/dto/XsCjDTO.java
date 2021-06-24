@@ -2,6 +2,7 @@ package com.itts.personTraining.dto;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.itts.personTraining.vo.kssj.GetKsjlScoreVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -30,6 +31,12 @@ public class XsCjDTO {
     @ApiModelProperty(value = "学生ID", required = true)
     private Long xsId;
 
+    /**
+     * 考试试卷id
+     */
+    @ApiModelProperty(value = "考试试卷id")
+    private Long kssjId;
+
 
     /**
      * 学号
@@ -54,6 +61,12 @@ public class XsCjDTO {
      */
     @ApiModelProperty(value = "批次名称")
     private String pcmc;
+
+    /**
+     * 教育类型
+     */
+    @ApiModelProperty(value = "教育类型")
+    private String jylx;
 
     /**
      * 类型(1:学历学位教育;2:继续教育)
@@ -150,4 +163,9 @@ public class XsCjDTO {
      * 学生成绩扩展集合
      */
     private List<XsKcCjDTO> xsKcCjDTOList;
+
+    /**
+     * 线上考试成绩对象
+     */
+    private GetKsjlScoreVO ksjlScoreVo;
 }

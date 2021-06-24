@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personTraining.mapper.tz.TzMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.tz.Tz">
+        <id column="id" property="id" />
+        <result column="tzmc" property="tzmc" />
+        <result column="tzlx" property="tzlx" />
+        <result column="nr" property="nr" />
+        <result column="sfsc" property="sfsc" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, tzmc, tzlx, nr, sfsc, cjsj, cjr, gxsj, gxr
+    </sql>
+    <select id="findTzDTOByXsIdAndTzlx" resultType="com.itts.personTraining.dto.TzDTO">
+        select tz.*, ttx.sfdq
+        from t_tz tz left join t_tz_xs ttx on (ttx.tz_id=tz.id) left join t_xs xs on (xs.id=ttx.xs_id)
+        where tz.sfsc = false and xs.sfsc = false and ttx.xs_id = #{xsId} and tz.tzlx = #{tzlx}
+    </select>
+    <select id="getTzDTOByIdAndXsId" resultType="com.itts.personTraining.dto.TzDTO">
+        select tz.*, ttx.sfdq
+        from t_tz tz left join t_tz_xs ttx on (ttx.tz_id=tz.id) left join t_xs xs on (xs.id=ttx.xs_id)
+        where tz.sfsc = false and xs.sfsc = false
+        <if test="id != null"> and tz.id = #{id} </if>
+        <if test="xsId != null"> and ttx.xs_id = #{xsId} </if>
+    </select>
+
+</mapper>

@@ -1,11 +1,13 @@
 package com.itts.personTraining.controller.xsCj.admin;
 
 
+import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.KcDTO;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.dto.XsCjDTO;
+import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.service.kc.KcService;
@@ -42,6 +44,8 @@ public class XsCjAdminController {
     private KcService kcService;
     @Resource
     private PcXsMapper pcXsMapper;
+    @Resource
+    private UserFeignService userFeignService;
 
     /**
      * 分页查询学生成绩列表
@@ -161,6 +165,8 @@ public class XsCjAdminController {
         }
         return ResponseUtil.success("学生成绩统一下发成功!");
     }
+
+
 
     /**
      * 校验参数

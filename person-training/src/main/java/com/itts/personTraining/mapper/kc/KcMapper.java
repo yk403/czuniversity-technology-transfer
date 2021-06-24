@@ -2,6 +2,7 @@ package com.itts.personTraining.mapper.kc;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.personTraining.dto.KcDTO;
+import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.model.kc.Kc;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -38,6 +39,13 @@ public interface KcMapper extends BaseMapper<Kc> {
      * @return
      */
     List<Kc> findKcByPcId(@Param("pcId") Long pcId);
+
+    /**
+     * 通过批次id查询学生课程成绩集合
+     * @param pcId
+     * @return
+     */
+    List<XsKcCjDTO> findXsKcCjByPcId(@Param("pcId") Long pcId);
 
     @Select("<script> " +
             "SELECT * FROM t_kc kc " +

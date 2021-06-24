@@ -4,30 +4,38 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.XfDTO;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
-import com.itts.personTraining.enums.UserTypeEnum;
+import com.itts.personTraining.enums.BmfsEnum;
 import com.itts.personTraining.mapper.kc.KcMapper;
+import com.itts.personTraining.mapper.ks.KsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
+import com.itts.personTraining.mapper.pk.PkMapper;
+import com.itts.personTraining.mapper.sz.SzMapper;
+import com.itts.personTraining.mapper.tz.TzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
-import com.itts.personTraining.model.kc.Kc;
-import com.itts.personTraining.model.ks.Ks;
 import com.itts.personTraining.model.pc.Pc;
+import com.itts.personTraining.model.sz.Sz;
+import com.itts.personTraining.model.tz.Tz;
+import com.itts.personTraining.model.tzXs.TzXs;
+import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.itts.personTraining.service.pc.PcService;
+import com.itts.personTraining.service.tz.TzService;
+import com.itts.personTraining.service.tzXs.TzXsService;
 import com.itts.personTraining.service.xsCj.XsCjService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.xsKcCj.XsKcCjService;
-import io.jsonwebtoken.lang.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,9 +44,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.personTraining.enums.BmfsEnum.ON_LINE;
 import static com.itts.personTraining.enums.CourseTypeEnum.TECHNOLOGY_TRANSFER_COURSE;
 import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
 import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
@@ -65,12 +75,24 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     private XsKcCjMapper xsKcCjMapper;
     @Autowired
     private PcService pcService;
+    @Autowired
+    private TzService tzService;
+    @Autowired
+    private TzXsService tzXsService;
     @Resource
     private XsMapper xsMapper;
     @Resource
     private KcMapper kcMapper;
     @Resource
     private PcMapper pcMapper;
+    @Resource
+    private TzMapper tzMapper;
+    @Resource
+    private SzMapper szMapper;
+    @Resource
+    private PkMapper pkMapper;
+    @Resource
+    private KsMapper ksMapper;
 
     /**
      * 根据批次id查询所有学生成绩
@@ -110,20 +132,14 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             if (xsKcCjDTOList != null && xsKcCjDTOList.size() > 0) {
                 Long id = xsCj.getId();
                 List<XsKcCj> xsKcCjs = new ArrayList<>();
-                int totalNum = 0;
-                int jszykczf = 0;
                 for (XsKcCjDTO xsKcCjDTO : xsKcCjDTOList) {
                     XsKcCj xsKcCj = new XsKcCj();
                     xsKcCjDTO.setXsCjId(id);
                     xsKcCjDTO.setKclx(TECHNOLOGY_TRANSFER_COURSE.getKey());
                     xsKcCjDTO.setCjr(userId);
                     xsKcCjDTO.setGxr(userId);
-                    Integer dqxf = xsKcCjDTO.getDqxf();
-                    totalNum += dqxf;
                     BeanUtils.copyProperties(xsKcCjDTO,xsKcCj);
                     xsKcCjs.add(xsKcCj);
-                    Kc kc = kcMapper.selectById(xsKcCjDTO.getKcId());
-                    jszykczf += kc.getKcxf();
                 }
                 return xsKcCjService.saveBatch(xsKcCjs);
             }
@@ -185,17 +201,24 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
      * @return
      */
     @Override
-    public PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String yx, String jylx) {
+    public Object findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String yx, String jylx) {
         log.info("【人才培养 - 根据条件批次ID:{},学号:{},姓名:{},学院名称:{},教育类型:{}分页查询学生成绩】",pcId,xh,xm,yx,jylx);
-        //前台第一次展示暂无数据,以后批次ID必传
+        //前台不传教育类型和批次id,默认给学历学位成绩
         PageHelper.startPage(pageNum,pageSize);
         List<XsCjDTO> xsCjDTOs = null;
-        if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
-            //学历学位教育
-            xsCjDTOs = xsCjMapper.findXsKcCj(pcId,xh,xm,yx,null);
-        } else if (ADULT_EDUCATION.getKey().equals(jylx)) {
-            //继续教育
-            xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,yx,jylx);
+        if (pcId == null && jylx == null) {
+            xsCjDTOs = getXsCjDTOS(pcId, xh, xm, yx);
+        } else {
+            if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
+                //学历学位教育
+                xsCjDTOs = getXsCjDTOS(pcId, xh, xm, yx);
+            } else if (ADULT_EDUCATION.getKey().equals(jylx)) {
+                //继续教育
+                xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,yx,jylx);
+            }
+        }
+        if (CollectionUtils.isEmpty(xsCjDTOs)) {
+            return Collections.EMPTY_LIST;
         }
         return new PageInfo<>(xsCjDTOs);
     }
@@ -223,13 +246,36 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     @Override
     public boolean issueBatch(List<Long> ids) {
         log.info("【人才培养 - 学生成绩批量下发,ids:{}】",ids);
-        List<XsCj> xsCjList = xsCjMapper.selectBatchIds(ids);
+        List<XsCj> xsCjList = new ArrayList<>();
+        List<XsCjDTO> xsCjDTOList = xsCjMapper.findXsCjByIds(ids);
         Long userId = getUserId();
-        for (XsCj xsCj : xsCjList) {
-            xsCj.setGxr(userId);
-            xsCj.setSfxf(true);
+        for (XsCjDTO xsCjDTO : xsCjDTOList) {
+            XsCj xsCj = new XsCj();
+            xsCjDTO.setGxr(userId);
+            xsCjDTO.setSfxf(true);
+            BeanUtils.copyProperties(xsCjDTO,xsCj);
+            xsCjList.add(xsCj);
+            Tz tz = new Tz();
+            tz.setTzlx("成绩通知");
+            tz.setTzmc(xsCjDTO.getPch() + "成绩通知" + DateUtils.getDateFormat(new Date()));
+            tz.setNr("您好,您的批次:"+ xsCjDTO.getPch() +"成绩结果已出,请悉知!");
+            //根据学生成绩Id查询学生id
+            Long xsId = xsCjMapper.findXsIdsByXsCjId(xsCjDTO.getId());
+            if (tzService.save(tz)) {
+                TzXs tzXs = new TzXs();
+                tzXs.setXsId(xsId);
+                tzXs.setTzId(tz.getId());
+                if (!tzXsService.save(tzXs)) {
+                    throw new ServiceException(INSERT_FAIL);
+                }
+            } else {
+                throw new ServiceException(INSERT_FAIL);
+            }
         }
-        return xsCjService.updateBatchById(xsCjList);
+        if (!xsCjService.updateBatchById(xsCjList)) {
+            throw new ServiceException(UPDATE_FAIL);
+        }
+        return true;
     }
 
     /**
@@ -322,6 +368,9 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                         } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
                             //继续教育
                             xsCjDTO = xsCjMapper.findXsCjByPcIdAndXsId(pcId, xsId);
+                            //通过批次id查询出对应所有课程
+                            List<XsKcCjDTO> xsKcCjDTOs = kcMapper.findXsKcCjByPcId(pcId);
+                            xsCjDTO.setXsKcCjDTOList(xsKcCjDTOs);
                         }
                         Integer zxf = xsDTO.getZxzyxf() + xsDTO.getHrxf() + xsDTO.getJszylyxf() + xsDTO.getSjxf() + xsDTO.getSxxf();
                         xsDTO.setZxf(zxf);
@@ -341,18 +390,18 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 }
                 XsMsgDTO xsMsgDTO1 = xsMapper.getByYhId(userId);
                 if (xsMsgDTO1 != null) {
+                    Long kssjId = null;
+                    if (ON_LINE.getMsg().equals(xsMsgDTO1.getBmfs())) {
+                        kssjId = ksMapper.getByPcId(pcId);
+                    }
                     XsCjDTO xsCjDTO = xsCjMapper.selectByPcIdAndXsId(pcId, xsMsgDTO1.getId());
                     if (xsCjDTO != null) {
-                        List<Kc> kcList = kcMapper.findKcByPcId(pcId);
-                        List<XsKcCjDTO> xsKcCjDTOList = new ArrayList<>();
-                        for (Kc kc : kcList) {
-                            XsKcCjDTO xsKcCjDTO = new XsKcCjDTO();
-                            BeanUtils.copyProperties(kc,xsKcCjDTO,"kclx");
-                            xsKcCjDTOList.add(xsKcCjDTO);
-                        }
-                        xsCjDTO.setXsKcCjDTOList(xsKcCjDTOList);
-                        map.put("broker",xsCjDTO);
+                        xsCjDTO.setKssjId(kssjId);
+                        //通过批次id查询出对应所有课程
+                        List<XsKcCjDTO> xsKcCjDTOs = kcMapper.findXsKcCjByPcId(pcId);
+                        xsCjDTO.setXsKcCjDTOList(xsKcCjDTOs);
                     }
+                    map.put("broker",xsCjDTO);
                 } else {
                     map.put("broker",null);
                 }
@@ -379,7 +428,32 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 if (pcId == null) {
                     throw new ServiceException(BATCH_NUMBER_ISEMPTY_ERROR);
                 }
+                //根据用户id查询师资(调了单独接口)
+                /*Sz sz = szMapper.getSzByYhId(getUserId());
+                List<Long> pcIdList = pkMapper.findPcIdsBySzId(sz.getId());
+                if (CollectionUtils.isEmpty(pcIdList)) {
+                    throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
+                }
+                if (pcId == null) {
+                    //默认查询最新批次信息
+                    pcId = pcIdList.get(0);
+                }*/
                 List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByPcIdAndName(pcId,name);
+                List<Long> xsIdList = new ArrayList<>();
+                for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                    xsIdList.add(xsCjDTO.getXsId());
+                }
+                //查询出报名方式是线上的学生ids
+                List<Long> xsxsIds = xsMapper.findXsIdsByBmfs(xsIdList, ON_LINE.getMsg());
+                //通过批次id查出对应的试卷id
+                Long kssjId = ksMapper.getByPcId(pcId);
+                for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                    for (Long xsxsId : xsxsIds) {
+                        if (xsxsId.equals(xsCjDTO.getXsId())) {
+                            xsCjDTO.setKssjId(kssjId);
+                        }
+                    }
+                }
                 PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
                 map.put("teacher",xsCjPageInfo);
                 break;
@@ -411,6 +485,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         switch (userCategory) {
             //研究生
             case "postgraduate":
+            case "broker":
                 if (xsMsgDTO.getId() != null) {
                     pcs = xsCjMapper.findPcByXsId(xsMsgDTO.getId());
                 }
@@ -420,6 +495,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         }
         return pcs;
     }
+
+
 
 
     /**
@@ -461,5 +538,28 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
         Date date = new Date();
         return sdf.format(date);
+    }
+
+    /**
+     * 通过条件查询学生成绩列表(方法)
+     * @param pcId
+     * @param xh
+     * @param xm
+     * @param yx
+     * @return
+     */
+    private List<XsCjDTO> getXsCjDTOS(Long pcId, String xh, String xm, String yx) {
+        List<XsCjDTO> xsCjDTOs;//学历学位教育
+        xsCjDTOs = xsCjMapper.findXsKcCj(pcId, xh, xm, yx, null);
+        if (CollectionUtils.isNotEmpty(xsCjDTOs)) {
+            for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                List<XsKcCjDTO> xsKcCjDTOList = xsCjDTO.getXsKcCjDTOList();
+                Integer zxf = xsKcCjDTOList.stream().collect(Collectors.summingInt(XsKcCjDTO::getDqxf));
+                xsCjDTO.setZxf(zxf);
+            }
+        } else {
+            return null;
+        }
+        return xsCjDTOs;
     }
 }

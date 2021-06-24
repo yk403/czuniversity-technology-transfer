@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public enum CourseTypeEnum {
+
     ORIGINAL_PROFESSION_COURSE(1,"原专业课程"),
 
     TECHNOLOGY_TRANSFER_COURSE(2,"技术转移专业课程");
