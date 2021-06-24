@@ -27,7 +27,7 @@ public class YhController {
     /**
      * 获取当前登陆用户信息
      */
-    @GetMapping(SystemConstant.BASE_URL + "/v1/yh/get/")
+    @GetMapping("/get")
     public ResponseUtil get() {
         return userFeignService.get();
     }

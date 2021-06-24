@@ -61,6 +61,11 @@
         select *
         from t_pc pc where pc.sfsc = false and pc.id = #{pcId}
     </select>
+    <select id="findXylxByXsId" resultType="java.lang.String">
+        select distinct pc.xylx
+        from t_pc pc left join t_pc_xs tpx on (tpx.pc_id=pc.id)
+        where pc.sfsc = false and tpx.xs_id = #{xsId}
+    </select>
 
     <update id="updatePcList"  parameterType="java.util.List">
         update sfsc =true

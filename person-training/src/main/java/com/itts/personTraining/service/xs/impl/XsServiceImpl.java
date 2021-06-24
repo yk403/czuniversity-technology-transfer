@@ -205,6 +205,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         if (xsId == null) {
             throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
         }
+        xsMsgDTO.setXylx(pcMapper.findXylxByXsId(xsId));
         ResponseUtil response = userFeignService.get();
         if(response.getErrCode() != 0 ){
             throw new ServiceException(USER_NOT_FIND_ERROR);

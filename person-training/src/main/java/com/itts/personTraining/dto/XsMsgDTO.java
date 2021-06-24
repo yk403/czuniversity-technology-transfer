@@ -5,11 +5,13 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @Author: Austin
  * @Data: 2021/6/8
  * @Version: 1.0.0
- * @Description: 学生综合信息
+ * @Description: 学生综合信息对象
  */
 @Data
 @ApiModel("学生综合信息对象")
@@ -39,6 +41,12 @@ public class XsMsgDTO {
      */
     @ApiModelProperty(value = "姓名", required = true)
     private String xm;
+
+    /**
+     * 学员类型
+     */
+    @ApiModelProperty(value = "学员类型", required = true)
+    private List<String> xylx;
 
     /**
      * 联系电话(手机)

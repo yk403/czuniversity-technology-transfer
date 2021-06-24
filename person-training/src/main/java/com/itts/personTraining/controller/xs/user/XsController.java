@@ -22,8 +22,6 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 public class XsController {
     @Autowired
     private XsService xsService;
-    @Autowired
-    private UserFeignService userFeignService;
 
     /**
      * 查询学员综合信息
