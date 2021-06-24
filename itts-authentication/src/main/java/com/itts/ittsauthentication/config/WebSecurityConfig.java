@@ -58,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
+                //白名单放行所有请求(需要前端不传token)
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().access("@roleSecurity.check(authentication, request)") //.authenticated()
                 .and()
@@ -65,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //权限不足结果处理
                 .accessDeniedHandler(new Http403AuthenticationEntryPoint())
                 .and()
+                //jwt登录和返回token给前端
                 .addFilter(new JWTLoginFilter(authenticationManager(), redisTemplate, authoritionUserMapper))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), redisTemplate, authoritionUserMapper))
                 .logout().logoutUrl("/api/logout/").logoutSuccessHandler(new SecurityLogoutHandler(redisTemplate)).permitAll();
