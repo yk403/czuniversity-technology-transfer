@@ -81,6 +81,10 @@ public class KsjlController {
 
         Ksjl ksjl = ksjlService.getOne(new QueryWrapper<Ksjl>().eq("xs_id", xsId).eq("sj_id", sjId));
 
+        if (ksjl == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
         GetKsjlScoreVO vo = new GetKsjlScoreVO();
 
         BeanUtils.copyProperties(ksjl, vo);
