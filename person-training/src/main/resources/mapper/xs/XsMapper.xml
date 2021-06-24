@@ -195,6 +195,15 @@
         from t_pc_xs tpx
         where tpx.pc_id = #{pcId}
     </select>
+    <select id="findXsIdsByBmfs" resultType="java.lang.Long">
+        select xs.id
+        from t_xs xs
+        where xs.sfsc = false and xs.bmfs = #{bmfs}
+        and xs.id in
+        <foreach collection="xsIdList" open="(" close=")" separator="," item="xsIdList">
+            #{xsIdList}
+        </foreach>
+    </select>
 
     <!--新增学生课程关联-->
     <insert id="addKcList">

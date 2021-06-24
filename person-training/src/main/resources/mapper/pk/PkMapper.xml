@@ -74,5 +74,12 @@
         where pk.sfsc = false and pc.sfsc = false and pk.sz_id = #{szId} group by pk.pc_id
         order by pc.cjsj desc
     </select>
+    <select id="findPcIdsBySzId" resultType="java.lang.Long">
+        select distinct pk.pc_id,pc
+        from t_pk pk left join t_sz sz on (sz.id=pk.sz_id) left join t_pc pc on (pc.id=pk.pc_id) left join t_xxjs xxjs on (xxjs.id=pk.xxjs_id) left join t_kcsj kcsj on (kcsj.id=pk.kcsj_id) left join t_kc kc on (kc.id=pk.kc_id)
+        where pk.sfsc = false and sz.sfsc = false and pc.sfsc = false and xxjs.sfsc = false and kcsj.sfsc = false and kc.sfsc = false
+        and pk.sz_id = #{szId}
+        order by pc.cjsj desc
+    </select>
 
 </mapper>

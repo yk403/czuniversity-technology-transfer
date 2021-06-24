@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.dto.SzMsgDTO;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.model.yh.GetYhVo;
@@ -187,6 +188,15 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
                 .eq(StringUtils.isNotBlank(xb),"xb",xb)
                 .eq(yhId != null,"yh_id",yhId);
         return szMapper.selectOne(szQueryWrapper);
+    }
+
+    /**
+     * 根据用户id查询师资综合信息
+     * @return
+     */
+    @Override
+    public SzMsgDTO getByYhId() {
+        return null;
     }
 
     /**
