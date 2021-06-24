@@ -5,18 +5,23 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.enums.SystemTypeEnum;
 import com.itts.common.utils.common.CommonUtils;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.feign.paymentservice.OrderFeignService;
-import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.mapper.fjzy.FjzyMapper;
+import com.itts.personTraining.mapper.kc.KcMapper;
+import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.xxzy.XxzyMapper;
 import com.itts.personTraining.mapper.xxzy.XxzyscMapper;
 import com.itts.personTraining.model.fjzy.Fjzy;
+import com.itts.personTraining.model.kc.Kc;
+import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.model.xxzy.Xxzysc;
 import com.itts.personTraining.request.ddxfjl.AddDdxfjlRequest;
@@ -37,6 +42,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -64,7 +70,10 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
     private OrderFeignService orderFeignService;
 
     @Autowired
-    private UserFeignService userFeignService;
+    private KcMapper kcMapper;
+
+    @Autowired
+    private SzMapper szMapper;
 
     /**
      * 获取列表 - 分页
@@ -225,6 +234,36 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         });
 
         return pageInfo;
+    }
+
+    /**
+     * 获取云课堂课程列表
+     */
+    @Override
+    public List<Kc> getCloudClassroomCourse(String userType, String educationType, String studentType) {
+
+        List<Kc> kcs = Lists.newArrayList();
+
+        //判断用户是否是授课教师
+        if (Objects.equals(userType, UserTypeEnum.TEACHER.getKey())) {
+
+            LoginUser loginUser = SystemConstant.threadLocal.get();
+
+            Sz sz = szMapper.getSzByYhId(loginUser.getUserId());
+
+            kcs = kcMapper.findBySzId(sz.getId(), educationType, studentType);
+
+        } else {
+
+            List<String> studentTypes = Lists.newArrayList(studentType.split(","));
+            if (CollectionUtils.isEmpty(studentTypes)) {
+                return kcs;
+            }
+
+            kcs = kcMapper.findByType(educationType, studentTypes);
+        }
+
+        return kcs;
     }
 
     /**

@@ -1,11 +1,12 @@
 package com.itts.personTraining.mapper.xs;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.model.xs.Xs;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * @author Austin
  * @since 2021-04-20
  */
+@Repository
 public interface XsMapper extends BaseMapper<Xs> {
 
     List<JwglDTO> findJwglList(String string,String yx,Long pcId);

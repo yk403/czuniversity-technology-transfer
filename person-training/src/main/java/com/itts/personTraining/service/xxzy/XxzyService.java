@@ -3,12 +3,15 @@ package com.itts.personTraining.service.xxzy;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.request.ddxfjl.PayDdxfjlRequest;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
 import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
 import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.vo.xxzy.GetXxzyVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -32,6 +35,11 @@ public interface XxzyService extends IService<Xxzy> {
     PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
                                String secondCategory, String category, String direction, Long courseId,
                                String condition);
+
+    /**
+     * 获取云课堂课程列表
+     */
+    List<Kc> getCloudClassroomCourse(String userType, String educationType, String studentType);
 
     /**
      * 获取详情
