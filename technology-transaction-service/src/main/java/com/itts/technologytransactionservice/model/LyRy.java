@@ -85,4 +85,12 @@ public class LyRy implements Serializable {
     * @Date: 2021/6/11
     */
     private String lxdh;
+    /**
+    * @Description: 研究领域(与技术领域数据字典相关)
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/24
+    */
+    private String yjly;
 }

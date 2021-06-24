@@ -82,7 +82,7 @@ public class LyRyDto implements Serializable {
     * @Author: yukai
     * @Date: 2021/6/4
     */
-    private String tx;
+    private String yhtx;
     /**
     * @Description: 专家姓名
     * @Param:
@@ -123,6 +123,13 @@ public class LyRyDto implements Serializable {
      * @Date: 2021/6/11
      */
     private String lxdh;
-
+    /**
+     * @Description: 研究领域(与技术领域数据字典相关)
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/24
+     */
+    private String yjly;
 
 }
