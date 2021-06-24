@@ -65,7 +65,7 @@ public class XxzyController {
     @ApiOperation(value = "获取云课堂课程列表")
     @GetMapping("/get/cloudClassroom/course/")
     public ResponseUtil getCourse(@ApiParam("用户类别") @RequestParam("userType") String userType,
-                                  @ApiParam("教育类型") @RequestParam("educationType") String educationType,
+                                  @ApiParam("教育类型") @RequestParam(value = "educationType", required = false) String educationType,
                                   @ApiParam("学员类型字符串，多个以\",\"分割") @RequestParam("studentType") String studentType) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
