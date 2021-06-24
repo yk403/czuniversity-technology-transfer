@@ -38,4 +38,11 @@ public interface PkMapper extends BaseMapper<Pk> {
      * @return
      */
     List<Pc> findPcsBySzId(@Param("szId") Long szId);
+
+    /**
+     * 根据师资id查询批次id
+     * @param szId
+     * @return
+     */
+    List<Long> findPcIdsBySzId(@Param("szId") Long szId);
 }

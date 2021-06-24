@@ -22,6 +22,11 @@ public class XsMsgDTO {
      */
     private Long id;
 
+    /**
+     * 考试试卷id
+     */
+    private Long kssjId;
+
     private GetYhVo yhMsg;
 
     /**
@@ -65,6 +70,12 @@ public class XsMsgDTO {
      */
     @ApiModelProperty(value = "原专业", required = true)
     private String yzy;
+
+    /**
+     * 报名方式
+     */
+    @ApiModelProperty(value = "报名方式")
+    private String bmfs;
 
     /**
      * 考试通知

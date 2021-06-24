@@ -1,23 +1,22 @@
 package com.itts.personTraining.enums;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * 课程类型枚举
+ * 报名方式枚举
  */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public enum CourseTypeEnum {
+public enum BmfsEnum {
 
-    ORIGINAL_PROFESSION_COURSE(1,"原专业课程"),
+    ON_LINE("1","线上"),
 
-    TECHNOLOGY_TRANSFER_COURSE(2,"技术转移专业课程");
+    OFF_LINE("2","线下");
 
-    private Integer key;
+    private String key;
 
     private String msg;
 }

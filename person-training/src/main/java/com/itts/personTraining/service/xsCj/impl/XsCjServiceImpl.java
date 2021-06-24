@@ -4,20 +4,27 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.XfDTO;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.enums.BmfsEnum;
 import com.itts.personTraining.mapper.kc.KcMapper;
+import com.itts.personTraining.mapper.ks.KsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
+import com.itts.personTraining.mapper.pk.PkMapper;
+import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.tz.TzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
 import com.itts.personTraining.model.pc.Pc;
+import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.tz.Tz;
 import com.itts.personTraining.model.tzXs.TzXs;
+import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
@@ -41,6 +48,7 @@ import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.personTraining.enums.BmfsEnum.ON_LINE;
 import static com.itts.personTraining.enums.CourseTypeEnum.TECHNOLOGY_TRANSFER_COURSE;
 import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
 import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
@@ -79,6 +87,12 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     private PcMapper pcMapper;
     @Resource
     private TzMapper tzMapper;
+    @Resource
+    private SzMapper szMapper;
+    @Resource
+    private PkMapper pkMapper;
+    @Resource
+    private KsMapper ksMapper;
 
     /**
      * 根据批次id查询所有学生成绩
@@ -376,8 +390,13 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 }
                 XsMsgDTO xsMsgDTO1 = xsMapper.getByYhId(userId);
                 if (xsMsgDTO1 != null) {
+                    Long kssjId = null;
+                    if (ON_LINE.getMsg().equals(xsMsgDTO1.getBmfs())) {
+                        kssjId = ksMapper.getByPcId(pcId);
+                    }
                     XsCjDTO xsCjDTO = xsCjMapper.selectByPcIdAndXsId(pcId, xsMsgDTO1.getId());
                     if (xsCjDTO != null) {
+                        xsCjDTO.setKssjId(kssjId);
                         //通过批次id查询出对应所有课程
                         List<XsKcCjDTO> xsKcCjDTOs = kcMapper.findXsKcCjByPcId(pcId);
                         xsCjDTO.setXsKcCjDTOList(xsKcCjDTOs);
@@ -409,7 +428,32 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 if (pcId == null) {
                     throw new ServiceException(BATCH_NUMBER_ISEMPTY_ERROR);
                 }
+                //根据用户id查询师资(调了单独接口)
+                /*Sz sz = szMapper.getSzByYhId(getUserId());
+                List<Long> pcIdList = pkMapper.findPcIdsBySzId(sz.getId());
+                if (CollectionUtils.isEmpty(pcIdList)) {
+                    throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
+                }
+                if (pcId == null) {
+                    //默认查询最新批次信息
+                    pcId = pcIdList.get(0);
+                }*/
                 List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByPcIdAndName(pcId,name);
+                List<Long> xsIdList = new ArrayList<>();
+                for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                    xsIdList.add(xsCjDTO.getXsId());
+                }
+                //查询出报名方式是线上的学生ids
+                List<Long> xsxsIds = xsMapper.findXsIdsByBmfs(xsIdList, ON_LINE.getMsg());
+                //通过批次id查出对应的试卷id
+                Long kssjId = ksMapper.getByPcId(pcId);
+                for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                    for (Long xsxsId : xsxsIds) {
+                        if (xsxsId.equals(xsCjDTO.getXsId())) {
+                            xsCjDTO.setKssjId(kssjId);
+                        }
+                    }
+                }
                 PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
                 map.put("teacher",xsCjPageInfo);
                 break;
@@ -451,6 +495,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         }
         return pcs;
     }
+
+
 
 
     /**
