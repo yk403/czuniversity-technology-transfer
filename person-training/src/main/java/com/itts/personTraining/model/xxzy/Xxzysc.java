@@ -85,5 +85,9 @@ public class Xxzysc implements Serializable {
      */
     private String zyfx;
 
+    /**
+     * 作者
+     */
+    private String zz;
 
 }
