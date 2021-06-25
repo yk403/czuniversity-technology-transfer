@@ -4,19 +4,24 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.xxzy.Xxzysc">
-        <id column="id" property="id" />
-        <result column="yh_id" property="yhId" />
-        <result column="xxzy_id" property="xxzyId" />
-        <result column="kc_id" property="kcId" />
-        <result column="xxzy_mc" property="xxzyMc" />
-        <result column="xxzy_zstp" property="xxzyZstp" />
-        <result column="kcmc" property="kcmc" />
-        <result column="cjsj" property="cjsj" />
+        <id column="id" property="id"/>
+        <result column="yh_id" property="yhId"/>
+        <result column="xxzy_id" property="xxzyId"/>
+        <result column="kc_id" property="kcId"/>
+        <result column="xxzy_mc" property="xxzyMc"/>
+        <result column="xxzy_zstp" property="xxzyZstp"/>
+        <result column="kcmc" property="kcmc"/>
+        <result column="cjsj" property="cjsj"/>
+        <result column="zyyjfl" property="zyyjfl"/>
+        <result column="zyejfl" property="zyejfl"/>
+        <result column="zylx" property="zylx"/>
+        <result column="zyfx" property="zyfx"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, yh_id, xxzy_id, kc_id, xxzy_mc, xxzy_zstp, kcmc, cjsj
+        id
+        , yh_id, xxzy_id, kc_id, xxzy_mc, xxzy_zstp, kcmc, cjsj, zyyjfl, zyejfl, zylx, zyfx
     </sql>
 
 </mapper>
