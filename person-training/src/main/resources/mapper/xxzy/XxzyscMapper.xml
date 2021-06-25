@@ -16,12 +16,13 @@
         <result column="zyejfl" property="zyejfl"/>
         <result column="zylx" property="zylx"/>
         <result column="zyfx" property="zyfx"/>
+        <result column="zz" property="zz"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id
-        , yh_id, xxzy_id, kc_id, xxzy_mc, xxzy_zstp, kcmc, cjsj, zyyjfl, zyejfl, zylx, zyfx
+        , yh_id, xxzy_id, kc_id, xxzy_mc, xxzy_zstp, kcmc, cjsj, zyyjfl, zyejfl, zylx, zyfx, zz
     </sql>
 
 </mapper>
