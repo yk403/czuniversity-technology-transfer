@@ -89,13 +89,13 @@ public class XxzyscController {
 
         List<Xxzysc> list = xxzyscService.list(new QueryWrapper<Xxzysc>().
                 eq("yh_id", loginUser.getUserId())
-                .eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory.trim())
-                .eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory.trim())
-                .eq(StringUtils.isNotBlank(category), "zylx", category.trim())
-                .eq(StringUtils.isNotBlank(category), "zyfx", direction.trim())
+                .eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory)
+                .eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory)
+                .eq(StringUtils.isNotBlank(category), "zylx", category)
+                .eq(StringUtils.isNotBlank(category), "zyfx", direction)
                 .orderByDesc("cjsj"));
 
-        PageInfo pageInfo = new PageInfo(null);
+        PageInfo pageInfo = new PageInfo(list);
 
         return ResponseUtil.success(pageInfo);
     }
