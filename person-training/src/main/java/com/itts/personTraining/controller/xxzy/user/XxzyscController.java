@@ -75,8 +75,10 @@ public class XxzyscController {
     @GetMapping("/list/")
     public ResponseUtil list(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                              @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                             @ApiParam(value = "课程名称") @RequestParam(value = "courseName", required = false) String courseName,
-                             @ApiParam(value = "资源名称") @RequestParam(value = "name", required = false) String name) {
+                             @ApiParam(value = "一级分类") @RequestParam(value = "firstCategory", required = false) String firstCategory,
+                             @ApiParam(value = "二级分类") @RequestParam(value = "secondCategory", required = false) String secondCategory,
+                             @ApiParam(value = "资源类型: video - 视频; textbook - 教材; courseware - 课件") @RequestParam(value = "category", required = false) String category,
+                             @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser == null) {
@@ -87,11 +89,13 @@ public class XxzyscController {
 
         List<Xxzysc> list = xxzyscService.list(new QueryWrapper<Xxzysc>().
                 eq("yh_id", loginUser.getUserId())
-                .like(StringUtils.isNotBlank(courseName), "kcmc", courseName.trim())
-                .like(StringUtils.isNotBlank(name), "xxzy_mc", name.trim())
+                .eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory.trim())
+                .eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory.trim())
+                .eq(StringUtils.isNotBlank(category), "zylx", category.trim())
+                .eq(StringUtils.isNotBlank(category), "zyfx", direction.trim())
                 .orderByDesc("cjsj"));
 
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo pageInfo = new PageInfo(null);
 
         return ResponseUtil.success(pageInfo);
     }

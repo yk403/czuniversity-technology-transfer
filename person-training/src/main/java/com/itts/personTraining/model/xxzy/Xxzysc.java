@@ -15,14 +15,14 @@ import java.util.Date;
  * </p>
  *
  * @author liuyingming
- * @since 2021-06-09
+ * @since 2021-06-25
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_xxzysc")
 public class Xxzysc implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -7941260330385350399L;
 
     /**
      * 主键ID
@@ -64,4 +64,26 @@ public class Xxzysc implements Serializable {
      * 创建时间
      */
     private Date cjsj;
+
+    /**
+     * 资源一级分类
+     */
+    private String zyyjfl;
+
+    /**
+     * 资源二级分类
+     */
+    private String zyejfl;
+
+    /**
+     * 资源类型
+     */
+    private String zylx;
+
+    /**
+     * 资源方向
+     */
+    private String zyfx;
+
+
 }
