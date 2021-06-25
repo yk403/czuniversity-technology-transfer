@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
@@ -60,11 +61,14 @@ public class TzServiceImpl extends ServiceImpl<TzMapper, Tz> implements TzServic
         List<TzDTO> tzDTOList = null;
         switch (userCategory) {
             case "postgraduate":
-            case "corporate_mentor":
+            case "broker":
                 tzDTOList = tzMapper.findTzDTOByXsIdAndTzlx(xsMsgDTO.getId(),tzlx);
                 break;
             default:
                 break;
+        }
+        if (tzDTOList == null) {
+            return null;
         }
         return new PageInfo<>(tzDTOList);
     }

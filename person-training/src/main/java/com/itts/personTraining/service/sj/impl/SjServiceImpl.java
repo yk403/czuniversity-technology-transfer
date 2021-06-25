@@ -112,7 +112,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
             tz.setTzlx("实践通知");
             tz.setTzmc(pc.getPch() + "实践通知" + DateUtils.getDateFormat(new Date()));
             List<Long> xsIds = xsMapper.findXsIdsByPcId(pc.getId());
-            tz.setNr("您好,您此批次:"+pc.getPch()+sj.getSjmc()+"实践单位为:"+sj.getSjdw()+",实践时间为:"+DateUtils.getDateFormat(sj.getKsrq())+"-"+DateUtils.getDateFormat(sj.getJsrq())+",请悉知!");
+            tz.setNr("您好，您此批次："+pc.getPch()+sj.getSjmc()+"实践单位为："+sj.getSjdw()+"，实践时间为："+DateUtils.getDateFormat(sj.getKsrq())+"—"+DateUtils.getDateFormat(sj.getJsrq())+"，请悉知！");
             if (tzService.save(tz)) {
                 TzXs tzXs = new TzXs();
                 tzXs.setXsId(sj.getXsId());

@@ -48,6 +48,18 @@ public class XsMsgDTO {
     private String xm;
 
     /**
+     * 性别
+     */
+    @ApiModelProperty(value = "性别")
+    private String xb;
+
+    /**
+     * 政治面貌
+     */
+    @ApiModelProperty(value = "政治面貌")
+    private String zzmm;
+
+    /**
      * 学员类型
      */
     @ApiModelProperty(value = "学员类型", required = true)

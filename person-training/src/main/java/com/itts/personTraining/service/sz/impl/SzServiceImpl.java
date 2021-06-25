@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.SzMsgDTO;
+import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.model.yh.GetYhVo;
@@ -17,6 +18,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.yh.YhService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,7 @@ import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 import static com.itts.common.enums.ErrorCodeEnum.USER_INSERT_ERROR;
 import static com.itts.personTraining.enums.UserTypeEnum.IN;
+import static com.itts.personTraining.enums.UserTypeEnum.TUTOR;
 
 /**
  * <p>
@@ -196,6 +199,21 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
      */
     @Override
     public SzMsgDTO getByYhId() {
+        Long userId = getUserId();
+        SzMsgDTO szMsgDTO = new SzMsgDTO();
+        Sz szByYhId = szMapper.getSzByYhId(userId);
+        BeanUtils.copyProperties(szByYhId,szMsgDTO);
+        log.info("【人才培养 - 根据用户id:{}查询师资综合信息】",userId);
+        String userCategory = getUserCategory();
+        switch (userCategory) {
+            case "tutor":
+            case "corporate_mentor":
+            case "teacher":
+                ;
+                break;
+            default:
+                break;
+        }
         return null;
     }
 
@@ -311,4 +329,20 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         }
         return userId;
     }
+
+    /**
+     * 获取当前用户id所属类别
+     * @return
+     */
+    private String getUserCategory() {
+        LoginUser loginUser = threadLocal.get();
+        String userCategory;
+        if (loginUser != null) {
+            userCategory = loginUser.getUserCategory();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userCategory;
+    }
+
 }

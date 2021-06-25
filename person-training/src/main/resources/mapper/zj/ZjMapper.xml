@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.zj.Zj">
         <id column="id" property="id" />
         <result column="xm" property="xm" />
-        <result column="tx" property="tx" />
+        <result column="yh_id" property="yhId" />
         <result column="sfzh" property="sfzh" />
         <result column="xb" property="xb" />
         <result column="sr" property="sr" />
@@ -39,7 +39,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, xm, xt, sfzh, xb, sr, mz, zzmm, xl, lx, zyjszw, dw, dz, dh, zjh, sshy, csxk, zcfx, yjcg, dzyj, yjly, zscq, zjxm, lw, zlh, bz, sfsc, cjsj, cjr, gxsj, gxr
+        id, xm, yh_id, sfzh, xb, sr, mz, zzmm, xl, lx, zyjszw, dw, dz, dh, zjh, sshy, csxk, zcfx, yjcg, dzyj, yjly, zscq, zjxm, lw, zlh, bz, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>
