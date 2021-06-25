@@ -65,6 +65,7 @@
             <if test="map.zpmc != null"> and zp.zpmc like concat('%',trim(#{map.zpmc}),'%') </if>
             <if test="map.zplx != null"> and zp.zplx = #{map.zplx} </if>
             <if test="map.fbshzt != null"> and zp.fbshzt = #{map.fbshzt} </if>
+            <if test="map.zwId != null"> and zp.zw_id = #{map.zwId} </if>
             <if test="map.hdId != null"> and hd.id = #{map.hdId} </if>
         </where>
         <choose>
@@ -139,6 +140,7 @@
             <if test="map.zpmc != null"> and zp.zpmc like concat('%',trim(#{map.zpmc}),'%') </if>
             <if test="map.zplx != null"> and zp.zplx = #{map.zplx} </if>
             <if test="map.fbshzt != null"> and zp.fbshzt = #{map.fbshzt} </if>
+            <if test="map.zwId != null"> and zp.zw_id = #{map.zwId} </if>
             <if test="map.hdId != null"> and hd.id = #{map.hdId} </if>
         </where>
         <choose>

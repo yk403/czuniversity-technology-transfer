@@ -46,7 +46,14 @@ public class LyZwAdminServiceImpl extends ServiceImpl<LyZwMapper, LyZw> implemen
         List<LyZwDto> list = lyZwMapper.findLyZwBack(query);
         return new PageInfo<>(list);
     }
-
+    @Override
+    public PageInfo findLyZwBackSelect(Map<String, Object> params) {
+        log.info("【双创路演 - 分页条件查询(前台复选框用)】");
+        Query query = new Query(params);
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<LyZwDto> list = lyZwMapper.findLyZwBackSelect(query);
+        return new PageInfo<>(list);
+    }
     @Override
     public Boolean saveZw(LyZw lyZw) {
         if(save(lyZw)){

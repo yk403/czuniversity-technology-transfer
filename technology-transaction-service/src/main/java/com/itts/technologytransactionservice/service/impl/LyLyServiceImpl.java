@@ -7,6 +7,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.LyLy;
 import com.itts.technologytransactionservice.mapper.LyLyMapper;
+import com.itts.technologytransactionservice.model.LyLyDto;
 import com.itts.technologytransactionservice.service.LyLyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,7 @@ public class LyLyServiceImpl extends ServiceImpl<LyLyMapper, LyLy> implements Ly
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyLy> list = lyLyMapper.findLyLyFront(query);
+        List<LyLyDto> list = lyLyMapper.findLyLyFront(query);
         return new PageInfo<>(list);
     }
 

@@ -9,6 +9,7 @@ import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.LyLyMapper;
 import com.itts.technologytransactionservice.model.LyHd;
 import com.itts.technologytransactionservice.model.LyLy;
+import com.itts.technologytransactionservice.model.LyLyDto;
 import com.itts.technologytransactionservice.service.LyLyService;
 import com.itts.technologytransactionservice.service.cd.LyLyAdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class LyLyAdminServiceImpl extends ServiceImpl<LyLyMapper, LyLy> implemen
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyLy> list = lyLyMapper.findLyLyBack(query);
+        List<LyLyDto> list = lyLyMapper.findLyLyBack(query);
         return new PageInfo<>(list);
     }
 

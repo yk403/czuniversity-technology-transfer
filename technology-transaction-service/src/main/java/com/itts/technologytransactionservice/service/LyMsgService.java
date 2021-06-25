@@ -19,4 +19,5 @@ public interface LyMsgService extends IService<LyMsg> {
     PageInfo findLyMsgFront(Map<String, Object> params);
 
     Boolean saveMsg(LyMsg lyMsg);
+    Long getUserId();
 }

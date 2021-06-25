@@ -3,13 +3,32 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyHzMapper">
 
     <select id="findLyHzFront" resultType="com.itts.technologytransactionservice.model.LyHzDto">
-        select hz.id as id,cjsj,gxsj,hzjs,hztp,hztpmc,hzmc,hd_id
+        select
+        hz.id AS id,
+        hz.hd_id AS hdId,
+        hz.cjsj AS cjsj,
+        hz.gxsj AS gxsj,
+        hz.hzjs AS hzjs,
+        hz.hztp AS hztp,
+        hz.hztpmc AS hztpmc,
+        hz.hzmc AS hzmc,
+        hd.hdmc as hdmc,
+        hz.hzlbt as hzlbt,
+        hz.hzsp as hzsp,
+        hz.hzspmc as hzspmc,
+        hz.hzgg as hzgg,
+        hz.ltst as ltst,
+        hz.ltstmc as ltstmc,
+        hz.ltnr as ltnr,
+        hz.ltmc as ltmc
         from t_ly_hz hz
+        LEFT JOIN t_ly_hd hd ON (hd.id = hz.hd_id)
         <where>
             <!--后台能查询0或者1的数据 -->
             hz.is_delete = 0
             <if test="map.hzjs != null"> and hz.hzjs = #{map.hzjs} </if>
             <if test="map.hztp != null"> and hz.hztp = #{map.hztp} </if>
+            <if test="map.ltmc != null"> and hz.ltmc = #{map.ltmc} </if>
             <if test="map.hztpmc != null"> and hz.hztpmc = #{map.hztpmc} </if>
             <if test="map.hzmc != null"> and hz.hzmc = #{map.hzmc} </if>
                 <if test="map.hdId != null"> and hz.hd_id = #{map.hdId} </if>
@@ -129,6 +148,7 @@
         hz.ltst as ltst,
         hz.ltstmc as ltstmc,
         hz.ltnr as ltnr,
+        hz.ltmc as ltmc,
         group_concat(zw.zwmc) AS zwmc,
         group_concat(zw.id) AS zwId
 
@@ -141,6 +161,7 @@
             <!--后台能查询0或者1的数据 -->
             hz.is_delete = 0
             <if test="map.hzjs != null"> and hz.hzjs = #{map.hzjs} </if>
+            <if test="map.ltmc != null"> and hz.ltmc = #{map.ltmc} </if>
             <if test="map.hdmc != null"> and hd.hdmc like concat('%',trim(#{map.hdmc}),'%') </if>
             <if test="map.hztp != null"> and hz.hztp = #{map.hztp} </if>
             <if test="map.hztpmc != null"> and hz.hztpmc = #{map.hztpmc} </if>

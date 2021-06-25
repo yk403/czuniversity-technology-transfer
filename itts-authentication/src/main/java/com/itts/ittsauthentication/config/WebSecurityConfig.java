@@ -48,7 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/JsLy/getById","/api/v1/JsLb/page","/api/v1/JsLb/getById/**","/api/v1/File/upload","/api/v1/JsBm/page/usr",
             "/api/v1/JsHd/page","/api/v1/JsCjRc/page","/api/v1/JsLcKz/page","/api/v1/LyBm/list","/api/v1/LyHd/list",
             "/api/v1/LyHz/list","/api/v1/LyLy/list","/api/v1/LyZp/list","/api/v1/LyZw/list","/api/v1/JsXq/PageByTJsFb",
-            "/api/v1/JsHd/pageFront1","/api/v1/sjzd/list/**","/admin/api/v1/sjzd/list/**","/admin/api/v1/zj/list/**","/api/v1/zj/list/**"
+            "/api/v1/JsHd/pageFront1","/api/v1/sjzd/list/**","/admin/api/v1/sjzd/list/**","/admin/api/v1/zj/list/**","/api/v1/zj/list/**",
+            "/api/v1/LyHd/list","/api/v1/LyHz/list"
     };
 
     @Override
@@ -57,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
+                //白名单放行所有请求(需要前端不传token)
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().access("@roleSecurity.check(authentication, request)") //.authenticated()
                 .and()
@@ -64,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //权限不足结果处理
                 .accessDeniedHandler(new Http403AuthenticationEntryPoint())
                 .and()
+                //jwt登录和返回token给前端
                 .addFilter(new JWTLoginFilter(authenticationManager(), redisTemplate, authoritionUserMapper))
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), redisTemplate, authoritionUserMapper))
                 .logout().logoutUrl("/api/logout/").logoutSuccessHandler(new SecurityLogoutHandler(redisTemplate)).permitAll();

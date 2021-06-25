@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.mapper;
 
 import com.itts.technologytransactionservice.model.LyLy;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itts.technologytransactionservice.model.LyLyDto;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,12 +23,12 @@ public interface LyLyMapper extends BaseMapper<LyLy> {
      * @param map
      * @return
      */
-    List<LyLy> findLyLyFront(@Param("map") Map map);
+    List<LyLyDto> findLyLyFront(@Param("map") Map map);
     /**
      * 分页条件查询需求(后台)
      *
      * @param map
      * @return
      */
-    List<LyLy> findLyLyBack(@Param("map") Map map);
+    List<LyLyDto> findLyLyBack(@Param("map") Map map);
 }
