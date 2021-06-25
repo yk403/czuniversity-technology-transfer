@@ -31,7 +31,7 @@
             <if test="map.lynr != null"> and msg.lynr = #{map.lynr} </if>
             <if test="map.hfnr != null"> and msg.hfnr = #{map.hfnr} </if>
             <if test="map.lyzt != null"> and msg.lyzt = #{map.lyzt} </if>
-            <if test="map.ckzt != null || map.ckzt == 0"> and msg.lysj &lt; #{map.afterTime}</if>
+            <if test="map.ckzt != null || map.ckzt == 0"> and msg.lysj &gt; #{map.afterTime}</if>
             <if test="map.lysj != null"> and msg.lysj = #{map.lysj} </if>
         </where>
         <choose>
