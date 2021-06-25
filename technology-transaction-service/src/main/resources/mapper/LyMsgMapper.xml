@@ -3,7 +3,23 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyMsgMapper">
 
     <select id="findLyMsgFront" resultType="com.itts.technologytransactionservice.model.LyMsgDto">
-        select msg.id as id,msg.yh_id,msg.gxsj,msg.cjsj,msg.ry_id,msg.lynr,msg.hfnr,msg.lysj,msg.lyzt,yh.yhtx as yhtx,yh.yhm as yhm,yh.zsxm as zsxm,yh.yhlx as yhlx,zd.zdmc AS yhlb
+        select
+        msg.id as id,
+        msg.yh_id,
+        msg.gxsj,
+        msg.cjsj,
+        msg.ry_id,
+        msg.lynr,
+        msg.hfnr,
+        msg.lysj,
+        msg.lyzt,
+        msg.ckzt,
+        yh.yhtx as yhtx,
+        yh.yhm as yhm,
+        yh.zsxm as zsxm,
+        yh.yhlx as yhlx,
+        zd.zdmc AS yhlb
+
         from t_ly_msg msg left join t_ly_ry ry on(ry.id = msg.ry_id) left join t_yh yh on (yh.id = msg.yh_id) LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
         <where>
             <!--后台能查询0或者1的数据 -->
@@ -15,6 +31,7 @@
             <if test="map.lynr != null"> and msg.lynr = #{map.lynr} </if>
             <if test="map.hfnr != null"> and msg.hfnr = #{map.hfnr} </if>
             <if test="map.lyzt != null"> and msg.lyzt = #{map.lyzt} </if>
+            <if test="map.ckzt != null || map.ckzt == 0"> and msg.lysj &lt; #{map.afterTime}</if>
             <if test="map.lysj != null"> and msg.lysj = #{map.lysj} </if>
         </where>
         <choose>
@@ -27,7 +44,22 @@
         </choose>
     </select>
     <select id="findLyMsgBack" resultType="com.itts.technologytransactionservice.model.LyMsgDto">
-        select msg.id as id,msg.yh_id,msg.gxsj,msg.cjsj,msg.ry_id,msg.lynr,msg.hfnr,msg.lysj,msg.lyzt,yh.yhtx as yhtx,yh.yhm as yhm,yh.zsxm as zsxm,yh.yhlx as yhlx,zd.zdmc AS yhlb
+        select
+        msg.id as id,
+        msg.yh_id,
+        msg.gxsj,
+        msg.cjsj,
+        msg.ry_id,
+        msg.lynr,
+        msg.hfnr,
+        msg.lysj,
+        msg.lyzt,
+        msg.ckzt,
+        yh.yhtx as yhtx,
+        yh.yhm as yhm,
+        yh.zsxm as zsxm,
+        yh.yhlx as yhlx,
+        zd.zdmc AS yhlb
         from t_ly_msg msg left join t_ly_ry ry on(ry.id = msg.ry_id) left join t_yh yh on (yh.id = msg.yh_id) LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
         <where>
             <!--后台能查询0或者1的数据 -->

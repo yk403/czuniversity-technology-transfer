@@ -46,6 +46,7 @@ public class LyMsgServiceImpl extends ServiceImpl<LyMsgMapper, LyMsg> implements
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         query.put("yhId",getUserId());
+        //query.put("afterTime",new Date());
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<LyMsgDto> list = lyMsgMapper.findLyMsgFront(query);
         return new PageInfo<>(list);

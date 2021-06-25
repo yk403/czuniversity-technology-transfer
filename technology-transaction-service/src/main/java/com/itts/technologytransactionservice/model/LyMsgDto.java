@@ -110,4 +110,8 @@ public class LyMsgDto implements Serializable {
      * @Date: 2021/6/7
      */
     private String yhlb;
+    /**
+     * 前端查看状态(0:可以查看,1:不可查看)
+     */
+    private Integer ckzt;
 }

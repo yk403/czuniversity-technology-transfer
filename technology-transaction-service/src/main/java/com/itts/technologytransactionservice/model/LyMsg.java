@@ -72,4 +72,9 @@ public class LyMsg implements Serializable {
      * 留言状态(0:未回复,1:已回复)
      */
     private Integer lyzt;
+    /**
+     * 前端查看状态(0:可以查看,1:不可查看)
+     */
+    private Integer ckzt;
+
 }

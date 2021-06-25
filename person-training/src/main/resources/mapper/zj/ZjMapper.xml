@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.zj.Zj">
         <id column="id" property="id" />
         <result column="xm" property="xm" />
-        <result column="tx" property="tx" />
+        <!--<result column="tx" property="tx" />-->
         <result column="sfzh" property="sfzh" />
         <result column="xb" property="xb" />
         <result column="sr" property="sr" />

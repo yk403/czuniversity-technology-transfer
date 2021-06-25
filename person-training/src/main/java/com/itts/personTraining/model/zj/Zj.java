@@ -37,11 +37,11 @@ public class Zj implements Serializable {
     @ApiModelProperty(value = "姓名", required = true)
     private String xm;
 
-    /**
+/*    *//**
      * 头像
-     */
+     *//*
     @ApiModelProperty(value = "头像")
-    private String tx;
+    private String tx;*/
 
     /**
      * 身份证号
