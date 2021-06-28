@@ -12,12 +12,13 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.model.xxzy.Xxzysc;
+import com.itts.personTraining.service.xxzy.XxzyService;
 import com.itts.personTraining.service.xxzy.XxzyscService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
@@ -41,6 +42,9 @@ public class XxzyscController {
 
     @Autowired
     private XxzyscService xxzyscService;
+
+    @Autowired
+    private XxzyService xxzyService;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -85,33 +89,31 @@ public class XxzyscController {
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
         }
 
-        PageHelper.startPage(pageNum, pageSize);
-
-        List<Xxzysc> list = xxzyscService.list(new QueryWrapper<Xxzysc>().
-                eq("yh_id", loginUser.getUserId())
-                .eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory)
-                .eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory)
-                .eq(StringUtils.isNotBlank(category), "zylx", category)
-                .eq(StringUtils.isNotBlank(category), "zyfx", direction)
-                .orderByDesc("cjsj"));
-
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<Xxzy> pageInfo = xxzyscService.findScByPage(pageNum, pageSize, loginUser.getUserId(),
+                firstCategory, secondCategory, category, direction);
 
         return ResponseUtil.success(pageInfo);
     }
 
     @ApiOperation(value = "添加收藏")
     @PostMapping("/add/")
-    public ResponseUtil add(@RequestBody Xxzysc xxzysc) {
+    public ResponseUtil add(@ApiParam("学习资源ID") @RequestParam("xxzyId") Long xxzyId) {
 
-        checkRequest(xxzysc);
+        if (xxzyId == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser == null) {
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
         }
 
-        Xxzysc data = xxzyscService.add(xxzysc, loginUser.getUserId());
+        Xxzy xxzy = xxzyService.getById(xxzyId);
+        if (xxzy == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        Xxzysc data = xxzyscService.add(xxzy, loginUser.getUserId());
 
         cache2Redis(loginUser.getUserId());
 
@@ -120,10 +122,10 @@ public class XxzyscController {
 
     @ApiOperation(value = "取消收藏")
     @DeleteMapping("/delete/{xxzyId}")
-    public ResponseUtil delete(@PathVariable("xxzyId") Long xxzyId){
+    public ResponseUtil delete(@PathVariable("xxzyId") Long xxzyId) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
-        if(loginUser == null){
+        if (loginUser == null) {
 
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
         }
@@ -162,11 +164,6 @@ public class XxzyscController {
         if (xxzysc.getXxzyId() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-
-        if (StringUtils.isBlank(xxzysc.getXxzyMc())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
     }
-
 }
 
