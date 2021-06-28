@@ -275,7 +275,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             tz.setTzlx("考试通知");
             tz.setTzmc(pc.getPch() + "考试通知" + DateUtils.getDateFormat(new Date()));
             Tz tz1 = new Tz();
-            tz.setTzlx("考试通知");
+            tz1.setTzlx("考试通知");
             tz1.setTzmc(pc.getPch() + "考试通知" + DateUtils.getDateFormat(new Date()));
             if (ks.getType() == 1) {
                 //学历学位教育,通过批次id查询学员ids(研究生)
@@ -439,9 +439,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 tzXs.setXsId(xsId);
                 tzXsList.add(tzXs);
             }
-            if (tzXsService.saveBatch(tzXsList)) {
-                return;
-            } else {
+            if (!tzXsService.saveBatch(tzXsList)) {
                 throw new ServiceException(INSERT_FAIL);
             }
         } else {
