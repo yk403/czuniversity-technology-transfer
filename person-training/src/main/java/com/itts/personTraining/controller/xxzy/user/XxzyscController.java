@@ -133,6 +133,8 @@ public class XxzyscController {
 
         xxzyscService.remove(new QueryWrapper<Xxzysc>().eq("xxzy_id", xxzyId).eq("yh_id", loginUser.getUserId()));
 
+        cache2Redis(loginUser.getUserId());
+
         return ResponseUtil.success();
     }
 
