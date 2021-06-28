@@ -8,7 +8,7 @@
         zw.cjsj,
         zw.gxsj,
         zw.zwjj,
-        zw.hd_id,
+        hd.id as hd_id,
         hd.hdmc,
         zw.zwmc,
         zw.zwtp,
@@ -16,7 +16,9 @@
         zw.sjzd_id,
         zd.zdmc as zdmc
         from t_ly_zw zw
-        left join t_ly_hd hd on (hd.id = zw.hd_id)
+        left join t_zw_hz zwhz on (zwhz.zw_id = zw.id)
+        left join t_ly_hz hz on (zwhz.hz_id = hz.id)
+        left join t_ly_hd hd on (hz.hd_id = hd.id)
         left join t_sjzd zd on (zd.id = zw.sjzd_id)
         <where>
             <!--后台能查询0或者1的数据 -->
@@ -24,7 +26,7 @@
             <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
             <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
             <if test="map.zwmc != null"> and zw.zwmc like concat('%',trim(#{map.zwmc}),'%') </if>
-            <if test="map.hdId != null"> and zw.hd_id = #{map.hdId} </if>
+            <if test="map.hdId != null"> and hd.id = #{map.hdId} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -41,18 +43,21 @@
         zw.cjsj,
         zw.gxsj,
         zw.zwjj,
-        zw.hd_id,
+        hd.id as hd_id,
         zw.zwmc,
         zw.zwtp,
         zw.zwtpmc,
         zw.sjzd_id
         from t_ly_zw zw
+        left join t_zw_hz zwhz on (zwhz.zw_id = zw.id)
+        left join t_ly_hz hz on (zwhz.hz_id = hz.id)
+        left join t_ly_hd hd on (hz.hd_id = hd.id)
         <where>
             <!--后台能查询0或者1的数据 -->
             zw.is_delete = 0
             <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
             <if test="map.zwmc != null"> and zw.zwmc like concat('%',trim(#{map.zwmc}),'%') </if>
-            <if test="map.hdId != null"> and zw.hd_id = #{map.hdId} </if>
+            <if test="map.hdId != null"> and hd.id = #{map.hdId} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
