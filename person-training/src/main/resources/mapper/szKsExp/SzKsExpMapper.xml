@@ -20,5 +20,10 @@
             tske.ks_exp_id = #{ksExpId}
         </where>
     </select>
+    <select id="findSzIdsByKsExpId" resultType="java.lang.Long">
+        select tske.sz_id
+        from t_sz_ks_exp tske left join t_ks_exp tke on (tke.id=tske.ks_exp_id) left join t_ks ks on (ks.id=tke.ks_id)
+        where tke.sfsc = false and ks.sfsc = false and tske.ks_exp_id = #{ksExpId}
+    </select>
 
 </mapper>

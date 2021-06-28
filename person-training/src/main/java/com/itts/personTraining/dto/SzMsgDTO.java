@@ -1,6 +1,7 @@
 package com.itts.personTraining.dto;
 
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.itts.personTraining.model.yh.GetYhVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -21,6 +22,11 @@ public class SzMsgDTO {
      * 师资id
      */
     private Long id;
+
+    /**
+     * 用户信息
+     */
+    private GetYhVo yhMsg;
 
     /**
      * 导师编号

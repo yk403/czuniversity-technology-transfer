@@ -2,12 +2,17 @@ package com.itts.personTraining.service.sz.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.SzMsgDTO;
+import com.itts.personTraining.enums.UserTypeEnum;
+import com.itts.personTraining.feign.userservice.UserFeignService;
+import com.itts.personTraining.mapper.tzSz.TzSzMapper;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.model.yh.GetYhVo;
@@ -17,6 +22,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.yh.YhService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,9 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
-import static com.itts.common.enums.ErrorCodeEnum.USER_INSERT_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 import static com.itts.personTraining.enums.UserTypeEnum.IN;
+import static com.itts.personTraining.enums.UserTypeEnum.TUTOR;
 
 /**
  * <p>
@@ -41,12 +47,16 @@ import static com.itts.personTraining.enums.UserTypeEnum.IN;
 @Transactional(rollbackFor = Exception.class)
 public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzService {
 
-    @Resource
-    private SzMapper szMapper;
     @Autowired
     private SzService szService;
     @Autowired
     private YhService yhService;
+    @Autowired
+    private UserFeignService userFeignService;
+    @Resource
+    private SzMapper szMapper;
+    @Resource
+    private TzSzMapper tzSzMapper;
 
     /**
      * 获取师资列表
@@ -196,7 +206,38 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
      */
     @Override
     public SzMsgDTO getByYhId() {
-        return null;
+        Long userId = getUserId();
+        SzMsgDTO szMsgDTO = new SzMsgDTO();
+        Sz szByYhId = szMapper.getSzByYhId(userId);
+        Long szId = szByYhId.getId();
+        if (szId == null) {
+            throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+        }
+        BeanUtils.copyProperties(szByYhId,szMsgDTO);
+        log.info("【人才培养 - 根据用户id:{}查询师资综合信息】",userId);
+        String userCategory = getUserCategory();
+        ResponseUtil response = userFeignService.get();
+        if(response.getErrCode() != 0 ){
+            throw new ServiceException(USER_NOT_FIND_ERROR);
+        }
+        GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
+        });
+        switch (userCategory) {
+            case "tutor":
+            case "corporate_mentor":
+            case "teacher":
+                szMsgDTO.setKstz(tzSzMapper.getTzCountBySzIdAndTzlx(szId,"考试通知",false));
+                //TODO: 暂时假数据
+                szMsgDTO.setCjtz(0L);
+                szMsgDTO.setSjtz(0L);
+                szMsgDTO.setXftz(0L);
+                szMsgDTO.setQttz(0L);
+                szMsgDTO.setYhMsg(vo);
+                break;
+            default:
+                break;
+        }
+        return szMsgDTO;
     }
 
     /**
@@ -311,4 +352,20 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         }
         return userId;
     }
+
+    /**
+     * 获取当前用户id所属类别
+     * @return
+     */
+    private String getUserCategory() {
+        LoginUser loginUser = threadLocal.get();
+        String userCategory;
+        if (loginUser != null) {
+            userCategory = loginUser.getUserCategory();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userCategory;
+    }
+
 }

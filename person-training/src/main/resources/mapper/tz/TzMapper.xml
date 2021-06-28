@@ -31,5 +31,17 @@
         <if test="id != null"> and tz.id = #{id} </if>
         <if test="xsId != null"> and ttx.xs_id = #{xsId} </if>
     </select>
+    <select id="findTzDTOBySzIdAndTzlx" resultType="com.itts.personTraining.dto.TzDTO">
+        select tz.*, tts.sfdq
+        from t_tz tz left join t_tz_sz tts on (tts.tz_id=tz.id) left join t_sz sz on (sz.id=tts.sz_id)
+        where tz.sfsc = false and sz.sfsc = false and tts.sz_id = #{szId} and tz.tzlx = #{tzlx}
+    </select>
+    <select id="getTzDTOByIdAndSzId" resultType="com.itts.personTraining.dto.TzDTO">
+        select tz.*, tts.sfdq
+        from t_tz tz left join t_tz_sz tts on (tts.tz_id=tz.id) left join t_sz sz on (sz.id=tts.sz_id)
+        where tz.sfsc = false and sz.sfsc = false
+        <if test="id != null"> and tz.id = #{id} </if>
+        <if test="szId != null"> and tts.sz_id = #{szId} </if>
+    </select>
 
 </mapper>
