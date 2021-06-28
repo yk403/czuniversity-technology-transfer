@@ -34,4 +34,19 @@ public interface TzMapper extends BaseMapper<Tz> {
      */
     TzDTO getTzDTOByIdAndXsId(@Param("id") Long id, @Param("xsId") Long xsId);
 
+    /**
+     * 根据师资id和通知类型查询通知列表
+     * @param szId
+     * @param tzlx
+     * @return
+     */
+    List<TzDTO> findTzDTOBySzIdAndTzlx(@Param("szId") Long szId, @Param("tzlx") String tzlx);
+
+    /**
+     * 根据id和师资id查询通知信息
+     * @param id
+     * @param szId
+     * @return
+     */
+    TzDTO getTzDTOByIdAndSzId(@Param("id") Long id, @Param("szId") Long szId);
 }

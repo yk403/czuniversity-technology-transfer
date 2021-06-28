@@ -14,5 +14,18 @@
     <sql id="Base_Column_List">
         id, tz_id, sz_id, sfdq
     </sql>
+    <update id="updateByTzIdAndSzId">
+        update t_tz_sz tts
+        set tts.sfdq = true
+        where tts.tz_id = #{tzId} and tts.sz_id = #{szId}
+    </update>
+    <select id="getTzCountBySzIdAndTzlx" resultType="java.lang.Long">
+        select count(tts.id)
+        from t_tz_sz tts left join t_tz tz on (tz.id=tts.tz_id) left join t_sz sz on (sz.id=tts.sz_id)
+        where tz.sfsc = false and sz.sfsc = false
+        <if test="szId != null">and tts.sz_id = #{szId}</if>
+        <if test="tzlx != null and tzlx != ''">and tz.tzlx = #{tzlx}</if>
+        <if test="sfdq != null">and tts.sfdq = #{sfdq}</if>
+    </select>
 
 </mapper>

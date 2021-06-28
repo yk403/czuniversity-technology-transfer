@@ -286,6 +286,8 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 for (KsExpDTO ksExpDTO : ksExpDTOs) {
                     nr += ksExpDTO.getKcmc()+"课程将于"+DateUtils.getDateFormat(ksExpDTO.getKsrq())+"，"+ksExpDTO.getKskssj()+"—"+ksExpDTO.getKsjssj()+"在"+ksExpDTO.getJxlmc()+ksExpDTO.getJsbh()+"进行考试，";
                     tz1.setNr("您好，您将于"+DateUtils.getDateFormat(ksExpDTO.getKsrq())+"，"+ksExpDTO.getKskssj()+"—"+ksExpDTO.getKsjssj()+"在"+ksExpDTO.getJxlmc()+ksExpDTO.getJsbh()+"进行"+ksExpDTO.getKcmc()+"课程的监考，请悉知！");
+                    tz1.setCjr(userId);
+                    tz1.setGxr(userId);
                     if (tzService.save(tz1)) {
                         List<Long> szIds = szKsExpMapper.findSzIdsByKsExpId(ksExpDTO.getId());
                         saveTzSz(tz1, szIds);
@@ -295,13 +297,19 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 }
                 nr += "请悉知！";
                 tz.setNr(nr);
+                tz.setCjr(userId);
+                tz.setGxr(userId);
                 saveTzAndTzXs(tz, xsIds);
             } else if (ks.getType() == 2) {
                 //继续教育,通过批次id和报名方式(线下)查询学员ids(经纪人)
                 List<Long> xsIds = xsMapper.findXsIdsByPcIdAndBmfs(pc.getId(),OFF_LINE.getMsg());
                 tz.setNr("您好，您此批次："+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsrq())+"，"+ks.getKskssj()+"—"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行考试，请悉知！");
+                tz.setCjr(userId);
+                tz.setGxr(userId);
                 saveTzAndTzXs(tz, xsIds);
                 tz1.setNr("您好，您将于"+DateUtils.getDateFormat(ks.getKsrq())+"，"+ks.getKskssj()+"—"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行监考，请悉知！");
+                tz1.setCjr(userId);
+                tz1.setGxr(userId);
                 if (tzService.save(tz1)) {
                     List<Long> szIds = szKsMapper.getByKsId(ks.getId());
                     saveTzSz(tz1, szIds);

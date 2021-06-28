@@ -27,6 +27,9 @@ public class XsMsgDTO {
      */
     private Long kssjId;
 
+    /**
+     * 用户信息
+     */
     private GetYhVo yhMsg;
 
     /**
