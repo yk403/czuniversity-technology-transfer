@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -65,12 +66,12 @@ public class XxzyscController {
             String redisStr = redisData.toString();
             JSONArray jsonArry = JSONUtil.parseArray(redisStr);
 
-            List<Xxzysc> xxzycss = JSONUtil.toList(jsonArry, Xxzysc.class);
+            List<Xxzy> xxzys = JSONUtil.toList(jsonArry, Xxzy.class);
 
-            return ResponseUtil.success(xxzycss);
+            return ResponseUtil.success(xxzys);
         }
 
-        List<Xxzysc> list = cache2Redis(loginUser.getUserId());
+        List<Xxzy> list = cache2Redis(loginUser.getUserId());
 
         return ResponseUtil.success(list);
     }
@@ -138,32 +139,26 @@ public class XxzyscController {
     /**
      * 查询数据库数据缓存到redis
      */
-    private List<Xxzysc> cache2Redis(Long userId) {
+    private List<Xxzy> cache2Redis(Long userId) {
 
         PageHelper.startPage(1, 10);
         List<Xxzysc> list = xxzyscService.list(new QueryWrapper<Xxzysc>().eq("yh_id", userId).orderByDesc("cjsj"));
 
         if (!CollectionUtils.isEmpty(list)) {
 
-            redisTemplate.opsForValue().set(RedisConstant.USER_LEARNING_RESOURCES_FAVORITES_PREFIX + userId,
-                    JSONUtil.toJsonStr(list), RedisConstant.USER_LEARNING_RESOURCES_FAVORITES_EXPIRE, TimeUnit.DAYS);
+            List<Long> xxzyIds = list.stream().map(Xxzysc::getXxzyId).collect(Collectors.toList());
+            if(!CollectionUtils.isEmpty(xxzyIds)){
+
+                List<Xxzy> xxzys = xxzyService.list(new QueryWrapper<Xxzy>().in("id", xxzyIds));
+
+                redisTemplate.opsForValue().set(RedisConstant.USER_LEARNING_RESOURCES_FAVORITES_PREFIX + userId,
+                        JSONUtil.toJsonStr(xxzys), RedisConstant.USER_LEARNING_RESOURCES_FAVORITES_EXPIRE, TimeUnit.DAYS);
+
+                return xxzys;
+            }
         }
 
-        return list;
-    }
-
-    /**
-     * 校验请求参数
-     */
-    private void checkRequest(Xxzysc xxzysc) {
-
-        if (xxzysc == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-
-        if (xxzysc.getXxzyId() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
+        return null;
     }
 }
 
