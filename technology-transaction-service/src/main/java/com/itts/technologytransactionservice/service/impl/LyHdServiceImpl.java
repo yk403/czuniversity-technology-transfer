@@ -10,6 +10,7 @@ import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.LyHdMapper;
 import com.itts.technologytransactionservice.model.LyHd;
 import com.itts.technologytransactionservice.model.LyHdDto;
+import com.itts.technologytransactionservice.model.TJsHd;
 import com.itts.technologytransactionservice.service.LyHdService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +45,37 @@ public class LyHdServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implements Ly
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<LyHdDto> list = lyHdMapper.findLyHdFront(query);
+        HashMap<String, Object> userMap = new HashMap<>();
+        //门户报名暂定为userId为2
+        userMap.put("userId",getUserId());
+        List<LyHdDto> list1 = lyHdMapper.findLyHdFront(userMap);
+        for (LyHdDto item:list1) {
+            for (LyHdDto item2:list) {
+                //判断是否已报过名，报过isBm为1，未报过为0
+                if(item.getId().equals(item2.getId())){
+                    item2.setIsBm(1);
+                }else{
+                    if(item2.getIsBm()!=null) {
+                        if (item2.getIsBm() == 1) {
+
+                        } else {
+                            item2.setIsBm(0);
+                        }
+                    }else{
+                        item2.setIsBm(0);
+                    }
+
+                }
+
+            }
+        }
+        for (LyHdDto item:list) {
+            //判断是否已报过名，报过isBm为1，未报过为0
+            if(item.getIsBm()==null){
+                item.setIsBm(0);
+            }
+
+        }
         return new PageInfo<>(list);
     }
     @Override

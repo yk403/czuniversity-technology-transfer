@@ -49,6 +49,7 @@
 		LEFT JOIN
 		(select * from t_js_bm
 		<where>
+			is_delete = 0
 			<if test="map.shzt != null"> and shzt = #{map.shzt} </if>
 		</where>
 		) bm
