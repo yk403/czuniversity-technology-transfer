@@ -78,6 +78,23 @@ public class Ks implements Serializable {
     private String ksjssj;
 
     /**
+     * 考试时长
+     */
+    private String kssc;
+
+    /**
+     * 考试开始年月日
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ksksnyr;
+
+    /**
+     * 考试结束年月日
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ksjsnyr;
+
+    /**
      * 是否下发(0:否;1:是)
      */
     private Boolean sfxf;
