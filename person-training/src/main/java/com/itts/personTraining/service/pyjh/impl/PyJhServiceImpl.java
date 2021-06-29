@@ -10,6 +10,7 @@ import com.itts.personTraining.dto.PyJhDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.fjzy.FjzyMapper;
 import com.itts.personTraining.mapper.jhKc.JhKcMapper;
+import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.fjzy.Fjzy;
 import com.itts.personTraining.model.jhKc.JhKc;
@@ -38,8 +39,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
-import static com.itts.common.enums.ErrorCodeEnum.STUDENT_MSG_NOT_EXISTS_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
  * <p>
@@ -64,6 +64,8 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     private FjzyMapper fjzyMapper;
     @Resource
     private XsMapper xsMapper;
+    @Resource
+    private PcXsMapper pcXsMapper;
 
     /**
      * 查询培养计划列表
@@ -232,30 +234,38 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
      * @return
      */
     @Override
-    public List<PyJhDTO> findByYh() {
+    public List<PyJhDTO> findByYh(String pch) {
         Long userId = getUserId();
         log.info("【人才培养 - 根据用户id:{}查询培养计划列表(前)】",userId);
         String userCategory = getUserCategory();
+        List<PyJhDTO> pyJhDTOList = null;
         switch(userCategory) {
             case "postgraduate":
+            case "broker":
                 XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
                 if (xsMsg == null) {
                     throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
                 }
+                if (pch == null) {
+                   List<Pc>  pcList = pcXsMapper.findPcByXsId(xsMsg.getId());
+                   if (CollectionUtils.isEmpty(pcList)) {
+                       throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                   }
+                   pyJhDTOList = pyJhMapper.findByPcId(pcList.get(0).getId());
+                } else {
 
-                break;
-            case "broker":
+                }
                 break;
             case "tutor":
-                break;
             case "corporate_mentor":
+
                 break;
             case "teacher":
                 break;
             default:
                 break;
         }
-        return null;
+        return pyJhDTOList;
     }
 
     /**
