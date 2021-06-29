@@ -37,9 +37,13 @@ import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 public class LyHdController {
     @Autowired
     private LyHdService lyHdService;
-//    *
-//     * 获取列表
-
+    /**
+    * @Description: 获取列表
+    * @Param: [params]
+    * @return: com.itts.common.utils.common.ResponseUtil
+    * @Author: yukai
+    * @Date: 2021/6/28
+    */
     @ApiOperation(value = "获取列表")
     @PostMapping("/list")
     public ResponseUtil find(@RequestBody Map<String, Object> params) {
