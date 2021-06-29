@@ -185,7 +185,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         //根据题目ID分组成map
         Map<Long, List<Tmxx>> allTmxxMap = Maps.newHashMap();
 
-        if(!CollectionUtils.isEmpty(allTmxxs)){
+        if (!CollectionUtils.isEmpty(allTmxxs)) {
             //根据题目ID分组成map
             allTmxxMap = allTmxxs.stream().collect(Collectors.groupingBy(Tmxx::getTmId));
         }
@@ -209,7 +209,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
                     setJudgmentOptions(tm, ksjl, getKsjlTmVO);
                 } else {
 
-                    if(!CollectionUtils.isEmpty(allTmxxMap)){
+                    if (!CollectionUtils.isEmpty(allTmxxMap)) {
                         setSelectOptions(tm, allTmxxMap, ksjl, getKsjlTmVO);
                     }
                 }
@@ -450,7 +450,8 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             Ksjlxx ksjlxx = new Ksjlxx();
             ksjlxx.setKsjlId(ksjl.getId());
             ksjlxx.setTmId(tm.getId());
-            ksjlxx.setXxbh(KsjlXxbhEnum.getByKey(i + 1).getValue());
+            int num = i + 1;
+            ksjlxx.setXxbh(KsjlXxbhEnum.getByKey(num).getValue());
             ksjlxx.setXxnr(tmxxs.get(i).getXxnr());
             ksjlxx.setSfzqda(tmxxs.get(i).getSfzqda());
 
