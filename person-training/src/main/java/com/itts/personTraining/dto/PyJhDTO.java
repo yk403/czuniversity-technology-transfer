@@ -2,6 +2,7 @@ package com.itts.personTraining.dto;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,6 +25,11 @@ public class PyJhDTO {
      * 培养计划主键
      */
     private Long id;
+
+    /**
+     * 批次集合
+     */
+    private List<Pc> pcList;
 
     /**
      * 批次ID

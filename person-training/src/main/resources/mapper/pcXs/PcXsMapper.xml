@@ -29,5 +29,11 @@
         where pc_id = #{pcId} and xs.sfsc = false
         order by xs.cjsj desc
     </select>
+    <select id="findPcByXsId" resultType="com.itts.personTraining.model.pc.Pc">
+        select pc.*
+        from t_pc_xs tpx left join t_pc pc on (pc.id=tpx.pc_id)
+        where pc.sfsc = false and tpx.xs_id = #{xsId}
+        order by pc.cjsj desc
+    </select>
 
 </mapper>

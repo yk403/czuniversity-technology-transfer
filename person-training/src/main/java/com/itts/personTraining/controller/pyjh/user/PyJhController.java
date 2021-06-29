@@ -32,8 +32,8 @@ public class PyJhController {
      */
     @GetMapping("/list")
     @ApiOperation(value = "根据用户id查询培养计划列表")
-    public ResponseUtil findByYh() {
-        return ResponseUtil.success(pyJhService.findByYh());
+    public ResponseUtil findByYh(@RequestParam(value = "pch",required = false) String pch) {
+        return ResponseUtil.success(pyJhService.findByYh(pch));
     }
 
 }
