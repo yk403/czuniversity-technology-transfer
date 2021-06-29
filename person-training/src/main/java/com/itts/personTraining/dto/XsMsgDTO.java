@@ -27,6 +27,9 @@ public class XsMsgDTO {
      */
     private Long kssjId;
 
+    /**
+     * 用户信息
+     */
     private GetYhVo yhMsg;
 
     /**
@@ -46,6 +49,18 @@ public class XsMsgDTO {
      */
     @ApiModelProperty(value = "姓名", required = true)
     private String xm;
+
+    /**
+     * 性别
+     */
+    @ApiModelProperty(value = "性别")
+    private String xb;
+
+    /**
+     * 政治面貌
+     */
+    @ApiModelProperty(value = "政治面貌")
+    private String zzmm;
 
     /**
      * 学员类型
