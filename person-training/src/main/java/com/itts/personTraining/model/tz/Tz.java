@@ -29,6 +29,11 @@ public class Tz implements Serializable {
     private Long id;
 
     /**
+     * 考试试卷ID
+     */
+    private Long kssjId;
+
+    /**
      * 通知名称
      */
     private String tzmc;

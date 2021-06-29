@@ -2,17 +2,18 @@ package com.itts.personTraining.controller.pc.user;
 
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.model.pc.Pc;
+import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.sjzd.SjzdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 
@@ -29,6 +30,8 @@ public class PcController {
 
     @Autowired
     private SjzdService sjzdService;
+    @Autowired
+    private PcService pcService;
 
     /**
      * 根据字典项类型查询类型
@@ -56,5 +59,15 @@ public class PcController {
         return sjzdService.getList(pageNum, pageSize, model, systemType, dictionary, zdbm, parentId, request.getHeader("token"));
     }
 
+    /**
+     * 根据用户查询批次列表
+     * @return
+     */
+    @GetMapping("/findByYh")
+    @ApiOperation(value = "根据用户查询批次列表")
+    public ResponseUtil findByYh(){
+        List<Pc> pcList = pcService.findByYh();
+        return ResponseUtil.success(pcList);
+    }
 
 }

@@ -57,6 +57,11 @@ public class Sz implements Serializable {
     private String dsxm;
 
     /**
+     * 电话
+     */
+    private String dh;
+
+    /**
      * 性别:	male - 男;	female - 女
      */
     private String xb;

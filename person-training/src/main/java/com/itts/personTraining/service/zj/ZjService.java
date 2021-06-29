@@ -35,9 +35,10 @@ public interface ZjService extends IService<Zj> {
     /**
      * 新增专家
      * @param zj
+     * @param token
      * @return
      */
-    boolean add(Zj zj);
+    boolean add(Zj zj,String token);
 
     /**
      * 根据id查询专家信息

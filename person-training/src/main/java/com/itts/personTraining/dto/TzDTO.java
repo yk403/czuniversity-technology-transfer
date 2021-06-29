@@ -25,6 +25,11 @@ public class TzDTO {
     private Long id;
 
     /**
+     * 考试试卷id
+     */
+    private Long kssjId;
+
+    /**
      * 通知名称
      */
     private String tzmc;
