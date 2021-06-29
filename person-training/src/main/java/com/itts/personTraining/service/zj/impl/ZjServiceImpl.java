@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.yh.GetYhVo;
@@ -30,6 +31,7 @@ import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 import static com.itts.common.enums.ErrorCodeEnum.USER_INSERT_ERROR;
 import static com.itts.personTraining.enums.UserTypeEnum.IN;
+import static com.itts.personTraining.enums.UserTypeEnum.PROFESSOR;
 
 /**
  * <p>
@@ -98,10 +100,10 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
         zj.setCjr(userId);
         zj.setGxr(userId);
         //通过手机号查询
-        /*Object data = yhService.getByPhone(zj.getDh(), token).getData();
+        Object data = yhService.getByPhone(zj.getDh(), token).getData();
         String yhlx = IN.getKey();
-        String yhlb = "professor";
-        Long ssjgId = sz.getSsjgId();
+        String yhlb = PROFESSOR.getKey();
+        /*Long ssjgId = sz.getSsjgId();
         String dsbh = sz.getDsbh();
         String dsxm = sz.getDsxm();
         if (data != null) {
