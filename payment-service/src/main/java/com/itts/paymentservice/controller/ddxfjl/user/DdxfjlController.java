@@ -38,7 +38,8 @@ public class DdxfjlController {
     @GetMapping("/list/")
     public ResponseUtil list(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                              @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                             @ApiParam(value = "订单编号") @RequestParam(value = "ddbh", required = false) String ddbh) {
+                             @ApiParam(value = "订单编号") @RequestParam(value = "ddbh", required = false) String ddbh,
+                             @ApiParam(value = "订单状态") @RequestParam(value = "zt", required = false) String zt) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser == null) {
@@ -49,7 +50,9 @@ public class DdxfjlController {
 
         List<Ddxfjl> list = ddxfjlService.list(new QueryWrapper<Ddxfjl>()
                 .eq(StringUtils.isNotBlank(ddbh), "bh", ddbh)
-                .eq("cjr", loginUser.getUserId()));
+                .eq("cjr", loginUser.getUserId())
+                .eq(StringUtils.isNotBlank(zt), "zt", zt)
+                .orderByDesc("cjsj"));
 
         PageInfo pageInfo = new PageInfo(list);
 

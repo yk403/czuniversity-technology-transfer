@@ -165,9 +165,6 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         ksjl.setKsdtsj(new Date());
 
-
-        ksjlMapper.insert(ksjl);
-
         //返回生成的试卷
         GetKsjlVO getKsjlVO = new GetKsjlVO();
         BeanUtils.copyProperties(ksjl, getKsjlVO);
@@ -176,9 +173,19 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         List<Tkzy> tms = tkzyMapper.findBySjId(kssj.getId());
         //获取题目ID
         List<Long> tmIds = tms.stream().map(Tkzy::getId).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(tmIds)) {
+            return null;
+        }
 
         //查询所有题目选项
         List<Tmxx> allTmxxs = tmxxMapper.selectList(new QueryWrapper<Tmxx>().in("tm_id", tmIds));
+
+        if(CollectionUtils.isEmpty(allTmxxs)){
+            return null;
+        }
+
+        ksjlMapper.insert(ksjl);
+
         //根据题目ID分组成map
         Map<Long, List<Tmxx>> allTmxxMap = allTmxxs.stream().collect(Collectors.groupingBy(Tmxx::getTmId));
 
@@ -209,7 +216,6 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
             ksjlTms.add(getKsjlTmVO);
         }
-
 
         return getKsjlVO;
     }

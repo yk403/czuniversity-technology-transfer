@@ -113,7 +113,8 @@ public enum ErrorCodeEnum {
     TEACHER_BE_OCCUPIED(-45043,"当前日期时段该教师已有排课,不可添加!"),
     NO_STUDENT_MSG_ERROR(-45044,"暂无该学生成绩信息!"),
     BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR(-45045, "批次号为空,暂无信息"),
-    TEACHER_MSG_NOT_EXISTS_ERROR(-45046,"师资信息不存在!"),
+    GENERATE_PAPER_ERROR(-45046, "生成试卷失败， 请联系管理员"),
+    TEACHER_MSG_NOT_EXISTS_ERROR(-45047, "老师信息不存在"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
