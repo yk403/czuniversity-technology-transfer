@@ -69,4 +69,11 @@ public interface PcService  {
      * @return
      */
     List<Kc> getKcListById(Long id);
+
+    /**
+     * 根据用户查询批次列表
+     * @return
+     */
+    List<Pc> findByYh();
+
 }

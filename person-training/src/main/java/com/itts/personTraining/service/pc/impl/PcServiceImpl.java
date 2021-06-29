@@ -7,10 +7,16 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
+import com.itts.personTraining.mapper.pk.PkMapper;
+import com.itts.personTraining.mapper.pyjh.PyJhMapper;
+import com.itts.personTraining.mapper.sz.SzMapper;
+import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pc.Pc;
+import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.service.pc.PcService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.sjzd.SjzdService;
@@ -25,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
  * <p>
@@ -40,12 +46,19 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 @Transactional(rollbackFor = Exception.class)
 public class PcServiceImpl implements PcService {
 
-    @Autowired
-    private SjzdService sjzdService;
     @Resource
     private PcMapper pcMapper;
     @Resource
     private PcXsMapper pcXsMapper;
+    @Resource
+    private XsMapper xsMapper;
+    @Resource
+    private SzMapper szMapper;
+    @Resource
+    private PkMapper pkMapper;
+    @Resource
+    private PyJhMapper pyJhMapper;
+
 
     /**
      * 获取分页
@@ -166,6 +179,56 @@ public class PcServiceImpl implements PcService {
     }
 
     /**
+     * 根据用户查询批次列表(前)
+     * @return
+     */
+    @Override
+    public List<Pc> findByYh() {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户:{}查询批次列表(前)】",userId);
+        String userCategory = getUserCategory();
+        List<Pc>  pcList = null;
+        switch (userCategory) {
+            case "postgraduate":
+            case "broker":
+                XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
+                if (xsMsg == null) {
+                    throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+                }
+                pcList = pcXsMapper.findPcByXsId(xsMsg.getId());
+            case "tutor":
+                Sz yzyds = szMapper.getSzByYhId(userId);
+                if (yzyds == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                pcList = pcXsMapper.findByYzydsIdOrQydsId(yzyds.getId(),null);
+                break;
+            //企业导师
+            case "corporate_mentor":
+                Sz qyds = szMapper.getSzByYhId(userId);
+                if (qyds == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                pcList = pcXsMapper.findByYzydsIdOrQydsId(null,qyds.getId());
+                break;
+            case "teacher":
+                Sz skjs = szMapper.getSzByYhId(userId);
+                if (skjs == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                pcList = pkMapper.findPcsBySzId(skjs.getId());
+                break;
+            case "school_leader":
+            case "administrator":
+                pcList = pyJhMapper.findAllPc();
+                break;
+            default:
+                break;
+        }
+        return pcList;
+    }
+
+    /**
      * 根据教育类型查询批次信息
      * @param jylx
      * @return
@@ -193,4 +256,20 @@ public class PcServiceImpl implements PcService {
         }
         return userId;
     }
+
+    /**
+     * 获取当前用户id所属类别
+     * @return
+     */
+    private String getUserCategory() {
+        LoginUser loginUser = threadLocal.get();
+        String userCategory;
+        if (loginUser != null) {
+            userCategory = loginUser.getUserCategory();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userCategory;
+    }
+
 }
