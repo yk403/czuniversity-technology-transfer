@@ -10,13 +10,17 @@ import com.itts.personTraining.dto.PyJhDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.fjzy.FjzyMapper;
 import com.itts.personTraining.mapper.jhKc.JhKcMapper;
+import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
+import com.itts.personTraining.mapper.pk.PkMapper;
+import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.fjzy.Fjzy;
 import com.itts.personTraining.model.jhKc.JhKc;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pyjh.PyJh;
 import com.itts.personTraining.mapper.pyjh.PyJhMapper;
+import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import com.itts.personTraining.service.jhKc.JhKcService;
 import com.itts.personTraining.service.pc.PcService;
@@ -61,11 +65,15 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     @Autowired
     private PcService pcService;
     @Resource
+    private SzMapper szMapper;
+    @Resource
     private FjzyMapper fjzyMapper;
     @Resource
     private XsMapper xsMapper;
     @Resource
     private PcXsMapper pcXsMapper;
+    @Resource
+    private PkMapper pkMapper;
 
     /**
      * 查询培养计划列表
@@ -234,7 +242,7 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
      * @return
      */
     @Override
-    public List<PyJhDTO> findByYh(String pch) {
+    public List<PyJhDTO> findByYh(Long pcId) {
         Long userId = getUserId();
         log.info("【人才培养 - 根据用户id:{}查询培养计划列表(前)】",userId);
         String userCategory = getUserCategory();
@@ -246,21 +254,73 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
                 if (xsMsg == null) {
                     throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
                 }
-                if (pch == null) {
+                if (pcId == null) {
                    List<Pc>  pcList = pcXsMapper.findPcByXsId(xsMsg.getId());
                    if (CollectionUtils.isEmpty(pcList)) {
                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
                    }
                    pyJhDTOList = pyJhMapper.findByPcId(pcList.get(0).getId());
                 } else {
-
+                    pyJhDTOList = pyJhMapper.findByPcId(pcId);
                 }
                 break;
             case "tutor":
+                Sz yzyds = szMapper.getSzByYhId(userId);
+                if (yzyds == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc> pcList = pcXsMapper.findByYzydsIdOrQydsId(yzyds.getId(),null);
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    pyJhDTOList = pyJhMapper.findByPcId(pcList.get(0).getId());
+                } else {
+                    pyJhDTOList = pyJhMapper.findByPcId(pcId);
+                }
+                break;
+            //企业导师
             case "corporate_mentor":
-
+                Sz qyds = szMapper.getSzByYhId(userId);
+                if (qyds == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc> pcList = pcXsMapper.findByYzydsIdOrQydsId(null,qyds.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    pyJhDTOList = pyJhMapper.findByPcId(pcList.get(0).getId());
+                } else {
+                    pyJhDTOList = pyJhMapper.findByPcId(pcId);
+                }
                 break;
             case "teacher":
+                Sz skjs = szMapper.getSzByYhId(userId);
+                if (skjs == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc> pcList = pkMapper.findPcsBySzId(skjs.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    pyJhDTOList = pyJhMapper.findByPcId(pcList.get(0).getId());
+                } else {
+                    pyJhDTOList = pyJhMapper.findByPcId(pcId);
+                }
+                break;
+            case "school_leader":
+            case "administrator":
+                if (pcId == null) {
+                    List<Pc> pcList = pyJhMapper.findAllPc();
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    pyJhDTOList = pyJhMapper.findByPcId(pcList.get(0).getId());
+                } else {
+                    pyJhDTOList = pyJhMapper.findByPcId(pcId);
+                }
                 break;
             default:
                 break;

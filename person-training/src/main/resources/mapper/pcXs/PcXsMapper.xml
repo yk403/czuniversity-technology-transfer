@@ -35,5 +35,23 @@
         where pc.sfsc = false and tpx.xs_id = #{xsId}
         order by pc.cjsj desc
     </select>
+    <select id="findBySzId" resultType="com.itts.personTraining.model.pc.Pc">
+        select distinct pc.*
+        from t_pc_xs tpx left join t_pc pc on (pc.id=tpx.pc_id)
+        where pc.sfsc = false and tpx.xs_id in (select xs.id from t_xs xs where xs.yzyds_id = #{szId})
+        order by pc.cjsj desc
+    </select>
+    <select id="findByQydsId" resultType="com.itts.personTraining.model.pc.Pc">
+        select distinct pc.*
+        from t_pc_xs tpx left join t_pc pc on (pc.id=tpx.pc_id)
+        where pc.sfsc = false and tpx.xs_id in (select xs.id from t_xs xs where xs.qyds_id = #{qydsId})
+        order by pc.cjsj desc
+    </select>
+    <select id="findByYzydsIdOrQydsId" resultType="com.itts.personTraining.model.pc.Pc">
+        select distinct pc.*
+        from t_pc_xs tpx left join t_pc pc on (pc.id=tpx.pc_id)
+        where pc.sfsc = false and tpx.xs_id in (select xs.id from t_xs xs where xs.sfsc = false <if test="yzydsId != null">and xs.yzyds_id = #{yzydsId} </if> <if test="qydsId != null">and xs.qyds_id = #{qydsId} </if>)
+        order by pc.cjsj desc
+    </select>
 
 </mapper>

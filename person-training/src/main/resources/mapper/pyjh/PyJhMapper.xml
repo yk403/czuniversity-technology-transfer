@@ -39,10 +39,16 @@
         order by tpj.cjsj desc
     </select>
     <select id="findByPcId" resultType="com.itts.personTraining.dto.PyJhDTO">
-        select
+        select tpj.*, pc.id as pcId, pc.pch
         from t_py_jh tpj left join t_pc pc on (tpj.pc_id = pc.id)
         where tpj.sfsc = false and tpj.sfxf = true and pc.sfsc = false and tpj.pc_id = #{pcId}
         order by tpj.cjsj desc
+    </select>
+    <select id="findAllPc" resultType="com.itts.personTraining.model.pc.Pc">
+        select distinct pc.*
+        from t_pc pc left join t_py_jh tpj on (tpj.pc_id = pc.id)
+        where tpj.sfsc = false and tpj.sfxf = true and pc.sfsc = false
+        order by pc.cjsj desc
     </select>
 
 </mapper>

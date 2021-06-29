@@ -1,6 +1,7 @@
 package com.itts.personTraining.mapper.pyjh;
 
 import com.itts.personTraining.dto.PyJhDTO;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pyjh.PyJh;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -32,4 +33,10 @@ public interface PyJhMapper extends BaseMapper<PyJh> {
      * @return
      */
     List<PyJhDTO> findByPcId(@Param("pcId") Long pcId);
+
+    /**
+     * 查询所有批次列表
+     * @return
+     */
+    List<Pc> findAllPc();
 }

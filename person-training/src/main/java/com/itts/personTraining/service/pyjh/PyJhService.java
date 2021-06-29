@@ -65,8 +65,8 @@ public interface PyJhService extends IService<PyJh> {
 
     /**
      * 根据用户id查询培养计划列表
-     * @param pch
+     * @param pcId
      * @return
      */
-    List<PyJhDTO> findByYh(String pch);
+    List<PyJhDTO> findByYh(Long pcId);
 }
