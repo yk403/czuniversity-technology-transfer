@@ -56,6 +56,9 @@ public class KsjlController {
         }
 
         GetKsjlVO ksjl = ksjlService.add(kssj, loginUser);
+        if(ksjl == null){
+            throw new WebException(ErrorCodeEnum.GENERATE_PAPER_ERROR);
+        }
 
         return ResponseUtil.success(ksjl);
     }
