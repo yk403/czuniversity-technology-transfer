@@ -7,8 +7,10 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.CommonUtils;
 import com.itts.personTraining.dto.PyJhDTO;
+import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.fjzy.FjzyMapper;
 import com.itts.personTraining.mapper.jhKc.JhKcMapper;
+import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.fjzy.Fjzy;
 import com.itts.personTraining.model.jhKc.JhKc;
 import com.itts.personTraining.model.pc.Pc;
@@ -37,6 +39,7 @@ import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.STUDENT_MSG_NOT_EXISTS_ERROR;
 
 /**
  * <p>
@@ -59,6 +62,8 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     private PcService pcService;
     @Resource
     private FjzyMapper fjzyMapper;
+    @Resource
+    private XsMapper xsMapper;
 
     /**
      * 查询培养计划列表
@@ -233,14 +238,23 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         String userCategory = getUserCategory();
         switch(userCategory) {
             case "postgraduate":
+                XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
+                if (xsMsg == null) {
+                    throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+                }
+
+                break;
             case "broker":
+                break;
             case "tutor":
+                break;
             case "corporate_mentor":
+                break;
             case "teacher":
+                break;
             default:
                 break;
         }
-
         return null;
     }
 
