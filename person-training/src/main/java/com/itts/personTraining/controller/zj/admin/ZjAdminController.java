@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
@@ -96,10 +97,10 @@ public class ZjAdminController {
      */
     @PostMapping("/add")
     @ApiOperation(value = "新增专家")
-    public ResponseUtil add(@RequestBody Zj zj) throws WebException {
+    public ResponseUtil add(@RequestBody Zj zj, HttpServletRequest request) throws WebException {
         //检查参数是否合法
         checkAddRequest(zj);
-        if (!zjService.add(zj)) {
+        if (!zjService.add(zj,request.getHeader("token"))) {
             throw new WebException(INSERT_FAIL);
         }
         return ResponseUtil.success("新增专家成功!");
