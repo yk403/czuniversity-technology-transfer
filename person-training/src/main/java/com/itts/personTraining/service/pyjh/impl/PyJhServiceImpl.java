@@ -223,6 +223,28 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
     }
 
     /**
+     * 根据用户id查询培养计划列表(前)
+     * @return
+     */
+    @Override
+    public List<PyJhDTO> findByYh() {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询培养计划列表(前)】",userId);
+        String userCategory = getUserCategory();
+        switch(userCategory) {
+            case "postgraduate":
+            case "broker":
+            case "tutor":
+            case "corporate_mentor":
+            case "teacher":
+            default:
+                break;
+        }
+
+        return null;
+    }
+
+    /**
      * 获取当前用户id
      * @return
      */
@@ -236,4 +258,20 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
         }
         return userId;
     }
+
+    /**
+     * 获取当前用户id所属类别
+     * @return
+     */
+    private String getUserCategory() {
+        LoginUser loginUser = threadLocal.get();
+        String userCategory;
+        if (loginUser != null) {
+            userCategory = loginUser.getUserCategory();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userCategory;
+    }
+
 }

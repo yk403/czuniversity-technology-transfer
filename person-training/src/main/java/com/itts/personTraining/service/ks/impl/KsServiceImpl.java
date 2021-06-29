@@ -10,6 +10,7 @@ import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.KsDTO;
 import com.itts.personTraining.dto.KsExpDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.enums.BmfsEnum;
 import com.itts.personTraining.mapper.ksExp.KsExpMapper;
 import com.itts.personTraining.mapper.ksXs.KsXsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
@@ -25,6 +26,7 @@ import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.szKs.SzKs;
 import com.itts.personTraining.model.szKsExp.SzKsExp;
 import com.itts.personTraining.model.tz.Tz;
+import com.itts.personTraining.model.tzSz.TzSz;
 import com.itts.personTraining.model.tzXs.TzXs;
 import com.itts.personTraining.service.ks.KsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -33,9 +35,11 @@ import com.itts.personTraining.service.ksXs.KsXsService;
 import com.itts.personTraining.service.szKs.SzKsService;
 import com.itts.personTraining.service.szKsExp.SzKsExpService;
 import com.itts.personTraining.service.tz.TzService;
+import com.itts.personTraining.service.tzSz.TzSzService;
 import com.itts.personTraining.service.tzXs.TzXsService;
 import io.jsonwebtoken.lang.Collections;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +53,8 @@ import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.personTraining.enums.BmfsEnum.OFF_LINE;
+import static com.itts.personTraining.enums.BmfsEnum.ON_LINE;
 import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
 import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
 
@@ -85,6 +91,8 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     private TzService tzService;
     @Autowired
     private TzXsService tzXsService;
+    @Autowired
+    private TzSzService tzSzService;
     @Resource
     private KsXsMapper ksXsMapper;
     @Resource
@@ -268,23 +276,61 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             Tz tz = new Tz();
             tz.setTzlx("考试通知");
             tz.setTzmc(pc.getPch() + "考试通知" + DateUtils.getDateFormat(new Date()));
+            Tz tz1 = new Tz();
+            tz1.setTzlx("考试通知");
+            tz1.setTzmc(pc.getPch() + "考试通知" + DateUtils.getDateFormat(new Date()));
+            Tz tz2 = new Tz();
+            tz2.setTzlx("考试通知");
+            tz2.setTzmc(pc.getPch() + "考试通知" + DateUtils.getDateFormat(new Date()));
             if (ks.getType() == 1) {
                 //学历学位教育,通过批次id查询学员ids(研究生)
                 List<Long> xsIds = xsMapper.findXsIdsByPcId(pc.getId());
                 //通过考试id查询考试扩展集合
                 List<KsExpDTO> ksExpDTOs = ksExpMapper.findByCondition(null, ks.getId());
-                String nr = "您好,您此批次:"+pc.getPch()+ks.getKsmc()+"的";
+                String nr = "您好，您此批次："+pc.getPch()+ks.getKsmc()+"的";
                 for (KsExpDTO ksExpDTO : ksExpDTOs) {
-                    nr += ksExpDTO.getKcmc()+"课程将于"+DateUtils.getDateFormat(ksExpDTO.getKsrq())+","+ksExpDTO.getKskssj()+"-"+ksExpDTO.getKsjssj()+"在"+ksExpDTO.getJxlmc()+ksExpDTO.getJsbh()+"进行考试,";
+                    nr += ksExpDTO.getKcmc()+"课程将于"+DateUtils.getDateFormat(ksExpDTO.getKsrq())+"，"+ksExpDTO.getKskssj()+"—"+ksExpDTO.getKsjssj()+"在"+ksExpDTO.getJxlmc()+ksExpDTO.getJsbh()+"进行考试，";
+                    tz1.setNr("您好，您将于"+DateUtils.getDateFormat(ksExpDTO.getKsrq())+"，"+ksExpDTO.getKskssj()+"—"+ksExpDTO.getKsjssj()+"在"+ksExpDTO.getJxlmc()+ksExpDTO.getJsbh()+"进行"+ksExpDTO.getKcmc()+"课程的监考，请悉知！");
+                    tz1.setCjr(userId);
+                    tz1.setGxr(userId);
+                    if (tzService.save(tz1)) {
+                        List<Long> szIds = szKsExpMapper.findSzIdsByKsExpId(ksExpDTO.getId());
+                        saveTzSz(tz1, szIds);
+                    } else {
+                        throw new ServiceException(INSERT_FAIL);
+                    }
                 }
-                nr += "请悉知!";
+                nr += "请悉知！";
                 tz.setNr(nr);
+                tz.setCjr(userId);
+                tz.setGxr(userId);
                 saveTzAndTzXs(tz, xsIds);
             } else if (ks.getType() == 2) {
                 //继续教育,通过批次id和报名方式(线下)查询学员ids(经纪人)
-                List<Long> xsIds = xsMapper.findXsIdsByPcIdAndBmfs(pc.getId(),"线下");
-                tz.setNr("您好,您此批次:"+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsrq())+","+ks.getKskssj()+"-"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行考试,请悉知!");
-                saveTzAndTzXs(tz, xsIds);
+                List<Long> xsIds = xsMapper.findXsIdsByPcIdAndBmfs(pc.getId(),OFF_LINE.getMsg());
+                if (CollectionUtils.isNotEmpty(xsIds)) {
+                    tz.setNr("您好，您此批次："+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsrq())+"，"+ks.getKskssj()+"--"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行考试，请悉知！");
+                    tz.setCjr(userId);
+                    tz.setGxr(userId);
+                    saveTzAndTzXs(tz, xsIds);
+                    tz1.setNr("您好，您将于"+DateUtils.getDateFormat(ks.getKsrq())+"，"+ks.getKskssj()+"--"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行监考，请悉知！");
+                    tz1.setCjr(userId);
+                    tz1.setGxr(userId);
+                    if (tzService.save(tz1)) {
+                        List<Long> szIds = szKsMapper.getByKsId(ks.getId());
+                        saveTzSz(tz1, szIds);
+                    } else {
+                        throw new ServiceException(INSERT_FAIL);
+                    }
+                }
+                //继续教育,通过批次id和报名方式(线上)查询学员ids(经纪人)
+                List<Long> xsIdList = xsMapper.findXsIdsByPcIdAndBmfs(pc.getId(),ON_LINE.getMsg());
+                if (CollectionUtils.isNotEmpty(xsIdList)) {
+                    tz2.setNr("您好，您此批次："+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsksnyr())+"至"+DateUtils.getDateFormat(ks.getKsjsnyr())+"进行线上考试，请悉知！");
+                    tz2.setCjr(userId);
+                    tz2.setGxr(userId);
+                    saveTzAndTzXs(tz2, xsIdList);
+                }
             }
         }
         if (ksService.updateBatchById(ksList)) {
@@ -306,8 +352,6 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         }
         return false;
     }
-
-
 
     /**
      * 根据用户id查询考试详情(前)
@@ -418,12 +462,28 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 tzXs.setXsId(xsId);
                 tzXsList.add(tzXs);
             }
-            if (tzXsService.saveBatch(tzXsList)) {
-                return;
-            } else {
+            if (!tzXsService.saveBatch(tzXsList)) {
                 throw new ServiceException(INSERT_FAIL);
             }
         } else {
+            throw new ServiceException(INSERT_FAIL);
+        }
+    }
+
+    /**
+     * 新增通知师资关系
+     * @param tz1
+     * @param szIds
+     */
+    private void saveTzSz(Tz tz1, List<Long> szIds) {
+        List<TzSz> tzSzs = new ArrayList<>();
+        for (Long szId : szIds) {
+            TzSz tzSz = new TzSz();
+            tzSz.setSzId(szId);
+            tzSz.setTzId(tz1.getId());
+            tzSzs.add(tzSz);
+        }
+        if (!tzSzService.saveBatch(tzSzs)) {
             throw new ServiceException(INSERT_FAIL);
         }
     }

@@ -22,4 +22,11 @@ public interface SzKsExpMapper extends BaseMapper<SzKsExp> {
      * @return
      */
     List<Long> selectByKsExpId(@Param("ksExpId") Long ksExpId);
+
+    /**
+     * 根据考试扩展id查询师资ids
+     * @param ksExpId
+     * @return
+     */
+    List<Long> findSzIdsByKsExpId(@Param("ksExpId") Long ksExpId);
 }
