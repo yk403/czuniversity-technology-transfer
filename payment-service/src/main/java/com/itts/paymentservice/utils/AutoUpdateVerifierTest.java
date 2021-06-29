@@ -15,6 +15,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.junit.After;
@@ -103,8 +104,8 @@ public class AutoUpdateVerifierTest {
     //统一下单api
     //orderNo 订单号
     @Test
-    public void orderInteface(String orderNo) throws Exception{
-        URIBuilder uriBuilder = new URIBuilder("https://api.mch.weixin.qq.com/v3/certificates");
+    public void orderInteface() throws Exception{
+        URIBuilder uriBuilder = new URIBuilder("https://api.mch.weixin.qq.com/v3/pay/transactions/native");
         HttpPost httpPost = new HttpPost(uriBuilder.build());
         httpPost.addHeader("Accept", "application/json");
         httpPost.addHeader("Content-type","application/json; charset=utf-8");
@@ -118,13 +119,19 @@ public class AutoUpdateVerifierTest {
                 .put("description", description)
                 //测试暂定固定值，实际开发需接入参数(商户订单号)
                 .put("out_trade_no", out_trade_no)
-                .put("notify_url", "https://technologytransfer.zmhycs.cn:11005/api/payment-service/api/test/get/");
+                .put("notify_url", "http://yukai.vipgz4.idcfengye.com/payment/api/test/get/")
                 //交易结束时间(当前时间向后两小时)
-                //.put("time_expire",format)
+                .put("time_expire",format);
         rootNode.putObject("amount")
-                .put("total", 1);
-        rootNode.putObject("payer")
-                .put("openid", "oUpF8uMuAJO_M2pxb1Q9zNjWeS6o");
+                .put("total", 1)
+                .put("currency", "CNY");
+        //rootNode.putObject("payer").put("openid", "oUpF8uMuAJO_M2pxb1Q9zNjWeS6o");
+        objectMapper.writeValue(bos, rootNode);
+        httpPost.setEntity(new StringEntity(bos.toString("UTF-8"), "UTF-8"));
+        CloseableHttpResponse response = httpClient.execute(httpPost);
+
+        String bodyAsString = EntityUtils.toString(response.getEntity());
+        System.out.println(bodyAsString);
     }
     //获取平台证书方法
     @Test

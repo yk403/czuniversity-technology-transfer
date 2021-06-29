@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
  * @Date: 2021/3/12
  */
 @RestController
-@RequestMapping("/api/test")
+    @RequestMapping("/api/test")
 public class TestController {
 
     @PostMapping("/get/")
@@ -55,6 +55,7 @@ public class TestController {
         } else {
             //log.info("微信支付回调函数：微信签名错误");
         }*/
+        System.out.println(notifyData);
         return ResponseUtil.success("test");
     }
 }
