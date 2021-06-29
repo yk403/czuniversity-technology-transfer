@@ -1,6 +1,8 @@
 package com.itts.technologytransactionservice.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
+import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.model.Fjzy;
 
 /**
@@ -12,5 +14,5 @@ import com.itts.technologytransactionservice.model.Fjzy;
  * @since 2021-05-21
  */
 public interface FjzyService extends IService<Fjzy> {
-
+    PageInfo page(Query query);
 }
