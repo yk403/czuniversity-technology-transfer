@@ -41,15 +41,15 @@ public enum KsjlXxbhEnum {
     Y(25, "Y"),
     Z(26, "Z");
 
-    private Integer key;
+    private int key;
 
     private String value;
 
-    public static KsjlXxbhEnum getByKey(Integer key) {
+    public static KsjlXxbhEnum getByKey(int key) {
 
         for (KsjlXxbhEnum value : KsjlXxbhEnum.values()) {
 
-            if (Objects.equals(key, value)) {
+            if (Objects.equals(key, value.key)) {
                 return value;
             }
         }
