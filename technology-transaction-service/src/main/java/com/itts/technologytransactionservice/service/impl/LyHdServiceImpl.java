@@ -109,7 +109,8 @@ public class LyHdServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implements Ly
         if (loginUser != null) {
             userId = loginUser.getUserId();
         } else {
-            throw new ServiceException(GET_THREADLOCAL_ERROR);
+            //throw new ServiceException(GET_THREADLOCAL_ERROR);
+            userId = null;
         }
         return userId;
     }
