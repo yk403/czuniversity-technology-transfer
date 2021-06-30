@@ -31,6 +31,7 @@ import static com.itts.common.enums.ErrorCodeEnum.USER_INSERT_ERROR;
 import static com.itts.personTraining.enums.UserTypeEnum.IN;
 import static com.itts.personTraining.enums.UserTypeEnum.PROFESSOR;
 import static com.itts.personTraining.enums.ZzmmEnum.*;
+import static com.itts.personTraining.enums.jslyEnum.*;
 
 /**
  * @Author: Austin
@@ -45,7 +46,6 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
     private StringBuilder result = new StringBuilder();
     private Integer count = 0;
     private String token;
-    private Long jgId;
     @Resource
     private SzMapper szMapper;
     @Resource
@@ -88,7 +88,7 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
             zj.setXb(data.getXb());
         }
         //生日
-        if (!StringUtils.isBlank(data.getSr().toString())) {
+        if (data.getSr() != null) {
             zj.setSr(data.getSr());
         }
         //民族
@@ -151,6 +151,33 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
         //研究成果
         if (!StringUtils.isBlank(data.getYjcg())) {
             zj.setYjcg(data.getYjcg());
+        }
+        //电子邮件
+        if (!StringUtils.isBlank(data.getDzyj())) {
+            zj.setDzyj(data.getDzyj());
+        }
+        //研究领域
+        String yjly = data.getYjly();
+        if (!StringUtils.isBlank(yjly)) {
+            if (BIOLOGY_AND_MEDICAL_TECHNOLOGY.getMsg().equals(yjly)) {
+                zj.setYjly(BIOLOGY_AND_MEDICAL_TECHNOLOGY.getKey());
+            } else if (ELECTRONIC_TECHNOLOGY.getMsg().equals(yjly)) {
+                zj.setYjly(ELECTRONIC_TECHNOLOGY.getKey());
+            } else if (AEROSPACE_TECHNOLOGY.getMsg().equals(yjly)) {
+                zj.setYjly(AEROSPACE_TECHNOLOGY.getKey());
+            } else if (NEW_MATERIAL_TECHNOLOGY.getMsg().equals(yjly)) {
+                zj.setYjly(NEW_MATERIAL_TECHNOLOGY.getKey());
+            } else if (HIGH_TECH_SERVICE_INDUSTRY.getMsg().equals(yjly)) {
+                zj.setYjly(HIGH_TECH_SERVICE_INDUSTRY.getKey());
+            } else if (EQUIPMENT_AND_MANUFACTURING.getMsg().equals(yjly)) {
+                zj.setYjly(EQUIPMENT_AND_MANUFACTURING.getKey());
+            } else if (RESOURCE_AND_ENVIRONMENT_TECHNOLOGY.getMsg().equals(yjly)) {
+                zj.setYjly(RESOURCE_AND_ENVIRONMENT_TECHNOLOGY.getKey());
+            } else if (CHEMICAL_ENGINEERING.getMsg().equals(yjly)) {
+                zj.setYjly(CHEMICAL_ENGINEERING.getKey());
+            } else if (MODERN_AGRICULTURE_TECHNOLOGY.getMsg().equals(yjly)) {
+                zj.setYjly(MODERN_AGRICULTURE_TECHNOLOGY.getKey());
+            }
         }
         //知识产权
         if (!StringUtils.isBlank(data.getZscq())) {
