@@ -180,14 +180,15 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         //查询所有题目选项
         List<Tmxx> allTmxxs = tmxxMapper.selectList(new QueryWrapper<Tmxx>().in("tm_id", tmIds));
 
-        if(CollectionUtils.isEmpty(allTmxxs)){
-            return null;
-        }
-
         ksjlMapper.insert(ksjl);
 
         //根据题目ID分组成map
-        Map<Long, List<Tmxx>> allTmxxMap = allTmxxs.stream().collect(Collectors.groupingBy(Tmxx::getTmId));
+        Map<Long, List<Tmxx>> allTmxxMap = Maps.newHashMap();
+
+        if (!CollectionUtils.isEmpty(allTmxxs)) {
+            //根据题目ID分组成map
+            allTmxxMap = allTmxxs.stream().collect(Collectors.groupingBy(Tmxx::getTmId));
+        }
 
         List<GetKsjlTmVO> ksjlTms = Lists.newArrayList();
 
@@ -208,7 +209,9 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
                     setJudgmentOptions(tm, ksjl, getKsjlTmVO);
                 } else {
 
-                    setSelectOptions(tm, allTmxxMap, ksjl, getKsjlTmVO);
+                    if (!CollectionUtils.isEmpty(allTmxxMap)) {
+                        setSelectOptions(tm, allTmxxMap, ksjl, getKsjlTmVO);
+                    }
                 }
 
                 tmIterator.remove();
@@ -216,6 +219,8 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
             ksjlTms.add(getKsjlTmVO);
         }
+
+        getKsjlVO.setKsjlTms(ksjlTms);
 
         return getKsjlVO;
     }
@@ -445,7 +450,8 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             Ksjlxx ksjlxx = new Ksjlxx();
             ksjlxx.setKsjlId(ksjl.getId());
             ksjlxx.setTmId(tm.getId());
-            ksjlxx.setXxbh(KsjlXxbhEnum.getByKey(i + 1).getValue());
+            int num = i + 1;
+            ksjlxx.setXxbh(KsjlXxbhEnum.getByKey(num).getValue());
             ksjlxx.setXxnr(tmxxs.get(i).getXxnr());
             ksjlxx.setSfzqda(tmxxs.get(i).getSfzqda());
 

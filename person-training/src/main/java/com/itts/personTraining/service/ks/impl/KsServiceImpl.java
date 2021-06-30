@@ -232,6 +232,9 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
         ks.setGxr(userId);
         List<Long> szIds = szKsMapper.getByKsId(ks.getId());
         if (ksService.updateById(ks)) {
+            if (ON_LINE.getMsg().equals(ks.getKslb())) {
+                return true;
+            }
             HashMap<String, Object> map = new HashMap<>();
             map.put("ks_id",ks.getId());
             if (szIds != null && szIds.size() > 0) {
@@ -329,6 +332,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                     tz2.setNr("您好，您此批次："+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsksnyr())+"至"+DateUtils.getDateFormat(ks.getKsjsnyr())+"进行线上考试，请悉知！");
                     tz2.setCjr(userId);
                     tz2.setGxr(userId);
+                    tz2.setKssjId(ks.getKssjId());
                     saveTzAndTzXs(tz2, xsIdList);
                 }
             }

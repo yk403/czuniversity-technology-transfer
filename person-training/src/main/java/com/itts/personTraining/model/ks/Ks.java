@@ -52,6 +52,12 @@ public class Ks implements Serializable {
     private String ksmc;
 
     /**
+     * 考试类别
+     */
+    @ApiModelProperty(value = "考试类别")
+    private String kslb;
+
+    /**
      * 考试类型(统一考试;补考)
      */
     private String kslx;

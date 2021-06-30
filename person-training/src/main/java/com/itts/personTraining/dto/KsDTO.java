@@ -63,6 +63,12 @@ public class KsDTO {
     private String ksmc;
 
     /**
+     * 考试类别
+     */
+    @ApiModelProperty(value = "考试类别")
+    private String kslb;
+
+    /**
      * 考试类型(统一考试;补考)
      */
     @ApiModelProperty(value = "试类型(统一考试;补考)", required = true)
@@ -97,13 +103,13 @@ public class KsDTO {
     /**
      * 考试开始年月日
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date ksksnyr;
 
     /**
      * 考试结束年月日
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date ksjsnyr;
 
     /**

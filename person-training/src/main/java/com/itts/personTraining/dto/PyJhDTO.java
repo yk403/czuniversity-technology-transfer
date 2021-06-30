@@ -2,6 +2,7 @@ package com.itts.personTraining.dto;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

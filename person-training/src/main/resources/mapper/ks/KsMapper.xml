@@ -11,6 +11,7 @@
         <result column="pch" property="pch" />
         <result column="ksmc" property="ksmc" />
         <result column="kslx" property="kslx" />
+        <result column="kslb" property="kslb" />
         <result column="ksrq" property="ksrq" />
         <result column="ksdd" property="ksdd" />
         <result column="kskssj" property="kskssj" />
@@ -60,10 +61,10 @@
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, pc_id, ksmc, kslx, sfxf, sfsc, cjsj, cjr, gxsj, gxr, xfsj
+        id, pc_id, ksmc, kslx, kslb, sfxf, sfsc, cjsj, cjr, gxsj, gxr, xfsj
     </sql>
     <select id="findByPage" resultType="com.itts.personTraining.dto.KsDTO">
-        select ks.id, pc_id, pc.pch, ks.type, kssj_id, ksmc, kslx, ks.ksrq, ks.ksdd, ks.kskssj, ks.ksjssj, ks.kssc, ks.ksksnyr, ks.ksjsnyr, ks.sfxf, ks.sfsc, ks.cjsj, ks.cjr, ks.gxsj, ks.gxr, ks.xfsj
+        select ks.id, pc_id, pc.pch, ks.type, kssj_id, ksmc, kslx, kslb, ks.ksrq, ks.ksdd, ks.kskssj, ks.ksjssj, ks.kssc, ks.ksksnyr, ks.ksjsnyr, ks.sfxf, ks.sfsc, ks.cjsj, ks.cjr, ks.gxsj, ks.gxr, ks.xfsj
         from t_ks ks left join t_pc pc on (ks.pc_id=pc.id)
         <where>
             ks.sfsc = false and pc.sfsc = false
@@ -74,7 +75,7 @@
         order by ks.cjsj desc
     </select>
     <select id="findById" resultType="com.itts.personTraining.dto.KsDTO">
-        select ks.id, pc_id, pc.pch, ks.type, kssj_id, ksmc, kslx, ksdd, ks.ksrq, ks.kskssj, ks.ksjssj, ks.kssc, ks.ksksnyr, ks.ksjsnyr, ks.sfsc, ks.sfxf, ks.cjsj, ks.cjr, ks.gxsj, ks.gxr, ks.xfsj
+        select ks.id, pc_id, pc.pch, ks.type, kssj_id, ksmc, kslx, kslb, ksdd, ks.ksrq, ks.kskssj, ks.ksjssj, ks.kssc, ks.ksksnyr, ks.ksjsnyr, ks.sfsc, ks.sfxf, ks.cjsj, ks.cjr, ks.gxsj, ks.gxr, ks.xfsj
         from t_ks ks left join t_pc pc on(ks.pc_id=pc.id)
         <where>
             ks.sfsc = false and pc.sfsc = false

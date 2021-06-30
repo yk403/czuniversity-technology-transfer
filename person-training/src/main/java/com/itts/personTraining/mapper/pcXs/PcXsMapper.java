@@ -2,6 +2,7 @@ package com.itts.personTraining.mapper.pcXs;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.personTraining.dto.StuDTO;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pcXs.PcXs;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -50,4 +51,32 @@ public interface PcXsMapper extends BaseMapper<PcXs> {
             "   AND pc.xylx = #{xslx}")
     Long findByXsIdAndXslx(@Param("xsId") Long xsId, @Param("xslx") String xslx);
 
+    /**
+     * 根据学生id查询批次
+     * @param xsId
+     * @return
+     */
+    List<Pc> findPcByXsId(@Param("xsId") Long xsId);
+
+    /**
+     * 通过师资id查询批次列表(原专业)
+     * @param szId
+     * @return
+     */
+    List<Pc> findBySzId(@Param("szId") Long szId);
+
+    /**
+     * 通过企业导师id查询批次列表
+     * @param qydsId
+     * @return
+     */
+    List<Pc> findByQydsId(@Param("qydsId") Long qydsId);
+
+    /**
+     * 通过原专业导师id或企业导师id查询批次列表
+     * @param yzydsId
+     * @param qydsId
+     * @return
+     */
+    List<Pc> findByYzydsIdOrQydsId(@Param("yzydsId") Long yzydsId, @Param("qydsId") Long qydsId);
 }

@@ -78,6 +78,10 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
         if (!StringUtils.isBlank(data.getDsxm())) {
             sz.setDsxm(data.getDsxm());
         }
+        //电话
+        if (!StringUtils.isBlank(data.getDh())) {
+            sz.setDh(data.getDh());
+        }
         //性别
         if (!StringUtils.isBlank(data.getXb())) {
             sz.setXb(data.getXb());

@@ -31,13 +31,24 @@
     <select id="findByPage" resultType="com.itts.personTraining.dto.PyJhDTO">
         select tpj.id as id, pc_id,pc.pch as pch, pc.jylx as jylx, jhmc, pymb, xzyxxnx, pyfshff, pyfaypyjh, kcszhxfgd, sjlw, pygl, fjzy_id, tpj.sfsc as sfsc, tpj.sfxf, tpj.xfsj, tpj.cjsj, tpj.cjr, tpj.gxsj, tpj.gxr
         from t_py_jh tpj left join t_pc pc on (tpj.pc_id = pc.id)
-        <where>
+        where
             tpj.sfsc = false and pc.sfsc = false
             <if test="pch != null and pch != ''"> and pc.pch like concat('%',trim(#{pch}),'%') </if>
             <if test="jylx != null and jylx != ''"> and pc.jylx = trim(#{jylx}) </if>
             <if test="jhmc != null and jhmc != ''"> and tpj.jhmc like concat('%',trim(#{jhmc}),'%') </if>
-        </where>
         order by tpj.cjsj desc
+    </select>
+    <select id="findByPcId" resultType="com.itts.personTraining.dto.PyJhDTO">
+        select tpj.*, pc.id as pcId, pc.pch
+        from t_py_jh tpj left join t_pc pc on (tpj.pc_id = pc.id)
+        where tpj.sfsc = false and tpj.sfxf = true and pc.sfsc = false and tpj.pc_id = #{pcId}
+        order by tpj.cjsj desc
+    </select>
+    <select id="findAllPc" resultType="com.itts.personTraining.model.pc.Pc">
+        select distinct pc.*
+        from t_pc pc left join t_py_jh tpj on (tpj.pc_id = pc.id)
+        where tpj.sfsc = false and tpj.sfxf = true and pc.sfsc = false
+        order by pc.cjsj desc
     </select>
 
 </mapper>

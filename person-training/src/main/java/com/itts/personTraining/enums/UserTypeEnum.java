@@ -27,6 +27,8 @@ public enum UserTypeEnum {
 
     SCHOOL_LEADER("school_leader", "校领导"),
 
+    PROFESSOR("professor","专家"),
+
     IN("in", "内部用户");
 
     private String key;
