@@ -128,6 +128,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             yh.setYhlb(yhlb);
             yh.setJgId(ssjgId);
             yhService.update(yh,token);
+            sz.setYhId(getYhVo.getId());
             Sz sz1 = szService.selectByCondition(dsbh,null, null);
             if (sz1 != null) {
                 //存在,则更新

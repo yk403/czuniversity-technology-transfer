@@ -103,62 +103,56 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
         Object data = yhService.getByPhone(zj.getDh(), token).getData();
         String yhlx = IN.getKey();
         String yhlb = PROFESSOR.getKey();
-        /*Long ssjgId = sz.getSsjgId();
-        String dsbh = sz.getDsbh();
-        String dsxm = sz.getDsxm();
+        String bh = zj.getBh();
+        String xm = zj.getXm();
         if (data != null) {
-            //用户表存在用户信息,更新用户信息,师资表判断是否存在
+            //用户表存在用户信息,更新用户信息,专家表判断是否存在
             GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
             Yh yh = new Yh();
             yh.setId(getYhVo.getId());
-            yh.setYhbh(dsbh);
-            yh.setYhm(dsbh);
-            yh.setMm(dsbh);
-            yh.setZsxm(dsxm);
+            yh.setYhbh(bh);
+            yh.setYhm(bh);
+            yh.setMm(bh);
+            yh.setZsxm(xm);
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
-            yh.setJgId(ssjgId);
             yhService.update(yh,token);
-            Sz sz1 = szService.selectByCondition(dsbh,null, null);
-            if (sz1 != null) {
+            Zj zj1 = zjMapper.getByCondition(zj.getDh());
+            zj.setYhId(getYhVo.getId());
+            if (zj1 != null) {
                 //存在,则更新
-                sz.setId(sz1.getId());
-                return szService.updateById(sz);
+                zj.setId(zj1.getId());
+                return zjService.updateById(zj);
             } else {
                 //不存在,则新增
-                return szService.save(sz);
+                return zjService.save(zj);
             }
         } else {
-            //用户表没有用户信息,新增用户信息,师资表查询是否存在
+            //用户表没有用户信息,新增用户信息,专家表查询是否存在
             Yh yh = new Yh();
-            yh.setYhbh(dsbh);
-            yh.setYhm(dsbh);
-            yh.setMm(dsbh);
-            yh.setZsxm(dsxm);
+            yh.setYhbh(bh);
+            yh.setYhm(bh);
+            yh.setMm(bh);
+            yh.setZsxm(xm);
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
-            yh.setJgId(ssjgId);
             Object data1 = yhService.rpcAdd(yh, token).getData();
             if (data1 == null) {
                 throw new ServiceException(USER_INSERT_ERROR);
             }
             Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
             Long yh1Id = yh1.getId();
-            sz.setYhId(yh1Id);
-            Sz sz1 = szService.selectByCondition(dsbh,null, null);
-            if (sz1 != null) {
+            zj.setYhId(yh1Id);
+            Zj zj1 = zjMapper.getByCondition(zj.getDh());
+            if (zj1 != null) {
                 //存在,则更新
-                sz.setId(sz1.getId());
-                return updateById(sz);
+                zj.setId(zj1.getId());
+                return updateById(zj);
             } else {
                 //不存在.则新增
-                return save(sz);
+                return save(zj);
             }
         }
-        Long userId = getUserId();
-        zj.setCjr(userId);
-        zj.setGxr(userId);*/
-        return zjService.save(zj);
     }
 
     /**
