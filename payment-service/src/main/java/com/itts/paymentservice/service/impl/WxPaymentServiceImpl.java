@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.itts.paymentservice.constant.PaymentConstant;
 import com.itts.paymentservice.model.ddxfjl.Ddxfjl;
 import com.itts.paymentservice.service.WxPatmentService;
-import com.itts.paymentservice.utils.QrCodeUtils;
 import com.itts.paymentservice.utils.TimeUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -15,9 +14,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 
 /*
@@ -28,7 +25,7 @@ import java.time.LocalDateTime;
 public class WxPaymentServiceImpl implements WxPatmentService {
     private CloseableHttpClient httpClient;
     @Override
-    public Ddxfjl orderInteface(Ddxfjl ddxfjl) throws Exception {
+    public String orderInteface(Ddxfjl ddxfjl) throws Exception {
         URIBuilder uriBuilder = new URIBuilder(PaymentConstant.wx_native_transactions_url);
         HttpPost httpPost = new HttpPost(uriBuilder.build());
         httpPost.addHeader("Accept", "application/json");
@@ -58,7 +55,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
         JSONObject jsonObject = JSONObject.parseObject(bodyAsString);
         String code_url=jsonObject.getString("code_url");
         System.out.println(code_url);
-        ImageIO.read(QrCodeUtils.generatorQrCode(code_url));
-        return ddxfjl;
+        //ImageIO.read(QrCodeUtils.generatorQrCode(code_url));
+        return code_url;
     }
 }

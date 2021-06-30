@@ -1,27 +1,22 @@
-package com.itts.paymentservice.utils;
+package com.itts.common.utils;
 
+import cn.hutool.core.codec.Base64Encoder;
+import com.alibaba.fastjson.JSON;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
-import com.itts.common.utils.FastDFSClient;
-import com.itts.common.utils.FastDFSFile;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import com.alibaba.fastjson.JSON;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 /**
@@ -39,7 +34,7 @@ public class QrCodeUtils {
      * @param qrCodePath 生成的二维码地址(最终保存地址)
      * @throws Exception 异常
      */
-    public static InputStream generatorQrCode(String content) throws Exception {
+    public static String generatorQrCode(String content) throws Exception {
         Map<EncodeHintType, Object> hints = new HashMap<>();
 
         hints.put(EncodeHintType.MARGIN, 0);
@@ -74,32 +69,34 @@ public class QrCodeUtils {
             }
         }
         //ImageIO.write(image, "png", new File(qrCodePath));
-        InputStream inputStream = bufferedImageToInputStream(image);
+/*        InputStream inputStream = bufferedImageToInputStream(image);
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         String format = df.format(now);
-        String fileNameString = format+"qrcode.png";
+        String fileNameString = format+"qrcode.png";*/
         //return uploadFile(inputStream,fileNameString);
-        return inputStream;
+        return bufferedImageToString(image);
     }
     /**
-     * 将BufferedImage转换为InputStream
+     * 将BufferedImage转换为base64字符串
      * @param image
      * @return
      */
-    public static InputStream bufferedImageToInputStream(BufferedImage image){
+    public static String bufferedImageToString(BufferedImage image){
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ImageIO.write(image, "png", os);
-            InputStream input = new ByteArrayInputStream(os.toByteArray());
-            return input;
+            byte b[]=os.toByteArray();
+            String str = new Base64Encoder().encode(b);
+            //InputStream input = new ByteArrayInputStream(os.toByteArray());
+            return str;
         } catch (IOException e) {
             throw new ServiceException("二维码转码失败");
         }
     }
     /**
      * 文件上传
-     * @param multipartFile
+     * @param
      * @return
      * @throws IOException
      */
