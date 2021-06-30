@@ -115,6 +115,8 @@ public enum ErrorCodeEnum {
     BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR(-45045, "批次号为空,暂无信息"),
     GENERATE_PAPER_ERROR(-45046, "生成试卷失败， 请联系管理员"),
     TEACHER_MSG_NOT_EXISTS_ERROR(-45047, "老师信息不存在"),
+    PROFESSOR_NUMBER_EXISTS_ERROR(-45048, "专家编号已存在!"),
+    PROFESSOR_NUMBER_ISEMPTY_ERROR(-45049, "专家编号不可为空!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

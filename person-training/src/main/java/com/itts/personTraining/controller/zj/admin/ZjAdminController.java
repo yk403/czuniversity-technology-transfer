@@ -155,10 +155,19 @@ public class ZjAdminController {
         if (zj == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+        if (zj.getDh() == null) {
+            throw new WebException(PHONE_NUMBER_ISEMPTY_ERROR);
+        }
+        if (zj.getBh() == null) {
+            throw new WebException(PROFESSOR_NUMBER_ISEMPTY_ERROR);
+        }
         List<Zj> zjList = zjService.getAll();
         for (Zj zj1 : zjList) {
             if (zj1.getDh().equals(zj.getDh())) {
                 throw new WebException(PROFESSOR_PHONE_EXISTS_ERROR);
+            }
+            if (zj1.getBh().equals(zj.getBh())) {
+                throw new WebException(PROFESSOR_NUMBER_EXISTS_ERROR);
             }
         }
     }
@@ -176,6 +185,9 @@ public class ZjAdminController {
             for (Zj zj1 : zjList) {
                 if (zj1.getDh().equals(zj.getDh())) {
                     throw new WebException(PROFESSOR_PHONE_EXISTS_ERROR);
+                }
+                if (zj1.getBh().equals(zj.getBh())) {
+                    throw new WebException(PROFESSOR_NUMBER_EXISTS_ERROR);
                 }
             }
         }

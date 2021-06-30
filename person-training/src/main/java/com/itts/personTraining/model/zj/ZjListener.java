@@ -62,6 +62,10 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
         int rowIndex = rrh.getRowIndex() + 1;
         log.info("解析第" + rowIndex + "行数据:{}", JSON.toJSONString(data));
         Zj zj = new Zj();
+        //编号
+        if (!StringUtils.isBlank(data.getBh())) {
+            zj.setBh(data.getBh());
+        }
         //姓名
         if (!StringUtils.isBlank(data.getXm())) {
             zj.setXm(data.getXm());
