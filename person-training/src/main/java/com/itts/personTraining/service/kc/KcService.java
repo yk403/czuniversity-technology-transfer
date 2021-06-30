@@ -2,6 +2,7 @@ package com.itts.personTraining.service.kc;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.dto.KcDTO;
+import com.itts.personTraining.dto.KcXsXfDTO;
 import com.itts.personTraining.model.kc.Kc;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -69,4 +70,10 @@ public interface KcService extends IService<Kc> {
      * @return
      */
     List<KcDTO> getByCondition(String xylx);
+    /**
+     * 根据用户id查询课程列表
+     * @param pcId
+     * @return
+     */
+    List<KcXsXfDTO> findByYh(Long pcId);
 }
