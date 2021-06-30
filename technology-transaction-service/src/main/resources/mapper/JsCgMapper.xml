@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsCgMapper">
 
 	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select `id`,`agreement`,`cgspmc`,`cgfj`,`cgfjmc`,`agreement_name`,`cgqsr`,`zzjgdm`,`qsrlxdh`,`cgmc`,`gjc`,`cgwcsj`,`zzqk`,`ly_id`,`cghqfs`,`jscsd`,`hjqk`,`hzjg`,`hzfs`,`dwmc`,`dz`,`fr`,`contracts`,`zj`,`dzyx`,`zscqxs`,`cgjs`,`jszb`,`syfx`,`cgtp`,`cgsp`,`bz`,`jshd_id`,`soft`,`cjjg`,`auction_status` from t_js_cg cg
+		select `id`,`agreement`,`cgspmc`,`cgfj`,`cgfjmc`,`agreement_name`,`cgqsr`,`zzjgdm`,`qsrlxdh`,`cgmc`,`gjc`,`cgwcsj`,`zzqk`,`ly_id`,`cghqfs`,`jscsd`,`hjqk`,`hzjg`,`hzfs`,`dwmc`,`dz`,`fr`,`contracts`,`zj`,`dzyx`,`zscqxs`,`cgjs`,`jszb`,`syfx`,`cgtp`,`cgsp`,`bz`,`jshd_id`,`soft`,`cjjg`,`auction_status`,`cgxqtp`,`cgxqtpmc` from t_js_cg cg
         <where>
           cg.is_delete = 0
 		  		  <if test="map.id != null"> and id = #{map.id} </if>
@@ -52,7 +52,7 @@
 	</select>
 
 	<select id="findJsCgFront" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,kz.dj as dj,cgspmc,cgfj,cgfjmc,cgqsr,agreement,agreement_name,zzjgdm,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,d.mc as lbName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz,cjjg,auction_status,kz.lcdj as lcdj
+		select cg.id as id,kz.dj as dj,cgspmc,cgfj,cgfjmc,cgqsr,agreement,agreement_name,zzjgdm,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,d.mc as lbName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz,cjjg,auction_status,kz.lcdj as lcdj,cgxqtp,cgxqtpmc
 		from t_js_cg cg left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lb d on(cg.lb_id=d.id) left join t_js_hd hd on(cg.jshd_id=hd.id) left join t_js_lc_kz kz on (cg.id = kz.cg_id)
 		<where>
 			cg.is_delete = 0
@@ -87,7 +87,7 @@
 </select>
 
 	<select id="findJsCg" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,cgspmc,cgfj,cgfjmc,user_id,agreement,agreement_name,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,lb.mc as lbName,sh.fbshbz,sh.slxbbz as slxbbz,cg.soft,cjjg,auction_status,sh.jszt as jszt,kz.lcdj as lcdj
+		select cg.id as id,cgspmc,cgfj,cgfjmc,user_id,agreement,agreement_name,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,ly.mc as lyName,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,lb.mc as lbName,sh.fbshbz,sh.slxbbz as slxbbz,cg.soft,cjjg,auction_status,sh.jszt as jszt,kz.lcdj as lcdj,cgxqtp,cgxqtpmc
 		from t_js_cg cg left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lb lb on(cg.lb_id=lb.id) left join t_js_lc_kz kz on (cg.id = kz.cg_id)
 		<where>
 			cg.is_delete != 2
@@ -125,7 +125,7 @@
 	</select>
 	<!--归档清算用-->
 	<select id="findGdJsCg" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,cgspmc,cgfj,cgfjmc,cg.user_id as userId,agreement,agreement_name,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,cg.dwmc as dwmc,cg.dz as dz,cg.fr as fr,cg.contracts as contracts,cg.zj as zj,cg.dzyx as dzyx,cg.zscqxs as zscqxs,cg.cgjs as cgjs,cg.jszb as jszb,cg.syfx as syfx,cg.cgtp as cgtp,cg.cgsp as cgsp,cg.bz as bz,cg.jshd_id as jshd_id,cg.release_type as release_type,cg.lb_id as lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,sh.fbshbz,sh.slxbbz as slxbbz,cg.soft,cjjg,auction_status,sh.jszt as jszt,kz.fwf as fwf,kz.lcdj as lcdj,ly.mc as lyName,bm.dwmc as srfmc,bm.sjhm as srfhm,hd.hdmc as hdmc
+		select cg.id as id,cgspmc,cgfj,cgfjmc,cg.user_id as userId,agreement,agreement_name,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,cg.dwmc as dwmc,cg.dz as dz,cg.fr as fr,cg.contracts as contracts,cg.zj as zj,cg.dzyx as dzyx,cg.zscqxs as zscqxs,cg.cgjs as cgjs,cg.jszb as jszb,cg.syfx as syfx,cg.cgtp as cgtp,cg.cgsp as cgsp,cg.bz as bz,cg.jshd_id as jshd_id,cg.release_type as release_type,cg.lb_id as lb_id,sh.fbshzt ,cg.cjsj,sh.release_status as releaseStatus,cg.sjhm,sh.assistance_status,sh.release_assistance_status,sh.jylx,sh.fbshbz,sh.slxbbz as slxbbz,cg.soft,cjjg,auction_status,sh.jszt as jszt,kz.fwf as fwf,kz.lcdj as lcdj,ly.mc as lyName,bm.dwmc as srfmc,bm.sjhm as srfhm,hd.hdmc as hdmc,cgxqtp,cgxqtpmc
 		from t_js_cg cg  left join t_js_sh sh on(cg.id=sh.cg_id) left join t_js_lc_kz kz on(kz.cg_id=cg.id) left join t_js_ly ly on(cg.ly_id=ly.id) left join t_js_bm bm on (bm.id = kz.bm_id) left join t_js_hd hd on (hd.id = cg.jshd_id)
 		<where>
 			cg.is_delete != 2
@@ -161,7 +161,7 @@
 		</choose>
 	</select>
 	<select id="findHdJsCg" resultType="com.itts.technologytransactionservice.model.TJsCg">
-		select cg.id as id,cgspmc,cgfj,cgfjmc,cg.user_id as userId,agreement,agreement_name,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,cg.cjsj,cg.sjhm,cg.soft,cjjg,auction_status
+		select cg.id as id,cgspmc,cgfj,cgfjmc,cg.user_id as userId,agreement,agreement_name,zzjgdm,cgqsr,qsrlxdh,cgmc,gjc,cgwcsj,zzqk,ly_id,cghqfs,jscsd,hjqk,hzjg,hzfs,dwmc,dz,fr,contracts,zj,dzyx,zscqxs,cgjs,jszb,syfx,cgtp,cgsp,bz,jshd_id,release_type,lb_id,cg.cjsj,cg.sjhm,cg.soft,cjjg,auction_status,cgxqtp,cgxqtpmc
 		from t_js_cg cg left join t_js_hd hd on (cg.jshd_id = hd.id)
 		<where>
 			cg.is_delete != 2
@@ -232,6 +232,8 @@
 			<if test="cjsj != null">cjsj = #{cjsj},</if>
 			<if test="soft != null">soft = #{soft},</if>
 			<if test="auctionStatus != null">auction_status = #{auctionStatus},</if>
+			<if test="cgxqtp != null">cgxqtp = #{cgxqtp},</if>
+			<if test="cgxqtpmc != null">cgxqtpmc = #{cgxqtpmc},</if>
 			<if test="cjjg != null">cjjg = #{cjjg},</if>
 			<if test="gxsj != null">gxsj = #{gxsj}</if>
 		</set>

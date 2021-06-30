@@ -353,5 +353,21 @@ public class LyZp implements Serializable {
      */
     private String qsrlxdh;
     private Long userId;
+    /**
+    * @Description: 展品详情图片
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/30
+    */
+    private String zpxqtp;
+    /**
+     * @Description: 展品详情图片名称
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/30
+     */
+    private String zpxqtpmc;
 
 }

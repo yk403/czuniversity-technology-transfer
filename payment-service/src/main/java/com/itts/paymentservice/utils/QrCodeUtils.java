@@ -39,7 +39,7 @@ public class QrCodeUtils {
      * @param qrCodePath 生成的二维码地址(最终保存地址)
      * @throws Exception 异常
      */
-    public static String generatorQrCode(String content, String qrCodePath) throws Exception {
+    public static String generatorQrCode(String content) throws Exception {
         Map<EncodeHintType, Object> hints = new HashMap<>();
 
         hints.put(EncodeHintType.MARGIN, 0);
@@ -137,7 +137,7 @@ public class QrCodeUtils {
         String qrCodeLocalPath = "D:\\technologyTransaction\\测试\\百度首页22.png";
         try {
             // 生成不带白边的二维码
-            QrCodeUtils.generatorQrCode(qrCodePath, qrCodeLocalPath);
+            QrCodeUtils.generatorQrCode(qrCodePath);
         } catch (Exception e) {
             log.info("error :{}", JSON.toJSON(e));
         }

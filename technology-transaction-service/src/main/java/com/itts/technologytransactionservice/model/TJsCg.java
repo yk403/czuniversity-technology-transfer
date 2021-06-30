@@ -284,4 +284,20 @@ public class TJsCg implements Serializable {
 	 * 活动名称
 	 */
 	private String hdmc;
+	/**
+	* @Description: 成果详情图片
+	* @Param: 
+	* @return: 
+	* @Author: yukai
+	* @Date: 2021/6/30
+	*/
+	private String cgxqtp;
+	/**
+	* @Description: 成果详情图片名称
+	* @Param: 
+	* @return: 
+	* @Author: yukai
+	* @Date: 2021/6/30
+	*/
+	private String cgxqtpmc;
 }

@@ -302,4 +302,20 @@ public class TJsXq implements Serializable {
 	 * 活动名称
 	 */
 	private String hdmc;
+	/**
+	* @Description: 需求详情图片名称
+	* @Param: 
+	* @return: 
+	* @Author: yukai
+	* @Date: 2021/6/30
+	*/
+	private String xqxqtpmc;
+	/**
+	 * @Description: 需求详情图片
+	 * @Param:
+	 * @return:
+	 * @Author: yukai
+	 * @Date: 2021/6/30
+	 */
+	private String xqxqtp;
 }
