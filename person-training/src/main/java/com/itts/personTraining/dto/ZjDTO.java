@@ -54,14 +54,14 @@ public class ZjDTO implements Serializable {
     /**
      * 生日
      */
-    @ExcelProperty(value = "性别", index = 4)
+    @ExcelProperty(value = "生日", index = 4)
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date sr;
 
     /**
      * 民族
      */
-    @ExcelProperty(value = "性别", index = 5)
+    @ExcelProperty(value = "民族", index = 5)
     private String mz;
 
     /**

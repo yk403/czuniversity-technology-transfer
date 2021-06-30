@@ -97,7 +97,6 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             return false;
         }
         Long userId = getUserId();
-        zj.setCjr(userId);
         zj.setGxr(userId);
         //通过手机号查询
         Object data = yhService.getByPhone(zj.getDh(), token).getData();
@@ -125,6 +124,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
                 return zjService.updateById(zj);
             } else {
                 //不存在,则新增
+                zj.setCjr(userId);
                 return zjService.save(zj);
             }
         } else {
@@ -150,6 +150,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
                 return updateById(zj);
             } else {
                 //不存在.则新增
+                zj.setCjr(userId);
                 return save(zj);
             }
         }
