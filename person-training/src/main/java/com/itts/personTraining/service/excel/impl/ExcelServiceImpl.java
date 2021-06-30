@@ -190,6 +190,7 @@ public class ExcelServiceImpl implements ExcelService {
             if(!StringUtils.isBlank(xlXwCjDTO.getXh())){
                 xsCj.setXsId(xs.getId());
             }
+            xsCj.setType(1);
             if(!StringUtils.isBlank(xlXwCjDTO.getLwcj())){
                 xsCj.setLwcj(xlXwCjDTO.getLwcj());
             }
@@ -216,6 +217,7 @@ public class ExcelServiceImpl implements ExcelService {
             }
             xsKcCj.setXsId(xs.getId());
             xsKcCj.setKcId(kc.getId());
+            xsKcCj.setKclx(1);
             if(!StringUtils.isBlank(xlXwCjDTO.getKcdm())){
                 xsKcCj.setKcdm(xlXwCjDTO.getKcdm());
             }

@@ -2,6 +2,7 @@ package com.itts.personTraining.mapper.kc;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.personTraining.dto.KcDTO;
+import com.itts.personTraining.dto.KcXsXfDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.model.kc.Kc;
 import org.apache.ibatis.annotations.Param;
@@ -74,4 +75,10 @@ public interface KcMapper extends BaseMapper<Kc> {
             "   </if>" +
             "</script>")
     List<Kc> findByType(@Param("educationType") String educationType, @Param("studentTypes") List<String> studentTypes);
+    /**
+     * 查询课程列表
+     * @param xylx
+     * @return
+     */
+    List<KcXsXfDTO> findByXylx(@Param("xylx") String xylx);
 }
