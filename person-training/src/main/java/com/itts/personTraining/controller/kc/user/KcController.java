@@ -45,5 +45,6 @@ public class KcController {
     public ResponseUtil findByYh(){
         List<Pc> pcList = pcService.findByYh();
         return ResponseUtil.success(pcList);
+
     }
 }
