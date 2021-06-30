@@ -1,25 +1,23 @@
-package com.itts.paymentservice.controller.test;
+package com.itts.paymentservice.controller.notice;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.itts.common.utils.common.ResponseUtil;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * @Author：lym
- * @Description：测试controller
- * @Date: 2021/3/12
+ * @Author：yukai
+ * @Description：支付通知controller
+ * @Date: 2021/6/30
  */
 @RestController
-    @RequestMapping("/api/test")
-public class TestController {
+@RequestMapping("/api/notice")
+public class NoticeController {
 
     @PostMapping("/get/")
     public ResponseUtil get(HttpServletRequest request) throws Exception {
@@ -56,6 +54,6 @@ public class TestController {
             //log.info("微信支付回调函数：微信签名错误");
         }*/
         System.out.println(notifyData);
-        return ResponseUtil.success("test");
+        return ResponseUtil.success("notice");
     }
 }

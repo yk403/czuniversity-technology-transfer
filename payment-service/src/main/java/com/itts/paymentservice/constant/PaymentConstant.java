@@ -46,6 +46,14 @@ public class PaymentConstant {
             "cxQyTQGta1OEo+Kwg11seBOLvLQWT4pAl3oo2+CdJ9CN/psWHcx0T3+rYKSI/R+r\n" +
             "8qdeyrheNscllAg8RURy8g==\n" +
             "-----END PRIVATE KEY-----\n";
-    public static String wx_notify_url="http://yukai.vipgz4.idcfengye.com/payment/api/test/get/";
+    public static String wx_notify_url="http://yukai.vipgz4.idcfengye.com/payment/api/notice/get/";
     public static String wx_native_transactions_url="https://api.mch.weixin.qq.com/v3/pay/transactions/native";
+    public static String wx_native_selectTrade_url="https://api.mch.weixin.qq.com/v3/pay/transactions/native";
+    /**
+    * @Description: 支付宝支付常量
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/30
+    */
 }
