@@ -17,6 +17,7 @@ import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.tkzy.TkzyMapper;
 import com.itts.personTraining.mapper.tkzy.TmxxMapper;
+import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.kssj.Ksjl;
 import com.itts.personTraining.model.kssj.Ksjlxx;
@@ -74,6 +75,9 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
     @Autowired
     private XsCjMapper xsCjMapper;
+
+    @Autowired
+    private XsMapper xsMapper;
 
     /**
      * 获取详情
@@ -223,6 +227,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         }
 
         getKsjlVO.setKsjlTms(ksjlTms);
+        getKsjlVO.setId(ksjl.getId());
 
         return getKsjlVO;
     }
