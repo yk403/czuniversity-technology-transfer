@@ -150,11 +150,13 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
     public GetKsjlVO add(Kssj kssj, LoginUser loginUser) {
 
         Ksjl ksjl = new Ksjl();
-        BeanUtils.copyProperties(kssj, ksjl);
 
+        ksjl.setSjlx(kssj.getSjlx());
+        ksjl.setTmzs(kssj.getTmzs());
+        ksjl.setSjzf(kssj.getSjzf());
         ksjl.setPdzf(kssj.getPdzf());
         ksjl.setDanxzf(kssj.getDanzf());
-        ksjl.setDuoxdf(kssj.getDuozf());
+        ksjl.setDuoxzf(kssj.getDuozf());
 
         ksjl.setXsId(loginUser.getUserId());
         ksjl.setXsmc(loginUser.getRealName());
