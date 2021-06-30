@@ -39,7 +39,7 @@ public class QrCodeUtils {
      * @param qrCodePath 生成的二维码地址(最终保存地址)
      * @throws Exception 异常
      */
-    public static String generatorQrCode(String content) throws Exception {
+    public static InputStream generatorQrCode(String content) throws Exception {
         Map<EncodeHintType, Object> hints = new HashMap<>();
 
         hints.put(EncodeHintType.MARGIN, 0);
@@ -79,8 +79,8 @@ public class QrCodeUtils {
         LocalDateTime now = LocalDateTime.now();
         String format = df.format(now);
         String fileNameString = format+"qrcode.png";
-        return uploadFile(inputStream,fileNameString);
-
+        //return uploadFile(inputStream,fileNameString);
+        return inputStream;
     }
     /**
      * 将BufferedImage转换为InputStream

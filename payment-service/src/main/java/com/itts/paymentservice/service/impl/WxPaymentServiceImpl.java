@@ -15,6 +15,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
@@ -57,7 +58,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
         JSONObject jsonObject = JSONObject.parseObject(bodyAsString);
         String code_url=jsonObject.getString("code_url");
         System.out.println(code_url);
-        String fileUrl=QrCodeUtils.generatorQrCode(code_url);
-        return null;
+        ImageIO.read(QrCodeUtils.generatorQrCode(code_url));
+        return ddxfjl;
     }
 }
