@@ -181,6 +181,7 @@
             <if test="map.hztp != null"> and hd.hztp = #{map.hztp} </if>
             <if test="map.hztpmc != null"> and hd.hztpmc = #{map.hztpmc} </if>
             <if test="map.hzmc != null"> and hd.hzmc = #{map.hzmc} </if>
+            <if test="map.type != null"> and (hd.hdzt = 0 or hd.hdzt = 1)</if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
