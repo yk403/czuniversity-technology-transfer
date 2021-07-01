@@ -196,6 +196,7 @@ public class PcServiceImpl implements PcService {
                     throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
                 }
                 pcList = pcXsMapper.findPcByXsId(xsMsg.getId());
+                break;
             case "tutor":
                 Sz yzyds = szMapper.getSzByYhId(userId);
                 if (yzyds == null) {

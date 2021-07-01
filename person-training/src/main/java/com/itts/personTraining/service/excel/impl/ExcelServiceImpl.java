@@ -17,6 +17,7 @@ import com.itts.personTraining.mapper.sj.SjMapper;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
+import com.itts.personTraining.mapper.zj.ZjMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.sj.SjListener;
@@ -96,6 +97,8 @@ public class ExcelServiceImpl implements ExcelService {
     private XsKcCjService xsKcCjService;
     @Resource
     private KcMapper kcMapper;
+    @Resource
+    private ZjMapper zjMapper;
 
 
     @Resource
@@ -190,6 +193,7 @@ public class ExcelServiceImpl implements ExcelService {
             if(!StringUtils.isBlank(xlXwCjDTO.getXh())){
                 xsCj.setXsId(xs.getId());
             }
+            xsCj.setType(1);
             if(!StringUtils.isBlank(xlXwCjDTO.getLwcj())){
                 xsCj.setLwcj(xlXwCjDTO.getLwcj());
             }
@@ -216,6 +220,7 @@ public class ExcelServiceImpl implements ExcelService {
             }
             xsKcCj.setXsId(xs.getId());
             xsKcCj.setKcId(kc.getId());
+            xsKcCj.setKclx(1);
             if(!StringUtils.isBlank(xlXwCjDTO.getKcdm())){
                 xsKcCj.setKcdm(xlXwCjDTO.getKcdm());
             }
@@ -289,6 +294,11 @@ public class ExcelServiceImpl implements ExcelService {
     public ResponseUtil importZj(MultipartFile file, Integer headRowNumber, String token) {
         ZjListener zjListener = new ZjListener();
         zjListener.setZjService(zjService);
+        zjListener.setYhService(yhService);
+        zjListener.setXyService(xyService);
+        zjListener.setSzMapper(szMapper);
+        zjListener.setZjMapper(zjMapper);
+        zjListener.setToken(token);
         try{
             EasyExcel.read(file.getInputStream(), ZjDTO.class, zjListener).headRowNumber(headRowNumber).sheet().doRead();
             return ResponseUtil.success(zjListener.getResult());

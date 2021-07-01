@@ -194,11 +194,13 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
 
     private void save(Sz sz) {
         Object data = yhService.getByCode(sz.getDsbh(), token).getData();
+        Long userId = getUserId();
         String yhlx = IN.getKey();
         String yhlb = sz.getDslb();
         Long ssjgId = sz.getSsjgId();
         String dsbh = sz.getDsbh();
         String dsxm = sz.getDsxm();
+        sz.setGxr(userId);
         if (data != null) {
             //用户表存在用户信息,更新用户信息,师资表判断是否存在
             GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
@@ -213,7 +215,6 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
             if (sz1 != null) {
                 //存在,则更新
                 sz.setId(sz1.getId());
-                sz.setGxr(getUserId());
                 if (szService.updateById(sz)) {
                     count++;
                 } else {
@@ -221,6 +222,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
                 }
             } else {
                 //不存在,则新增
+                sz.setCjr(userId);
                 if (szService.save(sz)) {
                     count++;
                 } else {
@@ -237,6 +239,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
             yh.setJgId(ssjgId);
+            sz.setGxr(userId);
             Object data1 = yhService.rpcAdd(yh, token).getData();
             if (data1 == null) {
                 throw new ServiceException(USER_INSERT_ERROR);
@@ -248,7 +251,6 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
             if (sz1 != null) {
                 //存在,则更新
                 sz.setId(sz1.getId());
-                sz.setGxr(getUserId());
                 if (szService.updateById(sz)) {
                     count++;
                 } else {
@@ -256,8 +258,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
                 }
             } else {
                 //不存在.则新增
-                sz.setCjr(getUserId());
-                sz.setGxr(getUserId());
+                sz.setCjr(userId);
                 if (szService.save(sz)) {
                     count++;
                 } else {

@@ -106,7 +106,6 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             return false;
         }
         Long userId = getUserId();
-        sz.setCjr(userId);
         sz.setGxr(userId);
         //通过用户编号查询
         Object data = yhService.getByCode(sz.getDsbh(), token).getData();
@@ -128,6 +127,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             yh.setYhlb(yhlb);
             yh.setJgId(ssjgId);
             yhService.update(yh,token);
+            sz.setYhId(getYhVo.getId());
             Sz sz1 = szService.selectByCondition(dsbh,null, null);
             if (sz1 != null) {
                 //存在,则更新
@@ -135,6 +135,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
                 return szService.updateById(sz);
             } else {
                 //不存在,则新增
+                sz.setCjr(userId);
                 return szService.save(sz);
             }
         } else {
@@ -161,6 +162,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
                 return updateById(sz);
             } else {
                 //不存在.则新增
+                sz.setCjr(userId);
                 return save(sz);
             }
         }

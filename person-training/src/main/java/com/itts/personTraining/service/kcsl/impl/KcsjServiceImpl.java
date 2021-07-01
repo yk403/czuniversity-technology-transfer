@@ -6,14 +6,26 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.dto.KcXsXfDTO;
+import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.kcsj.KcsjMapper;
+import com.itts.personTraining.mapper.pcXs.PcXsMapper;
+import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.kcsj.Kcsj;
+import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.service.kcsl.KcsjService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.common.enums.ErrorCodeEnum.BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR;
 
 /**
  * <p>
@@ -24,11 +36,16 @@ import java.util.List;
  * @since 2021-04-28
  */
 @Service
+@Slf4j
 public class KcsjServiceImpl extends ServiceImpl<KcsjMapper, Kcsj> implements KcsjService {
 
     @Autowired
     private KcsjMapper kcsjMapper;
 
+    @Autowired
+    private XsMapper xsMapper;
+    @Autowired
+    private PcXsMapper pcXsMapper;
     /**
      * 列表 - 分页
      */
