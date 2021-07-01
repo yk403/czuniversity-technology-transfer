@@ -243,10 +243,12 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
                 //存在,则更新
                 zj.setId(zj1.getId());
                 zjService.updateById(zj);
+                count++;
             } else {
                 //不存在,则新增
                 zj.setCjr(userId);
                 zjService.save(zj);
+                count++;
             }
         } else {
             //用户表没有用户信息,新增用户信息,专家表查询是否存在
@@ -269,10 +271,12 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
                 //存在,则更新
                 zj.setId(zj1.getId());
                 zjService.updateById(zj);
+                count++;
             } else {
                 //不存在.则新增
                 zj.setCjr(userId);
                 zjService.save(zj);
+                count++;
             }
         }
     }
