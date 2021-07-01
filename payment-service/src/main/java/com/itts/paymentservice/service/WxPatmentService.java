@@ -19,4 +19,5 @@ public interface WxPatmentService {
     * @Date: 2021/6/30
     */
     String orderInteface(Ddxfjl ddxfjl) throws URISyntaxException, Exception;
+    Object selectOrder() throws Exception;
 }

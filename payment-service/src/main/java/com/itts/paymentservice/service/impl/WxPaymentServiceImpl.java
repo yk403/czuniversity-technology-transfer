@@ -8,10 +8,13 @@ import com.itts.paymentservice.model.ddxfjl.Ddxfjl;
 import com.itts.paymentservice.service.WxPatmentService;
 import com.itts.paymentservice.utils.TimeUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -24,6 +27,13 @@ import java.time.LocalDateTime;
  */
 public class WxPaymentServiceImpl implements WxPatmentService {
     private CloseableHttpClient httpClient;
+    /**
+    * @Description: 微信预支付接口
+    * @Param: [ddxfjl]
+    * @return: java.lang.String
+    * @Author: yukai
+    * @Date: 2021/6/30
+    */
     @Override
     public String orderInteface(Ddxfjl ddxfjl) throws Exception {
         URIBuilder uriBuilder = new URIBuilder(PaymentConstant.wx_native_transactions_url);
@@ -58,4 +68,24 @@ public class WxPaymentServiceImpl implements WxPatmentService {
         //ImageIO.read(QrCodeUtils.generatorQrCode(code_url));
         return code_url;
     }
+    /**
+    * @Description: 微信支付查询订单接口
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/30
+    */
+    public Object selectOrder() throws Exception{
+        URIBuilder uriBuilder = new URIBuilder(PaymentConstant.wx_native_selectTrade_url);
+        HttpGet httpget = new HttpGet(uriBuilder.build());
+
+        return null;
+    }
+    /**
+    * @Description: 微信支付关闭订单接口
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/30
+    */
 }
