@@ -51,6 +51,8 @@
         zp.cgqsr,
         zp.qsrlxdh,
         zp.user_id,
+        zp.zpxqtp,
+        zp.zpxqtpmc,
         zp.zw_id
         from t_ly_zp zp left join t_sjzd sjzd on (sjzd.id = zp.ly_id) left join t_ly_zw zw on (zw.id = zp.zw_id) left join t_ly_hd hd on (hd.id = zp.hd_id)
         <where>
@@ -127,7 +129,9 @@
         zp.cgqsr,
         zp.qsrlxdh,
         zp.user_id,
-        zp.zw_id
+        zp.zw_id,
+        zp.zpxqtp,
+        zp.zpxqtpmc
         from t_ly_zp zp left join t_sjzd sjzd on (sjzd.id = zp.ly_id) left join t_ly_zw zw on (zw.id = zp.zw_id) left join t_ly_hd hd on (hd.id = zp.hd_id)
         <where>
             <!--后台能查询0或者1的数据 -->
