@@ -81,6 +81,14 @@ public class  LyLy implements Serializable {
      */
     private String lyjj;
     /**
+     * 路演简介图片
+     */
+    private String lyjjtp;
+    /**
+     * 路演简介图片名称
+     */
+    private String lyjjtpmc;
+    /**
      * 直播地址
      */
     private String zbdz;
