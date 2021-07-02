@@ -8,6 +8,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KcDTO;
 import com.itts.personTraining.dto.KcXsXfDTO;
+import com.itts.personTraining.dto.KcbDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.kcSz.KcSzMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
@@ -340,6 +341,113 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                 break;
         }
         return kcXsXfDTOList;
+    }
+
+    @Override
+    public List<KcbDTO> findByPcId(Long pcId) {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询课程表(前)】",userId);
+        String userCategory = getUserCategory();
+        List<KcbDTO> KcbDTOList =null;
+        switch(userCategory) {
+            case "postgraduate":
+            case "broker":
+                XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
+                if (xsMsg == null) {
+                    throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc>  pcList = pcXsMapper.findPcByXsId(xsMsg.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    Long id = pcList.get(0).getId();
+                    if(id!=null){
+                        KcbDTOList = kcMapper.findByPcId(id);
+                    }else {
+                        KcbDTOList=null;
+                    }
+                } else {
+                    KcbDTOList = kcMapper.findByPcId(pcId);
+                }
+                break;
+            case "tutor":
+                Sz yzyds = szMapper.getSzByYhId(userId);
+                if (yzyds == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc> pcList = pcXsMapper.findByYzydsIdOrQydsId(yzyds.getId(),null);
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    Long id = pcList.get(0).getId();
+                    if(id!=null){
+                        KcbDTOList = kcMapper.findByPcId(id);
+                    }else {
+                        KcbDTOList=null;
+                    }
+                } else {
+                    KcbDTOList = kcMapper.findByPcId(pcId);
+                }
+                break;
+            //企业导师
+            case "corporate_mentor":
+                Sz qyds = szMapper.getSzByYhId(userId);
+                if (qyds == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc> pcList = pcXsMapper.findByYzydsIdOrQydsId(null,qyds.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    Long id = pcList.get(0).getId();
+                    if(id!=null){
+                        KcbDTOList = kcMapper.findByPcId(id);
+                    }else {
+                        KcbDTOList=null;
+                    }
+                } else {
+                    KcbDTOList = kcMapper.findByPcId(pcId);
+                }
+                break;
+            case "teacher":
+                Sz skjs = szMapper.getSzByYhId(userId);
+                if (skjs == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc> pcList = pkMapper.findPcsBySzId(skjs.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    Long id = pcList.get(0).getId();
+                    if(id!=null){
+                        KcbDTOList = kcMapper.findByPcId(id);
+                    }else {
+                        KcbDTOList=null;
+                    }
+                } else {
+                    KcbDTOList = kcMapper.findByPcId(pcId);
+                }
+                break;
+            case "school_leader":
+            case "administrator":
+                if (pcId == null) {
+                    QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
+                    pcQueryWrapper.eq("sfsc",false)
+                            .orderByDesc("cjsj");
+                    Long id = pcMapper.selectList(pcQueryWrapper).get(0).getId();
+                    KcbDTOList = kcMapper.findByPcId(id);
+                } else {
+                    KcbDTOList = kcMapper.findByPcId(pcId);
+                }
+                break;
+            default:
+                break;
+        }
+        return KcbDTOList;
     }
 
 
