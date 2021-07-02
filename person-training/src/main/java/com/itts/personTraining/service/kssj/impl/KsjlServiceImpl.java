@@ -18,6 +18,7 @@ import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.tkzy.TkzyMapper;
 import com.itts.personTraining.mapper.tkzy.TmxxMapper;
+import com.itts.personTraining.mapper.tzXs.TzXsMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.kssj.Ksjl;
@@ -25,6 +26,8 @@ import com.itts.personTraining.model.kssj.Ksjlxx;
 import com.itts.personTraining.model.kssj.Kssj;
 import com.itts.personTraining.model.tkzy.Tkzy;
 import com.itts.personTraining.model.tkzy.Tmxx;
+import com.itts.personTraining.model.tz.Tz;
+import com.itts.personTraining.model.tzXs.TzXs;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.request.kssj.CommitKsjlRequest;
 import com.itts.personTraining.request.kssj.CommitKsjlXxRequest;
@@ -35,6 +38,7 @@ import com.itts.personTraining.vo.kssj.GetKsjlVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -79,6 +83,9 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
     @Autowired
     private XsMapper xsMapper;
+
+    @Autowired
+    private TzXsMapper tzXsMapper;
 
     /**
      * 获取详情
@@ -152,7 +159,25 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
      * 生成试卷
      */
     @Override
-    public GetKsjlVO add(Kssj kssj, LoginUser loginUser) {
+    @Transactional
+    public GetKsjlVO add(Kssj kssj, Tz tz, LoginUser loginUser) {
+
+        XsMsgDTO xs = xsMapper.getByYhId(loginUser.getUserId());
+        if (xs == null) {
+            return null;
+        }
+
+        TzXs tzxs = tzXsMapper.selectOne(new QueryWrapper<TzXs>()
+                .eq("tz_id", tz.getId())
+                .eq("xs_id", xs.getId())
+                .eq("clzt", 0));
+
+        if (tzxs == null) {
+            return null;
+        }
+
+        tzxs.setClzt(true);
+        tzXsMapper.updateById(tzxs);
 
         Ksjl ksjl = new Ksjl();
 
@@ -383,7 +408,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         }
 
         XsMsgDTO xs = xsMapper.getByYhId(loginUser.getUserId());
-        if(xs == null){
+        if (xs == null) {
             return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 

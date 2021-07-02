@@ -5,6 +5,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.kssj.Ksjl;
 import com.itts.personTraining.model.kssj.Kssj;
+import com.itts.personTraining.model.tz.Tz;
 import com.itts.personTraining.request.kssj.CommitKsjlRequest;
 import com.itts.personTraining.vo.kssj.GetKsjlVO;
 
@@ -26,7 +27,7 @@ public interface KsjlService extends IService<Ksjl> {
     /**
      * 生成试卷
      */
-    GetKsjlVO add(Kssj kssj, LoginUser loginUser);
+    GetKsjlVO add(Kssj kssj, Tz tz, LoginUser loginUser);
 
     /**
      * 提交试卷

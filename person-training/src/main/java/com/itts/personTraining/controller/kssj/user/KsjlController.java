@@ -9,9 +9,11 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.kssj.Ksjl;
 import com.itts.personTraining.model.kssj.Kssj;
+import com.itts.personTraining.model.tz.Tz;
 import com.itts.personTraining.request.kssj.CommitKsjlRequest;
 import com.itts.personTraining.service.kssj.KsjlService;
 import com.itts.personTraining.service.kssj.KssjService;
+import com.itts.personTraining.service.tz.TzService;
 import com.itts.personTraining.vo.kssj.GetKsjlScoreVO;
 import com.itts.personTraining.vo.kssj.GetKsjlVO;
 import io.swagger.annotations.Api;
@@ -41,9 +43,13 @@ public class KsjlController {
     @Autowired
     private KssjService kssjService;
 
+    @Autowired
+    private TzService tzService;
+
     @ApiOperation(value = "生成试卷")
     @PostMapping("/add/")
-    public ResponseUtil add(@ApiParam("试卷ID") @RequestParam("sjId") Long sjId) {
+    public ResponseUtil add(@ApiParam("试卷ID") @RequestParam("sjId") Long sjId,
+                            @ApiParam("通知ID") @RequestParam("tzId") Long tzId) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser == null) {
@@ -55,7 +61,12 @@ public class KsjlController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        GetKsjlVO ksjl = ksjlService.add(kssj, loginUser);
+        Tz tz = tzService.getById(tzId);
+        if(tz == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        GetKsjlVO ksjl = ksjlService.add(kssj, tz, loginUser);
         if(ksjl == null){
             throw new WebException(ErrorCodeEnum.GENERATE_PAPER_ERROR);
         }
