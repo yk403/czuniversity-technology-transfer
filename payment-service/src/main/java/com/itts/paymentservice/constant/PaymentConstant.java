@@ -48,7 +48,7 @@ public class PaymentConstant {
             "-----END PRIVATE KEY-----\n";
     public static String wx_notify_url="http://yukai.vipgz4.idcfengye.com/payment/api/notice/get/";
     public static String wx_native_transactions_url="https://api.mch.weixin.qq.com/v3/pay/transactions/native";
-    public static String wx_native_selectTrade_url="https://api.mch.weixin.qq.com/v3/pay/transactions/native";
+    public static String wx_native_selectTrade_url="https://api.mch.weixin.qq.com/v3/pay/transactions/out-trade-no/";
     /**
     * @Description: 支付宝支付常量
     * @Param: 

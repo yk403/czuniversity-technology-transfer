@@ -18,6 +18,7 @@ public interface WxPatmentService {
     * @Author: yukai
     * @Date: 2021/6/30
     */
-    String orderInteface(Ddxfjl ddxfjl) throws URISyntaxException, Exception;
-    Object selectOrder() throws Exception;
+    String orderInteface(Ddxfjl ddxfjl);
+    String selectOrder(Ddxfjl ddxfjl);
+    int closeOrder(Ddxfjl ddxfjl);
 }
