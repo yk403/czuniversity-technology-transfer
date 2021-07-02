@@ -8,11 +8,12 @@
         <result column="tz_id" property="tzId" />
         <result column="xs_id" property="xsId" />
         <result column="sfdq" property="sfdq" />
+        <result column="clzt" property="clzt" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, tz_id, xs_id, sfdq
+        id, tz_id, xs_id, sfdq, clzt
     </sql>
     <update id="updateByTzIdAndXsId">
         update t_tz_xs ttx

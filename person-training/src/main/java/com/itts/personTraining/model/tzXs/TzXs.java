@@ -43,5 +43,10 @@ public class TzXs implements Serializable {
      */
     private Boolean sfdq;
 
+    /**
+     * 处理状态(0: 未处理; 1: 已处理)
+     */
+    private Boolean clzt;
+
 
 }
