@@ -50,12 +50,12 @@ import static org.junit.Assert.assertTrue;
 @Service
 public class WxPaymentServiceImpl implements WxPatmentService {
 
-    private static CloseableHttpClient httpClient;
-    private static AutoUpdateCertificatesVerifier verifier;
+    private CloseableHttpClient httpClient;
+    private AutoUpdateCertificatesVerifier verifier;
     private static String serialNumber = "";
     private static String message = "";
     private static String signature = "";
-    static{
+    public void init(){
         try {
             PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(
                     new ByteArrayInputStream(PaymentConstant.wx_privateKey.getBytes("utf-8")));
@@ -73,6 +73,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
             throw new ServiceException(PAY_INITORDER_ERROR);
         }
     }
+
 /*    @Before
     public void setup() throws IOException {
         PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(
@@ -106,6 +107,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
     */
     @Override
     public String orderInteface(Ddxfjl ddxfjl) {
+        init();
         String bodyAsString =null;
         try {
             URIBuilder uriBuilder = new URIBuilder(PaymentConstant.wx_native_transactions_url);
@@ -133,7 +135,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
             httpPost.setEntity(new StringEntity(bos.toString("UTF-8"), "UTF-8"));
             CloseableHttpResponse response = httpClient.execute(httpPost);
             bodyAsString=EntityUtils.toString(response.getEntity());
-            //httpClient.close();
+            httpClient.close();
         } catch (Exception e) {
             throw new ServiceException(PAY_TRANSACTIONS_ERROR);
         }
@@ -156,6 +158,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
     */
     @Override
     public String selectOrder(Ddxfjl ddxfjl){
+        init();
         String bodyAsString =null;
         try {
             URIBuilder uriBuilder = new URIBuilder(PaymentConstant.wx_native_selectTrade_url+ddxfjl.getBh());
@@ -175,7 +178,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
             CloseableHttpResponse response = httpClient.execute(httpget);
             bodyAsString=EntityUtils.toString(response.getEntity());
             System.out.println(bodyAsString);
-            //httpClient.close();
+            httpClient.close();
         } catch (Exception e) {
             throw new ServiceException(PAY_SELECTORDER_ERROR);
         }
@@ -206,6 +209,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
      */
     @Override
     public int closeOrder(Ddxfjl ddxfjl) {
+        init();
         int statusCode=500;
         try {
             URIBuilder uriBuilder = new URIBuilder(PaymentConstant.wx_native_selectTrade_url+ddxfjl.getBh()+"/close");
@@ -224,7 +228,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
                     statusCode = response.getStatusLine().getStatusCode();
                 }
             }
-            //httpClient.close();
+            httpClient.close();
         } catch (Exception e) {
             throw new ServiceException(PAY_CLOSEORDER_ERROR);
         }
