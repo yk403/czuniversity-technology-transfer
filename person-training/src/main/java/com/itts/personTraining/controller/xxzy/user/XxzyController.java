@@ -186,6 +186,10 @@ public class XxzyController {
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
         }
 
+        if (StringUtils.isBlank(payDdxfjlRequest.getZffs())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
         ResponseUtil result = xxzyService.pay(payDdxfjlRequest);
         if(result.getErrCode().intValue() != 0){
 
@@ -228,10 +232,6 @@ public class XxzyController {
         }
 
         if (StringUtils.isBlank(buyXxzyRequest.getSpmc())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-
-        if (StringUtils.isBlank(buyXxzyRequest.getZffs())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 

@@ -135,7 +135,18 @@ public class DdxfjlController {
     @PostMapping("/pay/")
     public ResponseUtil pay(@RequestBody Ddxfjl ddxfjl) {
 
+        Ddxfjl dd = ddxfjlService.getById(ddxfjl.getId());
+        if(dd == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        dd.setZffs(ddxfjl.getZffs());
+
         String result = wxPaymentService.orderInteface(ddxfjl);
+
+        dd.setZt(OrderStatusEnum.COMPLETED.getKey());
+        dd.setZfsj(new Date());
+        ddxfjlService.updateById(dd);
 
         return ResponseUtil.success(result);
     }

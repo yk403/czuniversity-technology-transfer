@@ -442,6 +442,8 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         GetDdxfjlVO ddxfjl = response.conversionData(new TypeReference<GetDdxfjlVO>() {
         });
 
+        ddxfjl.setZffs(payDdxfjlRequest.getZffs());
+
         //如果是微信支付、支付宝支付调用三方支付接口
         ResponseUtil payResponse = orderFeignService.pay(ddxfjl);
 
