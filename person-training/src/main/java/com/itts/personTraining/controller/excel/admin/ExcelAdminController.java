@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Date;
+
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_UPLOAD_ERROR;
 
@@ -31,11 +33,18 @@ public class ExcelAdminController {
     /**
      * 学员导入
      */
-    @RequestMapping("/importXs")
+    @PostMapping("/importXs")
     @ApiOperation(value = "学员导入")
-    public ResponseUtil importXs(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, @RequestParam(value = "jgId")Long jgId, @RequestBody Pc pc, HttpServletRequest request){
+    public ResponseUtil importXs(@RequestParam(value = "file") MultipartFile file,
+                                 @RequestParam(value = "headRowNumber")Integer headRowNumber,
+                                 @RequestParam(value = "jgId")Long jgId,
+                                 @RequestParam(value = "pcId")Long pcId,
+                                 @RequestParam(value = "jylx")String jylx,
+                                 @RequestParam(value = "pch")String pch,
+                                 @RequestParam(value = "rxrq") Date rxrq,
+                                 HttpServletRequest request){
         try{
-            return excelService.importXs(file, headRowNumber, jgId, pc,request.getHeader("token"));
+            return excelService.importXs(file, headRowNumber, jgId, pcId, jylx, pch, rxrq, request.getHeader("token"));
         }catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());

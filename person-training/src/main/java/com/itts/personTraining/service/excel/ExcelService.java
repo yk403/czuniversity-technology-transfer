@@ -4,9 +4,11 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.pc.Pc;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 public interface ExcelService {
 
-    ResponseUtil importXs(MultipartFile file, Integer headRowNumber, Long jgId, Pc pc, String token);
+    ResponseUtil importXs(MultipartFile file, Integer headRowNumber, Long jgId, Long pcId, String jylx, String pch, Date rxrq, String token);
 
     ResponseUtil importSz(MultipartFile file, Integer headRowNumber, Long jgId, String token);
 

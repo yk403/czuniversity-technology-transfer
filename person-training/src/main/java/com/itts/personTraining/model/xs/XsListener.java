@@ -16,7 +16,6 @@ import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pcXs.PcXs;
 import com.itts.personTraining.model.sz.Sz;
-import com.itts.personTraining.model.xy.Xy;
 import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.model.yh.Yh;
 import com.itts.personTraining.service.sz.SzService;
@@ -53,9 +52,12 @@ import static com.itts.personTraining.enums.UserTypeEnum.*;
 public class XsListener extends AnalysisEventListener<XsDTO> {
     private StringBuilder result=new StringBuilder();
     private Integer count=0;
-    private Pc pc;
+    private Long pcId;
+    private String jylx;
+    private String pch;
     private String token;
     private Long jgId;
+    private Date rxrq;
     @Resource
     private XsMapper xsMapper;
     @Autowired
@@ -80,7 +82,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
     @SneakyThrows
     @Override
     public void invoke(XsDTO data, AnalysisContext context) {
-        if (pc.getId() == null) {
+        if (pcId == null) {
             throw new WebException(BATCH_NUMBER_ISEMPTY_ERROR);
         }
         ReadRowHolder readRowHolder = context.readRowHolder();
@@ -170,10 +172,6 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         xs.setJgId(jgId);
         xs.setBmfs("线下");
         save(xs);
-        PcXs pcXs = new PcXs();
-        pcXs.setXsId(xs.getId());
-        pcXs.setPcId(pc.getId());
-        pcXsMapper.insert(pcXs);
     }
 
     @Override
@@ -189,10 +187,11 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         throw exception;
     }
     private void save(Xs xs) {
-        if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(pc.getJylx())) {
+        if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
             //说明是学历学位教育
             xs.setXslbmc(POSTGRADUATE.getKey());
             String xsXh = xs.getXh();
+            String lxdh = xs.getLxdh();
             if (xsXh != null) {
                 Object data = yhService.getByCode(xsXh, token).getData();
                 Yh yh = new Yh();
@@ -211,12 +210,13 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
+                    yh.setLxdh(lxdh);
                     StuDTO dto = xsService.selectByCondition(null, null, getYhVo.getId());
                     if (dto != null) {
                         //学生表存在
                         xs.setId(dto.getId());
                         try {
-                            updateXsAndAddPcXs(xs,pc.getId());
+                            updateXsAndAddPcXs(xs,pcId);
                             //TODO 后期优化选择用mq同步
                             try {
                                 yhService.update(yh, token);
@@ -232,7 +232,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                         //不存在.则新增
                         xs.setCjsj(new Date());
                         xs.setGxsj(new Date());
-                        if (addXsAndPcXs(xs, pc.getId())) {
+                        if (addXsAndPcXs(xs, pcId)) {
                             count++;
                         } else {
                             throw new WebException(INSERT_FAIL);
@@ -249,6 +249,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
+                    yh.setLxdh(lxdh);
                     Object data1 = yhService.rpcAdd(yh, token).getData();
                     if (data1 == null) {
                         throw new WebException(USER_INSERT_ERROR);
@@ -261,7 +262,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                         //存在,则更新
                         xs.setId(dto.getId());
                         xs.setGxsj(new Date());
-                        if (updateXsAndAddPcXs(xs, pc.getId())) {
+                        if (updateXsAndAddPcXs(xs, pcId)) {
                             count++;
                         } else {
                             throw new WebException(INSERT_FAIL);
@@ -270,7 +271,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                         //不存在.则新增
                         xs.setCjsj(new Date());
                         xs.setGxsj(new Date());
-                        if (addXsAndPcXs(xs, pc.getId())) {
+                        if (addXsAndPcXs(xs, pcId)) {
                             count++;
                         } else {
                             throw new WebException(INSERT_FAIL);
@@ -278,15 +279,15 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     }
                 }
             }
-        } else if (ADULT_EDUCATION.getKey().equals(pc.getJylx())) {
+        } else if (ADULT_EDUCATION.getKey().equals(jylx)) {
                 //说明是继续教育
             xs.setXslbmc(BROKER.getKey());
             String phone = xs.getLxdh();
             if (phone != null) {
                 Object data = yhService.getByPhone(phone, token).getData();
                 //生成经纪人学号
-                String bh = redisTemplate.opsForValue().increment(pc.getPch()).toString();
-                String xh = pc.getJylx() + org.apache.commons.lang3.StringUtils.replace(DateUtils.toString(pc.getRxrq()),"/","") + String.format("%03d", Long.parseLong(bh));
+                String bh = redisTemplate.opsForValue().increment(pch).toString();
+                String xh = jylx + org.apache.commons.lang3.StringUtils.replace(DateUtils.toString(rxrq),"/","") + String.format("%03d", Long.parseLong(bh));
                 xs.setXh(xh);
                 String xm = xs.getXm();
                 //TODO 暂时是前端传,批量导入都是同一个机构id
@@ -308,7 +309,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     StuDTO dto = xsService.selectByCondition(null, null, yhId);
                     xs.setId(dto.getId());
                     xs.setGxsj(new Date());
-                    if (updateXsAndAddPcXs(xs, pc.getId())) {
+                    if (updateXsAndAddPcXs(xs, pcId)) {
                         count++;
                     } else {
                         throw new WebException(INSERT_FAIL);
@@ -335,14 +336,14 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     if (dto != null) {
                         //存在,则更新
                         xs.setId(dto.getId());
-                        if (updateXsAndAddPcXs(xs,pc.getId())) {
+                        if (updateXsAndAddPcXs(xs,pcId)) {
                             count++;
                         } else {
                             throw new WebException(INSERT_FAIL);
                         }
                     } else {
                         //不存在.则新增
-                        if (addXsAndPcXs(xs,pc.getId())) {
+                        if (addXsAndPcXs(xs,pcId)) {
                             count++;
                         } else {
                             throw new WebException(INSERT_FAIL);
@@ -355,25 +356,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         } else {
             throw new WebException(EDU_TYPE_ERROR);
         }
-            StuDTO stuDTO = xsService.selectByCondition(xs.getXh(), null, null);
-            if (stuDTO != null) {
-                xs.setId(stuDTO.getId());
-                xs.setGxsj(new Date());
-                try {
-                    xsMapper.updateById(xs);
-                    count++;
-                } catch (Exception e) {
-                    log.info(e.getMessage());
-                }
-            } else {
-                try {
-                    xsMapper.insert(xs);
-                    count++;
-                } catch (Exception e) {
-                    log.info(e.getMessage());
-                }
-            }
-        }
+    }
 
     public String  getResult(){
         return result.toString();
