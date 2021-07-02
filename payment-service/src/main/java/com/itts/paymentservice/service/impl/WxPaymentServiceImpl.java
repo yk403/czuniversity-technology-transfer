@@ -18,8 +18,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Service;
 
-import javax.xml.ws.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -34,6 +34,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  *@Date: 2021/06/30/9:13
  *@Desription:
  */
+@Service
 public class WxPaymentServiceImpl implements WxPatmentService {
     private CloseableHttpClient httpClient;
     /**
