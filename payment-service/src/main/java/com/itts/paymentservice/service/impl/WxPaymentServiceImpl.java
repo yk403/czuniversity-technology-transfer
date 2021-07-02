@@ -133,7 +133,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
             httpPost.setEntity(new StringEntity(bos.toString("UTF-8"), "UTF-8"));
             CloseableHttpResponse response = httpClient.execute(httpPost);
             bodyAsString=EntityUtils.toString(response.getEntity());
-            httpClient.close();
+            //httpClient.close();
         } catch (Exception e) {
             throw new ServiceException(PAY_TRANSACTIONS_ERROR);
         }
@@ -175,7 +175,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
             CloseableHttpResponse response = httpClient.execute(httpget);
             bodyAsString=EntityUtils.toString(response.getEntity());
             System.out.println(bodyAsString);
-            httpClient.close();
+            //httpClient.close();
         } catch (Exception e) {
             throw new ServiceException(PAY_SELECTORDER_ERROR);
         }
@@ -224,7 +224,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
                     statusCode = response.getStatusLine().getStatusCode();
                 }
             }
-            httpClient.close();
+            //httpClient.close();
         } catch (Exception e) {
             throw new ServiceException(PAY_CLOSEORDER_ERROR);
         }
