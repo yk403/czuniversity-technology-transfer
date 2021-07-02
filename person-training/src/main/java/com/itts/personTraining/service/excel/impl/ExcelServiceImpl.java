@@ -111,14 +111,19 @@ public class ExcelServiceImpl implements ExcelService {
      * @return
      */
     @Override
-    public ResponseUtil importXs(MultipartFile file, Integer headRowNumber, Long jgId, Pc pc, String token) {
+    public ResponseUtil importXs(MultipartFile file, Integer headRowNumber, Long jgId, Long pcId, String jylx, String pch, Date rxrq, String token) {
         XsListener xsListener = new XsListener();
         xsListener.setXsMapper(xsMapper);
         xsListener.setXyService(xyService);
         xsListener.setYhService(yhService);
+        xsListener.setPcXsMapper(pcXsMapper);
         xsListener.setRedisTemplate(redisTemplate);
         xsListener.setSzService(szService);
-        xsListener.setPc(pc);
+        xsListener.setXsService(xsService);
+        xsListener.setPcId(pcId);
+        xsListener.setJylx(jylx);
+        xsListener.setPch(pch);
+        xsListener.setRxrq(rxrq);
         xsListener.setToken(token);
         xsListener.setJgId(jgId);
         try{

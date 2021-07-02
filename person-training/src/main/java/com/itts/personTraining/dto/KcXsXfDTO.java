@@ -13,7 +13,6 @@ public class KcXsXfDTO {
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
 
@@ -75,4 +74,23 @@ public class KcXsXfDTO {
      */
     private String dsxm;
 
+    /**
+     * 起始周
+     */
+    private Integer qsz;
+
+    /**
+     * 结束周
+     */
+    private Integer jsz;
+
+    /**
+     * 星期数
+     */
+    private String xqs;
+
+    /**
+     * 是否删除(0:未删除;1已删除)
+     */
+    private Boolean sfsc;
 }

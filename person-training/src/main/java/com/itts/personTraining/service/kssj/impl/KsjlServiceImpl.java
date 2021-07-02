@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.enums.EduTypeEnum;
 import com.itts.personTraining.enums.KsjlXxbhEnum;
 import com.itts.personTraining.enums.TkzyTypeEnum;
@@ -381,8 +382,13 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             return ResponseUtil.success(totalScore.get());
         }
 
+        XsMsgDTO xs = xsMapper.getByYhId(loginUser.getUserId());
+        if(xs == null){
+            return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
         //获取批次ID
-        Long pcId = pcXsMapper.findByXsIdAndXslx(loginUser.getUserId(), kssj.getXylx());
+        Long pcId = pcXsMapper.findByXsIdAndXslx(xs.getId(), kssj.getXylx());
 
         XsCj xsCj = new XsCj();
         xsCj.setPcId(pcId);
