@@ -122,5 +122,42 @@ public class LyMsgDto implements Serializable {
      * @Date: 2021/7/2
      */
     private Integer sfckzt;
+    /**
+     * @Description:研究领域
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/7/2
+     */
+    private String yjly;
+    /**
+     * @Description:所属行业
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/7/2
+     */
+    private String sshy;
+    /**
+     * 回复时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date hfsj;
+    /**
+    * @Description: 专家姓名
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/7/2
+    */
+    private String xm;
+    /**
+     * @Description: 专家头像
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/7/2
+     */
+    private String zjtx;
 
 }

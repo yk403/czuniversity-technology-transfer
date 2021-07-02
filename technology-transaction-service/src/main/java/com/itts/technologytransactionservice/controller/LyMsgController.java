@@ -81,6 +81,7 @@ public class LyMsgController {
         if (lyMsgService.getById(id) == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
+        lyMsg.setHfsj(new Date());
         //更新数据
         if (!lyMsgService.updateById(lyMsg)) {
             throw new WebException(UPDATE_FAIL);

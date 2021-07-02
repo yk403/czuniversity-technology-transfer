@@ -84,5 +84,9 @@ public class LyMsg implements Serializable {
     * @Date: 2021/7/2
     */
     private Integer sfckzt;
-
+    /**
+     * 回复时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date hfsj;
 }

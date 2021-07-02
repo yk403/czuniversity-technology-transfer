@@ -14,14 +14,19 @@
         msg.lysj,
         msg.lyzt,
         msg.ckzt,
+        msg.hfsj,
         yh.yhtx as yhtx,
         yh.yhm as yhm,
         yh.zsxm as zsxm,
         yh.yhlx as yhlx,
+        sjzd.zdmc as yjly,
+        zj.sshy as sshy,
+        zj.xm as xm,
         zd.zdmc AS yhlb,
+        zjyh.yhtx as zjtx,
         msg.sfckzt
 
-        from t_ly_msg msg left join t_ly_ry ry on(ry.id = msg.ry_id) left join t_yh yh on (yh.id = msg.yh_id) LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
+        from t_ly_msg msg left join t_ly_ry ry on(ry.id = msg.ry_id) left join t_zj zj on(zj.id = ry.zj_id) left join t_sjzd sjzd on(sjzd.zdbm = zj.yjly) left join t_yh zjyh on (zjyh.id = zj.yh_id) left join t_yh yh on (yh.id = msg.yh_id) LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
         <where>
             <!--后台能查询0或者1的数据 -->
             msg.is_delete = 0
@@ -57,12 +62,19 @@
         msg.lysj,
         msg.lyzt,
         msg.ckzt,
+        msg.hfsj,
         yh.yhtx as yhtx,
         yh.yhm as yhm,
         yh.zsxm as zsxm,
         yh.yhlx as yhlx,
-        zd.zdmc AS yhlb
-        from t_ly_msg msg left join t_ly_ry ry on(ry.id = msg.ry_id) left join t_yh yh on (yh.id = msg.yh_id) LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
+        sjzd.zdmc as yjly,
+        zj.sshy as sshy,
+        zj.xm as xm,
+        zd.zdmc AS yhlb,
+        zjyh.yhtx as zjtx,
+        msg.sfckzt
+
+        from t_ly_msg msg left join t_ly_ry ry on(ry.id = msg.ry_id) left join t_zj zj on(zj.id = ry.zj_id) left join t_sjzd sjzd on(sjzd.zdbm = zj.yjly) left join t_yh zjyh on (zjyh.id = zj.yh_id) left join t_yh yh on (yh.id = msg.yh_id) LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
         <where>
             <!--后台能查询0或者1的数据 -->
             msg.is_delete = 0
@@ -76,8 +88,8 @@
             <if test="map.lysj != null"> and msg.lysj = #{map.lysj} </if>
         </where>
         <choose>
-            <when test="map.sort != null and map.sort.trim() != ''">
-                order by ${map.sort} ${map.order}
+            <when test="(map.sort1 != null and map.sort1.trim() != '') and (map.sort2 != null and map.sort2.trim() != '')">
+                order by ${map.sort1} ${map.order1}, ${map.sort2} ${map.order2}
             </when>
             <otherwise>
                 order by id desc
