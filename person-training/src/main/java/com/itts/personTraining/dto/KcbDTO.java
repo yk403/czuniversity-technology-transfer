@@ -15,17 +15,8 @@ public class KcbDTO {
     /**
      * 主键
      */
-    @TableId(value = "id")
     private Long id;
-    /**
-     * 开始时间
-     */
-    private String kssj;
 
-    /**
-     * 结束时间
-     */
-    private String jssj;
 
     /**
      * 课程代码
@@ -46,10 +37,7 @@ public class KcbDTO {
      * 上课地点
      */
     private String skdd;
-    /**
-     * 排课名称
-     */
-    private String pkmc;
+
 
     /**
      * 开学日期
@@ -100,4 +88,13 @@ public class KcbDTO {
      * 授课老师编号
      */
     private String dsbh;
+    /**
+     * 开始时间
+     */
+    private String kssj;
+
+    /**
+     * 结束时间
+     */
+    private String jssj;
 }

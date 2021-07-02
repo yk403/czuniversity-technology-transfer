@@ -35,6 +35,15 @@ public class KcController {
     public ResponseUtil findByYh(@RequestParam(value = "pcId",required = false) Long pcId) {
         return ResponseUtil.success(kcService.findByYh(pcId));
     }
+    /**
+     * 根据用户id查询课程表
+     * @return
+     */
+    @GetMapping("/kc/list")
+    @ApiOperation(value = "根据用户id查询列表")
+    public ResponseUtil findKcByYh(@RequestParam(value = "pcId",required = false) Long pcId) {
+        return ResponseUtil.success(kcService.findByPcId(pcId));
+    }
 
     /**
      * 根据用户查询批次列表

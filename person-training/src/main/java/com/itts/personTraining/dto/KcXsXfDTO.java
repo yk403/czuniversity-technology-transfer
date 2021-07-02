@@ -89,8 +89,5 @@ public class KcXsXfDTO {
      */
     private String xqs;
 
-    /**
-     * 是否删除(0:未删除;1已删除)
-     */
-    private Boolean sfsc;
+
 }
