@@ -191,6 +191,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
             //说明是学历学位教育
             xs.setXslbmc(POSTGRADUATE.getKey());
             String xsXh = xs.getXh();
+            String lxdh = xs.getLxdh();
             if (xsXh != null) {
                 Object data = yhService.getByCode(xsXh, token).getData();
                 Yh yh = new Yh();
@@ -209,6 +210,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
+                    yh.setLxdh(lxdh);
                     StuDTO dto = xsService.selectByCondition(null, null, getYhVo.getId());
                     if (dto != null) {
                         //学生表存在
@@ -247,6 +249,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
+                    yh.setLxdh(lxdh);
                     Object data1 = yhService.rpcAdd(yh, token).getData();
                     if (data1 == null) {
                         throw new WebException(USER_INSERT_ERROR);
