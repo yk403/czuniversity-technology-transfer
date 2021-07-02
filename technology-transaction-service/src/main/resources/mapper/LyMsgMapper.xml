@@ -18,7 +18,8 @@
         yh.yhm as yhm,
         yh.zsxm as zsxm,
         yh.yhlx as yhlx,
-        zd.zdmc AS yhlb
+        zd.zdmc AS yhlb,
+        msg.sfckzt
 
         from t_ly_msg msg left join t_ly_ry ry on(ry.id = msg.ry_id) left join t_yh yh on (yh.id = msg.yh_id) LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
         <where>
@@ -31,6 +32,7 @@
             <if test="map.lynr != null"> and msg.lynr = #{map.lynr} </if>
             <if test="map.hfnr != null"> and msg.hfnr = #{map.hfnr} </if>
             <if test="map.lyzt != null"> and msg.lyzt = #{map.lyzt} </if>
+            <if test="map.sfckzt != null"> and msg.sfckzt = #{map.sfckzt} </if>
             <if test="map.ckzt != null || map.ckzt == 0"> and msg.lysj &gt; #{map.afterTime}</if>
             <if test="map.lysj != null"> and msg.lysj = #{map.lysj} </if>
         </where>

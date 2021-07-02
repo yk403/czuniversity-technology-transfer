@@ -70,8 +70,8 @@ public class WxPaymentServiceImpl implements WxPatmentService {
     }
     /**
     * @Description: 微信支付查询订单接口
-    * @Param: 
-    * @return: 
+    * @Param:
+    * @return:
     * @Author: yukai
     * @Date: 2021/6/30
     */
@@ -83,9 +83,9 @@ public class WxPaymentServiceImpl implements WxPatmentService {
     }
     /**
     * @Description: 微信支付关闭订单接口
-    * @Param: 
-    * @return: 
+    * @Param:
+    * @return:
     * @Author: yukai
-    * @Date: 2021/6/30
+    * @Date: 2021/7/2
     */
 }
