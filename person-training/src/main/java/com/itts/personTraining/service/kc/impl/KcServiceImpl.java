@@ -35,6 +35,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -245,11 +246,15 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                         throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
                     }
                     String xylx = pcList.get(0).getXylx();
-                    kcXsXfDTOList = kcMapper.findByXylx(xylx);
+                    if(xylx!=null){
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    }else {
+                        kcXsXfDTOList=null;
+                    }
                 } else {
                     Pc pcById = pcMapper.getPcById(pcId);
                     String xylx = pcById.getXylx();
-                    kcXsXfDTOList = kcMapper.findByXylx(xylx);
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
                 }
                 break;
             case "tutor":
@@ -263,11 +268,16 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                         throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
                     }
                     String xylx = pcList.get(0).getXylx();
-                    kcXsXfDTOList = kcMapper.findByXylx(xylx);
+                    if(xylx!=null){
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    }else {
+                        kcXsXfDTOList=null;
+                    }
+
                 } else {
                     Pc pcById = pcMapper.getPcById(pcId);
                     String xylx = pcById.getXylx();
-                    kcXsXfDTOList = kcMapper.findByXylx(xylx);
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
                 }
                 break;
             //企业导师
@@ -282,11 +292,15 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                         throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
                     }
                     String xylx = pcList.get(0).getXylx();
-                    kcXsXfDTOList = kcMapper.findByXylx(xylx);
+                    if(xylx!=null){
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    }else {
+                        kcXsXfDTOList=null;
+                    }
                 } else {
                     Pc pcById = pcMapper.getPcById(pcId);
                     String xylx = pcById.getXylx();
-                    kcXsXfDTOList = kcMapper.findByXylx(xylx);
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
                 }
                 break;
             case "teacher":
@@ -300,22 +314,26 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                         throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
                     }
                     String xylx = pcList.get(0).getXylx();
-                    kcXsXfDTOList = kcMapper.findByXylx(xylx);
+                    if(xylx!=null){
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    }else {
+                        kcXsXfDTOList=null;
+                    }
                 } else {
                     Pc pcById = pcMapper.getPcById(pcId);
                     String xylx = pcById.getXylx();
-                    kcXsXfDTOList = kcMapper.findByXylx(xylx);
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
                 }
                 break;
             case "school_leader":
             case "administrator":
                 if (pcId == null) {
                     String xylx =null;
-                    kcXsXfDTOList = kcMapper.findByXylx(xylx);
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
                 } else {
                     Pc pcById = pcMapper.getPcById(pcId);
                     String xylx = pcById.getXylx();
-                    kcXsXfDTOList = kcMapper.findByXylx(xylx);
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
                 }
                 break;
             default:
@@ -323,6 +341,8 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         }
         return kcXsXfDTOList;
     }
+
+
     /**
      * 新增课程师资关系
      * @param kcDTO
@@ -368,5 +388,28 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userCategory;
+    }
+
+    /**
+     * 获取课程学时列表
+     * @param xylx
+     * @return
+     */
+    private List<KcXsXfDTO> getKcXsXfDTOList(String xylx){
+        List<KcXsXfDTO> kcXsXfDTOList = kcMapper.findByXylx(xylx);
+        List<KcXsXfDTO> pkByXylx = kcMapper.findPkByXylx(xylx);
+        for (int i = 0; i < kcXsXfDTOList.size(); i++) {
+            KcXsXfDTO kcXsXfDTO = kcXsXfDTOList.get(i);
+            Long id = kcXsXfDTO.getId();
+            for (int i1 = 0; i1 < pkByXylx.size(); i1++) {
+                KcXsXfDTO kcXsXfDTO1 = pkByXylx.get(i1);
+                if(id == kcXsXfDTO1.getId()){
+                    kcXsXfDTO.setQsz(kcXsXfDTO1.getQsz());
+                    kcXsXfDTO.setJsz(kcXsXfDTO1.getJsz());
+                    kcXsXfDTO.setXqs(kcXsXfDTO1.getXqs());
+                }
+            }
+        }
+        return kcXsXfDTOList;
     }
 }

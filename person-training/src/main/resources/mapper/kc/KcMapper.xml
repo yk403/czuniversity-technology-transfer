@@ -55,10 +55,22 @@
         and kc.xylx = (select xylx from t_pc pc where pc.sfsc = false and pc.id = #{pcId})
     </select>
     <select id="findByXylx" resultType="com.itts.personTraining.dto.KcXsXfDTO">
-        select kc.id as id,kc.jylx as jylx,kc.xylx as xylx,kc.kclx as kclx,kc.kcmc as kcmc,kc.kcdm as kcdm,kc.kcxs as kcxs,kc.kkxq as kkxq,kc.kkxy as kkxy,kc.sfbx as sfbx,sz.dsxm as dsxm
-        from t_kc kc left join t_kc_sz kcsz on kcsz.kc_id =kc.id  left join t_sz sz on kcsz.sz_id = sz.id
+        select kc.id as id,kc.jylx as jylx,kc.xylx as xylx,kc.kclx as kclx,kc.kcmc as kcmc,kc.kcdm as kcdm,kc.kcxs as kcxs,kc.kkxq as kkxq,kc.kkxy as kkxy,kc.sfbx as sfbx,sz.dsxm as dsxm,pk.qsz as qsz
+        from t_kc kc left join t_kc_sz kcsz on kcsz.kc_id =kc.id  left join t_sz sz on kcsz.sz_id = sz.id left join t_pk pk on pk.kc_id = kc.id
         where   kc.sfsc = false and sz.sfsc = false
-        <if test="xylx != null and xylx != ''"> and kc.xylx = #{xylx} </if>
+        <if test="xylx != null and xylx != ''">and kc.xylx = #{xylx}</if>
         order by kc.cjsj desc
     </select>
+    <select id="findPkByXylx" resultType="com.itts.personTraining.dto.KcXsXfDTO">
+        select kc.id as id,pk.qsz as qsz,pk.jsz as jsz,pk.xqs as xqs
+        from t_kc kc left join t_kc_sz kcsz on kcsz.kc_id =kc.id  left join t_sz sz on kcsz.sz_id = sz.id left join t_pk pk on pk.kc_id = kc.id
+        where   kc.sfsc = false and sz.sfsc = false and pk.sfsc = false
+        <if test="xylx != null and xylx != ''">and kc.xylx = #{xylx}</if>
+        order by kc.cjsj desc
+    </select>
+    <select id="findByPcId" resultType="com.itts.personTraining.dto.KcbDTO">
+
+    </select>
+
+
 </mapper>
