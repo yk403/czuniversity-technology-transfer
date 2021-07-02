@@ -7,15 +7,14 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
-import com.itts.personTraining.dto.XfDTO;
-import com.itts.personTraining.dto.XsCjDTO;
-import com.itts.personTraining.dto.XsKcCjDTO;
-import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.dto.*;
 import com.itts.personTraining.enums.BmfsEnum;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.mapper.ks.KsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
+import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.pk.PkMapper;
+import com.itts.personTraining.mapper.sj.SjMapper;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.tz.TzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
@@ -93,6 +92,10 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     private PkMapper pkMapper;
     @Resource
     private KsMapper ksMapper;
+    @Resource
+    private PcXsMapper pcXsMapper;
+    @Resource
+    private SjMapper sjMapper;
 
     /**
      * 根据批次id查询所有学生成绩
@@ -496,7 +499,62 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         return pcs;
     }
 
+    /**
+     * 查询学生能力提升信息
+     * @param pageNum
+     * @param pageSize
+     * @param pcId
+     * @return
+     */
+    @Override
+    public AbilityInfoDTO getAbilityByCategory(Integer pageNum, Integer pageSize, Long pcId) {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询学生能力提升信息】",userId);
 
+        String userCategory = getUserCategory();
+        AbilityInfoDTO abilityInfoDTO = new AbilityInfoDTO();
+        switch (userCategory) {
+            //研究生
+            case "postgraduate":
+                XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
+                Long xsId = xsMsgDTO.getId();
+                if (xsId == null) {
+                    throw new ServiceException(NO_STUDENT_MSG_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc>  pcList = pcXsMapper.findPcByXsId(xsMsgDTO.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    //批次为空,则默认最新批次
+                    pcId = pcList.get(0).getId();
+                }
+                //统计原专业获得学分
+                Integer zxzyhdxf = xsKcCjMapper.getCountYzy(xsId);
+                abilityInfoDTO.setZxzyhdxf(zxzyhdxf);
+                XsCjDTO xsCjDTO1 = xsCjMapper.selectByPcIdAndXsId(pcId, xsId);
+                if (xsCjDTO1 != null) {
+                    //统计技术转移专业获得学分
+                    Integer jszyhdxf = xsKcCjMapper.getCountDqxf(xsCjDTO1.getId());
+                    abilityInfoDTO.setJszyhdxf(jszyhdxf);
+                } else {
+                    throw new ServiceException(NO_STUDENT_MSG_ERROR);
+                }
+                //实训成绩 TODO:暂时假数据
+                abilityInfoDTO.setSxcj(0);
+                //实践成绩
+                Integer sjcj = Integer.valueOf(sjMapper.getSjcjByXsIdAndPcId(xsId,pcId));
+                abilityInfoDTO.setSjcj(sjcj);
+
+                break;
+            case "broker":
+
+                break;
+            default:
+                break;
+        }
+        return abilityInfoDTO;
+    }
 
 
     /**
