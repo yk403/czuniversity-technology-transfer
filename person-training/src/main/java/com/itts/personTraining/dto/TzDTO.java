@@ -50,6 +50,11 @@ public class TzDTO {
     private boolean sfdq;
 
     /**
+     * 处理状态
+     */
+    private boolean clzt;
+
+    /**
      * 是否删除
      */
     private Boolean sfsc;
