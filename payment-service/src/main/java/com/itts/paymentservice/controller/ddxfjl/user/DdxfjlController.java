@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,6 +53,7 @@ public class DdxfjlController {
                 .eq(StringUtils.isNotBlank(ddbh), "bh", ddbh)
                 .eq("cjr", loginUser.getUserId())
                 .eq(StringUtils.isNotBlank(zt), "zt", zt)
+                .eq("sfsc", false)
                 .orderByDesc("cjsj"));
 
         PageInfo pageInfo = new PageInfo(list);
@@ -147,6 +149,28 @@ public class DdxfjlController {
         }
 
         Ddxfjl ddxfjl = ddxfjlService.updateStatus(old, status);
+
+        return ResponseUtil.success(ddxfjl);
+    }
+
+    @ApiOperation(value = "删除订单")
+    @DeleteMapping("/delete/{id}")
+    public ResponseUtil delete(@PathVariable("id") Long id){
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser == null) {
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        Ddxfjl ddxfjl = ddxfjlService.getById(id);
+        if(ddxfjl == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        ddxfjl.setSfsc(true);
+        ddxfjl.setGxsj(new Date());
+
+        ddxfjlService.updateById(ddxfjl);
 
         return ResponseUtil.success(ddxfjl);
     }
