@@ -8,6 +8,13 @@ import com.itts.paymentservice.constant.PaymentConstant;
 import com.itts.paymentservice.model.ddxfjl.Ddxfjl;
 import com.itts.paymentservice.service.WxPatmentService;
 import com.itts.paymentservice.utils.TimeUtils;
+import com.wechat.pay.contrib.apache.httpclient.WechatPayHttpClientBuilder;
+import com.wechat.pay.contrib.apache.httpclient.auth.AutoUpdateCertificatesVerifier;
+import com.wechat.pay.contrib.apache.httpclient.auth.PrivateKeySigner;
+import com.wechat.pay.contrib.apache.httpclient.auth.WechatPay2Credentials;
+import com.wechat.pay.contrib.apache.httpclient.auth.WechatPay2Validator;
+import com.wechat.pay.contrib.apache.httpclient.util.PemUtil;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -16,15 +23,23 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.security.PrivateKey;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import static com.itts.common.enums.ErrorCodeEnum.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /*
  *@Auther: yukai
@@ -35,6 +50,34 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 public class WxPaymentServiceImpl implements WxPatmentService {
 
     private CloseableHttpClient httpClient;
+    private AutoUpdateCertificatesVerifier verifier;
+    private static String serialNumber = "";
+    private static String message = "";
+    private static String signature = "";
+    @Before
+    public void setup() throws IOException {
+        PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(
+                new ByteArrayInputStream(PaymentConstant.wx_privateKey.getBytes("utf-8")));
+
+        //使用自动更新的签名验证器，不需要传入证书
+        verifier = new AutoUpdateCertificatesVerifier(
+                new WechatPay2Credentials(PaymentConstant.wx_mchId, new PrivateKeySigner(PaymentConstant.wx_mchSerialNo, merchantPrivateKey)),
+                PaymentConstant.wx_apiV3Key.getBytes("utf-8"));
+
+        httpClient = WechatPayHttpClientBuilder.create()
+                .withMerchant(PaymentConstant.wx_mchId, PaymentConstant.wx_mchSerialNo, merchantPrivateKey)
+                .withValidator(new WechatPay2Validator(verifier))
+                .build();
+    }
+
+    @After
+    public void after() throws IOException {
+        httpClient.close();
+    }
+
+    public void autoUpdateVerifierTest() throws Exception {
+        assertTrue(verifier.verify(serialNumber, message.getBytes("utf-8"), signature));
+    }
     /**
     * @Description: 微信预支付接口
     * @Param: [ddxfjl]
@@ -167,6 +210,23 @@ public class WxPaymentServiceImpl implements WxPatmentService {
         System.out.println(trade_state);*/
         //204为正确码，其他为错误码
         return statusCode;
+    }
+    //获取平台证书方法
+    @Test
+    public void getCertificateTest() throws Exception {
+        URIBuilder uriBuilder = new URIBuilder("https://api.mch.weixin.qq.com/v3/certificates");
+        HttpGet httpGet = new HttpGet(uriBuilder.build());
+        httpGet.addHeader("Accept", "application/json");
+        CloseableHttpResponse response1 = httpClient.execute(httpGet);
+        assertEquals(200, response1.getStatusLine().getStatusCode());
+        try {
+            HttpEntity entity1 = response1.getEntity();
+            // do something useful with the response body
+            // and ensure it is fully consumed
+            EntityUtils.consume(entity1);
+        } finally {
+            response1.close();
+        }
     }
 
 
