@@ -25,6 +25,7 @@ public enum ErrorCodeEnum {
     SYSTEM_REQUEST_METHOD_ERROR(-40005, "请求方式错误"),
     SYSTEM_REQUEST_PARAMS_TYPE_ERROR(-40006, "请求参数类型或请求参数格式错误"),
     SYSTEM_ERROR(-40007, "系统异常，请联系管理员"),
+    SYSTEM_NET_ERROR(-40008, "网络不稳定，请重试"),
     //====================      系统错误提示  END     ====================
 
     //====================      技术交易服务错误提示（服务码410）      ====================

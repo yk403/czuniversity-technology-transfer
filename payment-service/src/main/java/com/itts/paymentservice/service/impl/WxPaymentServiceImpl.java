@@ -15,18 +15,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /*
@@ -36,6 +33,7 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  */
 @Service
 public class WxPaymentServiceImpl implements WxPatmentService {
+
     private CloseableHttpClient httpClient;
     /**
     * @Description: 微信预支付接口

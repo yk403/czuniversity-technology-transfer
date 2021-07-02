@@ -427,7 +427,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      * 支付金额
      */
     @Override
-    public ResponseUtil pay(PayDdxfjlRequest payDdxfjlRequest) {
+    public  ResponseUtil pay(PayDdxfjlRequest payDdxfjlRequest) {
 
         ResponseUtil response = orderFeignService.getByCode(payDdxfjlRequest.getBh());
         if (response.getErrCode().intValue() != 0) {
@@ -439,8 +439,12 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR.getCode(), "订单不存在");
         }
 
-        //如果是微信支付、支付宝支付调用三方支付接口 TODO
+        GetDdxfjlVO ddxfjl = response.conversionData(new TypeReference<GetDdxfjlVO>() {
+        });
 
-        return ResponseUtil.success();
+        //如果是微信支付、支付宝支付调用三方支付接口
+        ResponseUtil payResponse = orderFeignService.pay(ddxfjl);
+
+        return payResponse;
     }
 }

@@ -1,9 +1,6 @@
 package com.itts.paymentservice.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.itts.paymentservice.model.ddxfjl.Ddxfjl;
-
-import java.net.URISyntaxException;
 
 /*
  *@Auther: yukai
@@ -11,14 +8,19 @@ import java.net.URISyntaxException;
  *@Desription:
  */
 public interface WxPatmentService {
+
     /**
-    * @Description: 微信预支付接口
-    * @Param: []
-    * @return: com.itts.paymentservice.model.ddxfjl.Ddxfjl
-    * @Author: yukai
-    * @Date: 2021/6/30
-    */
+     * 微信预支付接口
+     */
     String orderInteface(Ddxfjl ddxfjl);
+
+    /**
+     * 查询订单
+     */
     String selectOrder(Ddxfjl ddxfjl);
+
+    /**
+     * 关闭订单
+     */
     int closeOrder(Ddxfjl ddxfjl);
 }

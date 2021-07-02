@@ -4,6 +4,13 @@ import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
@@ -25,8 +32,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -168,8 +178,8 @@ public class XxzyController {
     }
 
     @ApiOperation(value = "支付金额")
-    @PostMapping("/pay/")
-    public ResponseUtil pay(@RequestBody PayDdxfjlRequest payDdxfjlRequest) {
+    @GetMapping("/pay/")
+    public void pay(@RequestBody PayDdxfjlRequest payDdxfjlRequest, HttpServletResponse response) throws Exception {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser == null) {
@@ -177,8 +187,31 @@ public class XxzyController {
         }
 
         ResponseUtil result = xxzyService.pay(payDdxfjlRequest);
+        if(result.getErrCode().intValue() != 0){
 
-        return result;
+           throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
+        }
+
+        if(result.getData() == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
+        }
+
+        String codeUrl = result.getData().toString();
+        if(StringUtils.isBlank(codeUrl)){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
+        }
+
+       Map<EncodeHintType, Object> hints = Maps.newHashMap();
+
+        //设置纠错等级
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+
+        BitMatrix bitMatrix = new MultiFormatWriter().encode(codeUrl, BarcodeFormat.QR_CODE, 400, 400);
+
+        OutputStream outputStream = response.getOutputStream();
+
+        MatrixToImageWriter.writeToStream(bitMatrix, "png", outputStream);
     }
 
     /**

@@ -12,6 +12,7 @@ import com.itts.paymentservice.enums.OrderStatusEnum;
 import com.itts.paymentservice.model.ddxfjl.Ddxfjl;
 import com.itts.paymentservice.request.ddxfjl.AddDdxfjlRequest;
 import com.itts.paymentservice.service.DdxfjlService;
+import com.itts.paymentservice.service.WxPatmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -34,6 +35,9 @@ public class DdxfjlController {
 
     @Autowired
     private DdxfjlService ddxfjlService;
+
+    @Autowired
+    private WxPatmentService wxPaymentService;
 
     @ApiOperation(value = "获取列表")
     @GetMapping("/list/")
@@ -127,6 +131,15 @@ public class DdxfjlController {
         return ResponseUtil.success(ddxfjl);
     }
 
+    @ApiOperation(value = "订单支付接口")
+    @PostMapping("/pay/")
+    public ResponseUtil pay(@RequestBody Ddxfjl ddxfjl) {
+
+        String result = wxPaymentService.orderInteface(ddxfjl);
+
+        return ResponseUtil.success(result);
+    }
+
     @ApiOperation(value = "更新状态")
     @PutMapping("/update/status/{id}")
     public ResponseUtil updateStatus(@PathVariable("id") Long id, @RequestParam("status") String status) {
@@ -155,7 +168,7 @@ public class DdxfjlController {
 
     @ApiOperation(value = "删除订单")
     @DeleteMapping("/delete/{id}")
-    public ResponseUtil delete(@PathVariable("id") Long id){
+    public ResponseUtil delete(@PathVariable("id") Long id) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser == null) {
@@ -163,7 +176,7 @@ public class DdxfjlController {
         }
 
         Ddxfjl ddxfjl = ddxfjlService.getById(id);
-        if(ddxfjl == null){
+        if (ddxfjl == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
