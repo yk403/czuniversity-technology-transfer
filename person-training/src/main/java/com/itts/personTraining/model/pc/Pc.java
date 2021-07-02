@@ -95,5 +95,4 @@ public class Pc implements Serializable {
      */
     private Long gxr;
 
-
 }
