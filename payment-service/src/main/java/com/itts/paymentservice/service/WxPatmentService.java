@@ -8,7 +8,6 @@ import com.itts.paymentservice.model.ddxfjl.Ddxfjl;
  *@Desription:
  */
 public interface WxPatmentService {
-
     /**
      * 微信预支付接口
      */

@@ -55,6 +55,7 @@ public enum ErrorCodeEnum {
     PAY_TRANSACTIONS_ERROR(-420002, "预支付下单失败"),
     PAY_SELECTORDER_ERROR(-420003, "查询订单失败"),
     PAY_CLOSEORDER_ERROR(-420003, "关闭订单失败"),
+    PAY_INITORDER_ERROR(-420003, "订单初始化失败"),
     //====================       支付服务错误提示END     ====================
 
     //====================       登录、登出、注册错误提示（服务码430）      ====================

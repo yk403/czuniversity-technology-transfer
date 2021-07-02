@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.PrivateKey;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -49,12 +50,30 @@ import static org.junit.Assert.assertTrue;
 @Service
 public class WxPaymentServiceImpl implements WxPatmentService {
 
-    private CloseableHttpClient httpClient;
-    private AutoUpdateCertificatesVerifier verifier;
+    private static CloseableHttpClient httpClient;
+    private static AutoUpdateCertificatesVerifier verifier;
     private static String serialNumber = "";
     private static String message = "";
     private static String signature = "";
-    @Before
+    static{
+        try {
+            PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(
+                    new ByteArrayInputStream(PaymentConstant.wx_privateKey.getBytes("utf-8")));
+
+            //使用自动更新的签名验证器，不需要传入证书
+            verifier = new AutoUpdateCertificatesVerifier(
+                    new WechatPay2Credentials(PaymentConstant.wx_mchId, new PrivateKeySigner(PaymentConstant.wx_mchSerialNo, merchantPrivateKey)),
+                    PaymentConstant.wx_apiV3Key.getBytes("utf-8"));
+
+            httpClient = WechatPayHttpClientBuilder.create()
+                    .withMerchant(PaymentConstant.wx_mchId, PaymentConstant.wx_mchSerialNo, merchantPrivateKey)
+                    .withValidator(new WechatPay2Validator(verifier))
+                    .build();
+        } catch (Exception e) {
+            throw new ServiceException(PAY_INITORDER_ERROR);
+        }
+    }
+/*    @Before
     public void setup() throws IOException {
         PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(
                 new ByteArrayInputStream(PaymentConstant.wx_privateKey.getBytes("utf-8")));
@@ -68,12 +87,12 @@ public class WxPaymentServiceImpl implements WxPatmentService {
                 .withMerchant(PaymentConstant.wx_mchId, PaymentConstant.wx_mchSerialNo, merchantPrivateKey)
                 .withValidator(new WechatPay2Validator(verifier))
                 .build();
-    }
+    }*/
 
-    @After
+/*    @After
     public void after() throws IOException {
         httpClient.close();
-    }
+    }*/
 
     public void autoUpdateVerifierTest() throws Exception {
         assertTrue(verifier.verify(serialNumber, message.getBytes("utf-8"), signature));
@@ -114,6 +133,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
             httpPost.setEntity(new StringEntity(bos.toString("UTF-8"), "UTF-8"));
             CloseableHttpResponse response = httpClient.execute(httpPost);
             bodyAsString=EntityUtils.toString(response.getEntity());
+            httpClient.close();
         } catch (Exception e) {
             throw new ServiceException(PAY_TRANSACTIONS_ERROR);
         }
@@ -121,6 +141,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
         JSONObject jsonObject = JSONObject.parseObject(bodyAsString);
         String code_url=jsonObject.getString("code_url");
         System.out.println(code_url);
+
         //ImageIO.read(QrCodeUtils.generatorQrCode(code_url));
         return code_url;
     }
@@ -154,6 +175,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
             CloseableHttpResponse response = httpClient.execute(httpget);
             bodyAsString=EntityUtils.toString(response.getEntity());
             System.out.println(bodyAsString);
+            httpClient.close();
         } catch (Exception e) {
             throw new ServiceException(PAY_SELECTORDER_ERROR);
         }
@@ -202,6 +224,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
                     statusCode = response.getStatusLine().getStatusCode();
                 }
             }
+            httpClient.close();
         } catch (Exception e) {
             throw new ServiceException(PAY_CLOSEORDER_ERROR);
         }
