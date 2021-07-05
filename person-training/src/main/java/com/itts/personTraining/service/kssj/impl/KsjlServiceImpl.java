@@ -175,7 +175,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
             Kssj checkKssj = kssjMapper.selectById(checkKsjl.getSjId());
 
-            return getKsjlVO(checkKsjl, checkKssj);
+            return getKsjlVO(checkKsjl, checkKssj, false);
         }
 
         TzXs tzxs = tzXsMapper.selectOne(new QueryWrapper<TzXs>()
@@ -199,7 +199,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         ksjl.setDanxzf(kssj.getDanzf());
         ksjl.setDuoxzf(kssj.getDuozf());
 
-        ksjl.setXsId(loginUser.getUserId());
+        ksjl.setXsId(xs.getId());
         ksjl.setXsmc(loginUser.getRealName());
         ksjl.setXsbm("");
 
@@ -208,7 +208,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         ksjl.setKsdtsj(new Date());
 
-        GetKsjlVO getKsjlVO = getKsjlVO(ksjl, kssj);
+        GetKsjlVO getKsjlVO = getKsjlVO(ksjl, kssj, true);
         //返回生成的试卷
         /*GetKsjlVO getKsjlVO = new GetKsjlVO();
         BeanUtils.copyProperties(ksjl, getKsjlVO);
@@ -273,7 +273,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
     /**
      * 生成考试试卷VO
      */
-    private GetKsjlVO getKsjlVO(Ksjl ksjl, Kssj kssj) {
+    private GetKsjlVO getKsjlVO(Ksjl ksjl, Kssj kssj, boolean addFlag) {
         GetKsjlVO getKsjlVO = new GetKsjlVO();
         BeanUtils.copyProperties(ksjl, getKsjlVO);
 
@@ -288,7 +288,9 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         //查询所有题目选项
         List<Tmxx> allTmxxs = tmxxMapper.selectList(new QueryWrapper<Tmxx>().in("tm_id", tmIds));
 
-        ksjlMapper.insert(ksjl);
+        if (addFlag) {
+            ksjlMapper.insert(ksjl);
+        }
 
         //根据题目ID分组成map
         Map<Long, List<Tmxx>> allTmxxMap = Maps.newHashMap();
