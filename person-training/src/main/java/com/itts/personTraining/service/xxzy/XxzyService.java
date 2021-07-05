@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xxzy.Xxzy;
-import com.itts.personTraining.request.ddxfjl.PayDdxfjlRequest;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
 import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
 import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
@@ -69,5 +68,5 @@ public interface XxzyService extends IService<Xxzy> {
     /**
      * 支付金额
      */
-    ResponseUtil pay(PayDdxfjlRequest payDdxfjlRequest);
+    ResponseUtil pay(String orderNo, String payType);
 }
