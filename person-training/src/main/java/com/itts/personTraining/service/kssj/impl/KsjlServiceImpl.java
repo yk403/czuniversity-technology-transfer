@@ -166,6 +166,15 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             return null;
         }
 
+        //通过试卷ID和学生ID获取考试记录
+        Ksjl checkKsjl = ksjlMapper.selectOne(new QueryWrapper<Ksjl>()
+                .eq("sj_id", kssj.getId())
+                .eq("xs_id", xs.getId()));
+        if (checkKsjl != null) {
+
+            return getAlreadyKsjl(checkKsjl);
+        }
+
         TzXs tzxs = tzXsMapper.selectOne(new QueryWrapper<TzXs>()
                 .eq("tz_id", tz.getId())
                 .eq("xs_id", xs.getId())
@@ -177,15 +186,6 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         tzxs.setClzt(true);
         tzXsMapper.updateById(tzxs);
-
-        //通过试卷ID和学生ID获取考试记录
-        Ksjl checkKsjl = ksjlMapper.selectOne(new QueryWrapper<Ksjl>()
-                .eq("sj_id", kssj.getId())
-                .eq("xs_id", xs.getId()));
-        if (checkKsjl != null) {
-
-            return getAlreadyKsjl(checkKsjl);
-        }
 
         Ksjl ksjl = new Ksjl();
 
@@ -206,63 +206,6 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         ksjl.setKsdtsj(new Date());
 
         GetKsjlVO getKsjlVO = getKsjlVO(ksjl, kssj);
-        //返回生成的试卷
-        /*GetKsjlVO getKsjlVO = new GetKsjlVO();
-        BeanUtils.copyProperties(ksjl, getKsjlVO);
-
-        //获取当前试卷的题目
-        List<Tkzy> tms = tkzyMapper.findBySjId(kssj.getId());
-        //获取题目ID
-        List<Long> tmIds = tms.stream().map(Tkzy::getId).collect(Collectors.toList());
-        if (CollectionUtils.isEmpty(tmIds)) {
-            return null;
-        }
-
-        //查询所有题目选项
-        List<Tmxx> allTmxxs = tmxxMapper.selectList(new QueryWrapper<Tmxx>().in("tm_id", tmIds));
-
-        ksjlMapper.insert(ksjl);
-
-        //根据题目ID分组成map
-        Map<Long, List<Tmxx>> allTmxxMap = Maps.newHashMap();
-
-        if (!CollectionUtils.isEmpty(allTmxxs)) {
-            //根据题目ID分组成map
-            allTmxxMap = allTmxxs.stream().collect(Collectors.groupingBy(Tmxx::getTmId));
-        }
-
-        List<GetKsjlTmVO> ksjlTms = Lists.newArrayList();
-
-        //便利所有题目，生成试卷记录选项
-        Iterator<Tkzy> tmIterator = tms.iterator();
-        while (tmIterator.hasNext()) {
-
-            Tkzy tm = tmIterator.next();
-
-            GetKsjlTmVO getKsjlTmVO = new GetKsjlTmVO();
-            BeanUtils.copyProperties(tm, getKsjlTmVO);
-
-            if (tm != null) {
-
-                //判断题目是否为判断题
-                if (Objects.equals(tm.getTmlx(), TkzyTypeEnum.JUDGMENT.getKey())) {
-
-                    setJudgmentOptions(tm, ksjl, getKsjlTmVO);
-                } else {
-
-                    if (!CollectionUtils.isEmpty(allTmxxMap)) {
-                        setSelectOptions(tm, allTmxxMap, ksjl, getKsjlTmVO);
-                    }
-                }
-
-                tmIterator.remove();
-            }
-
-            ksjlTms.add(getKsjlTmVO);
-        }
-
-        getKsjlVO.setKsjlTms(ksjlTms);
-        getKsjlVO.setId(ksjl.getId());*/
 
         return getKsjlVO;
     }
