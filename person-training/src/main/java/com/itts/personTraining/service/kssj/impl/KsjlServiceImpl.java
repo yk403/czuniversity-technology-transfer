@@ -98,7 +98,6 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             return null;
         }
 
-
         GetKsjlVO vo = new GetKsjlVO();
         BeanUtils.copyProperties(ksjl, vo);
 
@@ -173,9 +172,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
                 .eq("xs_id", xs.getId()));
         if (checkKsjl != null) {
 
-            Kssj checkKssj = kssjMapper.selectById(checkKsjl.getSjId());
-
-            return getKsjlVO(checkKsjl, checkKssj, false);
+            return getAlreadyKsjl(checkKsjl);
         }
 
         TzXs tzxs = tzXsMapper.selectOne(new QueryWrapper<TzXs>()
@@ -208,7 +205,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         ksjl.setKsdtsj(new Date());
 
-        GetKsjlVO getKsjlVO = getKsjlVO(ksjl, kssj, true);
+        GetKsjlVO getKsjlVO = getKsjlVO(ksjl, kssj);
         //返回生成的试卷
         /*GetKsjlVO getKsjlVO = new GetKsjlVO();
         BeanUtils.copyProperties(ksjl, getKsjlVO);
@@ -273,7 +270,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
     /**
      * 生成考试试卷VO
      */
-    private GetKsjlVO getKsjlVO(Ksjl ksjl, Kssj kssj, boolean addFlag) {
+    private GetKsjlVO getKsjlVO(Ksjl ksjl, Kssj kssj) {
         GetKsjlVO getKsjlVO = new GetKsjlVO();
         BeanUtils.copyProperties(ksjl, getKsjlVO);
 
@@ -288,9 +285,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         //查询所有题目选项
         List<Tmxx> allTmxxs = tmxxMapper.selectList(new QueryWrapper<Tmxx>().in("tm_id", tmIds));
 
-        if (addFlag) {
-            ksjlMapper.insert(ksjl);
-        }
+        ksjlMapper.insert(ksjl);
 
         //根据题目ID分组成map
         Map<Long, List<Tmxx>> allTmxxMap = Maps.newHashMap();
@@ -332,6 +327,55 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         getKsjlVO.setKsjlTms(ksjlTms);
         getKsjlVO.setId(ksjl.getId());
+
+        return getKsjlVO;
+    }
+
+    /**
+     * 获取已生成考试记录信息
+     */
+    public GetKsjlVO getAlreadyKsjl(Ksjl ksjl) {
+        GetKsjlVO getKsjlVO = new GetKsjlVO();
+        BeanUtils.copyProperties(ksjl, getKsjlVO);
+
+        //获取当前考试记录所有考试选项
+        List<Ksjlxx> ksjlxxs = ksjlxxMapper.selectList(new QueryWrapper<Ksjlxx>().eq("ksjl_id", ksjl.getId()));
+        if (CollectionUtils.isEmpty(ksjlxxs)) {
+            return getKsjlVO;
+        }
+
+        //通过题目ID进行分组
+        Map<Long, List<Ksjlxx>> ksjlxxMap = ksjlxxs.stream().collect(Collectors.groupingBy(Ksjlxx::getTmId));
+
+        Set<Long> tmIds = ksjlxxs.stream().map(Ksjlxx::getTmId).collect(Collectors.toSet());
+        //获取当前考试记录所有题目
+        List<Tkzy> tms = tkzyMapper.selectList(new QueryWrapper<Tkzy>().in("id", tmIds));
+        if (CollectionUtils.isEmpty(tms)) {
+            return getKsjlVO;
+        }
+
+        List<GetKsjlTmVO> tmVOs = tms.stream().map(obj -> {
+
+            GetKsjlTmVO getKsjlTmVO = new GetKsjlTmVO();
+            BeanUtils.copyProperties(obj, getKsjlTmVO);
+
+            List<Ksjlxx> thisKsjlxxs = ksjlxxMap.get(obj.getId());
+            if (!CollectionUtils.isEmpty(thisKsjlxxs)) {
+
+                List<GetKsjlTmXxVO> ksjlxxVOs = thisKsjlxxs.stream().map(xxObj -> {
+
+                    GetKsjlTmXxVO getKsjlTmXxVO = new GetKsjlTmXxVO();
+                    BeanUtils.copyProperties(xxObj, getKsjlTmXxVO);
+                    return getKsjlTmXxVO;
+                }).collect(Collectors.toList());
+
+                getKsjlTmVO.setKsjlTmXxs(ksjlxxVOs);
+            }
+
+            return getKsjlTmVO;
+        }).collect(Collectors.toList());
+
+        getKsjlVO.setKsjlTms(tmVOs);
 
         return getKsjlVO;
     }
