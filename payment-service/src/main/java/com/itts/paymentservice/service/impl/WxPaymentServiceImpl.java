@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 import java.security.PrivateKey;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -124,7 +125,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
                     //交易结束时间(当前时间向后两小时)
                     .put("time_expire",format);
             rootNode.putObject("amount")
-                    .put("total", ddxfjl.getZje())
+                    .put("total", ddxfjl.getZje().multiply(new BigDecimal(100)))
                     .put("currency", "CNY");
             //rootNode.putObject("payer").put("openid", "oUpF8uMuAJO_M2pxb1Q9zNjWeS6o");
             objectMapper.writeValue(bos, rootNode);
