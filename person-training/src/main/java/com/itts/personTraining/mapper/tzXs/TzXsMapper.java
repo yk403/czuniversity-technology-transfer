@@ -1,8 +1,9 @@
 package com.itts.personTraining.mapper.tzXs;
 
-import com.itts.personTraining.model.tzXs.TzXs;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itts.personTraining.model.tzXs.TzXs;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -12,6 +13,7 @@ import org.apache.ibatis.annotations.Param;
  * @author Austin
  * @since 2021-06-22
  */
+@Repository
 public interface TzXsMapper extends BaseMapper<TzXs> {
 
     /**
