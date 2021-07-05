@@ -278,6 +278,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
      * 获取已生成考试记录信息
      */
     public GetKsjlVO getAlreadyKsjl(Ksjl ksjl) {
+
         GetKsjlVO getKsjlVO = new GetKsjlVO();
         BeanUtils.copyProperties(ksjl, getKsjlVO);
 
