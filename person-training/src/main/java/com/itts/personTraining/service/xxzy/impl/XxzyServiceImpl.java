@@ -25,7 +25,6 @@ import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.model.xxzy.Xxzysc;
 import com.itts.personTraining.request.ddxfjl.AddDdxfjlRequest;
-import com.itts.personTraining.request.ddxfjl.PayDdxfjlRequest;
 import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
 import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
@@ -427,9 +426,9 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      * 支付金额
      */
     @Override
-    public  ResponseUtil pay(PayDdxfjlRequest payDdxfjlRequest) {
+    public  ResponseUtil pay(String orderNo, String payType) {
 
-        ResponseUtil response = orderFeignService.getByCode(payDdxfjlRequest.getBh());
+        ResponseUtil response = orderFeignService.getByCode(orderNo);
         if (response.getErrCode().intValue() != 0) {
 
             return response;
@@ -442,7 +441,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         GetDdxfjlVO ddxfjl = response.conversionData(new TypeReference<GetDdxfjlVO>() {
         });
 
-        ddxfjl.setZffs(payDdxfjlRequest.getZffs());
+        ddxfjl.setZffs(payType);
 
         //如果是微信支付、支付宝支付调用三方支付接口
         ResponseUtil payResponse = orderFeignService.pay(ddxfjl);

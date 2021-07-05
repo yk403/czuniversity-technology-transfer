@@ -20,7 +20,6 @@ import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.model.yh.GetYhVo;
-import com.itts.personTraining.request.ddxfjl.PayDdxfjlRequest;
 import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
 import com.itts.personTraining.vo.xxzy.GetXxzyVO;
@@ -179,33 +178,34 @@ public class XxzyController {
 
     @ApiOperation(value = "支付金额")
     @GetMapping("/pay/")
-    public void pay(@RequestBody PayDdxfjlRequest payDdxfjlRequest, HttpServletResponse response) throws Exception {
+    public void pay(@RequestParam("orderNo") String orderNo, @RequestParam("payType") String payType
+            , HttpServletResponse response) throws Exception {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser == null) {
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
         }
 
-        if (StringUtils.isBlank(payDdxfjlRequest.getZffs())) {
+        if (StringUtils.isBlank(payType)) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        ResponseUtil result = xxzyService.pay(payDdxfjlRequest);
-        if(result.getErrCode().intValue() != 0){
+        ResponseUtil result = xxzyService.pay(orderNo, payType);
+        if (result.getErrCode().intValue() != 0) {
 
-           throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
         }
 
-        if(result.getData() == null){
+        if (result.getData() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
         }
 
         String codeUrl = result.getData().toString();
-        if(StringUtils.isBlank(codeUrl)){
+        if (StringUtils.isBlank(codeUrl)) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
         }
 
-       Map<EncodeHintType, Object> hints = Maps.newHashMap();
+        Map<EncodeHintType, Object> hints = Maps.newHashMap();
 
         //设置纠错等级
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);

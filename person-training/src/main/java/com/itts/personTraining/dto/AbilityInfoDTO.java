@@ -18,28 +18,28 @@ public class AbilityInfoDTO {
     //学历
 
     /**
-     * 主修专业总学分(获得)(专业成绩)
+     * 主修专业获得学分(专业成绩)
      */
-    @ApiModelProperty(value = "主修专业总学分(获得)")
-    private Integer zxzyzxf;
+    @ApiModelProperty(value = "主修专业获得学分(专业成绩)")
+    private Integer zxzyhdxf;
 
     /**
-     * 总学分(技术转移获得)(辅修成绩)
+     * 技术转移获得学分(辅修成绩)
      */
-    @ApiModelProperty(value = "总学分(技术转移获得)")
-    private Integer zxf;
+    @ApiModelProperty(value = "技术转移获得学分(辅修成绩)")
+    private Integer jszyhdxf;
 
     /**
      * 实践成绩
      */
     @ApiModelProperty(value = "实践成绩")
-    private String sjcj;
+    private Integer sjcj;
 
     /**
      * 实训成绩
      */
     @ApiModelProperty(value = "实训成绩")
-    private String sxcj;
+    private Integer sxcj;
 
     /**
      * 实践列表

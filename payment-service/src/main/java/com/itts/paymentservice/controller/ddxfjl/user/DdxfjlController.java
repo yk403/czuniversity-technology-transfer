@@ -148,7 +148,7 @@ public class DdxfjlController {
         dd.setZfsj(new Date());
         ddxfjlService.updateById(dd);
 
-        return ResponseUtil.success(result);
+        return ResponseUtil.success("success", result);
     }
 
     @ApiOperation(value = "更新状态")
