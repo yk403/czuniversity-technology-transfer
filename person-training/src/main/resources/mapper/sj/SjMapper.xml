@@ -71,4 +71,10 @@
         <if test="cjr != null">and sj.cjr = #{cjr}</if>
         order by sj.cjsj desc
     </select>
+    <select id="getSjcjByXsIdAndPcId" resultType="java.lang.String">
+        select sj.sjcj
+        from t_sj sj left join t_xs xs on (xs.id=sj.xs_id) left join t_pc pc on (pc.id=sj.pc_id)
+        where sj.sfsc = false and sj.sfxf = true and xs.sfsc = false and pc.sfsc = false
+        and sj.xs_id = #{xsId} and sj.pc_id = #{pcId}
+    </select>
 </mapper>
