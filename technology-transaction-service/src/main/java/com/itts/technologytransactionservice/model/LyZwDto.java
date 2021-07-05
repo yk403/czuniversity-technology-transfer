@@ -105,5 +105,12 @@ public class LyZwDto implements Serializable {
 * @Date: 2021/6/15
 */
     private String zdmc;
-
+    /**
+    * @Description: 当前展位展品的数量
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/7/5
+    */
+    private String zpCount;
 }
