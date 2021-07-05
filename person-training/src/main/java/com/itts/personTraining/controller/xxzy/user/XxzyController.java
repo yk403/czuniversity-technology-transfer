@@ -191,21 +191,21 @@ public class XxzyController {
         }
 
         ResponseUtil result = xxzyService.pay(orderNo, payType);
-        if(result.getErrCode().intValue() != 0){
+        if (result.getErrCode().intValue() != 0) {
 
-           throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
+            throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
         }
 
-        if(result.getData() == null){
+        if (result.getData() == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
         }
 
         String codeUrl = result.getData().toString();
-        if(StringUtils.isBlank(codeUrl)){
+        if (StringUtils.isBlank(codeUrl)) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
         }
 
-       Map<EncodeHintType, Object> hints = Maps.newHashMap();
+        Map<EncodeHintType, Object> hints = Maps.newHashMap();
 
         //设置纠错等级
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
