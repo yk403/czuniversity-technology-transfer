@@ -49,6 +49,11 @@ public class Tz implements Serializable {
     private String nr;
 
     /**
+     * 考试时长
+     */
+    private String kssc;
+
+    /**
      * 是否删除
      */
     private Boolean sfsc;
