@@ -55,6 +55,11 @@ public class TzDTO {
     private boolean clzt;
 
     /**
+     * 考试时长
+     */
+    private String kssc;
+
+    /**
      * 是否删除
      */
     private Boolean sfsc;

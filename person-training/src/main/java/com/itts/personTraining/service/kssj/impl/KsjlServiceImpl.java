@@ -166,15 +166,6 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             return null;
         }
 
-        //通过试卷ID和学生ID获取考试记录
-        Ksjl checkKsjl = ksjlMapper.selectOne(new QueryWrapper<Ksjl>()
-                .eq("sj_id", kssj.getId())
-                .eq("xs_id", xs.getId()));
-        if (checkKsjl != null) {
-
-            return getAlreadyKsjl(checkKsjl);
-        }
-
         TzXs tzxs = tzXsMapper.selectOne(new QueryWrapper<TzXs>()
                 .eq("tz_id", tz.getId())
                 .eq("xs_id", xs.getId())
@@ -186,6 +177,15 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         tzxs.setClzt(true);
         tzXsMapper.updateById(tzxs);
+
+        //通过试卷ID和学生ID获取考试记录
+        Ksjl checkKsjl = ksjlMapper.selectOne(new QueryWrapper<Ksjl>()
+                .eq("sj_id", kssj.getId())
+                .eq("xs_id", xs.getId()));
+        if (checkKsjl != null) {
+
+            return getAlreadyKsjl(checkKsjl);
+        }
 
         Ksjl ksjl = new Ksjl();
 

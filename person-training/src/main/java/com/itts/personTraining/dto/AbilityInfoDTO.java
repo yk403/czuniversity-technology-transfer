@@ -42,18 +42,6 @@ public class AbilityInfoDTO {
     private Integer sxcj;
 
     /**
-     * 实践列表
-     */
-    @ApiModelProperty(value = "实践列表")
-    private List<SjDTO> sjDTOList;
-
-    /**
-     * 课程列表
-     */
-    @ApiModelProperty(value = "课程列表")
-    private List<KcDTO> kcDTOList;
-
-    /**
      * 批次ID
      */
     @ApiModelProperty(value = "批次ID")
