@@ -42,8 +42,8 @@
             <if test="map.lysj != null"> and msg.lysj = #{map.lysj} </if>
         </where>
         <choose>
-            <when test="map.sort != null and map.sort.trim() != ''">
-                order by ${map.sort} ${map.order}
+            <when test="(map.sort1 != null and map.sort1.trim() != '') and (map.sort2 != null and map.sort2.trim() != '')">
+                order by ${map.sort1} ${map.order1}, ${map.sort2} ${map.order2}
             </when>
             <otherwise>
                 order by id desc
