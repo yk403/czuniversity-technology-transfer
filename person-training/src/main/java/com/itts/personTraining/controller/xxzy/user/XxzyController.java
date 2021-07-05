@@ -181,11 +181,6 @@ public class XxzyController {
     public void pay(@RequestParam("orderNo") String orderNo, @RequestParam("payType") String payType
             , HttpServletResponse response) throws Exception {
 
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        if (loginUser == null) {
-            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
-        }
-
         if (StringUtils.isBlank(payType)) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
