@@ -144,7 +144,6 @@ public class DdxfjlController {
 
         String result = wxPaymentService.orderInteface(ddxfjl);
 
-        dd.setZt(OrderStatusEnum.COMPLETED.getKey());
         dd.setZfsj(new Date());
         ddxfjlService.updateById(dd);
 
