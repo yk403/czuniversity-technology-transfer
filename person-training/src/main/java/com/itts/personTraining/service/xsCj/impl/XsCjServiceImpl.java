@@ -545,7 +545,6 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 //实践成绩
                 Integer sjcj = Integer.valueOf(sjMapper.getSjcjByXsIdAndPcId(xsId,pcId));
                 abilityInfoDTO.setSjcj(sjcj);
-
                 break;
             case "broker":
 
