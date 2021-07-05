@@ -98,7 +98,6 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             return null;
         }
 
-
         GetKsjlVO vo = new GetKsjlVO();
         BeanUtils.copyProperties(ksjl, vo);
 
@@ -167,6 +166,15 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             return null;
         }
 
+        //通过试卷ID和学生ID获取考试记录
+        Ksjl checkKsjl = ksjlMapper.selectOne(new QueryWrapper<Ksjl>()
+                .eq("sj_id", kssj.getId())
+                .eq("xs_id", xs.getId()));
+        if (checkKsjl != null) {
+
+            return getAlreadyKsjl(checkKsjl);
+        }
+
         TzXs tzxs = tzXsMapper.selectOne(new QueryWrapper<TzXs>()
                 .eq("tz_id", tz.getId())
                 .eq("xs_id", xs.getId())
@@ -188,7 +196,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         ksjl.setDanxzf(kssj.getDanzf());
         ksjl.setDuoxzf(kssj.getDuozf());
 
-        ksjl.setXsId(loginUser.getUserId());
+        ksjl.setXsId(xs.getId());
         ksjl.setXsmc(loginUser.getRealName());
         ksjl.setXsbm("");
 
@@ -197,7 +205,72 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         ksjl.setKsdtsj(new Date());
 
+        GetKsjlVO getKsjlVO = getKsjlVO(ksjl, kssj);
         //返回生成的试卷
+        /*GetKsjlVO getKsjlVO = new GetKsjlVO();
+        BeanUtils.copyProperties(ksjl, getKsjlVO);
+
+        //获取当前试卷的题目
+        List<Tkzy> tms = tkzyMapper.findBySjId(kssj.getId());
+        //获取题目ID
+        List<Long> tmIds = tms.stream().map(Tkzy::getId).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(tmIds)) {
+            return null;
+        }
+
+        //查询所有题目选项
+        List<Tmxx> allTmxxs = tmxxMapper.selectList(new QueryWrapper<Tmxx>().in("tm_id", tmIds));
+
+        ksjlMapper.insert(ksjl);
+
+        //根据题目ID分组成map
+        Map<Long, List<Tmxx>> allTmxxMap = Maps.newHashMap();
+
+        if (!CollectionUtils.isEmpty(allTmxxs)) {
+            //根据题目ID分组成map
+            allTmxxMap = allTmxxs.stream().collect(Collectors.groupingBy(Tmxx::getTmId));
+        }
+
+        List<GetKsjlTmVO> ksjlTms = Lists.newArrayList();
+
+        //便利所有题目，生成试卷记录选项
+        Iterator<Tkzy> tmIterator = tms.iterator();
+        while (tmIterator.hasNext()) {
+
+            Tkzy tm = tmIterator.next();
+
+            GetKsjlTmVO getKsjlTmVO = new GetKsjlTmVO();
+            BeanUtils.copyProperties(tm, getKsjlTmVO);
+
+            if (tm != null) {
+
+                //判断题目是否为判断题
+                if (Objects.equals(tm.getTmlx(), TkzyTypeEnum.JUDGMENT.getKey())) {
+
+                    setJudgmentOptions(tm, ksjl, getKsjlTmVO);
+                } else {
+
+                    if (!CollectionUtils.isEmpty(allTmxxMap)) {
+                        setSelectOptions(tm, allTmxxMap, ksjl, getKsjlTmVO);
+                    }
+                }
+
+                tmIterator.remove();
+            }
+
+            ksjlTms.add(getKsjlTmVO);
+        }
+
+        getKsjlVO.setKsjlTms(ksjlTms);
+        getKsjlVO.setId(ksjl.getId());*/
+
+        return getKsjlVO;
+    }
+
+    /**
+     * 生成考试试卷VO
+     */
+    private GetKsjlVO getKsjlVO(Ksjl ksjl, Kssj kssj) {
         GetKsjlVO getKsjlVO = new GetKsjlVO();
         BeanUtils.copyProperties(ksjl, getKsjlVO);
 
@@ -254,6 +327,55 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         getKsjlVO.setKsjlTms(ksjlTms);
         getKsjlVO.setId(ksjl.getId());
+
+        return getKsjlVO;
+    }
+
+    /**
+     * 获取已生成考试记录信息
+     */
+    public GetKsjlVO getAlreadyKsjl(Ksjl ksjl) {
+        GetKsjlVO getKsjlVO = new GetKsjlVO();
+        BeanUtils.copyProperties(ksjl, getKsjlVO);
+
+        //获取当前考试记录所有考试选项
+        List<Ksjlxx> ksjlxxs = ksjlxxMapper.selectList(new QueryWrapper<Ksjlxx>().eq("ksjl_id", ksjl.getId()));
+        if (CollectionUtils.isEmpty(ksjlxxs)) {
+            return getKsjlVO;
+        }
+
+        //通过题目ID进行分组
+        Map<Long, List<Ksjlxx>> ksjlxxMap = ksjlxxs.stream().collect(Collectors.groupingBy(Ksjlxx::getTmId));
+
+        Set<Long> tmIds = ksjlxxs.stream().map(Ksjlxx::getTmId).collect(Collectors.toSet());
+        //获取当前考试记录所有题目
+        List<Tkzy> tms = tkzyMapper.selectList(new QueryWrapper<Tkzy>().in("id", tmIds));
+        if (CollectionUtils.isEmpty(tms)) {
+            return getKsjlVO;
+        }
+
+        List<GetKsjlTmVO> tmVOs = tms.stream().map(obj -> {
+
+            GetKsjlTmVO getKsjlTmVO = new GetKsjlTmVO();
+            BeanUtils.copyProperties(obj, getKsjlTmVO);
+
+            List<Ksjlxx> thisKsjlxxs = ksjlxxMap.get(obj.getId());
+            if (!CollectionUtils.isEmpty(thisKsjlxxs)) {
+
+                List<GetKsjlTmXxVO> ksjlxxVOs = thisKsjlxxs.stream().map(xxObj -> {
+
+                    GetKsjlTmXxVO getKsjlTmXxVO = new GetKsjlTmXxVO();
+                    BeanUtils.copyProperties(xxObj, getKsjlTmXxVO);
+                    return getKsjlTmXxVO;
+                }).collect(Collectors.toList());
+
+                getKsjlTmVO.setKsjlTmXxs(ksjlxxVOs);
+            }
+
+            return getKsjlTmVO;
+        }).collect(Collectors.toList());
+
+        getKsjlVO.setKsjlTms(tmVOs);
 
         return getKsjlVO;
     }
@@ -364,33 +486,36 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             }
 
             //如果选中的数量小于正确答案数量，漏选得一半分，多选或者有选错选项不得分
-            zqIdList.stream().forEach(zqId -> {
+            if (zqIdList.size() > xzIdList.size()) {
 
-                if (xzIdList.contains(zqId)) {
-                    xzIdList.remove(zqId);
-                }
-            });
+                zqIdList.stream().forEach(zqId -> {
 
-            if (CollectionUtils.isEmpty(xzIdList)) {
+                    if (xzIdList.contains(zqId)) {
+                        xzIdList.remove(zqId);
+                    }
+                });
 
-                totalScore.addAndGet(tmMap.get(k).getFz() / 2);
+                if (CollectionUtils.isEmpty(xzIdList)) {
 
-                //设置判断最终得分
-                if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.JUDGMENT.getKey())) {
+                    totalScore.addAndGet(tmMap.get(k).getFz() / 2);
 
-                    pdScore.addAndGet(tmMap.get(k).getFz());
-                }
+                    //设置判断最终得分
+                    if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.JUDGMENT.getKey())) {
 
-                //设置单选最终得分
-                if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.SINGLE_CHOICE.getKey())) {
+                        pdScore.addAndGet(tmMap.get(k).getFz());
+                    }
 
-                    danxScore.addAndGet(tmMap.get(k).getFz());
-                }
+                    //设置单选最终得分
+                    if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.SINGLE_CHOICE.getKey())) {
 
-                //设置多选最终得分
-                if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.MULTIPLE_CHOICE.getKey())) {
+                        danxScore.addAndGet(tmMap.get(k).getFz());
+                    }
 
-                    duoxScore.addAndGet(tmMap.get(k).getFz());
+                    //设置多选最终得分
+                    if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.MULTIPLE_CHOICE.getKey())) {
+
+                        duoxScore.addAndGet(tmMap.get(k).getFz());
+                    }
                 }
             }
         });
