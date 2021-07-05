@@ -486,33 +486,36 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             }
 
             //如果选中的数量小于正确答案数量，漏选得一半分，多选或者有选错选项不得分
-            zqIdList.stream().forEach(zqId -> {
+            if (zqIdList.size() > xzIdList.size()) {
 
-                if (xzIdList.contains(zqId)) {
-                    xzIdList.remove(zqId);
-                }
-            });
+                zqIdList.stream().forEach(zqId -> {
 
-            if (CollectionUtils.isEmpty(xzIdList)) {
+                    if (xzIdList.contains(zqId)) {
+                        xzIdList.remove(zqId);
+                    }
+                });
 
-                totalScore.addAndGet(tmMap.get(k).getFz() / 2);
+                if (CollectionUtils.isEmpty(xzIdList)) {
 
-                //设置判断最终得分
-                if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.JUDGMENT.getKey())) {
+                    totalScore.addAndGet(tmMap.get(k).getFz() / 2);
 
-                    pdScore.addAndGet(tmMap.get(k).getFz());
-                }
+                    //设置判断最终得分
+                    if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.JUDGMENT.getKey())) {
 
-                //设置单选最终得分
-                if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.SINGLE_CHOICE.getKey())) {
+                        pdScore.addAndGet(tmMap.get(k).getFz());
+                    }
 
-                    danxScore.addAndGet(tmMap.get(k).getFz());
-                }
+                    //设置单选最终得分
+                    if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.SINGLE_CHOICE.getKey())) {
 
-                //设置多选最终得分
-                if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.MULTIPLE_CHOICE.getKey())) {
+                        danxScore.addAndGet(tmMap.get(k).getFz());
+                    }
 
-                    duoxScore.addAndGet(tmMap.get(k).getFz());
+                    //设置多选最终得分
+                    if (Objects.equals(tmMap.get(k).getTmlx(), TkzyTypeEnum.MULTIPLE_CHOICE.getKey())) {
+
+                        duoxScore.addAndGet(tmMap.get(k).getFz());
+                    }
                 }
             }
         });
