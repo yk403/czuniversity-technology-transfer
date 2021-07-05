@@ -5,6 +5,7 @@
     <select id="findLyMsgFront" resultType="com.itts.technologytransactionservice.model.LyMsgDto">
         select
         msg.id as id,
+        hd.hdmc,
         msg.yh_id,
         msg.gxsj,
         msg.cjsj,
@@ -26,7 +27,14 @@
         zjyh.yhtx as zjtx,
         msg.sfckzt
 
-        from t_ly_msg msg left join t_ly_ry ry on(ry.id = msg.ry_id) left join t_zj zj on(zj.id = ry.zj_id) left join t_sjzd sjzd on(sjzd.zdbm = zj.yjly) left join t_yh zjyh on (zjyh.id = zj.yh_id) left join t_yh yh on (yh.id = msg.yh_id) LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
+        from t_ly_msg msg
+        left join t_ly_ry ry on(ry.id = msg.ry_id)
+        LEFT JOIN t_ly_hd hd ON (hd.id = ry.hd_id)
+        left join t_zj zj on(zj.id = ry.zj_id)
+        left join t_sjzd sjzd on(sjzd.zdbm = zj.yjly)
+        left join t_yh zjyh on (zjyh.id = zj.yh_id)
+        left join t_yh yh on (yh.id = msg.yh_id)
+        LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
         <where>
             <!--后台能查询0或者1的数据 -->
             msg.is_delete = 0
@@ -53,6 +61,7 @@
     <select id="findLyMsgBack" resultType="com.itts.technologytransactionservice.model.LyMsgDto">
         select
         msg.id as id,
+        hd.hdmc,
         msg.yh_id,
         msg.gxsj,
         msg.cjsj,
@@ -74,7 +83,14 @@
         zjyh.yhtx as zjtx,
         msg.sfckzt
 
-        from t_ly_msg msg left join t_ly_ry ry on(ry.id = msg.ry_id) left join t_zj zj on(zj.id = ry.zj_id) left join t_sjzd sjzd on(sjzd.zdbm = zj.yjly) left join t_yh zjyh on (zjyh.id = zj.yh_id) left join t_yh yh on (yh.id = msg.yh_id) LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
+        from t_ly_msg msg
+        left join t_ly_ry ry on(ry.id = msg.ry_id)
+        LEFT JOIN t_ly_hd hd ON (hd.id = ry.hd_id)
+        left join t_zj zj on(zj.id = ry.zj_id)
+        left join t_sjzd sjzd on(sjzd.zdbm = zj.yjly)
+        left join t_yh zjyh on (zjyh.id = zj.yh_id)
+        left join t_yh yh on (yh.id = msg.yh_id)
+        LEFT JOIN t_sjzd zd on (zd.zdbm = yh.yhlb)
         <where>
             <!--后台能查询0或者1的数据 -->
             msg.is_delete = 0

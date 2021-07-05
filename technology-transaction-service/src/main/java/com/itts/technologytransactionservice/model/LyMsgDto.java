@@ -159,5 +159,13 @@ public class LyMsgDto implements Serializable {
      * @Date: 2021/7/2
      */
     private String zjtx;
+    /**
+    * @Description: 活动名称
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/7/5
+    */
+    private String hdmc;
 
 }
