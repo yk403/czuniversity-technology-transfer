@@ -307,7 +307,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 tz.setNr(nr);
                 tz.setCjr(userId);
                 tz.setGxr(userId);
-                saveTzAndTzXs(tz, xsIds);
+                saveTzAndTzXs(tz, xsIds,null);
             } else if (ks.getType() == 2) {
                 //继续教育,通过批次id和报名方式(线下)查询学员ids(经纪人)
                 List<Long> xsIds = xsMapper.findXsIdsByPcIdAndBmfs(pc.getId(),OFF_LINE.getMsg());
@@ -315,7 +315,7 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                     tz.setNr("您好，您此批次："+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsrq())+"，"+ks.getKskssj()+"--"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行考试，请悉知！");
                     tz.setCjr(userId);
                     tz.setGxr(userId);
-                    saveTzAndTzXs(tz, xsIds);
+                    saveTzAndTzXs(tz, xsIds, null);
                     tz1.setNr("您好，您将于"+DateUtils.getDateFormat(ks.getKsrq())+"，"+ks.getKskssj()+"--"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行监考，请悉知！");
                     tz1.setCjr(userId);
                     tz1.setGxr(userId);
@@ -332,9 +332,8 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                     tz2.setNr("您好，您此批次："+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsksnyr())+"至"+DateUtils.getDateFormat(ks.getKsjsnyr())+"进行线上考试，请悉知！");
                     tz2.setCjr(userId);
                     tz2.setGxr(userId);
-                    tz2.setKssc(ks.getKssc());
                     tz2.setKssjId(ks.getKssjId());
-                    saveTzAndTzXs(tz2, xsIdList);
+                    saveTzAndTzXs(tz2, xsIdList, ks.getKssc());
                 }
             }
         }
@@ -458,13 +457,14 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
      * @param tz
      * @param xsIds
      */
-    private void saveTzAndTzXs(Tz tz, List<Long> xsIds) {
+    private void saveTzAndTzXs(Tz tz, List<Long> xsIds, String kssc) {
         if (tzService.save(tz)) {
             List<TzXs> tzXsList = new ArrayList<>();
             for (Long xsId : xsIds) {
                 TzXs tzXs = new TzXs();
                 tzXs.setTzId(tz.getId());
                 tzXs.setXsId(xsId);
+                tzXs.setKssc(kssc);
                 tzXsList.add(tzXs);
             }
             if (!tzXsService.saveBatch(tzXsList)) {

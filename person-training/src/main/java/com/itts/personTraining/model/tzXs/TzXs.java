@@ -48,5 +48,10 @@ public class TzXs implements Serializable {
      */
     private Boolean clzt;
 
+    /**
+     * 考试时长
+     */
+    private String kssc;
+
 
 }
