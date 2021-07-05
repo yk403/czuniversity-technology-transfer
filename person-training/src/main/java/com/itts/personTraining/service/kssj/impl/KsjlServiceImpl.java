@@ -199,7 +199,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         ksjl.setDanxzf(kssj.getDanzf());
         ksjl.setDuoxzf(kssj.getDuozf());
 
-        ksjl.setXsId(loginUser.getUserId());
+        ksjl.setXsId(xs.getId());
         ksjl.setXsmc(loginUser.getRealName());
         ksjl.setXsbm("");
 
