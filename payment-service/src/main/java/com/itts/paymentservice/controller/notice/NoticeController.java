@@ -94,7 +94,7 @@ public class NoticeController {
             params.put(name, valueStr);
         }
 
-        boolean signVerified = AlipaySignature.rsaCheckV1(params, PaymentConstant.alipay_public_key, PaymentConstant.charset, PaymentConstant.sign_type); //调用SDK验证签名
+        boolean signVerified = AlipaySignature.rsaCheckV1(params, PaymentConstant.alipay_public_key, PaymentConstant.alipay_charset, PaymentConstant.alipay_sign_type); //调用SDK验证签名
 
         //——请在这里编写您的程序（以下代码仅作参考）——
 
@@ -166,7 +166,7 @@ public class NoticeController {
             params.put(name, valueStr);
         }
 
-        boolean signVerified = AlipaySignature.rsaCheckV1(params, PaymentConstant.alipay_public_key, PaymentConstant.charset, PaymentConstant.sign_type); //调用SDK验证签名
+        boolean signVerified = AlipaySignature.rsaCheckV1(params, PaymentConstant.alipay_public_key, PaymentConstant.alipay_charset, PaymentConstant.alipay_sign_type); //调用SDK验证签名
 
         //——请在这里编写您的程序（以下代码仅作参考）——
         if(signVerified) {
