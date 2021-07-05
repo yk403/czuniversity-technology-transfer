@@ -1,5 +1,8 @@
 package com.itts.paymentservice.constant;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 /*
  *@Auther: yukai
  *@Date: 2021/06/30/9:17
@@ -56,4 +59,58 @@ public class PaymentConstant {
     * @Author: yukai
     * @Date: 2021/6/30
     */
+    //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+    // 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号(沙箱环境)
+    public static String alipay_app_id = "2021000117683408";
+
+    // 商户私钥，您的PKCS8格式RSA2私钥
+    public static String alipay_merchant_private_key = "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC5Cyk/d/z6CONIm+LRr+yZoAE34cjqoD8RxP1QSQ3qQBygT7SpAoYlvZ2KbN3P7DIedFm8PT1NnRB1M7ap2oY5S2gswgMzb1RcEPs2pkJoqEmMZRghpCZfclOcQOBDAU7QzTEaXEXBJtbWA89Xa0YFDa3NBnDJmdNsUrFkarEQ0mAmxHffw00t09E1ghw6v0tQC2TSYUc7S5+5QV25dmt96A2kk5tl5pUUxEosB1MZ9xA/vhQ41df6HFg4cSTj60Qe4gQ5x4f+RsARCNHKzpMKRUivRwYH27IKtirpRLBYMpdHfUQP9Tpv6Iy/gO0ytdbvyFSkafsa+dAoic9BXMmhAgMBAAECggEBAJVzWT4kp9I9yWvEU34tyzcMjs9WcVJmWGn+ouTsC+wNGdG0bmIuYrAqpAnAAapDxvrn1+37u/5qg3dVbAtlLhEqQRodHD63hPfS00KBJ5Olj7lvkPziugdOrA7AKyCS9tgXUbhLnB7zQoKZkyW0w1mjgaLct81riuGrLBDBRv8gumc03CTpEEnLfsqWfFCXt8Ozd3PtM6Bsx2JG6MHVrjuwBJnFG2o9Vez2+EJNNo5jh9LB8oqYhvRmKMrXSb3FQW8Px5irgmlyj88uJDDiDsmGZrp1U2s3w/g76IUQBcaPBdHafN+33wPTwU5s4JNjLe/2hWZHq/qU+QGT15bAHwECgYEA5bxBN1+A4HYyDgyMkFHEdEyPOqv8hmHnWNMkXWTeFAhuibuyLsrZ0+poMiw1MmtqqQ2BW4U6Np1iMf6IvFaxUxsTwnidyKOhvVwXT9G+7/DZVITu+dmlaRYAUFbVHhw/MSkTTZJRn2ZjQFsaYVWs6SkUN3FzJpDiHFrJ9Qh/4PECgYEAzjLljUROLmPk3t4pXXcFvVbrCRX67uTy7hTWT6F1j+iXavlKy7zWtftoW6VaIVxhiA8LDxuMarrJW/CxV5q14VfWrce00fmJqfGs5UGSw/cZ4Jy3hTh5Y+tXujEfhLzR5Q2OqdYZgYL9eYj6X54zUG9ZfvSAKTXmN6m5Ij1Gc7ECgYEAo2Q/8fUPwRTvRsSwGFi/Y4Or/quhn6X0F12cKHx74j2Y+IaxFMybHjhCQSTl9OUm5/M+BGx92agX1bzVXTY/Sf8hD5gfiDqw5u+feNqRdS+UMqOVH8gm99V5BaqsSo0GeJ1hKDOfr8HvZy8kVQPNRcs8oK4kmtJCrq33ozmXUdECgYEAile3j5oeYh1/ds/TLPQoE6p3Mrdejl1pZ7bvOqn3OEAzJwBu4FaoL5ynnaVI3U0f2qtNHiu7f/gmFNteAIq6MKBAVoPAm4gyhqSw/XeLQpNM91fuASGswA8r4q4GmYYdxPHdn7EXl78M1TfD09dOUk8C2pysR/nzpbDnl0NJO2ECgYATtjrvvsWE3pItemueSTQiR/+Dh7HfOq463RBA3t+f+fSSXCwn5iEZQElWwwigRQWOeKBGqUyL/wr7GGFytuaK2yPJPZij1uWx3xLCpHHFnOSxpwDKVmoZj0m6FJ3BV3qa2918xkh4wpFZEHGikbY5q61X9MsoC+FqwcCdzWLrhQ==";
+
+    // 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
+    public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuQspP3f8+gjjSJvi0a/smaABN+HI6qA/EcT9UEkN6kAcoE+0qQKGJb2dimzdz+wyHnRZvD09TZ0QdTO2qdqGOUtoLMIDM29UXBD7NqZCaKhJjGUYIaQmX3JTnEDgQwFO0M0xGlxFwSbW1gPPV2tGBQ2tzQZwyZnTbFKxZGqxENJgJsR338NNLdPRNYIcOr9LUAtk0mFHO0ufuUFduXZrfegNpJObZeaVFMRKLAdTGfcQP74UONXX+hxYOHEk4+tEHuIEOceH/kbAEQjRys6TCkVIr0cGB9uyCrYq6USwWDKXR31ED/U6b+iMv4DtMrXW78hUpGn7GvnQKInPQVzJoQIDAQAB";
+
+    // 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
+    public static String alipay_notify_url = "http://yukai.vipgz4.idcfengye.com/payment/api/notice/alipaypost/";
+
+    // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
+    public static String alipay_return_url = "http://yukai.vipgz4.idcfengye.com/payment/api/notice/alipayget/";
+
+    // 签名方式
+    public static String alipay_sign_type = "RSA2";
+
+    // 字符编码格式
+    public static String alipay_charset = "utf-8";
+
+    // 支付宝网关(沙箱环境，正式环境在下面)
+    public static String alipay_gatewayUrl = "https://openapi.alipaydev.com/gateway.do";
+    //public static String alipay_gatewayUrl = "https://openapi.alipay.com/gateway.do";
+
+    // 支付宝网关
+    public static String alipay_log_path = "F:\\";
+
+
+//↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+
+    /**
+     * 写日志，方便测试（看网站需求，也可以改成把记录存入数据库）
+     * @param sWord 要写入日志里的文本内容
+     */
+    public static void logResult(String sWord) {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(alipay_log_path + "alipay_log_" + System.currentTimeMillis()+".txt");
+            writer.write(sWord);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
