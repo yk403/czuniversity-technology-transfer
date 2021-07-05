@@ -45,7 +45,7 @@ public class LyHdServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implements Ly
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyHdDto> list = lyHdMapper.findLyHdFront(query);
+        List<LyHdDto> list = lyHdMapper.findLyHd(query);
         if(getUserId()!=null){
             HashMap<String, Object> userMap = new HashMap<>();
             //门户报名暂定为userId为2
