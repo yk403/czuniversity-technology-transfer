@@ -11,8 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "user-service")
 public interface UserInfoService {
     /**
-     * 获取数据字典
+     * 获取当前用户
      */
     @GetMapping(SystemConstant.BASE_URL + "/v1/yh/get/")
-    ResponseUtil get(@RequestHeader(name = "token") String token);
+    ResponseUtil get();
+    /**
+     * 根据id获取用户
+     */
+    @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/yh/get/{id}")
+    ResponseUtil getUser(@RequestParam(value = "id") Long id);
 }

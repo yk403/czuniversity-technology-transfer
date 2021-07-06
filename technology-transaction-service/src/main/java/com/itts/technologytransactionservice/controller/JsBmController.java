@@ -1,18 +1,25 @@
 package com.itts.technologytransactionservice.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.technologytransactionservice.mapper.JsBmMapper;
+import com.itts.technologytransactionservice.mapper.JsHdMapper;
 import com.itts.technologytransactionservice.model.TJsBm;
+import com.itts.technologytransactionservice.model.TJsHd;
 import com.itts.technologytransactionservice.model.TJsLb;
 import com.itts.technologytransactionservice.service.JsBmService;
+import com.itts.technologytransactionservice.service.JsHdService;
 import com.itts.technologytransactionservice.service.JsLbService;
+import com.itts.technologytransactionservice.service.JsXtxxService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +40,12 @@ public class JsBmController extends BaseController {
 
     @Autowired
     private JsBmService jsBmService;
+    @Autowired
+    private JsHdMapper jsHdMapper;
+    @Autowired
+    private JsXtxxService jsXtxxService;
+    @Autowired
+    private JsHdService jsHdService;
 
     /**
     * 分页查询
@@ -71,7 +84,26 @@ public class JsBmController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsBm tJsBm) {
-        return update(jsBmService.updateById(tJsBm));
+        R update=update(jsBmService.updateById(tJsBm));
+        TJsHd tJsHd=jsHdService.getById(tJsBm.getHdId());
+        String  hdlx="";
+        if(tJsHd.getHdlx()==0){
+            hdlx="技术拍卖";
+        }
+        if(tJsHd.getHdlx()==1){
+            hdlx="技术招标";
+        }
+        if(tJsHd.getHdlx()==2){
+            hdlx="技术挂牌";
+        }
+        hdlx+="报名管理";
+        if(tJsBm.getShzt().equals("2")){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsBm.getUserId().longValue(),0,hdlx,"","报名成功");
+        }
+        if(tJsBm.getShzt().equals("1")){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsBm.getUserId().longValue(),0,hdlx,"","报名拒绝");
+        }
+        return update;
     }
 
     /**
