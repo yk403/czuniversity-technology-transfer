@@ -22,6 +22,7 @@ import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.tz.Tz;
+import com.itts.personTraining.model.tzSz.TzSz;
 import com.itts.personTraining.model.tzXs.TzXs;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.model.xsCj.XsCj;
@@ -29,6 +30,7 @@ import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.tz.TzService;
+import com.itts.personTraining.service.tzSz.TzSzService;
 import com.itts.personTraining.service.tzXs.TzXsService;
 import com.itts.personTraining.service.xsCj.XsCjService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -78,6 +80,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     private TzService tzService;
     @Autowired
     private TzXsService tzXsService;
+    @Autowired
+    private TzSzService tzSzService;
     @Resource
     private XsMapper xsMapper;
     @Resource
@@ -258,18 +262,46 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             xsCjDTO.setSfxf(true);
             BeanUtils.copyProperties(xsCjDTO,xsCj);
             xsCjList.add(xsCj);
+            List<Tz> tzList = new ArrayList<>();
             Tz tz = new Tz();
             tz.setTzlx("成绩通知");
             tz.setTzmc(xsCjDTO.getPch() + "成绩通知" + DateUtils.getDateFormat(new Date()));
             tz.setNr("您好，您的批次："+ xsCjDTO.getPch() +"成绩结果已出，请悉知！");
+            tzList.add(tz);
             //根据学生成绩Id查询学生id
             Long xsId = xsCjMapper.findXsIdsByXsCjId(xsCjDTO.getId());
-            if (tzService.save(tz)) {
+            Xs xs = xsMapper.selectById(xsId);
+            Tz tz1 = new Tz();
+            if (xs.getYzydsId() != null && xs.getQydsId() != null) {
+                tz1.setTzlx("成绩通知");
+                tz1.setTzmc(xsCjDTO.getPch() + "成绩通知" + DateUtils.getDateFormat(new Date()));
+                tz1.setNr("您好，您的"+xs.getXm()+"学生的批次："+ xsCjDTO.getPch() +"的成绩结果已出，请悉知！");
+                tzList.add(tz1);
+            }
+            if (tzService.saveBatch(tzList)) {
                 TzXs tzXs = new TzXs();
                 tzXs.setXsId(xsId);
                 tzXs.setTzId(tz.getId());
                 if (!tzXsService.save(tzXs)) {
                     throw new ServiceException(INSERT_FAIL);
+                }
+                if (xs.getYzydsId() != null || xs.getQydsId() != null) {
+                    List<TzSz> tzSzList = new ArrayList<>();
+                    if (xs.getYzydsId() != null) {
+                        TzSz tzSz = new TzSz();
+                        tzSz.setTzId(tz1.getId());
+                        tzSz.setSzId(xs.getYzydsId());
+                        tzSzList.add(tzSz);
+                    }
+                    if (xs.getQydsId() != null) {
+                        TzSz tzSz = new TzSz();
+                        tzSz.setTzId(tz1.getId());
+                        tzSz.setSzId(xs.getQydsId());
+                        tzSzList.add(tzSz);
+                    }
+                    if(!tzSzService.saveBatch(tzSzList)) {
+                        throw new ServiceException(INSERT_FAIL);
+                    }
                 }
             } else {
                 throw new ServiceException(INSERT_FAIL);
@@ -545,9 +577,6 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 //实践成绩
                 Integer sjcj = Integer.valueOf(sjMapper.getSjcjByXsIdAndPcId(xsId,pcId));
                 abilityInfoDTO.setSjcj(sjcj);
-                break;
-            case "broker":
-
                 break;
             default:
                 break;
