@@ -178,7 +178,7 @@ public class XxzyController {
 
     @ApiOperation(value = "支付金额")
     @GetMapping("/pay/")
-    public String pay(@RequestParam("orderNo") String orderNo, @RequestParam("payType") String payType
+    public ResponseUtil pay(@RequestParam("orderNo") String orderNo, @RequestParam("payType") String payType
             , HttpServletResponse response) throws Exception {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
@@ -216,7 +216,7 @@ public class XxzyController {
         OutputStream outputStream = response.getOutputStream();
 
         MatrixToImageWriter.writeToStream(bitMatrix, "png", outputStream);*/
-return codeUrl;
+return ResponseUtil.success(codeUrl);
     }
 
     /**
