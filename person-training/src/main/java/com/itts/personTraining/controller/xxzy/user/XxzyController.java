@@ -211,7 +211,7 @@ public class XxzyController {
         OutputStream outputStream = response.getOutputStream();
 
         MatrixToImageWriter.writeToStream(bitMatrix, "png", outputStream);*/
-return ResponseUtil.success(codeUrl);
+        return ResponseUtil.success("返回成功",codeUrl);
     }
 
     /**
