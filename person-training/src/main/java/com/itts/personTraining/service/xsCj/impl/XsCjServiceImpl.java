@@ -264,6 +264,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             xsCjList.add(xsCj);
             List<Tz> tzList = new ArrayList<>();
             Tz tz = new Tz();
+            tz.setCjr(userId);
+            tz.setGxr(userId);
             tz.setTzlx("成绩通知");
             tz.setTzmc(xsCjDTO.getPch() + "成绩通知" + DateUtils.getDateFormat(new Date()));
             tz.setNr("您好，您的批次："+ xsCjDTO.getPch() +"成绩结果已出，请悉知！");
@@ -272,7 +274,9 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             Long xsId = xsCjMapper.findXsIdsByXsCjId(xsCjDTO.getId());
             Xs xs = xsMapper.selectById(xsId);
             Tz tz1 = new Tz();
-            if (xs.getYzydsId() != null && xs.getQydsId() != null) {
+            if (xs.getYzydsId() != null || xs.getQydsId() != null) {
+                tz1.setCjr(userId);
+                tz1.setGxr(userId);
                 tz1.setTzlx("成绩通知");
                 tz1.setTzmc(xsCjDTO.getPch() + "成绩通知" + DateUtils.getDateFormat(new Date()));
                 tz1.setNr("您好，您的"+xs.getXm()+"学生的批次："+ xsCjDTO.getPch() +"的成绩结果已出，请悉知！");
