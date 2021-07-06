@@ -13,11 +13,14 @@ import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.sj.Sj;
 import com.itts.personTraining.mapper.sj.SjMapper;
 import com.itts.personTraining.model.tz.Tz;
+import com.itts.personTraining.model.tzSz.TzSz;
 import com.itts.personTraining.model.tzXs.TzXs;
+import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.service.sj.SjService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.tz.TzService;
+import com.itts.personTraining.service.tzSz.TzSzService;
 import com.itts.personTraining.service.tzXs.TzXsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -55,6 +58,8 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     private TzXsService tzXsService;
     @Autowired
     private TzService tzService;
+    @Autowired
+    private TzSzService tzSzService;
     @Resource
     private SjMapper sjMapper;
     @Resource
@@ -108,19 +113,49 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
             sj.setGxr(userId);
             sj.setSfxf(true);
             Pc pc = pcMapper.getPcById(sj.getPcId());
+            List<Tz> tzList = new ArrayList<>();
             Tz tz = new Tz();
+            tz.setCjr(userId);
+            tz.setGxr(userId);
             tz.setTzlx("实践通知");
             tz.setTzmc(pc.getPch() + "实践通知" + DateUtils.getDateFormat(new Date()));
             List<Long> xsIds = xsMapper.findXsIdsByPcId(pc.getId());
             tz.setNr("您好，您此批次："+pc.getPch()+sj.getSjmc()+"实践单位为："+sj.getSjdw()+"，实践时间为："+DateUtils.getDateFormat(sj.getKsrq())+"—"+DateUtils.getDateFormat(sj.getJsrq())+"，请悉知！");
-            if (tzService.save(tz)) {
+            tzList.add(tz);
+            Xs xs = xsMapper.selectById(sj.getXsId());
+            Tz tz1 = new Tz();;
+            if (xs.getYzydsId() != null || xs.getQydsId() != null) {
+                tz1.setCjr(userId);
+                tz1.setGxr(userId);
+                tz1.setTzlx("实践通知");
+                tz1.setTzmc(pc.getPch() + "实践通知" + DateUtils.getDateFormat(new Date()));
+                tz1.setNr("您好，您批次："+pc.getPch()+sj.getSjmc()+"的"+xs.getXm()+"学生的实践单位为："+sj.getSjdw()+"，实践时间为："+DateUtils.getDateFormat(sj.getKsrq())+"—"+DateUtils.getDateFormat(sj.getJsrq())+"，请悉知！");
+                tzList.add(tz1);
+            }
+            if (tzService.saveBatch(tzList)) {
                 TzXs tzXs = new TzXs();
                 tzXs.setXsId(sj.getXsId());
                 tzXs.setTzId(tz.getId());
-                if (tzXsService.save(tzXs)) {
-                    continue;
-                } else {
+                if (!tzXsService.save(tzXs)) {
                     throw new ServiceException(INSERT_FAIL);
+                }
+                if (xs.getYzydsId() != null || xs.getQydsId() != null) {
+                    List<TzSz> tzSzList =  new ArrayList<>();
+                    if (xs.getYzydsId() != null) {
+                        TzSz tzSz = new TzSz();
+                        tzSz.setTzId(tz1.getId());
+                        tzSz.setSzId(xs.getYzydsId());
+                        tzSzList.add(tzSz);
+                    }
+                    if (xs.getQydsId() != null) {
+                        TzSz tzSz = new TzSz();
+                        tzSz.setTzId(tz1.getId());
+                        tzSz.setSzId(xs.getQydsId());
+                        tzSzList.add(tzSz);
+                    }
+                    if (!tzSzService.saveBatch(tzSzList)) {
+                        throw new ServiceException(INSERT_FAIL);
+                    }
                 }
             } else {
                 throw new ServiceException(INSERT_FAIL);
