@@ -8,6 +8,7 @@ import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.LyZwMapper;
 import com.itts.technologytransactionservice.model.*;
 import com.itts.technologytransactionservice.mapper.LyZpMapper;
+import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.LyZpService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,8 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 public class LyZpServiceImpl extends ServiceImpl<LyZpMapper, LyZp> implements LyZpService {
     @Autowired
     private LyZpMapper lyZpMapper;
+    @Autowired
+    private JsXtxxService jsXtxxService;
     @Override
     public PageInfo findLyZpFront(Map<String, Object> params) {
         log.info("【技术交易 - 分页条件查询(前台)】");
@@ -91,6 +94,12 @@ public class LyZpServiceImpl extends ServiceImpl<LyZpMapper, LyZp> implements Ly
             id.setFbshbz("");
         }
         updateById(id);
+        if(fbshzt == 2){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),id.getUserId(),1,"审批管理","技术展品","审核成功");
+        }
+        if(fbshzt == 4){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),id.getUserId(),1,"审批管理","技术展品","审核拒绝");
+        }
         return true;
     }
 }
