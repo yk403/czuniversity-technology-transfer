@@ -178,7 +178,7 @@ public class XxzyController {
 
     @ApiOperation(value = "支付金额")
     @GetMapping("/pay/")
-    public void pay(@RequestParam("orderNo") String orderNo, @RequestParam("payType") String payType
+    public String pay(@RequestParam("orderNo") String orderNo, @RequestParam("payType") String payType
             , HttpServletResponse response) throws Exception {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
@@ -205,7 +205,7 @@ public class XxzyController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
         }
 
-        Map<EncodeHintType, Object> hints = Maps.newHashMap();
+/*        Map<EncodeHintType, Object> hints = Maps.newHashMap();
 
         //设置纠错等级
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
@@ -215,7 +215,8 @@ public class XxzyController {
 
         OutputStream outputStream = response.getOutputStream();
 
-        MatrixToImageWriter.writeToStream(bitMatrix, "png", outputStream);
+        MatrixToImageWriter.writeToStream(bitMatrix, "png", outputStream);*/
+return codeUrl;
     }
 
     /**
