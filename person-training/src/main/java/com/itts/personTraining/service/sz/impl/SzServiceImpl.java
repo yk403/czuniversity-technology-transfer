@@ -211,10 +211,10 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         Long userId = getUserId();
         SzMsgDTO szMsgDTO = new SzMsgDTO();
         Sz szByYhId = szMapper.getSzByYhId(userId);
-        Long szId = szByYhId.getId();
-        if (szId == null) {
+        if (szByYhId == null) {
             throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
         }
+        Long szId = szByYhId.getId();
         BeanUtils.copyProperties(szByYhId,szMsgDTO);
         log.info("【人才培养 - 根据用户id:{}查询师资综合信息】",userId);
         String userCategory = getUserCategory();
@@ -229,8 +229,8 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             case "corporate_mentor":
             case "teacher":
                 szMsgDTO.setKstz(tzSzMapper.getTzCountBySzIdAndTzlx(szId,"考试通知",false));
+                szMsgDTO.setCjtz(tzSzMapper.getTzCountBySzIdAndTzlx(szId,"成绩通知",false));
                 //TODO: 暂时假数据
-                szMsgDTO.setCjtz(0L);
                 szMsgDTO.setSjtz(0L);
                 szMsgDTO.setXftz(0L);
                 szMsgDTO.setQttz(0L);
