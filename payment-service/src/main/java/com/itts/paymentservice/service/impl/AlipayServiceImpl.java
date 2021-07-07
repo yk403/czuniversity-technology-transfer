@@ -6,12 +6,14 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.itts.paymentservice.constant.PaymentConstant;
 import com.itts.paymentservice.model.ddxfjl.Ddxfjl;
 import com.itts.paymentservice.service.AlipayService;
+import org.springframework.stereotype.Service;
 
 /*
  *@Auther: yukai
  *@Date: 2021/07/05/10:26
  *@Desription:
  */
+@Service
 public class AlipayServiceImpl  implements AlipayService {
 
     @Override
