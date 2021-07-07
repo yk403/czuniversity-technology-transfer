@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.COURSE_TYPE_ERROR;
 import static com.itts.personTraining.enums.CourseTypeEnum.ORIGINAL_PROFESSION_COURSE;
@@ -51,7 +49,7 @@ public class XsKcCjController {
      * 校验参数
      */
     private void checkRequest(Integer kclx) throws WebException {
-        if (Integer.parseInt(TECHNOLOGY_TRANSFER_COURSE.getKey()) != kclx && Integer.parseInt(ORIGINAL_PROFESSION_COURSE.getKey()) != kclx) {
+        if (kclx.equals(Integer.parseInt(TECHNOLOGY_TRANSFER_COURSE.getKey())) && kclx.equals(Integer.parseInt(ORIGINAL_PROFESSION_COURSE.getKey()))) {
             throw new WebException(COURSE_TYPE_ERROR);
         }
     }
