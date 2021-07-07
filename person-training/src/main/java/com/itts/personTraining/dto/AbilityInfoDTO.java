@@ -15,30 +15,34 @@ import java.util.List;
 @Data
 @ApiModel("能力提升综合信息")
 public class AbilityInfoDTO {
-    //学历
+    /**
+     * 学历
+     */
+    @ApiModelProperty(value = "学历")
+    private String xl;
 
     /**
-     * 主修专业获得学分(专业成绩)
+     * 专业成绩(原专业平均分)
      */
-    @ApiModelProperty(value = "主修专业获得学分(专业成绩)")
-    private Integer zxzyhdxf;
+    @ApiModelProperty(value = "专业成绩(原专业平均分)")
+    private Integer zycj;
 
     /**
-     * 技术转移获得学分(辅修成绩)
+     * 辅修成绩(技术转移理论平均分)
      */
-    @ApiModelProperty(value = "技术转移获得学分(辅修成绩)")
-    private Integer jszyhdxf;
+    @ApiModelProperty(value = "辅修成绩(技术转移理论平均分)")
+    private Integer fxcj;
 
     /**
-     * 实践成绩
+     * 实践成绩(技术转移实践平均分)
      */
-    @ApiModelProperty(value = "实践成绩")
+    @ApiModelProperty(value = "实践成绩(技术转移实践平均分)")
     private Integer sjcj;
 
     /**
-     * 实训成绩
+     * 实训成绩(技术转移实训平均分)
      */
-    @ApiModelProperty(value = "实训成绩")
+    @ApiModelProperty(value = "实训成绩(技术转移实训平均分)")
     private Integer sxcj;
 
     /**

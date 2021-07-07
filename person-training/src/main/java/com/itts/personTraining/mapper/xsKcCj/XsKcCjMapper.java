@@ -60,4 +60,19 @@ public interface XsKcCjMapper extends BaseMapper<XsKcCj> {
      * @return
      */
     Integer getCountJszykczf(@Param("xsCjId") Long xsCjId);
+
+    /**
+     * 统计原专业成绩
+     * @param xsId
+     * @return
+     */
+    Integer getAvgYzy(@Param("xsId") Long xsId);
+
+    /**
+     * 统计辅修专业成绩(理论,实训,实践)
+     * @param xsCjId
+     * @param kclx
+     * @return
+     */
+    Integer getAvgfxcj(@Param("xsCjId") Long xsCjId, @Param("kclx") String kclx);
 }

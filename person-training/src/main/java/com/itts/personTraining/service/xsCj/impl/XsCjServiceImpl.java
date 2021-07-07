@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 import static com.itts.personTraining.enums.BmfsEnum.ON_LINE;
-import static com.itts.personTraining.enums.CourseTypeEnum.TECHNOLOGY_TRANSFER_COURSE;
+import static com.itts.personTraining.enums.CourseTypeEnum.*;
 import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
 import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
 
@@ -142,7 +142,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 for (XsKcCjDTO xsKcCjDTO : xsKcCjDTOList) {
                     XsKcCj xsKcCj = new XsKcCj();
                     xsKcCjDTO.setXsCjId(id);
-                    xsKcCjDTO.setKclx(TECHNOLOGY_TRANSFER_COURSE.getKey());
+                    xsKcCjDTO.setKclx(Integer.parseInt(TECHNOLOGY_TRANSFER_COURSE.getKey()));
                     xsKcCjDTO.setCjr(userId);
                     xsKcCjDTO.setGxr(userId);
                     BeanUtils.copyProperties(xsKcCjDTO,xsKcCj);
@@ -546,7 +546,6 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     public AbilityInfoDTO getAbilityByCategory(Integer pageNum, Integer pageSize, Long pcId) {
         Long userId = getUserId();
         log.info("【人才培养 - 根据用户id:{}查询学生能力提升信息】",userId);
-
         String userCategory = getUserCategory();
         AbilityInfoDTO abilityInfoDTO = new AbilityInfoDTO();
         switch (userCategory) {
@@ -565,22 +564,22 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                     //批次为空,则默认最新批次
                     pcId = pcList.get(0).getId();
                 }
-                //统计原专业获得学分
-                Integer zxzyhdxf = xsKcCjMapper.getCountYzy(xsId);
-                abilityInfoDTO.setZxzyhdxf(zxzyhdxf);
+                //统计原专业成绩
+                Integer zycj = xsKcCjMapper.getAvgYzy(xsId);
+                abilityInfoDTO.setZycj(zycj);
                 XsCjDTO xsCjDTO1 = xsCjMapper.selectByPcIdAndXsId(pcId, xsId);
                 if (xsCjDTO1 != null) {
-                    //统计技术转移专业获得学分
-                    Integer jszyhdxf = xsKcCjMapper.getCountDqxf(xsCjDTO1.getId());
-                    abilityInfoDTO.setJszyhdxf(jszyhdxf);
+                    //统计辅修专业成绩(技术转移理论成绩)
+                    Integer fxcj = xsKcCjMapper.getAvgfxcj(xsCjDTO1.getId(), THEORY_CLASS.getKey());
+                    abilityInfoDTO.setFxcj(fxcj);
                 } else {
                     throw new ServiceException(NO_STUDENT_MSG_ERROR);
                 }
-                //实训成绩 TODO:暂时假数据
-                abilityInfoDTO.setSxcj(0);
                 //实践成绩
-                Integer sjcj = Integer.valueOf(sjMapper.getSjcjByXsIdAndPcId(xsId,pcId));
-                abilityInfoDTO.setSjcj(sjcj);
+                abilityInfoDTO.setSjcj(xsKcCjMapper.getAvgfxcj(xsCjDTO1.getId(), PRACTICE_COURSE.getKey()));
+                //实训成绩
+                abilityInfoDTO.setSxcj(xsKcCjMapper.getAvgfxcj(xsCjDTO1.getId(), PRACTICAL_TRAINING.getKey()));
+                abilityInfoDTO.setXl(userCategory);
                 break;
             default:
                 break;
