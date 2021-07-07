@@ -203,7 +203,10 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         ksjl.setSjId(kssj.getId());
         ksjl.setSjmc(kssj.getSjmc());
 
-        ksjl.setKsdtsj(new Date());
+        Date now = new Date();
+
+        ksjl.setKsdtsj(now);
+        ksjl.setCjsj(now);
 
         GetKsjlVO getKsjlVO = getKsjlVO(ksjl, kssj);
 
@@ -214,8 +217,10 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
      * 生成考试试卷VO
      */
     private GetKsjlVO getKsjlVO(Ksjl ksjl, Kssj kssj) {
+
         GetKsjlVO getKsjlVO = new GetKsjlVO();
         BeanUtils.copyProperties(ksjl, getKsjlVO);
+        getKsjlVO.setCjsj(ksjl.getCjsj().getTime());
 
         //获取当前试卷的题目
         List<Tkzy> tms = tkzyMapper.findBySjId(kssj.getId());
@@ -281,6 +286,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         GetKsjlVO getKsjlVO = new GetKsjlVO();
         BeanUtils.copyProperties(ksjl, getKsjlVO);
+        getKsjlVO.setCjsj(ksjl.getCjsj().getTime());
 
         //获取当前考试记录所有考试选项
         List<Ksjlxx> ksjlxxs = ksjlxxMapper.selectList(new QueryWrapper<Ksjlxx>().eq("ksjl_id", ksjl.getId()));

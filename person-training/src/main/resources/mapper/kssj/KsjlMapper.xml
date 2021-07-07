@@ -22,11 +22,12 @@
         <result column="danxdf" property="danxdf" />
         <result column="duoxzf" property="duoxzf" />
         <result column="duoxdf" property="duoxdf" />
+        <result column="cjsj" property="cjsj" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, sj_id, xs_id, xsbm, xsmc, sjmc, sjzf, zzcj, tmzs, sjlx, ksdtsj, jsdtsj, pdzf, pddf, danxzf, danxdf, duoxzf, duoxdf
+        id, sj_id, xs_id, xsbm, xsmc, sjmc, sjzf, zzcj, tmzs, sjlx, ksdtsj, jsdtsj, pdzf, pddf, danxzf, danxdf, duoxzf, duoxdf, cjsj
     </sql>
 
 </mapper>
