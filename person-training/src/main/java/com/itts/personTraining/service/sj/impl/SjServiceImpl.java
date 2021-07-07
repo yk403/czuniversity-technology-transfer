@@ -120,7 +120,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
             tz.setTzlx("实践通知");
             tz.setTzmc(pc.getPch() + "实践通知" + DateUtils.getDateFormat(new Date()));
             List<Long> xsIds = xsMapper.findXsIdsByPcId(pc.getId());
-            tz.setNr("您好，您此批次："+pc.getPch()+sj.getSjmc()+"实践单位为："+sj.getSjdw()+"，实践时间为："+DateUtils.getDateFormat(sj.getKsrq())+"—"+DateUtils.getDateFormat(sj.getJsrq())+"，请悉知！");
+            tz.setNr("您好，您此批次："+pc.getPch()+sj.getSjmc()+"，实践单位为："+sj.getSjdw()+"，实践时间为："+DateUtils.getDateFormat(sj.getKsrq())+"—"+DateUtils.getDateFormat(sj.getJsrq())+"，请悉知！");
             tzList.add(tz);
             Xs xs = xsMapper.selectById(sj.getXsId());
             Tz tz1 = new Tz();;
@@ -129,7 +129,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                 tz1.setGxr(userId);
                 tz1.setTzlx("实践通知");
                 tz1.setTzmc(pc.getPch() + "实践通知" + DateUtils.getDateFormat(new Date()));
-                tz1.setNr("您好，您批次："+pc.getPch()+sj.getSjmc()+"的"+xs.getXm()+"学生的实践单位为："+sj.getSjdw()+"，实践时间为："+DateUtils.getDateFormat(sj.getKsrq())+"—"+DateUtils.getDateFormat(sj.getJsrq())+"，请悉知！");
+                tz1.setNr("您好，您批次："+pc.getPch()+sj.getSjmc()+"，学生："+xs.getXm()+"的实践单位为："+sj.getSjdw()+"，实践时间为："+DateUtils.getDateFormat(sj.getKsrq())+"—"+DateUtils.getDateFormat(sj.getJsrq())+"，请悉知！");
                 tzList.add(tz1);
             }
             if (tzService.saveBatch(tzList)) {

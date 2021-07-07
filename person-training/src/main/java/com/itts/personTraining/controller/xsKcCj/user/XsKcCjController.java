@@ -51,7 +51,7 @@ public class XsKcCjController {
      * 校验参数
      */
     private void checkRequest(Integer kclx) throws WebException {
-        if (!TECHNOLOGY_TRANSFER_COURSE.getKey().equals(kclx) && !ORIGINAL_PROFESSION_COURSE.getKey().equals(kclx)) {
+        if (Integer.parseInt(TECHNOLOGY_TRANSFER_COURSE.getKey()) != kclx && Integer.parseInt(ORIGINAL_PROFESSION_COURSE.getKey()) != kclx) {
             throw new WebException(COURSE_TYPE_ERROR);
         }
     }
