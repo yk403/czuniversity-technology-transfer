@@ -6,11 +6,13 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.enums.PayTypeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.paymentservice.enums.OrderStatusEnum;
 import com.itts.paymentservice.model.ddxfjl.Ddxfjl;
 import com.itts.paymentservice.request.ddxfjl.AddDdxfjlRequest;
+import com.itts.paymentservice.service.AlipayService;
 import com.itts.paymentservice.service.DdxfjlService;
 import com.itts.paymentservice.service.WxPatmentService;
 import io.swagger.annotations.Api;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Description：
@@ -38,6 +41,9 @@ public class DdxfjlController {
 
     @Autowired
     private WxPatmentService wxPaymentService;
+
+    @Autowired
+    private AlipayService alipayService;
 
     @ApiOperation(value = "获取列表")
     @GetMapping("/list/")
@@ -133,7 +139,7 @@ public class DdxfjlController {
 
     @ApiOperation(value = "订单支付接口")
     @PostMapping("/pay/")
-    public ResponseUtil pay(@RequestBody Ddxfjl ddxfjl) {
+    public ResponseUtil pay(@RequestBody Ddxfjl ddxfjl) throws Exception {
 
         Ddxfjl dd = ddxfjlService.getById(ddxfjl.getId());
         if(dd == null){
@@ -141,11 +147,21 @@ public class DdxfjlController {
         }
 
         dd.setZffs(ddxfjl.getZffs());
-
-        String result = wxPaymentService.orderInteface(ddxfjl);
-
         dd.setZfsj(new Date());
         ddxfjlService.updateById(dd);
+
+        String result = "";
+
+        //微信支付
+        if(Objects.equals(ddxfjl.getZffs(), PayTypeEnum.WECHAT.getKey())){
+            result = wxPaymentService.orderInteface(ddxfjl);
+        }
+
+        //支付宝支付
+        if(Objects.equals(ddxfjl.getZffs(), PayTypeEnum.ALIPAY.getKey())){
+
+            result = alipayService.payInteface(ddxfjl);
+        }
 
         return ResponseUtil.success("success", result);
     }
