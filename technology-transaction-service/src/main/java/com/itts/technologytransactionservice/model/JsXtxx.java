@@ -27,13 +27,13 @@ public class JsXtxx implements Serializable {
      * 创建时间
      */
     @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
     /**
      * 更新时间
      */
     @TableField(value = "gxsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
     /**
      * 删除状态(0未删除;1已删除)
@@ -119,4 +119,12 @@ public class JsXtxx implements Serializable {
      * @Date: 2021/7/6
      */
     private String cznr;
+    /**
+    * @Description: 描述姓名
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/7/7
+    */
+    private String describeName;
 }

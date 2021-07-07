@@ -1,5 +1,6 @@
 package com.itts.paymentservice.controller.ddxfjl.user;
 
+import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -155,15 +156,18 @@ public class DdxfjlController {
         //微信支付
         if(Objects.equals(ddxfjl.getZffs(), PayTypeEnum.WECHAT.getKey())){
             result = wxPaymentService.orderInteface(ddxfjl);
+            return ResponseUtil.success("success", result);
         }
 
         //支付宝支付
         if(Objects.equals(ddxfjl.getZffs(), PayTypeEnum.ALIPAY.getKey())){
 
-            result = alipayService.payInteface(ddxfjl);
+            String alipayTradePagePayResponse=alipayService.payInteface(ddxfjl);
+            return ResponseUtil.success("success", alipayTradePagePayResponse);
         }
+        return null;
 
-        return ResponseUtil.success("success", result);
+
     }
 
     @ApiOperation(value = "更新状态")

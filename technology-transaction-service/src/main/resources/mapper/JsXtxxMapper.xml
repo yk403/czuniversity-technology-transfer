@@ -17,6 +17,7 @@
         xtxx.ssmk,
         xtxx.mklx,
         xtxx.ztlx,
+        xtxx.describe_name,
         xtxx.cznr
         from t_js_xtxx xtxx
         <where>
