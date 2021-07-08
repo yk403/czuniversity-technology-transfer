@@ -1,7 +1,5 @@
 package com.itts.personTraining.vo.yh;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -77,6 +75,18 @@ public class GetYhVO implements Serializable {
      */
     @ApiModelProperty(value = "机构ID", required = true)
     private Long jgId;
+
+    /**
+     * 最顶级机构ID
+     */
+    @ApiModelProperty(value = "最顶级机构ID", required = true)
+    private Long fjjgId;
+
+    /**
+     * 机构类型
+     */
+    @ApiModelProperty(value = "机构类型：headquarters - 总基地；branch - 分基地", required = true)
+    private String jglx;
 
     /**
      * 用户邮箱
