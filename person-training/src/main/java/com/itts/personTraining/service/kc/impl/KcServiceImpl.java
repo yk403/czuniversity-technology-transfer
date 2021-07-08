@@ -36,6 +36,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
@@ -348,7 +349,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         Long userId = getUserId();
         log.info("【人才培养 - 根据用户id:{}查询课程表(前)】",userId);
         String userCategory = getUserCategory();
-        List<KcbDTO> KcbDTOList =null;
+        List<KcbDTO> collect =null;
         switch(userCategory) {
             case "postgraduate":
             case "broker":
@@ -363,12 +364,12 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                     Long id = pcList.get(0).getId();
                     if(id!=null){
-                        KcbDTOList = kcMapper.findByPcId(id);
+                        collect = kcMapper.findByPcId(id);
                     }else {
-                        KcbDTOList=null;
+                        collect=null;
                     }
                 } else {
-                    KcbDTOList = kcMapper.findByPcId(pcId);
+                    collect = kcMapper.findByPcId(pcId);
                 }
                 break;
             case "tutor":
@@ -383,12 +384,12 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                     Long id = pcList.get(0).getId();
                     if(id!=null){
-                        KcbDTOList = kcMapper.findByPcId(id);
+                        collect = kcMapper.findByPcId(id);
                     }else {
-                        KcbDTOList=null;
+                        collect=null;
                     }
                 } else {
-                    KcbDTOList = kcMapper.findByPcId(pcId);
+                    collect = kcMapper.findByPcId(pcId);
                 }
                 break;
             //企业导师
@@ -404,12 +405,12 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                     Long id = pcList.get(0).getId();
                     if(id!=null){
-                        KcbDTOList = kcMapper.findByPcId(id);
+                        collect = kcMapper.findByPcId(id);
                     }else {
-                        KcbDTOList=null;
+                        collect=null;
                     }
                 } else {
-                    KcbDTOList = kcMapper.findByPcId(pcId);
+                    collect = kcMapper.findByPcId(pcId);
                 }
                 break;
             case "teacher":
@@ -424,12 +425,12 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                     Long id = pcList.get(0).getId();
                     if(id!=null){
-                        KcbDTOList = kcMapper.findByPcId(id);
+                        collect = kcMapper.findByPcId(id);
                     }else {
-                        KcbDTOList=null;
+                        collect=null;
                     }
                 } else {
-                    KcbDTOList = kcMapper.findByPcId(pcId);
+                    collect = kcMapper.findByPcId(pcId);
                 }
                 break;
             case "school_leader":
@@ -439,15 +440,15 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     pcQueryWrapper.eq("sfsc",false)
                             .orderByDesc("cjsj");
                     Long id = pcMapper.selectList(pcQueryWrapper).get(0).getId();
-                    KcbDTOList = kcMapper.findByPcId(id);
+                    collect = kcMapper.findByPcId(id);
                 } else {
-                    KcbDTOList = kcMapper.findByPcId(pcId);
+                    collect = kcMapper.findByPcId(pcId);
                 }
                 break;
             default:
                 break;
         }
-        return KcbDTOList;
+        return collect;
     }
 
 

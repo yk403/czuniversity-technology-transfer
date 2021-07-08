@@ -69,7 +69,7 @@
         order by kc.cjsj desc
     </select>
     <select id="findByPcId" resultType="com.itts.personTraining.dto.KcbDTO">
-        select pk.id as id,kc.kcdm as kcdm ,kc.kcmc as kcmc,pk.type as type,pk.skdd as skdd,pk.kxrq as kxrq,pk.skqsnyr as skqsnyr,pk.skjsnyr as skjsnyr,pk.qsz as qsz,pk.jsz as jsz,pk.xqs as xqs,xxjs.jxlmc as jxlmc,xxjs.jsbh as jsbh,sz.dsxm as dsxm,sz.dsbh as dsbh,kcsj.kssj as kssj,kcsj.jssj as jssj
+        select pk.id as id,kc.kcdm as kcdm ,kc.kcmc as kcmc,pk.type as type,pk.skdd as skdd,pk.kxrq as kxrq,pk.skqsnyr as skqsnyr,pk.skjsnyr as skjsnyr,pk.qsz as qsz,pk.jsz as jsz,pk.xqs as xqs,xxjs.jxlmc as jxlmc,xxjs.jsbh as jsbh,sz.dsxm as dsxm,sz.dsbh as dsbh,kcsj.id as kcsjId,kcsj.kssj as kssj,kcsj.jssj as jssj
         from t_pk pk left join t_kc kc on pk.kc_id = kc.id left join t_xxjs xxjs on xxjs.id = pk.xxjs_id left join t_sz sz on sz.id = pk.sz_id left join t_kcsj kcsj on kcsj.id = pk.kcsj_id
         where pk.sfsc = false and kc.sfsc = false and xxjs.sfsc = false and sz.sfsc = false  and kcsj.sfsc = false
         <if test="pcId != null and pcId != ''">and pk.pc_id =#{pcId}</if>

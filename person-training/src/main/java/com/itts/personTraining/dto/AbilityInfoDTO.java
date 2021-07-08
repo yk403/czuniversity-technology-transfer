@@ -19,7 +19,7 @@ public class AbilityInfoDTO {
      * 学历
      */
     @ApiModelProperty(value = "学历")
-    private String xl;
+    private Integer xl;
 
     /**
      * 专业成绩(原专业平均分)
