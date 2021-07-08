@@ -98,10 +98,10 @@ public class JsBmController extends BaseController {
         }
         hdlx+="报名管理";
         if(tJsBm.getShzt().equals("2")){
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsBm.getUserId().longValue(),0,hdlx,"","报名成功",jsHdService.getById(tJsBm.getHdId()).getHdmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsBm.getUserId().longValue(),6,0,jsHdService.getById(tJsBm.getHdId()).getHdmc());
         }
         if(tJsBm.getShzt().equals("1")){
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsBm.getUserId().longValue(),0,hdlx,"","报名拒绝",jsHdService.getById(tJsBm.getHdId()).getHdmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsBm.getUserId().longValue(),6,1,jsHdService.getById(tJsBm.getHdId()).getHdmc());
         }
         return update;
     }

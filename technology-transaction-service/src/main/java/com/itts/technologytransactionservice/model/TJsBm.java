@@ -98,27 +98,12 @@ public class TJsBm implements Serializable {
      */
     private Integer hdId;
     /**
-     * 活动名称
-     */
-    private String hdmc;
-    /**
      * 审核状态（0默认、1拒绝、2通过）
      */
     private String shzt;
-    /**
-     * 活动状态
-     */
-    private String hdzt;
-    /**
-     * 活动类型
-     */
-    private String hdlx;
+
     /**
      * 机构代码
      */
     private String jgdm;
-    /**
-     * 用户名
-     */
-    private String yhm;
 }

@@ -1,13 +1,16 @@
 package com.itts.technologytransactionservice.controller.cd.admin;
 
 
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.controller.BaseController;
 import com.itts.technologytransactionservice.model.TJsBm;
 import com.itts.technologytransactionservice.service.JsBmService;
+import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.cd.JsBmAdminService;
+import com.itts.technologytransactionservice.service.cd.JsHdAdminService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
 /**
@@ -31,6 +35,10 @@ public class JsBmAdminController extends BaseController {
 
     @Autowired
     private JsBmAdminService jsBmAdminService;
+    @Autowired
+    private JsXtxxService jsXtxxService;
+    @Autowired
+    private JsHdAdminService jsHdAdminService;
 
     /**
     * 分页查询
@@ -67,7 +75,27 @@ public class JsBmAdminController extends BaseController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody TJsBm tJsBm) {
-        return update(jsBmAdminService.updateById(tJsBm));
+        Integer id = tJsBm.getId();
+        //检查参数是否合法
+        if (id == null ) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        //检查数据库中是否存在要更新的数据
+        if (jsBmAdminService.getById(id) == null) {
+            throw new WebException(SYSTEM_NOT_FIND_ERROR);
+        }
+        //更新数据
+        if (!jsBmAdminService.updateById(tJsBm)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        TJsBm byId=jsBmAdminService.getById(id);
+        if(tJsBm.getShzt().equals("2")){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),byId.getUserId().longValue(),5,0,jsHdAdminService.getById(byId.getHdId()).getHdmc());
+        }
+        if(tJsBm.getShzt().equals("1")){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),byId.getUserId().longValue(),5,1,jsHdAdminService.getById(byId.getHdId()).getHdmc());
+        }
+        return update(true);
     }
 
     /**

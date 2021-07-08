@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsXtxxMapper">
-    <select id="findJsXtxx" resultType="com.itts.technologytransactionservice.model.JsXtxx">
+    <select id="findJsXtxx" resultType="com.itts.technologytransactionservice.model.JsXtxxDto">
         select
         xtxx.id as id,
         xtxx.cjsj,
@@ -18,8 +18,9 @@
         xtxx.mklx,
         xtxx.ztlx,
         xtxx.describe_name,
-        xtxx.cznr
-        from t_js_xtxx xtxx
+        xtxx.cznr,
+        yh.yhm as yhm
+        from t_js_xtxx xtxx left join t_yh yh on(yh.id = xtxx.send_id)
         <where>
             <!--后台能查询0或者1的数据 -->
             xtxx.is_delete = 0

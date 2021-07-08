@@ -91,7 +91,7 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
              * @Author: yukai
              * @Date: 2021/7/6
              */
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),0,"信息采集审核管理","技术成果","审核成功",cg.getCgmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),0,0,cg.getCgmc());
         }else if(fbshzt == 4){
             TJsCg cg=jsCgMapper.getById(Integer.parseInt(params.get("id").toString()));
             /**
@@ -101,7 +101,7 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
              * @Author: yukai
              * @Date: 2021/7/6
              */
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),0,"信息采集审核管理","技术成果","审核拒绝",cg.getCgmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),0,1,cg.getCgmc());
         }
         return true;
     }
@@ -140,7 +140,7 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
              * @Author: yukai
              * @Date: 2021/7/6
              */
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),xq.getUserId().longValue(),0,"信息采集审核管理","技术需求","审核成功",xq.getXqmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),xq.getUserId().longValue(),0,0,xq.getXqmc());
         }else if(fbshzt == 4){
             TJsXq xq=jsXqMapper.getById(Integer.parseInt(params.get("id").toString()));
             /**
@@ -150,7 +150,7 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
              * @Author: yukai
              * @Date: 2021/7/6
              */
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),xq.getUserId().longValue(),0,"信息采集审核管理","技术需求","审核拒绝",xq.getXqmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),xq.getUserId().longValue(),0,1,xq.getXqmc());
         }
         return true;
     }
@@ -182,7 +182,7 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
              * @Author: yukai
              * @Date: 2021/7/6
              */
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),xq.getUserId().longValue(),0,"技术招标审批管理","技术需求","审核成功",xq.getXqmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),xq.getUserId().longValue(),1,0,xq.getXqmc());
         }else if(assistanceStatus == 4){
             TJsXq xq=jsXqMapper.getById(Integer.parseInt(params.get("id").toString()));
             /**
@@ -192,7 +192,7 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
              * @Author: yukai
              * @Date: 2021/7/6
              */
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),xq.getUserId().longValue(),0,"技术招标审批管理","技术需求","审核拒绝",xq.getXqmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),xq.getUserId().longValue(),1,1,xq.getXqmc());
         }
         return true;
     }
@@ -225,10 +225,10 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
              * @Date: 2021/7/6
              */
             if(tJsSh.getJylx() == 0){
-                jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),0,"技术拍卖审核管理","技术成果","审核成功",cg.getCgmc());
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),2,0,cg.getCgmc());
             }
             if(tJsSh.getJylx() == 2){
-                jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),0,"技术挂牌审核管理","技术成果","审核成功",cg.getCgmc());
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),3,0,cg.getCgmc());
             }
         }else if(assistanceStatus == 4){
             TJsCg cg=jsCgMapper.getById(Integer.parseInt(params.get("id").toString()));
@@ -240,10 +240,10 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
              * @Date: 2021/7/6
              */
             if(tJsSh.getJylx() == 0){
-                jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),0,"技术拍卖审核管理","技术成果","审核拒绝",cg.getCgmc());
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),2,1,cg.getCgmc());
             }
             if(tJsSh.getJylx() == 2){
-                jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),0,"技术挂牌审核管理","技术成果","审核拒绝",cg.getCgmc());
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),3,1,cg.getCgmc());
             }
         }
         return true;

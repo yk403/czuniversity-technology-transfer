@@ -10,6 +10,7 @@ import com.itts.technologytransactionservice.feign.userservice.UserInfoService;
 import com.itts.technologytransactionservice.mapper.JsXtxxMapper;
 import com.itts.technologytransactionservice.mapper.LyBmMapper;
 import com.itts.technologytransactionservice.model.JsXtxx;
+import com.itts.technologytransactionservice.model.JsXtxxDto;
 import com.itts.technologytransactionservice.model.LyBm;
 import com.itts.technologytransactionservice.model.LyBmDto;
 import com.itts.technologytransactionservice.service.JsXtxxService;
@@ -45,7 +46,7 @@ public class JsXtxxServiceImpl extends ServiceImpl<JsXtxxMapper, JsXtxx> impleme
         Query query = new Query(params);
         query.put("userId",getUserId());
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<JsXtxx> list = jsXtxxMapper.findJsXtxx(query);
+        List<JsXtxxDto> list = jsXtxxMapper.findJsXtxx(query);
         return new PageInfo<>(list);
     }
     /**
@@ -57,22 +58,13 @@ public class JsXtxxServiceImpl extends ServiceImpl<JsXtxxMapper, JsXtxx> impleme
      */
     //添加系统消息
     @Override
-    public void addXtxx(Long sendId, Long receiveId, Integer mklx, String ssmk, String ztlx, String cznr,String describe) {
+    public void addXtxx(Long sendId, Long receiveId,Integer ssmk, Integer cznr,String describe) {
         JsXtxx jsXtxx=new JsXtxx();
         jsXtxx.setSendId(sendId);
         jsXtxx.setReceiveId(receiveId);
-        jsXtxx.setMklx(mklx);
         jsXtxx.setSsmk(ssmk);
-        jsXtxx.setZtlx(ztlx);
         jsXtxx.setCznr(cznr);
         jsXtxx.setDescribeName(describe);
-        //拼接消息模板
-        if(mklx == 0){
-            jsXtxx.setXxnr("技术交易"+ssmk+ztlx+cznr);
-        }
-        if(mklx == 1){
-            jsXtxx.setXxnr("双创路演"+ssmk+ztlx+cznr);
-        }
         save(jsXtxx);
     }
     /**

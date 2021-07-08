@@ -95,10 +95,10 @@ public class LyZpServiceImpl extends ServiceImpl<LyZpMapper, LyZp> implements Ly
         }
         updateById(id);
         if(fbshzt == 2){
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),id.getUserId(),1,"审批管理","技术展品","审核成功",id.getZpmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),id.getUserId(),4,0,id.getZpmc());
         }
         if(fbshzt == 4){
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),id.getUserId(),1,"审批管理","技术展品","审核拒绝",id.getZpmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),id.getUserId(),4,1,id.getZpmc());
         }
         return true;
     }

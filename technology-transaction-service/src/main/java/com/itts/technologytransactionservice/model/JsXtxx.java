@@ -94,7 +94,7 @@ public class JsXtxx implements Serializable {
     * @Author: yukai
     * @Date: 2021/7/6
     */
-    private String ssmk;
+    private Integer ssmk;
     /**
      * @Description: 模块类型(0:技术交易,1:双创路演)
      * @Param:
@@ -118,7 +118,7 @@ public class JsXtxx implements Serializable {
      * @Author: yukai
      * @Date: 2021/7/6
      */
-    private String cznr;
+    private Integer cznr;
     /**
     * @Description: 描述姓名
     * @Param: 

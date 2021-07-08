@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.technologytransactionservice.model.JsXtxx;
+import com.itts.technologytransactionservice.model.JsXtxxDto;
 import com.itts.technologytransactionservice.model.LyBmDto;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,5 +21,5 @@ public interface JsXtxxMapper extends BaseMapper<JsXtxx> {
      * @param map
      * @return
      */
-    List<JsXtxx> findJsXtxx(@Param("map") Map map);
+    List<JsXtxxDto> findJsXtxx(@Param("map") Map map);
 }

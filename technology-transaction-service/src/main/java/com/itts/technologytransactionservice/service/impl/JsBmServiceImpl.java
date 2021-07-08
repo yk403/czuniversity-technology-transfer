@@ -8,6 +8,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsBmMapper;
 import com.itts.technologytransactionservice.model.TJsBm;
+import com.itts.technologytransactionservice.model.TJsBmDto;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.service.JsBmService;
@@ -36,8 +37,8 @@ public class JsBmServiceImpl extends ServiceImpl<JsBmMapper, TJsBm> implements J
 	@Override
 	public PageInfo page(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		List<TJsBm> list = jsBmMapper.list(query);
-		PageInfo<TJsBm> page = new PageInfo<>(list);
+		List<TJsBmDto> list = jsBmMapper.list(query);
+		PageInfo<TJsBmDto> page = new PageInfo<>(list);
 		return page;
 	}
 	/**

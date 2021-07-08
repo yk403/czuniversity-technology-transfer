@@ -1,12 +1,12 @@
 package com.itts.technologytransactionservice.feign.userservice;
 
+import com.aliyuncs.ram.model.v20150501.UpdateUserRequest;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.common.ResponseUtil;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(value = "user-service")
 public interface UserInfoService {
@@ -20,4 +20,9 @@ public interface UserInfoService {
      */
     @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/yh/get/{id}")
     ResponseUtil getUser(@RequestParam(value = "id") Long id);
+    /**
+     * 更新用户信息
+     */
+    @PutMapping(SystemConstant.BASE_URL+"/v1/yh/update/")
+    ResponseUtil update(@RequestBody UpdateUserRequest updateUserRequest);
 }

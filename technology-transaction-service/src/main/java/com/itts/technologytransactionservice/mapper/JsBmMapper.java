@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.technologytransactionservice.model.TJsBm;
+import com.itts.technologytransactionservice.model.TJsBmDto;
 import com.itts.technologytransactionservice.model.TJsLb;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -18,6 +19,6 @@ import java.util.Map;
 @Repository
 public interface JsBmMapper extends BaseMapper<TJsBm> {
 	
-	List<TJsBm> list(@Param("map") Map map);
+	List<TJsBmDto> list(@Param("map") Map map);
 
 }

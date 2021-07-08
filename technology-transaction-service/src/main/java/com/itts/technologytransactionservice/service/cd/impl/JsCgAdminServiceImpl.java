@@ -268,7 +268,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         //系统消息
         List<TJsCg> tJsCgs=jsCgMapper.selectBatchIds(ids);
         for (TJsCg tJsCg:tJsCgs) {
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),0,"信息采集","技术成果","发布成功",tJsCg.getCgmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),0,0,tJsCg.getCgmc());
         }
 
         return true;
@@ -297,10 +297,10 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         List<TJsCg> tJsCgs=jsCgMapper.selectBatchIds(ids);
         for (TJsCg tJsCg:tJsCgs) {
             if(tJsShes.get(0).getJylx() == 0){
-                jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),0,"技术拍卖信息采集","技术成果","发布成功",tJsCg.getCgmc());
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),2,0,tJsCg.getCgmc());
             }
             if(tJsShes.get(0).getJylx() == 2){
-                jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),0,"技术挂牌信息采集","技术成果","发布成功",tJsCg.getCgmc());
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),3,0,tJsCg.getCgmc());
             }
         }
         return true;

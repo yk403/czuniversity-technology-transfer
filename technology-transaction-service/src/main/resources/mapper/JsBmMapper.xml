@@ -3,7 +3,7 @@
 
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsBmMapper">
 
-    <select id="list" resultType="com.itts.technologytransactionservice.model.TJsBm">
+    <select id="list" resultType="com.itts.technologytransactionservice.model.TJsBmDto">
         select bm.id,dwmc,dz,fr,bm.cjsj,bm.gxsj,bm.gszzmc,jgdm,lxr,sjhm,gszz,bzj,sjfa,zbwj,bm.is_delete,hd_id,hd.hdmc as hdmc,shzt,hdlx,hdzt,user_id,yh.yhm as yhm
         from t_js_bm bm left join t_js_hd hd on( bm.hd_id = hd.id ) left join t_yh yh on (yh.id=bm.user_id)
         <where>

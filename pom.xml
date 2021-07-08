@@ -11,6 +11,7 @@
         <module>user-service</module>
         <module>itts-authentication</module>
         <module>person-training</module>
+        <module>web-crawler</module>
     </modules>
 
 
