@@ -23,4 +23,12 @@ public class JsXtxxDto extends JsXtxx implements Serializable {
     * @Date: 2021/7/8
     */
     private String yhm;
+    /**
+     * @Description: 当前用户名
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/7/8
+     */
+    private String dqyh;
 }

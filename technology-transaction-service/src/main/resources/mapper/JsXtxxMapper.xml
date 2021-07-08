@@ -19,8 +19,9 @@
         xtxx.ztlx,
         xtxx.describe_name,
         xtxx.cznr,
-        yh.yhm as yhm
-        from t_js_xtxx xtxx left join t_yh yh on(yh.id = xtxx.send_id)
+        yh.yhm as yhm,
+        yh2.yhm as dqyh
+        from t_js_xtxx xtxx left join t_yh yh on(yh.id = xtxx.send_id) left join t_yh yh2 on(yh2.id = xtxx.receive_id)
         <where>
             <!--后台能查询0或者1的数据 -->
             xtxx.is_delete = 0

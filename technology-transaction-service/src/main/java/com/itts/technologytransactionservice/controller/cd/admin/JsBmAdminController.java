@@ -90,10 +90,10 @@ public class JsBmAdminController extends BaseController {
         }
         TJsBm byId=jsBmAdminService.getById(id);
         if(tJsBm.getShzt().equals("2")){
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),byId.getUserId().longValue(),5,0,jsHdAdminService.getById(byId.getHdId()).getHdmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),byId.getUserId().longValue(),6,0,jsHdAdminService.getById(byId.getHdId()).getHdmc());
         }
         if(tJsBm.getShzt().equals("1")){
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),byId.getUserId().longValue(),5,1,jsHdAdminService.getById(byId.getHdId()).getHdmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),byId.getUserId().longValue(),6,1,jsHdAdminService.getById(byId.getHdId()).getHdmc());
         }
         return update(true);
     }
