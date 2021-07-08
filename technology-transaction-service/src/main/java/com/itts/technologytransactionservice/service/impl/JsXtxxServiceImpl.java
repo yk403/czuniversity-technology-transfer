@@ -57,7 +57,7 @@ public class JsXtxxServiceImpl extends ServiceImpl<JsXtxxMapper, JsXtxx> impleme
      */
     //添加系统消息
     @Override
-    public void addXtxx(Long sendId, Long receiveId, Integer mklx, String ssmk, String ztlx, String cznr) {
+    public void addXtxx(Long sendId, Long receiveId, Integer mklx, String ssmk, String ztlx, String cznr,String describe) {
         JsXtxx jsXtxx=new JsXtxx();
         jsXtxx.setSendId(sendId);
         jsXtxx.setReceiveId(receiveId);
@@ -65,6 +65,7 @@ public class JsXtxxServiceImpl extends ServiceImpl<JsXtxxMapper, JsXtxx> impleme
         jsXtxx.setSsmk(ssmk);
         jsXtxx.setZtlx(ztlx);
         jsXtxx.setCznr(cznr);
+        jsXtxx.setDescribeName(describe);
         //拼接消息模板
         if(mklx == 0){
             jsXtxx.setXxnr("技术交易"+ssmk+ztlx+cznr);

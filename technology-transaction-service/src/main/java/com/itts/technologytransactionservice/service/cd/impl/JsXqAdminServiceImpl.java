@@ -208,7 +208,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         //系统消息
         List<TJsXq> tJsXqs=jsXqMapper.selectBatchIds(ids);
         for (TJsXq tJsXq:tJsXqs) {
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsXq.getUserId().longValue(),0,"信息采集","技术需求","发布成功");
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsXq.getUserId().longValue(),0,"信息采集","技术需求","发布成功",tJsXq.getXqmc());
         }
         return true;
     }
@@ -232,7 +232,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         //系统消息
         List<TJsXq> tJsXqs=jsXqMapper.selectBatchIds(ids);
         for (TJsXq tJsXq:tJsXqs) {
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsXq.getUserId().longValue(),0,"技术招标信息采集","技术需求","发布成功");
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsXq.getUserId().longValue(),0,"技术招标信息采集","技术需求","发布成功",tJsXq.getXqmc());
         }
         return true;
     }

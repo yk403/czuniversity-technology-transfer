@@ -4,13 +4,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Maps;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
@@ -32,10 +25,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -64,9 +55,10 @@ public class XxzyController {
                              @ApiParam(value = "资源类型: video - 视频; textbook - 教材; courseware - 课件") @RequestParam(value = "category", required = false) String category,
                              @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction,
                              @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
-                             @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition) {
+                             @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
+                             @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId) {
 
-        PageInfo<GetXxzyVO> result = xxzyService.listVO(pageNum, pageSize, type, firstCategory, secondCategory, category, direction, courseId, condition);
+        PageInfo<GetXxzyVO> result = xxzyService.listVO(pageNum, pageSize, type, firstCategory, secondCategory, category, direction, courseId, condition, groupId);
 
         return ResponseUtil.success(result);
     }
@@ -75,7 +67,8 @@ public class XxzyController {
     @GetMapping("/get/cloudClassroom/course/")
     public ResponseUtil getCourse(@ApiParam("用户类别") @RequestParam("userType") String userType,
                                   @ApiParam("教育类型") @RequestParam(value = "educationType", required = false) String educationType,
-                                  @ApiParam("学员类型字符串，多个以\",\"分割") @RequestParam("studentType") String studentType) {
+                                  @ApiParam("学员类型字符串，多个以\",\"分割") @RequestParam("studentType") String studentType,
+                                  @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser == null) {
@@ -97,7 +90,7 @@ public class XxzyController {
             throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
         }
 
-        List<Kc> kcs = xxzyService.getCloudClassroomCourse(userType, educationType, studentType);
+        List<Kc> kcs = xxzyService.getCloudClassroomCourse(userType, educationType, studentType, groupId);
 
         return ResponseUtil.success(kcs);
     }
@@ -112,7 +105,8 @@ public class XxzyController {
                                                        @ApiParam(value = "资源类型: video - 视频; textbook - 教材; courseware - 课件") @RequestParam(value = "category", required = false) String category,
                                                        @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction,
                                                        @ApiParam(value = "课程ID字符串，多个以\",\"分割") @RequestParam(value = "courseIds", required = false) String courseIds,
-                                                       @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition) {
+                                                       @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
+                                                       @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -120,7 +114,8 @@ public class XxzyController {
                 eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory).eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory)
                 .eq(StringUtils.isNotBlank(category), "zylx", category).eq(StringUtils.isNotBlank(direction), "zyfx", direction)
                 .in(CollectionUtils.isEmpty(Arrays.asList(courseIds.split(",").clone())), "kc_id", Arrays.asList(courseIds.split(",").clone()))
-                .like(StringUtils.isNotBlank(condition), "mc", condition));
+                .like(StringUtils.isNotBlank(condition), "mc", condition)
+                .eq(groupId != null, "jg_id", groupId));
 
         PageInfo pageInfo = new PageInfo(xxzys);
 

@@ -7,6 +7,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.dto.YhDTO;
+import com.itts.userservice.enmus.GroupTypeEnum;
 import com.itts.userservice.enmus.UserTypeEnum;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 /**
  * <p>
@@ -127,6 +129,31 @@ public class YhAdminController {
 
         GetYhVO getYhVO = new GetYhVO();
         BeanUtils.copyProperties(yh, getYhVO);
+
+        //获取当前用户最顶级机构信息
+        Jggl jg = jgglService.get(getYhVO.getJgId());
+        if(jg != null){
+
+            //总基地
+            if(Objects.equals(jg.getLx(), GroupTypeEnum.HEADQUARTERS.getKey())){
+                getYhVO.setFjjgId(jg.getId());
+            }
+
+            //分基地
+            if(Objects.equals(jg.getLx(), GroupTypeEnum.BRANCH.getKey())){
+                getYhVO.setFjjgId(jg.getId());
+            }
+
+            //其他
+            if(Objects.equals(jg.getLx(), GroupTypeEnum.OTHER.getKey())){
+
+                String jgCode = jg.getJgbm().substring(0, 2);
+                Jggl fjjg = jgglService.selectByJgbm(jgCode);
+                if(fjjg != null){
+                    getYhVO.setFjjgId(fjjg.getId());
+                }
+            }
+        }
 
         return ResponseUtil.success(getYhVO);
     }

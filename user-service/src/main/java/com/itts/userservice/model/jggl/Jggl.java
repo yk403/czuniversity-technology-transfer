@@ -72,6 +72,11 @@ public class Jggl implements Serializable {
     private String cj;
 
     /**
+     * 机构类型：headquarters - 总部；branch - 分基地；other - 其他
+     */
+    private String lx;
+
+    /**
      * 是否删除
      */
     private Boolean sfsc;

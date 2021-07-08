@@ -79,7 +79,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      */
     @Override
     public PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type,
-                               String firstCategory, String secondCategory, String category, Long courseId, String condition) {
+                               String firstCategory, String secondCategory, String category, Long courseId, String condition, Long groupId) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -108,6 +108,10 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             query.eq("zylx", category);
         }
 
+        if(groupId == null){
+            query.eq("jg_id", groupId);
+        }
+
         query.orderByDesc("cjsj");
 
         List xxzys = xxzyMapper.selectList(query);
@@ -123,7 +127,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
     @Override
     public PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
                                       String secondCategory, String category, String direction, Long courseId,
-                                      String condition) {
+                                      String condition, Long groupId) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -155,6 +159,10 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
         if (StringUtils.isNotBlank(condition)) {
             query.like("mc", condition.trim());
+        }
+
+        if(groupId != null){
+            query.eq("jg_id", groupId);
         }
 
         query.orderByDesc("cjsj");
@@ -239,7 +247,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      * 获取云课堂课程列表
      */
     @Override
-    public List<Kc> getCloudClassroomCourse(String userType, String educationType, String studentType) {
+    public List<Kc> getCloudClassroomCourse(String userType, String educationType, String studentType, Long groupId) {
 
         List<Kc> kcs = Lists.newArrayList();
 
@@ -250,7 +258,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
             Sz sz = szMapper.getSzByYhId(loginUser.getUserId());
 
-            kcs = kcMapper.findBySzId(sz.getId(), educationType, studentType);
+            kcs = kcMapper.findBySzId(sz.getId(), educationType, studentType, groupId);
 
         } else {
 
@@ -259,7 +267,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
                 return kcs;
             }
 
-            kcs = kcMapper.findByType(educationType, studentTypes);
+            kcs = kcMapper.findByType(educationType, studentTypes, groupId);
         }
 
         return kcs;
