@@ -89,6 +89,7 @@
               where xscj.sfsc = false
                 and xscj.sfxf = true
                 and kccj.cj &lt; 60
+                and kc.sfsc = false
                 and kc.kclx = #{kclx}
                 and kccj.xs_cj_id = #{xsCjId}
               UNION ALL
@@ -100,6 +101,7 @@
               where xscj.sfsc = false
                 and xscj.sfxf = true
                 and kccj.cj >= 60
+                and kc.sfsc = false
                 and kc.kclx = #{kclx}
                 and kccj.xs_cj_id = #{xsCjId}) kccj1
     </select>
