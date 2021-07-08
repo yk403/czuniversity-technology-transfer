@@ -80,6 +80,12 @@ public class GetYhVO implements Serializable {
     private Long jgId;
 
     /**
+     * 最顶级机构ID
+     */
+    @ApiModelProperty(value = "最顶级机构ID", required = true)
+    private Long fjjgId;
+
+    /**
      * 用户邮箱
      */
     @ApiModelProperty(value = "用户邮箱", required = true)
