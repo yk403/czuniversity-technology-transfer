@@ -52,7 +52,7 @@ public class UserInfoController extends BaseController {
      * @return
      * @author liuyingming
      */
-    @GetMapping("/update/")
+    @PutMapping("/update/")
     @ApiOperation(value = "更新用户信息")
     public ResponseUtil update(@RequestBody UpdateUserRequest updateUserRequest) {
         return userInfoService.update(updateUserRequest);
