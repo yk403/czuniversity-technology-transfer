@@ -160,6 +160,8 @@ public class XxzyscController {
             }
         }
 
+        redisTemplate.delete(RedisConstant.USER_LEARNING_RESOURCES_FAVORITES_PREFIX + userId);
+
         return null;
     }
 }
