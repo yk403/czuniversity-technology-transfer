@@ -10,6 +10,7 @@ import com.itts.technologytransactionservice.mapper.LyZpMapper;
 import com.itts.technologytransactionservice.model.LyZp;
 import com.itts.technologytransactionservice.model.LyZpDto;
 import com.itts.technologytransactionservice.model.TJsSh;
+import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.LyZpService;
 import com.itts.technologytransactionservice.service.cd.LyZpAdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,8 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 public class LyZpAdminServiceImpl extends ServiceImpl<LyZpMapper, LyZp> implements LyZpAdminService {
     @Autowired
     private LyZpMapper lyZpMapper;
+    @Autowired
+    private JsXtxxService jsXtxxService;
     @Override
     public PageInfo findLyZpBack(Map<String, Object> params) {
         log.info("【技术交易 - 分页条件查询(前台)】");
@@ -91,6 +94,12 @@ public class LyZpAdminServiceImpl extends ServiceImpl<LyZpMapper, LyZp> implemen
         lyZp.setFbshzt(fbshzt);
         if (!updateById(lyZp)) {
             throw new ServiceException("审核操作失败!");
+        }
+        if(lyZp.getFbshzt().equals(2)){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyZp.getUserId().longValue(),4,0,lyZp.getZpmc());
+        }
+        if(lyZp.getFbshzt().equals(4)){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyZp.getUserId().longValue(),4,1,lyZp.getZpmc());
         }
         return true;
     }

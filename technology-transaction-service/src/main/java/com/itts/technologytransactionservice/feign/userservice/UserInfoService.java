@@ -1,6 +1,7 @@
 package com.itts.technologytransactionservice.feign.userservice;
 
-import com.aliyuncs.ram.model.v20150501.UpdateUserRequest;
+
+
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.common.ResponseUtil;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +24,6 @@ public interface UserInfoService {
     /**
      * 更新用户信息
      */
-    @PutMapping(SystemConstant.BASE_URL+"/v1/yh/update/")
-    ResponseUtil update(@RequestBody UpdateUserRequest updateUserRequest);
+    /*@PutMapping(SystemConstant.BASE_URL+"/v1/yh/update/")
+    ResponseUtil update(@RequestBody UpdateUserRequest updateUserRequest);*/
 }
