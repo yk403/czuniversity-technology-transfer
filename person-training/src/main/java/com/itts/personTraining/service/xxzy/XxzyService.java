@@ -26,19 +26,19 @@ public interface XxzyService extends IService<Xxzy> {
      * 获取列表 - 分页
      */
     PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type, String firstCategory,
-                        String secondCategory, String category, Long courseId, String condition);
+                        String secondCategory, String category, Long courseId, String condition, Long groupId);
 
     /**
      * 获取列表 - 分页
      */
     PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
                                String secondCategory, String category, String direction, Long courseId,
-                               String condition);
+                               String condition, Long groupId);
 
     /**
      * 获取云课堂课程列表
      */
-    List<Kc> getCloudClassroomCourse(String userType, String educationType, String studentType);
+    List<Kc> getCloudClassroomCourse(String userType, String educationType, String studentType, Long groupId);
 
     /**
      * 获取详情

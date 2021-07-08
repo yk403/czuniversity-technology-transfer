@@ -59,8 +59,12 @@ public interface KcMapper extends BaseMapper<Kc> {
             "   <if test='studentType != null and studentType != \"\"'> " +
             "       AND xylx = #{studentType} " +
             "   </if>" +
+            "   <if test='groupId != null'> " +
+            "       AND jg_id = #{groupId} " +
+            "   </if>" +
             "</script>")
-    List<Kc> findBySzId(@Param("szId") Long szId, @Param("educationType") String educationType, @Param("studentType") String studentType);
+    List<Kc> findBySzId(@Param("szId") Long szId, @Param("educationType") String educationType,
+                        @Param("studentType") String studentType, @Param("groupId") Long groupId);
 
     @Select("<script> " +
             "SELECT * FROM t_kc " +
@@ -68,6 +72,9 @@ public interface KcMapper extends BaseMapper<Kc> {
             "   <if test='educationType != null and educationType != \"\"'> " +
             "       AND jylx = #{educationType}" +
             "   </if>" +
+            "   <if test='groupId != null'> " +
+            "       AND jg_id = #{groupId} " +
+            "   </if> " +
             "   <if test='null != studentTypes and studentTypes.size > 0'> " +
             "       AND xylx IN " +
             "       <foreach collection=\"studentTypes\" item=\"studentType\" open=\"(\" separator=\",\"  close=\")\"> " +
@@ -75,7 +82,7 @@ public interface KcMapper extends BaseMapper<Kc> {
             "       </foreach> " +
             "   </if>" +
             "</script>")
-    List<Kc> findByType(@Param("educationType") String educationType, @Param("studentTypes") List<String> studentTypes);
+    List<Kc> findByType(@Param("educationType") String educationType, @Param("studentTypes") List<String> studentTypes, @Param("groupId") Long groupId);
     /**
      * 查询课程列表
      * @param xylx

@@ -8,6 +8,7 @@
         <result column="mc" property="mc"/>
         <result column="bm" property="bm"/>
         <result column="kc_id" property="kcId"/>
+        <result column="jg_id" property="jgId"/>
         <result column="kcmc" property="kcmc"/>
         <result column="zylb" property="zylb"/>
         <result column="zyyjfl" property="zyyjfl"/>
