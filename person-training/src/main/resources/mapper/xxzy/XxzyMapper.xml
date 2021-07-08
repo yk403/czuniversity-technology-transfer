@@ -33,7 +33,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, mc, bm, kc_id, kcmc, zylb, zyyjfl, zyejfl, zylx, zyfx, jj, lll, jg, zz, fjzy_id, sffx, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
+        id, mc, bm, kc_id, jg_id, kcmc, zylb, zyyjfl, zyejfl, zylx, zyfx, jj, lll, jg, zz, fjzy_id, sffx, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>
