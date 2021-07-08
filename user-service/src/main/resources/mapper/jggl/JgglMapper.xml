@@ -12,6 +12,7 @@
         <result column="fjbm" property="fjbm"/>
         <result column="fjmc" property="fjmc"/>
         <result column="cj" property="cj"/>
+        <result column="lx" property="lx"/>
         <result column="sfsc" property="sfsc"/>
         <result column="cjsj" property="cjsj"/>
         <result column="cjr" property="cjr"/>
@@ -22,7 +23,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id
-        , jgmc, jgbm, jglbbm, jglb, fjbm, fjmc, cj, sfsc, cjsj, cjr, gxsj, gxr
+        , jgmc, jgbm, jglbbm, jglb, fjbm, fjmc, cj, lx, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="selectByName" resultMap="BaseResultMap">
