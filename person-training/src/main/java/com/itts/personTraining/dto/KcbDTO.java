@@ -89,6 +89,10 @@ public class KcbDTO {
      */
     private String dsbh;
     /**
+     * 课程时间ID
+     */
+    private Long kcsjId;
+    /**
      * 开始时间
      */
     private String kssj;
