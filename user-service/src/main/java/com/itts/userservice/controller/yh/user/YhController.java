@@ -77,25 +77,47 @@ public class YhController {
 
         //获取当前用户最顶级机构信息
         Jggl jg = jgglService.get(getYhVO.getJgId());
-        if(jg != null){
+        if (jg != null) {
 
             //总基地
-            if(Objects.equals(jg.getLx(), GroupTypeEnum.HEADQUARTERS.getKey())){
+            if (Objects.equals(jg.getLx(), GroupTypeEnum.HEADQUARTERS.getKey())) {
+
                 getYhVO.setFjjgId(jg.getId());
+                getYhVO.setJglx(GroupTypeEnum.HEADQUARTERS.getKey());
             }
 
             //分基地
-            if(Objects.equals(jg.getLx(), GroupTypeEnum.BRANCH.getKey())){
+            if (Objects.equals(jg.getLx(), GroupTypeEnum.BRANCH.getKey())) {
+
                 getYhVO.setFjjgId(jg.getId());
+                getYhVO.setJglx(GroupTypeEnum.BRANCH.getKey());
             }
 
             //其他
-            if(Objects.equals(jg.getLx(), GroupTypeEnum.OTHER.getKey())){
+            if (Objects.equals(jg.getLx(), GroupTypeEnum.OTHER.getKey())) {
 
-                String jgCode = jg.getJgbm().substring(0, 2);
-                Jggl fjjg = jgglService.selectByJgbm(jgCode);
-                if(fjjg != null){
-                    getYhVO.setFjjgId(fjjg.getId());
+                String jgCode = jg.getJgbm().substring(0, 6);
+                Jggl checkJg = jgglService.selectByJgbm(jgCode);
+                if (checkJg != null) {
+
+                    //分基地
+                    if (Objects.equals(checkJg.getLx(), GroupTypeEnum.BRANCH.getKey())) {
+
+                        getYhVO.setFjjgId(checkJg.getId());
+                        getYhVO.setJglx(GroupTypeEnum.BRANCH.getKey());
+                    }
+
+                    //如果是其他，则上级一定是总基地
+                    if (Objects.equals(checkJg.getLx(), GroupTypeEnum.OTHER.getKey())) {
+
+                        String fjcode = checkJg.getJgbm().substring(0, 3);
+                        Jggl fjjg = jgglService.selectByJgbm(fjcode);
+                        if (fjjg != null) {
+
+                            getYhVO.setFjjgId(fjjg.getId());
+                            getYhVO.setJglx(GroupTypeEnum.HEADQUARTERS.getKey());
+                        }
+                    }
                 }
             }
         }
