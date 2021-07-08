@@ -253,6 +253,7 @@ public class JgglController {
                 if(Objects.equals(fjbm, UserServiceCommon.GROUP_SUPER_PARENT_CODE)){
 
                     jggl.setJgbm(getByJggl(UserServiceCommon.GROUP_SUPER_PARENT_CODE));
+                    jggl.setFjmc(UserServiceCommon.GROUP_SUPER_PARENT_CODE);
                     jggl.setCj(jggl.getJgbm());
                     if (list != null) {
                         for (int i = 0; i < list.size(); i++) {
