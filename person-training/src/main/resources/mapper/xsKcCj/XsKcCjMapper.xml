@@ -68,5 +68,40 @@
         where txkc.sfsc = false and kc.sfsc = false and txc.sfsc = false and txc.sfxf = true
         and txkc.xs_cj_id = #{xsCjId}
     </select>
+    <select id="getAvgYzy" resultType="java.lang.Integer">
+        select round(avg(kccj2.cj),0) from (SELECT
+        kccj.xs_id,
+        kccj.bkcj AS cj
+        FROM
+        t_xs_kc_cj kccj
+        WHERE
+        cj &lt; 60 AND xs_id = #{xsId} UNION ALL SELECT kccj.xs_id, kccj.cj AS cj FROM t_xs_kc_cj kccj WHERE cj >= 60
+        AND xs_id = #{xsId}) kccj2
+    </select>
+    <select id="getAvgfxcj" resultType="java.lang.Integer">
+        select round(avg(kccj1.cj),0)
+        from (select kccj.xs_cj_id,
+                     kccj.bkcj as cj
+              from t_xs_kc_cj kccj
+                       left join t_kc kc on
+                  (kc.id = kccj.kc_id)
+                       left join t_xs_cj xscj on (xscj.id = kccj.xs_cj_id)
+              where xscj.sfsc = false
+                and xscj.sfxf = true
+                and kccj.cj &lt; 60
+                and kc.kclx = #{kclx}
+                and kccj.xs_cj_id = #{xsCjId}
+              UNION ALL
+              select kccj.xs_cj_id, kccj.cj
+              from t_xs_kc_cj kccj
+                       left join t_kc kc on (kc.id = kccj.kc_id)
+                       left join t_xs_cj xscj
+                                 on (xscj.id = kccj.xs_cj_id)
+              where xscj.sfsc = false
+                and xscj.sfxf = true
+                and kccj.cj >= 60
+                and kc.kclx = #{kclx}
+                and kccj.xs_cj_id = #{xsCjId}) kccj1
+    </select>
 
 </mapper>

@@ -5,8 +5,11 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.userservice.enmus.GroupTypeEnum;
+import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.request.yh.UpdateUserRequest;
+import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.service.yh.YhJsGlService;
 import com.itts.userservice.service.yh.YhService;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 
@@ -43,6 +47,9 @@ public class YhController {
 
     @Autowired
     private JsService jsService;
+
+    @Autowired
+    private JgglService jgglService;
 
     /**
      * 获取用户信息
@@ -67,6 +74,31 @@ public class YhController {
 
         GetYhVO getYhVO = new GetYhVO();
         BeanUtils.copyProperties(yh, getYhVO);
+
+        //获取当前用户最顶级机构信息
+        Jggl jg = jgglService.get(getYhVO.getJgId());
+        if(jg != null){
+
+            //总基地
+            if(Objects.equals(jg.getLx(), GroupTypeEnum.HEADQUARTERS.getKey())){
+                getYhVO.setFjjgId(jg.getId());
+            }
+
+            //分基地
+            if(Objects.equals(jg.getLx(), GroupTypeEnum.BRANCH.getKey())){
+                getYhVO.setFjjgId(jg.getId());
+            }
+
+            //其他
+            if(Objects.equals(jg.getLx(), GroupTypeEnum.OTHER.getKey())){
+
+                String jgCode = jg.getJgbm().substring(0, 2);
+                Jggl fjjg = jgglService.selectByJgbm(jgCode);
+                if(fjjg != null){
+                    getYhVO.setFjjgId(fjjg.getId());
+                }
+            }
+        }
 
         return ResponseUtil.success(getYhVO);
     }

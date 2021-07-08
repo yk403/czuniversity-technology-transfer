@@ -20,6 +20,6 @@ public interface JsXtxxService extends IService<JsXtxx> {
     * @Author: yukai
     * @Date: 2021/7/6
     */
-    void addXtxx(Long sendId,Long receiveId,Integer mklx,String ssmk,String ztlx,String cznr);
+    void addXtxx(Long sendId,Long receiveId,Integer mklx,String ssmk,String ztlx,String cznr,String describe);
     Long getUserId();
 }
