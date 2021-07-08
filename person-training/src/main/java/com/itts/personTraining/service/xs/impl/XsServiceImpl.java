@@ -201,10 +201,10 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     public XsMsgDTO getByYhId() {
         log.info("【人才培养 - 查询学生综合信息】");
         XsMsgDTO xsMsgDTO = xsMapper.getByYhId(getUserId());
-        Long xsId = xsMsgDTO.getId();
-        if (xsId == null) {
+        if (xsMsgDTO == null) {
             throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
         }
+        Long xsId = xsMsgDTO.getId();
         xsMsgDTO.setXylx(pcMapper.findXylxByXsId(xsId));
         ResponseUtil response = userFeignService.get();
         if(response.getErrCode() != 0 ){

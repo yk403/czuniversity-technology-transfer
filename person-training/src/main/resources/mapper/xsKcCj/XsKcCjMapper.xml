@@ -103,5 +103,17 @@
                 and kc.kclx = #{kclx}
                 and kccj.xs_cj_id = #{xsCjId}) kccj1
     </select>
+    <select id="getCountXf" resultType="java.lang.Integer">
+        select sum(kccj.dqxf)
+        from t_xs_kc_cj kccj
+                 left join t_kc kc on (kc.id = kccj.kc_id)
+                 left join t_xs_cj xscj on
+            (xscj.id = kccj.xs_cj_id)
+        where xscj.sfsc = false
+          and xscj.sfxf = true
+          and kc.sfsc = false
+          and kccj.xs_cj_id = #{xsCjId}
+          and kc.kclx = #{kclx}
+    </select>
 
 </mapper>

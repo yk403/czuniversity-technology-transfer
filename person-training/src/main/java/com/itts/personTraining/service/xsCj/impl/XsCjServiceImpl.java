@@ -380,9 +380,6 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                     if (pcId != null) {
                         Pc pc = pcMapper.selectById(pcId);
                         XfDTO xsDTO = new XfDTO();
-                        //TODO:实践和实训待确认
-                        xsDTO.setSxxf(0);
-                        xsDTO.setSjxf(0);
                         //TODO:互认学分暂时为0
                         xsDTO.setHrxf(0);
                         XsCjDTO xsCjDTO = null;
@@ -392,14 +389,15 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                             List<XsKcCjDTO> xsKcCjDTOs = xsKcCjMapper.findXsKcCjByXsId(xsId);
                             if (xsCjDTO != null) {
                                 xsCjDTO.getXsKcCjDTOList().addAll(xsKcCjDTOs);
-                            }
-                            //统计原专业学分(获得)
-                            Integer zxzyxf = xsKcCjMapper.getCountYzy(xsId);
-                            xsDTO.setZxzyxf(zxzyxf);
-                            XsCjDTO xsCjDTO1 = xsCjMapper.selectByPcIdAndXsId(pcId, xsId);
-                            if (xsCjDTO1 != null) {
+                                //实训学分
+                                xsDTO.setSxxf(xsKcCjMapper.getCountXf(xsCjDTO.getId(),PRACTICAL_TRAINING.getKey()));
+                                //实践学分
+                                xsDTO.setSjxf(xsKcCjMapper.getCountXf(xsCjDTO.getId(),PRACTICE_COURSE.getKey()));
+                                //统计原专业学分(获得)
+                                Integer zxzyxf = xsKcCjMapper.getCountYzy(xsId);
+                                xsDTO.setZxzyxf(zxzyxf);
                                 //统计技术转移专业获得学分
-                                Integer jszylyxf = xsKcCjMapper.getCountDqxf(xsCjDTO1.getId());
+                                Integer jszylyxf = xsKcCjMapper.getCountDqxf(xsCjDTO.getId());
                                 xsDTO.setJszylyxf(jszylyxf);
                             } else {
                                 throw new ServiceException(NO_STUDENT_MSG_ERROR);
@@ -579,7 +577,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 abilityInfoDTO.setSjcj(xsKcCjMapper.getAvgfxcj(xsCjDTO1.getId(), PRACTICE_COURSE.getKey()));
                 //实训成绩
                 abilityInfoDTO.setSxcj(xsKcCjMapper.getAvgfxcj(xsCjDTO1.getId(), PRACTICAL_TRAINING.getKey()));
-                abilityInfoDTO.setXl(userCategory);
+                abilityInfoDTO.setXl(1);
                 break;
             default:
                 break;

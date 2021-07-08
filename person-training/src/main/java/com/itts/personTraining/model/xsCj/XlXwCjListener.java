@@ -6,8 +6,6 @@ import com.alibaba.excel.metadata.CellExtra;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.api.Assert;
-import com.itts.common.bean.LoginUser;
-import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.XlXwCjDTO;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import lombok.Data;
@@ -23,8 +21,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.*;
 /**
  * @Author: Austin
  * @Data: 2021/6/3

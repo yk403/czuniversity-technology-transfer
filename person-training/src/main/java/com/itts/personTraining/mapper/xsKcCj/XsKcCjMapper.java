@@ -75,4 +75,12 @@ public interface XsKcCjMapper extends BaseMapper<XsKcCj> {
      * @return
      */
     Integer getAvgfxcj(@Param("xsCjId") Long xsCjId, @Param("kclx") String kclx);
+
+    /**
+     * 根据学生成绩id和课程类型查询当前学分总和
+     * @param xsCjId
+     * @param kclx
+     * @return
+     */
+    Integer getCountXf(@Param("xsCjId") Long xsCjId, @Param("kclx") String kclx);
 }
