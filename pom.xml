@@ -270,7 +270,7 @@
                 <artifactId>alipay-sdk-java</artifactId>
                 <version>${alipay-version}</version>
             </dependency>
-            <!--webmagic依赖-->
+            <!--webmgic依赖,注意此包内含SLF4J会与springboot自带SLF4J冲突-->
             <dependency>
                 <groupId>us.codecraft</groupId>
                 <artifactId>webmagic-core</artifactId>
