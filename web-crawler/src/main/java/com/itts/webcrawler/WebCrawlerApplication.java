@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication(scanBasePackages = {"com.itts.webcrawler",
-        "com.itts.common.exception", "com.itts.common.utils", "com.itts.common.config", "com.itts.common.handler"})
+        "com.itts.common.exception", "com.itts.common.utils.common", "com.itts.common.config", "com.itts.common.handler"})
 @MapperScan("com.itts.webcrawler.mapper")
 @EnableDiscoveryClient
 @EnableFeignClients
