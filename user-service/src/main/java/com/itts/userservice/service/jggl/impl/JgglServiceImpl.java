@@ -112,7 +112,7 @@ public class JgglServiceImpl implements JgglService {
     @Override
     public List<Jggl> getList(String cj) {
         QueryWrapper<Jggl> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.likeLeft("cj",cj)
+        objectQueryWrapper.likeRight("cj",cj)
                 .eq("sfsc",false);
         List<Jggl> jggls = jgglMapper.selectList(objectQueryWrapper);
         return jggls;
