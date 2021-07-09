@@ -3,6 +3,7 @@ package com.itts.personTraining.feign.paymentservice;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.request.ddxfjl.AddDdxfjlRequest;
+import com.itts.personTraining.vo.ddxfjl.GetDdxfjlVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,4 +35,10 @@ public interface OrderFeignService {
      */
     @PostMapping(SystemConstant.BASE_URL + "/v1/ddxfjl/add/")
     ResponseUtil createOrder(@RequestBody AddDdxfjlRequest addDdxfjlRequest);
+
+    /**
+     * 支付订单
+     */
+    @PostMapping(SystemConstant.BASE_URL + "/v1/ddxfjl/pay/")
+    ResponseUtil pay(@RequestBody GetDdxfjlVO getDdxfjlVO);
 }

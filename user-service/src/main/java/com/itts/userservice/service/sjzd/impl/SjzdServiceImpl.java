@@ -93,7 +93,7 @@ public class SjzdServiceImpl implements SjzdService {
             objectQueryWrapper.eq("fj_id", parentId);
         }
 
-        objectQueryWrapper.orderByDesc("cjsj");
+        objectQueryWrapper.orderByAsc("px").orderByDesc("cjsj");
 
         List<Sjzd> sjzds = sjzdMapper.selectList(objectQueryWrapper);
         PageInfo<Sjzd> shzdPageInfo = new PageInfo<>(sjzds);

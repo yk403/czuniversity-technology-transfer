@@ -21,7 +21,7 @@ public interface TkzyMapper extends BaseMapper<Tkzy> {
 
     @Select("SELECT tkzy.* " +
             "FROM t_tkzy tkzy " +
-            "LEFT JOIN t_sj_tm_gl sjtmgl ON tkzy.id = sjtmgl.kssj_id " +
+            "LEFT JOIN t_sj_tm_gl sjtmgl ON tkzy.id = sjtmgl.tm_id " +
             "WHERE sjtmgl.kssj_id = #{sjId} " +
             "AND tkzy.sfsc = false " +
             "AND tkzy.sfsj = true")

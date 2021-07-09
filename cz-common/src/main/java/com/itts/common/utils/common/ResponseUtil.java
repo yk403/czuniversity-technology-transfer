@@ -1,5 +1,8 @@
 package com.itts.common.utils.common;
 
+import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.itts.common.enums.ErrorCodeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -86,5 +89,13 @@ public class ResponseUtil {
      */
     public static ResponseUtil error(ErrorCodeEnum errorCodeEnum) {
         return error(errorCodeEnum.getCode(), errorCodeEnum.getMsg(), null);
+    }
+
+    /**
+     * 数据转换
+     */
+    public <T> T conversionData(TypeReference<T> typeReference) {
+
+        return JSON.parseObject(JSONUtil.toJsonPrettyStr(data), typeReference);
     }
 }

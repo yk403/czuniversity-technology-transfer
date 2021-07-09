@@ -24,7 +24,22 @@ public interface LyHdMapper extends BaseMapper<LyHd> {
      * @param map
      * @return
      */
+    List<LyHdDto> findLyHd(@Param("map") Map map);
+    /**
+     * 分页条件查询需求
+     *
+     * @param map
+     * @return
+     */
     List<LyHdDto> findLyHdFront(@Param("map") Map map);
+    /**
+    * @Description: 分页查询当前用户双创路演活动
+    * @Param: [map]
+    * @return: java.util.List<com.itts.technologytransactionservice.model.LyHdDto>
+    * @Author: yukai
+    * @Date: 2021/6/18
+    */
+    List<LyHdDto> findLyHdFrontUser(@Param("map") Map map);
     /**
      * 分页条件查询需求(后台)
      *

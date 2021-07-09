@@ -111,6 +111,7 @@ logging:
             LyLyMapper: DEBUG
             LyZpMapper: DEBUG
             LyZwMapper: DEBUG
+            LyMsgMapper: DEBUG
 #设置文件上传静态变量
 dictionary:
   confFilePath: classpath:fdfs_client.conf

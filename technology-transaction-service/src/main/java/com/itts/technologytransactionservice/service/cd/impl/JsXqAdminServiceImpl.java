@@ -13,6 +13,7 @@ import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.model.TJsXq;
+import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.cd.JsShAdminService;
 import com.itts.technologytransactionservice.service.cd.JsXqAdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +46,8 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     private JsShAdminService jsShAdminService;
     @Autowired
     private JsShMapper jsShMapper;
+    @Autowired
+    private JsXtxxService jsXtxxService;
 
 
     /**
@@ -202,6 +205,11 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
             log.error("【技术交易 - 批量发布需求失败!】");
             return false;
         }
+        //系统消息
+        List<TJsXq> tJsXqs=jsXqMapper.selectBatchIds(ids);
+        for (TJsXq tJsXq:tJsXqs) {
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsXq.getUserId().longValue(),0,0,tJsXq.getXqmc());
+        }
         return true;
     }
 
@@ -220,6 +228,11 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         }
         if (!jsShAdminService.updateBatchById(tJsShes)) {
             return false;
+        }
+        //系统消息
+        List<TJsXq> tJsXqs=jsXqMapper.selectBatchIds(ids);
+        for (TJsXq tJsXq:tJsXqs) {
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsXq.getUserId().longValue(),1,0,tJsXq.getXqmc());
         }
         return true;
     }

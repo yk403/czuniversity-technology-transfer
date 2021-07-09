@@ -7,28 +7,37 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.KcDTO;
+import com.itts.personTraining.dto.KcXsXfDTO;
+import com.itts.personTraining.dto.KcbDTO;
+import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.kcSz.KcSzMapper;
+import com.itts.personTraining.mapper.pc.PcMapper;
+import com.itts.personTraining.mapper.pcXs.PcXsMapper;
+import com.itts.personTraining.mapper.pk.PkMapper;
+import com.itts.personTraining.mapper.sz.SzMapper;
+import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.model.kcSz.KcSz;
-import com.itts.personTraining.model.xyKc.XyKc;
+import com.itts.personTraining.model.pc.Pc;
+import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.service.kc.KcService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.kcSz.KcSzService;
-import com.itts.personTraining.service.xyKc.XyKcService;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.K;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -54,6 +63,16 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     private KcSzMapper kcSzMapper;
     @Autowired
     private KcSzService kcSzService;
+    @Autowired
+    private XsMapper xsMapper;
+    @Autowired
+    private PcXsMapper pcXsMapper;
+    @Autowired
+    private PcMapper pcMapper;
+    @Autowired
+    private SzMapper szMapper;
+    @Autowired
+    private PkMapper pkMapper;
 
     /**
      * 分页条件查询课程列表
@@ -210,6 +229,229 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         return false;
     }
 
+    @Override
+    public List<KcXsXfDTO> findByYh(Long pcId) {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询课程列表(前)】",userId);
+        String userCategory = getUserCategory();
+        List<KcXsXfDTO> kcXsXfDTOList =null;
+        switch(userCategory) {
+            case "postgraduate":
+            case "broker":
+                XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
+                if (xsMsg == null) {
+                    throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc>  pcList = pcXsMapper.findPcByXsId(xsMsg.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    String xylx = pcList.get(0).getXylx();
+                    if(xylx!=null){
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    }else {
+                        kcXsXfDTOList=null;
+                    }
+                } else {
+                    Pc pcById = pcMapper.getPcById(pcId);
+                    String xylx = pcById.getXylx();
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                }
+                break;
+            case "tutor":
+                Sz yzyds = szMapper.getSzByYhId(userId);
+                if (yzyds == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc> pcList = pcXsMapper.findByYzydsIdOrQydsId(yzyds.getId(),null);
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    String xylx = pcList.get(0).getXylx();
+                    if(xylx!=null){
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    }else {
+                        kcXsXfDTOList=null;
+                    }
+
+                } else {
+                    Pc pcById = pcMapper.getPcById(pcId);
+                    String xylx = pcById.getXylx();
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                }
+                break;
+            //企业导师
+            case "corporate_mentor":
+                Sz qyds = szMapper.getSzByYhId(userId);
+                if (qyds == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc> pcList = pcXsMapper.findByYzydsIdOrQydsId(null,qyds.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    String xylx = pcList.get(0).getXylx();
+                    if(xylx!=null){
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    }else {
+                        kcXsXfDTOList=null;
+                    }
+                } else {
+                    Pc pcById = pcMapper.getPcById(pcId);
+                    String xylx = pcById.getXylx();
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                }
+                break;
+            case "teacher":
+                Sz skjs = szMapper.getSzByYhId(userId);
+                if (skjs == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc> pcList = pkMapper.findPcsBySzId(skjs.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    String xylx = pcList.get(0).getXylx();
+                    if(xylx!=null){
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    }else {
+                        kcXsXfDTOList=null;
+                    }
+                } else {
+                    Pc pcById = pcMapper.getPcById(pcId);
+                    String xylx = pcById.getXylx();
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                }
+                break;
+            case "school_leader":
+            case "administrator":
+                if (pcId == null) {
+                    String xylx =null;
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                } else {
+                    Pc pcById = pcMapper.getPcById(pcId);
+                    String xylx = pcById.getXylx();
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                }
+                break;
+            default:
+                break;
+        }
+        return kcXsXfDTOList;
+    }
+
+    @Override
+    public List<KcbDTO> findByPcId(Long pcId) {
+        Long userId = getUserId();
+        log.info("【人才培养 - 根据用户id:{}查询课程表(前)】",userId);
+        String userCategory = getUserCategory();
+        List<KcbDTO> collect =null;
+        switch(userCategory) {
+            case "postgraduate":
+            case "broker":
+                XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
+                if (xsMsg == null) {
+                    throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc>  pcList = pcXsMapper.findPcByXsId(xsMsg.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    Long id = pcList.get(0).getId();
+                    if(id!=null){
+                        collect = kcMapper.findByPcId(id);
+                    }else {
+                        collect=null;
+                    }
+                } else {
+                    collect = kcMapper.findByPcId(pcId);
+                }
+                break;
+            case "tutor":
+                Sz yzyds = szMapper.getSzByYhId(userId);
+                if (yzyds == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc> pcList = pcXsMapper.findByYzydsIdOrQydsId(yzyds.getId(),null);
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    Long id = pcList.get(0).getId();
+                    if(id!=null){
+                        collect = kcMapper.findByPcId(id);
+                    }else {
+                        collect=null;
+                    }
+                } else {
+                    collect = kcMapper.findByPcId(pcId);
+                }
+                break;
+            //企业导师
+            case "corporate_mentor":
+                Sz qyds = szMapper.getSzByYhId(userId);
+                if (qyds == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc> pcList = pcXsMapper.findByYzydsIdOrQydsId(null,qyds.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    Long id = pcList.get(0).getId();
+                    if(id!=null){
+                        collect = kcMapper.findByPcId(id);
+                    }else {
+                        collect=null;
+                    }
+                } else {
+                    collect = kcMapper.findByPcId(pcId);
+                }
+                break;
+            case "teacher":
+                Sz skjs = szMapper.getSzByYhId(userId);
+                if (skjs == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc> pcList = pkMapper.findPcsBySzId(skjs.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    Long id = pcList.get(0).getId();
+                    if(id!=null){
+                        collect = kcMapper.findByPcId(id);
+                    }else {
+                        collect=null;
+                    }
+                } else {
+                    collect = kcMapper.findByPcId(pcId);
+                }
+                break;
+            case "school_leader":
+            case "administrator":
+                if (pcId == null) {
+                    QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
+                    pcQueryWrapper.eq("sfsc",false)
+                            .orderByDesc("cjsj");
+                    Long id = pcMapper.selectList(pcQueryWrapper).get(0).getId();
+                    collect = kcMapper.findByPcId(id);
+                } else {
+                    collect = kcMapper.findByPcId(pcId);
+                }
+                break;
+            default:
+                break;
+        }
+        return collect;
+    }
+
+
     /**
      * 新增课程师资关系
      * @param kcDTO
@@ -241,5 +483,42 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+    /**
+     * 获取当前用户id所属类别
+     * @return
+     */
+    private String getUserCategory() {
+        LoginUser loginUser = threadLocal.get();
+        String userCategory;
+        if (loginUser != null) {
+            userCategory = loginUser.getUserCategory();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userCategory;
+    }
+
+    /**
+     * 获取课程学时列表
+     * @param xylx
+     * @return
+     */
+    private List<KcXsXfDTO> getKcXsXfDTOList(String xylx){
+        List<KcXsXfDTO> kcXsXfDTOList = kcMapper.findByXylx(xylx);
+        List<KcXsXfDTO> pkByXylx = kcMapper.findPkByXylx(xylx);
+        for (int i = 0; i < kcXsXfDTOList.size(); i++) {
+            KcXsXfDTO kcXsXfDTO = kcXsXfDTOList.get(i);
+            Long id = kcXsXfDTO.getId();
+            for (int i1 = 0; i1 < pkByXylx.size(); i1++) {
+                KcXsXfDTO kcXsXfDTO1 = pkByXylx.get(i1);
+                if(id == kcXsXfDTO1.getId()){
+                    kcXsXfDTO.setQsz(kcXsXfDTO1.getQsz());
+                    kcXsXfDTO.setJsz(kcXsXfDTO1.getJsz());
+                    kcXsXfDTO.setXqs(kcXsXfDTO1.getXqs());
+                }
+            }
+        }
+        return kcXsXfDTOList;
     }
 }

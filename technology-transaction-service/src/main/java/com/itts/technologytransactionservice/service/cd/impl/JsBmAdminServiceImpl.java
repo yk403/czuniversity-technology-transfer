@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsBmMapper;
 import com.itts.technologytransactionservice.model.TJsBm;
+import com.itts.technologytransactionservice.model.TJsBmDto;
 import com.itts.technologytransactionservice.service.JsBmService;
 import com.itts.technologytransactionservice.service.cd.JsBmAdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +31,8 @@ public class JsBmAdminServiceImpl extends ServiceImpl<JsBmMapper, TJsBm> impleme
 	@Override
 	public PageInfo page(Query query) {
 		PageHelper.startPage(query.getPageNum(), query.getPageSize());
-		List<TJsBm> list = jsBmMapper.list(query);
-		PageInfo<TJsBm> page = new PageInfo<>(list);
+		List<TJsBmDto> list = jsBmMapper.list(query);
+		PageInfo<TJsBmDto> page = new PageInfo<>(list);
 		return page;
 	}
 	/**

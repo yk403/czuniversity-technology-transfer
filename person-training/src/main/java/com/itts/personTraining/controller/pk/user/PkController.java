@@ -6,6 +6,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.xs.Xs;
+import com.itts.personTraining.service.kc.KcService;
 import com.itts.personTraining.service.pk.PkService;
 import com.itts.personTraining.service.xs.XsService;
 import io.swagger.annotations.Api;
@@ -28,22 +29,16 @@ public class PkController {
     @Autowired
     private PkService pkService;
     @Autowired
-    private XsService xsService;
+    private KcService kcService;
+
     /**
-     * 查询排课信息
-     *
+     * 根据用户id查询课程表
      * @return
      */
-    @GetMapping("/list/")
-    @ApiOperation(value = "查询排课信息")
-    public ResponseUtil findPkInfo(@RequestParam(value = "skqsnyr") String skqsnyr,
-                                   @RequestParam(value = "xh") String xh) {
-        //TODO: 暂定,等会处理
-        Long pcId = null; //xsService.getByXh(xh).getPcId();
-        if(pcId==null){
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-        }
-        return ResponseUtil.success(pkService.findPkInfo(pcId));
+    @GetMapping("/list")
+    @ApiOperation(value = "根据用户id查询列表")
+    public ResponseUtil findKcByYh(@RequestParam(value = "pcId",required = false) Long pcId) {
+        return ResponseUtil.success(kcService.findByPcId(pcId));
     }
 
     /**

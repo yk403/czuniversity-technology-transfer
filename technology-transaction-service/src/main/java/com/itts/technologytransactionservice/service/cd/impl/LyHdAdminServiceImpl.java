@@ -14,6 +14,7 @@ import com.itts.technologytransactionservice.mapper.LyZwMapper;
 import com.itts.technologytransactionservice.model.Fjzy;
 import com.itts.technologytransactionservice.model.LyHd;
 import com.itts.technologytransactionservice.model.LyHdDto;
+import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.LyHdService;
 import com.itts.technologytransactionservice.service.cd.LyHdAdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,8 @@ public class LyHdAdminServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implemen
     private FjzyMapper fjzyMapper;
     @Autowired
     private LyZwMapper lyZwMapper;
+    @Autowired
+    private JsXtxxService jsXtxxService;
     @Override
     public PageInfo findLyHdBack(Map<String, Object> params) {
         log.info("【技术交易 - 分页条件查询(前台)】");

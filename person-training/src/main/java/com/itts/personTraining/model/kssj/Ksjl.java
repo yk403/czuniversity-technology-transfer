@@ -3,6 +3,7 @@ package com.itts.personTraining.model.kssj;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,19 +16,19 @@ import java.util.Date;
  * </p>
  *
  * @author liuyingming
- * @since 2021-05-27
+ * @since 2021-06-22
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_ksjl")
 public class Ksjl implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3228492672125835499L;
 
     /**
      * 主键ID
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -85,5 +86,39 @@ public class Ksjl implements Serializable {
      */
     private Date jsdtsj;
 
+    /**
+     * 判断总分
+     */
+    private Integer pdzf;
 
+    /**
+     * 判断题最终得分
+     */
+    private Integer pddf;
+
+    /**
+     * 单选题总分
+     */
+    private Integer danxzf;
+
+    /**
+     * 单选最终得分
+     */
+    private Integer danxdf;
+
+    /**
+     * 多选总分
+     */
+    private Integer duoxzf;
+
+    /**
+     * 多选最终得分
+     */
+    private Integer duoxdf;
+
+    /**
+     * 创建时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date cjsj;
 }

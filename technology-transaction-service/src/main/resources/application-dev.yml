@@ -107,6 +107,8 @@ logging:
             LyLyMapper: DEBUG
             LyZpMapper: DEBUG
             LyZwMapper: DEBUG
+            LyMsgMapper: DEBUG
+            JsXtxxMapper: DEBUG
 
 #feign配置全局超时时间
 ribbon:

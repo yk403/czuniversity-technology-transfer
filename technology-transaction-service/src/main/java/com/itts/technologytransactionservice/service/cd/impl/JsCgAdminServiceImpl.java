@@ -12,6 +12,7 @@ import com.itts.technologytransactionservice.mapper.JsHdMapper;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsSh;
+import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.cd.JsCgAdminService;
 import com.itts.technologytransactionservice.service.cd.JsShAdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,8 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements JsCgAdminService {
     @Autowired
     private JsCgMapper jsCgMapper;
-
+    @Autowired
+    private JsXtxxService jsXtxxService;
     @Autowired
     private JsShAdminService jsShAdminService;
 
@@ -96,7 +98,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     /**
      * 成果上移下移 上移type为0 下移type为1
      *
-     * @param i
+     * @param
      * @return
      */
     @Override
@@ -263,6 +265,12 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
             log.error("【技术交易 - 批量发布成果失败!】");
             return false;
         }
+        //系统消息
+        List<TJsCg> tJsCgs=jsCgMapper.selectBatchIds(ids);
+        for (TJsCg tJsCg:tJsCgs) {
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),0,0,tJsCg.getCgmc());
+        }
+
         return true;
     }
 
@@ -284,6 +292,16 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         }
         if (!jsShAdminService.updateBatchById(tJsShes)) {
             return false;
+        }
+        //系统消息
+        List<TJsCg> tJsCgs=jsCgMapper.selectBatchIds(ids);
+        for (TJsCg tJsCg:tJsCgs) {
+            if(tJsShes.get(0).getJylx() == 0){
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),2,0,tJsCg.getCgmc());
+            }
+            if(tJsShes.get(0).getJylx() == 2){
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),3,0,tJsCg.getCgmc());
+            }
         }
         return true;
     }

@@ -112,12 +112,6 @@ public class Pk implements Serializable {
     private String xqs;
 
     /**
-     * 是否下发(0:未下发;1:已下发)
-     */
-    @ApiModelProperty(value = "是否下发", required = true)
-    private Boolean sfxf;
-
-    /**
      * 是否删除(0:未删除;1已删除)
      */
     private Boolean sfsc;

@@ -11,6 +11,7 @@
         <module>user-service</module>
         <module>itts-authentication</module>
         <module>person-training</module>
+        <module>web-crawler</module>
     </modules>
 
 
@@ -66,6 +67,8 @@
         <poi-ooxml.version>3.17</poi-ooxml.version>
         <json.version>20180130</json.version>
         <fastdfs.version>1.27</fastdfs.version>
+        <wx-version>0.2.2</wx-version>
+        <alipay-version>4.15.0.ALL</alipay-version>
     </properties>
 
     <dependencyManagement>
@@ -252,6 +255,18 @@
                 <groupId>org.csource</groupId>
                 <artifactId>fastdfs-client-java</artifactId>
                 <version>${fastdfs.version}</version>
+            </dependency>
+            <!--微信支付API v3的Apache HttpClient扩展，实现了请求签名的生成和应答签名的验证-->
+            <dependency>
+                <groupId>com.github.wechatpay-apiv3</groupId>
+                <artifactId>wechatpay-apache-httpclient</artifactId>
+                <version>${wx-version}</version>
+            </dependency>
+            <!-- 支付宝sdk https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-sdk-java</artifactId>
+                <version>${alipay-version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.technologytransactionservice.mapper.JsXtxxMapper">
+    <select id="findJsXtxx" resultType="com.itts.technologytransactionservice.model.JsXtxxDto">
+        select
+        xtxx.id as id,
+        xtxx.cjsj,
+        xtxx.gxsj,
+        xtxx.xxmc,
+        xtxx.xxlx,
+        xtxx.xxnr,
+        xtxx.send_id,
+        xtxx.ckzt,
+        xtxx.cjsj,
+        xtxx.gxsj,
+        xtxx.receive_id,
+        xtxx.ssmk,
+        xtxx.mklx,
+        xtxx.ztlx,
+        xtxx.describe_name,
+        xtxx.cznr,
+        yh.yhm as yhm,
+        yh2.yhm as dqyh
+        from t_js_xtxx xtxx left join t_yh yh on(yh.id = xtxx.send_id) left join t_yh yh2 on(yh2.id = xtxx.receive_id)
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            xtxx.is_delete = 0
+            <if test="map.userId != null"> and xtxx.receive_id = #{map.userId} </if>
+            <if test="map.ckzt != null"> and xtxx.ckzt = #{map.ckzt} </if>
+            <if test="map.xxmc != null"> and xtxx.xxmc like concat('%',trim(#{map.xxmc}),'%') </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

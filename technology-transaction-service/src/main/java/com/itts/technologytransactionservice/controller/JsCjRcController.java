@@ -10,6 +10,7 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.controller.test.bid.BidController;
 import com.itts.technologytransactionservice.mapper.JsBmMapper;
 import com.itts.technologytransactionservice.model.TJsBm;
+import com.itts.technologytransactionservice.model.TJsBmDto;
 import com.itts.technologytransactionservice.model.TJsCjRc;
 import com.itts.technologytransactionservice.model.TJsCjRcDto;
 import com.itts.technologytransactionservice.service.JsBmService;
@@ -94,7 +95,7 @@ public class JsCjRcController extends BaseController {
                 HashMap<String, Object> bmquery = new HashMap<>();
                 bmquery.put("userId",jsCjRcService.getUserId());
                 bmquery.put("hdId",tJsCjRcDto.getHdId());
-                List<TJsBm> list = jsBmMapper.list(bmquery);
+                List<TJsBmDto> list = jsBmMapper.list(bmquery);
                 if(list.size()==1){
                     tJsCjRcDto.setBmId(list.get(0).getId());
                 }else{

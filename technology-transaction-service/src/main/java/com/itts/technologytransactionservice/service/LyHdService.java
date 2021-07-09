@@ -19,4 +19,7 @@ public interface LyHdService extends IService<LyHd> {
     PageInfo findLyHdFront(Map<String, Object> params);
 
     Boolean saveHd(LyHd lyHd);
+
+    PageInfo findLyHdFrontUser(Map<String, Object> params);
+    Long getUserId();
 }

@@ -42,14 +42,20 @@ public class Ks implements Serializable {
     private Integer type;
 
     /**
-     * 试卷id
+     * 考试试卷id
      */
-    private Long sjId;
+    private Long kssjId;
 
     /**
      * 考试名称
      */
     private String ksmc;
+
+    /**
+     * 考试类别
+     */
+    @ApiModelProperty(value = "考试类别")
+    private String kslb;
 
     /**
      * 考试类型(统一考试;补考)
@@ -76,6 +82,23 @@ public class Ks implements Serializable {
      * 考试结束时间
      */
     private String ksjssj;
+
+    /**
+     * 考试时长
+     */
+    private String kssc;
+
+    /**
+     * 考试开始年月日
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ksksnyr;
+
+    /**
+     * 考试结束年月日
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ksjsnyr;
 
     /**
      * 是否下发(0:否;1:是)

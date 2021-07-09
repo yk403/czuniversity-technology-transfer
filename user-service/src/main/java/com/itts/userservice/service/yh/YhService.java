@@ -1,5 +1,6 @@
 package com.itts.userservice.service.yh;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.model.jggl.Jggl;
@@ -18,7 +19,7 @@ import com.itts.userservice.vo.yh.YhVO;
  * @author fl
  * @since 2021-03-18
  */
-public interface YhService {
+public interface YhService extends IService<Yh> {
 
     /**
      * 查询列表

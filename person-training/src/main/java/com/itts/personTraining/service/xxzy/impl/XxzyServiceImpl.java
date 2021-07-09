@@ -1,30 +1,36 @@
 package com.itts.personTraining.service.xxzy.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.enums.SystemTypeEnum;
 import com.itts.common.utils.common.CommonUtils;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.feign.paymentservice.OrderFeignService;
-import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.mapper.fjzy.FjzyMapper;
+import com.itts.personTraining.mapper.kc.KcMapper;
+import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.xxzy.XxzyMapper;
 import com.itts.personTraining.mapper.xxzy.XxzyscMapper;
 import com.itts.personTraining.model.fjzy.Fjzy;
+import com.itts.personTraining.model.kc.Kc;
+import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.model.xxzy.Xxzysc;
 import com.itts.personTraining.request.ddxfjl.AddDdxfjlRequest;
-import com.itts.personTraining.request.ddxfjl.PayDdxfjlRequest;
 import com.itts.personTraining.request.fjzy.AddFjzyRequest;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
 import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
 import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
+import com.itts.personTraining.vo.ddxfjl.GetDdxfjlVO;
 import com.itts.personTraining.vo.xxzy.GetXxzyVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -35,6 +41,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -62,14 +69,17 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
     private OrderFeignService orderFeignService;
 
     @Autowired
-    private UserFeignService userFeignService;
+    private KcMapper kcMapper;
+
+    @Autowired
+    private SzMapper szMapper;
 
     /**
      * 获取列表 - 分页
      */
     @Override
     public PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type,
-                               String firstCategory, String secondCategory, String category, Long courseId, String condition) {
+                               String firstCategory, String secondCategory, String category, Long courseId, String condition, Long groupId) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -98,6 +108,10 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             query.eq("zylx", category);
         }
 
+        if(groupId == null){
+            query.eq("jg_id", groupId);
+        }
+
         query.orderByDesc("cjsj");
 
         List xxzys = xxzyMapper.selectList(query);
@@ -112,7 +126,8 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      */
     @Override
     public PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
-                                      String secondCategory, Long courseId, String condition, String token) {
+                                      String secondCategory, String category, String direction, Long courseId,
+                                      String condition, Long groupId) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -130,12 +145,24 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             query.eq("zyejfl", secondCategory);
         }
 
+        if (StringUtils.isNotBlank(category)) {
+            query.eq("zylx", category);
+        }
+
+        if (StringUtils.isNotBlank(direction)) {
+            query.eq("zyfx", direction);
+        }
+
         if (courseId != null) {
             query.eq("kc_id", courseId);
         }
 
         if (StringUtils.isNotBlank(condition)) {
             query.like("mc", condition.trim());
+        }
+
+        if(groupId != null){
+            query.eq("jg_id", groupId);
         }
 
         query.orderByDesc("cjsj");
@@ -170,32 +197,33 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             return pageInfo;
         }
 
-        /*ResponseUtil response = orderFeignService.getByUserId();
+        ResponseUtil response = orderFeignService.getByUserId();
         if (response.getErrCode().intValue() != 0) {
 
             return pageInfo;
         }
 
-        //解析响应结果
-        String dataStr = response.getData().toString();
-        JSONArray jsonArr = JSONUtil.parseArray(dataStr);
+        if (response.getData() == null) {
+            return pageInfo;
+        }
 
-        List<GetDdxfjlVO> ddxfjls = JSONUtil.toList(jsonArr, GetDdxfjlVO.class);
+        List<GetDdxfjlVO> ddxfjls = response.conversionData(new TypeReference<List<GetDdxfjlVO>>() {
+        });
 
         //获取订单中商品ID
-        List<Long> spIds = ddxfjls.stream().map(GetDdxfjlVO::getSpId).collect(Collectors.toList());*/
+        List<Long> spIds = ddxfjls.stream().map(GetDdxfjlVO::getSpId).collect(Collectors.toList());
 
         //获取当前查询列表的商品是否为已支付订单
         Map<Long, GetXxzyVO> xxzyMap = voList.stream().collect(Collectors.toMap(GetXxzyVO::getId, Function.identity()));
 
-        /*spIds.forEach(spId -> {
+        spIds.forEach(spId -> {
 
             GetXxzyVO xxzy = xxzyMap.get(spId);
             if (xxzy != null) {
 
                 xxzy.setSfgm(true);
             }
-        });*/
+        });
 
         //获取我收藏的学习资源
         List<Xxzysc> xxzyscs = xxzyscMapper.selectList(new QueryWrapper<Xxzysc>()
@@ -213,6 +241,36 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         });
 
         return pageInfo;
+    }
+
+    /**
+     * 获取云课堂课程列表
+     */
+    @Override
+    public List<Kc> getCloudClassroomCourse(String userType, String educationType, String studentType, Long groupId) {
+
+        List<Kc> kcs = Lists.newArrayList();
+
+        //判断用户是否是授课教师
+        if (Objects.equals(userType, UserTypeEnum.TEACHER.getKey())) {
+
+            LoginUser loginUser = SystemConstant.threadLocal.get();
+
+            Sz sz = szMapper.getSzByYhId(loginUser.getUserId());
+
+            kcs = kcMapper.findBySzId(sz.getId(), educationType, studentType, groupId);
+
+        } else {
+
+            List<String> studentTypes = Lists.newArrayList(studentType.split(","));
+            if (CollectionUtils.isEmpty(studentTypes)) {
+                return kcs;
+            }
+
+            kcs = kcMapper.findByType(educationType, studentTypes, groupId);
+        }
+
+        return kcs;
     }
 
     /**
@@ -376,9 +434,9 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      * 支付金额
      */
     @Override
-    public ResponseUtil pay(PayDdxfjlRequest payDdxfjlRequest) {
+    public  ResponseUtil pay(String orderNo, String payType) {
 
-        ResponseUtil response = orderFeignService.getByCode(payDdxfjlRequest.getBh());
+        ResponseUtil response = orderFeignService.getByCode(orderNo);
         if (response.getErrCode().intValue() != 0) {
 
             return response;
@@ -388,8 +446,14 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR.getCode(), "订单不存在");
         }
 
-        //如果是微信支付、支付宝支付调用三方支付接口 TODO
+        GetDdxfjlVO ddxfjl = response.conversionData(new TypeReference<GetDdxfjlVO>() {
+        });
 
-        return ResponseUtil.success();
+        ddxfjl.setZffs(payType);
+
+        //如果是微信支付、支付宝支付调用三方支付接口
+        ResponseUtil payResponse = orderFeignService.pay(ddxfjl);
+
+        return payResponse;
     }
 }

@@ -2,6 +2,7 @@ package com.itts.userservice.service.yh.impl;
 
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -58,7 +59,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Primary
-public class YhServiceImpl implements YhService {
+public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhService {
 
     @Resource
     private YhMapper yhMapper;
@@ -68,6 +69,7 @@ public class YhServiceImpl implements YhService {
 
     @Resource
     private RedisTemplate redisTemplate;
+
     @Resource
     private JsMapper jsMapper;
 

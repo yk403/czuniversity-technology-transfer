@@ -94,24 +94,36 @@ public class springScheduledDemo {
     @Scheduled(cron = "5 0/1 * * * ?")
     public void startRoadShow(){
         Map<String,Object> map=new HashMap<>();
+        map.put("hdEnd",1);
         List<LyHdDto> lyHdBack = lyHdMapper.findLyHdBack(map);
         if(lyHdBack.size()>0){
             for (LyHdDto item:lyHdBack){
                 Date startTime=item.getHdkssj();
                 Date nowDate = new Date();
-                //判断如果活动开始时
-                if(item.getHdkssj()!=null){
-                    if(startTime.before(nowDate)){
+                //判断活动如果未开始且超过活动报名时间，将活动状态改为报名中
+                if(item.getBmkssj()!=null){
+                    if(item.getBmkssj().before(nowDate)){
                         if(item.getHdzt()==0 && item.getHdfbzt() == 1){
                             item.setHdzt(1);
                             LyHd lyHd= new LyHd();
                             BeanUtils.copyProperties(item,lyHd);
                             lyHdMapper.updateById(lyHd);
-                        }else if(item.getHdzt()==1 && item.getHdfbzt() == 1){
+                        }
+                    }
+                }
+                //判断如果活动开始时,将活动状态由报名中改为活动中
+                if(item.getHdkssj()!=null){
+                    if(startTime.before(nowDate)){
+                        if(item.getHdzt()==1 && item.getHdfbzt() == 1){
+                            item.setHdzt(2);
+                            LyHd lyHd= new LyHd();
+                            BeanUtils.copyProperties(item,lyHd);
+                            lyHdMapper.updateById(lyHd);
+                        }else if(item.getHdzt()==2 && item.getHdfbzt() == 1){
                             if(item.getHdjssj()!=null){
                                 //如果活动时间已结束则置活动状态为已结束
                                 if(item.getHdjssj().before(nowDate)){
-                                    item.setHdzt(2);
+                                    item.setHdzt(3);
                                     LyHd lyHd= new LyHd();
                                     BeanUtils.copyProperties(item,lyHd);
                                     lyHdMapper.updateById(lyHd);

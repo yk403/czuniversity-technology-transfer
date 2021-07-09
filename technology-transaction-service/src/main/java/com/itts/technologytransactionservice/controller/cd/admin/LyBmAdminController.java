@@ -7,7 +7,9 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.LyBm;
+import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.cd.LyBmAdminService;
+import com.itts.technologytransactionservice.service.cd.LyHdAdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,10 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 public class LyBmAdminController {
     @Autowired
     private LyBmAdminService lyBmAdminService;
+    @Autowired
+    private LyHdAdminService lyHdAdminService;
+    @Autowired
+    private JsXtxxService jsXtxxService;
     /**
      * 获取列表
      */
@@ -85,7 +91,13 @@ public class LyBmAdminController {
        if (!lyBmAdminService.updateLyBm(lyBm)) {
             throw new WebException(UPDATE_FAIL);
         }
-        return ResponseUtil.success("更新课程成功!");
+        if(lyBm.getShzt().equals(2)){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyBm.getUserId().longValue(),5,0,lyHdAdminService.getById(lyBm.getHdId()).getHdmc());
+        }
+        if(lyBm.getShzt().equals(1)){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyBm.getUserId().longValue(),5,1,lyHdAdminService.getById(lyBm.getHdId()).getHdmc());
+        }
+        return ResponseUtil.success("报名审核成功!");
 
     }
     @ApiOperation(value = "删除")

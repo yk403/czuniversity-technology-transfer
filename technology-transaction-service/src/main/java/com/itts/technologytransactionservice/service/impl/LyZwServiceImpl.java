@@ -44,7 +44,16 @@ public class LyZwServiceImpl extends ServiceImpl<LyZwMapper, LyZw> implements Ly
         log.info("【技术交易 - 分页条件查询(前台)】");
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
-        List<LyZwDto> list = lyZwMapper.findLyZwFront(query);
+        List<LyZwDto> list = lyZwMapper.findLyZwFrontCount(query);
+        return new PageInfo<>(list);
+    }
+
+    @Override
+    public PageInfo findLyZwFrontSelect(Map<String, Object> params) {
+        log.info("【双创路演 - 分页条件查询(前台复选框用)】");
+        Query query = new Query(params);
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<LyZwDto> list = lyZwMapper.findLyZwFrontSelect(query);
         return new PageInfo<>(list);
     }
 

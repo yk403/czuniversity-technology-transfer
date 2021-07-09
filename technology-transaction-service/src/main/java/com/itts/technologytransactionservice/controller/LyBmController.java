@@ -9,8 +9,11 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.technologytransactionservice.model.LyBm;
+import com.itts.technologytransactionservice.model.LyHd;
 import com.itts.technologytransactionservice.model.TJsBm;
+import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.LyBmService;
+import com.itts.technologytransactionservice.service.LyHdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -39,6 +42,10 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 public class LyBmController {
     @Autowired
     private LyBmService lyBmService;
+    @Autowired
+    private LyHdService lyHdService;
+    @Autowired
+    private JsXtxxService jsXtxxService;
     /**
      * 获取列表
      */
@@ -89,6 +96,12 @@ public class LyBmController {
         //更新数据
        if (!lyBmService.updateLyBm(lyBm)) {
             throw new WebException(UPDATE_FAIL);
+        }
+        if(lyBm.getShzt().equals("2")){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyBm.getUserId().longValue(),5,0,lyHdService.getById(lyBm.getHdId()).getHdmc());
+        }
+        if(lyBm.getShzt().equals("1")){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyBm.getUserId().longValue(),5,1,lyHdService.getById(lyBm.getHdId()).getHdmc());
         }
         return ResponseUtil.success("更新课程成功!");
 

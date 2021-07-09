@@ -62,7 +62,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             LoginUserInfo userInfo = new ObjectMapper().readValue(request.getInputStream(), LoginUserInfo.class);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                     = new UsernamePasswordAuthenticationToken(userInfo.getUserName(), userInfo.getUserPassword(), new ArrayList<>());
-
+            //在此调用UserDetailsService的loadUserByUsername
             Authentication authentication = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
             return authentication;
 
@@ -94,7 +94,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         //⽣成Token, 并存入redis
         String token = JwtUtil.getJwtToken(JSONUtil.toJsonStr(loginUser), RedisConstant.TOKEN_EXPIRE_DATE);
-
+        //set第三个参数为时间倍数，第四个参数为时间单位
         redisTemplate.opsForValue().set(RedisConstant.REDIS_USER_LOGIN_TOKEN_PREFIX + user.getId(), token, RedisConstant.TOKEN_EXPIRE_DATE, TimeUnit.MILLISECONDS);
 
         //返回数据

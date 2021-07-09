@@ -100,4 +100,10 @@ public interface XsService extends IService<Xs> {
      */
     List<Pc> getPcByYhId();
 
+    /**
+     * 更新学生信息(前)
+     * @param stuDTO
+     * @return
+     */
+    boolean updateUser(StuDTO stuDTO);
 }

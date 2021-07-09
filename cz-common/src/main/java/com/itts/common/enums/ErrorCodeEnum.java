@@ -25,6 +25,7 @@ public enum ErrorCodeEnum {
     SYSTEM_REQUEST_METHOD_ERROR(-40005, "请求方式错误"),
     SYSTEM_REQUEST_PARAMS_TYPE_ERROR(-40006, "请求参数类型或请求参数格式错误"),
     SYSTEM_ERROR(-40007, "系统异常，请联系管理员"),
+    SYSTEM_NET_ERROR(-40008, "网络不稳定，请重试"),
     //====================      系统错误提示  END     ====================
 
     //====================      技术交易服务错误提示（服务码410）      ====================
@@ -51,6 +52,10 @@ public enum ErrorCodeEnum {
 
     //====================       支付服务错误提示（服务码420）      ====================
     PAY_FAIL_ERROR(-420001, "支付失败"),
+    PAY_TRANSACTIONS_ERROR(-420002, "预支付下单失败"),
+    PAY_SELECTORDER_ERROR(-420003, "查询订单失败"),
+    PAY_CLOSEORDER_ERROR(-420003, "关闭订单失败"),
+    PAY_INITORDER_ERROR(-420003, "订单初始化失败"),
     //====================       支付服务错误提示END     ====================
 
     //====================       登录、登出、注册错误提示（服务码430）      ====================
@@ -112,7 +117,11 @@ public enum ErrorCodeEnum {
     PLACE_BE_OCCUPIED(-45042,"当前日期时段该地点已有排课,不可添加!"),
     TEACHER_BE_OCCUPIED(-45043,"当前日期时段该教师已有排课,不可添加!"),
     NO_STUDENT_MSG_ERROR(-45044,"暂无该学生成绩信息!"),
-    BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR(-45016, "批次号为空,暂无信息"),
+    BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR(-45045, "批次号为空,暂无信息"),
+    GENERATE_PAPER_ERROR(-45046, "生成试卷失败， 请联系管理员"),
+    TEACHER_MSG_NOT_EXISTS_ERROR(-45047, "老师信息不存在"),
+    PROFESSOR_NUMBER_EXISTS_ERROR(-45048, "专家编号已存在!"),
+    PROFESSOR_NUMBER_ISEMPTY_ERROR(-45049, "专家编号不可为空!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

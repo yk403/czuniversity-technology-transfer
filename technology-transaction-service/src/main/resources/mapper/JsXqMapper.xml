@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsXqMapper">
 
 	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,xq.cjsj as cjsj,xq.remarks,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status,yxqkssj,yxqjssj
+		select xq.id as id,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,xq.cjsj as cjsj,xq.remarks,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status,yxqkssj,yxqjssj,xqxqtp,xqxqtpmc
 		from t_js_xq xq
 		<where>
 			<!--后台能查询0或者1的数据 -->
@@ -44,13 +44,15 @@
 	</select>
 
 	<select id="findJsXq" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status,sh.jszt as jszt,kz.lcdj as lcdj
+		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status,sh.jszt as jszt,kz.lcdj as lcdj,xqxqtp,xqxqtpmc
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id) left join t_js_lc_kz kz on (xq.id = kz.xq_id)
 		<where>
 		<!--后台能查询0或者1的数据 -->
 		    xq.is_delete != 2
 			<if test="map.zgzt == 0"> and (sh.fbshzt = 3 or sh.fbshzt = 5) </if>
 			<if test="map.zgzt == 1"> and (sh.assistance_status = 3 or sh.assistance_status = 5) </if>
+			<if test="map.zgzt == 2"> and (sh.fbshzt = 1 or sh.fbshzt = 3 or sh.fbshzt = 5) </if>
+			<if test="map.zgzt == 3"> and (sh.assistance_status = 1 or sh.assistance_status = 3 or sh.assistance_status = 5) </if>
 			<if test="map.type == 1"> and xq.user_id = #{map.userId} </if>
 			<if test="map.lyId != null and map.lyId != ''"> and xq.ly_id = #{map.lyId} </if>
 			<if test="map.auctionStatus != null and map.auctionStatus != ''"> and xq.auction_status = #{map.auctionStatus} </if>
@@ -131,7 +133,7 @@
 	</select>
 
 	<select id="findJsXqFront" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,kz.dj as dj,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,agreement,agreement_name,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,sh.assistance_status,sh.release_assistance_status,sh.fbshbz,xq.remarks,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,cjjg,auction_status,kz.lcdj as lcdj
+		select xq.id as id,kz.dj as dj,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,agreement,agreement_name,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,sh.assistance_status,sh.release_assistance_status,sh.fbshbz,xq.remarks,sh.jylx,hd.hdzt,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,cjjg,auction_status,kz.lcdj as lcdj,xqxqtp,xqxqtpmc
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id) left join t_js_hd hd on(xq.jshd_id=hd.id) left join t_js_lc_kz kz on (xq.id = kz.xq_id)
 		<where>
 			xq.is_delete = 0
@@ -173,7 +175,7 @@
 		</choose>
 	</select>
 	<select id="findHdJsXq" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,agreement,agreement_name,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,cjjg,auction_status,xq.remarks,xq.soft
+		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,sjhm,agreement,agreement_name,gjz,zzjgdm,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,dwmc,dz,fr,contracts,lxrdh,zj,dzyx,jshd_id,release_type,introduction,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,cjjg,auction_status,xq.remarks,xq.soft,xqxqtp,xqxqtpmc
 		from t_js_xq xq left join t_js_hd hd on (xq.jshd_id = hd.id)
 		<where>
 			xq.is_delete != 2
@@ -208,7 +210,7 @@
 	</select>
 	<!--归档清算用-->
 	<select id="findGdJsXq" resultType="com.itts.technologytransactionservice.model.TJsXq">
-		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,xq.sjhm as sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,xq.dwmc as dwmc,xq.dz as dz,xq.fr as fr,xq.contracts as contracts,xq.lxrdh as lxrdh,xq.zj as zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status,sh.jszt as jszt,kz.fwf as fwf,kz.lcdj as lcdj,ly.mc as lyName,bm.dwmc as srfmc,bm.sjhm as srfhm,hd.hdmc as hdmc
+		select xq.id as id,yxqkssj,yxqjssj,xqmc,xqfj,xqfjmc,xqspmc,xq.sjhm as sjhm,zzjgdm,agreement,agreement_name,gjz,yxq,ly_id,lb_id,hzfs,hzjg,yxhzdw,yxhzzj,xqxq,jszb,xqtp,xqsp,xq.dwmc as dwmc,xq.dz as dz,xq.fr as fr,xq.contracts as contracts,xq.lxrdh as lxrdh,xq.zj as zj,dzyx,jshd_id,release_type,introduction,sh.fbshzt as fbshzt,xq.cjsj as cjsj,sh.release_status as releaseStatus,ly.mc as lyName,lb.mc as lbName,xq.remarks,sh.assistance_status,sh.jylx,sh.release_assistance_status,sh.fbshbz as fbshbz,sh.slxbbz as slxbbz,zbxmgs,zbxmqd,jscs,fwnr,jhrq,ysrq,xq.soft,cjjg,auction_status,sh.jszt as jszt,kz.fwf as fwf,kz.lcdj as lcdj,ly.mc as lyName,bm.dwmc as srfmc,bm.sjhm as srfhm,hd.hdmc as hdmc,xqxqtp,xqxqtpmc
 		from t_js_xq xq left join t_js_ly ly on(xq.ly_id=ly.id) left join t_js_lb lb on(xq.lb_id=lb.id) left join t_js_sh sh on(xq.id=sh.xq_id) left join t_js_lc_kz kz on(kz.xq_id=xq.id) left join t_js_bm bm on (bm.id = kz.bm_id) left join t_js_hd hd on (hd.id = xq.jshd_id)
 		<where>
 			<!--后台能查询0或者1的数据 -->
@@ -300,6 +302,8 @@
 			<if test="fwnr != null">fwnr = #{fwnr},</if>
 			<if test="jscs != null">jscs = #{jscs},</if>
 			<if test="xqfjmc != null">xqfjmc = #{xqfjmc},</if>
+			<if test="xqxqtp != null">xqxqtp = #{xqxqtp},</if>
+			<if test="xqxqtpmc != null">xqxqtpmc = #{xqxqtpmc},</if>
 			<if test="xqfj != null">xqfj = #{xqfj},</if>
 			<if test="yxqkssj != null">yxqkssj = #{yxqkssj},</if>
 			<if test="yxqjssj != null">yxqjssj = #{yxqjssj},</if>

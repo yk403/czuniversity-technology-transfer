@@ -1,11 +1,12 @@
 package com.itts.personTraining.mapper.xsCj;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.personTraining.dto.XfDTO;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.xsCj.XsCj;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * @author Austin
  * @since 2021-06-01
  */
+@Repository
 public interface XsCjMapper extends BaseMapper<XsCj> {
 
     /**
@@ -117,4 +119,18 @@ public interface XsCjMapper extends BaseMapper<XsCj> {
      * @return
      */
     List<Pc> findPcByXsId(@Param("xsId") Long xsId);
+
+    /**
+     * 根据ids查询学生成绩集合
+     * @param ids
+     * @return
+     */
+    List<XsCjDTO> findXsCjByIds(@Param("ids") List<Long> ids);
+
+    /**
+     * 通过学生成绩id查询学生ids
+     * @param xsCjId
+     * @return
+     */
+    Long findXsIdsByXsCjId(@Param("xsCjId") Long xsCjId);
 }

@@ -55,6 +55,12 @@ public class GetKsjlVO implements Serializable {
     private String sjlx;
 
     /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
+    private long cjsj;
+
+    /**
      * 考试记录题目
      */
     @ApiModelProperty(value = "考试记录题目")

@@ -2,7 +2,10 @@ package com.itts.personTraining.service.kcsl;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.KcXsXfDTO;
 import com.itts.personTraining.model.kcsj.Kcsj;
+
+import java.util.List;
 
 /**
  * <p>

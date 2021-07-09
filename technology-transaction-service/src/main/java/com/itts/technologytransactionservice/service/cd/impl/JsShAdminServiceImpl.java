@@ -5,8 +5,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
+import com.itts.technologytransactionservice.mapper.JsCgMapper;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
+import com.itts.technologytransactionservice.mapper.JsXqMapper;
+import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsSh;
+import com.itts.technologytransactionservice.model.TJsXq;
+import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.cd.JsShAdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +37,12 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
     private JsShMapper jsShMapper;
     @Autowired
     private JsShAdminService jsShAdminService;
+    @Autowired
+    private JsXtxxService jsXtxxService;
+    @Autowired
+    private JsCgMapper jsCgMapper;
+    @Autowired
+    private JsXqMapper jsXqMapper;
 
     @Override
     public IPage page(Query query) {
@@ -70,6 +81,28 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
         if (!jsShAdminService.updateById(tJsSh)) {
             throw new ServiceException("发布审核成果操作失败!");
         }
+        //系统消息
+        if(fbshzt == 2){
+            TJsCg cg=jsCgMapper.getById(Integer.parseInt(params.get("id").toString()));
+            /**
+             * @Description: 发送人员id,接收人员id，模块类型(0:技术交易,1:双创路演)，所属模块(信息采集，报名，招标发布，挂牌发布等)，载体类型(如技术成果，技术需求，技术展品)，操作内容（如发布成功，发布失败，审核成功等）
+             * @Param: [sendId, receiveId, mklx, ssmk, ztlx]
+             * @return: void
+             * @Author: yukai
+             * @Date: 2021/7/6
+             */
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),0,0,cg.getCgmc());
+        }else if(fbshzt == 4){
+            TJsCg cg=jsCgMapper.getById(Integer.parseInt(params.get("id").toString()));
+            /**
+             * @Description: 发送人员id,接收人员id，模块类型(0:技术交易,1:双创路演)，所属模块(信息采集，报名，招标发布，挂牌发布等)，载体类型(如技术成果，技术需求，技术展品)，操作内容（如发布成功，发布失败，审核成功等）
+             * @Param: [sendId, receiveId, mklx, ssmk, ztlx]
+             * @return: void
+             * @Author: yukai
+             * @Date: 2021/7/6
+             */
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),0,1,cg.getCgmc());
+        }
         return true;
     }
 
@@ -97,6 +130,28 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
         if (!jsShAdminService.updateById(tJsSh)) {
             throw new ServiceException("发布审核需求操作失败!");
         }
+        //系统消息
+        if(fbshzt == 2){
+            TJsXq xq=jsXqMapper.getById(Integer.parseInt(params.get("id").toString()));
+            /**
+             * @Description: 发送人员id,接收人员id，模块类型(0:技术交易,1:双创路演)，所属模块(信息采集，报名，招标发布，挂牌发布等)，载体类型(如技术成果，技术需求，技术展品)，操作内容（如发布成功，发布失败，审核成功等）
+             * @Param: [sendId, receiveId, mklx, ssmk, ztlx]
+             * @return: void
+             * @Author: yukai
+             * @Date: 2021/7/6
+             */
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),xq.getUserId().longValue(),0,0,xq.getXqmc());
+        }else if(fbshzt == 4){
+            TJsXq xq=jsXqMapper.getById(Integer.parseInt(params.get("id").toString()));
+            /**
+             * @Description: 发送人员id,接收人员id，模块类型(0:技术交易,1:双创路演)，所属模块(信息采集，报名，招标发布，挂牌发布等)，载体类型(如技术成果，技术需求，技术展品)，操作内容（如发布成功，发布失败，审核成功等）
+             * @Param: [sendId, receiveId, mklx, ssmk, ztlx]
+             * @return: void
+             * @Author: yukai
+             * @Date: 2021/7/6
+             */
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),xq.getUserId().longValue(),0,1,xq.getXqmc());
+        }
         return true;
     }
 
@@ -117,6 +172,28 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
         if (!jsShAdminService.updateById(tJsSh)) {
             throw new ServiceException("发布审核需求操作失败!");
         }
+        //系统消息
+        if(assistanceStatus == 2){
+            TJsXq xq=jsXqMapper.getById(Integer.parseInt(params.get("id").toString()));
+            /**
+             * @Description: 发送人员id,接收人员id，模块类型(0:技术交易,1:双创路演)，所属模块(信息采集，报名，招标发布，挂牌发布等)，载体类型(如技术成果，技术需求，技术展品)，操作内容（如发布成功，发布失败，审核成功等）
+             * @Param: [sendId, receiveId, mklx, ssmk, ztlx]
+             * @return: void
+             * @Author: yukai
+             * @Date: 2021/7/6
+             */
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),xq.getUserId().longValue(),1,0,xq.getXqmc());
+        }else if(assistanceStatus == 4){
+            TJsXq xq=jsXqMapper.getById(Integer.parseInt(params.get("id").toString()));
+            /**
+             * @Description: 发送人员id,接收人员id，模块类型(0:技术交易,1:双创路演)，所属模块(信息采集，报名，招标发布，挂牌发布等)，载体类型(如技术成果，技术需求，技术展品)，操作内容（如发布成功，发布失败，审核成功等）
+             * @Param: [sendId, receiveId, mklx, ssmk, ztlx]
+             * @return: void
+             * @Author: yukai
+             * @Date: 2021/7/6
+             */
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),xq.getUserId().longValue(),1,1,xq.getXqmc());
+        }
         return true;
     }
 
@@ -136,6 +213,38 @@ public class JsShAdminServiceImpl extends ServiceImpl<JsShMapper, TJsSh> impleme
         tJsSh.setAssistanceStatus(assistanceStatus);
         if (!jsShAdminService.updateById(tJsSh)) {
             throw new ServiceException("发布审核需求操作失败!");
+        }
+        //系统消息
+        if(assistanceStatus == 2){
+            TJsCg cg=jsCgMapper.getById(Integer.parseInt(params.get("id").toString()));
+            /**
+             * @Description: 发送人员id,接收人员id，模块类型(0:技术交易,1:双创路演)，所属模块(信息采集，报名，招标发布，挂牌发布等)，载体类型(如技术成果，技术需求，技术展品)，操作内容（如发布成功，发布失败，审核成功等）
+             * @Param: [sendId, receiveId, mklx, ssmk, ztlx]
+             * @return: void
+             * @Author: yukai
+             * @Date: 2021/7/6
+             */
+            if(tJsSh.getJylx() == 0){
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),2,0,cg.getCgmc());
+            }
+            if(tJsSh.getJylx() == 2){
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),3,0,cg.getCgmc());
+            }
+        }else if(assistanceStatus == 4){
+            TJsCg cg=jsCgMapper.getById(Integer.parseInt(params.get("id").toString()));
+            /**
+             * @Description: 发送人员id,接收人员id，模块类型(0:技术交易,1:双创路演)，所属模块(信息采集，报名，招标发布，挂牌发布等)，载体类型(如技术成果，技术需求，技术展品)，操作内容（如发布成功，发布失败，审核成功等）
+             * @Param: [sendId, receiveId, mklx, ssmk, ztlx]
+             * @return: void
+             * @Author: yukai
+             * @Date: 2021/7/6
+             */
+            if(tJsSh.getJylx() == 0){
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),2,1,cg.getCgmc());
+            }
+            if(tJsSh.getJylx() == 2){
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),cg.getUserId().longValue(),3,1,cg.getCgmc());
+            }
         }
         return true;
     }

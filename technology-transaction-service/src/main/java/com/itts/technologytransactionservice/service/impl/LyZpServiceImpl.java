@@ -6,10 +6,9 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.LyZwMapper;
-import com.itts.technologytransactionservice.model.LyZp;
+import com.itts.technologytransactionservice.model.*;
 import com.itts.technologytransactionservice.mapper.LyZpMapper;
-import com.itts.technologytransactionservice.model.LyZpDto;
-import com.itts.technologytransactionservice.model.LyZw;
+import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.LyZpService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +17,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +39,8 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 public class LyZpServiceImpl extends ServiceImpl<LyZpMapper, LyZp> implements LyZpService {
     @Autowired
     private LyZpMapper lyZpMapper;
+    @Autowired
+    private JsXtxxService jsXtxxService;
     @Override
     public PageInfo findLyZpFront(Map<String, Object> params) {
         log.info("【技术交易 - 分页条件查询(前台)】");
@@ -47,13 +49,57 @@ public class LyZpServiceImpl extends ServiceImpl<LyZpMapper, LyZp> implements Ly
         List<LyZpDto> list = lyZpMapper.findLyZpFront(query);
         return new PageInfo<>(list);
     }
+    @Override
+    public PageInfo findLyZpFrontUser(Map<String, Object> params) {
+        log.info("【技术交易 - 分页条件查询(前台)】");
+        Query query = new Query(params);
+        query.put("userId",getUserId());
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<LyZpDto> list = lyZpMapper.findLyZpFront(query);
+        return new PageInfo<>(list);
+    }
 
     @Override
     public Boolean saveZp(LyZp lyZp) {
+        lyZp.setUserId(getUserId());
         if(save(lyZp)){
             return true;
         }else{
             return false;
         }
+    }
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    public Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            //throw new ServiceException(GET_THREADLOCAL_ERROR);
+            userId=null;
+        }
+        return userId;
+    }
+    @Override
+    public boolean audit(Map<String, Object> params, Integer fbshzt) {
+        //TJsSh tJsSh = jsShMapper.selectByCgId(Integer.parseInt(params.get("id").toString()));
+        LyZp id=getById(Long.valueOf(params.get("id").toString()));
+
+        id.setFbshzt(fbshzt);
+        //如果门户在信息采集的整改中申请发布改为整改完成时将发布审核状态清空
+        if(fbshzt == 5){
+            id.setFbshbz("");
+        }
+        updateById(id);
+        if(fbshzt == 2){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),id.getUserId(),4,0,id.getZpmc());
+        }
+        if(fbshzt == 4){
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),id.getUserId(),4,1,id.getZpmc());
+        }
+        return true;
     }
 }

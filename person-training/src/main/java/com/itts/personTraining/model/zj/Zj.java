@@ -32,16 +32,22 @@ public class Zj implements Serializable {
     private Long id;
 
     /**
+     * 用户id
+     */
+    @ApiModelProperty(value = "用户id")
+    private Long yhId;
+
+    /**
+     * 编号
+     */
+    @ApiModelProperty(value = "编号")
+    private String bh;
+
+    /**
      * 姓名
      */
     @ApiModelProperty(value = "姓名", required = true)
     private String xm;
-
-    /**
-     * 头像
-     */
-    @ApiModelProperty(value = "头像")
-    private String tx;
 
     /**
      * 身份证号

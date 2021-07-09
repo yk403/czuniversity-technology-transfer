@@ -1,6 +1,7 @@
 package com.itts.personTraining.service.xsCj;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.AbilityInfoDTO;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.xsCj.XsCj;
@@ -65,7 +66,7 @@ public interface XsCjService extends IService<XsCj> {
      * @param jylx
      * @return
      */
-    PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String xymc, String jylx);
+    Object findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String xymc, String jylx);
 
     /**
      * 更新学生成绩
@@ -102,4 +103,13 @@ public interface XsCjService extends IService<XsCj> {
      * @return
      */
     List<Pc> findPcByYhId();
+
+    /**
+     * 查询学生能力提升信息
+     * @param pageNum
+     * @param pageSize
+     * @param pcId
+     * @return
+     */
+    AbilityInfoDTO getAbilityByCategory(Integer pageNum, Integer pageSize, Long pcId);
 }

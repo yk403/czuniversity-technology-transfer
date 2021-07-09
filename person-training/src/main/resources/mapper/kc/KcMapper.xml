@@ -40,7 +40,7 @@
             <if test="xylx != null and xylx != ''"> and kc.xylx like trim(#{xylx}) </if>
             <if test="name != null and name != ''"> and (kc.kcdm like concat('%',trim(#{name}),'%') or kc.kcmc like concat('%',trim(#{name}),'%'))</if>
         </where>
-        order by kc.cjsj desc
+        order by field(kc.kclx,'theory_class','practice_course','practical_training'), kc.cjsj desc
     </select>
     <select id="findKcByPcId" resultType="com.itts.personTraining.model.kc.Kc">
         select kc.*
@@ -48,4 +48,32 @@
         where kc.sfsc = false
         and kc.xylx = (select pc.xylx from t_pc pc where pc.sfsc = false and pc.id = #{pcId})
     </select>
+    <select id="findXsKcCjByPcId" resultType="com.itts.personTraining.dto.XsKcCjDTO">
+        select kc.id as kcId, kc.zsmk_id, kc.kcdm, kc.kcmc, kc.kcxs
+        from t_kc kc
+        where kc.sfsc = false
+        and kc.xylx = (select xylx from t_pc pc where pc.sfsc = false and pc.id = #{pcId})
+    </select>
+    <select id="findByXylx" resultType="com.itts.personTraining.dto.KcXsXfDTO">
+        select kc.id as id,kc.jylx as jylx,kc.xylx as xylx,kc.kclx as kclx,kc.kcmc as kcmc,kc.kcdm as kcdm,kc.kcxs as kcxs,kc.kkxq as kkxq,kc.kkxy as kkxy,kc.sfbx as sfbx,sz.dsxm as dsxm,pk.qsz as qsz
+        from t_kc kc left join t_kc_sz kcsz on kcsz.kc_id =kc.id  left join t_sz sz on kcsz.sz_id = sz.id left join t_pk pk on pk.kc_id = kc.id
+        where   kc.sfsc = false and sz.sfsc = false
+        <if test="xylx != null and xylx != ''">and kc.xylx = #{xylx}</if>
+        order by kc.cjsj desc
+    </select>
+    <select id="findPkByXylx" resultType="com.itts.personTraining.dto.KcXsXfDTO">
+        select kc.id as id,pk.qsz as qsz,pk.jsz as jsz,pk.xqs as xqs
+        from t_kc kc left join t_kc_sz kcsz on kcsz.kc_id =kc.id  left join t_sz sz on kcsz.sz_id = sz.id left join t_pk pk on pk.kc_id = kc.id
+        where   kc.sfsc = false and sz.sfsc = false and pk.sfsc = false
+        <if test="xylx != null and xylx != ''">and kc.xylx = #{xylx}</if>
+        order by kc.cjsj desc
+    </select>
+    <select id="findByPcId" resultType="com.itts.personTraining.dto.KcbDTO">
+        select pk.id as id,kc.kcdm as kcdm ,kc.kcmc as kcmc,pk.type as type,pk.skdd as skdd,pk.kxrq as kxrq,pk.skqsnyr as skqsnyr,pk.skjsnyr as skjsnyr,pk.qsz as qsz,pk.jsz as jsz,pk.xqs as xqs,xxjs.jxlmc as jxlmc,xxjs.jsbh as jsbh,sz.dsxm as dsxm,sz.dsbh as dsbh,kcsj.id as kcsjId,kcsj.kssj as kssj,kcsj.jssj as jssj
+        from t_pk pk left join t_kc kc on pk.kc_id = kc.id left join t_xxjs xxjs on xxjs.id = pk.xxjs_id left join t_sz sz on sz.id = pk.sz_id left join t_kcsj kcsj on kcsj.id = pk.kcsj_id
+        where pk.sfsc = false and kc.sfsc = false and xxjs.sfsc = false and sz.sfsc = false  and kcsj.sfsc = false
+        <if test="pcId != null and pcId != ''">and pk.pc_id =#{pcId}</if>
+    </select>
+
+
 </mapper>

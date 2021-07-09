@@ -72,4 +72,21 @@ public class LyMsg implements Serializable {
      * 留言状态(0:未回复,1:已回复)
      */
     private Integer lyzt;
+    /**
+     * 前端查看状态(0:可以查看,1:不可查看)
+     */
+    private Integer ckzt;
+    /**
+    * @Description: 是否查看状态(0:未查看 1:已查看)
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/7/2
+    */
+    private Integer sfckzt;
+    /**
+     * 回复时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date hfsj;
 }

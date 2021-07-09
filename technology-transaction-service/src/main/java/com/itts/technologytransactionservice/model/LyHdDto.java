@@ -174,4 +174,20 @@ public class LyHdDto implements Serializable {
     * @Date: 2021/6/16
     */
     private List<LyZwDto> lyZwDtoList;
+    /**
+    * @Description: 领域名称
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/18
+    */
+    private String lymc;
+    /**
+    * @Description: 是否报名 0未报名 1已报名
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/6/28
+    */
+    private Integer isBm;
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.personTraining.mapper.tzXs.TzXsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.tzXs.TzXs">
+        <id column="id" property="id" />
+        <result column="tz_id" property="tzId" />
+        <result column="xs_id" property="xsId" />
+        <result column="sfdq" property="sfdq" />
+        <result column="clzt" property="clzt" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, tz_id, xs_id, sfdq, clzt
+    </sql>
+    <update id="updateByTzIdAndXsId">
+        update t_tz_xs ttx
+        set ttx.sfdq = true
+        where ttx.tz_id = #{tzId} and ttx.xs_id = #{xsId}
+    </update>
+    <select id="getTzCountByXsIdAndTzlx" resultType="java.lang.Long">
+        select count(ttx.id)
+        from t_tz_xs ttx left join t_tz tz on (tz.id=ttx.tz_id) left join t_xs xs on (xs.id=ttx.xs_id)
+        where tz.sfsc = false and xs.sfsc = false
+        <if test="xsId != null">and ttx.xs_id = #{xsId}</if>
+        <if test="tzlx != null and tzlx != ''">and tz.tzlx = #{tzlx}</if>
+        <if test="sfdq != null">and ttx.sfdq = #{sfdq}</if>
+    </select>
+
+</mapper>

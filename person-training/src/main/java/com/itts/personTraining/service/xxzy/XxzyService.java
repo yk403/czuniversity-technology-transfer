@@ -3,12 +3,14 @@ package com.itts.personTraining.service.xxzy;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xxzy.Xxzy;
-import com.itts.personTraining.request.ddxfjl.PayDdxfjlRequest;
 import com.itts.personTraining.request.xxzy.AddXxzyRequest;
 import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
 import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.vo.xxzy.GetXxzyVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -24,13 +26,19 @@ public interface XxzyService extends IService<Xxzy> {
      * 获取列表 - 分页
      */
     PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type, String firstCategory,
-                        String secondCategory, String category, Long courseId, String condition);
+                        String secondCategory, String category, Long courseId, String condition, Long groupId);
 
     /**
      * 获取列表 - 分页
      */
     PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
-                               String secondCategory, Long courseId, String condition, String token);
+                               String secondCategory, String category, String direction, Long courseId,
+                               String condition, Long groupId);
+
+    /**
+     * 获取云课堂课程列表
+     */
+    List<Kc> getCloudClassroomCourse(String userType, String educationType, String studentType, Long groupId);
 
     /**
      * 获取详情
@@ -60,5 +68,5 @@ public interface XxzyService extends IService<Xxzy> {
     /**
      * 支付金额
      */
-    ResponseUtil pay(PayDdxfjlRequest payDdxfjlRequest);
+    ResponseUtil pay(String orderNo, String payType);
 }

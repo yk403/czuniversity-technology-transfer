@@ -2,21 +2,23 @@ package com.itts.personTraining.service.xs.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.mapper.ksXs.KsXsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.sj.SjMapper;
+import com.itts.personTraining.mapper.tzXs.TzXsMapper;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pcXs.PcXs;
@@ -24,6 +26,7 @@ import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.model.yh.Yh;
+import com.itts.personTraining.request.feign.UpdateUserRequest;
 import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.pcXs.PcXsService;
 import com.itts.personTraining.service.xs.XsService;
@@ -58,7 +61,7 @@ import static com.itts.personTraining.enums.UserTypeEnum.*;
  */
 @Service
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsService {
     
     @Resource
@@ -71,6 +74,10 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     private PcXsMapper pcXsMapper;
     @Autowired
     private YhService yhService;
+    @Autowired
+    private PcService pcService;
+    @Autowired
+    private UserFeignService userFeignService;
     @Resource
     private KsXsMapper ksXsMapper;
     @Resource
@@ -81,8 +88,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     private RedisTemplate redisTemplate;
     @Resource
     private PcMapper pcMapper;
-    @Autowired
-    private PcService pcService;
+    @Resource
+    private TzXsMapper tzXsMapper;
 
     /**
      * 查询学员列表
@@ -194,16 +201,24 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     public XsMsgDTO getByYhId() {
         log.info("【人才培养 - 查询学生综合信息】");
         XsMsgDTO xsMsgDTO = xsMapper.getByYhId(getUserId());
-        Long xsId = xsMsgDTO.getId();
-        if (xsId == null) {
+        if (xsMsgDTO == null) {
             throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
         }
-        xsMsgDTO.setKstz(ksXsMapper.getNumByXsId(xsId));
-        xsMsgDTO.setCjtz(xsCjMapper.getNumByXsId(xsId));
-        xsMsgDTO.setSjtz(sjMapper.getNumByXsId(xsId));
+        Long xsId = xsMsgDTO.getId();
+        xsMsgDTO.setXylx(pcMapper.findXylxByXsId(xsId));
+        ResponseUtil response = userFeignService.get();
+        if(response.getErrCode() != 0 ){
+            throw new ServiceException(USER_NOT_FIND_ERROR);
+        }
+        GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
+        });
+        xsMsgDTO.setKstz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"考试通知",false));
+        xsMsgDTO.setCjtz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"成绩通知",false));
+        xsMsgDTO.setSjtz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"实践通知",false));
         //TODO: 暂时假数据
         xsMsgDTO.setXftz(0L);
         xsMsgDTO.setQttz(0L);
+        xsMsgDTO.setYhMsg(vo);
         return xsMsgDTO;
     }
 
@@ -217,6 +232,28 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         log.info("【人才培养 - 根据用户id:{}查询批次信息(前)】",userId);
         List<Pc> pcList = pcMapper.findPcByYhId(userId);
         return pcList;
+    }
+
+    /**
+     * 更新学生信息(前)
+     * @param stuDTO
+     * @return
+     */
+    @Override
+    public boolean updateUser(StuDTO stuDTO) {
+        log.info("【人才培养 - 更新学生信息(前):{}】",stuDTO);
+        Long userId = getUserId();
+        stuDTO.setGxr(userId);
+        Xs xs = new Xs();
+        BeanUtils.copyProperties(stuDTO,xs);
+        if (xsService.updateById(xs)) {
+            UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+            updateUserRequest.setLxdh(stuDTO.getLxdh());
+            updateUserRequest.setYhyx(stuDTO.getYhMsg().getYhyx());
+            updateUserRequest.setYhtx(stuDTO.getYhMsg().getYhtx());
+            return userFeignService.update(updateUserRequest).getErrCode() == 0;
+        }
+        return false;
     }
 
     /**

@@ -7,6 +7,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.dto.YhDTO;
+import com.itts.userservice.enmus.GroupTypeEnum;
 import com.itts.userservice.enmus.UserTypeEnum;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 /**
  * <p>
@@ -121,15 +123,62 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        if(yh.getSfsc()){
+        if (yh.getSfsc()) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
         GetYhVO getYhVO = new GetYhVO();
         BeanUtils.copyProperties(yh, getYhVO);
 
+        //获取当前用户最顶级机构信息
+        Jggl jg = jgglService.get(getYhVO.getJgId());
+        if (jg != null) {
+
+            //总基地
+            if (Objects.equals(jg.getLx(), GroupTypeEnum.HEADQUARTERS.getKey())) {
+
+                getYhVO.setFjjgId(jg.getId());
+                getYhVO.setJglx(GroupTypeEnum.HEADQUARTERS.getKey());
+            }
+
+            //分基地
+            if (Objects.equals(jg.getLx(), GroupTypeEnum.BRANCH.getKey())) {
+
+                getYhVO.setFjjgId(jg.getId());
+                getYhVO.setJglx(GroupTypeEnum.BRANCH.getKey());
+            }
+
+            //其他
+            if (Objects.equals(jg.getLx(), GroupTypeEnum.OTHER.getKey())) {
+
+                String jgCode = jg.getJgbm().substring(0, 6);
+                Jggl checkJg = jgglService.selectByJgbm(jgCode);
+                if (checkJg != null) {
+
+                    //分基地
+                    if (Objects.equals(checkJg.getLx(), GroupTypeEnum.BRANCH.getKey())) {
+
+                        getYhVO.setFjjgId(checkJg.getId());
+                        getYhVO.setJglx(GroupTypeEnum.BRANCH.getKey());
+                    }
+
+                    //如果是其他，则上级一定是总基地
+                    if (Objects.equals(checkJg.getLx(), GroupTypeEnum.OTHER.getKey())) {
+
+                        String fjcode = checkJg.getJgbm().substring(0, 3);
+                        Jggl fjjg = jgglService.selectByJgbm(fjcode);
+                        if (fjjg != null) {
+
+                            getYhVO.setFjjgId(fjjg.getId());
+                            getYhVO.setJglx(GroupTypeEnum.HEADQUARTERS.getKey());
+                        }
+                    }
+                }
+            }
+        }
+
         return ResponseUtil.success(getYhVO);
-    }
+}
 
     @ApiOperation(value = "通过用户编号查询")
     @GetMapping("/get/by/code/")

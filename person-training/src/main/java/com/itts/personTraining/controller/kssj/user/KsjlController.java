@@ -1,19 +1,25 @@
 package com.itts.personTraining.controller.kssj.user;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.model.kssj.Ksjl;
 import com.itts.personTraining.model.kssj.Kssj;
+import com.itts.personTraining.model.tz.Tz;
 import com.itts.personTraining.request.kssj.CommitKsjlRequest;
 import com.itts.personTraining.service.kssj.KsjlService;
 import com.itts.personTraining.service.kssj.KssjService;
+import com.itts.personTraining.service.tz.TzService;
+import com.itts.personTraining.vo.kssj.GetKsjlScoreVO;
 import com.itts.personTraining.vo.kssj.GetKsjlVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -37,9 +43,13 @@ public class KsjlController {
     @Autowired
     private KssjService kssjService;
 
+    @Autowired
+    private TzService tzService;
+
     @ApiOperation(value = "生成试卷")
     @PostMapping("/add/")
-    public ResponseUtil add(@ApiParam("试卷ID") @RequestParam("sjId") Long sjId) {
+    public ResponseUtil add(@ApiParam("试卷ID") @RequestParam("sjId") Long sjId,
+                            @ApiParam("通知ID") @RequestParam("tzId") Long tzId) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser == null) {
@@ -51,7 +61,15 @@ public class KsjlController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        GetKsjlVO ksjl = ksjlService.add(kssj, loginUser);
+        Tz tz = tzService.getById(tzId);
+        if(tz == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        GetKsjlVO ksjl = ksjlService.add(kssj, tz, loginUser);
+        if(ksjl == null){
+            throw new WebException(ErrorCodeEnum.GENERATE_PAPER_ERROR);
+        }
 
         return ResponseUtil.success(ksjl);
     }
@@ -71,6 +89,26 @@ public class KsjlController {
         return result;
     }
 
+    @ApiOperation(value = "通过学生ID获取分数")
+    @GetMapping("/get/score/by/student/")
+    public ResponseUtil getScoreByUserId(@RequestParam("xsId") Long xsId, @RequestParam("sjId") Long sjId) {
+
+        Ksjl ksjl = ksjlService.getOne(new QueryWrapper<Ksjl>().eq("xs_id", xsId).eq("sj_id", sjId));
+
+        if (ksjl == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        GetKsjlScoreVO vo = new GetKsjlScoreVO();
+
+        BeanUtils.copyProperties(ksjl, vo);
+
+        return ResponseUtil.success(vo);
+    }
+
+    /**
+     * 校验提交试卷参数
+     */
     private void checkCommitRequest(CommitKsjlRequest commitKsjlRequest) {
 
         if (commitKsjlRequest == null) {

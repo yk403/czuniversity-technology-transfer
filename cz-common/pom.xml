@@ -15,7 +15,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>cz-common</name>
 
-
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -145,6 +144,42 @@
         <dependency>
             <groupId>org.csource</groupId>
             <artifactId>fastdfs-client-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.huaweicloud</groupId>
+            <artifactId>esdk-obs-java</artifactId>
+            <version>[3.20.6.1,)</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.31</version>
+        </dependency>
+        <!-- 生成二维码 -->
+        <dependency>
+            <groupId>net.glxn.qrgen</groupId>
+            <artifactId>javase</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <!--单元测试-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+        <!-- google 二维码生成器 -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.2.0</version>
         </dependency>
 
     </dependencies>

@@ -110,4 +110,62 @@ public class LyMsgDto implements Serializable {
      * @Date: 2021/6/7
      */
     private String yhlb;
+    /**
+     * 前端查看状态(0:可以查看,1:不可查看)
+     */
+    private Integer ckzt;
+    /**
+     * @Description: 是否查看状态(0:未查看 1:已查看)
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/7/2
+     */
+    private Integer sfckzt;
+    /**
+     * @Description:研究领域
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/7/2
+     */
+    private String yjly;
+    /**
+     * @Description:所属行业
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/7/2
+     */
+    private String sshy;
+    /**
+     * 回复时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date hfsj;
+    /**
+    * @Description: 专家姓名
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/7/2
+    */
+    private String xm;
+    /**
+     * @Description: 专家头像
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/7/2
+     */
+    private String zjtx;
+    /**
+    * @Description: 活动名称
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/7/5
+    */
+    private String hdmc;
+
 }

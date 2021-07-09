@@ -1,9 +1,10 @@
 package com.itts.personTraining.mapper.pc;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pc.Pc;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @author FL
  * @since 2021-04-20
  */
+@Repository
 public interface PcMapper extends BaseMapper<Pc> {
 
 
@@ -53,4 +55,18 @@ public interface PcMapper extends BaseMapper<Pc> {
      * @return
      */
     List<Long> findPcIdsByYear(@Param("currentYear") String currentYear);
+
+    /**
+     * 通过pcId查询批次信息
+     * @param pcId
+     * @return
+     */
+    Pc getPcById(@Param("pcId") Long pcId);
+
+    /**
+     * 根据学生id查询学员类型集合
+     * @param xsId
+     * @return
+     */
+    List<String> findXylxByXsId(@Param("xsId") Long xsId);
 }

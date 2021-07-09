@@ -144,5 +144,13 @@ public class LyHzDto implements Serializable {
      * @Date: 2021/6/16
      */
     private String zwId;
+    /**
+     * @Description: 论坛名称
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/24
+     */
+    private String ltmc;
 
 }

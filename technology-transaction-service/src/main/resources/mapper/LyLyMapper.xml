@@ -2,9 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyLyMapper">
 
-    <select id="findLyLyFront" resultType="com.itts.technologytransactionservice.model.LyLy">
-        select ly.id as id,cjsj,gxsj,lyxq,qymc,lytp,lytpmc,hd_id,lybt,lyjj,zbdz,qylx,lxfs,fbzt
-        from t_ly_ly ly
+    <select id="findLyLyFront" resultType="com.itts.technologytransactionservice.model.LyLyDto">
+        select
+        ly.id as id,
+        ly.cjsj,
+        ly.gxsj,
+        ly.lyxq,
+        ly.qymc,
+        ly.lytp,
+        ly.lytpmc,
+        ly.hd_id,
+        ly.lybt,
+        ly.lyjj,
+        ly.lyjjtp,
+        ly.lyjjtpmc,
+        ly.zbdz,
+        ly.qylx,
+        ly.lxfs,
+        ly.fbzt,
+        ly.lysp,
+        ly.lyspmc,
+        ly.lykssj,
+        ly.lydz,
+        hd.hdmc
+        from t_ly_ly ly left join t_ly_hd hd on (hd.id = ly.hd_id)
         <where>
             <!--后台能查询0或者1的数据 -->
             ly.is_delete = 0
@@ -29,9 +50,30 @@
             </otherwise>
         </choose>
     </select>
-    <select id="findLyLyBack" resultType="com.itts.technologytransactionservice.model.LyLy">
-        select ly.id as id,cjsj,gxsj,lyxq,qymc,lytp,lytpmc,hd_id,lybt,lyjj,zbdz,qylx,lxfs,fbzt
-        from t_ly_ly ly
+    <select id="findLyLyBack" resultType="com.itts.technologytransactionservice.model.LyLyDto">
+        select
+        ly.id as id,
+        ly.cjsj,
+        ly.gxsj,
+        ly.lyxq,
+        ly.qymc,
+        ly.lytp,
+        ly.lytpmc,
+        ly.hd_id,
+        ly.lybt,
+        ly.lyjj,
+        ly.lyjjtp,
+        ly.lyjjtpmc,
+        ly.zbdz,
+        ly.qylx,
+        ly.lxfs,
+        ly.fbzt,
+        ly.lysp,
+        ly.lyspmc,
+        ly.lykssj,
+        ly.lydz,
+        hd.hdmc
+        from t_ly_ly ly left join t_ly_hd hd on (hd.id = ly.hd_id)
         <where>
             <!--后台能查询0或者1的数据 -->
             ly.is_delete = 0

@@ -1,7 +1,12 @@
 package com.itts.paymentservice.utils;
 
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.itts.paymentservice.constant.PaymentConstant;
+import com.itts.paymentservice.model.ddxfjl.Ddxfjl;
 import com.wechat.pay.contrib.apache.httpclient.WechatPayHttpClientBuilder;
 import com.wechat.pay.contrib.apache.httpclient.WechatPayUploadHttpPost;
 import com.wechat.pay.contrib.apache.httpclient.auth.AutoUpdateCertificatesVerifier;
@@ -15,6 +20,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.junit.After;
@@ -103,8 +109,8 @@ public class AutoUpdateVerifierTest {
     //统一下单api
     //orderNo 订单号
     @Test
-    public void orderInteface(String orderNo) throws Exception{
-        URIBuilder uriBuilder = new URIBuilder("https://api.mch.weixin.qq.com/v3/certificates");
+    public void orderInteface() throws Exception{
+        URIBuilder uriBuilder = new URIBuilder("https://api.mch.weixin.qq.com/v3/pay/transactions/native");
         HttpPost httpPost = new HttpPost(uriBuilder.build());
         httpPost.addHeader("Accept", "application/json");
         httpPost.addHeader("Content-type","application/json; charset=utf-8");
@@ -118,13 +124,19 @@ public class AutoUpdateVerifierTest {
                 .put("description", description)
                 //测试暂定固定值，实际开发需接入参数(商户订单号)
                 .put("out_trade_no", out_trade_no)
-                .put("notify_url", "https://technologytransfer.zmhycs.cn:11005/api/payment-service/api/test/get/");
+                .put("notify_url", "http://yukai.vipgz4.idcfengye.com/payment/api/test/get/")
                 //交易结束时间(当前时间向后两小时)
-                //.put("time_expire",format)
+                .put("time_expire",format);
         rootNode.putObject("amount")
-                .put("total", 1);
-        rootNode.putObject("payer")
-                .put("openid", "oUpF8uMuAJO_M2pxb1Q9zNjWeS6o");
+                .put("total", 1)
+                .put("currency", "CNY");
+        //rootNode.putObject("payer").put("openid", "oUpF8uMuAJO_M2pxb1Q9zNjWeS6o");
+        objectMapper.writeValue(bos, rootNode);
+        httpPost.setEntity(new StringEntity(bos.toString("UTF-8"), "UTF-8"));
+        CloseableHttpResponse response = httpClient.execute(httpPost);
+
+        String bodyAsString = EntityUtils.toString(response.getEntity());
+        System.out.println(bodyAsString);
     }
     //获取平台证书方法
     @Test
@@ -171,5 +183,49 @@ public class AutoUpdateVerifierTest {
                 }
             }
         }
+    }
+    @Test
+    public void payInteface() throws Exception {
+        //获得初始化的AlipayClient
+        AlipayClient alipayClient = new DefaultAlipayClient(PaymentConstant.alipay_gatewayUrl, PaymentConstant.alipay_app_id, PaymentConstant.alipay_merchant_private_key, "json", PaymentConstant.alipay_charset, PaymentConstant.alipay_public_key, PaymentConstant.alipay_sign_type);
+
+        //设置请求参数
+        AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
+        alipayRequest.setReturnUrl(PaymentConstant.alipay_return_url);
+        alipayRequest.setNotifyUrl(PaymentConstant.alipay_notify_url);
+
+        //商户订单号，商户网站订单系统中唯一订单号，必填
+        String out_trade_no = new String("123456".getBytes("ISO-8859-1"),"UTF-8");
+        //String out_trade_no = new String(request.getParameter("WIDout_trade_no").getBytes("ISO-8859-1"),"UTF-8");
+        //付款金额，必填
+        String total_amount = new String("1".getBytes("ISO-8859-1"),"UTF-8");
+        //String total_amount = new String(request.getParameter("WIDtotal_amount").getBytes("ISO-8859-1"),"UTF-8");
+        //订单名称，必填
+        String subject = new String("订单名称".getBytes("ISO-8859-1"),"UTF-8");
+        //String subject = new String(request.getParameter("WIDsubject").getBytes("ISO-8859-1"),"UTF-8");
+        //商品描述，可空
+        String body = new String("商品名称".getBytes("ISO-8859-1"),"UTF-8");
+        //String body = new String(request.getParameter("WIDbody").getBytes("ISO-8859-1"),"UTF-8");
+
+        alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\","
+                + "\"total_amount\":\""+ total_amount +"\","
+                + "\"subject\":\""+ subject +"\","
+                + "\"body\":\""+ body +"\","
+                + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+
+        //若想给BizContent增加其他可选请求参数，以增加自定义超时时间参数timeout_express来举例说明
+        //alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\","
+        //		+ "\"total_amount\":\""+ total_amount +"\","
+        //		+ "\"subject\":\""+ subject +"\","
+        //		+ "\"body\":\""+ body +"\","
+        //		+ "\"timeout_express\":\"10m\","
+        //		+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+        //请求参数可查阅【电脑网站支付的API文档-alipay.trade.page.pay-请求参数】章节
+
+        //请求
+        String result = alipayClient.pageExecute(alipayRequest).getBody();
+
+        //输出
+        System.out.println(result);
     }
 }

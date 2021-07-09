@@ -1,15 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyZwMapper">
-
-    <select id="findLyZwFront" resultType="com.itts.technologytransactionservice.model.LyZwDto">
-        select zw.id as id,zw.cjsj,zw.gxsj,zw.zwjj,zw.hd_id,hd.hdmc,zw.zwmc,zw.zwtp,zw.zwtpmc,zw.sjzd_id,zd.zdmc as zdmc
-        from t_ly_zw zw left join t_ly_hd hd on (hd.id = zw.hd_id) left join t_sjzd zd on (zd.id = zw.sjzd_id)
+    <select id="findLyZwFrontCount" resultType="com.itts.technologytransactionservice.model.LyZwDto">
+        select
+        count(zp.id) as zpCount,
+        dqzw.id,
+        dqzw.cjsj,
+        dqzw.gxsj,
+        dqzw.zwjj,
+        hd.id AS hd_id,
+        hd.hdmc,
+        dqzw.zwmc,
+        dqzw.zwtp,
+        dqzw.zwtpmc,
+        dqzw.sjzd_id,
+        dqzd.zdmc AS zdmc
+        FROM t_ly_zp zp
+        LEFT JOIN
+        (
+        SELECT
+        zw.id AS id,
+        zw.cjsj,
+        zw.gxsj,
+        zw.zwjj,
+        hd.id AS hd_id,
+        hd.hdmc,
+        zw.zwmc,
+        zw.zwtp,
+        zw.zwtpmc,
+        zw.sjzd_id,
+        zd.zdmc AS zdmc
+        FROM
+        t_ly_zw zw
+        LEFT JOIN t_zw_hz zwhz ON (zwhz.zw_id = zw.id)
+        LEFT JOIN t_ly_hz hz ON (zwhz.hz_id = hz.id)
+        LEFT JOIN t_ly_hd hd ON (hz.hd_id = hd.id)
+        LEFT JOIN t_sjzd zd ON (zd.id = zw.sjzd_id)
         <where>
             <!--后台能查询0或者1的数据 -->
             zw.is_delete = 0
             <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
             <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
+            <if test="map.zwmc != null"> and zw.zwmc like concat('%',trim(#{map.zwmc}),'%') </if>
+            <if test="map.hdId != null"> and hd.id = #{map.hdId} </if>
+        </where>
+        ) dqzw
+        on(dqzw.id = zp.zw_id)
+        left join t_ly_hd hd on (hd.id = zp.hd_id)
+        LEFT JOIN t_sjzd dqzd ON (dqzd.id = dqzw.sjzd_id)
+        <where>
+            <!--后台能查询0或者1的数据 -->
+             dqzw.id is not null and zp.is_delete = 0
+            <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
+            <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
+            <if test="map.zwmc != null"> and zw.zwmc like concat('%',trim(#{map.zwmc}),'%') </if>
+            <if test="map.hdId != null"> and hd.id = #{map.hdId} </if>
+        </where>
+        GROUP BY dqzw.id
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
+    <select id="findLyZwFront" resultType="com.itts.technologytransactionservice.model.LyZwDto">
+        select
+        zw.id as id,
+        zw.cjsj,
+        zw.gxsj,
+        zw.zwjj,
+        hd.id as hd_id,
+        hd.hdmc,
+        zw.zwmc,
+        zw.zwtp,
+        zw.zwtpmc,
+        zw.sjzd_id,
+        zd.zdmc as zdmc
+        from t_ly_zw zw
+        left join t_zw_hz zwhz on (zwhz.zw_id = zw.id)
+        left join t_ly_hz hz on (zwhz.hz_id = hz.id)
+        left join t_ly_hd hd on (hz.hd_id = hd.id)
+        left join t_sjzd zd on (zd.id = zw.sjzd_id)
+        left join t_ly_zp zp on (zp.zw_id = zw.id and zp.hd_id = hd.id)
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            zw.is_delete = 0
+            <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
+            <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
+            <if test="map.zwmc != null"> and zw.zwmc like concat('%',trim(#{map.zwmc}),'%') </if>
+            <if test="map.hdId != null"> and hd.id = #{map.hdId} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
+    <select id="findLyZwFrontSelect" resultType="com.itts.technologytransactionservice.model.LyZwDto">
+        select
+        zw.id as id,
+        zw.cjsj,
+        zw.gxsj,
+        zw.zwjj,
+        hd.id as hd_id,
+        zw.zwmc,
+        zw.zwtp,
+        zw.zwtpmc,
+        zw.sjzd_id
+        from t_ly_zw zw
+        left join t_zw_hz zwhz on (zwhz.zw_id = zw.id)
+        left join t_ly_hz hz on (zwhz.hz_id = hz.id)
+        left join t_ly_hd hd on (hz.hd_id = hd.id)
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            zw.is_delete = 0
+            <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
+            <if test="map.zwmc != null"> and zw.zwmc like concat('%',trim(#{map.zwmc}),'%') </if>
+            <if test="map.hdId != null"> and hd.id = #{map.hdId} </if>
+        </where>
+        <choose>
+            <when test="map.sort != null and map.sort.trim() != ''">
+                order by ${map.sort} ${map.order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
+    <select id="findLyZwBackSelect" resultType="com.itts.technologytransactionservice.model.LyZwDto">
+        select
+        zw.id as id,
+        zw.cjsj,
+        zw.gxsj,
+        zw.zwjj,
+        zw.hd_id,
+        zw.zwmc,
+        zw.zwtp,
+        zw.zwtpmc,
+        zw.sjzd_id
+        from t_ly_zw zw
+        <where>
+            <!--后台能查询0或者1的数据 -->
+            zw.is_delete = 0
+            <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
             <if test="map.zwmc != null"> and zw.zwmc like concat('%',trim(#{map.zwmc}),'%') </if>
             <if test="map.hdId != null"> and zw.hd_id = #{map.hdId} </if>
         </where>
@@ -23,8 +162,21 @@
         </choose>
     </select>
     <select id="findLyZwBack" resultType="com.itts.technologytransactionservice.model.LyZwDto">
-        select zw.id as id,zw.cjsj,zw.gxsj,zw.zwjj,zw.hd_id,hd.hdmc,zw.zwmc,zw.zwtp,zw.zwtpmc,zw.sjzd_id,zd.zdmc as zdmc
-        from t_ly_zw zw left join t_ly_hd hd on (hd.id = zw.hd_id) left join t_sjzd zd on (zd.id = zw.sjzd_id)
+        select
+        zw.id as id,
+        zw.cjsj,
+        zw.gxsj,
+        zw.zwjj,
+        zw.hd_id,
+        hd.hdmc,
+        zw.zwmc,
+        zw.zwtp,
+        zw.zwtpmc,
+        zw.sjzd_id,
+        zd.zdmc as zdmc
+        from t_ly_zw zw
+        left join t_ly_hd hd on (hd.id = zw.hd_id)
+        left join t_sjzd zd on (zd.id = zw.sjzd_id)
         <where>
             <!--后台能查询0或者1的数据 -->
             zw.is_delete = 0

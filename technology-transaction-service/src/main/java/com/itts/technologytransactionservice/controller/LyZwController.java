@@ -46,6 +46,15 @@ public class LyZwController {
 //return null;
         return ResponseUtil.success(lyZwService.findLyZwFront(params));
     }
+    //    *
+//     * 获取复选框列表
+
+    @ApiOperation(value = "获取复选框列表")
+    @PostMapping("/listSelect")
+    public ResponseUtil findSelect(@RequestBody Map<String, Object> params) {
+//return null;
+        return ResponseUtil.success(lyZwService.findLyZwFrontSelect(params));
+    }
 //    *
 //     * 根据ID查询
 //     * @param id

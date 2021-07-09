@@ -4,11 +4,15 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.ZjDTO;
 import com.itts.personTraining.mapper.sz.SzMapper;
+import com.itts.personTraining.mapper.zj.ZjMapper;
+import com.itts.personTraining.model.yh.GetYhVo;
+import com.itts.personTraining.model.yh.Yh;
 import com.itts.personTraining.service.xy.XyService;
 import com.itts.personTraining.service.yh.YhService;
 import com.itts.personTraining.service.zj.ZjService;
@@ -23,7 +27,11 @@ import java.util.Date;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.USER_INSERT_ERROR;
+import static com.itts.personTraining.enums.UserTypeEnum.IN;
+import static com.itts.personTraining.enums.UserTypeEnum.PROFESSOR;
 import static com.itts.personTraining.enums.ZzmmEnum.*;
+import static com.itts.personTraining.enums.jslyEnum.*;
 
 /**
  * @Author: Austin
@@ -38,7 +46,6 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
     private StringBuilder result = new StringBuilder();
     private Integer count = 0;
     private String token;
-    private Long jgId;
     @Resource
     private SzMapper szMapper;
     @Resource
@@ -47,6 +54,8 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
     private XyService xyService;
     @Resource
     private YhService yhService;
+    @Resource
+    private ZjMapper zjMapper;
 
     public static ZjListener zjListener;
 
@@ -62,6 +71,10 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
         int rowIndex = rrh.getRowIndex() + 1;
         log.info("解析第" + rowIndex + "行数据:{}", JSON.toJSONString(data));
         Zj zj = new Zj();
+        //编号
+        if (!StringUtils.isBlank(data.getBh())) {
+            zj.setBh(data.getBh());
+        }
         //姓名
         if (!StringUtils.isBlank(data.getXm())) {
             zj.setXm(data.getXm());
@@ -75,7 +88,7 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
             zj.setXb(data.getXb());
         }
         //生日
-        if (!StringUtils.isBlank(data.getSr().toString())) {
+        if (data.getSr() != null) {
             zj.setSr(data.getSr());
         }
         //民族
@@ -139,6 +152,33 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
         if (!StringUtils.isBlank(data.getYjcg())) {
             zj.setYjcg(data.getYjcg());
         }
+        //电子邮件
+        if (!StringUtils.isBlank(data.getDzyj())) {
+            zj.setDzyj(data.getDzyj());
+        }
+        //研究领域
+        String yjly = data.getYjly();
+        if (!StringUtils.isBlank(yjly)) {
+            if (BIOLOGY_AND_MEDICAL_TECHNOLOGY.getMsg().equals(yjly)) {
+                zj.setYjly(BIOLOGY_AND_MEDICAL_TECHNOLOGY.getKey());
+            } else if (ELECTRONIC_TECHNOLOGY.getMsg().equals(yjly)) {
+                zj.setYjly(ELECTRONIC_TECHNOLOGY.getKey());
+            } else if (AEROSPACE_TECHNOLOGY.getMsg().equals(yjly)) {
+                zj.setYjly(AEROSPACE_TECHNOLOGY.getKey());
+            } else if (NEW_MATERIAL_TECHNOLOGY.getMsg().equals(yjly)) {
+                zj.setYjly(NEW_MATERIAL_TECHNOLOGY.getKey());
+            } else if (HIGH_TECH_SERVICE_INDUSTRY.getMsg().equals(yjly)) {
+                zj.setYjly(HIGH_TECH_SERVICE_INDUSTRY.getKey());
+            } else if (EQUIPMENT_AND_MANUFACTURING.getMsg().equals(yjly)) {
+                zj.setYjly(EQUIPMENT_AND_MANUFACTURING.getKey());
+            } else if (RESOURCE_AND_ENVIRONMENT_TECHNOLOGY.getMsg().equals(yjly)) {
+                zj.setYjly(RESOURCE_AND_ENVIRONMENT_TECHNOLOGY.getKey());
+            } else if (CHEMICAL_ENGINEERING.getMsg().equals(yjly)) {
+                zj.setYjly(CHEMICAL_ENGINEERING.getKey());
+            } else if (MODERN_AGRICULTURE_TECHNOLOGY.getMsg().equals(yjly)) {
+                zj.setYjly(MODERN_AGRICULTURE_TECHNOLOGY.getKey());
+            }
+        }
         //知识产权
         if (!StringUtils.isBlank(data.getZscq())) {
             zj.setZscq(data.getZscq());
@@ -177,19 +217,70 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
     }
 
     private void save(Zj zj) {
-        Zj byXmDh = zjService.getByXmDh(zj.getXm(), zj.getDh());
-        if (byXmDh == null) {
-            //新增
-            zj.setCjr(getUserId());
-            zj.setGxr(getUserId());
-            zj.setCjsj(new Date());
-            zj.setGxsj(new Date());
-            zjService.save(zj);
+        Long userId = getUserId();
+        zj.setGxr(userId);
+        //通过手机号查询
+        Object data = yhService.getByPhone(zj.getDh(), token).getData();
+        String yhlx = IN.getKey();
+        String yhlb = PROFESSOR.getKey();
+        String bh = zj.getBh();
+        String xm = zj.getXm();
+        String lxdh = zj.getDh();
+        if (data != null) {
+            //用户表存在用户信息,更新用户信息,专家表判断是否存在
+            GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
+            Yh yh = new Yh();
+            yh.setId(getYhVo.getId());
+            yh.setYhbh(bh);
+            yh.setYhm(bh);
+            yh.setMm(bh);
+            yh.setZsxm(xm);
+            yh.setYhlx(yhlx);
+            yh.setYhlb(yhlb);
+            yh.setLxdh(lxdh);
+            yhService.update(yh,token);
+            Zj zj1 = zjMapper.getByCondition(zj.getDh());
+            zj.setYhId(getYhVo.getId());
+            if (zj1 != null) {
+                //存在,则更新
+                zj.setId(zj1.getId());
+                zjService.updateById(zj);
+                count++;
+            } else {
+                //不存在,则新增
+                zj.setCjr(userId);
+                zjService.save(zj);
+                count++;
+            }
         } else {
-            //更新
-            zj.setGxr(getUserId());
-            zj.setGxsj(new Date());
-            zjService.update(zj);
+            //用户表没有用户信息,新增用户信息,专家表查询是否存在
+            Yh yh = new Yh();
+            yh.setYhbh(bh);
+            yh.setYhm(bh);
+            yh.setMm(bh);
+            yh.setZsxm(xm);
+            yh.setYhlx(yhlx);
+            yh.setYhlb(yhlb);
+            yh.setLxdh(lxdh);
+            Object data1 = yhService.rpcAdd(yh, token).getData();
+            if (data1 == null) {
+                throw new ServiceException(USER_INSERT_ERROR);
+            }
+            Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
+            Long yh1Id = yh1.getId();
+            zj.setYhId(yh1Id);
+            Zj zj1 = zjMapper.getByCondition(zj.getDh());
+            if (zj1 != null) {
+                //存在,则更新
+                zj.setId(zj1.getId());
+                zjService.updateById(zj);
+                count++;
+            } else {
+                //不存在.则新增
+                zj.setCjr(userId);
+                zjService.save(zj);
+                count++;
+            }
         }
     }
 

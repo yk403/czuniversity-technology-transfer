@@ -2,10 +2,14 @@ package com.itts.personTraining.service.kc;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.dto.KcDTO;
+import com.itts.personTraining.dto.KcXsXfDTO;
+import com.itts.personTraining.dto.KcbDTO;
 import com.itts.personTraining.model.kc.Kc;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -69,4 +73,17 @@ public interface KcService extends IService<Kc> {
      * @return
      */
     List<KcDTO> getByCondition(String xylx);
+    /**
+     * 根据用户id查询课程列表
+     * @param pcId
+     * @return
+     */
+    List<KcXsXfDTO> findByYh(Long pcId);
+
+    /**
+     * 查询课程表
+     * @param pcId
+     * @return
+     */
+    List<KcbDTO> findByPcId(@Param("pcId") Long pcId);
 }

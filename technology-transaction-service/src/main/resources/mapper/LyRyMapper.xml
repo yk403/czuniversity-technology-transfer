@@ -3,8 +3,27 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.LyRyMapper">
 
     <select id="findLyRyFront" resultType="com.itts.technologytransactionservice.model.LyRyDto">
-        select ry.id as id,ry.zj_id,ry.gxsj,ry.cjsj,ry.hd_id,ry.zxkssj,ry.zxjssj,ry.zxlx,ry.ryjj,ry.lxdh,hd.hdmc as hdmc,zj.tx as tx,zj.xm as xm,zj.dh as dh,zj.dz as dz
-        from t_ly_ry ry left join t_ly_hd hd on (hd.id = ry.hd_id) left join t_zj zj on (zj.id = ry.zj_id)
+        select
+        ry.id as id,
+        ry.zj_id,
+        ry.gxsj,
+        ry.cjsj,
+        ry.hd_id,
+        ry.zxkssj,
+        ry.zxjssj,
+        ry.zxlx,
+        ry.ryjj,
+        ry.lxdh,
+        hd.hdmc as hdmc,
+        zj.xm as xm,
+        zj.dh as dh,
+        zj.dz as dz,
+        zj.yjly as yjly,
+        yh.yhtx as yhtx
+        from t_ly_ry ry
+        left join t_ly_hd hd on (hd.id = ry.hd_id)
+        left join t_zj zj on (zj.id = ry.zj_id)
+        left join t_yh yh on (zj.yh_id = yh.id)
         <where>
             <!--后台能查询0或者1的数据 -->
             ry.is_delete = 0
@@ -25,8 +44,27 @@
         </choose>
     </select>
     <select id="findLyRyBack" resultType="com.itts.technologytransactionservice.model.LyRyDto">
-        select ry.id as id,ry.zj_id,ry.gxsj,ry.cjsj,ry.hd_id,ry.zxkssj,ry.zxjssj,ry.zxlx,ry.ryjj,ry.lxdh,hd.hdmc as hdmc,zj.tx as tx,zj.xm as xm,zj.dh as dh,zj.dz as dz
-        from t_ly_ry ry left join t_ly_hd hd on (hd.id = ry.hd_id) left join t_zj zj on (zj.id = ry.zj_id)
+        select
+        ry.id as id,
+        ry.zj_id,
+        ry.gxsj,
+        ry.cjsj,
+        ry.hd_id,
+        ry.zxkssj,
+        ry.zxjssj,
+        ry.zxlx,
+        ry.ryjj,
+        ry.lxdh,
+        hd.hdmc as hdmc,
+        zj.xm as xm,
+        zj.dh as dh,
+        zj.dz as dz,
+        zj.yjly as yjly,
+        yh.yhtx as yhtx
+        from t_ly_ry ry
+        left join t_ly_hd hd on (hd.id = ry.hd_id)
+        left join t_zj zj on (zj.id = ry.zj_id)
+        left join t_yh yh on (zj.yh_id = yh.id)
         <where>
             <!--后台能查询0或者1的数据 -->
             ry.is_delete = 0

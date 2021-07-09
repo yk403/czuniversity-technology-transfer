@@ -49,6 +49,12 @@ public class UpdateXxzyRequest implements Serializable {
     private Long kcId;
 
     /**
+     * 机构ID
+     */
+    @ApiModelProperty(value = "机构ID")
+    private Long jgId;
+
+    /**
      * 课程名称
      */
     @ApiModelProperty(value = "课程名称", required = true)

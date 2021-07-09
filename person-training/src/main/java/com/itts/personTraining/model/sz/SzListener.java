@@ -30,7 +30,9 @@ import java.util.Date;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
-import static com.itts.personTraining.enums.UserTypeEnum.IN;
+import static com.itts.personTraining.enums.UserTypeEnum.*;
+import static com.itts.personTraining.enums.ZzmmEnum.*;
+import static com.itts.personTraining.enums.ZzmmEnum.PRO_PARTY_MEMBER;
 
 /**
  * @Author: Austin
@@ -78,6 +80,10 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
         if (!StringUtils.isBlank(data.getDsxm())) {
             sz.setDsxm(data.getDsxm());
         }
+        //电话
+        if (!StringUtils.isBlank(data.getDh())) {
+            sz.setDh(data.getDh());
+        }
         //性别
         if (!StringUtils.isBlank(data.getXb())) {
             sz.setXb(data.getXb());
@@ -99,8 +105,17 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
             sz.setMz(data.getMz());
         }
         //政治面貌
-        if (!StringUtils.isBlank(data.getZzmm())) {
-            sz.setZzmm(data.getZzmm());
+        String zzmm = data.getZzmm();
+        if (!StringUtils.isBlank(zzmm)) {
+            if (MEMBER.getMsg().equals(zzmm)) {
+                sz.setZzmm(MEMBER.getKey());
+            } else if (PARTY_MEMBER.getMsg().equals(zzmm)) {
+                sz.setZzmm(PARTY_MEMBER.getKey());
+            } else if (ACTIVIST.getMsg().equals(zzmm)) {
+                sz.setZzmm(ACTIVIST.getKey());
+            } else if (PRO_PARTY_MEMBER.getMsg().equals(zzmm)) {
+                sz.setZzmm(PRO_PARTY_MEMBER.getKey());
+            }
         }
         //文化程度
         if (!StringUtils.isBlank(data.getWhcd())) {
@@ -147,8 +162,15 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
             sz.setZgzt(data.getZgzt());
         }
         //导师类别
-        if (!StringUtils.isBlank(data.getDslb())) {
-            sz.setDslb(data.getDslb());
+        String dslb = data.getDslb();
+        if (!StringUtils.isBlank(dslb)) {
+            if (TUTOR.getMsg().equals(dslb)) {
+                sz.setDslb(TUTOR.getKey());
+            } else if (CORPORATE_MENTOR.getMsg().equals(dslb)) {
+                sz.setDslb(CORPORATE_MENTOR.getKey());
+            } else if (TEACHER.getMsg().equals(dslb)) {
+                sz.setDslb(TEACHER.getKey());
+            }
         }
        /* //个人照片
         if (!StringUtils.isBlank(data.getGrzp())) {
@@ -190,11 +212,14 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
 
     private void save(Sz sz) {
         Object data = yhService.getByCode(sz.getDsbh(), token).getData();
+        Long userId = getUserId();
         String yhlx = IN.getKey();
         String yhlb = sz.getDslb();
         Long ssjgId = sz.getSsjgId();
         String dsbh = sz.getDsbh();
         String dsxm = sz.getDsxm();
+        String lxdh = sz.getDh();
+        sz.setGxr(userId);
         if (data != null) {
             //用户表存在用户信息,更新用户信息,师资表判断是否存在
             GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
@@ -204,12 +229,12 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
             yh.setJgId(ssjgId);
+            yh.setLxdh(lxdh);
             yhService.update(yh,token);
             Sz sz1 = szService.selectByCondition(dsbh,null, null);
             if (sz1 != null) {
                 //存在,则更新
                 sz.setId(sz1.getId());
-                sz.setGxr(getUserId());
                 if (szService.updateById(sz)) {
                     count++;
                 } else {
@@ -217,6 +242,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
                 }
             } else {
                 //不存在,则新增
+                sz.setCjr(userId);
                 if (szService.save(sz)) {
                     count++;
                 } else {
@@ -233,6 +259,8 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
             yh.setJgId(ssjgId);
+            yh.setLxdh(lxdh);
+            sz.setGxr(userId);
             Object data1 = yhService.rpcAdd(yh, token).getData();
             if (data1 == null) {
                 throw new ServiceException(USER_INSERT_ERROR);
@@ -244,7 +272,6 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
             if (sz1 != null) {
                 //存在,则更新
                 sz.setId(sz1.getId());
-                sz.setGxr(getUserId());
                 if (szService.updateById(sz)) {
                     count++;
                 } else {
@@ -252,8 +279,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
                 }
             } else {
                 //不存在.则新增
-                sz.setCjr(getUserId());
-                sz.setGxr(getUserId());
+                sz.setCjr(userId);
                 if (szService.save(sz)) {
                     count++;
                 } else {

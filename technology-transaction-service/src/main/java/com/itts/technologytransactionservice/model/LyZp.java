@@ -1,14 +1,13 @@
 package com.itts.technologytransactionservice.model;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -336,5 +335,37 @@ public class LyZp implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date cgwcsj;
-
+    /**
+    * @Description: 成果权属人
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/6/17
+    */
+    private String cgqsr;
+    /**
+     * @Description: 权属人联系电话
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/17
+     */
+    private String qsrlxdh;
+    private Long userId;
+    /**
+    * @Description: 展品详情图片
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/6/30
+    */
+    private String zpxqtp;
+    /**
+     * @Description: 展品详情图片名称
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/6/30
+     */
+    private String zpxqtpmc;
 }
