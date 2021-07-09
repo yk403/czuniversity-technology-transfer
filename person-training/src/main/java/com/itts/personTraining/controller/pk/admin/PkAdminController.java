@@ -159,7 +159,7 @@ public class PkAdminController {
         if (pkDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if (pkDTO.getQsz()>=pkDTO.getJsz()) {
+        if (pkDTO.getQsz()>pkDTO.getJsz()) {
             throw new WebException(STARTWEEK_GREATER_THAN_ENDWEEK);
         }
         //查询出该开学日期的所有排课信息
