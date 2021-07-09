@@ -162,7 +162,7 @@ public class PkAdminController {
         List<PkDTO> pkDTOs = pkService.findPkByKxrq(pkDTO.getKxrq());
         for (PkDTO dto : pkDTOs) {
             if (dto.getXqs().equals(pkDTO.getXqs()) && dto.getKcsjId().equals(pkDTO.getKcsjId())) {
-                if ((pkDTO.getQsz() > dto.getQsz() && pkDTO.getJsz() < dto.getJsz()) || (pkDTO.getJsz() > dto.getQsz() && pkDTO.getJsz() <dto.getJsz())) {
+                if ((pkDTO.getQsz() >= dto.getQsz() && pkDTO.getJsz() <= dto.getJsz()) || (pkDTO.getJsz() >= dto.getQsz() && pkDTO.getJsz() <= dto.getJsz())) {
                     if (pkDTO.getXxjsId() != null) {
                         if (pkDTO.getXxjsId().equals(dto.getXxjsId())) {
                             throw new WebException(SCHOOL_BE_OCCUPIED);

@@ -409,7 +409,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                             List<XsKcCjDTO> xsKcCjDTOs = kcMapper.findXsKcCjByPcId(pcId);
                             xsCjDTO.setXsKcCjDTOList(xsKcCjDTOs);
                         }
-                        Integer zxf = xsDTO.getZxzyxf() + xsDTO.getHrxf() + xsDTO.getJszylyxf() + xsDTO.getSjxf() + xsDTO.getSxxf();
+                        Integer zxf = xsDTO.getZxzyxf() + xsDTO.getHrxf() + xsDTO.getJszylyxf();
                         xsDTO.setZxf(zxf);
                         map.put("xf", xsDTO);
                         map.put("postgraduate", xsCjDTO);
