@@ -297,7 +297,6 @@ public class JgglController {
                             }
                         }
                     }
-
                 }
             }
             jggl.setGxsj(new Date());
