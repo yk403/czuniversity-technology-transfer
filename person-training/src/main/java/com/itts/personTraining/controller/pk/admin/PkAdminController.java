@@ -120,6 +120,7 @@ public class PkAdminController {
         if (pkService.get(id) == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
+        checkRequest(pkDTO);
         if (!pkService.update(pkDTO)) {
             throw new WebException(UPDATE_FAIL);
         }
@@ -157,6 +158,9 @@ public class PkAdminController {
     public void checkRequest(PkDTO pkDTO) throws WebException {
         if (pkDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (pkDTO.getQsz()>=pkDTO.getJsz()) {
+            throw new WebException(STARTWEEK_GREATER_THAN_ENDWEEK);
         }
         //查询出该开学日期的所有排课信息
         List<PkDTO> pkDTOs = pkService.findPkByKxrq(pkDTO.getKxrq());
