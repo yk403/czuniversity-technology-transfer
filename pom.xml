@@ -69,6 +69,8 @@
         <fastdfs.version>1.27</fastdfs.version>
         <wx-version>0.2.2</wx-version>
         <alipay-version>4.15.0.ALL</alipay-version>
+        <!--webmagic版本-->
+        <webmagic-version>0.7.3</webmagic-version>
     </properties>
 
     <dependencyManagement>
@@ -267,6 +269,17 @@
                 <groupId>com.alipay.sdk</groupId>
                 <artifactId>alipay-sdk-java</artifactId>
                 <version>${alipay-version}</version>
+            </dependency>
+            <!--webmagic依赖-->
+            <dependency>
+                <groupId>us.codecraft</groupId>
+                <artifactId>webmagic-core</artifactId>
+                <version>${webmagic-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>us.codecraft</groupId>
+                <artifactId>webmagic-extension</artifactId>
+                <version>${webmagic-version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
