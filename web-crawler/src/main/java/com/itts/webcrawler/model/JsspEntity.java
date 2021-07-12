@@ -41,7 +41,7 @@ public class JsspEntity implements Serializable {
     * @Author: yukai
     * @Date: 2021/7/12
     */
-    private BigDecimal jyjg;
+    private String jyjg;
     /**
     * @Description: 专利类型
     * @Param: 
@@ -49,23 +49,15 @@ public class JsspEntity implements Serializable {
     * @Author: yukai
     * @Date: 2021/7/12
     */
-    private String zlzx;
+    private String zllx;
     /**
-    * @Description: 有效期开始时间
+    * @Description: 有效期
     * @Param:
     * @return:
     * @Author: yukai
     * @Date: 2021/7/12
     */
-    private Date yxqkssj;
-    /**
-    * @Description: 有效期结束时间
-    * @Param: 
-    * @return: 
-    * @Author: yukai
-    * @Date: 2021/7/12
-    */
-    private Date yxqjssj;
+    private String yxq;
     /**
     * @Description: 商品类型(0需求，1:成果)
     * @Param: 
@@ -123,5 +115,13 @@ public class JsspEntity implements Serializable {
     * @Date: 2021/7/12
     */
     private String dwmc;
+    /**
+    * @Description: 申请号或专业号
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/7/12
+    */
+    private String sqh;
 
 }
