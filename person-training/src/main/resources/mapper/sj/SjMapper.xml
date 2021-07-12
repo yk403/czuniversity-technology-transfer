@@ -16,7 +16,6 @@
         <result column="jdjj_one" property="jdjjOne" />
         <result column="jdjj_two" property="jdjjTwo" />
         <result column="sfxf" property="sfxf" />
-        <result column="sfck" property="sfck" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
         <result column="cjr" property="cjr" />
