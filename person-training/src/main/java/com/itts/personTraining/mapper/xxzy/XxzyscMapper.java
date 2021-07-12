@@ -39,10 +39,13 @@ public interface XxzyscMapper extends BaseMapper<Xxzysc> {
             "   <if test='direction != null and direction != \"\"'> " +
             "       AND zy.zyfx = #{direction}" +
             "   </if>" +
+            "   <if test='id != null'> " +
+            "       AND sc.id = #{id} " +
+            "   </if>" +
             "ORDER BY sc.cjsj DESC " +
             "</script> ")
     List<Xxzy> findScByPage(@Param("userId") Long userId, @Param("firstCategory") String firstCategory,
                             @Param("secondCategory") String secondCategory, @Param("category") String category,
-                            @Param("direction") String direction);
+                            @Param("direction") String direction, @Param("id") Long id);
 
 }
