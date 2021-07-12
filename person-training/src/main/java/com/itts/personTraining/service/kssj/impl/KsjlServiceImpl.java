@@ -492,7 +492,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         XsCj xsCj = new XsCj();
         xsCj.setPcId(pcId);
-        xsCj.setXsId(loginUser.getUserId());
+        xsCj.setXsId(xs.getId());
         xsCj.setType(Objects.equals(kssj.getJylx(), EduTypeEnum.ACADEMIC_DEGREE_EDUCATION.getKey()) ? 1 : 2);
         xsCj.setZhcj(totalScore.get() + "");
 

@@ -40,7 +40,7 @@ public interface XxzyscMapper extends BaseMapper<Xxzysc> {
             "       AND zy.zyfx = #{direction}" +
             "   </if>" +
             "   <if test='id != null'> " +
-            "       AND sc.id = #{id} " +
+            "       AND sc.xxzy_id = #{id} " +
             "   </if>" +
             "ORDER BY sc.cjsj DESC " +
             "</script> ")
