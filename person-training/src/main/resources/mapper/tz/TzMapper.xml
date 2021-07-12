@@ -23,6 +23,7 @@
         select tz.*, ttx.sfdq, ttx.clzt, ttx.kssc
         from t_tz tz left join t_tz_xs ttx on (ttx.tz_id=tz.id) left join t_xs xs on (xs.id=ttx.xs_id)
         where tz.sfsc = false and xs.sfsc = false and ttx.xs_id = #{xsId} and tz.tzlx = #{tzlx}
+        order by ttx.sfdq asc, tz.cjsj desc
     </select>
     <select id="getTzDTOByIdAndXsId" resultType="com.itts.personTraining.dto.TzDTO">
         select tz.*, ttx.sfdq, ttx.clzt, ttx.kssc
@@ -35,6 +36,7 @@
         select tz.*, tts.sfdq
         from t_tz tz left join t_tz_sz tts on (tts.tz_id=tz.id) left join t_sz sz on (sz.id=tts.sz_id)
         where tz.sfsc = false and sz.sfsc = false and tts.sz_id = #{szId} and tz.tzlx = #{tzlx}
+        order by tts.sfdq asc, tz.cjsj desc
     </select>
     <select id="getTzDTOByIdAndSzId" resultType="com.itts.personTraining.dto.TzDTO">
         select tz.*, tts.sfdq
