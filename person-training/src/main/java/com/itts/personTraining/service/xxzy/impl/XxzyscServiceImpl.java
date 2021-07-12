@@ -32,11 +32,11 @@ public class XxzyscServiceImpl extends ServiceImpl<XxzyscMapper, Xxzysc> impleme
      */
     @Override
     public PageInfo<Xxzy> findScByPage(int pageNum, int pageSize, Long userId, String firstCategory,
-                                       String secondCategory, String category, String direction) {
+                                       String secondCategory, String category, String direction, Long id) {
 
         PageHelper.startPage(pageNum, pageSize);
 
-        List<Xxzy> xxzys = xxzyscMapper.findScByPage(userId, firstCategory, secondCategory, category, direction);
+        List<Xxzy> xxzys = xxzyscMapper.findScByPage(userId, firstCategory, secondCategory, category, direction, id);
 
         PageInfo pageInfo = new PageInfo(xxzys);
 
