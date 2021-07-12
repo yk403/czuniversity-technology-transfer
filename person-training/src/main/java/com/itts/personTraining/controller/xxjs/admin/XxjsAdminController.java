@@ -44,6 +44,16 @@ public class XxjsAdminController {
     }
 
     /**
+     * 查询所有教学楼
+     */
+    @GetMapping("/findAllJxlmc")
+    @ApiOperation(value = "查询所有教学楼")
+    public ResponseUtil findAllJxlmc() {
+        return ResponseUtil.success(xxjsService.findAllJxlmc());
+    }
+
+
+    /**
      * 根据id查询学校教室详情
      *
      * @param id

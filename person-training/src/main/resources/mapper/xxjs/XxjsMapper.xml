@@ -18,5 +18,10 @@
     <sql id="Base_Column_List">
         id, mc, jsbh, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
+    <select id="findAllJxlmc" resultType="java.lang.String">
+        select distinct xxjs.jxlmc
+        from t_xxjs xxjs
+        where xxjs.sfsc = false
+    </select>
 
 </mapper>

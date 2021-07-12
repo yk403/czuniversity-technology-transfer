@@ -72,4 +72,10 @@ public interface XxjsService extends IService<Xxjs> {
      * @return
      */
     List<Xxjs> getAll();
+
+    /**
+     * 查询所有教学楼
+     * @return
+     */
+    List<String> findAllJxlmc();
 }
