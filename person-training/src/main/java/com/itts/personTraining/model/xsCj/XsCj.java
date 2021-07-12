@@ -61,11 +61,6 @@ public class XsCj implements Serializable {
     private Boolean sfxf;
 
     /**
-     * 是否查看（0：否；1：是）
-     */
-    private Boolean sfck;
-
-    /**
      * 是否删除（0：否；1：是）
      */
     private Boolean sfsc;
