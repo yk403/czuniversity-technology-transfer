@@ -12,9 +12,12 @@ import com.itts.userservice.dto.GetCdCzGlDTO;
 import com.itts.userservice.mapper.cd.CdCzGlMapper;
 import com.itts.userservice.mapper.cd.CdMapper;
 import com.itts.userservice.mapper.cz.CzMapper;
+import com.itts.userservice.mapper.js.JsCdCzGlMapper;
 import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.model.cd.CdCzGl;
 import com.itts.userservice.model.cz.Cz;
+import com.itts.userservice.model.js.Js;
+import com.itts.userservice.model.js.JsCdCzGl;
 import com.itts.userservice.request.AddCdRequest;
 import com.itts.userservice.service.cd.CdService;
 import com.itts.userservice.vo.CdTreeVO;
@@ -53,7 +56,11 @@ public class CdServiceImpl implements CdService {
     private CzMapper czMapper;
 
     @Autowired
+    private JsCdCzGlMapper jsCdCzGlMapper;
+
+    @Autowired
     private RedisTemplate redisTemplate;
+
     /**
      * 获取列表 - 分页
      */
@@ -130,6 +137,31 @@ public class CdServiceImpl implements CdService {
         }
 
         return vos;
+    }
+
+    /**
+     * 通过角色获取菜单操作
+     */
+    @Override
+    public List<Cz> getOptionsByRole(List<Js> js, Long menuId) {
+
+        //获取角色ID
+        List<Long> jsIds = js.stream().map(Js::getId).collect(Collectors.toList());
+
+        List<JsCdCzGl> jsCdczGls = jsCdCzGlMapper.selectList(new QueryWrapper<JsCdCzGl>()
+                .eq("cd_id", menuId).in("js_id", jsIds));
+
+        if(CollectionUtils.isEmpty(jsCdczGls)){
+            return null;
+        }
+
+        List<Long> czIds = Lists.newArrayList(jsCdczGls.stream().map(JsCdCzGl::getCzId).collect(Collectors.toSet()));
+        if(CollectionUtils.isEmpty(czIds)){
+            return null;
+        }
+
+        List<Cz> czs = czMapper.selectList(new QueryWrapper<Cz>().in("id", czIds));
+        return czs;
     }
 
     /**
