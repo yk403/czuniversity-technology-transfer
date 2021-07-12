@@ -65,7 +65,7 @@ public class JszyfwRepoPageProcessor implements PageProcessor {
                 jsspEntity.setFmr(detailInfo.get(4));
                 jsspEntity.setHylb(detailInfo.get(5));
                 jsspEntity.setLxr(detailInfo.get(8));
-                jsspDao.saveJssp(jsspEntity);
+                //jsspDao.saveJssp(jsspEntity);
                 System.out.println(detailInfo);
             }
         }
