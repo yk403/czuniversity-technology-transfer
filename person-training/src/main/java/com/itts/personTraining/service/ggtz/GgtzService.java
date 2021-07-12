@@ -1,7 +1,7 @@
-package com.itts.personTraining.service.xwgl;
+package com.itts.personTraining.service.ggtz;
 
 import com.github.pagehelper.PageInfo;
-import com.itts.personTraining.model.xwgl.Xwgl;
+import com.itts.personTraining.model.ggtz.Ggtz;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -12,12 +12,11 @@ import java.util.List;
  * </p>
  *
  * @author fuli
- * @since 2021-07-09
+ * @since 2021-07-12
  */
-public interface XwglService extends IService<Xwgl> {
-
+public interface GgtzService extends IService<Ggtz> {
     /**
-     * 查询新闻列表
+     * 查询列表
      * @param pageNum
      * @param pageSize
      * @param jgId
@@ -25,26 +24,26 @@ public interface XwglService extends IService<Xwgl> {
      * @param lx
      * @return
      */
-    PageInfo<Xwgl> findByPage(Integer pageNum, Integer pageSize,Long jgId,String zt,String lx);
+    PageInfo<Ggtz> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx);
 
     /**
-     * 新增新闻
-     * @param xwgl
+     * 新增
+     * @param
      * @return
      */
-    Xwgl add(Xwgl xwgl);
+    Ggtz add(Ggtz ggtz);
     /**
      * 更新
      * @param
      * @return
      */
-    Xwgl update(Xwgl xwgl);
+    Ggtz update(Ggtz ggtz);
     /**
      * 根据id查询信息
      * @param id
      * @return
      */
-    Xwgl get(Long id);
+    Ggtz get(Long id);
     /**
      * 发布
      * @param

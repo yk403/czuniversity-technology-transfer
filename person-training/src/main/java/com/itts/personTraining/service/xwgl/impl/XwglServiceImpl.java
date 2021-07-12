@@ -13,7 +13,6 @@ import com.itts.personTraining.model.xwgl.Xwgl;
 import com.itts.personTraining.service.xwgl.XwglService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -47,10 +46,10 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
         .eq("sfsc",false)
         .orderByDesc("cjsj");
         if (StringUtils.isNotBlank(zt)) {
-            xwglQueryWrapper.like("zt", zt);
+            xwglQueryWrapper.eq("zt", zt);
         }
         if (StringUtils.isNotBlank(lx)) {
-            xwglQueryWrapper.like("lx", lx);
+            xwglQueryWrapper.eq("lx", lx);
         }
         List<Xwgl> xwgls = xwglMapper.selectList(xwglQueryWrapper);
         PageInfo<Xwgl> xwglPageInfo = new PageInfo<>(xwgls);

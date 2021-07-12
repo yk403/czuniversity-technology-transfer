@@ -1,8 +1,9 @@
-package com.itts.personTraining.service.xwgl;
+package com.itts.personTraining.service.yqlj;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.model.xwgl.Xwgl;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.itts.personTraining.model.yqlj.Yqlj;
 
 import java.util.List;
 
@@ -12,12 +13,11 @@ import java.util.List;
  * </p>
  *
  * @author fuli
- * @since 2021-07-09
+ * @since 2021-07-12
  */
-public interface XwglService extends IService<Xwgl> {
-
+public interface YqljService extends IService<Yqlj> {
     /**
-     * 查询新闻列表
+     * 查询列表
      * @param pageNum
      * @param pageSize
      * @param jgId
@@ -25,26 +25,26 @@ public interface XwglService extends IService<Xwgl> {
      * @param lx
      * @return
      */
-    PageInfo<Xwgl> findByPage(Integer pageNum, Integer pageSize,Long jgId,String zt,String lx);
+    PageInfo<Yqlj> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx);
 
     /**
-     * 新增新闻
-     * @param xwgl
+     * 新增
+     * @param
      * @return
      */
-    Xwgl add(Xwgl xwgl);
+    Yqlj add(Yqlj yqlj);
     /**
      * 更新
      * @param
      * @return
      */
-    Xwgl update(Xwgl xwgl);
+    Yqlj update(Yqlj yqlj);
     /**
      * 根据id查询信息
      * @param id
      * @return
      */
-    Xwgl get(Long id);
+    Yqlj get(Long id);
     /**
      * 发布
      * @param
