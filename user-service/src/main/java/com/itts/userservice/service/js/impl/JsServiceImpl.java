@@ -371,7 +371,7 @@ public class JsServiceImpl implements JsService {
 
         //设置角色更新后的信息
         Js js = new Js();
-        BeanUtils.copyProperties(request, js, "cjsj", "id", "jsbm", "cjr");
+        BeanUtils.copyProperties(request, js, "cjsj", "jsbm", "cjr");
 
         Long userId = null;
         Date now = new Date();
