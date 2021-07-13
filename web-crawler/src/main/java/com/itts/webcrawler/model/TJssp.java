@@ -144,5 +144,36 @@ public class TJssp implements Serializable {
      * 删除状态(0未删除;1已删除)
      */
     private Boolean isDelete;
-
+    /**
+     * @Description: 需求类型
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/7/12
+     */
+    private String xqlx;
+    /**
+    * @Description: 单位性质
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/7/13
+    */
+    private String dwxz;
+    /**
+    * @Description: 内容目标
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/7/13
+    */
+    private String nrmb;
+    /**
+    * @Description: 需求详情
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/7/13
+    */
+    private String xqxq;
 }

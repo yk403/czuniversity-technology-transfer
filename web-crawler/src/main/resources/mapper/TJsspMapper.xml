@@ -3,7 +3,26 @@
 <mapper namespace="com.itts.webcrawler.mapper.TJsspMapper">
     <select id="findTJssp" resultType="com.itts.webcrawler.model.TJssp">
         select
-        *
+        jssp.id,
+        jssp.title,
+        jssp.sptp,
+        jssp.cjsj,
+        jssp.gxsj,
+        jssp.jyjg,
+        jssp.zllx,
+        jssp.yxq,
+        jssp.splx,
+        jssp.fbrq,
+        jssp.jscsd,
+        jssp.hylb,
+        jssp.lxr,
+        jssp.fmr,
+        jssp.dwmc,
+        jssp.sqh,
+        jssp.xqlx,
+        jssp.dwxz,
+        jssp.xqxq,
+        jssp.nrmb
         FROM
         t_jssp jssp
         <where>
