@@ -3,6 +3,7 @@ package com.itts.webcrawler.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.webcrawler.model.TJssp;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,4 +22,7 @@ public interface TJsspMapper extends BaseMapper<TJssp> {
      * @return
      */
     List<TJssp> findTJssp(@Param("map") Map map);
+    //清空指定表
+    @Update("truncate table t_jssp")
+    void deleteJssp();
 }
