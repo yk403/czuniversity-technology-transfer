@@ -17,6 +17,7 @@ import com.itts.userservice.model.js.Js;
 import com.itts.userservice.request.AddCdRequest;
 import com.itts.userservice.service.cd.CdService;
 import com.itts.userservice.service.js.JsService;
+import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.CdTreeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +31,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
 
 /**
  * <p>
@@ -49,6 +52,9 @@ public class CdController {
 
     @Autowired
     private JsService jsService;
+
+    @Autowired
+    private YhService yhService;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -128,6 +134,27 @@ public class CdController {
         List<Cz> czs = cdService.getOptionsByRole(js, menuId);
 
         return ResponseUtil.success(czs);
+    }
+
+    @ApiOperation(value = "获取当前用户角色菜单列表")
+    @GetMapping("/get/user/menu")
+    public ResponseUtil getMenuByUser() {
+
+        //获取登录用户信息
+        LoginUser loginUser = threadLocal.get();
+        if (loginUser == null) {
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        //获取当前用户角色
+        List<Js> js = jsService.findByUserId(loginUser.getUserId());
+        if (CollectionUtils.isEmpty(js)) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        List<CdTreeVO> vos = cdService.getMenuByRole(js);
+
+        return ResponseUtil.success(vos);
     }
 
 

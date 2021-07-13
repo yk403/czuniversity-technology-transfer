@@ -36,6 +36,11 @@ public interface CdService {
     List<Cz> getOptionsByRole(List<Js> js, Long menuId);
 
     /**
+     * 通过角色获取菜单
+     */
+    List<CdTreeVO> getMenuByRole(List<Js> js);
+
+    /**
      * 通过菜单编码获取当前菜单和所有子菜单
      */
     List<Cd> findThisAndAllChildrenByCode(String code);

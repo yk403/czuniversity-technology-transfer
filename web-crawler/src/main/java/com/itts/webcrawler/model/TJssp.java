@@ -1,11 +1,13 @@
 package com.itts.webcrawler.model;
 
+import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /*
@@ -14,9 +16,11 @@ import java.util.Date;
  *@Desription:
  */
 @Data
-@Document(collection="jszyfw")
-public class JsspEntity implements Serializable {
-    @Id
+@EqualsAndHashCode(callSuper = false)
+@TableName("t_jssp")
+public class TJssp implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     /**
     * @Description: 商品名称
@@ -33,7 +37,7 @@ public class JsspEntity implements Serializable {
     * @Author: yukai
     * @Date: 2021/7/12
     */
-    private String zptp;
+    private String sptp;
     /**
     * @Description: 交易价格
     * @Param:
@@ -123,5 +127,53 @@ public class JsspEntity implements Serializable {
     * @Date: 2021/7/12
     */
     private String sqh;
+    /**
+     * 创建时间
+     */
+    @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date cjsj;
 
+    /**
+     * 更新时间
+     */
+    @TableField(value = "gxsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date gxsj;
+    /**
+     * 删除状态(0未删除;1已删除)
+     */
+    private Boolean isDelete;
+    /**
+     * @Description: 需求类型
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/7/12
+     */
+    private String xqlx;
+    /**
+    * @Description: 单位性质
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/7/13
+    */
+    private String dwxz;
+    /**
+    * @Description: 内容目标
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/7/13
+    */
+    private String nrmb;
+    /**
+    * @Description: 需求详情
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/7/13
+    */
+    private String xqxq;
 }
