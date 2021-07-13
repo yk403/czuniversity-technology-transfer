@@ -1,14 +1,14 @@
-package com.itts.personTraining.service.lmgl.impl;
+package com.itts.personTraining.service.stgl.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
-import com.itts.personTraining.mapper.lmgl.LmglMapper;
-import com.itts.personTraining.model.lbt.Lbt;
+import com.itts.personTraining.mapper.stgl.StglMapper;
 import com.itts.personTraining.model.lmgl.Lmgl;
-import com.itts.personTraining.service.lmgl.LmglService;
+import com.itts.personTraining.model.stgl.Stgl;
+import com.itts.personTraining.service.stgl.StglService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,56 +27,56 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
  * @since 2021-07-13
  */
 @Service
-public class LmglServiceImpl extends ServiceImpl<LmglMapper, Lmgl> implements LmglService {
+public class StglServiceImpl extends ServiceImpl<StglMapper, Stgl> implements StglService {
 
     @Resource
-    private LmglMapper lmglMapper;
+    private StglMapper stglMapper;
     @Override
-    public List<Lmgl> findList(Long jgId) {
-        QueryWrapper<Lmgl> lmglQueryWrapper = new QueryWrapper<>();
-        lmglQueryWrapper.eq("sfsc",false)
+    public List<Stgl> findList(Long jgId) {
+        QueryWrapper<Stgl> stglQueryWrapper = new QueryWrapper<>();
+        stglQueryWrapper.eq("sfsc",false)
                 .eq("jg_id",jgId)
                 .orderByAsc("px");
-        List<Lmgl> lmgls = lmglMapper.selectList(lmglQueryWrapper);
+        List<Stgl> lmgls = stglMapper.selectList(stglQueryWrapper);
         return lmgls;
     }
 
     @Override
-    public Lmgl add(Lmgl lmgl) {
+    public Stgl add(Stgl stgl) {
         Long userId = getUserId();
-        lmgl.setCjr(userId);
-        lmgl.setCjsj(new Date());
-        lmgl.setGxr(userId);
-        lmgl.setGxsj(new Date());
-        lmglMapper.insert(lmgl);
-        return lmgl;
+        stgl.setCjr(userId);
+        stgl.setCjsj(new Date());
+        stgl.setGxr(userId);
+        stgl.setGxsj(new Date());
+        stglMapper.insert(stgl);
+        return stgl;
     }
 
     @Override
-    public Lmgl update(Lmgl lmgl) {
+    public Stgl update(Stgl stgl) {
         Long userId = getUserId();
-        lmgl.setGxsj(new Date());
-        lmgl.setGxr(userId);
-        lmglMapper.updateById(lmgl);
-        return lmgl;
+        stgl.setGxsj(new Date());
+        stgl.setGxr(userId);
+        stglMapper.updateById(stgl);
+        return stgl;
     }
 
     @Override
-    public Lmgl get(Long id) {
-        QueryWrapper<Lmgl> lmglQueryWrapper = new QueryWrapper<>();
-        lmglQueryWrapper.eq("sfsc",false)
+    public Stgl get(Long id) {
+        QueryWrapper<Stgl> stglQueryWrapper = new QueryWrapper<>();
+        stglQueryWrapper.eq("sfsc",false)
                 .eq("id",id);
-        Lmgl lmgl = lmglMapper.selectOne(lmglQueryWrapper);
-        return lmgl;
+        Stgl stgl = stglMapper.selectOne(stglQueryWrapper);
+        return stgl;
     }
 
     @Override
     public boolean delete(Long id) {
-        Lmgl lmgl = get(id);
-        lmgl.setSfsc(true);
-        lmgl.setGxr(getUserId());
-        lmgl.setGxsj(new Date());
-        lmglMapper.updateById(lmgl);
+        Stgl stgl = get(id);
+        stgl.setSfsc(true);
+        stgl.setGxr(getUserId());
+        stgl.setGxsj(new Date());
+        stglMapper.updateById(stgl);
         return true;
     }
     /**

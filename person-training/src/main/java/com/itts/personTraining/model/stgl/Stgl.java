@@ -1,4 +1,4 @@
-package com.itts.personTraining.model.lmgl;
+package com.itts.personTraining.model.stgl;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -18,11 +18,11 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_lmgl")
-public class Lmgl implements Serializable {
+@TableName("t_stgl")
+public class Stgl implements Serializable {
 
 
-    private static final long serialVersionUID = -7473937665716615284L;
+    private static final long serialVersionUID = 1430220250483625676L;
     /**
      * 主键ID
      */
@@ -35,19 +35,15 @@ public class Lmgl implements Serializable {
     private String mc;
 
     /**
-     * 图标
-     */
-    private String tb;
-
-    /**
-     * 网址
-     */
-    private String wz;
-
-    /**
      * 排序
      */
     private String px;
+
+    /**
+     * 是否显示
+     */
+    private Boolean sfxs;
+
     /**
      * 机构ID
      */

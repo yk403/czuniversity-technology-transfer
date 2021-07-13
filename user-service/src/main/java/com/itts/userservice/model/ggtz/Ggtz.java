@@ -1,12 +1,13 @@
-package com.itts.personTraining.model.lmgl;
+package com.itts.userservice.model.ggtz;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -14,15 +15,15 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author fuli
- * @since 2021-07-13
+ * @since 2021-07-12
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_lmgl")
-public class Lmgl implements Serializable {
+@TableName("t_ggtz")
+public class Ggtz implements Serializable {
 
 
-    private static final long serialVersionUID = -7473937665716615284L;
+    private static final long serialVersionUID = -4672068901247847224L;
     /**
      * 主键ID
      */
@@ -30,28 +31,49 @@ public class Lmgl implements Serializable {
     private Long id;
 
     /**
-     * 名称
+     * 通知标题
      */
-    private String mc;
+    private String tzbt;
 
     /**
-     * 图标
+     * 通知内容
      */
-    private String tb;
+    private String tzwnr;
 
     /**
-     * 网址
+     * 通知图片
      */
-    private String wz;
+    private String tztp;
 
     /**
-     * 排序
+     * 时间
      */
-    private String px;
+    private Date sj;
+
+    /**
+     * 类型
+     */
+    private String lx;
+
     /**
      * 机构ID
      */
     private Long jgId;
+
+    /**
+     * 状态已发布未发布已停用
+     */
+    private String zt;
+
+    /**
+     * 发布时间
+     */
+    private Date fbsj;
+
+    /**
+     * 备注
+     */
+    private String bz;
 
     /**
      * 是否删除

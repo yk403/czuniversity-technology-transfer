@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itts.personTraining.mapper.lmgl.LmglMapper">
+<mapper namespace="com.itts.personTraining.mapper.stgl.StglMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.lmgl.Lmgl">
+    <resultMap id="BaseResultMap" type="com.itts.personTraining.model.stgl.Stgl">
         <id column="id" property="id" />
         <result column="mc" property="mc" />
-        <result column="tb" property="tb" />
-        <result column="wz" property="wz" />
         <result column="px" property="px" />
+        <result column="sfxs" property="sfxs" />
         <result column="jg_id" property="jgId" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
@@ -19,7 +18,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, mc, tb, wz,px, jg_id, sfsc, cjsj, cjr, gxsj, gxr
+        id, mc, px, sfxs, jg_id, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

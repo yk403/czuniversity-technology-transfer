@@ -36,7 +36,7 @@ public class JgglServiceImpl implements JgglService {
     private JgglMapper jgglMapper;
 
     @Override
-    public PageInfo<Jggl> findPage(Integer pageNum, Integer pageSize, String jgbm, String string, String jglb, String lx) {
+    public PageInfo<Jggl> findPage(Integer pageNum, Integer pageSize, String string, String jgbm, String jglb, String lx) {
         //传入机构编码
         if(!StringUtils.isBlank(jgbm)){
             String cj = jgglMapper.selectByCode(jgbm).getCj();

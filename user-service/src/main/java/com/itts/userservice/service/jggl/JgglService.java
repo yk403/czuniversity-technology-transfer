@@ -19,7 +19,7 @@ public interface JgglService  {
     /**
      * 获取列表 - 分页
      */
-    PageInfo<Jggl> findPage(Integer pageNum,Integer pageSize,String jgbm,String string,String jglb,String lx);
+    PageInfo<Jggl> findPage(Integer pageNum,Integer pageSize,String string,String jgbm,String jglb,String lx);
     PageInfo<Jggl> findByPage(Integer pageNum,Integer pageSize,String jgbm);
     PageInfo<Jggl> selectByString(Integer pageNum,Integer pageSize,String string);
     /**
