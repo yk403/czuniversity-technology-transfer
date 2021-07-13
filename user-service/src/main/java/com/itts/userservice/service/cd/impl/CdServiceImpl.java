@@ -264,6 +264,10 @@ public class CdServiceImpl implements CdService {
             }
         }
 
+        if(CollectionUtils.isEmpty(childCds)){
+            parentVo.setChildCds(null);
+        }
+
         parentVo.setChildCds(childCds);
 
         return parentVo;
