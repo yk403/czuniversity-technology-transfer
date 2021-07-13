@@ -211,6 +211,9 @@ public class JsServiceImpl implements JsService {
             }
         }
 
+        Integer count = jsMapper.selectCount(new QueryWrapper<Js>());
+        String code = String.format(" %04d", count.intValue());
+
         Js js = new Js();
         BeanUtils.copyProperties(request, js);
 
@@ -227,6 +230,7 @@ public class JsServiceImpl implements JsService {
         js.setGxr(userId);
         js.setCjsj(now);
         js.setGxsj(now);
+        js.setJsbm(code);
 
         jsMapper.insert(js);
 
