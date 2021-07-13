@@ -258,7 +258,7 @@ public class CdServiceImpl implements CdService {
                     iterator.remove();
 
                     //组装当前菜单及子菜单
-                    CdTreeVO childVO = assemblyLevel(Lists.newArrayList(iterator), cd);
+                    CdTreeVO childVO = assemblyLevel(cds, cd);
                     childCds.add(childVO);
                 }
             }
@@ -266,9 +266,9 @@ public class CdServiceImpl implements CdService {
 
         if(CollectionUtils.isEmpty(childCds)){
             parentVo.setChildCds(null);
+        }else{
+            parentVo.setChildCds(childCds);
         }
-
-        parentVo.setChildCds(childCds);
 
         return parentVo;
     }
