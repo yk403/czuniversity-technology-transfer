@@ -2,6 +2,8 @@ package com.itts.personTraining.service.jjrpxjh;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.JjrpxjhDTO;
 import com.itts.personTraining.model.jjrpxjh.Jjrpxjh;
 import com.itts.personTraining.request.jjrpxjh.AddJjrpxjhRequest;
 import com.itts.personTraining.request.jjrpxjh.UpdateJjrpxjhRequest;
@@ -42,4 +44,9 @@ public interface JjrpxjhService extends IService<Jjrpxjh> {
      */
     void delete(Jjrpxjh old);
 
+    /**
+     *获取经纪人培训计划
+     * @return
+     */
+    JjrpxjhDTO getJjrpxjh();
 }

@@ -32,5 +32,10 @@
         id
         , pxjhmc, jg_id, xymc, pc_id, pc_mc, jylx, xylx, skkssj, skjssj, bmkssj, bmjssj, dd, bmrs, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
+    <select id="getJirpxjh" resultType="com.itts.personTraining.dto.JjrpxjhDTO">
+        select tj.id, tj.pxjhmc, tj.jg_id, tj.xymc, pc.id as pc_id, pc.pcmc as pc_mc, pc.jylx, pc.xylx, tj.skkssj, tj.skjssj, tj.bmkssj, tj.bmjssj, tj.dd, tj.bmrs, tj.sfsj, tj.sfsc, tj.cjsj, tj.cjr, tj.gxsj, tj.gxr
+        from t_jjrpxjh tj left join t_pc pc on (tj.pc_id=pc.id)
+        where pc.sfsc = false and tj.bmjssj = (select MAX(tj.bmjssj) from t_jjrpxjh tj where tj.sfsc = false and tj.sfsj = true)
+    </select>
 
 </mapper>

@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.personTraining.dto.JjrpxjhDTO;
+import com.itts.personTraining.dto.KcXsXfDTO;
+import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.mapper.jjrpxjh.JjrpxjhMapper;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.mapper.pk.PkMapper;
@@ -22,6 +25,7 @@ import com.itts.personTraining.service.jjrpxjh.JjrpxjhService;
 import com.itts.personTraining.vo.jjrpxjh.GetJjrpxhKcVO;
 import com.itts.personTraining.vo.jjrpxjh.GetJjrpxjhSzVO;
 import com.itts.personTraining.vo.jjrpxjh.GetJjrpxjhVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +36,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.itts.personTraining.enums.UserTypeEnum.TEACHER;
+
 /**
  * <p>
  * 经纪人培训计划表 服务实现类
@@ -41,6 +47,7 @@ import java.util.stream.Collectors;
  * @since 2021-06-01
  */
 @Service
+@Slf4j
 public class JjrpxjhServiceImpl extends ServiceImpl<JjrpxjhMapper, Jjrpxjh> implements JjrpxjhService {
 
     @Autowired
@@ -198,4 +205,25 @@ public class JjrpxjhServiceImpl extends ServiceImpl<JjrpxjhMapper, Jjrpxjh> impl
 
         jjrpxjhMapper.updateById(old);
     }
+
+    /**
+     * 获取经纪人培训计划
+     * @return
+     */
+    @Override
+    public JjrpxjhDTO getJjrpxjh() {
+        log.info("【人才培养 - 获取经纪人培训计划】");
+        //查询最新经纪人培训计划
+        JjrpxjhDTO jjrpxjhDTO = jjrpxjhMapper.getJirpxjh();
+        if (jjrpxjhDTO != null) {
+            //根据学员类型查询课程
+            List<KcXsXfDTO> kcDTOList = kcMapper.findByXylx(jjrpxjhDTO.getXylx());
+            jjrpxjhDTO.setKcDTOList(kcDTOList);
+        }
+        //查询授课教师
+        List<Sz> szList = szMapper.findByDslb(TEACHER.getKey());
+        jjrpxjhDTO.setSzList(szList);
+        return jjrpxjhDTO;
+    }
+
 }

@@ -5,6 +5,8 @@ import com.itts.personTraining.model.sz.Sz;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * <p>
  * 师资表 Mapper 接口
@@ -22,4 +24,11 @@ public interface SzMapper extends BaseMapper<Sz> {
      * @return
      */
     Sz getSzByYhId(@Param("yhId") Long yhId);
+
+    /**
+     * 根据导师类别查询师资
+     * @param dslb
+     * @return
+     */
+    List<Sz> findByDslb(@Param("dslb") String dslb);
 }
