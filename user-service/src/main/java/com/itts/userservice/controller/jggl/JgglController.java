@@ -47,6 +47,23 @@ public class JgglController {
     private JgglMapper jgglMapper;
 
     /**
+     * 获取机构列表
+     */
+    @GetMapping("/list/")
+    @ApiOperation(value = "获取机构列表")
+    public ResponseUtil getlist(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                @RequestParam(value = "string", required = false) String string,
+                                @RequestParam(value = "jgbm", required = false) String jgbm,
+                                @RequestParam(value = "jglb",required = false)String jglb,
+                                @RequestParam(value = "lx",required = false)String lx) {
+
+        PageInfo<Jggl> byPage = jgglService.findPage(pageNum, pageSize, jgbm,string,jglb,lx);
+
+        return ResponseUtil.success(byPage);
+    }
+
+    /**
      * 查询机构，通过名称和编码
      */
     @GetMapping("/query/mechanism/")

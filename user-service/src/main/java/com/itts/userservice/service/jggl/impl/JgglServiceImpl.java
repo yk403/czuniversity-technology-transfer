@@ -35,6 +35,45 @@ public class JgglServiceImpl implements JgglService {
     @Resource
     private JgglMapper jgglMapper;
 
+    @Override
+    public PageInfo<Jggl> findPage(Integer pageNum, Integer pageSize, String jgbm, String string, String jglb, String lx) {
+        //传入机构编码
+        if(!StringUtils.isBlank(jgbm)){
+            String cj = jgglMapper.selectByCode(jgbm).getCj();
+            jgbm=cj;
+            //传入string
+        }else if(!StringUtils.isBlank(string)){
+            PageHelper.startPage(pageNum,pageSize);
+            List<Jggl> jggls = jgglMapper.selectByString(string);
+            PageInfo<Jggl> pageInfo = new PageInfo<>(jggls);
+            return pageInfo;
+            //传入类型
+        }else if(!StringUtils.isBlank(lx)){
+            PageHelper.startPage(pageNum,pageSize);
+            QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
+            jgglQueryWrapper.eq("sfsc",false)
+                    .eq("lx",lx)
+                    .orderByDesc("cjsj");
+            List<Jggl> jgglList = jgglMapper.selectList(jgglQueryWrapper);
+            PageInfo<Jggl> pageInfo = new PageInfo<>(jgglList);
+            return pageInfo;
+        }else if(!StringUtils.isBlank(jglb)) {
+            PageHelper.startPage(pageNum, pageSize);
+            QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
+            jgglQueryWrapper.eq("sfsc", false)
+                    .eq("jglb", jglb)
+                    .orderByDesc("cjsj");
+            List<Jggl> jgglList = jgglMapper.selectList(jgglQueryWrapper);
+            PageInfo<Jggl> pageInfo = new PageInfo<>(jgglList);
+            return pageInfo;
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<Jggl> list = jgglMapper.findThisAndChildByCode(jgbm);
+        PageInfo<Jggl> pageInfo = new PageInfo<>(list);
+        return pageInfo;
+
+    }
+
     /**
      * 获取指定分页
      * @param pageNum
@@ -58,7 +97,13 @@ public class JgglServiceImpl implements JgglService {
 
         return pageInfo;
     }
-
+    @Override
+    public PageInfo<Jggl> selectByString(Integer pageNum, Integer pageSize, String string) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Jggl> jggls = jgglMapper.selectByString(string);
+        PageInfo<Jggl> pageInfo = new PageInfo<>(jggls);
+        return pageInfo;
+    }
     /**
      * 获取机构管理树
      * @return
@@ -136,13 +181,7 @@ public class JgglServiceImpl implements JgglService {
         return jggl;
     }
 
-    @Override
-    public PageInfo<Jggl> selectByString(Integer pageNum, Integer pageSize, String string) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<Jggl> jggls = jgglMapper.selectByString(string);
-        PageInfo<Jggl> pageInfo = new PageInfo<>(jggls);
-        return pageInfo;
-    }
+
 
     /**
      * 新增

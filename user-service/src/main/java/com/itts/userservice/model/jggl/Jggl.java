@@ -67,6 +67,15 @@ public class Jggl implements Serializable {
     private String fjmc;
 
     /**
+     * 负责人
+     */
+    private Long fzr;
+    /**
+     * 联系电话
+     */
+    private String lxdh;
+
+    /**
      * 菜单层级, 以“-”分隔
      */
     private String cj;
