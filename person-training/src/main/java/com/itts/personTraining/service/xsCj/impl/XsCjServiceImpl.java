@@ -89,17 +89,9 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     @Resource
     private PcMapper pcMapper;
     @Resource
-    private TzMapper tzMapper;
-    @Resource
-    private SzMapper szMapper;
-    @Resource
-    private PkMapper pkMapper;
-    @Resource
     private KsMapper ksMapper;
     @Resource
     private PcXsMapper pcXsMapper;
-    @Resource
-    private SjMapper sjMapper;
 
     /**
      * 根据批次id查询所有学生成绩

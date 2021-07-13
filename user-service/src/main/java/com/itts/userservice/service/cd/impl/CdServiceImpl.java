@@ -12,9 +12,14 @@ import com.itts.userservice.dto.GetCdCzGlDTO;
 import com.itts.userservice.mapper.cd.CdCzGlMapper;
 import com.itts.userservice.mapper.cd.CdMapper;
 import com.itts.userservice.mapper.cz.CzMapper;
+import com.itts.userservice.mapper.js.JsCdCzGlMapper;
+import com.itts.userservice.mapper.js.JsCdGlMapper;
 import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.model.cd.CdCzGl;
 import com.itts.userservice.model.cz.Cz;
+import com.itts.userservice.model.js.Js;
+import com.itts.userservice.model.js.JsCdCzGl;
+import com.itts.userservice.model.js.JsCdGl;
 import com.itts.userservice.request.AddCdRequest;
 import com.itts.userservice.service.cd.CdService;
 import com.itts.userservice.vo.CdTreeVO;
@@ -53,7 +58,14 @@ public class CdServiceImpl implements CdService {
     private CzMapper czMapper;
 
     @Autowired
+    private JsCdCzGlMapper jsCdCzGlMapper;
+
+    @Autowired
+    private JsCdGlMapper jsCdGlMapper;
+
+    @Autowired
     private RedisTemplate redisTemplate;
+
     /**
      * 获取列表 - 分页
      */
@@ -130,6 +142,135 @@ public class CdServiceImpl implements CdService {
         }
 
         return vos;
+    }
+
+    /**
+     * 通过角色获取菜单操作
+     */
+    @Override
+    public List<Cz> getOptionsByRole(List<Js> js, Long menuId) {
+
+        //获取角色ID
+        List<Long> jsIds = js.stream().map(Js::getId).collect(Collectors.toList());
+
+        List<JsCdCzGl> jsCdczGls = jsCdCzGlMapper.selectList(new QueryWrapper<JsCdCzGl>()
+                .eq("cd_id", menuId).in("js_id", jsIds));
+
+        if (CollectionUtils.isEmpty(jsCdczGls)) {
+            return null;
+        }
+
+        List<Long> czIds = Lists.newArrayList(jsCdczGls.stream().map(JsCdCzGl::getCzId).collect(Collectors.toSet()));
+        if (CollectionUtils.isEmpty(czIds)) {
+            return null;
+        }
+
+        List<Cz> czs = czMapper.selectList(new QueryWrapper<Cz>().in("id", czIds));
+        return czs;
+    }
+
+    /**
+     * 通过角色获取菜单
+     */
+    @Override
+    public List<CdTreeVO> getMenuByRole(List<Js> js) {
+
+        List<Long> jsIds = js.stream().map(Js::getId).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(jsIds)) {
+            return null;
+        }
+
+        List<JsCdGl> jsCdGls = jsCdGlMapper.selectList(new QueryWrapper<JsCdGl>().in("js_id", jsIds));
+        if (CollectionUtils.isEmpty(jsCdGls)) {
+            return null;
+        }
+
+        List<Long> cdIds = jsCdGls.stream().map(JsCdGl::getCdId).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(cdIds)) {
+            return null;
+        }
+
+        List<Cd> cds = cdMapper.selectList(new QueryWrapper<Cd>().in("id", cdIds).eq("sfsc", false));
+        if (CollectionUtils.isEmpty(cds)) {
+            return null;
+        }
+
+        //获取菜单的一级菜单
+        List<Cd> parentCds = getParentMenu(cds);
+
+        //菜单层级组装
+        List<CdTreeVO> vos = parentCds.stream().map(obj -> {
+
+            CdTreeVO vo = assemblyLevel(cds, obj);
+            return vo;
+        }).collect(Collectors.toList());
+
+        return vos;
+    }
+
+    /**
+     * 获取一级菜单列表
+     */
+    private List<Cd> getParentMenu(List<Cd> cds) {
+
+        Iterator<Cd> iterator = cds.iterator();
+        List<Cd> parentMenus = Lists.newArrayList();
+
+        while (iterator.hasNext()) {
+
+            Cd cd = iterator.next();
+            if (cd != null) {
+
+                String[] cjs = cd.getCj().split("-");
+                if(cjs.length == 1){
+                    parentMenus.add(cd);
+                    iterator.remove();
+                }
+            }
+        }
+
+        return parentMenus;
+    }
+
+    /**
+     * 通过父级ID获取菜单列表
+     */
+    private CdTreeVO assemblyLevel(List<Cd> cds, Cd parentCd) {
+        
+        if(parentCd == null){
+            return null;
+        }
+
+        CdTreeVO parentVo = new CdTreeVO();
+        BeanUtils.copyProperties(parentCd, parentVo);
+
+        Iterator<Cd> iterator = cds.iterator();
+
+        List<CdTreeVO> childCds = Lists.newArrayList();
+
+        while (iterator.hasNext()) {
+
+            Cd cd = iterator.next();
+            if(cd != null){
+
+                if(cd.getFjcdId().longValue() == parentVo.getId().longValue()){
+
+                    iterator.remove();
+
+                    //组装当前菜单及子菜单
+                    CdTreeVO childVO = assemblyLevel(Lists.newArrayList(iterator), cd);
+                    childCds.add(childVO);
+                }
+            }
+        }
+
+        if(CollectionUtils.isEmpty(childCds)){
+            parentVo.setChildCds(null);
+        }
+
+        parentVo.setChildCds(childCds);
+
+        return parentVo;
     }
 
     /**

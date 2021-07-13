@@ -5,6 +5,7 @@ import com.itts.userservice.model.js.JsCdGl;
 import com.itts.userservice.vo.GetJsCdGlVO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * @author fl
  * @since 2021-03-24
  */
+@Repository
 public interface JsCdGlMapper extends BaseMapper<JsCdGl> {
 
     /**

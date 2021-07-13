@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.userservice.model.js.JsCdCzGl;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @author liuyingming
  * @since 2021-04-15
  */
+@Repository
 public interface JsCdCzGlMapper extends BaseMapper<JsCdCzGl> {
 
     /**
