@@ -89,17 +89,9 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     @Resource
     private PcMapper pcMapper;
     @Resource
-    private TzMapper tzMapper;
-    @Resource
-    private SzMapper szMapper;
-    @Resource
-    private PkMapper pkMapper;
-    @Resource
     private KsMapper ksMapper;
     @Resource
     private PcXsMapper pcXsMapper;
-    @Resource
-    private SjMapper sjMapper;
 
     /**
      * 根据批次id查询所有学生成绩
@@ -409,7 +401,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                             List<XsKcCjDTO> xsKcCjDTOs = kcMapper.findXsKcCjByPcId(pcId);
                             xsCjDTO.setXsKcCjDTOList(xsKcCjDTOs);
                         }
-                        Integer zxf = xsDTO.getZxzyxf() + xsDTO.getHrxf() + xsDTO.getJszylyxf() + xsDTO.getSjxf() + xsDTO.getSxxf();
+                        Integer zxf = xsDTO.getZxzyxf() + xsDTO.getHrxf() + xsDTO.getJszylyxf();
                         xsDTO.setZxf(zxf);
                         map.put("xf", xsDTO);
                         map.put("postgraduate", xsCjDTO);

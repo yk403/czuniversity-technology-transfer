@@ -120,6 +120,7 @@ public class PkAdminController {
         if (pkService.get(id) == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
+        checkRequest(pkDTO);
         if (!pkService.update(pkDTO)) {
             throw new WebException(UPDATE_FAIL);
         }
@@ -158,11 +159,14 @@ public class PkAdminController {
         if (pkDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+        if (pkDTO.getQsz()>pkDTO.getJsz()) {
+            throw new WebException(STARTWEEK_GREATER_THAN_ENDWEEK);
+        }
         //查询出该开学日期的所有排课信息
         List<PkDTO> pkDTOs = pkService.findPkByKxrq(pkDTO.getKxrq());
         for (PkDTO dto : pkDTOs) {
             if (dto.getXqs().equals(pkDTO.getXqs()) && dto.getKcsjId().equals(pkDTO.getKcsjId())) {
-                if ((pkDTO.getQsz() > dto.getQsz() && pkDTO.getJsz() < dto.getJsz()) || (pkDTO.getJsz() > dto.getQsz() && pkDTO.getJsz() <dto.getJsz())) {
+                if ((pkDTO.getQsz() >= dto.getQsz() && pkDTO.getQsz() <= dto.getJsz()) || (pkDTO.getJsz() >= dto.getQsz() && pkDTO.getJsz() <= dto.getJsz())) {
                     if (pkDTO.getXxjsId() != null) {
                         if (pkDTO.getXxjsId().equals(dto.getXxjsId())) {
                             throw new WebException(SCHOOL_BE_OCCUPIED);

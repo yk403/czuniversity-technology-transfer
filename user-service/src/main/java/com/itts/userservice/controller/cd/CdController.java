@@ -3,6 +3,7 @@ package com.itts.userservice.controller.cd;
 
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.enums.SystemTypeEnum;
@@ -11,13 +12,17 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.dto.GetCdAndCzDTO;
 import com.itts.userservice.enmus.UserTypeEnum;
 import com.itts.userservice.model.cd.Cd;
+import com.itts.userservice.model.cz.Cz;
+import com.itts.userservice.model.js.Js;
 import com.itts.userservice.request.AddCdRequest;
 import com.itts.userservice.service.cd.CdService;
+import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.vo.CdTreeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +46,9 @@ public class CdController {
 
     @Resource
     private CdService cdService;
+
+    @Autowired
+    private JsService jsService;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -97,6 +105,31 @@ public class CdController {
 
         return ResponseUtil.success();
     }
+
+    @ApiOperation(value = "获取当前用户角色菜单操作列表")
+    @GetMapping("/get/menu/options")
+    public ResponseUtil getMenuOptions(@RequestParam("menuId") Long menuId) {
+
+        if (menuId == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if (loginUser == null) {
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        //获取用户角色
+        List<Js> js = jsService.findByUserId(loginUser.getUserId());
+        if (CollectionUtils.isEmpty(js)) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        List<Cz> czs = cdService.getOptionsByRole(js, menuId);
+
+        return ResponseUtil.success(czs);
+    }
+
 
     /**
      * 通过名称和编码获取列表

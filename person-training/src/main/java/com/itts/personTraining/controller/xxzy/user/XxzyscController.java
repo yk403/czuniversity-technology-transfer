@@ -83,7 +83,8 @@ public class XxzyscController {
                              @ApiParam(value = "一级分类") @RequestParam(value = "firstCategory", required = false) String firstCategory,
                              @ApiParam(value = "二级分类") @RequestParam(value = "secondCategory", required = false) String secondCategory,
                              @ApiParam(value = "资源类型: video - 视频; textbook - 教材; courseware - 课件") @RequestParam(value = "category", required = false) String category,
-                             @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction) {
+                             @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction,
+                             @ApiParam(value = "收藏学习资源ID") @RequestParam(value = "id", required = false) Long id) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser == null) {
@@ -91,7 +92,7 @@ public class XxzyscController {
         }
 
         PageInfo<Xxzy> pageInfo = xxzyscService.findScByPage(pageNum, pageSize, loginUser.getUserId(),
-                firstCategory, secondCategory, category, direction);
+                firstCategory, secondCategory, category, direction, id);
 
         return ResponseUtil.success(pageInfo);
     }

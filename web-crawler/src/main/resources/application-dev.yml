@@ -30,6 +30,10 @@ spring:
     filters: stat,wall,slf4j
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  #mongodb配置
+  data:
+    mongodb:
+      uri: mongodb://172.21.25.6:27017/technology_transaction
   # Redis 配置
   redis:
     # Redis 服务器地址

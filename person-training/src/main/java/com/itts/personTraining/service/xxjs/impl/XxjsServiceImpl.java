@@ -158,6 +158,17 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
     }
 
     /**
+     * 查询所有教学楼
+     * @return
+     */
+    @Override
+    public List<String> findAllJxlmc() {
+        log.info("【人才培养 - 查询所有教学楼】");
+        List<String> jxlmcList = xxjsMapper.findAllJxlmc();
+        return jxlmcList;
+    }
+
+    /**
      * 获取当前用户id
      * @return
      */

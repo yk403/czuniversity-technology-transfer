@@ -36,7 +36,7 @@
             <if test="pch != null and pch != ''"> and pc.pch like concat('%',trim(#{pch}),'%') </if>
             <if test="jylx != null and jylx != ''"> and pc.jylx = trim(#{jylx}) </if>
             <if test="jhmc != null and jhmc != ''"> and tpj.jhmc like concat('%',trim(#{jhmc}),'%') </if>
-        order by tpj.cjsj desc
+        order by tpj.sfxf asc, tpj.cjsj desc
     </select>
     <select id="findByPcId" resultType="com.itts.personTraining.dto.PyJhDTO">
         select tpj.*, pc.id as pcId, pc.pch

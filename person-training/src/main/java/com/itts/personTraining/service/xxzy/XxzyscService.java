@@ -20,7 +20,7 @@ public interface XxzyscService extends IService<Xxzysc> {
      * 获取学习资源收藏列表 - 分页
      */
     PageInfo<Xxzy> findScByPage(int pageNum, int pageSize, Long userId, String firstCategory,
-                                String secondCategory, String category, String direction);
+                                String secondCategory, String category, String direction, Long id);
 
     /**
      * 新增

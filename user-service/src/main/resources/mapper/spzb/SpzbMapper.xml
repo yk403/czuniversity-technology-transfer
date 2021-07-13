@@ -10,6 +10,7 @@
         <result column="kssj" property="kssj"/>
         <result column="jssj" property="jssj"/>
         <result column="zbmc" property="zbmc"/>
+        <result column="ssxt" property="ssxt"/>
         <result column="ccdz" property="ccdz"/>
         <result column="zbspmy" property="zbspmy"/>
         <result column="splx" property="splx"/>
@@ -39,7 +40,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id
-        , zbspmc, zbspjs, kssj, jssj, zbmc, ccdz, zbspmy, splx, xm_id, tlym, lzlm, lzgs, mz_id, bfdz, wxdx, spsc, lzkssj, lzjssj, spkd, spgd, obsqy, obst, obslj, msxx, sfsc, cjsj, cjr, gxsj, gxr
+        , zbspmc, zbspjs, kssj, jssj, zbmc, ssxt, ccdz, zbspmy, splx, xm_id, tlym, lzlm, lzgs, mz_id, bfdz, wxdx, spsc, lzkssj, lzjssj, spkd, spgd, obsqy, obst, obslj, msxx, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

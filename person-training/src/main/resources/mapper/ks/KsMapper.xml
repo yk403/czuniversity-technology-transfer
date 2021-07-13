@@ -72,7 +72,7 @@
             <if test="ksmc != null and ksmc != ''">and ks.ksmc like concat('%',trim(#{ksmc}),'%')</if>
             <if test="kslx != null and kslx != ''">and ks.kslx = #{kslx}</if>
         </where>
-        order by ks.cjsj desc
+        order by ks.sfxf asc, ks.cjsj desc
     </select>
     <select id="findById" resultType="com.itts.personTraining.dto.KsDTO">
         select ks.id, pc_id, pc.pch, ks.type, kssj_id, ksmc, kslx, kslb, ksdd, ks.ksrq, ks.kskssj, ks.ksjssj, ks.kssc, ks.ksksnyr, ks.ksjsnyr, ks.sfsc, ks.sfxf, ks.cjsj, ks.cjr, ks.gxsj, ks.gxr, ks.xfsj
