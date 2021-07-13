@@ -7,7 +7,9 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.dto.JjrbmInfo;
 import com.itts.personTraining.dto.JjrpxjhDTO;
+import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.model.jjrpxjh.Jjrpxjh;
 import com.itts.personTraining.request.jjrpxjh.SignUpJjrpxjhRequest;
 import com.itts.personTraining.service.jjrpxjh.JjrpxjhService;
@@ -19,7 +21,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+import static com.itts.common.enums.ErrorCodeEnum.SIGN_UP_FAIL;
+import static com.itts.common.enums.ErrorCodeEnum.SIGN_UP_SUCCESS;
 
 /**
  * @Description：
@@ -55,9 +61,12 @@ public class JjrpxjhController {
         return ResponseUtil.success(jjrpxjhVO);
     }
 
-    @ApiOperation(value = "报名")
+    @ApiOperation(value = "培训报名")
     @PostMapping("/sign/up/")
-    public ResponseUtil signUp(@RequestBody SignUpJjrpxjhRequest signUpJjrpxjhRequest){
-        return null;
+    public ResponseUtil signUp(@RequestBody JjrbmInfo jjrbmInfo){
+        if (jjrpxjhService.signUp(jjrbmInfo)) {
+            throw new WebException(SIGN_UP_FAIL);
+        }
+        return ResponseUtil.success(SIGN_UP_SUCCESS);
     }
 }
