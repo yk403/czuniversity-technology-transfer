@@ -67,6 +67,12 @@ public class Spzb implements Serializable {
     private String zbmc;
 
     /**
+     * 所属系统
+     */
+    @ApiModelProperty(value = "所属系统")
+    private String ssxt;
+
+    /**
      * 视频存储地址
      */
     @ApiModelProperty(value = "视频存储地址")

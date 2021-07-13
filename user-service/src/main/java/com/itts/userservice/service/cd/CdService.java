@@ -3,6 +3,8 @@ package com.itts.userservice.service.cd;
 import com.github.pagehelper.PageInfo;
 import com.itts.userservice.dto.GetCdAndCzDTO;
 import com.itts.userservice.model.cd.Cd;
+import com.itts.userservice.model.cz.Cz;
+import com.itts.userservice.model.js.Js;
 import com.itts.userservice.request.AddCdRequest;
 import com.itts.userservice.vo.CdTreeVO;
 
@@ -27,6 +29,11 @@ public interface CdService {
      * 通过ID获取当前菜单及其子菜单（树形）
      */
     List<CdTreeVO> findByTree(List<Cd> cds);
+
+    /**
+     * 通过角色获取菜单操作
+     */
+    List<Cz> getOptionsByRole(List<Js> js, Long menuId);
 
     /**
      * 通过菜单编码获取当前菜单和所有子菜单
