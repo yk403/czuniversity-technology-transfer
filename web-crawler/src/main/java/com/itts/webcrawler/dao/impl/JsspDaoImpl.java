@@ -39,9 +39,8 @@ public class JsspDaoImpl implements JsspDao {
         update.set("dwmc", jsspEntity.getDwmc());
         update.set("zptp", jsspEntity.getZptp());
         update.set("jyjg", jsspEntity.getJyjg());
-        update.set("zlzx", jsspEntity.getZlzx());
-        update.set("yxqkssj", jsspEntity.getYxqkssj());
-        update.set("yxqjssj", jsspEntity.getYxqjssj());
+        update.set("zllx", jsspEntity.getZllx());
+        update.set("yxq", jsspEntity.getYxq());
         update.set("splx", jsspEntity.getSplx());
         update.set("fbrq", jsspEntity.getFbrq());
         update.set("jscsd", jsspEntity.getJscsd());
