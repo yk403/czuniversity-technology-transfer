@@ -8,6 +8,7 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.enmus.GroupTypeEnum;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
+import com.itts.userservice.request.yh.RpcAddYhRequest;
 import com.itts.userservice.request.yh.UpdateUserRequest;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.service.js.JsService;
@@ -123,6 +124,41 @@ public class YhController {
         }
 
         return ResponseUtil.success(getYhVO);
+    }
+
+    /**
+     * 新增
+     *
+     * @author fl
+     */
+    @PostMapping("/rpc/add/")
+    @ApiOperation(value = "新增")
+    public ResponseUtil rpcAdd(@RequestBody RpcAddYhRequest yh) throws WebException {
+
+        //检查参数是否合法
+        if (yh == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(yh.getYhlx())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(yh.getYhlb())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(yh.getYhm())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        if (StringUtils.isBlank(yh.getMm())) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        GetYhVO result = yhService.rpcAdd(yh);
+
+        return ResponseUtil.success(result);
     }
 
     /**
