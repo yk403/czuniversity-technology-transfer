@@ -2,6 +2,7 @@ package com.itts.userservice.controller.yh.admin;
 
 
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
@@ -107,6 +108,30 @@ public class YhAdminController {
         return ResponseUtil.success(yhPageInfo);
     }
 
+    @ApiOperation(value = "获取登录用户信息")
+    @GetMapping("/get/login/user/")
+    public ResponseUtil getLoginUser(){
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if(loginUser == null){
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        Yh yh = yhService.get(loginUser.getUserId());
+
+        if (yh == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (yh.getSfsc()) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        GetYhVO getYhVO = DTO2VO(yh);
+
+        return ResponseUtil.success(getYhVO);
+    }
+
     /**
      * 获取详情
      *
@@ -127,55 +152,7 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        GetYhVO getYhVO = new GetYhVO();
-        BeanUtils.copyProperties(yh, getYhVO);
-
-        //获取当前用户最顶级机构信息
-        Jggl jg = jgglService.get(getYhVO.getJgId());
-        if (jg != null) {
-
-            //总基地
-            if (Objects.equals(jg.getLx(), GroupTypeEnum.HEADQUARTERS.getKey())) {
-
-                getYhVO.setFjjgId(jg.getId());
-                getYhVO.setJglx(GroupTypeEnum.HEADQUARTERS.getKey());
-            }
-
-            //分基地
-            if (Objects.equals(jg.getLx(), GroupTypeEnum.BRANCH.getKey())) {
-
-                getYhVO.setFjjgId(jg.getId());
-                getYhVO.setJglx(GroupTypeEnum.BRANCH.getKey());
-            }
-
-            //其他
-            if (Objects.equals(jg.getLx(), GroupTypeEnum.OTHER.getKey())) {
-
-                String jgCode = jg.getJgbm().substring(0, 6);
-                Jggl checkJg = jgglService.selectByJgbm(jgCode);
-                if (checkJg != null) {
-
-                    //分基地
-                    if (Objects.equals(checkJg.getLx(), GroupTypeEnum.BRANCH.getKey())) {
-
-                        getYhVO.setFjjgId(checkJg.getId());
-                        getYhVO.setJglx(GroupTypeEnum.BRANCH.getKey());
-                    }
-
-                    //如果是其他，则上级一定是总基地
-                    if (Objects.equals(checkJg.getLx(), GroupTypeEnum.OTHER.getKey())) {
-
-                        String fjcode = checkJg.getJgbm().substring(0, 3);
-                        Jggl fjjg = jgglService.selectByJgbm(fjcode);
-                        if (fjjg != null) {
-
-                            getYhVO.setFjjgId(fjjg.getId());
-                            getYhVO.setJglx(GroupTypeEnum.HEADQUARTERS.getKey());
-                        }
-                    }
-                }
-            }
-        }
+        GetYhVO getYhVO = DTO2VO(yh);
 
         return ResponseUtil.success(getYhVO);
 }
@@ -354,6 +331,64 @@ public class YhAdminController {
         if (StringUtils.isBlank(yh.getMm())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+    }
+
+    /**
+    *用户DTO转VO
+    */
+    private GetYhVO DTO2VO(Yh yh){
+
+        GetYhVO getYhVO = new GetYhVO();
+        BeanUtils.copyProperties(yh, getYhVO);
+
+        //获取当前用户最顶级机构信息
+        Jggl jg = jgglService.get(getYhVO.getJgId());
+        if (jg != null) {
+
+            //总基地
+            if (Objects.equals(jg.getLx(), GroupTypeEnum.HEADQUARTERS.getKey())) {
+
+                getYhVO.setFjjgId(jg.getId());
+                getYhVO.setJglx(GroupTypeEnum.HEADQUARTERS.getKey());
+            }
+
+            //分基地
+            if (Objects.equals(jg.getLx(), GroupTypeEnum.BRANCH.getKey())) {
+
+                getYhVO.setFjjgId(jg.getId());
+                getYhVO.setJglx(GroupTypeEnum.BRANCH.getKey());
+            }
+
+            //其他
+            if (Objects.equals(jg.getLx(), GroupTypeEnum.OTHER.getKey())) {
+
+                String jgCode = jg.getJgbm().substring(0, 6);
+                Jggl checkJg = jgglService.selectByJgbm(jgCode);
+                if (checkJg != null) {
+
+                    //分基地
+                    if (Objects.equals(checkJg.getLx(), GroupTypeEnum.BRANCH.getKey())) {
+
+                        getYhVO.setFjjgId(checkJg.getId());
+                        getYhVO.setJglx(GroupTypeEnum.BRANCH.getKey());
+                    }
+
+                    //如果是其他，则上级一定是总基地
+                    if (Objects.equals(checkJg.getLx(), GroupTypeEnum.OTHER.getKey())) {
+
+                        String fjcode = checkJg.getJgbm().substring(0, 3);
+                        Jggl fjjg = jgglService.selectByJgbm(fjcode);
+                        if (fjjg != null) {
+
+                            getYhVO.setFjjgId(fjjg.getId());
+                            getYhVO.setJglx(GroupTypeEnum.HEADQUARTERS.getKey());
+                        }
+                    }
+                }
+            }
+        }
+
+        return getYhVO;
     }
 }
 
