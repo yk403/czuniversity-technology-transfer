@@ -41,7 +41,7 @@ public class GgtzServiceImpl extends ServiceImpl<GgtzMapper, Ggtz> implements Gg
     private GgtzService ggtzService;
 
     @Override
-    public PageInfo<Ggtz> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx) {
+    public PageInfo<Ggtz> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx,String tzbt) {
         PageHelper.startPage(pageNum,pageSize);
         QueryWrapper<Ggtz> ggtzQueryWrapper = new QueryWrapper<>();
         ggtzQueryWrapper.eq("sfsc",false)
@@ -54,6 +54,9 @@ public class GgtzServiceImpl extends ServiceImpl<GgtzMapper, Ggtz> implements Gg
         }
         if(StringUtils.isNotBlank(zt)){
             ggtzQueryWrapper.eq("lx",lx);
+        }
+        if(StringUtils.isNotBlank(tzbt)){
+            ggtzQueryWrapper.likeRight("tzbt",tzbt);
         }
         List<Ggtz> ggtzs = ggtzMapper.selectList(ggtzQueryWrapper);
         PageInfo<Ggtz> ggtzPageInfo = new PageInfo<>(ggtzs);

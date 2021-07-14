@@ -32,8 +32,9 @@ public class XwglAdminController {
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                 @RequestParam(value = "jgId",required = false) Long jgId,
                                 @RequestParam(value = "zt",required = false) String zt,
-                                @RequestParam(value = "lx",required = false) String lx) throws WebException {
-        return xwglRpcService.getList(pageNum, pageSize, jgId, zt, lx);
+                                @RequestParam(value = "lx",required = false) String lx,
+                                @RequestParam(value = "xwbt",required = false)String xwbt) throws WebException {
+        return xwglRpcService.getList(pageNum, pageSize, jgId, zt, lx,xwbt);
     }
     /**
      * 新增

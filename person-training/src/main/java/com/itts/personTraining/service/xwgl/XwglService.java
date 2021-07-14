@@ -25,7 +25,7 @@ public interface XwglService extends IService<Xwgl> {
      * @param lx
      * @return
      */
-    PageInfo<Xwgl> findByPage(Integer pageNum, Integer pageSize,Long jgId,String zt,String lx);
+    PageInfo<Xwgl> findByPage(Integer pageNum, Integer pageSize,Long jgId,String zt,String lx,String xwbt);
 
     /**
      * 新增新闻
