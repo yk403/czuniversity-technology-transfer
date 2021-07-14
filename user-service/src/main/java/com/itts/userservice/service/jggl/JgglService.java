@@ -19,8 +19,9 @@ public interface JgglService  {
     /**
      * 获取列表 - 分页
      */
+    PageInfo<Jggl> findPage(Integer pageNum,Integer pageSize,String string,String jgbm,String jglb,String lx);
     PageInfo<Jggl> findByPage(Integer pageNum,Integer pageSize,String jgbm);
-
+    PageInfo<Jggl> selectByString(Integer pageNum,Integer pageSize,String string);
     /**
      * 获取机构管理树
      * @return
@@ -51,7 +52,7 @@ public interface JgglService  {
      */
     Jggl selectByJgbm(String jgbm);
 
-    PageInfo<Jggl> selectByString(Integer pageNum,Integer pageSize,String string);
+
     /**
      * 新增
      *

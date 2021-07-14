@@ -44,7 +44,7 @@ public interface JgglMapper extends BaseMapper<Jggl> {
                     "FROM t_jggl " +
                     "WHERE sfsc = false " +
                     "<if test=\" code != null and code != ''\"> " +
-                    "   AND cj LIKE CONCAT('%', #{code}, '%') " +
+                    "   AND cj LIKE CONCAT( #{code}, '%') " +
                     "</if> " +
                     "ORDER BY cjsj DESC ",
             "</script>"})
