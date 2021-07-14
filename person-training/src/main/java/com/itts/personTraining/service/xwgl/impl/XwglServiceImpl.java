@@ -42,9 +42,11 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
     public PageInfo<Xwgl> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx) {
         PageHelper.startPage(pageNum,pageSize);
         QueryWrapper<Xwgl> xwglQueryWrapper = new QueryWrapper<>();
-        xwglQueryWrapper.eq("jg_id",jgId)
-        .eq("sfsc",false)
+        xwglQueryWrapper.eq("sfsc",false)
         .orderByDesc("cjsj");
+        if(jgId != null){
+            xwglQueryWrapper.eq("jg_id",jgId);
+        }
         if (StringUtils.isNotBlank(zt)) {
             xwglQueryWrapper.eq("zt", zt);
         }

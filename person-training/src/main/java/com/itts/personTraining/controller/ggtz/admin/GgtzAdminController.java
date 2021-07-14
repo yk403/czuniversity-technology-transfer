@@ -37,7 +37,7 @@ public class GgtzAdminController {
     @ApiOperation(value = "查询新闻")
     public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                @RequestParam(value = "jgId") Long jgId,
+                                @RequestParam(value = "jgId",required = false) Long jgId,
                                 @RequestParam(value = "zt",required = false) String zt,
                                 @RequestParam(value = "lx",required = false) String lx) throws WebException {
         return ResponseUtil.success(ggtzService.findByPage(pageNum, pageSize, jgId, zt, lx));
