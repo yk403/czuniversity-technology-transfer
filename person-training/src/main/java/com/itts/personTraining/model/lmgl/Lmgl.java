@@ -37,8 +37,11 @@ public class Lmgl implements Serializable {
     /**
      * 图标
      */
-    private String tb;
-
+    private String tbmc;
+    /**
+     * 图标
+     */
+    private String tbdz;
     /**
      * 网址
      */

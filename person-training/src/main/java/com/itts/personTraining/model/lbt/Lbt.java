@@ -37,7 +37,11 @@ public class Lbt implements Serializable {
     /**
      * 图片
      */
-    private String tp;
+    private String tpmc;
+    /**
+     * 图片
+     */
+    private String lbtdz;
 
     /**
      * 机构ID

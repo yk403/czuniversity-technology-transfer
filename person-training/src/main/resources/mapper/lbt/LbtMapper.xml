@@ -6,7 +6,8 @@
     <resultMap id="BaseResultMap" type="com.itts.personTraining.model.lbt.Lbt">
         <id column="id" property="id" />
         <result column="mc" property="mc" />
-        <result column="tp" property="tp" />
+        <result column="tpmc" property="tpmc" />
+        <result column="lbtdz" property="lbtdz" />
         <result column="jg_id" property="jgId" />
         <result column="sfsc" property="sfsc" />
         <result column="cjsj" property="cjsj" />
@@ -17,7 +18,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, mc, tp, jg_id, sfsc, cjsj, cjr, gxsj, gxr
+        id, mc, tpmc,lbtdz, jg_id, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>
