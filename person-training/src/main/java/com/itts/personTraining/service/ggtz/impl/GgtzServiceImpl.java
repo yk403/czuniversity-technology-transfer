@@ -12,10 +12,12 @@ import com.itts.personTraining.model.xwgl.Xwgl;
 import com.itts.personTraining.service.ggtz.GgtzService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +37,8 @@ public class GgtzServiceImpl extends ServiceImpl<GgtzMapper, Ggtz> implements Gg
 
     @Resource
     private GgtzMapper ggtzMapper;
+    @Autowired
+    private GgtzService ggtzService;
 
     @Override
     public PageInfo<Ggtz> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx) {
@@ -110,7 +114,16 @@ public class GgtzServiceImpl extends ServiceImpl<GgtzMapper, Ggtz> implements Gg
 
     @Override
     public boolean issueBatch(List<Long> ids) {
-        return false;
+        ArrayList<Ggtz> ggtzs = new ArrayList<>();
+        for (int i = 0; i < ids.size(); i++) {
+            Ggtz ggtz = get(ids.get(i));
+            ggtz.setZt(FbztEnum.RELEASE.getKey());
+            ggtz.setFbsj(new Date());
+            ggtz.setGxsj(new Date());
+            ggtz.setGxr(getUserId());
+            ggtzs.add(ggtz);
+        }
+        return ggtzService.updateBatchById(ggtzs);
     }
 
     @Override

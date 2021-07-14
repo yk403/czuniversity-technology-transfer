@@ -2,6 +2,7 @@ package com.itts.userservice.controller.ggtz.admin;
 
 
 
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.feign.persontraining.ggtz.GgtzRpcService;
@@ -12,7 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+import java.util.List;
+
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
+import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 
 /**
  * <p>
@@ -65,6 +69,14 @@ public class GgtzAdminController {
     @PutMapping("/release/{id}")
     public ResponseUtil release(@PathVariable("id") Long id) throws WebException{
         return ggtzRpcService.release(id);
+    }
+    /**
+     * 发布
+     */
+    @ApiOperation(value = "批量发布")
+    @PutMapping("/release/issueBatch/")
+    public ResponseUtil issueBatch(@RequestBody List<Long> ids)throws WebException{
+        return ggtzRpcService.issueBatch(ids);
     }
     /**
      * 停用

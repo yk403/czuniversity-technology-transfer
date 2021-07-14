@@ -1,6 +1,5 @@
 package com.itts.personTraining.controller.xwgl.admin;
 
-import com.github.pagehelper.PageInfo;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
@@ -12,7 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+import java.awt.*;
+import java.util.List;
+
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
+import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 
 /**
  * <p>
@@ -82,6 +85,20 @@ public class XwglAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         return ResponseUtil.success(xwglService.release(id));
+    }
+    /**
+     * 发布
+     */
+    @ApiOperation(value = "批量发布")
+    @PutMapping("/release/issueBatch/")
+    public ResponseUtil issueBatch(@RequestBody List<Long> ids)throws WebException{
+        if (ids == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (!xwglService.issueBatch(ids)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("统一下发成功!");
     }
     /**
      * 停用

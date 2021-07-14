@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+import java.util.List;
+
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 
 @RestController
@@ -56,6 +58,14 @@ public class XwglAdminController {
     @PutMapping("/release/{id}")
     public ResponseUtil release(@PathVariable("id") Long id) throws WebException{
         return xwglRpcService.release(id);
+    }
+    /**
+     * 发布
+     */
+    @ApiOperation(value = "批量发布")
+    @PutMapping("/release/issueBatch/")
+    public ResponseUtil issueBatch(@RequestBody List<Long> ids)throws WebException{
+        return xwglRpcService.issueBatch(ids);
     }
     /**
      * 停用

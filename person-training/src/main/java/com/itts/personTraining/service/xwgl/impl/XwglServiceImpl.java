@@ -13,9 +13,11 @@ import com.itts.personTraining.model.xwgl.Xwgl;
 import com.itts.personTraining.service.xwgl.XwglService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +39,8 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
 
     @Resource
     private XwglMapper xwglMapper;
+    @Autowired
+    private XwglService xwglService;
 
     @Override
     public PageInfo<Xwgl> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx) {
@@ -112,7 +116,16 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
 
     @Override
     public boolean issueBatch(List<Long> ids) {
-        return false;
+        List<Xwgl> xwglList =new ArrayList<>();
+        for (int i = 0; i < ids.size(); i++) {
+            Xwgl xwgl = get(ids.get(i));
+            xwgl.setZt(FbztEnum.RELEASE.getKey());
+            xwgl.setFbsj(new Date());
+            xwgl.setGxsj(new Date());
+            xwgl.setGxr(getUserId());
+            xwglList.add(xwgl);
+        }
+        return xwglService.updateBatchById(xwglList);
     }
 
     @Override

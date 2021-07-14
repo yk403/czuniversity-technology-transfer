@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @FeignClient(value = "person-training-service")
 public interface XwglRpcService {
@@ -17,7 +19,7 @@ public interface XwglRpcService {
     @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/xwgl/list/")
     ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                          @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                         @RequestParam(value = "jgId") Long jgId,
+                         @RequestParam(value = "jgId",required = false) Long jgId,
                          @RequestParam(value = "zt", required = false) String zt,
                          @RequestParam(value = "lx", required = false) String lx);
     /**
@@ -35,6 +37,11 @@ public interface XwglRpcService {
      */
     @PutMapping(SystemConstant.ADMIN_BASE_URL + "/v1/xwgl/release/{id}")
     ResponseUtil release(@PathVariable("id") Long id);
+    /**
+     * 发布
+     */
+    @PutMapping(SystemConstant.ADMIN_BASE_URL + "/v1/xwgl/release/issueBatch/")
+    ResponseUtil issueBatch(@RequestBody List<Long> ids);
     /**
      * 停用
      */
