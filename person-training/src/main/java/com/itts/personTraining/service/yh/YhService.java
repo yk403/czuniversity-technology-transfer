@@ -3,6 +3,7 @@ package com.itts.personTraining.service.yh;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.yh.Yh;
+import com.itts.personTraining.vo.yh.RpcAddYhRequest;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
+import static com.itts.common.constant.SystemConstant.BASE_URL;
 
 /**
  * @author Austin
@@ -44,4 +46,11 @@ public interface YhService {
     @ApiOperation(value = "通过用户编号查询")
     @GetMapping(ADMIN_BASE_URL + "/v1/yh/get/by/code/")
     ResponseUtil getByCode(@ApiParam("用户编号") @RequestParam("code") String code,@RequestHeader(name = "token") String token);
+
+    /**
+     * 新增用户(前台)
+     */
+    @ApiOperation(value = "新增用户(前台)")
+    @PostMapping(BASE_URL + "/v1/yh/rpc/add/")
+    ResponseUtil rpcAdd(@RequestBody RpcAddYhRequest yh) throws WebException;
 }

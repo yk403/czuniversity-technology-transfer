@@ -8,6 +8,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.JjrbmInfo;
 import com.itts.personTraining.dto.JjrpxjhDTO;
 import com.itts.personTraining.dto.KcXsXfDTO;
@@ -39,12 +40,14 @@ import com.itts.personTraining.service.yh.YhService;
 import com.itts.personTraining.vo.jjrpxjh.GetJjrpxhKcVO;
 import com.itts.personTraining.vo.jjrpxjh.GetJjrpxjhSzVO;
 import com.itts.personTraining.vo.jjrpxjh.GetJjrpxjhVO;
+import com.itts.personTraining.vo.yh.RpcAddYhRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,6 +70,7 @@ import static com.itts.personTraining.enums.UserTypeEnum.*;
  */
 @Service
 @Slf4j
+@Transactional(rollbackFor = Exception.class)
 public class JjrpxjhServiceImpl extends ServiceImpl<JjrpxjhMapper, Jjrpxjh> implements JjrpxjhService {
 
     @Autowired
@@ -256,7 +260,7 @@ public class JjrpxjhServiceImpl extends ServiceImpl<JjrpxjhMapper, Jjrpxjh> impl
      * @return
      */
     @Override
-    public boolean signUp(JjrbmInfo jjrbmInfo) {
+    public boolean saveJjrInfo(JjrbmInfo jjrbmInfo) {
         log.info("【人才培养 - 培训报名，经纪人报名基础信息:{}】",jjrbmInfo);
         //生成经纪人学号
         Pc pc = pcService.get(jjrbmInfo.getPcId());
@@ -266,7 +270,7 @@ public class JjrpxjhServiceImpl extends ServiceImpl<JjrpxjhMapper, Jjrpxjh> impl
         String yhlb = BROKER.getKey();
         String lxdh = jjrbmInfo.getLxdh();
         //用户表新增,学生表新增
-        Yh yh = new Yh();
+        RpcAddYhRequest yh = new RpcAddYhRequest();
         yh.setYhbh(xh);
         yh.setYhm(xh);
         yh.setMm(xh);
@@ -275,7 +279,8 @@ public class JjrpxjhServiceImpl extends ServiceImpl<JjrpxjhMapper, Jjrpxjh> impl
         yh.setYhlx(yhlx);
         yh.setYhlb(yhlb);
         yh.setJgId(jjrbmInfo.getJgId());
-        Object data1 = yhService.rpcAdd(yh,"s").getData();
+        ResponseUtil responseUtil = yhService.rpcAdd(yh);
+        Object data1 = responseUtil.getData();
         if (data1 == null) {
             throw new ServiceException(USER_INSERT_ERROR);
         }
@@ -287,28 +292,21 @@ public class JjrpxjhServiceImpl extends ServiceImpl<JjrpxjhMapper, Jjrpxjh> impl
             throw new ServiceException(USER_EXISTS_ERROR);
         } else {
             //不存在.则新增
-            return addXsAndPcXs(jjrbmInfo,yh1Id);
+            Xs xs = new Xs();
+            BeanUtils.copyProperties(jjrbmInfo,xs);
+            xs.setYhId(yh1Id);
+            xs.setCjr(yh1Id);
+            xs.setGxr(yh1Id);
+            if (xsService.save(xs)) {
+                Long pcId = jjrbmInfo.getPcId();
+                PcXs pcXs = new PcXs();
+                pcXs.setXsId(xs.getId());
+                pcXs.setPcId(pcId);
+                boolean save = pcXsService.save(pcXs);
+                return save;
+            }
+            return false;
         }
     }
 
-    /**
-     * 新增
-     * @param jjrbmInfo
-     * @Param yhId
-     * @return
-     */
-    private boolean addXsAndPcXs(JjrbmInfo jjrbmInfo, Long yhId) {
-        Xs xs = new Xs();
-        BeanUtils.copyProperties(jjrbmInfo,xs);
-        xs.setCjr(yhId);
-        xs.setGxr(yhId);
-        if (xsService.save(xs)) {
-            Long pcId = jjrbmInfo.getPcId();
-            PcXs pcXs = new PcXs();
-            pcXs.setXsId(xs.getId());
-            pcXs.setPcId(pcId);
-            return pcXsService.save(pcXs);
-        }
-        return false;
-    }
 }

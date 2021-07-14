@@ -59,5 +59,5 @@ public interface JjrpxjhService extends IService<Jjrpxjh> {
      * @param jjrbmInfo
      * @return
      */
-    boolean signUp(JjrbmInfo jjrbmInfo);
+    boolean saveJjrInfo(JjrbmInfo jjrbmInfo);
 }
