@@ -40,9 +40,11 @@ public class GgtzServiceImpl extends ServiceImpl<GgtzMapper, Ggtz> implements Gg
     public PageInfo<Ggtz> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx) {
         PageHelper.startPage(pageNum,pageSize);
         QueryWrapper<Ggtz> ggtzQueryWrapper = new QueryWrapper<>();
-        ggtzQueryWrapper.eq("jg_id",jgId)
-                .eq("sfsc",false)
+        ggtzQueryWrapper.eq("sfsc",false)
                 .orderByDesc("cjsj");
+        if(jgId != null){
+            ggtzQueryWrapper.eq("jg_id",jgId);
+        }
         if(StringUtils.isNotBlank(zt)){
             ggtzQueryWrapper.eq("zt",zt);
         }
