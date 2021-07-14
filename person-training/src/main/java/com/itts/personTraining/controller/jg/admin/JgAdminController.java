@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 
 /**
@@ -34,4 +36,14 @@ public class JgAdminController {
                          @RequestHeader(name = "token") String token) {
         return jgService.getlist(pageNum,pageSize,jgbm,token);
     }
+
+    /**
+     * 获取机构树
+     */
+    @GetMapping("/tree/")
+    @ApiOperation(value = "获取机构树")
+    public ResponseUtil findJgglVO(@RequestParam(value = "jgbm", required = false) String jgbm) {
+        return jgService.findJgglVO(jgbm);
+    }
+
 }
