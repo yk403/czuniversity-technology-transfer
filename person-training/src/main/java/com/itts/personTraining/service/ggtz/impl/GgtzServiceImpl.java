@@ -56,7 +56,7 @@ public class GgtzServiceImpl extends ServiceImpl<GgtzMapper, Ggtz> implements Gg
             ggtzQueryWrapper.eq("lx",lx);
         }
         if(StringUtils.isNotBlank(tzbt)){
-            ggtzQueryWrapper.likeRight("tzbt",tzbt);
+            ggtzQueryWrapper.like("tzbt",tzbt);
         }
         List<Ggtz> ggtzs = ggtzMapper.selectList(ggtzQueryWrapper);
         PageInfo<Ggtz> ggtzPageInfo = new PageInfo<>(ggtzs);
