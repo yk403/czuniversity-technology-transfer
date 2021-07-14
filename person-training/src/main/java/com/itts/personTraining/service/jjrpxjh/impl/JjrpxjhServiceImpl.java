@@ -297,6 +297,7 @@ public class JjrpxjhServiceImpl extends ServiceImpl<JjrpxjhMapper, Jjrpxjh> impl
             xs.setYhId(yh1Id);
             xs.setCjr(yh1Id);
             xs.setGxr(yh1Id);
+            xs.setXh(xh);
             if (xsService.save(xs)) {
                 Long pcId = jjrbmInfo.getPcId();
                 PcXs pcXs = new PcXs();
