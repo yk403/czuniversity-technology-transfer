@@ -162,7 +162,8 @@ public class PcServiceImpl implements PcService {
     public List<Pc> getAll() {
         log.info("【人才培养 - 获取所有批次详情】");
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
-        pcQueryWrapper.eq("sfsc",false);
+        pcQueryWrapper.eq("sfsc",false)
+                      .orderByDesc("cjsj");
         return pcMapper.selectList(pcQueryWrapper);
     }
 
