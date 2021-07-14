@@ -58,6 +58,7 @@ import java.util.stream.Collectors;
 
 import static com.itts.common.enums.ErrorCodeEnum.USER_EXISTS_ERROR;
 import static com.itts.common.enums.ErrorCodeEnum.USER_INSERT_ERROR;
+import static com.itts.personTraining.enums.BmfsEnum.ON_LINE;
 import static com.itts.personTraining.enums.UserTypeEnum.*;
 
 /**
@@ -298,6 +299,7 @@ public class JjrpxjhServiceImpl extends ServiceImpl<JjrpxjhMapper, Jjrpxjh> impl
             xs.setCjr(yh1Id);
             xs.setGxr(yh1Id);
             xs.setXh(xh);
+            xs.setBmfs(ON_LINE.getMsg());
             if (xsService.save(xs)) {
                 Long pcId = jjrbmInfo.getPcId();
                 PcXs pcXs = new PcXs();
