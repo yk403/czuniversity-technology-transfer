@@ -97,7 +97,7 @@ public class LbtAdminController {
         if (lbt.getMc() == null){
             throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
         }
-        if (lbt.getTp() == null){
+        if (lbt.getTpmc() == null){
             throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
         }
         if (lbt.getJgId() == null){
