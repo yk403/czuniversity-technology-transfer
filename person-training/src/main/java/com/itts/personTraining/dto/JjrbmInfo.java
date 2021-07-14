@@ -81,4 +81,5 @@ public class JjrbmInfo {
      */
    @ApiModelProperty(value = "联系电话(手机)", required = true)
     private String lxdh;
+
 }

@@ -124,6 +124,7 @@ public enum ErrorCodeEnum {
     PROFESSOR_NUMBER_ISEMPTY_ERROR(-45049, "专家编号不可为空!"),
     STARTWEEK_GREATER_THAN_ENDWEEK(-45050,"起始周不可大于结束周!"),
     SIGN_UP_FAIL(-45051,"培训报名失败!"),
+    CONDITION_IS_EMPTY_ERROR(-45052,"查询条件不可为空!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
