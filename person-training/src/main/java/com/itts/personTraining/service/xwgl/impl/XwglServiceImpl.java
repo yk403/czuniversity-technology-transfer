@@ -43,7 +43,7 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
     private XwglService xwglService;
 
     @Override
-    public PageInfo<Xwgl> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx) {
+    public PageInfo<Xwgl> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx,String xwbt) {
         PageHelper.startPage(pageNum,pageSize);
         QueryWrapper<Xwgl> xwglQueryWrapper = new QueryWrapper<>();
         xwglQueryWrapper.eq("sfsc",false)
@@ -56,6 +56,9 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
         }
         if (StringUtils.isNotBlank(lx)) {
             xwglQueryWrapper.eq("lx", lx);
+        }
+        if (StringUtils.isNotBlank(xwbt)) {
+            xwglQueryWrapper.likeRight("xwbt",xwbt);
         }
         List<Xwgl> xwgls = xwglMapper.selectList(xwglQueryWrapper);
         PageInfo<Xwgl> xwglPageInfo = new PageInfo<>(xwgls);

@@ -24,7 +24,7 @@ public interface GgtzService extends IService<Ggtz> {
      * @param lx
      * @return
      */
-    PageInfo<Ggtz> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx);
+    PageInfo<Ggtz> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx,String tzbt);
 
     /**
      * 新增
