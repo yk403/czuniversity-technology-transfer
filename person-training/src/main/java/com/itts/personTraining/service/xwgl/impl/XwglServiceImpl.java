@@ -58,7 +58,7 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
             xwglQueryWrapper.eq("lx", lx);
         }
         if (StringUtils.isNotBlank(xwbt)) {
-            xwglQueryWrapper.likeRight("xwbt",xwbt);
+            xwglQueryWrapper.like("xwbt",xwbt);
         }
         List<Xwgl> xwgls = xwglMapper.selectList(xwglQueryWrapper);
         PageInfo<Xwgl> xwglPageInfo = new PageInfo<>(xwgls);
