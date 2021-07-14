@@ -123,6 +123,7 @@ public enum ErrorCodeEnum {
     PROFESSOR_NUMBER_EXISTS_ERROR(-45048, "专家编号已存在!"),
     PROFESSOR_NUMBER_ISEMPTY_ERROR(-45049, "专家编号不可为空!"),
     STARTWEEK_GREATER_THAN_ENDWEEK(-45050,"起始周不可大于结束周!"),
+    SIGN_UP_FAIL(-45051,"培训报名失败!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

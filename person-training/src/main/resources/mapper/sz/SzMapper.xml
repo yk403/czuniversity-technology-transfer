@@ -42,5 +42,10 @@
         from t_sz sz
         where sz.sfsc = false and sz.yh_id = #{yhId}
     </select>
+    <select id="findByDslb" resultType="com.itts.personTraining.model.sz.Sz">
+        select *
+        from t_sz sz
+        where sz.sfsc = false and sz.dslb = #{dslb}
+    </select>
 
 </mapper>

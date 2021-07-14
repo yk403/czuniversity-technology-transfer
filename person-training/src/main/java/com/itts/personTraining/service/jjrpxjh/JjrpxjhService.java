@@ -2,10 +2,16 @@ package com.itts.personTraining.service.jjrpxjh;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.JjrbmInfo;
+import com.itts.personTraining.dto.JjrpxjhDTO;
+import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.model.jjrpxjh.Jjrpxjh;
 import com.itts.personTraining.request.jjrpxjh.AddJjrpxjhRequest;
 import com.itts.personTraining.request.jjrpxjh.UpdateJjrpxjhRequest;
 import com.itts.personTraining.vo.jjrpxjh.GetJjrpxjhVO;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -42,4 +48,16 @@ public interface JjrpxjhService extends IService<Jjrpxjh> {
      */
     void delete(Jjrpxjh old);
 
+    /**
+     *获取经纪人培训计划
+     * @return
+     */
+    JjrpxjhDTO getJjrpxjh();
+
+    /**
+     * 培训报名
+     * @param jjrbmInfo
+     * @return
+     */
+    boolean saveJjrInfo(JjrbmInfo jjrbmInfo);
 }
