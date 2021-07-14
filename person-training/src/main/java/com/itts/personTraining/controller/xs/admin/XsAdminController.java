@@ -100,6 +100,9 @@ public class XsAdminController {
     public ResponseUtil selectByCondition(@RequestParam(value = "xh",required = false) String xh,
                                        @RequestParam(value = "lxdh",required = false) String lxdh,
                                          @RequestParam(value = "yhId",required = false) Long yhId) {
+        if (xh == null && lxdh == null && yhId == null) {
+            throw new WebException(CONDITION_IS_EMPTY_ERROR);
+        }
         return ResponseUtil.success(xsService.selectByCondition(xh,lxdh,yhId));
     }
 
