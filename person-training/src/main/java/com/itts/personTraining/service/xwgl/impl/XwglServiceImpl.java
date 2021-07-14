@@ -26,7 +26,7 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author fuli
@@ -43,13 +43,13 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
     private XwglService xwglService;
 
     @Override
-    public PageInfo<Xwgl> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx,String xwbt) {
-        PageHelper.startPage(pageNum,pageSize);
+    public PageInfo<Xwgl> findByPage(Integer pageNum, Integer pageSize, Long jgId, String zt, String lx, String xwbt) {
+        PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Xwgl> xwglQueryWrapper = new QueryWrapper<>();
-        xwglQueryWrapper.eq("sfsc",false)
-        .orderByDesc("cjsj");
-        if(jgId != null){
-            xwglQueryWrapper.eq("jg_id",jgId);
+        xwglQueryWrapper.eq("sfsc", false)
+                .orderByDesc("cjsj");
+        if (jgId != null) {
+            xwglQueryWrapper.eq("jg_id", jgId);
         }
         if (StringUtils.isNotBlank(zt)) {
             xwglQueryWrapper.eq("zt", zt);
@@ -58,7 +58,7 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
             xwglQueryWrapper.eq("lx", lx);
         }
         if (StringUtils.isNotBlank(xwbt)) {
-            xwglQueryWrapper.like("xwbt",xwbt);
+            xwglQueryWrapper.like("xwbt", xwbt);
         }
         List<Xwgl> xwgls = xwglMapper.selectList(xwglQueryWrapper);
         PageInfo<Xwgl> xwglPageInfo = new PageInfo<>(xwgls);
@@ -89,8 +89,8 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
     @Override
     public Xwgl get(Long id) {
         QueryWrapper<Xwgl> xwglQueryWrapper = new QueryWrapper<>();
-        xwglQueryWrapper.eq("sfsc",false)
-                .eq("id",id);
+        xwglQueryWrapper.eq("sfsc", false)
+                .eq("id", id);
         Xwgl xwgl = xwglMapper.selectOne(xwglQueryWrapper);
         return xwgl;
     }
@@ -119,7 +119,7 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
 
     @Override
     public boolean issueBatch(List<Long> ids) {
-        List<Xwgl> xwglList =new ArrayList<>();
+        List<Xwgl> xwglList = new ArrayList<>();
         for (int i = 0; i < ids.size(); i++) {
             Xwgl xwgl = get(ids.get(i));
             xwgl.setZt(FbztEnum.RELEASE.getKey());
@@ -143,6 +143,7 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
 
     /**
      * 获取当前用户id
+     *
      * @return
      */
     private Long getUserId() {

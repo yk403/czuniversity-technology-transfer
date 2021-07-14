@@ -19,14 +19,14 @@ import static com.itts.common.enums.ErrorCodeEnum.UPDATE_FAIL;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author fuli
  * @since 2021-07-09
  */
 @RestController
-@RequestMapping(ADMIN_BASE_URL +"/v1/xwgl")
+@RequestMapping(ADMIN_BASE_URL + "/v1/xwgl")
 @Api(value = "XwglAdminController", tags = "新闻后台管理")
 public class XwglAdminController {
 
@@ -39,60 +39,64 @@ public class XwglAdminController {
     @GetMapping("/list/")
     @ApiOperation(value = "查询新闻")
     public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                         @RequestParam(value = "jgId",required = false) Long jgId,
-                                         @RequestParam(value = "zt",required = false) String zt,
-                                         @RequestParam(value = "lx",required = false) String lx,
-                                @RequestParam(value = "xwbt",required = false)String xwbt) throws WebException {
-        return ResponseUtil.success(xwglService.findByPage(pageNum, pageSize, jgId, zt, lx,xwbt));
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                @RequestParam(value = "jgId", required = false) Long jgId,
+                                @RequestParam(value = "zt", required = false) String zt,
+                                @RequestParam(value = "lx", required = false) String lx,
+                                @RequestParam(value = "xwbt", required = false) String xwbt) throws WebException {
+        return ResponseUtil.success(xwglService.findByPage(pageNum, pageSize, jgId, zt, lx, xwbt));
     }
+
     /**
      * 新增
      */
     @PostMapping("/add/")
     @ApiOperation(value = "新增")
-    public ResponseUtil add(@RequestBody Xwgl xwgl) throws WebException{
+    public ResponseUtil add(@RequestBody Xwgl xwgl) throws WebException {
         checkPequest(xwgl);
         return ResponseUtil.success(xwglService.add(xwgl));
     }
+
     /**
      * 更新
      */
     @ApiOperation(value = "更新")
     @PutMapping("/update/")
-    public ResponseUtil update(@RequestBody Xwgl xwgl) throws WebException{
+    public ResponseUtil update(@RequestBody Xwgl xwgl) throws WebException {
         checkPequest(xwgl);
         Long id = xwgl.getId();
-        if(id == null){
+        if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         Xwgl xwgl1 = xwglService.get(id);
-        if(xwgl1 == null){
+        if (xwgl1 == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         return ResponseUtil.success(xwglService.update(xwgl));
     }
+
     /**
      * 发布
      */
     @ApiOperation(value = "发布")
     @PutMapping("/release/{id}")
-    public ResponseUtil release(@PathVariable("id") Long id) throws WebException{
+    public ResponseUtil release(@PathVariable("id") Long id) throws WebException {
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         Xwgl xwgl = xwglService.get(id);
-        if(xwgl == null){
+        if (xwgl == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         return ResponseUtil.success(xwglService.release(id));
     }
+
     /**
      * 发布
      */
     @ApiOperation(value = "批量发布")
     @PutMapping("/release/issueBatch/")
-    public ResponseUtil issueBatch(@RequestBody List<Long> ids)throws WebException{
+    public ResponseUtil issueBatch(@RequestBody List<Long> ids) throws WebException {
         if (ids == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
@@ -101,58 +105,62 @@ public class XwglAdminController {
         }
         return ResponseUtil.success("统一下发成功!");
     }
+
     /**
      * 停用
      */
     @ApiOperation(value = "停用")
     @PutMapping("/stop/{id}")
-    public ResponseUtil stop(@PathVariable("id") Long id) throws WebException{
+    public ResponseUtil stop(@PathVariable("id") Long id) throws WebException {
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         Xwgl xwgl = xwglService.get(id);
-        if(xwgl == null){
+        if (xwgl == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         return ResponseUtil.success(xwglService.out(id));
     }
+
     /**
      * 查询
      */
     @GetMapping("/get/{id}")
     @ApiOperation(value = "查询")
-    public ResponseUtil get(@PathVariable("id") Long id) throws WebException{
+    public ResponseUtil get(@PathVariable("id") Long id) throws WebException {
         if (id == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         Xwgl xwgl = xwglService.get(id);
-        if(xwgl == null){
+        if (xwgl == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         return ResponseUtil.success(xwgl);
     }
+
     /**
      * 删除
      */
     @ApiOperation(value = "删除")
     @DeleteMapping("/delete/{id}")
-    public ResponseUtil delete(@PathVariable("id") Long id) throws WebException{
+    public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
         return ResponseUtil.success(xwglService.delete(id));
     }
+
     /**
      * 校验参数是否合法
      */
-    private void checkPequest(Xwgl xwgl) throws WebException{
-        if (xwgl == null){
+    private void checkPequest(Xwgl xwgl) throws WebException {
+        if (xwgl == null) {
             throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
         }
-        if (xwgl.getXwbt() == null){
+        if (xwgl.getXwbt() == null) {
             throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
         }
-        if (xwgl.getXwnr() == null){
+        if (xwgl.getXwnr() == null) {
             throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
         }
-        if (xwgl.getJgId() == null){
+        if (xwgl.getJgId() == null) {
             throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
         }
     }
