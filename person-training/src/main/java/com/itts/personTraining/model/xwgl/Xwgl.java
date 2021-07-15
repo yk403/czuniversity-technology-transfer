@@ -1,13 +1,12 @@
 package com.itts.personTraining.model.xwgl;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.util.Date;
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -109,7 +108,7 @@ public class Xwgl implements Serializable {
     /**
      * 更新时间
      */
-    @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行
+    @TableField(value = "gxsj", fill = FieldFill.INSERT) // 新增执行
     private Date gxsj;
 
     /**
