@@ -1,12 +1,14 @@
 package com.itts.userservice.controller.spzb.admin;
 
 
+import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.model.spzb.Spzb;
+import com.itts.userservice.response.thirdparty.LiveCallBackResponse;
 import com.itts.userservice.service.spzb.SpzbService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -160,11 +162,21 @@ public class SpzbAdminController {
      * 视频录制完成回调接口
      */
     @PostMapping("/callback/")
-    public ResponseUtil callback(@RequestBody String string) {
+    public ResponseUtil callback(@RequestBody String responseStr) {
 
-        System.out.println(string);
+        if(StringUtils.isBlank(responseStr)){
+            throw new WebException(ErrorCodeEnum.HUA_WEI_YUN_VIDEO_CALLBACK_ERROR);
+        }
 
-        return ResponseUtil.success(string);
+        LiveCallBackResponse response = JSONUtil.toBean(JSONUtil.parseObj(responseStr), LiveCallBackResponse.class);
+
+        if(response == null){
+            throw new WebException(ErrorCodeEnum.HUA_WEI_YUN_VIDEO_CALLBACK_ERROR);
+        }
+
+        Spzb spzb = spzbService.update(response);
+
+        return ResponseUtil.success(spzb);
     }
 
     /**
