@@ -55,7 +55,7 @@ public class XsKcCjServiceImpl extends ServiceImpl<XsKcCjMapper, XsKcCj> impleme
         log.info("【人才培养 - 根据学生成绩id:{},课程类型:{}查询学生课程成绩集合】",xsCjId,kclx);
         XsCjDTO xsCjDTO = new XsCjDTO();
         List<XsKcCjDTO> xsKcCjDTOs;
-        if (TECHNOLOGY_TRANSFER_COURSE.getKey().equals(kclx)) {
+        if (TECHNOLOGY_TRANSFER_COURSE.getKey().equals(kclx.toString())) {
             //技术转移专业课程
             xsKcCjDTOs = xsKcCjMapper.selectByXsCjId(xsCjId,kclx);
             xsCjDTO.setZxf(xsKcCjMapper.getCountDqxf(xsCjId));
