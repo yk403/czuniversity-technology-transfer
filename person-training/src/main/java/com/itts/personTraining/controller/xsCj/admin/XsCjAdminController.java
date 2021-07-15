@@ -162,7 +162,7 @@ public class XsCjAdminController {
     @ApiOperation(value = "学生成绩批量下发")
     public ResponseUtil issueBatch(@RequestBody List<Long> ids) {
         if (CollectionUtils.isEmpty(ids)) {
-            throw new WebException(STUDENT_NOT_SELECTED);
+            throw new WebException(STUDENT_NOT_SELECTED_ERROR);
         }
         if (!xsCjService.issueBatch(ids)) {
             throw new WebException(UPDATE_FAIL);

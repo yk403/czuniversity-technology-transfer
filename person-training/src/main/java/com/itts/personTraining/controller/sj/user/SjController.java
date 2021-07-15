@@ -148,6 +148,9 @@ public class SjController {
         if (sjDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+        if (sjDTO.getKsrq().compareTo(sjDTO.getJsrq()) == 1) {
+            throw new WebException(STARTDATE_GREATER_THAN_ENDDATE_ERROR);
+        }
         List<SjDTO> sjDTOs = sjService.getAll();
         for (SjDTO dto : sjDTOs) {
             if (dto.getXh().equals(sjDTO.getXh())) {
