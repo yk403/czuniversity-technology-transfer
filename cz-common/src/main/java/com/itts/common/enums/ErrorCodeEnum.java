@@ -41,11 +41,11 @@ public enum ErrorCodeEnum {
     INSERT_FAIL(-41009, "新增失败"),
     DELETE_FAIL(-41010, "删除失败"),
     NAME_REPEAT(-41011, "交易商品名称重复"),
-    MAX_BIDHISTORY_ERROR(-41012,"出价价格不能小于等于最高价格"),
-    USER_SIGNUP_ERROR(-41013,"用户未报名无法叫价"),
-    BID_UPDATE_ERROR(-41014,"保存失败，叫价错误"),
-    BID_OVERTIME_ERROR(-41015,"叫价超时"),
-    MIN_BIDHISTORY_ERROR(-41016,"出价价格不能大于等于最高价格"),
+    MAX_BIDHISTORY_ERROR(-41012, "出价价格不能小于等于最高价格"),
+    USER_SIGNUP_ERROR(-41013, "用户未报名无法叫价"),
+    BID_UPDATE_ERROR(-41014, "保存失败，叫价错误"),
+    BID_OVERTIME_ERROR(-41015, "叫价超时"),
+    MIN_BIDHISTORY_ERROR(-41016, "出价价格不能大于等于最高价格"),
 
     //====================      技术交易服务错误提示  END     ====================
 
@@ -90,14 +90,14 @@ public enum ErrorCodeEnum {
     BATCH_NAME_EXISTS_ERROR(-45015, "批次名称已存在!"),
     BATCH_NUMBER_ISEMPTY_ERROR(-45016, "批次号不可为空!"),
     COURSE_ISEMPTY_ERROR(-45017, "课程不可为空!"),
-    TEACH_TYPE_ISEMPTY_ERROR(-45018,"教育类型不可为空!"),
-    TEACHING_NAME_OR_BH_ISEMPTY_ERROR(-45019,"教学楼名称或教室编号不可为空!"),
-    STUDENT_MSG_NOT_EXISTS_ERROR(-45020,"学生信息不存在!"),
-    USER_EXISTS_ERROR(-45021,"用户已存在!"),
-    PHONE_NUMBER_EXISTS_ERROR(-45022,"手机号已存在!"),
-    PHONE_NUMBER_ISEMPTY_ERROR(-45023,"手机号不可为空!"),
-    EDU_TYPE_ERROR(-45024,"教育类型不合法!"),
-    NUMBER_AND_PHONE_ISEMPTY_ERROR(-45025,"学号和联系电话不可都为空!"),
+    TEACH_TYPE_ISEMPTY_ERROR(-45018, "教育类型不可为空!"),
+    TEACHING_NAME_OR_BH_ISEMPTY_ERROR(-45019, "教学楼名称或教室编号不可为空!"),
+    STUDENT_MSG_NOT_EXISTS_ERROR(-45020, "学生信息不存在!"),
+    USER_EXISTS_ERROR(-45021, "用户已存在!"),
+    PHONE_NUMBER_EXISTS_ERROR(-45022, "手机号已存在!"),
+    PHONE_NUMBER_ISEMPTY_ERROR(-45023, "手机号不可为空!"),
+    EDU_TYPE_ERROR(-45024, "教育类型不合法!"),
+    NUMBER_AND_PHONE_ISEMPTY_ERROR(-45025, "学号和联系电话不可都为空!"),
     STUDENT_MSG_EXISTS_ERROR(-45026, "学员信息已存在,不可新增!"),
     TEACHER_TYPE_ISEMPTY_ERROR(-45027, "导师类别不可为空!"),
     TEACHER_TYPE_ERROR(-45028, "导师类别不正确!"),
@@ -113,23 +113,27 @@ public enum ErrorCodeEnum {
     BATCH_STUDENT_EXISTS_ERROR(-45038, "该批次学生成绩已存在!"),
     COURSE_TYPE_ERROR(-45039, "课程类型不正确!"),
     NAME_PHONE_ISEMPTY_ERROR(-45040, "姓名电话不可都为空!"),
-    SCHOOL_BE_OCCUPIED(-45041,"当前日期时段该教室已有排课,不可添加!"),
-    PLACE_BE_OCCUPIED(-45042,"当前日期时段该地点已有排课,不可添加!"),
-    TEACHER_BE_OCCUPIED(-45043,"当前日期时段该教师已有排课,不可添加!"),
-    NO_STUDENT_MSG_ERROR(-45044,"暂无该学生成绩信息!"),
+    SCHOOL_BE_OCCUPIED(-45041, "当前日期时段该教室已有排课,不可添加!"),
+    PLACE_BE_OCCUPIED(-45042, "当前日期时段该地点已有排课,不可添加!"),
+    TEACHER_BE_OCCUPIED(-45043, "当前日期时段该教师已有排课,不可添加!"),
+    NO_STUDENT_MSG_ERROR(-45044, "暂无该学生成绩信息!"),
     BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR(-45045, "批次号为空,暂无信息"),
     GENERATE_PAPER_ERROR(-45046, "生成试卷失败， 请联系管理员"),
     TEACHER_MSG_NOT_EXISTS_ERROR(-45047, "老师信息不存在"),
     PROFESSOR_NUMBER_EXISTS_ERROR(-45048, "专家编号已存在!"),
     PROFESSOR_NUMBER_ISEMPTY_ERROR(-45049, "专家编号不可为空!"),
-    STARTWEEK_GREATER_THAN_ENDWEEK(-45050,"起始周不可大于结束周!"),
+    STARTWEEK_GREATER_THAN_ENDWEEK(-45050, "起始周不可大于结束周!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
     USER_NOT_FIND_ERROR(-440001, "用户不存在"),
     USER_DELETE_MENU_HAVE_CHILD_ERROR(-440002, "删除菜单失败，该菜单下有子级菜单"),
-    USER_DELETE_GROUP_HAVE_CHILD_ERROR(-440003, "删除机构失败，该机构下有子级机构");
+    USER_DELETE_GROUP_HAVE_CHILD_ERROR(-440003, "删除机构失败，该机构下有子级机构"),
     //====================       用户服务错误提示END     ====================
+
+    //====================       三方华为云服务错误提示（服务码450）      ====================
+    HUA_WEI_YUN_DEAL_VIDEO_ERROR(-450001, "华为云点播服务视频转码失败");
+    //====================       三方华为云服务错误提示END     ====================
 
     /**
      * 错误码

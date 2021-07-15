@@ -1,19 +1,21 @@
 package com.itts.userservice.service.spzb.impl.thirdparty;
 
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.google.common.collect.Lists;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.userservice.config.HuaWeiLiveConfig;
+import com.itts.userservice.request.spzb.thirdparty.DealVideoRequest;
 import com.itts.userservice.request.spzb.thirdparty.GetTokenRequest;
 import com.itts.userservice.service.spzb.thirdparty.HuaWeiLiveService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -80,9 +82,12 @@ public class HuaWeiLiveServiceImpl implements HuaWeiLiveService {
         headers.setContentType(type);
         headers.add("Accept", MediaType.APPLICATION_JSON.toString());
 
+
+        log.info("【华为云第三方接口】获取token， 请求地址：{}", huaWeiLiveConfig.getTokenUrl() + HuaWeiLiveConfig.GET_TOKEN_URL);
         String json = JSONUtil.toJsonStr(request);
         HttpEntity<String> formEntity = new HttpEntity<String>(json, headers);
-        ResponseEntity<String> response = restTemplate.exchange(huaWeiLiveConfig.getLiveUrl() + HuaWeiLiveConfig.GET_TOKEN_URL, HttpMethod.POST, formEntity, String.class);
+
+        ResponseEntity<String> response = restTemplate.exchange(huaWeiLiveConfig.getTokenUrl() + HuaWeiLiveConfig.GET_TOKEN_URL, HttpMethod.POST, formEntity, String.class);
 
         log.info("【华为云第三方接口】获取token， 响应结果：{}", response.getBody());
 
@@ -109,10 +114,48 @@ public class HuaWeiLiveServiceImpl implements HuaWeiLiveService {
     @Override
     public String dealLive(String assetId) {
 
-        String token = redisTemplate.opsForValue().get(HuaWeiLiveConfig.CACHE_TOKEN_KEY).toString();
+        String token = "";
+        Object tokenObj = redisTemplate.opsForValue().get(HuaWeiLiveConfig.CACHE_TOKEN_KEY);
 
-        if(StringUtils.isEmpty(token)){
+        if (tokenObj == null) {
             token = this.getToken();
+        } else {
+            token = tokenObj.toString();
+        }
+
+
+        DealVideoRequest request = new DealVideoRequest();
+        request.setAssetId(assetId);
+        request.setTemplateGroupName(huaWeiLiveConfig.getTemplateGroupName());
+
+        log.info("【华为云第三方接口】处理视频， 请求参数：{}", JSONUtil.toJsonStr(request));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", token);
+        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
+        headers.setContentType(type);
+        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
+
+        String json = JSONUtil.toJsonStr(request);
+        HttpEntity<String> formEntity = new HttpEntity<String>(json, headers);
+
+        log.info("【华为云第三方接口】处理视频， 请求地址：{}", huaWeiLiveConfig.getVideoUrl() + String.format(HuaWeiLiveConfig.DEAL_VIDEO_URL, huaWeiLiveConfig.getProjectId()));
+        ResponseEntity<String> response = restTemplate.exchange(huaWeiLiveConfig.getVideoUrl() + String.format(HuaWeiLiveConfig.DEAL_VIDEO_URL, huaWeiLiveConfig.getProjectId()), HttpMethod.POST, formEntity, String.class);
+
+        log.info("【华为云第三方接口】处理视频， 响应结果：{}", response.getBody());
+
+        JSONObject jsonObj = JSONUtil.parseObj(response.getBody());
+        if (jsonObj == null) {
+            throw new WebException(ErrorCodeEnum.HUA_WEI_YUN_DEAL_VIDEO_ERROR);
+        }
+
+        if (jsonObj.containsKey("asset_id")) {
+
+            String newAssetId = jsonObj.get("asset_id").toString();
+
+            if (StringUtils.isNotBlank(newAssetId)) {
+                return newAssetId;
+            }
         }
 
         return null;

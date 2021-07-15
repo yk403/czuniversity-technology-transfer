@@ -55,11 +55,13 @@ huawei:
       endPoint: cdspzb.obs.cn-north-4.myhuaweicloud.com
   #直播相关配置
   live:
-    url: https://iam.myhuaweicloud.com
+    tokenUrl: https://iam.myhuaweicloud.com
+    videoUrl: https://vod.cn-north-4.myhuaweicloud.com
     account: ZMHYRJ
     username: ZMHYRJ
     password: wkj555555
     projectId: 058691a4a70026712f1fc010ad7ca888
+    templateGroupName: mp4
 
 
 ribbon:

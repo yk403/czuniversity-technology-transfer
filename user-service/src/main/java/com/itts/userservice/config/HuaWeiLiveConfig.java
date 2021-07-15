@@ -14,10 +14,16 @@ import org.springframework.context.annotation.Configuration;
 public class HuaWeiLiveConfig {
 
     /**
-     * 直播请求地址
+     * 获取Token请求地址
      */
-    @Value("${huawei.live.url}")
-    private String liveUrl;
+    @Value("${huawei.live.tokenUrl}")
+    private String tokenUrl;
+
+    /**
+    *视频处理请求地址
+    */
+    @Value("${huawei.live.videoUrl}")
+    private String videoUrl;
 
     /**
      * 华为云账号
@@ -43,10 +49,18 @@ public class HuaWeiLiveConfig {
     @Value("${huawei.live.projectId}")
     private String projectId;
 
+    @Value("${huawei.live.templateGroupName}")
+    private String templateGroupName;
+
     /**
      * 获取token请求地址
      */
     public static final String GET_TOKEN_URL = "/v3/auth/tokens";
+
+    /**
+     * 处理视频请求地址
+     */
+    public static final String DEAL_VIDEO_URL = "/v1.0/%s/asset/process";
 
     /**
      * token缓存key
