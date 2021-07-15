@@ -4,23 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.*;
-import com.itts.personTraining.enums.BmfsEnum;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.mapper.ks.KsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
-import com.itts.personTraining.mapper.pk.PkMapper;
-import com.itts.personTraining.mapper.sj.SjMapper;
-import com.itts.personTraining.mapper.sz.SzMapper;
-import com.itts.personTraining.mapper.tz.TzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
 import com.itts.personTraining.model.pc.Pc;
-import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.tz.Tz;
 import com.itts.personTraining.model.tzSz.TzSz;
 import com.itts.personTraining.model.tzXs.TzXs;
@@ -203,7 +196,6 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     public PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String yx, String jylx) {
         log.info("【人才培养 - 根据条件批次ID:{},学号:{},姓名:{},学院名称:{},教育类型:{}分页查询学生成绩】",pcId,xh,xm,yx,jylx);
         //前台不传教育类型和批次id,默认给学历学位成绩
-        PageHelper.startPage(pageNum,pageSize);
         List<XsCjDTO> xsCjDTOs = null;
         if (pcId == null && jylx == null) {
             xsCjDTOs = getXsCjDTOS(pcId, xh, xm, yx);
@@ -219,6 +211,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         if (CollectionUtils.isEmpty(xsCjDTOs)) {
             return new PageInfo<>(Collections.EMPTY_LIST);
         }
+        PageHelper.startPage(pageNum,pageSize);
         return new PageInfo<>(xsCjDTOs);
     }
 
