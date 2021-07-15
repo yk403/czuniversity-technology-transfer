@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -100,5 +101,20 @@ public class HuaWeiLiveServiceImpl implements HuaWeiLiveService {
         redisTemplate.opsForValue().set(HuaWeiLiveConfig.CACHE_TOKEN_KEY, token.get(0), 23, TimeUnit.HOURS);
 
         return token.get(0);
+    }
+
+    /**
+     * 处理视频
+     */
+    @Override
+    public String dealLive(String assetId) {
+
+        String token = redisTemplate.opsForValue().get(HuaWeiLiveConfig.CACHE_TOKEN_KEY).toString();
+
+        if(StringUtils.isEmpty(token)){
+            token = this.getToken();
+        }
+
+        return null;
     }
 }

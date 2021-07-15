@@ -12,4 +12,9 @@ public interface HuaWeiLiveService {
      */
     String getToken();
 
+    /**
+     * 处理视频
+     */
+    String dealLive(String assetId);
+
 }
