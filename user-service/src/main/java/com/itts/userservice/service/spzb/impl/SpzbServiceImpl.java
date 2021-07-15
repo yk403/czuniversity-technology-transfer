@@ -138,6 +138,11 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
     @Override
     public Spzb update(LiveCallBackResponse response) {
 
+        Spzb spzb = spzbMapper.selectOne(new QueryWrapper<Spzb>().eq("zbspmy", response.getApp()));
+        if(spzb == null){
+            return  null;
+        }
+
         return null;
     }
 

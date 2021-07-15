@@ -13,6 +13,7 @@ import com.itts.userservice.service.spzb.SpzbService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
  * @author liuyingming
  * @since 2021-04-27
  */
+@Slf4j
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/spzb")
 @Api(tags = "视频直播")
@@ -163,6 +165,8 @@ public class SpzbAdminController {
      */
     @PostMapping("/callback/")
     public ResponseUtil callback(@RequestBody String responseStr) {
+
+        log.info("【视频直播回调】响应数据：{}", responseStr);
 
         if(StringUtils.isBlank(responseStr)){
             throw new WebException(ErrorCodeEnum.HUA_WEI_YUN_VIDEO_CALLBACK_ERROR);
