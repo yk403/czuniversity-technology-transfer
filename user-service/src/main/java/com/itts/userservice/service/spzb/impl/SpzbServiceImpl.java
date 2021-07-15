@@ -9,6 +9,7 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.userservice.enmus.VideoEnum;
 import com.itts.userservice.mapper.spzb.SpzbMapper;
 import com.itts.userservice.model.spzb.Spzb;
+import com.itts.userservice.response.thirdparty.LiveCallBackResponse;
 import com.itts.userservice.service.spzb.SpzbService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,6 +130,20 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
         spzbMapper.updateById(spzb);
 
         return spzb;
+    }
+
+    /**
+     * 更新直播数据
+     */
+    @Override
+    public Spzb update(LiveCallBackResponse response) {
+
+        Spzb spzb = spzbMapper.selectOne(new QueryWrapper<Spzb>().eq("zbspmy", response.getApp()));
+        if(spzb == null){
+            return  null;
+        }
+
+        return null;
     }
 
     /**

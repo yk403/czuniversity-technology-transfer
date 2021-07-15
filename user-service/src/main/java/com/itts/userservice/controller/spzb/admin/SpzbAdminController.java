@@ -1,16 +1,19 @@
 package com.itts.userservice.controller.spzb.admin;
 
 
+import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.model.spzb.Spzb;
+import com.itts.userservice.response.thirdparty.LiveCallBackResponse;
 import com.itts.userservice.service.spzb.SpzbService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
  * @author liuyingming
  * @since 2021-04-27
  */
+@Slf4j
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/spzb")
 @Api(tags = "视频直播")
@@ -67,7 +71,7 @@ public class SpzbAdminController {
 
         Spzb spzb = spzbService.getById(id);
 
-        if(spzb == null){
+        if (spzb == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
@@ -157,14 +161,26 @@ public class SpzbAdminController {
     }
 
     /**
-    *视频录制完成回调接口
-    */
+     * 视频录制完成回调接口
+     */
     @PostMapping("/callback/")
-    public ResponseUtil callback(@RequestBody String string){
+    public ResponseUtil callback(@RequestBody String responseStr) {
 
-        System.out.println(string);
+        log.info("【视频直播回调】响应数据：{}", responseStr);
 
-        return ResponseUtil.success(string);
+        if(StringUtils.isBlank(responseStr)){
+            throw new WebException(ErrorCodeEnum.HUA_WEI_YUN_VIDEO_CALLBACK_ERROR);
+        }
+
+        LiveCallBackResponse response = JSONUtil.toBean(JSONUtil.parseObj(responseStr), LiveCallBackResponse.class);
+
+        if(response == null){
+            throw new WebException(ErrorCodeEnum.HUA_WEI_YUN_VIDEO_CALLBACK_ERROR);
+        }
+
+        Spzb spzb = spzbService.update(response);
+
+        return ResponseUtil.success(spzb);
     }
 
     /**

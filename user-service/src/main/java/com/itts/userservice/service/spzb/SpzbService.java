@@ -3,6 +3,7 @@ package com.itts.userservice.service.spzb;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.userservice.model.spzb.Spzb;
+import com.itts.userservice.response.thirdparty.LiveCallBackResponse;
 
 /**
  * <p>
@@ -40,6 +41,11 @@ public interface SpzbService extends IService<Spzb> {
      * @author liuyingming
      */
     Spzb update(Spzb spzb);
+
+    /**
+     * 更新直播
+     */
+    Spzb update(LiveCallBackResponse response);
 
     /**
      * 删除
