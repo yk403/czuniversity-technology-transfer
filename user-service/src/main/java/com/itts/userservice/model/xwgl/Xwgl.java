@@ -99,6 +99,7 @@ public class Xwgl implements Serializable {
      * 创建时间
      */
     @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
@@ -110,6 +111,7 @@ public class Xwgl implements Serializable {
      * 更新时间
      */
     @TableField(value = "gxsj", fill = FieldFill.INSERT) // 新增执行
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**
