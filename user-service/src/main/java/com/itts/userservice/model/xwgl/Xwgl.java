@@ -109,7 +109,7 @@ public class Xwgl implements Serializable {
     /**
      * 更新时间
      */
-    @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行
+    @TableField(value = "gxsj", fill = FieldFill.INSERT) // 新增执行
     private Date gxsj;
 
     /**
