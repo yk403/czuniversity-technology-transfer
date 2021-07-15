@@ -138,12 +138,34 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
     @Override
     public Spzb update(LiveCallBackResponse response) {
 
-        Spzb spzb = spzbMapper.selectOne(new QueryWrapper<Spzb>().eq("zbspmy", response.getApp()));
+        Spzb spzb = spzbMapper.selectOne(new QueryWrapper<Spzb>().eq("zbspmy", response.getStream()));
         if(spzb == null){
             return  null;
         }
 
-        return null;
+        spzb.setXmId(response.getProjectId());
+        spzb.setSplx(VideoEnum.LIVE_BROADCAST.getCode());
+        spzb.setTlym(response.getPublishDomain());
+        spzb.setLzlm(response.getStream());
+        spzb.setLzgs(response.getRecordFormat());
+        spzb.setMzId(response.getAssetId());
+        spzb.setBfdz(response.getPlayUrl());
+        spzb.setWxdx(response.getFileSize());
+        spzb.setSpsc(response.getRecordDuration());
+        spzb.setLzkssj(response.getStartTime());
+        spzb.setLzjssj(response.getEndTime());
+        spzb.setSpkd(response.getWidth());
+        spzb.setSpgd(response.getHeight());
+        spzb.setObsqy(response.getObsLocation());
+        spzb.setObst(response.getObsBucket());
+        spzb.setObslj(response.getObsObject());
+        spzb.setMsxx(response.getErrorMessage());
+
+        spzb.setGxsj(new Date());
+
+        spzbMapper.updateById(spzb);
+
+        return spzb;
     }
 
     /**
