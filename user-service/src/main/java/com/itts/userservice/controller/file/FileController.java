@@ -104,7 +104,7 @@ public class FileController {
      * @return
      */
     @PostMapping("/upload/file")
-    public ResponseUtil Upload(@RequestParam MultipartFile file) {
+    public ResponseUtil Upload(@RequestParam(value = "file", required = true) MultipartFile file) {
         return fileRpcService.fileUpload(file);
     }
 
