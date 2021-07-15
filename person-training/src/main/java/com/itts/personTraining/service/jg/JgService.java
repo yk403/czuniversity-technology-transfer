@@ -5,6 +5,7 @@ import com.itts.common.utils.common.ResponseUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -34,5 +35,12 @@ public interface JgService {
     @GetMapping(ADMIN_BASE_URL + "/v1/jggl/tree/")
     @ApiOperation(value = "获取机构树")
     ResponseUtil findJgglVO(@RequestParam(value = "jgbm",required = false) String jgbm);
+
+    /**
+     * 获取详情
+     */
+    @GetMapping(ADMIN_BASE_URL + "/v1/jggl/get/{id}")
+    @ApiOperation(value = "获取详情")
+    ResponseUtil get(@PathVariable("id") Long id);
 
 }
