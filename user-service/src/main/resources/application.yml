@@ -46,13 +46,21 @@ huawei:
   obs:
     ak: D19EMDG2HD30LAAJULFV
     sk: Oy26kRatswkUvkhhKQNyQdhDZxwT3MNExtwcFoae
-    # 桶
+    #桶
     bucketName: cdspzb
     upload:
       endPoint: obs.cn-north-4.myhuaweicloud.com
-  # 访问的endPoint
+  #访问的endPoint
     access:
       endPoint: cdspzb.obs.cn-north-4.myhuaweicloud.com
+  #直播相关配置
+  live:
+    url: https://iam.myhuaweicloud.com
+    account: ZMHYRJ
+    username: ZMHYRJ
+    password: wkj555555
+    projectId: 058691a4a70026712f1fc010ad7ca888
+
 
 ribbon:
   ConnectTimeout: 10000 # ribbon链接超时时长

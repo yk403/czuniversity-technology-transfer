@@ -67,7 +67,7 @@ public class SpzbAdminController {
 
         Spzb spzb = spzbService.getById(id);
 
-        if(spzb == null){
+        if (spzb == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
@@ -157,10 +157,10 @@ public class SpzbAdminController {
     }
 
     /**
-    *视频录制完成回调接口
-    */
+     * 视频录制完成回调接口
+     */
     @PostMapping("/callback/")
-    public ResponseUtil callback(@RequestBody String string){
+    public ResponseUtil callback(@RequestBody String string) {
 
         System.out.println(string);
 
