@@ -17,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -160,6 +161,9 @@ public class XsCjAdminController {
     @PutMapping("/update/issueBatch")
     @ApiOperation(value = "学生成绩批量下发")
     public ResponseUtil issueBatch(@RequestBody List<Long> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            throw new WebException(STUDENT_NOT_SELECTED_ERROR);
+        }
         if (!xsCjService.issueBatch(ids)) {
             throw new WebException(UPDATE_FAIL);
         }
