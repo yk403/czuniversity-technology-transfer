@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.WebException;
+import com.itts.userservice.feign.persontraining.file.FileRpcService;
 import com.itts.userservice.utils.HuaweiyunOss;
 import com.itts.common.utils.common.ResponseUtil;
 import com.obs.services.exception.ObsException;
@@ -22,6 +24,8 @@ import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static com.itts.common.enums.ErrorCodeEnum.UPLOAD_FAIL_ISEMPTY_ERROR;
+
 @Slf4j
 @Api(tags = "文件")
 @RestController
@@ -30,6 +34,8 @@ public class FileController {
     @Resource
     private HuaweiyunOss huaweiyunOss;
 
+    @Resource
+    private FileRpcService fileRpcService;
     /**
      * 视频上传
      * @param multipartFile
@@ -91,6 +97,15 @@ public class FileController {
             return ResponseUtil.error(000,"文件下载失败！");
         }
     }
-
+    /**
+     * 文件上传
+     *
+     * @param file
+     * @return
+     */
+    @PostMapping("/upload/file")
+    public ResponseUtil Upload(@RequestParam MultipartFile file) {
+        return fileRpcService.fileUpload(file);
+    }
 
 }
