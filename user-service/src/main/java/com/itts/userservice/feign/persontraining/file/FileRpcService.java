@@ -1,5 +1,6 @@
 package com.itts.userservice.feign.persontraining.file;
 
+import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -21,6 +22,6 @@ public interface FileRpcService {
      * @param file
      * @return
      */
-    @PostMapping(ADMIN_BASE_URL + "/v1/File/upload")
-    ResponseUtil fileUpload(@RequestParam MultipartFile file);
+    @PostMapping(SystemConstant.ADMIN_BASE_URL + "/v1/File/upload")
+    ResponseUtil fileUpload(@RequestParam(value = "file", required = true) MultipartFile file);
 }
