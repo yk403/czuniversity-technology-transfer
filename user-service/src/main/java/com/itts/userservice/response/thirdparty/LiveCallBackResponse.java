@@ -116,12 +116,12 @@ public class LiveCallBackResponse implements Serializable {
     /**
      * 录制文件分辨率的宽
      */
-    private long width;
+    private int width;
 
     /**
      * 录制文件分辨率的高
      */
-    private long height;
+    private int height;
 
     /**
      * 存储录制文件的OBS桶所在区域
