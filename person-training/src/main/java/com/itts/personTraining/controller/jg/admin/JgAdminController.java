@@ -46,4 +46,13 @@ public class JgAdminController {
         return jgService.findJgglVO(jgbm);
     }
 
+    /**
+     * 获取详情
+     */
+    @GetMapping("/get/{id}")
+    @ApiOperation(value = "获取详情")
+    public ResponseUtil get(@PathVariable("id") Long id) {
+        return jgService.get(id);
+    }
+
 }

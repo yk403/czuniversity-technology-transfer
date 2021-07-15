@@ -200,7 +200,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
      * @return
      */
     @Override
-    public Object findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String yx, String jylx) {
+    public PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String yx, String jylx) {
         log.info("【人才培养 - 根据条件批次ID:{},学号:{},姓名:{},学院名称:{},教育类型:{}分页查询学生成绩】",pcId,xh,xm,yx,jylx);
         //前台不传教育类型和批次id,默认给学历学位成绩
         PageHelper.startPage(pageNum,pageSize);
@@ -217,7 +217,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             }
         }
         if (CollectionUtils.isEmpty(xsCjDTOs)) {
-            return Collections.EMPTY_LIST;
+            return new PageInfo<>(Collections.EMPTY_LIST);
         }
         return new PageInfo<>(xsCjDTOs);
     }
