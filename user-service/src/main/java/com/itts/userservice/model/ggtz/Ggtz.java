@@ -90,6 +90,7 @@ public class Ggtz implements Serializable {
      * 创建时间
      */
     @TableField(value = "cjsj", fill = FieldFill.INSERT) // 新增执行
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
@@ -101,6 +102,7 @@ public class Ggtz implements Serializable {
      * 更新时间
      */
     @TableField(value = "gxsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
 
