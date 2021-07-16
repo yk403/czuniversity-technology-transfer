@@ -587,6 +587,7 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
             case "corporate_mentor":
             case "teacher":
             case "school_leader":
+            case "professor":
                 addSzgl(yh, token);
                 break;
         }
