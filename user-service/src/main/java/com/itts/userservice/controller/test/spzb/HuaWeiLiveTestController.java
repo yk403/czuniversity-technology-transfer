@@ -3,6 +3,7 @@ package com.itts.userservice.controller.test.spzb;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.userservice.response.thirdparty.GetAssetInfoResponse;
 import com.itts.userservice.service.spzb.thirdparty.HuaWeiLiveService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,12 @@ public class HuaWeiLiveTestController {
         }
 
         return ResponseUtil.error(ErrorCodeEnum.HUA_WEI_YUN_DEAL_VIDEO_ERROR);
+    }
+
+    @GetMapping("/get/asset/info/")
+    public ResponseUtil getAssetInfo(@RequestParam("assetId") String assetId){
+
+        GetAssetInfoResponse result = huaWeiLiveService.getVideoInfo(assetId, "transcode_info");
+        return ResponseUtil.success(result);
     }
 }

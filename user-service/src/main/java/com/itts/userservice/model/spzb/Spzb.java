@@ -35,6 +35,18 @@ public class Spzb implements Serializable {
     private Long id;
 
     /**
+     * 课程ID
+     */
+    @ApiModelProperty(value = "课程ID")
+    private Long kcId;
+
+    /**
+     * 课程名称
+     */
+    @ApiModelProperty(value = "课程名称")
+    private String kcMc;
+
+    /**
      * 直播视频名称
      */
     @ApiModelProperty(value = "直播视频名称")

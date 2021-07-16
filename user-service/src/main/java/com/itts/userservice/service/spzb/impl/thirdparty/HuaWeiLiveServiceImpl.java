@@ -8,6 +8,7 @@ import com.itts.common.exception.WebException;
 import com.itts.userservice.config.HuaWeiLiveConfig;
 import com.itts.userservice.request.spzb.thirdparty.DealVideoRequest;
 import com.itts.userservice.request.spzb.thirdparty.GetTokenRequest;
+import com.itts.userservice.response.thirdparty.GetAssetInfoResponse;
 import com.itts.userservice.service.spzb.thirdparty.HuaWeiLiveService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -159,5 +160,54 @@ public class HuaWeiLiveServiceImpl implements HuaWeiLiveService {
         }
 
         return null;
+    }
+
+    /**
+     * 通过ID获取媒资信息
+     */
+    @Override
+    public GetAssetInfoResponse getVideoInfo(String assetId, String category) {
+
+        String token = "";
+        Object tokenObj = redisTemplate.opsForValue().get(HuaWeiLiveConfig.CACHE_TOKEN_KEY);
+
+        if (tokenObj == null) {
+            token = this.getToken();
+        } else {
+            token = tokenObj.toString();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Auth-Token", token);
+
+        HttpEntity<String> formEntity = new HttpEntity<String>(null, headers);
+
+        String params = "";
+        if (StringUtils.isNotBlank(category)) {
+            params = "?asset_id=" + assetId + "&categories = " + category;
+        } else {
+            params = "?asset_id=" + assetId;
+        }
+
+        log.info("【华为云第三方接口】获取媒资详情， 请求地址：{}", huaWeiLiveConfig.getVideoUrl() + String.format(HuaWeiLiveConfig.GET_ASSET_DETAIL_URL, huaWeiLiveConfig.getProjectId()));
+        ResponseEntity<String> response = restTemplate.exchange(huaWeiLiveConfig.getVideoUrl() + String.format(HuaWeiLiveConfig.GET_ASSET_DETAIL_URL, huaWeiLiveConfig.getProjectId()) + params, HttpMethod.GET, formEntity, String.class);
+
+        log.info("【华为云第三方接口】获取媒资详情， 响应结果：{}", response.getBody());
+
+        if (response.getBody() == null) {
+            throw new WebException(ErrorCodeEnum.HUA_WEI_YUN_DEAL_VIDEO_ERROR);
+        }
+
+        String responseStr = response.getBody();
+
+        if (StringUtils.isNotBlank(responseStr)) {
+
+            GetAssetInfoResponse getAssetInfoResponse = JSONUtil.toBean(JSONUtil.parseObj(responseStr), GetAssetInfoResponse.class);
+
+            return getAssetInfoResponse;
+        }
+
+        return null;
+
     }
 }

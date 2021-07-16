@@ -6,20 +6,26 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.userservice.enmus.HuaWeiAssetTypeEnum;
+import com.itts.userservice.enmus.HuaWeiTranscodeStatusEnum;
 import com.itts.userservice.enmus.VideoEnum;
 import com.itts.userservice.mapper.spzb.SpzbMapper;
 import com.itts.userservice.model.spzb.Spzb;
+import com.itts.userservice.response.thirdparty.GetAssetInfoResponse;
 import com.itts.userservice.response.thirdparty.LiveCallBackResponse;
 import com.itts.userservice.service.spzb.SpzbService;
+import com.itts.userservice.service.spzb.thirdparty.HuaWeiLiveService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -34,6 +40,9 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
 
     @Autowired
     private SpzbMapper spzbMapper;
+
+    @Autowired
+    private HuaWeiLiveService huaWeiLiveService;
 
     /**
      * 获取列表 - 分页
@@ -139,8 +148,8 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
     public Spzb update(LiveCallBackResponse response) {
 
         Spzb spzb = spzbMapper.selectOne(new QueryWrapper<Spzb>().eq("zbspmy", response.getStream()));
-        if(spzb == null){
-            return  null;
+        if (spzb == null) {
+            return null;
         }
 
         spzb.setXmId(response.getProjectId());
@@ -163,8 +172,36 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
 
         spzb.setGxsj(new Date());
 
-        spzbMapper.updateById(spzb);
+        //视频转码
+        if (StringUtils.isBlank(spzb.getMzId())) {
 
+            log.error("【视频直播完成】录制完成，视频点播转码，媒资ID为空");
+        } else {
+
+            String mzId = huaWeiLiveService.dealLive(spzb.getMzId());
+            GetAssetInfoResponse result = huaWeiLiveService.getVideoInfo(mzId, HuaWeiAssetTypeEnum.TRANSCODE_INFO.getKey());
+            if (result != null) {
+                GetAssetInfoResponse.TranscodeInfo transcodeInfo = result.getTranscodeInfo();
+                if (transcodeInfo != null && Objects.equals(transcodeInfo.getTranscodeStatus(), HuaWeiTranscodeStatusEnum.TRANSCODE_SUCCEED.getKey())) {
+
+                    List<String> urls = transcodeInfo.getOutput().stream().map(GetAssetInfoResponse.Output::getUrl).collect(Collectors.toList());
+                    if (!CollectionUtils.isEmpty(urls)) {
+
+                        String str = "";
+                        for (String url : urls) {
+
+                            str = str + url + ",";
+                        }
+
+                        str.substring(0, str.length() - 1);
+
+                        spzb.setBfdz(str);
+                    }
+                }
+            }
+        }
+
+        spzbMapper.updateById(spzb);
         return spzb;
     }
 

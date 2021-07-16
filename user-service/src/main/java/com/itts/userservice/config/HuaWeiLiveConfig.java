@@ -20,8 +20,8 @@ public class HuaWeiLiveConfig {
     private String tokenUrl;
 
     /**
-    *视频处理请求地址
-    */
+     * 视频处理请求地址
+     */
     @Value("${huawei.live.videoUrl}")
     private String videoUrl;
 
@@ -61,6 +61,11 @@ public class HuaWeiLiveConfig {
      * 处理视频请求地址
      */
     public static final String DEAL_VIDEO_URL = "/v1.0/%s/asset/process";
+
+    /**
+     * 获取媒资信息请求地址
+     */
+    public static final String GET_ASSET_DETAIL_URL = "/v1.0/%s/asset/details";
 
     /**
      * token缓存key
