@@ -63,7 +63,21 @@ huawei:
     projectId: 058691a4a70026712f1fc010ad7ca888
     templateGroupName: mp4
 
-
 ribbon:
   ConnectTimeout: 10000 # ribbon链接超时时长
   ReadTimeout: 10000 # ribbon读取超时时间长
+
+#订单支付消息队列配置
+mqconfig:
+  #延迟队列，不能被监听消费
+  video_release_delay_queue: video.release.delay.queue
+  #延迟队列的消息过期后转发的队列
+  video_release_queue: video.release.queue
+  #交换机
+  video_event_exchange: video.event.exchange
+  #进入延迟队列的路由key
+  video_release_delay_routing_key: video.release.delay.routing.key
+  #消息过期，进入释放死信队列的key
+  video_release_routing_key: video.release.routing.key
+  #消息过期时间,毫秒,5分钟
+  ttl: 300000
