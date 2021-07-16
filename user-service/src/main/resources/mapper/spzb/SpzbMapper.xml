@@ -5,6 +5,8 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itts.userservice.model.spzb.Spzb">
         <id column="id" property="id"/>
+        <result column="kc_id" property="kcId"/>
+        <result column="kc_mc" property="kcMc"/>
         <result column="zbspmc" property="zbspmc"/>
         <result column="zbspjs" property="zbspjs"/>
         <result column="kssj" property="kssj"/>
@@ -39,8 +41,8 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id
-        , zbspmc, zbspjs, kssj, jssj, zbmc, ssxt, ccdz, zbspmy, splx, xm_id, tlym, lzlm, lzgs, mz_id, bfdz, wxdx, spsc, lzkssj, lzjssj, spkd, spgd, obsqy, obst, obslj, msxx, sfsc, cjsj, cjr, gxsj, gxr
+        id,
+        kc_id, kc_mc, zbspmc, zbspjs, kssj, jssj, zbmc, ssxt, ccdz, zbspmy, splx, xm_id, tlym, lzlm, lzgs, mz_id, bfdz, wxdx, spsc, lzkssj, lzjssj, spkd, spgd, obsqy, obst, obslj, msxx, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>
