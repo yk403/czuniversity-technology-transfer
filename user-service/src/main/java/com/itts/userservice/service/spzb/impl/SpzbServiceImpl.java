@@ -1,11 +1,13 @@
 package com.itts.userservice.service.spzb.impl;
 
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.userservice.config.MqConfig;
 import com.itts.userservice.enmus.HuaWeiAssetTypeEnum;
 import com.itts.userservice.enmus.HuaWeiTranscodeStatusEnum;
 import com.itts.userservice.enmus.VideoEnum;
@@ -15,7 +17,9 @@ import com.itts.userservice.response.thirdparty.GetAssetInfoResponse;
 import com.itts.userservice.response.thirdparty.LiveCallBackResponse;
 import com.itts.userservice.service.spzb.SpzbService;
 import com.itts.userservice.service.spzb.thirdparty.HuaWeiLiveService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -36,6 +40,7 @@ import java.util.stream.Collectors;
  * @since 2021-04-27
  */
 @Service
+@Slf4j
 public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements SpzbService {
 
     @Autowired
@@ -43,6 +48,12 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
 
     @Autowired
     private HuaWeiLiveService huaWeiLiveService;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private MqConfig mqConfig;
 
     /**
      * 获取列表 - 分页
@@ -147,10 +158,12 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
     @Override
     public Spzb update(LiveCallBackResponse response) {
 
+        log.info("【视频直播回调】查询视频直播是否存在，直播流名称：{}", response.getStream());
         Spzb spzb = spzbMapper.selectOne(new QueryWrapper<Spzb>().eq("zbspmy", response.getStream()));
         if (spzb == null) {
             return null;
         }
+        log.info("【视频直播回调】查询视频直播，直播数据信息：{}", JSONUtil.toJsonStr(spzb));
 
         spzb.setXmId(response.getProjectId());
         spzb.setSplx(VideoEnum.LIVE_BROADCAST.getCode());
@@ -178,30 +191,48 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
             log.error("【视频直播完成】录制完成，视频点播转码，媒资ID为空");
         } else {
 
+            log.info("【视频直播回调】处理视频直播");
             String mzId = huaWeiLiveService.dealLive(spzb.getMzId());
+            log.info("【视频直播回调】处理视频直播完成，媒资ID：{}", mzId);
+            log.info("【视频直播回调】获取华为云媒资信息；媒资ID:{}", mzId);
             GetAssetInfoResponse result = huaWeiLiveService.getVideoInfo(mzId, HuaWeiAssetTypeEnum.TRANSCODE_INFO.getKey());
+            log.info("【视频直播回调】获取华为云媒资信息, 数据信息：{}", JSONUtil.toJsonStr(result));
             if (result != null) {
                 GetAssetInfoResponse.TranscodeInfo transcodeInfo = result.getTranscodeInfo();
-                if (transcodeInfo != null && Objects.equals(transcodeInfo.getTranscodeStatus(), HuaWeiTranscodeStatusEnum.TRANSCODE_SUCCEED.getKey())) {
 
-                    List<String> urls = transcodeInfo.getOutput().stream().map(GetAssetInfoResponse.Output::getUrl).collect(Collectors.toList());
-                    if (!CollectionUtils.isEmpty(urls)) {
+                if (transcodeInfo != null) {
 
-                        String str = "";
-                        for (String url : urls) {
+                    //转码成功
+                    if (Objects.equals(transcodeInfo.getTranscodeStatus(), HuaWeiTranscodeStatusEnum.TRANSCODE_SUCCEED.getKey())) {
+                        log.info("【视频直播回调】视频转码完成");
+                        List<String> urls = transcodeInfo.getOutput().stream().map(GetAssetInfoResponse.Output::getUrl).collect(Collectors.toList());
+                        if (!CollectionUtils.isEmpty(urls)) {
 
-                            str = str + url + ",";
+                            String str = "";
+                            for (String url : urls) {
+
+                                str = str + url + ",";
+                            }
+
+                            str.substring(0, str.length() - 1);
+                            log.info("【视频直播回调】视频转码完成, 播放地址：{}", str);
+
+                            spzb.setBfdz(str);
                         }
+                    }
 
-                        str.substring(0, str.length() - 1);
+                    //转码中、待转码
+                    if (Objects.equals(transcodeInfo.getTranscodeStatus(), HuaWeiTranscodeStatusEnum.TRANSCODING.getKey())
+                            || Objects.equals(transcodeInfo.getTranscodeStatus(), HuaWeiTranscodeStatusEnum.WAITING_TRANSCODE.getKey())) {
 
-                        spzb.setBfdz(str);
+                        rabbitTemplate.convertAndSend(mqConfig.getEventExchange(), mqConfig.getVideoReleaseDelayRoutingKey(), mzId);
                     }
                 }
             }
         }
 
         spzbMapper.updateById(spzb);
+        log.info("【视频直播回调】视频信息更新完成：{}", JSONUtil.toJsonStr(spzb));
         return spzb;
     }
 
