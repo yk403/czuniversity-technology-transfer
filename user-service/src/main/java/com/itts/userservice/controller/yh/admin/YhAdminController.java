@@ -11,10 +11,12 @@ import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.enmus.GroupTypeEnum;
 import com.itts.userservice.enmus.UserTypeEnum;
 import com.itts.userservice.model.jggl.Jggl;
+import com.itts.userservice.model.js.Js;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.request.yh.AddYhRequest;
 import com.itts.userservice.request.yh.RpcAddYhRequest;
 import com.itts.userservice.service.jggl.JgglService;
+import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.yh.GetYhVO;
 import com.itts.userservice.vo.yh.YhListVO;
@@ -29,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -50,6 +53,9 @@ public class YhAdminController {
 
     @Autowired
     private JgglService jgglService;
+
+    @Autowired
+    private JsService jsService;
 
     /**
      * 获取列表 - 分页
@@ -110,10 +116,10 @@ public class YhAdminController {
 
     @ApiOperation(value = "获取登录用户信息")
     @GetMapping("/get/login/user/")
-    public ResponseUtil getLoginUser(){
+    public ResponseUtil getLoginUser() {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
-        if(loginUser == null){
+        if (loginUser == null) {
             throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
         }
 
@@ -155,7 +161,7 @@ public class YhAdminController {
         GetYhVO getYhVO = DTO2VO(yh);
 
         return ResponseUtil.success(getYhVO);
-}
+    }
 
     @ApiOperation(value = "通过用户编号查询")
     @GetMapping("/get/by/code/")
@@ -334,9 +340,9 @@ public class YhAdminController {
     }
 
     /**
-    *用户DTO转VO
-    */
-    private GetYhVO DTO2VO(Yh yh){
+     * 用户DTO转VO
+     */
+    private GetYhVO DTO2VO(Yh yh) {
 
         GetYhVO getYhVO = new GetYhVO();
         BeanUtils.copyProperties(yh, getYhVO);
@@ -387,6 +393,11 @@ public class YhAdminController {
                 }
             }
         }
+
+        //获取用户角色
+        List<Js> js = jsService.findByUserId(getYhVO.getId());
+        getYhVO.setJsList(js);
+
 
         return getYhVO;
     }

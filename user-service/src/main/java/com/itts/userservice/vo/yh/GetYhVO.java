@@ -2,11 +2,13 @@ package com.itts.userservice.vo.yh;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.itts.userservice.model.js.Js;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Description：
@@ -114,4 +116,10 @@ public class GetYhVO implements Serializable {
      */
     @ApiModelProperty(value = "会员类型")
     private String hylx;
+
+    /**
+     * 用户角色
+     */
+    @ApiModelProperty(value = "用户角色")
+    private List<Js> jsList;
 }
