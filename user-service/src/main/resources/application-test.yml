@@ -58,6 +58,15 @@ spring:
   sleuth:
     sampler:
       probability: 1.0 #采样的百分比
+
+  #rabbitMQ
+  rabbitmq:
+    host: 172.21.25.6
+    port: 5672
+    virtual-host: /test
+    password: root
+    username: root
+
 pagehelper:
   reasonable: true
   support-methods-arguments: true
