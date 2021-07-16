@@ -93,9 +93,9 @@ public class Zj implements Serializable {
     private String xl;
 
     /**
-     * 类型(校内; 校外)
+     * 类型(内部专家; 校领导)
      */
-    @ApiModelProperty(value = "类型(校内;校外)", required = true)
+    @ApiModelProperty(value = "类型(内部专家; 校领导)", required = true)
     private String lx;
 
     /**

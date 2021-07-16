@@ -17,6 +17,8 @@ import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.personTraining.enums.UserTypeEnum.PROFESSOR;
+import static com.itts.personTraining.enums.UserTypeEnum.SCHOOL_LEADER;
 
 /**
  * <p>
@@ -160,6 +162,9 @@ public class ZjAdminController {
         }
         if (zj.getBh() == null) {
             throw new WebException(PROFESSOR_NUMBER_ISEMPTY_ERROR);
+        }
+        if (!zj.getLx().equals(SCHOOL_LEADER.getKey()) && !zj.getLx().equals(PROFESSOR.getKey())) {
+            throw new WebException(PROFESSOR_TYPE_ERROR);
         }
         List<Zj> zjList = zjService.getAll();
         for (Zj zj1 : zjList) {

@@ -127,6 +127,7 @@ public enum ErrorCodeEnum {
     CONDITION_IS_EMPTY_ERROR(-45052,"查询条件不可为空!"),
     STUDENT_NOT_SELECTED_ERROR(-45053,"未选择学生，无法下发!"),
     STARTDATE_GREATER_THAN_ENDDATE_ERROR(-45054,"开始日期不可大于结束日期!"),
+    PROFESSOR_TYPE_ERROR(-45055,"专家类型有误!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
