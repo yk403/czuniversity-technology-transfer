@@ -26,7 +26,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void updateFill(MetaObject metaObject) {
         Object val = getFieldValByName("gxsj", metaObject);
         log.info("start update fill ....");
-        if(val == null){
+        if(val != null){
             this.setFieldValByName("gxsj",new Date(),metaObject);
         }
        /* this.strictUpdateFill(metaObject, "cjsj", LocalDateTime.class, LocalDateTime.now()); // 起始版本 3.3.3(推荐)
