@@ -70,13 +70,18 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
     @Override
     public PageInfo<Sz> findByPage(Integer pageNum, Integer pageSize, String dsxm, String dslb, String hyly) {
         log.info("【人才培养 - 分页条件查询师资列表,导师姓名:{},导师类别:{},行业领域:{}】",dsxm,dslb,hyly);
-        PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
-        szQueryWrapper.eq("sfsc",false)
-                      .like(StringUtils.isNotBlank(dsxm),"dsxm", dsxm)
-                      .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
-                      .eq(StringUtils.isNotBlank(hyly),"hyly", hyly)
-                      .orderByDesc("cjsj");
+        if (pageNum == -1) {
+            szQueryWrapper.eq("sfsc",false)
+                    .orderByDesc("cjsj");
+        } else {
+            PageHelper.startPage(pageNum, pageSize);
+            szQueryWrapper.eq("sfsc",false)
+                    .like(StringUtils.isNotBlank(dsxm),"dsxm", dsxm)
+                    .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
+                    .eq(StringUtils.isNotBlank(hyly),"hyly", hyly)
+                    .orderByDesc("cjsj");
+        }
         return new PageInfo<>(szMapper.selectList(szQueryWrapper));
     }
 
