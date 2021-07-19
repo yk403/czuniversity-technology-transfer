@@ -16,7 +16,7 @@ public interface GroupFeignService {
     /**
      * 获取基地列表（分基地、总基地）
      */
-    @GetMapping("/find/base/list/")
+    @GetMapping("/admin/api/v1/jggl/find/base/list/")
     ResponseUtil findBaseList(@RequestParam("jgId") Long jgId);
 
 }
