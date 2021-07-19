@@ -68,7 +68,7 @@ public class JgglController {
      */
     @ApiOperation(value = "获取基地列表（分基地、总基地）")
     @GetMapping("/find/base/list/")
-    public ResponseUtil findBaseList(@RequestParam("jgId") Long jgId) {
+    public ResponseUtil findBaseList(@RequestParam(value = "jgId", required = false) Long jgId) {
 
         List<Jggl> jgs = jgglService.findBaseList(jgId);
         return ResponseUtil.success(jgs);
