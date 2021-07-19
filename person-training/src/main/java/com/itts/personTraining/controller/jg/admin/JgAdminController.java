@@ -1,13 +1,12 @@
 package com.itts.personTraining.controller.jg.admin;
 
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.feign.userservice.GroupFeignService;
 import com.itts.personTraining.service.jg.JgService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 
@@ -25,16 +24,30 @@ public class JgAdminController {
     @Autowired
     private JgService jgService;
 
+    @Autowired
+    private GroupFeignService groupFeignService;
+
     /**
      * 获取机构列表
      */
     @GetMapping("/list/")
     @ApiOperation(value = "获取机构列表")
     public ResponseUtil getlist(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                         @RequestParam(value = "jgbm",required = false) String jgbm,
-                         @RequestHeader(name = "token") String token) {
-        return jgService.getlist(pageNum,pageSize,jgbm,token);
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                @RequestParam(value = "jgbm", required = false) String jgbm,
+                                @RequestHeader(name = "token") String token) {
+        return jgService.getlist(pageNum, pageSize, jgbm, token);
+    }
+
+    /**
+     * 获取基地列表（分基地、总基地）
+     */
+    @ApiOperation(value = "获取基地列表（分基地、总基地）")
+    @GetMapping("/find/base/list/")
+    public ResponseUtil findBaseList(@RequestParam(value = "jgId", required = false) Long jgId) {
+
+        ResponseUtil response = groupFeignService.findBaseList(jgId);
+        return response;
     }
 
     /**
