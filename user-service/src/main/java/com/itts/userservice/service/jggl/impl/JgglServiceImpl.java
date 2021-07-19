@@ -22,7 +22,7 @@ import static com.itts.common.constant.SystemConstant.threadLocal;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author fl
@@ -38,26 +38,26 @@ public class JgglServiceImpl implements JgglService {
     @Override
     public PageInfo<Jggl> findPage(Integer pageNum, Integer pageSize, String string, String jgbm, String jglb, String lx) {
         //传入机构编码
-        if(!StringUtils.isBlank(jgbm)){
+        if (!StringUtils.isBlank(jgbm)) {
             String cj = jgglMapper.selectByCode(jgbm).getCj();
-            jgbm=cj;
+            jgbm = cj;
             //传入string
-        }else if(!StringUtils.isBlank(string)){
-            PageHelper.startPage(pageNum,pageSize);
+        } else if (!StringUtils.isBlank(string)) {
+            PageHelper.startPage(pageNum, pageSize);
             List<Jggl> jggls = jgglMapper.selectByString(string);
             PageInfo<Jggl> pageInfo = new PageInfo<>(jggls);
             return pageInfo;
             //传入类型
-        }else if(!StringUtils.isBlank(lx)){
-            PageHelper.startPage(pageNum,pageSize);
+        } else if (!StringUtils.isBlank(lx)) {
+            PageHelper.startPage(pageNum, pageSize);
             QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
-            jgglQueryWrapper.eq("sfsc",false)
-                    .eq("lx",lx)
+            jgglQueryWrapper.eq("sfsc", false)
+                    .eq("lx", lx)
                     .orderByDesc("cjsj");
             List<Jggl> jgglList = jgglMapper.selectList(jgglQueryWrapper);
             PageInfo<Jggl> pageInfo = new PageInfo<>(jgglList);
             return pageInfo;
-        }else if(!StringUtils.isBlank(jglb)) {
+        } else if (!StringUtils.isBlank(jglb)) {
             PageHelper.startPage(pageNum, pageSize);
             QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
             jgglQueryWrapper.eq("sfsc", false)
@@ -67,7 +67,7 @@ public class JgglServiceImpl implements JgglService {
             PageInfo<Jggl> pageInfo = new PageInfo<>(jgglList);
             return pageInfo;
         }
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<Jggl> list = jgglMapper.findThisAndChildByCode(jgbm);
         PageInfo<Jggl> pageInfo = new PageInfo<>(list);
         return pageInfo;
@@ -76,42 +76,56 @@ public class JgglServiceImpl implements JgglService {
 
     /**
      * 获取指定分页
+     *
      * @param pageNum
      * @param pageSize
      * @return
      */
     @Override
-    public PageInfo<Jggl> findByPage(Integer pageNum, Integer pageSize,String jgbm) {
+    public PageInfo<Jggl> findByPage(Integer pageNum, Integer pageSize, String jgbm) {
 
         log.info("【机构管理 - 分页查询】");
 
-        if(!StringUtils.isBlank(jgbm)){
+        if (!StringUtils.isBlank(jgbm)) {
             String cj = jgglMapper.selectByCode(jgbm).getCj();
-            jgbm=cj;
+            jgbm = cj;
         }
 
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
 
         List<Jggl> list = jgglMapper.findThisAndChildByCode(jgbm);
         PageInfo<Jggl> pageInfo = new PageInfo<>(list);
 
         return pageInfo;
     }
+
     @Override
     public PageInfo<Jggl> selectByString(Integer pageNum, Integer pageSize, String string) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<Jggl> jggls = jgglMapper.selectByString(string);
         PageInfo<Jggl> pageInfo = new PageInfo<>(jggls);
         return pageInfo;
     }
+
+    /**
+     * 获取基地列表
+     */
+    @Override
+    public List<Jggl> findBaseList(Long jgId) {
+
+        List<Jggl> jds = jgglMapper.findBaseList(jgId);
+        return jds;
+    }
+
     /**
      * 获取机构管理树
+     *
      * @return
      */
     @Override
     public List<JgglVO> findJgglVO(String jgbm) {
 
-        if(StringUtils.isBlank(jgbm)){
+        if (StringUtils.isBlank(jgbm)) {
             jgbm = UserServiceCommon.GROUP_SUPER_PARENT_CODE;
         }
 
@@ -119,26 +133,28 @@ public class JgglServiceImpl implements JgglService {
         List<JgglVO> jgglVOS = jgglMapper.selectJggl();
 
         //获取机构树
-        List<JgglVO> jgglVOList=buildJgglVOTree(jgglVOS,jgbm);
+        List<JgglVO> jgglVOList = buildJgglVOTree(jgglVOS, jgbm);
         return jgglVOList;
     }
+
     /**
      * 获取关键字机构管理树
+     *
      * @return
      */
     @Override
     public List<JgglVO> findStringJgglVO(String string) {
         List<JgglVO> jgglVOS = jgglMapper.selectStringJggl(string);
-        List<JgglVO> jgglVOList=buildJgglVOTree(jgglVOS,"000");
-        String[] sisoi="100-199".split("-");
+        List<JgglVO> jgglVOList = buildJgglVOTree(jgglVOS, "000");
+        String[] sisoi = "100-199".split("-");
         return jgglVOList;
     }
 
-    private List<JgglVO> buildJgglVOTree(List<JgglVO> jgglVOS,String fatherCode){
+    private List<JgglVO> buildJgglVOTree(List<JgglVO> jgglVOS, String fatherCode) {
         List<JgglVO> treeList = new ArrayList<>();
         jgglVOS.forEach(jgglVO -> {
-            if(jgglVO.getFjbm().equals(fatherCode)){
-                jgglVO.setJgglVOList(buildJgglVOTree(jgglVOS,jgglVO.getJgbm()));
+            if (jgglVO.getFjbm().equals(fatherCode)) {
+                jgglVO.setJgglVOList(buildJgglVOTree(jgglVOS, jgglVO.getJgbm()));
                 treeList.add(jgglVO);
             }
         });
@@ -148,8 +164,8 @@ public class JgglServiceImpl implements JgglService {
     @Override
     public Jggl get(Long id) {
         QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
-        jgglQueryWrapper.eq("sfsc",false)
-        .eq("id",id);
+        jgglQueryWrapper.eq("sfsc", false)
+                .eq("id", id);
         Jggl jggl = jgglMapper.selectOne(jgglQueryWrapper);
         return jggl;
     }
@@ -157,8 +173,8 @@ public class JgglServiceImpl implements JgglService {
     @Override
     public List<Jggl> getList(String cj) {
         QueryWrapper<Jggl> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.likeRight("cj",cj)
-                .eq("sfsc",false);
+        objectQueryWrapper.likeRight("cj", cj)
+                .eq("sfsc", false);
         List<Jggl> jggls = jgglMapper.selectList(objectQueryWrapper);
         return jggls;
     }
@@ -182,10 +198,8 @@ public class JgglServiceImpl implements JgglService {
     }
 
 
-
     /**
      * 新增
-     *
      */
     @Override
     public Jggl add(Jggl jggl) {
@@ -200,7 +214,7 @@ public class JgglServiceImpl implements JgglService {
     @Override
     public Jggl update(Jggl jggl) {
         LoginUser loginUser = threadLocal.get();
-        if(loginUser.getUserId()!=null){
+        if (loginUser.getUserId() != null) {
             jggl.setGxr(loginUser.getUserId());
         }
         jggl.setGxsj(new Date());
