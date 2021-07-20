@@ -65,6 +65,12 @@ public class Cd implements Serializable {
     private String cj;
 
     /**
+     * 组件地址
+     */
+    @ApiModelProperty("组件地址")
+    private String zjdz;
+
+    /**
      * 菜单地址
      */
     @ApiModelProperty("菜单地址")

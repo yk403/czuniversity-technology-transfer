@@ -11,6 +11,7 @@
         <result column="fjcd_id" property="fjcdId"/>
         <result column="cj" property="cj"/>
         <result column="cddz" property="cddz"/>
+        <result column="zjdz" property="zjdz"/>
         <result column="xtlx" property="xtlx"/>
         <result column="mklx" property="mklx"/>
         <result column="sfsc" property="sfsc"/>
@@ -23,7 +24,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id
-        , cdmc, cdbm, cdtb, fjcd_id, cj, cddz, xtlx, mklx, sfsc, cjsj, cjr, gxsj, gxr
+        , cdmc, cdbm, cdtb, fjcd_id, cj, cddz, zjdz, xtlx, mklx, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
     <select id="selectByParameterList" resultType="com.itts.userservice.model.cd.Cd">
         SELECT *
