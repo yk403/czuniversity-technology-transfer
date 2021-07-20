@@ -52,15 +52,26 @@ public class JgglController {
     @GetMapping("/list/list/")
     @ApiOperation(value = "获取机构列表")
     public ResponseUtil getlistBy(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                @RequestParam(value = "string", required = false) String string,
-                                @RequestParam(value = "jgbm", required = false) String jgbm,
-                                @RequestParam(value = "jglb",required = false)String jglb,
-                                @RequestParam(value = "lx",required = false)String lx) {
+                                  @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                  @RequestParam(value = "string", required = false) String string,
+                                  @RequestParam(value = "jgbm", required = false) String jgbm,
+                                  @RequestParam(value = "jglb", required = false) String jglb,
+                                  @RequestParam(value = "lx", required = false) String lx) {
 
-        PageInfo<Jggl> byPage = jgglService.findPage(pageNum, pageSize, string,jgbm,jglb,lx);
+        PageInfo<Jggl> byPage = jgglService.findPage(pageNum, pageSize, string, jgbm, jglb, lx);
 
         return ResponseUtil.success(byPage);
+    }
+
+    /**
+     * 获取基地列表（分基地、总基地）
+     */
+    @ApiOperation(value = "获取基地列表（分基地、总基地）")
+    @GetMapping("/find/base/list/")
+    public ResponseUtil findBaseList(@RequestParam(value = "jgId", required = false) Long jgId) {
+
+        List<Jggl> jgs = jgglService.findBaseList(jgId);
+        return ResponseUtil.success(jgs);
     }
 
     /**
@@ -132,7 +143,7 @@ public class JgglController {
         }*/
 
         if (Objects.equals(jggl.getFjbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
-            String str= getByJggl(jggl);
+            String str = getByJggl(jggl);
             jggl.setJgbm(str);
             jggl.setCj(jggl.getJgbm());
 
@@ -145,7 +156,7 @@ public class JgglController {
             String cj = jggl1.getCj();
             String jgbm1 = jggl1.getJgbm();
             //生成机构编码
-            String str= getByJggl(jggl);
+            String str = getByJggl(jggl);
             jggl.setJgbm(jgbm1 + str);
             //生成层级
             String jgbm = jggl.getJgbm();
@@ -195,7 +206,7 @@ public class JgglController {
             group.setGxsj(new Date());
             jgglService.update(group);
             return ResponseUtil.success(group);
-        } else if(jggl.getFjbm().equals(group.getFjbm())){
+        } else if (jggl.getFjbm().equals(group.getFjbm())) {
             BeanUtils.copyProperties(jggl, group, "id", "cjsj", "cjr");
             group.setGxsj(new Date());
             jgglService.update(group);
@@ -208,13 +219,13 @@ public class JgglController {
             String cj;
             Jggl fatherGroup;
             //判断机构是否移入自身的子机构
-            Boolean flag =false;
+            Boolean flag = false;
             for (Jggl jggl1 : list) {
                 if (jggl.getFjbm().equals(jggl1.getJgbm())) {
                     flag = true;
                 }
             }
-            if(flag){
+            if (flag) {
                 Long id1 = jgglService.selectByJgbm(jggl.getFjbm()).getId();
                 List<Jggl> jgglList = new ArrayList<Jggl>();
                 for (Jggl jggl1 : list) {
@@ -224,14 +235,14 @@ public class JgglController {
                         }
                     }
                 }
-                if (jgglList!=null) {
+                if (jgglList != null) {
                     //修改机构自身下一级的所有子机构的fjbm和fjmc
                     for (int i = 0; i < jgglList.size(); i++) {
                         Jggl jggl1 = jgglList.get(i);
                         jggl1.setFjbm(group.getFjbm());
-                        if(Objects.equals(group.getFjbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)){
+                        if (Objects.equals(group.getFjbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
                             jggl1.setFjmc(UserServiceCommon.GROUP_SUPER_PARENT_CODE);
-                        }else {
+                        } else {
                             jggl1.setFjmc(jgglService.selectByJgbm(group.getFjbm()).getJgmc());
                         }
                         jgglService.update(jggl1);
@@ -245,14 +256,14 @@ public class JgglController {
                     }
                     for (int i = 0; i < list.size(); i++) {
                         Jggl old = list.get(i);
-                        if(Objects.equals(group.getFjbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)){
-                            old.setJgbm(getByJggl(UserServiceCommon.GROUP_SUPER_PARENT_CODE,i+1));
-                        }else {
-                            old.setJgbm(group.getFjbm()+getByJggl(group.getFjbm(),i+1));
+                        if (Objects.equals(group.getFjbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
+                            old.setJgbm(getByJggl(UserServiceCommon.GROUP_SUPER_PARENT_CODE, i + 1));
+                        } else {
+                            old.setJgbm(group.getFjbm() + getByJggl(group.getFjbm(), i + 1));
                         }
-                        if(Objects.equals(group.getFjbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)){
+                        if (Objects.equals(group.getFjbm(), UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
                             old.setCj(old.getJgbm());
-                        }else {
+                        } else {
                             old.setCj(StringUtils.strip(old.getCj(), group.getJgbm() + "-"));
                         }
                         jgglService.update(old);
@@ -266,8 +277,8 @@ public class JgglController {
                     jgglService.update(jggl);
                     return ResponseUtil.success(jggl);
                 }
-            }else {
-                if(Objects.equals(fjbm, UserServiceCommon.GROUP_SUPER_PARENT_CODE)){
+            } else {
+                if (Objects.equals(fjbm, UserServiceCommon.GROUP_SUPER_PARENT_CODE)) {
 
                     jggl.setJgbm(getByJggl(UserServiceCommon.GROUP_SUPER_PARENT_CODE));
                     jggl.setFjmc(UserServiceCommon.GROUP_SUPER_PARENT_CODE);
@@ -279,10 +290,10 @@ public class JgglController {
                                 list.remove(i);
                             }
                         }
-                        if(list!=null){
+                        if (list != null) {
                             for (int i = 0; i < list.size(); i++) {
                                 Jggl jggl1 = list.get(i);
-                                jggl1.setJgbm(getByJggl(jggl.getJgbm(),i+1));
+                                jggl1.setJgbm(getByJggl(jggl.getJgbm(), i + 1));
                                 jggl1.setCj(jggl1.getCj().replace(cjold, jggl.getCj()));
 
                                 jgglService.update(jggl1);
@@ -294,22 +305,22 @@ public class JgglController {
                     fatherGroup = jgglService.selectByJgbm(fjbm);
                     cj = fatherGroup.getCj();
                     jggl.setFjmc(fatherGroup.getJgmc());
-                    jggl.setJgbm(fatherGroup.getJgbm()+getByJggl(fjbm));
+                    jggl.setJgbm(fatherGroup.getJgbm() + getByJggl(fjbm));
                     cj = cj + "-" + jggl.getJgbm();
                     jggl.setCj(cj);
                     //生成层级
                     if (list != null) {
                         for (int i = 0; i < list.size(); i++) {
                             Jggl jggl1 = list.get(i);
-                            if (cjold == jggl1.getCj()){
+                            if (cjold == jggl1.getCj()) {
                                 list.remove(i);
                             }
                         }
-                        if(list!=null){
+                        if (list != null) {
                             for (int i = 0; i < list.size(); i++) {
                                 Jggl jggl1 = list.get(i);
                                 jggl1.setCj(jggl1.getCj().replace(cjold, cj));
-                                jggl1.setJgbm(jggl.getJgbm()+getByJggl(jggl.getJgbm(),i+1));
+                                jggl1.setJgbm(jggl.getJgbm() + getByJggl(jggl.getJgbm(), i + 1));
                                 jgglService.update(jggl1);
                             }
                         }
@@ -393,48 +404,55 @@ public class JgglController {
 
     /**
      * 生成机构编码后三位
+     *
      * @param jggl
      * @return
      */
-    private String getByJggl(Jggl jggl){
+    private String getByJggl(Jggl jggl) {
         QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
-        jgglQueryWrapper.eq("fjbm",jggl.getFjbm());
+        jgglQueryWrapper.eq("fjbm", jggl.getFjbm());
         List<Jggl> jgglList = jgglMapper.selectList(jgglQueryWrapper);
         String str = String.format("%03d", jgglList.size() + 1);
         return str;
     }
+
     /**
      * 生成机构编码后三位
+     *
      * @param fjbm
      * @return
      */
-    private String getByJggl(String fjbm){
+    private String getByJggl(String fjbm) {
         QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
-        jgglQueryWrapper.eq("fjbm",fjbm);
+        jgglQueryWrapper.eq("fjbm", fjbm);
         List<Jggl> jgglList = jgglMapper.selectList(jgglQueryWrapper);
         String str = String.format("%03d", jgglList.size() + 1);
         return str;
     }
+
     /**
      * 生成机构编码后三位
+     *
      * @param jggl
      * @return
      */
-    private String getByJggl(Jggl jggl,int i){
+    private String getByJggl(Jggl jggl, int i) {
         QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
-        jgglQueryWrapper.eq("fjbm",jggl.getFjbm());
+        jgglQueryWrapper.eq("fjbm", jggl.getFjbm());
         List<Jggl> jgglList = jgglMapper.selectList(jgglQueryWrapper);
         String str = String.format("%03d", jgglList.size() + i);
         return str;
     }
+
     /**
      * 生成机构编码后三位
+     *
      * @param fjbm
      * @return
      */
-    private String getByJggl(String fjbm,int i){
+    private String getByJggl(String fjbm, int i) {
         QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
-        jgglQueryWrapper.eq("fjbm",fjbm);
+        jgglQueryWrapper.eq("fjbm", fjbm);
         List<Jggl> jgglList = jgglMapper.selectList(jgglQueryWrapper);
         String str = String.format("%03d", jgglList.size() + i);
         return str;

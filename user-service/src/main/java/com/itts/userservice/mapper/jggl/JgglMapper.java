@@ -18,6 +18,17 @@ import java.util.List;
  */
 public interface JgglMapper extends BaseMapper<Jggl> {
 
+    @Select("<script> " +
+            "SELECT * " +
+            "   FROM t_jggl " +
+            "   WHERE sfsc = false " +
+            "   AND (lx = 'headquarters' OR lx = 'branch') " +
+            "   <if test='jgId != null' > " +
+            "       AND id = #{jgId}" +
+            "   </if>" +
+            "</script> ")
+    List<Jggl> findBaseList(@Param("jgId") Long jgId);
+
 
     Jggl selectByName(String jgmc);
 

@@ -101,7 +101,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
         //通过手机号查询
         Object data = yhService.getByPhone(zj.getDh(), token).getData();
         String yhlx = IN.getKey();
-        String yhlb = PROFESSOR.getKey();
+        String yhlb = zj.getLx();
         String bh = zj.getBh();
         String xm = zj.getXm();
         if (data != null) {

@@ -1,5 +1,6 @@
 package com.itts.personTraining.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -43,7 +44,8 @@ public class JjrbmInfo {
     /**
      * 出生日期
      */
-   @ApiModelProperty(value = "出生日期", required = true)
+    @ApiModelProperty(value = "出生日期", required = true)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date csrq;
 
     /**
