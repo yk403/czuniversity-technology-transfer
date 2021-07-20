@@ -51,4 +51,9 @@ public class RedisConstant {
      * 用户学习资源收藏前缀
      */
     public static final String USER_LEARNING_RESOURCES_FAVORITES_PREFIX = "itts:persontraining:resources:favorites:";
+
+    /**
+     * 角色菜单操作关联前缀
+     */
+    public static final String ROLE_MENU_OPTIONS_PREFIX = "itts:user:js_cd_cz";
 }
