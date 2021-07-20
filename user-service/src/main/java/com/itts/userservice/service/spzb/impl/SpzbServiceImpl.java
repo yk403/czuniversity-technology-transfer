@@ -194,9 +194,11 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
             log.info("【视频直播回调】处理视频直播");
             String mzId = huaWeiLiveService.dealLive(spzb.getMzId());
             log.info("【视频直播回调】处理视频直播完成，媒资ID：{}", mzId);
+
             log.info("【视频直播回调】获取华为云媒资信息；媒资ID:{}", mzId);
             GetAssetInfoResponse result = huaWeiLiveService.getVideoInfo(mzId, HuaWeiAssetTypeEnum.TRANSCODE_INFO.getKey());
             log.info("【视频直播回调】获取华为云媒资信息, 数据信息：{}", JSONUtil.toJsonStr(result));
+
             if (result != null) {
                 GetAssetInfoResponse.TranscodeInfo transcodeInfo = result.getTranscodeInfo();
 
