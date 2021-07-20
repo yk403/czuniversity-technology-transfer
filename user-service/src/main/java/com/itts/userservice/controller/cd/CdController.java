@@ -145,7 +145,7 @@ public class CdController {
         }
 
         JSONArray jsonArr = JSONUtil.parseArray(cacheObj.toString());
-        List<Cd> czs = JSONUtil.toList(jsonArr, Cd.class);
+        List<Cz> czs = JSONUtil.toList(jsonArr, Cz.class);
         return ResponseUtil.success(czs);
     }
 
