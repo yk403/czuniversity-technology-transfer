@@ -20,6 +20,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Set;
 
 /**
  * <p>
@@ -88,7 +89,8 @@ public class JsAdminController {
         checkRequest(js);
 
         Js add = jsService.add(js);
-        redisTemplate.delete(RedisConstant.ROLE_MENU_OPTIONS_PREFIX);
+        Set keys = redisTemplate.keys(RedisConstant.ROLE_MENU_OPTIONS_PREFIX + "*");
+        redisTemplate.delete(keys);
         return ResponseUtil.success(add);
     }
 
@@ -114,7 +116,8 @@ public class JsAdminController {
         }
 
         Js js = jsService.updateJsCdCzGl(request);
-        redisTemplate.delete(RedisConstant.ROLE_MENU_OPTIONS_PREFIX);
+        Set keys = redisTemplate.keys(RedisConstant.ROLE_MENU_OPTIONS_PREFIX + "*");
+        redisTemplate.delete(keys);
         return ResponseUtil.success(js);
     }
 
@@ -135,7 +138,8 @@ public class JsAdminController {
         }
 
         jsService.delete(js);
-        redisTemplate.delete(RedisConstant.ROLE_MENU_OPTIONS_PREFIX);
+        Set keys = redisTemplate.keys(RedisConstant.ROLE_MENU_OPTIONS_PREFIX + "*");
+        redisTemplate.delete(keys);
         return ResponseUtil.success();
     }
 
