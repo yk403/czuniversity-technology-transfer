@@ -189,47 +189,64 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
         if (StringUtils.isBlank(spzb.getMzId())) {
 
             log.error("【视频直播完成】录制完成，视频点播转码，媒资ID为空");
+            rabbitTemplate.convertAndSend(mqConfig.getEventExchange(), mqConfig.getVideoReleaseDelayRoutingKey(), response.getAssetId());
         } else {
 
-            log.info("【视频直播回调】处理视频直播");
-            String mzId = huaWeiLiveService.dealLive(spzb.getMzId());
-            log.info("【视频直播回调】处理视频直播完成，媒资ID：{}", mzId);
+            try {
 
-            log.info("【视频直播回调】获取华为云媒资信息；媒资ID:{}", mzId);
-            GetAssetInfoResponse result = huaWeiLiveService.getVideoInfo(mzId, HuaWeiAssetTypeEnum.TRANSCODE_INFO.getKey());
-            log.info("【视频直播回调】获取华为云媒资信息, 数据信息：{}", JSONUtil.toJsonStr(result));
+                log.info("【视频直播回调】处理视频直播");
+                String mzId = huaWeiLiveService.dealLive(spzb.getMzId());
+                log.info("【视频直播回调】处理视频直播完成，媒资ID：{}", mzId);
 
-            if (result != null) {
-                GetAssetInfoResponse.TranscodeInfo transcodeInfo = result.getTranscodeInfo();
+                //处理成功
+                if (StringUtils.isNotBlank(mzId)) {
 
-                if (transcodeInfo != null) {
+                    log.info("【视频直播回调】获取华为云媒资信息；媒资ID:{}", mzId);
+                    GetAssetInfoResponse result = huaWeiLiveService.getVideoInfo(mzId, HuaWeiAssetTypeEnum.TRANSCODE_INFO.getKey());
+                    log.info("【视频直播回调】获取华为云媒资信息, 数据信息：{}", JSONUtil.toJsonStr(result));
 
-                    //转码成功
-                    if (Objects.equals(transcodeInfo.getTranscodeStatus(), HuaWeiTranscodeStatusEnum.TRANSCODE_SUCCEED.getKey())) {
-                        log.info("【视频直播回调】视频转码完成");
-                        List<String> urls = transcodeInfo.getOutput().stream().map(GetAssetInfoResponse.Output::getUrl).collect(Collectors.toList());
-                        if (!CollectionUtils.isEmpty(urls)) {
+                    if (result != null) {
+                        GetAssetInfoResponse.TranscodeInfo transcodeInfo = result.getTranscodeInfo();
 
-                            String str = "";
-                            for (String url : urls) {
+                        if (transcodeInfo != null) {
 
-                                str = str + url + ",";
+                            //转码成功
+                            if (Objects.equals(transcodeInfo.getTranscodeStatus(), HuaWeiTranscodeStatusEnum.TRANSCODE_SUCCEED.getKey())) {
+                                log.info("【视频直播回调】视频转码完成");
+                                List<String> urls = transcodeInfo.getOutput().stream().map(GetAssetInfoResponse.Output::getUrl).collect(Collectors.toList());
+                                if (!CollectionUtils.isEmpty(urls)) {
+
+                                    String str = "";
+                                    for (String url : urls) {
+
+                                        str = str + url + ",";
+                                    }
+
+                                    str.substring(0, str.length() - 1);
+                                    log.info("【视频直播回调】视频转码完成, 播放地址：{}", str);
+
+                                    spzb.setBfdz(str);
+                                }
                             }
 
-                            str.substring(0, str.length() - 1);
-                            log.info("【视频直播回调】视频转码完成, 播放地址：{}", str);
+                            //转码中、待转码
+                            if (Objects.equals(transcodeInfo.getTranscodeStatus(), HuaWeiTranscodeStatusEnum.TRANSCODING.getKey())
+                                    || Objects.equals(transcodeInfo.getTranscodeStatus(), HuaWeiTranscodeStatusEnum.WAITING_TRANSCODE.getKey())) {
 
-                            spzb.setBfdz(str);
+                                rabbitTemplate.convertAndSend(mqConfig.getEventExchange(), mqConfig.getVideoReleaseDelayRoutingKey(), mzId);
+                            }
                         }
-                    }
-
-                    //转码中、待转码
-                    if (Objects.equals(transcodeInfo.getTranscodeStatus(), HuaWeiTranscodeStatusEnum.TRANSCODING.getKey())
-                            || Objects.equals(transcodeInfo.getTranscodeStatus(), HuaWeiTranscodeStatusEnum.WAITING_TRANSCODE.getKey())) {
+                    } else {
 
                         rabbitTemplate.convertAndSend(mqConfig.getEventExchange(), mqConfig.getVideoReleaseDelayRoutingKey(), mzId);
                     }
+                } else {
+
+                    rabbitTemplate.convertAndSend(mqConfig.getEventExchange(), mqConfig.getVideoReleaseDelayRoutingKey(), mzId);
                 }
+            } catch (Exception e) {
+
+                log.info("【视频直播回调】视频处理异常, {}", e);
             }
         }
 
