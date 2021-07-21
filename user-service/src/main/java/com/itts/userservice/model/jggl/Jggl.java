@@ -65,11 +65,15 @@ public class Jggl implements Serializable {
      * 父机构名称
      */
     private String fjmc;
+    /**
+     * 机构地址
+     */
+    private String jgdz;
 
     /**
      * 负责人
      */
-    private Long fzr;
+    private String fzr;
     /**
      * 联系电话
      */
