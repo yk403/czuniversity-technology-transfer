@@ -1,9 +1,12 @@
 package com.itts.userservice.controller.cd;
 
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.RedisConstant;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.enums.SystemTypeEnum;
@@ -131,8 +134,18 @@ public class CdController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        List<Cz> czs = cdService.getOptionsByRole(js, menuId);
+        //获取缓存
+        String cacheKey = getJsCdCzCacheKey(js, menuId);
+        Object cacheObj = redisTemplate.opsForValue().get(cacheKey);
+        if (cacheObj == null) {
 
+            List<Cz> czs = cdService.getOptionsByRole(js, menuId);
+            redisTemplate.opsForValue().set(cacheKey, JSONUtil.toJsonStr(czs));
+            return ResponseUtil.success(czs);
+        }
+
+        JSONArray jsonArr = JSONUtil.parseArray(cacheObj.toString());
+        List<Cz> czs = JSONUtil.toList(jsonArr, Cz.class);
         return ResponseUtil.success(czs);
     }
 
@@ -285,6 +298,23 @@ public class CdController {
         if (StringUtils.isBlank(cd.getMklx())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
+    }
+
+    /**
+     * 获取角色菜单操作缓存Key
+     */
+    private String getJsCdCzCacheKey(List<Js> js, Long menuId) {
+
+        //获取缓存key
+        StringBuffer stringBuffer = new StringBuffer();
+        for (Js j : js) {
+
+            stringBuffer = stringBuffer.append(j.getId());
+        }
+
+        String cacheKey = RedisConstant.ROLE_MENU_OPTIONS_PREFIX + ":" + stringBuffer.toString() + ":" + menuId;
+
+        return cacheKey;
     }
 }
 

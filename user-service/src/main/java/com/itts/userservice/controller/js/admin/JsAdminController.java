@@ -2,6 +2,7 @@ package com.itts.userservice.controller.js.admin;
 
 
 import com.github.pagehelper.PageInfo;
+import com.itts.common.constant.RedisConstant;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
@@ -14,9 +15,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Set;
 
 /**
  * <p>
@@ -33,6 +37,9 @@ public class JsAdminController {
 
     @Resource
     private JsService jsService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 获取列表
@@ -82,6 +89,8 @@ public class JsAdminController {
         checkRequest(js);
 
         Js add = jsService.add(js);
+        Set keys = redisTemplate.keys(RedisConstant.ROLE_MENU_OPTIONS_PREFIX + "*");
+        redisTemplate.delete(keys);
         return ResponseUtil.success(add);
     }
 
@@ -107,6 +116,8 @@ public class JsAdminController {
         }
 
         Js js = jsService.updateJsCdCzGl(request);
+        Set keys = redisTemplate.keys(RedisConstant.ROLE_MENU_OPTIONS_PREFIX + "*");
+        redisTemplate.delete(keys);
         return ResponseUtil.success(js);
     }
 
@@ -127,7 +138,8 @@ public class JsAdminController {
         }
 
         jsService.delete(js);
-
+        Set keys = redisTemplate.keys(RedisConstant.ROLE_MENU_OPTIONS_PREFIX + "*");
+        redisTemplate.delete(keys);
         return ResponseUtil.success();
     }
 

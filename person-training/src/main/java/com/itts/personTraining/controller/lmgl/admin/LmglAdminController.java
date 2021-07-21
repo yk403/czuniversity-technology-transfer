@@ -4,7 +4,6 @@ package com.itts.personTraining.controller.lmgl.admin;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.personTraining.model.lbt.Lbt;
 import com.itts.personTraining.model.lmgl.Lmgl;
 import com.itts.personTraining.service.lmgl.LmglService;
 import io.swagger.annotations.Api;
@@ -24,7 +23,7 @@ import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
  */
 @RestController
 @RequestMapping(ADMIN_BASE_URL +"/v1/lmgl")
-@Api(value = "LmglAdminController", tags = "栏目管理")
+@Api(tags = "栏目管理")
 public class LmglAdminController {
 
     @Autowired
