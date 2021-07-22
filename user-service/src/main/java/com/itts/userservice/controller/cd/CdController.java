@@ -5,6 +5,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.RedisConstant;
 import com.itts.common.constant.SystemConstant;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
@@ -167,7 +169,14 @@ public class CdController {
 
         List<CdTreeVO> vos = cdService.getMenuByRole(js);
 
-        return ResponseUtil.success(vos);
+
+        Map<String, Object> resultMap = Maps.newHashMap();
+        resultMap.put("children", vos);
+        resultMap.put("path", "/Home");
+        resultMap.put("name", "Home");
+        resultMap.put("redirect", "/CourseManagement");
+
+        return ResponseUtil.success(resultMap);
     }
 
 
