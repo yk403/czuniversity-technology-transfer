@@ -51,6 +51,11 @@ public class Kc implements Serializable {
     private String kclx;
 
     /**
+     * 课程图片
+     */
+    private String kctp;
+
+    /**
      * 课程名称
      */
     private String kcmc;

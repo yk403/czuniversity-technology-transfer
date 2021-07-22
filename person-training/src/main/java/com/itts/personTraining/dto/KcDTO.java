@@ -59,6 +59,11 @@ public class KcDTO {
     private String kclx;
 
     /**
+     * 课程图片
+     */
+    private String kctp;
+
+    /**
      * 课程名称
      */
     @ApiModelProperty(value = "课程名称", required = true)
