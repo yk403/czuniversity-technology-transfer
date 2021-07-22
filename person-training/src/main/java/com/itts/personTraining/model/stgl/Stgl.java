@@ -38,6 +38,10 @@ public class Stgl implements Serializable {
      * 排序
      */
     private String px;
+    /**
+     * 简介
+     */
+    private String jj;
 
     /**
      * 是否显示
