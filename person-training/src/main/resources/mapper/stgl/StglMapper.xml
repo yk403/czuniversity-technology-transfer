@@ -7,6 +7,7 @@
         <id column="id" property="id" />
         <result column="mc" property="mc" />
         <result column="px" property="px" />
+        <result column="jj" property="jj" />
         <result column="sfxs" property="sfxs" />
         <result column="jg_id" property="jgId" />
         <result column="sfsc" property="sfsc" />
@@ -18,7 +19,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, mc, px, sfxs, jg_id, sfsc, cjsj, cjr, gxsj, gxr
+        id, mc, px, jj, sfxs, jg_id, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>
