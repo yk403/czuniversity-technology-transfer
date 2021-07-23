@@ -92,7 +92,7 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
 
         if (group != null) {
             //通过编号获取该机构及机构下所有机构的ID
-            groupIds = jgglMapper.findThisAndChildByCode(group.getJgbm()).stream().map(Jggl::getId).collect(Collectors.toList());
+            groupIds = jgglMapper.findThisAndChildByLevel(group.getCj()).stream().map(Jggl::getId).collect(Collectors.toList());
         }
 
         PageHelper.startPage(pageNum, pageSize);
