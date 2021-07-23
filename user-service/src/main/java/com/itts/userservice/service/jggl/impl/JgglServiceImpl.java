@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.userservice.common.UserServiceCommon;
+import com.itts.userservice.enmus.GroupTypeEnum;
 import com.itts.userservice.feign.persontraining.stgl.StglFeignService;
 import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.model.jggl.Jggl;
@@ -21,6 +22,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 
@@ -237,37 +239,43 @@ public class JgglServiceImpl implements JgglService {
 
         jgglMapper.insert(jggl);
 
-        for (int i = 1; i <= 4; i++) {
+        //如果是总基地或者分基地， 添加试图管理
+        if(Objects.equals(jggl.getLx(), GroupTypeEnum.HEADQUARTERS.getKey())
+                || Objects.equals(jggl.getLx(), GroupTypeEnum.BRANCH.getKey())){
 
-            AddStglRequest request = new AddStglRequest();
-            request.setCjr(jggl.getCjr());
-            request.setCjsj(jggl.getCjsj());
-            request.setGxr(jggl.getGxr());
-            request.setGxsj(jggl.getGxsj());
-            request.setJgId(jggl.getId());
-            request.setPx(i + "");
+            for (int i = 1; i <= 4; i++) {
 
-            switch (i) {
-                case 1:
-                    request.setMc("需求大厅");
-                    request.setJj(xqdtjj);
-                    break;
-                case 2:
-                    request.setMc("技术成果");
-                    request.setJj(jscgjj);
-                    break;
-                case 3:
-                    request.setMc("教学资源");
-                    request.setJj(jxzyjj);
-                    break;
-                case 4:
-                    request.setMc("师资团队");
-                    request.setJj(sztdjj);
-                    break;
+                AddStglRequest request = new AddStglRequest();
+                request.setCjr(jggl.getCjr());
+                request.setCjsj(jggl.getCjsj());
+                request.setGxr(jggl.getGxr());
+                request.setGxsj(jggl.getGxsj());
+                request.setJgId(jggl.getId());
+                request.setPx(i + "");
+
+                switch (i) {
+                    case 1:
+                        request.setMc("需求大厅");
+                        request.setJj(xqdtjj);
+                        break;
+                    case 2:
+                        request.setMc("技术成果");
+                        request.setJj(jscgjj);
+                        break;
+                    case 3:
+                        request.setMc("教学资源");
+                        request.setJj(jxzyjj);
+                        break;
+                    case 4:
+                        request.setMc("师资团队");
+                        request.setJj(sztdjj);
+                        break;
+                }
+
+                stglFeignService.add(request);
             }
-
-            stglFeignService.add(request);
         }
+
         return jggl;
     }
 
