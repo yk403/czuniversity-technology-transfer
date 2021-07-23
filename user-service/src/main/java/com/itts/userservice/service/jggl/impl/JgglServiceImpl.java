@@ -5,12 +5,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.userservice.common.UserServiceCommon;
+import com.itts.userservice.feign.persontraining.stgl.StglFeignService;
 import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.model.jggl.Jggl;
+import com.itts.userservice.request.stgl.AddStglRequest;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.vo.JgglVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,6 +38,33 @@ public class JgglServiceImpl implements JgglService {
 
     @Resource
     private JgglMapper jgglMapper;
+
+    @Autowired
+    private StglFeignService stglFeignService;
+
+    /**
+     * 需求大厅简介
+     */
+    @Value(value = "${jdypt.xqdtjj}")
+    private String xqdtjj;
+
+    /**
+     * 技术成果简介
+     */
+    @Value(value = "${jdypt.jscgjj}")
+    private String jscgjj;
+
+    /**
+     * 教学资源简介
+     */
+    @Value(value = "${jdypt.jxzyjj}")
+    private String jxzyjj;
+
+    /**
+     * 师资团队
+     */
+    @Value(value = "${jdypt.sztdjj}")
+    private String sztdjj;
 
     @Override
     public PageInfo<Jggl> findPage(Integer pageNum, Integer pageSize, String string, String jgbm, String jglb, String lx) {
@@ -205,6 +236,38 @@ public class JgglServiceImpl implements JgglService {
     public Jggl add(Jggl jggl) {
 
         jgglMapper.insert(jggl);
+
+        for (int i = 1; i <= 4; i++) {
+
+            AddStglRequest request = new AddStglRequest();
+            request.setCjr(jggl.getCjr());
+            request.setCjsj(jggl.getCjsj());
+            request.setGxr(jggl.getGxr());
+            request.setGxsj(jggl.getGxsj());
+            request.setJgId(jggl.getId());
+            request.setPx(i + "");
+
+            switch (i) {
+                case 1:
+                    request.setMc("需求大厅");
+                    request.setJj(xqdtjj);
+                    break;
+                case 2:
+                    request.setMc("技术成果");
+                    request.setJj(jscgjj);
+                    break;
+                case 3:
+                    request.setMc("教学资源");
+                    request.setJj(jxzyjj);
+                    break;
+                case 4:
+                    request.setMc("师资团队");
+                    request.setJj(sztdjj);
+                    break;
+            }
+
+            stglFeignService.add(request);
+        }
         return jggl;
     }
 
