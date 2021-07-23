@@ -66,6 +66,8 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
             return null;
         }
 
+        PageInfo page = new PageInfo(tkzys);
+
         List<Long> tkzyIds = tkzys.stream().map(Tkzy::getId).collect(Collectors.toList());
 
         //获取题库列表重的所有选项
@@ -99,7 +101,9 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
             return vo;
         }).collect(Collectors.toList());
 
-        PageInfo pageInfo = new PageInfo(tkzyVOs);
+        PageInfo pageInfo = new PageInfo();
+        BeanUtils.copyProperties(page, pageInfo);
+        pageInfo.setList(tkzyVOs);
 
         return pageInfo;
     }
