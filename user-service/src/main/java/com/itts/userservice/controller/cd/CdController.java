@@ -172,7 +172,7 @@ public class CdController {
         resultMap.put("children", vos);
         resultMap.put("path", "/Home");
         resultMap.put("name", "Home");
-        resultMap.put("redirect", "/CourseManagement");*/
+        resultMap.put("redirect", "");*/
 
         return ResponseUtil.success(vos);
     }
