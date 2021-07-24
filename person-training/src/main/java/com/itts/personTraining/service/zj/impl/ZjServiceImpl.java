@@ -63,14 +63,18 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
     @Override
     public PageInfo<Zj> findByPage(Integer pageNum, Integer pageSize, String yjly, String name) {
         log.info("【人才培养 - 分页条件查询专家列表,研究类型:{},姓名:{}】",yjly,name);
-        PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Zj> zjQueryWrapper = new QueryWrapper<>();
-        zjQueryWrapper.eq("sfsc",false)
-                      .eq(StringUtils.isNotBlank(yjly),"yjly",yjly)
-                      .like(StringUtils.isNotBlank(name),"xm",name)
-                      .orderByDesc("cjsj");
-        List<Zj> zjList = zjMapper.selectList(zjQueryWrapper);
-        return new PageInfo<>(zjList);
+        if (pageNum == -1) {
+            zjQueryWrapper.eq("sfsc",false)
+                    .orderByDesc("cjsj");
+        } else {
+            PageHelper.startPage(pageNum, pageSize);
+            zjQueryWrapper.eq("sfsc",false)
+                    .eq(StringUtils.isNotBlank(yjly),"yjly",yjly)
+                    .like(StringUtils.isNotBlank(name),"xm",name)
+                    .orderByDesc("cjsj");
+        }
+        return new PageInfo<>(zjMapper.selectList(zjQueryWrapper));
     }
 
     /**
