@@ -79,6 +79,24 @@ public class StglServiceImpl extends ServiceImpl<StglMapper, Stgl> implements St
         stglMapper.updateById(stgl);
         return true;
     }
+
+    @Override
+    public boolean use(Long id) {
+        Stgl stgl = get(id);
+        Long userId = getUserId();
+        Boolean sfxs = stgl.getSfxs();
+        if(sfxs){
+            stgl.setSfxs(false);
+            stgl.setGxr(userId);
+            stglMapper.updateById(stgl);
+        }else {
+            stgl.setSfxs(true);
+            stgl.setGxr(userId);
+            stglMapper.updateById(stgl);
+        }
+        return true;
+    }
+
     /**
      * 获取当前用户id
      * @return
