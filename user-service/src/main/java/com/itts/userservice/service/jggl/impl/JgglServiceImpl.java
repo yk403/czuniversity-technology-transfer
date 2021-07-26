@@ -7,9 +7,11 @@ import com.itts.common.bean.LoginUser;
 import com.itts.userservice.common.UserServiceCommon;
 import com.itts.userservice.enmus.GroupTypeEnum;
 import com.itts.userservice.feign.persontraining.gngl.GnglFeignService;
+import com.itts.userservice.feign.persontraining.rmdt.RmdtFeignService;
 import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.request.gngl.AddGnglRequest;
+import com.itts.userservice.request.rmdt.AddRmdtRequest;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.vo.JgglVO;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +45,8 @@ public class JgglServiceImpl implements JgglService {
 
     @Autowired
     private GnglFeignService gnglFeignService;
+    @Resource
+    private RmdtFeignService rmdtFeignService;
 
     /**
      * 轮播图功能简介
@@ -73,6 +77,12 @@ public class JgglServiceImpl implements JgglService {
      */
     @Value(value = "${jdypt.gngl.rmdt}")
     private String rmdt;
+
+    @Value(value = "${jdypt.rmdt.xw}")
+    private String xw;
+
+    @Value(value = "${jdypt.rmdt.gg}")
+    private String gg;
 
     @Override
     public PageInfo<Jggl> findPage(Integer pageNum, Integer pageSize, String string, String jgbm, String jglb, String lx) {
@@ -250,6 +260,22 @@ public class JgglServiceImpl implements JgglService {
                 || Objects.equals(jggl.getLx(), GroupTypeEnum.BRANCH.getKey())) {
 
             Date now = new Date();
+            for (int i = 0; i < 2; i++) {
+                AddRmdtRequest addRmdtRequest = new AddRmdtRequest();
+                addRmdtRequest.setJgId(jggl.getId());
+                addRmdtRequest.setKssysj(now);
+                switch (i){
+                    case 1:
+                        addRmdtRequest.setMc("新闻");
+                        addRmdtRequest.setJj(xw);
+                        break;
+                    case 2:
+                        addRmdtRequest.setMc("公告");
+                        addRmdtRequest.setJj(gg);
+                        break;
+                }
+                rmdtFeignService.add(addRmdtRequest);
+            }
 
             for (int i = 1; i <= 5; i++) {
 
