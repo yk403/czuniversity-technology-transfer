@@ -4,6 +4,7 @@ package com.itts.personTraining.controller.stgl.admin;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.model.gngl.Gngl;
 import com.itts.personTraining.model.stgl.Stgl;
 import com.itts.personTraining.service.stgl.StglService;
 import io.swagger.annotations.Api;
@@ -84,6 +85,18 @@ public class StglAdminController {
     @DeleteMapping("/delete/{id}")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException{
         return ResponseUtil.success(stglService.delete(id));
+    }
+    @ApiOperation(value = "使用")
+    @PutMapping("/use/{id}")
+    public ResponseUtil use(@PathVariable("id") Long id)throws WebException{
+        if(id == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        Stgl stgl = stglService.get(id);
+        if(stgl == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+        return ResponseUtil.success(stglService.use(id));
     }
     /**
      * 校验参数是否合法
