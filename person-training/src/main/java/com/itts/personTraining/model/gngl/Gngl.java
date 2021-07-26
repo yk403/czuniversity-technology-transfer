@@ -1,17 +1,16 @@
 package com.itts.personTraining.model.gngl;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.util.Date;
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author fuli
@@ -27,8 +26,13 @@ public class Gngl implements Serializable {
     /**
      * 主键ID
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
+    /**
+     * 机构ID
+     */
+    private Long jgId;
 
     /**
      * 功能名称
