@@ -45,6 +45,12 @@ public class KsDTO {
     @ApiModelProperty(value = "考试试卷id")
     private Long kssjId;
 
+    /**
+     * 考试试卷名称
+     */
+    @ApiModelProperty(value = "考试试卷名称")
+    private String kssjmc;
+
 
     /**
      * 类型 (1:学历学位考试;2:继续教育考试)
