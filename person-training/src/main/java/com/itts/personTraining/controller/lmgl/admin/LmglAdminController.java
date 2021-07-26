@@ -96,9 +96,6 @@ public class LmglAdminController {
         if (lmgl.getMc() == null){
             throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
         }
-        if (lmgl.getTbmc() == null){
-            throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
-        }
         if (lmgl.getJgId() == null){
             throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
         }
