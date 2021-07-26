@@ -47,6 +47,12 @@ public class Ks implements Serializable {
     private Long kssjId;
 
     /**
+     * 考试试卷名称
+     */
+    @ApiModelProperty(value = "考试试卷名称")
+    private String kssjmc;
+
+    /**
      * 考试名称
      */
     private String ksmc;
