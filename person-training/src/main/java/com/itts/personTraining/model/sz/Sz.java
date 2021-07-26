@@ -46,13 +46,13 @@ public class Sz implements Serializable {
     private Long ssjgId;
 
     /**
-     * 导师编号
+     * 编号
      */
-    @ApiModelProperty(value = "导师编号", required = true)
+    @ApiModelProperty(value = "编号", required = true)
     private String dsbh;
 
     /**
-     * 导师姓名
+     * 姓名
      */
     private String dsxm;
 
@@ -143,7 +143,7 @@ public class Sz implements Serializable {
     private String zgzt;
 
     /**
-     * 导师类别:	tutor - 导师;	corporate_mentor - 企业导师;	teacher - 授课教师
+     * 导师类别:	tutor - 导师; corporate_mentor - 企业导师; teacher - 授课教师; school_leader - 校领导
      */
     private String dslb;
 
