@@ -207,6 +207,12 @@ public class Spzb implements Serializable {
     private Boolean sfsc;
 
     /**
+     * 直播状态： not_start - 未开始；started - 已开始；finished - 已结束
+     */
+    @ApiModelProperty(value = "直播状态： not_start - 未开始；started - 已开始；finished - 已结束")
+    private String zt;
+
+    /**
      * 创建时间
      */
     @ApiModelProperty(value = "创建时间")
