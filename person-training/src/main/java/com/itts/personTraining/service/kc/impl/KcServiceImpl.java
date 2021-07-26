@@ -83,18 +83,35 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     @Override
     public PageInfo<KcDTO> findByPage(Integer pageNum, Integer pageSize, String kclx, String name, String jylx, String xylx) {
         log.info("【人才培养 - 分页条件查询课程列表,课程类型:{},课程代码/名称:{},学院id:{}】",kclx,name,jylx,xylx);
-        PageHelper.startPage(pageNum, pageSize);
-        List<KcDTO> kcDTOs = kcMapper.findByPage(kclx,name,jylx,xylx);
-        for (KcDTO kcDTO : kcDTOs) {
-            QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
-            kcSzQueryWrapper.eq("kc_id",kcDTO.getId());
-            List<KcSz> kcSzList = kcSzMapper.selectList(kcSzQueryWrapper);
-            List<Long> szIds = new ArrayList<>();
-            for (KcSz kcSz : kcSzList) {
-                szIds.add(kcSz.getSzId());
+        List<KcDTO> kcDTOs = null;
+        if (pageNum == -1) {
+            kcDTOs = kcMapper.findByPage(null,null,null,null);
+            for (KcDTO kcDTO : kcDTOs) {
+                QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
+                kcSzQueryWrapper.eq("kc_id",kcDTO.getId());
+                List<KcSz> kcSzList = kcSzMapper.selectList(kcSzQueryWrapper);
+                List<Long> szIds = new ArrayList<>();
+                for (KcSz kcSz : kcSzList) {
+                    szIds.add(kcSz.getSzId());
+                }
+                kcDTO.setSzIds(szIds);
             }
-            kcDTO.setSzIds(szIds);
+        } else {
+            PageHelper.startPage(pageNum, pageSize);
+            String[] xylxArr = StringUtils.split(xylx,",");
+            kcDTOs = kcMapper.findByPage(kclx,name,jylx,xylxArr);
+            for (KcDTO kcDTO : kcDTOs) {
+                QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
+                kcSzQueryWrapper.eq("kc_id",kcDTO.getId());
+                List<KcSz> kcSzList = kcSzMapper.selectList(kcSzQueryWrapper);
+                List<Long> szIds = new ArrayList<>();
+                for (KcSz kcSz : kcSzList) {
+                    szIds.add(kcSz.getSzId());
+                }
+                kcDTO.setSzIds(szIds);
+            }
         }
+
         return new PageInfo<>(kcDTOs);
     }
 
