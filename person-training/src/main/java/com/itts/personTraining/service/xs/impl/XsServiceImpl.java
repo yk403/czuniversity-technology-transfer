@@ -427,7 +427,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         stuDTO.setGxr(userId);
         Xs xs = new Xs();
         BeanUtils.copyProperties(stuDTO,xs);
-        if (xsService.updateById(xs)) {
+        return xsService.updateById(xs);
+        /*if () {
             List<Long> pcIds = stuDTO.getPcIds();
             if (pcIds != null && pcIds.size() > 0) {
                 HashMap<String, Object> map = new HashMap<>();
@@ -445,7 +446,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 return false;
             }
         }
-        return false;
+        return false;*/
     }
 
     /**

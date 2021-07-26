@@ -29,15 +29,15 @@ public class SzDTO implements Serializable {
 
 
     /**
-     * 导师编号
+     * 编号
      */
-    @ExcelProperty(value = "导师编号", index = 0)
+    @ExcelProperty(value = "编号", index = 0)
     private String dsbh;
 
     /**
-     * 导师姓名
+     * 姓名
      */
-    @ExcelProperty(value = "导师姓名", index = 1)
+    @ExcelProperty(value = "姓名", index = 1)
     private String dsxm;
 
     /**

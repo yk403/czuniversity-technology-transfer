@@ -77,9 +77,9 @@ public class ZjDTO implements Serializable {
     private String xl;
 
     /**
-     * 类型(校内; 校外; 领导)
+     * 类型(校内; 校外)
      */
-    @ExcelProperty(value = "类型(校内; 校外; 领导)", index = 8)
+    @ExcelProperty(value = "类型(校内; 校外)", index = 8)
     private String lx;
 
     /**

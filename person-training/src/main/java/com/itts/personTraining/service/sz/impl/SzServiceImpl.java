@@ -287,8 +287,8 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
                 return szService.save(sz);
             }
         } else {
-            //用户表没有用户信息,新增用户信息,师资表查询是否存在
-            Yh yh = new Yh();
+            //用户表没有用户信息,暂不作处理,师资表查询是否存在
+            /*Yh yh = new Yh();
             yh.setYhbh(dsbh);
             yh.setYhm(dsbh);
             yh.setMm(dsbh);
@@ -302,7 +302,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             }
             Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
             Long yh1Id = yh1.getId();
-            sz.setYhId(yh1Id);
+            sz.setYhId(yh1Id);*/
             Sz sz1 = szService.selectByCondition(dsbh,null, null);
             if (sz1 != null) {
                 //存在,则更新

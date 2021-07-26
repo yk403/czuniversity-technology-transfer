@@ -481,11 +481,9 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 break;
             //管理员
             case "administrator":
-                ;
-                break;
             //校领导
             case "school_leader":
-                ;
+
                 break;
             default:
                 break;
