@@ -43,6 +43,7 @@ public class RmdtAdminController {
 
         return ResponseUtil.success(list);
     }
+    @ApiOperation(value = "使用")
     @PutMapping("/use/{id}")
     public ResponseUtil use(@PathVariable("id") Long id)throws WebException {
         if(id == null){
@@ -53,6 +54,11 @@ public class RmdtAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         return ResponseUtil.success(rmdtService.use(id));
+    }
+    @ApiOperation(value = "新增")
+    @PostMapping("/add/")
+    public ResponseUtil add(@RequestBody Rmdt rmdt)throws WebException{
+        return ResponseUtil.success(rmdtService.save(rmdt));
     }
 }
 
