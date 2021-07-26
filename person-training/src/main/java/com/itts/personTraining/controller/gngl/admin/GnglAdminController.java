@@ -1,10 +1,10 @@
 package com.itts.personTraining.controller.gngl.admin;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.personTraining.model.ggtz.Ggtz;
 import com.itts.personTraining.model.gngl.Gngl;
 import com.itts.personTraining.service.gngl.GnglService;
 import io.swagger.annotations.Api;
@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 
@@ -33,8 +34,11 @@ public class GnglAdminController {
 
     @GetMapping("/list/")
     @ApiOperation(value = "查询功能")
-    public ResponseUtil getList(){
-        return ResponseUtil.success(gnglService.find());
+    public ResponseUtil getList(@RequestParam("jgId") Long jgId){
+
+        List<Gngl> list = gnglService.list(new QueryWrapper<Gngl>().eq(jgId != null, "jg_id", jgId));
+
+        return ResponseUtil.success(list);
     }
     /**
      * 查询
