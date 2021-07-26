@@ -4,7 +4,6 @@ package com.itts.personTraining.controller.lbt.admin;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.personTraining.model.ggtz.Ggtz;
 import com.itts.personTraining.model.lbt.Lbt;
 import com.itts.personTraining.service.lbt.LbtService;
 import io.swagger.annotations.Api;
@@ -92,9 +91,6 @@ public class LbtAdminController {
      */
     private void checkPequest(Lbt lbt) throws WebException{
         if (lbt == null){
-            throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
-        }
-        if (lbt.getMc() == null){
             throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
         }
         if (lbt.getTpmc() == null){
