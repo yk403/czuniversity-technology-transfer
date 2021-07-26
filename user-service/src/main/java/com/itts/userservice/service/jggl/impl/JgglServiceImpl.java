@@ -6,10 +6,10 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.userservice.common.UserServiceCommon;
 import com.itts.userservice.enmus.GroupTypeEnum;
-import com.itts.userservice.feign.persontraining.stgl.StglFeignService;
+import com.itts.userservice.feign.persontraining.gngl.GnglFeignService;
 import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.model.jggl.Jggl;
-import com.itts.userservice.request.stgl.AddStglRequest;
+import com.itts.userservice.request.gngl.AddGnglRequest;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.vo.JgglVO;
 import lombok.extern.slf4j.Slf4j;
@@ -42,31 +42,37 @@ public class JgglServiceImpl implements JgglService {
     private JgglMapper jgglMapper;
 
     @Autowired
-    private StglFeignService stglFeignService;
+    private GnglFeignService gnglFeignService;
 
     /**
-     * 需求大厅简介
+     * 轮播图功能简介
      */
-    @Value(value = "${jdypt.xqdtjj}")
-    private String xqdtjj;
+    @Value(value = "${jdypt.gngl.lbt}")
+    private String lbt;
 
     /**
-     * 技术成果简介
+     * 栏目菜单功能简介
      */
-    @Value(value = "${jdypt.jscgjj}")
-    private String jscgjj;
+    @Value(value = "${jdypt.gngl.lmcd}")
+    private String lmcd;
 
     /**
-     * 教学资源简介
+     * 视图功能简介
      */
-    @Value(value = "${jdypt.jxzyjj}")
-    private String jxzyjj;
+    @Value(value = "${jdypt.gngl.stgn}")
+    private String stgn;
 
     /**
-     * 师资团队
+     * 友情链接功能简介
      */
-    @Value(value = "${jdypt.sztdjj}")
-    private String sztdjj;
+    @Value(value = "${jdypt.gngl.yqlj}")
+    private String yqlj;
+
+    /**
+     * 热门动态功能简介
+     */
+    @Value(value = "${jdypt.gngl.rmdt}")
+    private String rmdt;
 
     @Override
     public PageInfo<Jggl> findPage(Integer pageNum, Integer pageSize, String string, String jgbm, String jglb, String lx) {
@@ -240,39 +246,42 @@ public class JgglServiceImpl implements JgglService {
         jgglMapper.insert(jggl);
 
         //如果是总基地或者分基地， 添加试图管理
-        if(Objects.equals(jggl.getLx(), GroupTypeEnum.HEADQUARTERS.getKey())
-                || Objects.equals(jggl.getLx(), GroupTypeEnum.BRANCH.getKey())){
+        if (Objects.equals(jggl.getLx(), GroupTypeEnum.HEADQUARTERS.getKey())
+                || Objects.equals(jggl.getLx(), GroupTypeEnum.BRANCH.getKey())) {
 
-            for (int i = 1; i <= 4; i++) {
+            Date now = new Date();
 
-                AddStglRequest request = new AddStglRequest();
-                request.setCjr(jggl.getCjr());
-                request.setCjsj(jggl.getCjsj());
-                request.setGxr(jggl.getGxr());
-                request.setGxsj(jggl.getGxsj());
+            for (int i = 1; i <= 5; i++) {
+
+                AddGnglRequest request = new AddGnglRequest();
+
                 request.setJgId(jggl.getId());
-                request.setPx(i + "");
+                request.setSysj(now);
 
                 switch (i) {
                     case 1:
-                        request.setMc("需求大厅");
-                        request.setJj(xqdtjj);
+                        request.setGnmc("轮播图");
+                        request.setGnjs(lbt);
                         break;
                     case 2:
-                        request.setMc("技术成果");
-                        request.setJj(jscgjj);
+                        request.setGnmc("栏目菜单");
+                        request.setGnjs(lmcd);
                         break;
                     case 3:
-                        request.setMc("教学资源");
-                        request.setJj(jxzyjj);
+                        request.setGnmc("视图功能");
+                        request.setGnjs(stgn);
                         break;
                     case 4:
-                        request.setMc("师资团队");
-                        request.setJj(sztdjj);
+                        request.setGnmc("友情链接");
+                        request.setGnjs(yqlj);
+                        break;
+                    case 5:
+                        request.setGnmc("热门动态");
+                        request.setGnjs(rmdt);
                         break;
                 }
 
-                stglFeignService.add(request);
+                gnglFeignService.add(request);
             }
         }
 

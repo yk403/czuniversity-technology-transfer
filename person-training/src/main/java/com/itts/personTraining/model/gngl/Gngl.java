@@ -72,6 +72,4 @@ public class Gngl implements Serializable {
      * 更新人
      */
     private Long gxr;
-
-
 }
