@@ -1,5 +1,6 @@
 package com.itts.personTraining.service.rmdt.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.mapper.rmdt.RmdtMapper;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
@@ -48,6 +50,49 @@ public class RmdtServiceImpl extends ServiceImpl<RmdtMapper, Rmdt> implements Rm
         }
         return true;
     }
+
+    @Override
+    public Boolean up(Long jgId,Long id) {
+        Rmdt rmdt = rmdtMapper.selectById(id);
+        String px = rmdt.getPx();
+        List<Rmdt> rmdts = rmdtMapper.selectList(new QueryWrapper<Rmdt>().eq("jg_id", jgId)
+                .orderByDesc("px"));
+        int s = 0;
+        for (int i = 0; i < rmdts.size(); i++) {
+            if(rmdts.get(i).getId()==rmdt.getId()){
+                s=i;
+            }
+        }
+        Rmdt two = rmdts.get(s + 1);
+        String px1 = two.getPx();
+        two.setPx(px);
+        rmdt.setPx(px1);
+        rmdtMapper.updateById(rmdt);
+        rmdtMapper.updateById(two);
+        return true;
+    }
+
+    @Override
+    public Boolean down(Long jgId,Long id) {
+        Rmdt rmdt = rmdtMapper.selectById(id);
+        String px = rmdt.getPx();
+        List<Rmdt> rmdts = rmdtMapper.selectList(new QueryWrapper<Rmdt>().eq("jg_id", jgId)
+                .orderByAsc("px"));
+        int s=0;
+        for (int i = 0; i < rmdts.size(); i++) {
+            if(rmdts.get(i).getId()==rmdt.getId()){
+                s=i;
+            }
+        }
+        Rmdt two = rmdts.get(s + 1);
+        String px1 = two.getPx();
+        two.setPx(px);
+        rmdt.setPx(px1);
+        rmdtMapper.updateById(rmdt);
+        rmdtMapper.updateById(two);
+        return true;
+    }
+
     /**
      * 获取当前用户id
      * @return

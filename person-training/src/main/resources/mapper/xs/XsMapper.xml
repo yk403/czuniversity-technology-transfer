@@ -56,8 +56,6 @@
         <result column="rxfs" property="rxfs" />
         <result column="ybyyx" property="ybyyx" />
         <result column="xz" property="xz" />
-        <result column="dsbh" property="dsbh" />
-        <result column="dsxm" property="dsxm" />
         <result column="yx" property="yx" />
         <result column="xxxs" property="xxxs" />
         <result column="byjl" property="byjl" />

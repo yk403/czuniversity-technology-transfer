@@ -98,6 +98,18 @@ public class StglAdminController {
         }
         return ResponseUtil.success(stglService.use(id));
     }
+    @ApiOperation(value = "上")
+    @PutMapping("/up/")
+    public ResponseUtil up(@RequestParam(value = "jgId")Long jgId,
+                           @RequestParam(value = "id")Long id)throws WebException{
+        return ResponseUtil.success(stglService.up(jgId, id));
+    }
+    @ApiOperation(value = "下")
+    @PutMapping("/down/")
+    public ResponseUtil down(@RequestParam(value = "jgId")Long jgId,
+                             @RequestParam(value = "id")Long id)throws WebException{
+        return ResponseUtil.success(stglService.down(jgId, id));
+    }
     /**
      * 校验参数是否合法
      */

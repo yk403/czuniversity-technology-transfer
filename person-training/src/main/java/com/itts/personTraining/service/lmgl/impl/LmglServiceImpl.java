@@ -8,6 +8,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.mapper.lmgl.LmglMapper;
 import com.itts.personTraining.model.lbt.Lbt;
 import com.itts.personTraining.model.lmgl.Lmgl;
+import com.itts.personTraining.model.rmdt.Rmdt;
 import com.itts.personTraining.service.lmgl.LmglService;
 import org.springframework.stereotype.Service;
 
@@ -43,11 +44,15 @@ public class LmglServiceImpl extends ServiceImpl<LmglMapper, Lmgl> implements Lm
 
     @Override
     public Lmgl add(Lmgl lmgl) {
+        QueryWrapper<Lmgl> lmglQueryWrapper = new QueryWrapper<>();
+        lmglQueryWrapper.eq("sfsc",false);
+        List<Lmgl> lmgls = lmglMapper.selectList(lmglQueryWrapper);
         Long userId = getUserId();
         lmgl.setCjr(userId);
         lmgl.setCjsj(new Date());
         lmgl.setGxr(userId);
         lmgl.setGxsj(new Date());
+        lmgl.setPx(String.valueOf(lmgls.size()+1));
         lmglMapper.insert(lmgl);
         return lmgl;
     }
@@ -79,6 +84,65 @@ public class LmglServiceImpl extends ServiceImpl<LmglMapper, Lmgl> implements Lm
         lmglMapper.updateById(lmgl);
         return true;
     }
+
+    @Override
+    public Boolean up(Long jgId, Long id) {
+        Lmgl lmgl = lmglMapper.selectById(id);
+        String px = lmgl.getPx();
+        List<Lmgl> lmgls = lmglMapper.selectList(new QueryWrapper<Lmgl>().eq("jg_id", jgId)
+                .orderByDesc("px"));
+        int s = 0;
+        for (int i = 0; i < lmgls.size(); i++) {
+            if(lmgls.get(i).getId()==lmgl.getId()){
+                s=i;
+                break;
+            }
+        }
+        Lmgl two = lmgls.get(s + 1);
+        for (int j = 0; j < lmgls.size(); j++) {
+            if(two.getSfsc()){
+                two=lmgls.get(s+1+j+1);
+            }else if(two.getSfsc()==false){
+                break;
+            }
+        }
+        String px1 = two.getPx();
+        two.setPx(px);
+        lmgl.setPx(px1);
+        lmglMapper.updateById(lmgl);
+        lmglMapper.updateById(two);
+        return true;
+    }
+
+    @Override
+    public Boolean down(Long jgId, Long id) {
+        Lmgl lmgl = lmglMapper.selectById(id);
+        String px = lmgl.getPx();
+        List<Lmgl> lmgls = lmglMapper.selectList(new QueryWrapper<Lmgl>().eq("jg_id", jgId)
+                .orderByAsc("px"));
+        int s=0;
+        for (int i = 0; i < lmgls.size(); i++) {
+            if(lmgls.get(i).getId()==lmgl.getId()){
+                s=i;
+                break;
+            }
+        }
+        Lmgl two = lmgls.get(s + 1);
+        for (int j = 0; j < lmgls.size(); j++) {
+            if(two.getSfsc()){
+                two=lmgls.get(s+1+j+1);
+            }else if(two.getSfsc()==false){
+                break;
+            }
+        }
+        String px1 = two.getPx();
+        two.setPx(px);
+        lmgl.setPx(px1);
+        lmglMapper.updateById(lmgl);
+        lmglMapper.updateById(two);
+        return true;
+    }
+
     /**
      * 获取当前用户id
      * @return

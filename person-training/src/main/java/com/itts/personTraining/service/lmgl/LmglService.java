@@ -28,4 +28,6 @@ public interface LmglService extends IService<Lmgl> {
 
     boolean delete(Long id);
 
+    Boolean up(Long jgId,Long id);
+    Boolean down(Long jgId,Long id);
 }

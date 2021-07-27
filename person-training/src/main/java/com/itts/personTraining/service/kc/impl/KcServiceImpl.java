@@ -98,7 +98,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             }
         } else {
             PageHelper.startPage(pageNum, pageSize);
-            String[] xylxArr = StringUtils.split(xylx,",");
+            String[] xylxArr = xylx.split(",");
             kcDTOs = kcMapper.findByPage(kclx,name,jylx,xylxArr);
             for (KcDTO kcDTO : kcDTOs) {
                 QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
@@ -471,7 +471,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     @Override
     public List<KcDTO> findByXylx(String xylx) {
         log.info("【人才培养 - 根据学员类型:{}查询课程列表】",xylx);
-        String[] xylxArr = StringUtils.split(xylx,",");
+        String[] xylxArr = xylx.split(",");
         List<KcDTO> kcDTOs = kcMapper.findByPage(null,null,null,xylxArr);
         for (KcDTO kcDTO : kcDTOs) {
             QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
