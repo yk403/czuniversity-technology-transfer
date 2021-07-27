@@ -99,7 +99,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         } else {
             PageHelper.startPage(pageNum, pageSize);
             String[] xylxArr = null;
-            if (xylx != null) {
+            if (xylx != null&& !xylx.equals("")) {
                 xylxArr = xylx.split(",");
             }
             kcDTOs = kcMapper.findByPage(kclx,name,jylx,xylxArr);
@@ -114,7 +114,6 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                 kcDTO.setSzIds(szIds);
             }
         }
-
         return new PageInfo<>(kcDTOs);
     }
 
