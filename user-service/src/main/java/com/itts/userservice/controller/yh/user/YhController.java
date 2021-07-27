@@ -15,6 +15,7 @@ import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.service.yh.YhJsGlService;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.GetJsVO;
+import com.itts.userservice.vo.yh.GetSystemsVO;
 import com.itts.userservice.vo.yh.GetYhVO;
 import com.itts.userservice.vo.yh.YhVO;
 import io.swagger.annotations.Api;
@@ -157,6 +158,23 @@ public class YhController {
         }
 
         GetYhVO result = yhService.rpcAdd(yh);
+
+        return ResponseUtil.success(result);
+    }
+
+    /**
+     * 获取当前用户所属哪些系统
+     */
+    @ApiOperation(value = "获取当前用户所属哪些系统")
+    @GetMapping("/find/systems/")
+    public ResponseUtil findSystemByUser() {
+
+        LoginUser loginUser = threadLocal.get();
+        if(loginUser == null){
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        List<GetSystemsVO> result = yhService.findSystems(loginUser.getUserId());
 
         return ResponseUtil.success(result);
     }

@@ -1,9 +1,9 @@
 package com.itts.personTraining.controller.yh.user;
 
-import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.feign.userservice.UserFeignService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +24,20 @@ public class YhController {
 
     @Autowired
     private UserFeignService userFeignService;
+
     /**
      * 获取当前登陆用户信息
      */
     @GetMapping("/get")
     public ResponseUtil get() {
         return userFeignService.get();
+    }
+
+    @ApiOperation(value = "获取用户所属系统")
+    @GetMapping("/find/user/systems/")
+    public ResponseUtil getUserSystems() {
+
+        ResponseUtil result = userFeignService.findUserSystems();
+        return result;
     }
 }

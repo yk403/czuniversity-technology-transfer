@@ -7,9 +7,12 @@ import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.request.yh.AddYhRequest;
 import com.itts.userservice.request.yh.RpcAddYhRequest;
+import com.itts.userservice.vo.yh.GetSystemsVO;
 import com.itts.userservice.vo.yh.GetYhVO;
 import com.itts.userservice.vo.yh.YhListVO;
 import com.itts.userservice.vo.yh.YhVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -25,6 +28,11 @@ public interface YhService extends IService<Yh> {
      * 查询列表
      */
     PageInfo<YhListVO> findByPage(Integer pageNum, Integer pageSize, String type, Jggl group, String condition);
+
+    /**
+     * 获取当前用户所属系统
+     */
+    List<GetSystemsVO> findSystems(Long userId);
 
     /**
      * 查询列表
