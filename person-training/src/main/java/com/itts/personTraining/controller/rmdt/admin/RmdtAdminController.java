@@ -60,5 +60,18 @@ public class RmdtAdminController {
     public ResponseUtil add(@RequestBody Rmdt rmdt)throws WebException{
         return ResponseUtil.success(rmdtService.save(rmdt));
     }
+    @ApiOperation(value = "上")
+    @PutMapping("/up/")
+    public ResponseUtil up(@RequestParam(value = "jgId")Long jgId,
+                           @RequestParam(value = "id")Long id)throws WebException{
+        return ResponseUtil.success(rmdtService.up(jgId, id));
+    }
+    @ApiOperation(value = "下")
+    @PutMapping("/down/")
+    public ResponseUtil down(@RequestParam(value = "jgId")Long jgId,
+                             @RequestParam(value = "id")Long id)throws WebException{
+        return ResponseUtil.success(rmdtService.down(jgId, id));
+    }
+
 }
 
