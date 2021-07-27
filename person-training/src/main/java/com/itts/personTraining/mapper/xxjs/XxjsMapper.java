@@ -19,6 +19,6 @@ public interface XxjsMapper extends BaseMapper<Xxjs> {
      * 查询所有教学楼
      * @return
      */
-    List<String> findAllJxlmc();
+    List<Xxjs> findAllJxlmc();
 
 }

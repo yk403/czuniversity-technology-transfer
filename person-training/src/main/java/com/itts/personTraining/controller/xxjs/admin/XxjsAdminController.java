@@ -52,7 +52,6 @@ public class XxjsAdminController {
         return ResponseUtil.success(xxjsService.findAllJxlmc());
     }
 
-
     /**
      * 根据id查询学校教室详情
      *
