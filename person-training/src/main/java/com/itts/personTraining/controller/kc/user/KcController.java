@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(SystemConstant.BASE_URL + "/v1/kc")
-@Api(tags = "课程学时")
+@Api(tags = "课程-门户")
 public class KcController {
 
     @Autowired
@@ -55,5 +55,16 @@ public class KcController {
         List<Pc> pcList = pcService.findByYh();
         return ResponseUtil.success(pcList);
 
+    }
+    /**
+     * 根据学员类型查询课程列表
+     *
+     * @param xylx
+     * @return
+     */
+    @GetMapping("/findByXylx")
+    @ApiOperation(value = "根据学员类型查询课程列表")
+    public ResponseUtil findByPage(@RequestParam(value = "xylx", required = false) String xylx) {
+        return ResponseUtil.success(kcService.findByXylx(xylx));
     }
 }

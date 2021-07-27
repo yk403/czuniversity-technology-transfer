@@ -86,4 +86,11 @@ public interface KcService extends IService<Kc> {
      * @return
      */
     List<KcbDTO> findByPcId(@Param("pcId") Long pcId);
+
+    /**
+     * 根据学员类型查询课程列表
+     * @param xylx
+     * @return
+     */
+    List<KcDTO> findByXylx(String xylx);
 }

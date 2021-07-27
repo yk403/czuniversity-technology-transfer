@@ -468,6 +468,24 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         return collect;
     }
 
+    @Override
+    public List<KcDTO> findByXylx(String xylx) {
+        log.info("【人才培养 - 根据学员类型:{}查询课程列表】",xylx);
+        String[] xylxArr = StringUtils.split(xylx,",");
+        List<KcDTO> kcDTOs = kcMapper.findByPage(null,null,null,xylxArr);
+        for (KcDTO kcDTO : kcDTOs) {
+            QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
+            kcSzQueryWrapper.eq("kc_id",kcDTO.getId());
+            List<KcSz> kcSzList = kcSzMapper.selectList(kcSzQueryWrapper);
+            List<Long> szIds = new ArrayList<>();
+            for (KcSz kcSz : kcSzList) {
+                szIds.add(kcSz.getSzId());
+            }
+            kcDTO.setSzIds(szIds);
+        }
+        return kcDTOs;
+    }
+
 
     /**
      * 新增课程师资关系
