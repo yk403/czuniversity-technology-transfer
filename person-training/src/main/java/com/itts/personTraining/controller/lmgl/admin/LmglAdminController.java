@@ -35,6 +35,9 @@ public class LmglAdminController {
     @GetMapping("/list/")
     @ApiOperation(value = "查询")
     public ResponseUtil getList(@RequestParam(value = "jgId") Long jgId) {
+        if(jgId == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
         return ResponseUtil.success(lmglService.findList(jgId));
     }
     /**
