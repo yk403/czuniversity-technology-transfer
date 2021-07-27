@@ -110,7 +110,7 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
                 BeanUtils.copyProperties(ksExpDTO, ksExp);
                 if (ksExpService.updateById(ksExp)) {
                     List<Long> szIds = ksExpDTO.getSzIds();
-                    if (szIds != null || szIds.size() > 0) {
+                    if (szIds != null && szIds.size() > 0) {
                         HashMap<String, Object> map = new HashMap<>();
                         Long ksExpId = ksExpDTO.getId();
                         map.put("ks_exp_id", ksExpId);
