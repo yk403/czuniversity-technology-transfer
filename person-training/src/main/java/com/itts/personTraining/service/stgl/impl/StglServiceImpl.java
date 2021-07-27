@@ -7,6 +7,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.mapper.stgl.StglMapper;
 import com.itts.personTraining.model.lmgl.Lmgl;
+import com.itts.personTraining.model.rmdt.Rmdt;
 import com.itts.personTraining.model.stgl.Stgl;
 import com.itts.personTraining.service.stgl.StglService;
 import org.springframework.stereotype.Service;
@@ -94,6 +95,48 @@ public class StglServiceImpl extends ServiceImpl<StglMapper, Stgl> implements St
             stgl.setGxr(userId);
             stglMapper.updateById(stgl);
         }
+        return true;
+    }
+
+    @Override
+    public Boolean up(Long jgId, Long id) {
+        Stgl stgl = stglMapper.selectById(id);
+        String px = stgl.getPx();
+        List<Stgl> stgls = stglMapper.selectList(new QueryWrapper<Stgl>().eq("jg_id", jgId)
+                .orderByDesc("px"));
+        int s = 0;
+        for (int i = 0; i < stgls.size(); i++) {
+            if(stgls.get(i).getId()==stgl.getId()){
+                s=i;
+            }
+        }
+        Stgl two = stgls.get(s + 1);
+        String px1 = two.getPx();
+        two.setPx(px);
+        stgl.setPx(px1);
+        stglMapper.updateById(stgl);
+        stglMapper.updateById(two);
+        return true;
+    }
+
+    @Override
+    public Boolean down(Long jgId, Long id) {
+        Stgl stgl = stglMapper.selectById(id);
+        String px = stgl.getPx();
+        List<Stgl> stgls = stglMapper.selectList(new QueryWrapper<Stgl>().eq("jg_id", jgId)
+                .orderByAsc("px"));
+        int s=0;
+        for (int i = 0; i < stgls.size(); i++) {
+            if(stgls.get(i).getId()==stgl.getId()){
+                s=i;
+            }
+        }
+        Stgl two = stgls.get(s + 1);
+        String px1 = two.getPx();
+        two.setPx(px);
+        stgl.setPx(px1);
+        stglMapper.updateById(stgl);
+        stglMapper.updateById(two);
         return true;
     }
 

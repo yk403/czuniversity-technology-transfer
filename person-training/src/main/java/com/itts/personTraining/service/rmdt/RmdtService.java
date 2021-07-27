@@ -15,4 +15,6 @@ public interface RmdtService extends IService<Rmdt> {
 
 
     Boolean use(Long id);
+    Boolean up(Long jgId,Long id);
+    Boolean down(Long jgId,Long id);
 }

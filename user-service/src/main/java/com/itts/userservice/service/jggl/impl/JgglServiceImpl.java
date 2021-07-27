@@ -268,10 +268,12 @@ public class JgglServiceImpl implements JgglService {
                     case 1:
                         addRmdtRequest.setMc("新闻");
                         addRmdtRequest.setJj(xw);
+                        addRmdtRequest.setPx("1");
                         break;
                     case 2:
                         addRmdtRequest.setMc("公告");
                         addRmdtRequest.setJj(gg);
+                        addRmdtRequest.setPx("2");
                         break;
                 }
                 rmdtFeignService.add(addRmdtRequest);

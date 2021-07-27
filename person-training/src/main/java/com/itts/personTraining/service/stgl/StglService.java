@@ -26,4 +26,6 @@ public interface StglService extends IService<Stgl> {
 
     boolean delete(Long id);
     boolean use(Long id);
+    Boolean up(Long jgId,Long id);
+    Boolean down(Long jgId,Long id);
 }
