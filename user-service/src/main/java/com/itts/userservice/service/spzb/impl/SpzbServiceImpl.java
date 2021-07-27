@@ -63,7 +63,7 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
      * @author liuyingming
      */
     @Override
-    public PageInfo<Spzb> findByPage(Integer pageNum, Integer pageSize, String name, String videoType) {
+    public PageInfo<Spzb> findByPage(Integer pageNum, Integer pageSize, String name, Long courseId, String videoType) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -76,6 +76,10 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
 
         if (StringUtils.isNotBlank(videoType)) {
             query.eq("splx", videoType);
+        }
+
+        if (courseId != null) {
+            query.eq("kc_id", courseId);
         }
 
         query.orderByDesc("cjsj");
