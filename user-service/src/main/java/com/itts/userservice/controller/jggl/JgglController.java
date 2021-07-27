@@ -128,6 +128,22 @@ public class JgglController {
     }
 
     /**
+    *通过编码获取数据
+    */
+    @GetMapping("/get/by/code/")
+    @ApiOperation(value = "获取详情")
+    public ResponseUtil getByCode(@RequestParam("code") String code){
+
+        if(StringUtils.isBlank(code)){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        Jggl jggl = jgglService.getOne(new QueryWrapper<Jggl>().eq("sfsc", false).eq("jgbm", code));
+
+        return ResponseUtil.success(jggl);
+    }
+
+    /**
      * 新增
      */
     @PostMapping("/add/")

@@ -1,5 +1,6 @@
 package com.itts.userservice.service.jggl;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.vo.JgglVO;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author fl
  * @since 2021-03-30
  */
-public interface JgglService {
+public interface JgglService extends IService<Jggl> {
 
     /**
      * 获取列表 - 分页

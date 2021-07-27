@@ -1,14 +1,19 @@
 package com.itts.personTraining.controller.gngl.user;
 
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.feign.userservice.GroupFeignService;
 import com.itts.personTraining.model.gngl.Gngl;
 import com.itts.personTraining.service.gngl.GnglService;
+import com.itts.personTraining.vo.jggl.JgglVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,11 +37,32 @@ public class GnglController {
     @Resource
     private GnglService gnglService;
 
+    @Autowired
+    private GroupFeignService groupFeignService;
+
     @GetMapping("/list/")
     @ApiOperation(value = "查询功能")
-    public ResponseUtil getList(@RequestParam("jgId") Long jgId) {
+    public ResponseUtil getList(@RequestParam("jgCode") String jgCode) {
 
-        List<Gngl> list = gnglService.list(new QueryWrapper<Gngl>().eq(jgId != null, "jg_id", jgId));
+        if(StringUtils.isBlank(jgCode)){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        ResponseUtil response = groupFeignService.getByCode(jgCode);
+        if(response == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if(response.getErrCode().intValue() != 0){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        JgglVO jgglVO = response.conversionData(new TypeReference<JgglVO>(){});
+        if(jgglVO == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        List<Gngl> list = gnglService.list(new QueryWrapper<Gngl>().eq(jgglVO.getId() != null, "jg_id", jgglVO.getId()));
 
         return ResponseUtil.success(list);
     }

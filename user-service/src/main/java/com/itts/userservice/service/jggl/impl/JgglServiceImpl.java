@@ -1,6 +1,7 @@
 package com.itts.userservice.service.jggl.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
@@ -38,7 +39,7 @@ import static com.itts.common.constant.SystemConstant.threadLocal;
  */
 @Slf4j
 @Service
-public class JgglServiceImpl implements JgglService {
+public class JgglServiceImpl extends ServiceImpl<JgglMapper, Jggl> implements JgglService {
 
     @Resource
     private JgglMapper jgglMapper;
