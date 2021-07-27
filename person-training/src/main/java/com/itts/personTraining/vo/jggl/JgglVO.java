@@ -1,30 +1,23 @@
-package com.itts.userservice.model.jggl;
+package com.itts.personTraining.vo.jggl;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * <p>
- *
- * </p>
- *
- * @author liuyingming
- * @since 2021-04-09
+ * @Description：
+ * @Author：lym
+ * @Date: 2021/7/27
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("t_jggl")
-public class Jggl implements Serializable {
+public class JgglVO implements Serializable {
 
-    private static final long serialVersionUID = -3816105986737417996L;
+    private static final long serialVersionUID = 7724417164069632149L;
 
     /**
      * 主键ID

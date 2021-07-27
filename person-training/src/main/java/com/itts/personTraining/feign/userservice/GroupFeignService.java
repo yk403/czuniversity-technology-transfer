@@ -19,4 +19,10 @@ public interface GroupFeignService {
     @GetMapping("/admin/api/v1/jggl/find/base/list/")
     ResponseUtil findBaseList(@RequestParam("jgId") Long jgId);
 
+    /**
+     * 通过编码获取机构信息
+     */
+    @GetMapping("/api/v1/jggl/get/by/code/")
+    ResponseUtil getByCode(@RequestParam(value = "code") String code);
+
 }
