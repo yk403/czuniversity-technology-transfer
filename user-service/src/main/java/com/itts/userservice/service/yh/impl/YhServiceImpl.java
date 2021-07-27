@@ -16,12 +16,16 @@ import com.itts.userservice.enmus.UserCategoryEnum;
 import com.itts.userservice.enmus.UserTypeEnum;
 import com.itts.userservice.feign.persontraining.jdxy.JdxyRpcService;
 import com.itts.userservice.feign.persontraining.szgl.SzglRpcService;
+import com.itts.userservice.mapper.cd.CdMapper;
 import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.mapper.js.JsMapper;
+import com.itts.userservice.mapper.sjzd.SjzdMapper;
 import com.itts.userservice.mapper.yh.YhJsGlMapper;
 import com.itts.userservice.mapper.yh.YhMapper;
+import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.js.Js;
+import com.itts.userservice.model.sjzd.Sjzd;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.model.yh.YhJsGl;
 import com.itts.userservice.request.jsxy.AddJdxyRequest;
@@ -29,6 +33,7 @@ import com.itts.userservice.request.szgl.AddSzglRequest;
 import com.itts.userservice.request.yh.AddYhRequest;
 import com.itts.userservice.request.yh.RpcAddYhRequest;
 import com.itts.userservice.service.yh.YhService;
+import com.itts.userservice.vo.yh.GetSystemsVO;
 import com.itts.userservice.vo.yh.GetYhVO;
 import com.itts.userservice.vo.yh.YhListVO;
 import com.itts.userservice.vo.yh.YhVO;
@@ -43,10 +48,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -73,6 +77,9 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
     @Resource
     private JsMapper jsMapper;
 
+    @Autowired
+    private CdMapper cdMapper;
+
     @Resource
     private YhJsGlMapper yhJsGlMapper;
 
@@ -81,6 +88,9 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
 
     @Autowired
     private SzglRpcService szglRpcService;
+
+    @Autowired
+    private SjzdMapper sjzdMapper;
 
     /**
      * 获取列表 - 分页
@@ -103,6 +113,59 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
         PageInfo<YhListVO> page = new PageInfo(list);
         page.setList(yhListVOs);
         return page;
+    }
+
+    /**
+     * 获取当前用户所属系统
+     */
+    @Override
+    public List<GetSystemsVO> findSystems(Long userId) {
+
+        List<Js> jsList = jsMapper.findByYhId(userId);
+        if (CollectionUtils.isEmpty(jsList)) {
+            return null;
+        }
+
+        List<Long> jsIds = jsList.stream().map(Js::getId).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(jsIds)) {
+            return null;
+        }
+
+        //获取当前用户菜单所属哪些系统
+        List<Cd> cds = cdMapper.findByJsId(jsIds);
+        if (CollectionUtils.isEmpty(cds)) {
+            return null;
+        }
+
+        Set<String> cdSystems = cds.stream().map(Cd::getXtlx).collect(Collectors.toSet());
+        if (CollectionUtils.isEmpty(cdSystems)) {
+            return null;
+        }
+
+        List<Sjzd> sjzds = sjzdMapper.findBySsmk(null, null, "system_type");
+        if(CollectionUtils.isEmpty(sjzds)){
+            return null;
+        }
+        Map<String, Sjzd> sjzdMap = sjzds.stream().collect(Collectors.toMap(Sjzd::getZdbm, Function.identity()));
+
+        //设置返回菜单信息
+        List<GetSystemsVO> result = cdSystems.stream().map(obj -> {
+
+            GetSystemsVO vo = new GetSystemsVO();
+
+            Sjzd thisSjzd = sjzdMap.get(obj);
+            if (thisSjzd != null) {
+
+
+                vo.setBm(thisSjzd.getZdbm());
+                vo.setMc(thisSjzd.getZdmc());
+            }
+
+            return vo;
+
+        }).collect(Collectors.toList());
+
+        return result;
     }
 
     @Override

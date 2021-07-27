@@ -18,8 +18,16 @@ public interface UserFeignService {
     ResponseUtil get();
 
     /**
+     * 获取用户所属系统
+     */
+    @GetMapping(SystemConstant.BASE_URL + "/v1/yh/find/systems/")
+    ResponseUtil findUserSystems();
+
+    /**
      * 更新用户信息
      */
     @PutMapping(SystemConstant.BASE_URL + "/v1/yh/update/")
     ResponseUtil update(@RequestBody UpdateUserRequest updateUserRequest);
+
+
 }

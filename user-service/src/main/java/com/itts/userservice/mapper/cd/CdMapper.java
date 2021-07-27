@@ -51,4 +51,17 @@ public interface CdMapper extends BaseMapper<Cd> {
     Long countByParentId(@Param("parentId") Long parentId);
 
     List<Cd> selectByParameterList(@Param("parameter")String parameter,@Param("systemType") String systemType,@Param("modelType") String modelType);
+
+    @Select("<script> " +
+            "SELECT cd.* FROM t_cd cd " +
+            "    LEFT JOIN t_js_cd_gl jcg on cd.id = jcg.cd_id " +
+            "WHERE cd.sfsc = false " +
+            "   <if test='jsIds != null and jsIds.size() > 0'> " +
+            "       AND jcg.js_id IN " +
+            "       <foreach item='jsId' collection='jsIds' separator=',' open='(' close=')'> " +
+            "           #{jsId} " +
+            "     </foreach>" +
+            "   </if> " +
+            "</script>")
+    List<Cd> findByJsId(List<Long> jsIds);
 }
