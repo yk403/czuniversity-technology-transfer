@@ -162,9 +162,9 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
      * @return
      */
     @Override
-    public List<String> findAllJxlmc() {
+    public List<Xxjs> findAllJxlmc() {
         log.info("【人才培养 - 查询所有教学楼】");
-        List<String> jxlmcList = xxjsMapper.findAllJxlmc();
+        List<Xxjs> jxlmcList = xxjsMapper.findAllJxlmc();
         return jxlmcList;
     }
 

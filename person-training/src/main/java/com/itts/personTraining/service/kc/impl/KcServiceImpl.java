@@ -98,7 +98,10 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             }
         } else {
             PageHelper.startPage(pageNum, pageSize);
-            String[] xylxArr = xylx.split(",");
+            String[] xylxArr = null;
+            if (xylx != null) {
+                xylxArr = xylx.split(",");
+            }
             kcDTOs = kcMapper.findByPage(kclx,name,jylx,xylxArr);
             for (KcDTO kcDTO : kcDTOs) {
                 QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();

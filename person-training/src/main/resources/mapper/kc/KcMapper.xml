@@ -37,9 +37,11 @@
             kc.sfsc = false
             <if test="kclx != null and kclx != ''"> and kc.kclx like trim(#{kclx}) </if>
             <if test="jylx != null and jylx != ''"> and kc.jylx like trim(#{jylx}) </if>
+            <if test="xylxArr != null and xylxArr != ''">
             and kc.xylx in <foreach collection="xylxArr" open="(" close=")" separator="," item="xylxArr">
                 #{xylxArr}
             </foreach>
+            </if>
             <if test="name != null and name != ''"> and (kc.kcdm like concat('%',trim(#{name}),'%') or kc.kcmc like concat('%',trim(#{name}),'%'))</if>
         </where>
         order by field(kc.kclx,'theory_class','practice_course','practical_training'), kc.cjsj desc
