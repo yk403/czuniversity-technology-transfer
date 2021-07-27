@@ -50,7 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/LyHz/list","/api/v1/LyLy/list","/api/v1/LyZp/list","/api/v1/LyZw/list","/api/v1/JsXq/PageByTJsFb",
             "/api/v1/JsHd/pageFront1","/api/v1/sjzd/list/**","/admin/api/v1/sjzd/list/**","/admin/api/v1/zj/list/**","/api/v1/zj/list/**",
             "/api/v1/LyHd/list","/api/v1/LyHz/list","/api/v1/LyHd/getById/**","/api/test/get/**","/api/v1/Fjzy/page","/api/v1/Fjzy/getById/**",
-            "/api/v1/LyRy/list", "/api/v1/xxzy/pay/**", "/api/v1/yh/rpc/add/","/api/v1/jjrpxjh/sign/up/","/api/v1/jjrpxjh/getJjrpxjh/","/admin/api/v1/sjzd/list/","/api/v1/pc/getByDictionary"
+            "/api/v1/LyRy/list", "/api/v1/xxzy/pay/**", "/api/v1/yh/rpc/add/","/api/v1/jjrpxjh/sign/up/","/api/v1/jjrpxjh/getJjrpxjh/","/admin/api/v1/sjzd/list/"
+            ,"/api/v1/pc/getByDictionary", "/api/v1/gngl/**"
     };
 
     @Override

@@ -26,7 +26,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
  */
 @RestController
 @RequestMapping(BASE_URL + "/v1/gngl")
-@Api(tags = "功能管理")
+@Api(tags = "功能管理 - 门户")
 public class GnglController {
 
     @Resource
