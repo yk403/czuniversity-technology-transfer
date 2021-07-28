@@ -25,6 +25,7 @@ import java.util.List;
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
+import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
 
 /**
  * <p>
@@ -56,11 +57,11 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
      * @return
      */
     @Override
-    public List<KsExpDTO> get(Long id,Long ksId) {
-        log.info("【人才培养 - 根据考试扩展id:{},考试id:{}查询考试扩展信息】",id,ksId);
+    public List<KsExpDTO> get(Long id,Long ksId,String jylx) {
+        log.info("【人才培养 - 根据考试扩展id:{},考试id:{},教育类型:{}查询考试扩展信息】",id,ksId,jylx);
         KsExp ksExp = ksExpMapper.selectById(id);
         List<KsExpDTO> ksExpDTOs;
-        if (ksExp.getXxjsId() != null) {
+        if (jylx.equals(ACADEMIC_DEGREE_EDUCATION.getKey())) {
             //学位学历教育
             ksExpDTOs = ksExpMapper.findByCondition(id,ksId);
             for (KsExpDTO ksExpDTO : ksExpDTOs) {
@@ -76,16 +77,14 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
 
     /**
      * 根据考试扩展id删除考试扩展信息
-     * @param ksExpDTO
+     * @param ksExp
      * @return
      */
     @Override
-    public boolean delete(KsExpDTO ksExpDTO) {
-        log.info("【人才培养 - 根据考试扩展id:{}删除考试扩展信息】",ksExpDTO.getId());
-        ksExpDTO.setSfsc(true);
-        ksExpDTO.setGxr(getUserId());
-        KsExp ksExp = new KsExp();
-        BeanUtils.copyProperties(ksExpDTO,ksExp);
+    public boolean delete(KsExp ksExp) {
+        log.info("【人才培养 - 根据考试扩展id:{}删除考试扩展信息】",ksExp.getId());
+        ksExp.setSfsc(true);
+        ksExp.setGxr(getUserId());
         if (ksExpService.updateById(ksExp)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("ks_exp_id",ksExp.getId());

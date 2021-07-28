@@ -63,6 +63,11 @@ public class KsDTO {
     private String pch;
 
     /**
+     * 教育类型
+     */
+    private String jylx;
+
+    /**
      * 考试名称
      */
     @ApiModelProperty(value = "考试名称")

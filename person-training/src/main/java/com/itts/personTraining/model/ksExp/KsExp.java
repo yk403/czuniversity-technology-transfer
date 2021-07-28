@@ -8,6 +8,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.ibatis.type.JdbcType;
 
 /**
  * <p>
@@ -33,11 +34,13 @@ public class KsExp implements Serializable {
     /**
      * 考试ID
      */
+    @TableField(value = "ks_id",updateStrategy = FieldStrategy.IGNORED,jdbcType = JdbcType.BIGINT)
     private Long ksId;
 
     /**
      * 学校教室ID
      */
+    @TableField(value = "xxjs_id",updateStrategy = FieldStrategy.IGNORED,jdbcType = JdbcType.BIGINT)
     private Long xxjsId;
 
     /**
@@ -49,16 +52,19 @@ public class KsExp implements Serializable {
      * 考试日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @TableField(value = "ksrq",updateStrategy = FieldStrategy.IGNORED,jdbcType = JdbcType.DATE)
     private Date ksrq;
 
     /**
      * 考试开始时间
      */
+    @TableField(value = "kskssj",updateStrategy = FieldStrategy.IGNORED,jdbcType = JdbcType.VARCHAR)
     private String kskssj;
 
     /**
      * 考试结束时间
      */
+    @TableField(value = "ksjssj",updateStrategy = FieldStrategy.IGNORED,jdbcType = JdbcType.VARCHAR)
     private String ksjssj;
 
     /**

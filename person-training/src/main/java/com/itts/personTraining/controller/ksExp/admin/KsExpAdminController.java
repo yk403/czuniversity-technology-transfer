@@ -5,6 +5,7 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.KcDTO;
 import com.itts.personTraining.dto.KsExpDTO;
+import com.itts.personTraining.model.ksExp.KsExp;
 import com.itts.personTraining.service.ksExp.KsExpService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,8 +45,9 @@ public class KsExpAdminController {
     @GetMapping("/get")
     @ApiOperation(value = "根据条件查询考试扩展信息")
     public ResponseUtil get(@RequestParam(value = "id", required = false) Long id,
-                            @RequestParam(value = "ksId", required = false) Long ksId) {
-        return ResponseUtil.success(ksExpService.get(id,ksId));
+                            @RequestParam(value = "ksId", required = false) Long ksId,
+                            @RequestParam(value = "jylx") String jylx) {
+        return ResponseUtil.success(ksExpService.get(id,ksId,jylx));
     }
 
     /**
@@ -94,12 +96,12 @@ public class KsExpAdminController {
     @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "根据考试扩展id删除考试扩展信息")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
-        List<KsExpDTO> ksExpDTOs = ksExpService.get(id,null);
-        if (ksExpDTOs == null || ksExpDTOs.size() == 0) {
+        KsExp ksExp = ksExpService.getById(id);
+        if (ksExp == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新删除状态
-        if (!ksExpService.delete(ksExpDTOs.get(0))) {
+        if (!ksExpService.delete(ksExp)) {
             throw new WebException(DELETE_FAIL);
         }
         return ResponseUtil.success("删除考试扩展信息成功!");
