@@ -63,5 +63,5 @@ public interface CdMapper extends BaseMapper<Cd> {
             "     </foreach>" +
             "   </if> " +
             "</script>")
-    List<Cd> findByJsId(List<Long> jsIds);
+    List<Cd> findByJsId(@Param("jsIds") List<Long> jsIds);
 }
