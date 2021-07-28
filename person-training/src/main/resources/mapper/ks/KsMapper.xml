@@ -65,7 +65,7 @@
         id, pc_id, ksmc, kslx, kslb, sfxf, sfsc, cjsj, cjr, gxsj, gxr, xfsj
     </sql>
     <select id="findByPage" resultType="com.itts.personTraining.dto.KsDTO">
-        select ks.id, pc_id, pc.pch, ks.type, kssj_id, kssjmc, ksmc, kslx, kslb, ks.ksrq, ks.ksdd, ks.kskssj, ks.ksjssj, ks.kssc, ks.ksksnyr, ks.ksjsnyr, ks.sfxf, ks.sfsc, ks.cjsj, ks.cjr, ks.gxsj, ks.gxr, ks.xfsj
+        select ks.id, pc_id, pc.pch, pc.jylx, ks.type, kssj_id, kssjmc, ksmc, kslx, kslb, ks.ksrq, ks.ksdd, ks.kskssj, ks.ksjssj, ks.kssc, ks.ksksnyr, ks.ksjsnyr, ks.sfxf, ks.sfsc, ks.cjsj, ks.cjr, ks.gxsj, ks.gxr, ks.xfsj
         from t_ks ks left join t_pc pc on (ks.pc_id=pc.id)
         <where>
             ks.sfsc = false and pc.sfsc = false

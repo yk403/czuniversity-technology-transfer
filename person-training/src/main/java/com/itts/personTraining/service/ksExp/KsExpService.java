@@ -20,16 +20,17 @@ public interface KsExpService extends IService<KsExp> {
      * 根据条件查询考试扩展信息
      * @param id
      * @param ksId
+     * @param jylx
      * @return
      */
-    List<KsExpDTO> get(Long id,Long ksId);
+    List<KsExpDTO> get(Long id,Long ksId,String jylx);
 
     /**
      * 根据考试扩展id删除考试扩展信息
-     * @param ksExpDTO
+     * @param ksExp
      * @return
      */
-    boolean delete(KsExpDTO ksExpDTO);
+    boolean delete(KsExp ksExp);
 
     /**
      * 更新考试扩展信息
