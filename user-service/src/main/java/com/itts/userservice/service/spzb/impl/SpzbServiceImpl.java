@@ -11,6 +11,7 @@ import com.itts.userservice.config.MqConfig;
 import com.itts.userservice.enmus.HuaWeiAssetTypeEnum;
 import com.itts.userservice.enmus.HuaWeiTranscodeStatusEnum;
 import com.itts.userservice.enmus.VideoEnum;
+import com.itts.userservice.enmus.VideoStatusEnum;
 import com.itts.userservice.mapper.spzb.SpzbMapper;
 import com.itts.userservice.model.spzb.Spzb;
 import com.itts.userservice.response.thirdparty.GetAssetInfoResponse;
@@ -187,6 +188,7 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
         spzb.setObslj(response.getObsObject());
         spzb.setMsxx(response.getErrorMessage());
         spzb.setSplx(VideoEnum.RECORDING.getCode());
+        spzb.setZt(VideoStatusEnum.FINISHED.getKey());
 
         spzb.setGxsj(new Date());
 
