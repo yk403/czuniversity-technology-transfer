@@ -113,10 +113,8 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
                         HashMap<String, Object> map = new HashMap<>();
                         Long ksExpId = ksExpDTO.getId();
                         map.put("ks_exp_id", ksExpId);
-                        if (szKsExpService.removeByMap(map)) {
-                            return saveSzKsExp(szIds, ksExpId);
-                        }
-                        return false;
+                        szKsExpService.removeByMap(map);
+                        return saveSzKsExp(szIds, ksExpId);
                     }
                     return true;
                 }

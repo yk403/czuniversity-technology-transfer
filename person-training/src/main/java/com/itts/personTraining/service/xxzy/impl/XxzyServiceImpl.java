@@ -108,7 +108,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             query.eq("zylx", category);
         }
 
-        if(groupId == null){
+        if(groupId != null){
             query.eq("jg_id", groupId);
         }
 
