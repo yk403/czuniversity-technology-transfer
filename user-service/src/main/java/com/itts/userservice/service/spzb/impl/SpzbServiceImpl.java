@@ -186,6 +186,7 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
         spzb.setObst(response.getObsBucket());
         spzb.setObslj(response.getObsObject());
         spzb.setMsxx(response.getErrorMessage());
+        spzb.setSplx(VideoEnum.RECORDING.getCode());
 
         spzb.setGxsj(new Date());
 
