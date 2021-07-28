@@ -198,7 +198,7 @@ public class SpzbAdminController {
         }
 
         if(spzb.getKssj().getTime() >= spzb.getJssj().getTime()){
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+            throw new WebException(ErrorCodeEnum.USER_VIDEO_DATE_ERROR);
         }
 
         if (StringUtils.isBlank(spzb.getZbmc())) {
