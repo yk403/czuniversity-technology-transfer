@@ -55,6 +55,7 @@ public class KcsjServiceImpl extends ServiceImpl<KcsjMapper, Kcsj> implements Kc
         PageHelper.startPage(pageNum, pageSize);
 
         QueryWrapper query = new QueryWrapper();
+        query.eq("sfsc",false);
         query.orderByAsc("kssj");
         List<Kcsj> kcsjs = kcsjMapper.selectList(query);
 
