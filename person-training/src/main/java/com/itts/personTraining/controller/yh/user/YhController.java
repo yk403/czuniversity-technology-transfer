@@ -1,6 +1,11 @@
 package com.itts.personTraining.controller.yh.user;
 
+import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.SystemConstant;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.feign.userservice.RoleFeignService;
 import com.itts.personTraining.feign.userservice.UserFeignService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +30,9 @@ public class YhController {
     @Autowired
     private UserFeignService userFeignService;
 
+    @Autowired
+    private RoleFeignService roleFeignService;
+
     /**
      * 获取当前登陆用户信息
      */
@@ -38,6 +46,20 @@ public class YhController {
     public ResponseUtil getUserSystems() {
 
         ResponseUtil result = userFeignService.findUserSystems();
+        return result;
+    }
+
+    @ApiOperation(value = "获取用户角色信息")
+    @GetMapping("/find/user/role/")
+    public ResponseUtil getUserRole(){
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if(loginUser == null){
+            throw new WebException(ErrorCodeEnum.NO_LOGIN_ERROR);
+        }
+
+        ResponseUtil result = roleFeignService.getByUserId(loginUser.getUserId());
+
         return result;
     }
 }
