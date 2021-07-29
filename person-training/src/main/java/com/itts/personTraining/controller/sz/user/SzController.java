@@ -38,9 +38,9 @@ public class SzController {
     /**
      * 根据机构编号查询师资信息
      */
-    @GetMapping("/getByJgBh/{code}")
+    @GetMapping("/getByJgBh")
     @ApiOperation(value = "根据机构编号查询师资信息")
-    public ResponseUtil getByJgBh(@PathVariable("code") String code) {
+    public ResponseUtil getByJgBh(@RequestParam("code") String code) {
         return ResponseUtil.success(szService.getByJgBh(code));
     }
 }
