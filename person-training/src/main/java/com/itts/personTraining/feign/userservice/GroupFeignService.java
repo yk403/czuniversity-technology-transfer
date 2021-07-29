@@ -22,7 +22,7 @@ public interface GroupFeignService {
     /**
      * 通过编码获取机构信息
      */
-    @GetMapping("/api/v1/jggl/get/by/code/")
+    @GetMapping("/admin/api/v1/jggl/get/by/code/")
     ResponseUtil getByCode(@RequestParam(value = "code") String code);
 
 }
