@@ -11,8 +11,10 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.SzMsgDTO;
 import com.itts.personTraining.enums.UserTypeEnum;
+import com.itts.personTraining.feign.userservice.JgglFeignService;
 import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.mapper.tzSz.TzSzMapper;
+import com.itts.personTraining.model.jggl.Jggl;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.model.yh.GetYhVo;
@@ -53,6 +55,8 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
     private YhService yhService;
     @Autowired
     private UserFeignService userFeignService;
+    @Autowired
+    private JgglFeignService jgglFeignService;
     @Resource
     private SzMapper szMapper;
     @Resource
@@ -245,6 +249,21 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
                 break;
         }
         return szMsgDTO;
+    }
+
+    /**
+     * 根据机构编号查询师资信息
+     * @param code
+     * @return
+     */
+    @Override
+    public Sz getByJgBh(String code) {
+        Object data = jgglFeignService.getByCode(code).getData();
+        Jggl jggl = JSONObject.parseObject(JSON.toJSON(data).toString(), Jggl.class);
+        if (jggl != null) {
+            return szService.getOne(new QueryWrapper<Sz>().eq("ssjg_id", jggl.getId()).eq("sfsc", false));
+        }
+        return null;
     }
 
     /**

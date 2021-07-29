@@ -1,5 +1,6 @@
 package com.itts.personTraining.controller.kcsj.admin;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
@@ -88,7 +89,7 @@ public class KcsjController {
         checkKcsj(kcsj);
 
         //获取数据库中排课时间，判断时间是否合法
-        List<Kcsj> kcsjs = kcsjService.list();
+        List<Kcsj> kcsjs = kcsjService.list(new QueryWrapper<Kcsj>().eq("sfsc",false));
         if (!CollectionUtils.isEmpty(kcsjs)) {
 
             for (Kcsj dbKcsj : kcsjs) {

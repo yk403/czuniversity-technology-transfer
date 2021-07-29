@@ -82,4 +82,11 @@ public interface SzService extends IService<Sz> {
      * @return
      */
     SzMsgDTO getByYhId();
+
+    /**
+     * 根据机构编号查询师资信息
+     * @param code
+     * @return
+     */
+    Sz getByJgBh(String code);
 }
