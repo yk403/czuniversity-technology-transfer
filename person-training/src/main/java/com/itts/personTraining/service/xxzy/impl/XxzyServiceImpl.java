@@ -14,6 +14,7 @@ import com.itts.common.utils.common.CommonUtils;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.feign.paymentservice.OrderFeignService;
+import com.itts.personTraining.feign.userservice.GroupFeignService;
 import com.itts.personTraining.mapper.fjzy.FjzyMapper;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.mapper.sz.SzMapper;
@@ -31,6 +32,7 @@ import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
 import com.itts.personTraining.request.xxzy.UpdateXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
 import com.itts.personTraining.vo.ddxfjl.GetDdxfjlVO;
+import com.itts.personTraining.vo.jggl.JgglVO;
 import com.itts.personTraining.vo.xxzy.GetXxzyVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -69,6 +71,9 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
     private OrderFeignService orderFeignService;
 
     @Autowired
+    private GroupFeignService groupFeignService;
+
+    @Autowired
     private KcMapper kcMapper;
 
     @Autowired
@@ -79,7 +84,8 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
      */
     @Override
     public PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type,
-                               String firstCategory, String secondCategory, String category, Long courseId, String condition, Long groupId) {
+                               String firstCategory, String secondCategory, String category,
+                               Long courseId, String condition, Long groupId, String groupCode) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -110,6 +116,19 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
         if(groupId != null){
             query.eq("jg_id", groupId);
+        }
+
+        if(StringUtils.isNotBlank(groupCode)){
+            ResponseUtil response = groupFeignService.getByCode(groupCode);
+            if(response.getErrCode().intValue() == 0){
+
+                JgglVO jg = response.conversionData(new TypeReference<JgglVO>() {
+                });
+
+                if(jg != null){
+                    query.eq("jg_id", jg.getId());
+                }
+            }
         }
 
         query.orderByDesc("cjsj");

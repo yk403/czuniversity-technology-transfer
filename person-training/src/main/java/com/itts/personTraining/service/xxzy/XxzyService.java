@@ -33,7 +33,7 @@ public interface XxzyService extends IService<Xxzy> {
      */
     PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
                                String secondCategory, String category, String direction, Long courseId,
-                               String condition, Long groupId);
+                               String condition, Long groupId, String groupCode);
 
     /**
      * 获取云课堂课程列表

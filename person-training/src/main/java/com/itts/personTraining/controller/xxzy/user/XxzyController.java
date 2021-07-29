@@ -56,9 +56,10 @@ public class XxzyController {
                              @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction,
                              @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
                              @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
-                             @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId) {
+                             @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId,
+                             @ApiParam(value = "机构编码") @RequestParam(value = "groupCode", required = false) String groupCode) {
 
-        PageInfo<GetXxzyVO> result = xxzyService.listVO(pageNum, pageSize, type, firstCategory, secondCategory, category, direction, courseId, condition, groupId);
+        PageInfo<GetXxzyVO> result = xxzyService.listVO(pageNum, pageSize, type, firstCategory, secondCategory, category, direction, courseId, condition, groupId, groupCode);
 
         return ResponseUtil.success(result);
     }
