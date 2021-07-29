@@ -407,7 +407,7 @@ public class CdServiceImpl implements CdService {
     public Cd update(AddCdRequest cd, Cd old) {
 
         //浅拷贝，更新的数据覆盖已存数据,并过滤指定字段
-        BeanUtils.copyProperties(cd, old, "id", "chsj", "cjr");
+        BeanUtils.copyProperties(cd, old, "id", "cjsj", "cjr");
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         if (loginUser != null) {

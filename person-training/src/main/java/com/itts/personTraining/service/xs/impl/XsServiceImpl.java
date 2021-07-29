@@ -13,6 +13,8 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.JwglDTO;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.enums.SsmkEnum;
+import com.itts.personTraining.feign.userservice.SjzdFeignService;
 import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.mapper.ksXs.KsXsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
@@ -22,6 +24,7 @@ import com.itts.personTraining.mapper.tzXs.TzXsMapper;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pcXs.PcXs;
+import com.itts.personTraining.model.sjzd.Sjzd;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.yh.GetYhVo;
@@ -91,6 +94,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     @Resource
     private TzXsMapper tzXsMapper;
 
+    @Resource
+    private SjzdFeignService sjzdFeignService;
     /**
      * 查询学员列表
      * @param pageNum
@@ -109,6 +114,40 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             stuDTO.setPcIds(pcIds);
         }
         return new PageInfo<>(stuDTOList);
+    }
+
+    @Override
+    public List<StuDTO> findExport(Long pcId, String xslbmc, String jyxs, String name) {
+        List<StuDTO> stuDTOList = xsMapper.findXsList(pcId,xslbmc,jyxs,name);
+        List<Sjzd> data1 = (List<Sjzd>)sjzdFeignService.getList(null, null, SsmkEnum.USER_TYPE.getKey()).getData();
+        List<Sjzd> data2 = (List<Sjzd>)sjzdFeignService.getList(null, null, SsmkEnum.POLITICS_STATUS.getKey()).getData();
+        List<Sjzd> data3 = (List<Sjzd>)sjzdFeignService.getList(null, null, SsmkEnum.STUDY_TYPE.getKey()).getData();
+        List<Sjzd> data4 = (List<Sjzd>)sjzdFeignService.getList(null, null, SsmkEnum.STUDY_MODE.getKey()).getData();
+        for (StuDTO stuDTO : stuDTOList) {
+            List<Long> pcIds = pcXsMapper.selectByXsId(stuDTO.getId());
+            for (Sjzd sjzd : data1) {
+                if(sjzd.getZdbm()==stuDTO.getXslbId()){
+                    stuDTO.setZzmm(sjzd.getZdmc());
+                }
+            }
+            for (Sjzd sjzd : data2) {
+                if(sjzd.getZdbm()==stuDTO.getZzmm()){
+                    stuDTO.setZzmm(sjzd.getZdmc());
+                }
+            }
+            for (Sjzd sjzd : data3) {
+                if(sjzd.getZdbm()==stuDTO.getRxfs()){
+                    stuDTO.setZzmm(sjzd.getZdmc());
+                }
+            }
+            for (Sjzd sjzd : data4) {
+                if(sjzd.getZdbm()==stuDTO.getXxxs()){
+                    stuDTO.setZzmm(sjzd.getZdmc());
+                }
+            }
+            stuDTO.setPcIds(pcIds);
+        }
+        return stuDTOList;
     }
 
     /**

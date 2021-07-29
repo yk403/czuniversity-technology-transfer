@@ -71,7 +71,18 @@ public class SjzdController {
         PageInfo<Sjzd> byPage = sjzdService.findByPage(pageNum, pageSize, model, systemType, dictionary,zdbm, parentId);
         return ResponseUtil.success(byPage);
     }
+    /**
+     * 获取列表
+     */
+    @GetMapping("/getList/")
+    @ApiOperation(value = "获取列表")
+    public ResponseUtil getList(@RequestParam(value = "xtlb", required = false) String xtlb,
+                             @RequestParam(value = "mklx", required = false) String mklx,
+                             @RequestParam(value = "ssmk", required = false) String ssmk) {
 
+        List<Sjzd> bySsmk = sjzdService.findBySsmk(xtlb, mklx, ssmk);
+        return ResponseUtil.success(bySsmk);
+    }
     /**
      * 获取数据字典详情
      */
