@@ -31,6 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
+import java.util.List;
+
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 import static com.itts.personTraining.enums.UserTypeEnum.IN;
@@ -257,14 +259,15 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
      * @return
      */
     @Override
-    public Sz getByJgBh(String code) {
+    public List<Sz> getByJgBh(String code) {
         Object data = jgglFeignService.getByCode(code).getData();
         if (data == null) {
             throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
         }
         Jggl jggl = JSONObject.parseObject(JSON.toJSON(data).toString(), Jggl.class);
         if (jggl != null) {
-            return szService.getOne(new QueryWrapper<Sz>().eq("ssjg_id", jggl.getId()).eq("sfsc", false));
+            QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<Sz>().eq("ssjg_id", jggl.getId()).eq("sfsc", false);
+            return szMapper.selectList(szQueryWrapper);
         }
         return null;
     }

@@ -5,6 +5,8 @@ import com.itts.personTraining.dto.SzMsgDTO;
 import com.itts.personTraining.model.sz.Sz;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 师资表 服务类
@@ -88,5 +90,5 @@ public interface SzService extends IService<Sz> {
      * @param code
      * @return
      */
-    Sz getByJgBh(String code);
+    List<Sz> getByJgBh(String code);
 }
