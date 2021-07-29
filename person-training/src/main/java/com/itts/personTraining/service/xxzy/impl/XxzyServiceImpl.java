@@ -85,7 +85,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
     @Override
     public PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type,
                                String firstCategory, String secondCategory, String category,
-                               Long courseId, String condition, Long groupId, String groupCode) {
+                               Long courseId, String condition, Long groupId) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -118,19 +118,6 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
             query.eq("jg_id", groupId);
         }
 
-        if(StringUtils.isNotBlank(groupCode)){
-            ResponseUtil response = groupFeignService.getByCode(groupCode);
-            if(response.getErrCode().intValue() == 0){
-
-                JgglVO jg = response.conversionData(new TypeReference<JgglVO>() {
-                });
-
-                if(jg != null){
-                    query.eq("jg_id", jg.getId());
-                }
-            }
-        }
-
         query.orderByDesc("cjsj");
 
         List xxzys = xxzyMapper.selectList(query);
@@ -146,7 +133,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
     @Override
     public PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
                                       String secondCategory, String category, String direction, Long courseId,
-                                      String condition, Long groupId) {
+                                      String condition, Long groupId, String groupCode) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -182,6 +169,19 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
         if(groupId != null){
             query.eq("jg_id", groupId);
+        }
+
+        if(StringUtils.isNotBlank(groupCode)){
+            ResponseUtil response = groupFeignService.getByCode(groupCode);
+            if(response.getErrCode().intValue() == 0){
+
+                JgglVO jg = response.conversionData(new TypeReference<JgglVO>() {
+                });
+
+                if(jg != null){
+                    query.eq("jg_id", jg.getId());
+                }
+            }
         }
 
         query.orderByDesc("cjsj");
