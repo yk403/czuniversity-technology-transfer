@@ -467,7 +467,11 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             if (pcIds != null && pcIds.size() > 0) {
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("xs_id",stuDTO.getId());
-                return pcXsService.removeByMap(map);
+                if (pcXsService.removeByMap(map)) {
+                    ResponseUtil responseUtil = userFeignService.delete(xs.getYhId());
+                    return responseUtil.getErrMsg().equals("success");
+                }
+                return false;
             }
         }
         return false;

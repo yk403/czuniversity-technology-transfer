@@ -328,7 +328,11 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         //设置删除状态
         sz.setSfsc(true);
         sz.setGxr(getUserId());
-        return szService.updateById(sz);
+        if (szService.updateById(sz)) {
+            ResponseUtil responseUtil = userFeignService.delete(sz.getYhId());
+            return responseUtil.getErrMsg().equals("success");
+        }
+        return false;
     }
 
     /**

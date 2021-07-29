@@ -7,7 +7,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.enums.UserTypeEnum;
+import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.yh.GetYhVo;
@@ -49,6 +51,8 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
     private ZjService zjService;
     @Autowired
     private YhService yhService;
+    @Autowired
+    private UserFeignService userFeignService;
     @Resource
     private ZjMapper zjMapper;
 
@@ -196,7 +200,11 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
         log.info("【人才培养 - 更新专家:{}信息】",zj);
         zj.setGxr(getUserId());
         zj.setSfsc(true);
-        return zjService.updateById(zj);
+        if (zjService.updateById(zj)) {
+            ResponseUtil responseUtil = userFeignService.delete(zj.getYhId());
+            return responseUtil.getErrMsg().equals("success");
+        }
+        return false;
     }
 
     /**

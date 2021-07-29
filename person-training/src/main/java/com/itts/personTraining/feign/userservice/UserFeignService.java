@@ -4,9 +4,9 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.request.feign.UpdateUserRequest;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
+import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 
 @FeignClient(value = "user-service")
 public interface UserFeignService {
@@ -28,6 +28,14 @@ public interface UserFeignService {
      */
     @PutMapping(SystemConstant.BASE_URL + "/v1/yh/update/")
     ResponseUtil update(@RequestBody UpdateUserRequest updateUserRequest);
+
+    /**
+     * 删除用户信息
+     * @param id
+     * @return
+     */
+    @DeleteMapping(ADMIN_BASE_URL + "/v1/yh/delete/{id}")
+    ResponseUtil delete(@PathVariable("id") Long id);
 
 
 }
