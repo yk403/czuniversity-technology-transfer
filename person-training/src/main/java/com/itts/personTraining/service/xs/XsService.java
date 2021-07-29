@@ -32,6 +32,7 @@ public interface XsService extends IService<Xs> {
      */
     PageInfo<StuDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbmc, String jyxs, String name);
 
+    List<StuDTO> findExport( Long pcId, String xslbmc, String jyxs, String name);
     /**
      * 查询教务管理列表
      */

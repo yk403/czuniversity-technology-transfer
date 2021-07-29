@@ -54,7 +54,19 @@ public class XsAdminController {
                                    @RequestParam(value = "name", required = false) String name) {
         return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbmc, jyxs, name));
     }
-
+    /**
+     * 查询学员列表
+     *
+     * @return
+     */
+    @GetMapping("/getlist")
+    @ApiOperation(value = "获取列表")
+    public ResponseUtil findByPage(@RequestParam(value = "pcId", required = false) Long pcId,
+                                   @RequestParam(value = "xslbmc", required = false) String xslbmc,
+                                   @RequestParam(value = "jyxs", required = false) String jyxs,
+                                   @RequestParam(value = "name", required = false) String name) {
+        return ResponseUtil.success(xsService.findExport(pcId, xslbmc, jyxs, name));
+    }
     /**
      * 获取机构列表
      */
