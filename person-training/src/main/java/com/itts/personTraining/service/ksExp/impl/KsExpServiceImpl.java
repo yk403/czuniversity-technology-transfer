@@ -99,33 +99,32 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
      * @return
      */
     @Override
-    public boolean update(List<KsExpDTO> ksExpDTOs,String jylx) {
-        log.info("【人才培养 - 更新考试扩展信息:{},id:{},教育类型:{}】",ksExpDTOs,jylx);
+    public boolean update(List<KsExpDTO> ksExpDTOs, String jylx) {
+        log.info("【人才培养 - 更新考试扩展信息:{},id:{},教育类型:{}】", ksExpDTOs, jylx);
         if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
             for (KsExpDTO ksExpDTO : ksExpDTOs) {
                 //学位学历教育
                 KsExp ksExp = new KsExp();
                 ksExpDTO.setGxr(getUserId());
                 BeanUtils.copyProperties(ksExpDTO, ksExp);
-                if (ksExpService.updateById(ksExp)) {
-                    List<Long> szIds = ksExpDTO.getSzIds();
-                    if (szIds != null && szIds.size() > 0) {
-                        HashMap<String, Object> map = new HashMap<>();
-                        Long ksExpId = ksExpDTO.getId();
-                        map.put("ks_exp_id", ksExpId);
-                        szKsExpService.removeByMap(map);
-                        return saveSzKsExp(szIds, ksExpId);
-                    }
-                    return true;
+                ksExpService.updateById(ksExp);
+                List<Long> szIds = ksExpDTO.getSzIds();
+                if (szIds != null && szIds.size() > 0) {
+                    HashMap<String, Object> map = new HashMap<>();
+                    Long ksExpId = ksExpDTO.getId();
+                    map.put("ks_exp_id", ksExpId);
+                    szKsExpService.removeByMap(map);
+                    saveSzKsExp(szIds, ksExpId);
                 }
-                return false;
+                continue;
             }
+            return true;
         } else {
             //继续教育
             List<KsExp> ksExps = new ArrayList<>();
             for (KsExpDTO ksExpDTO : ksExpDTOs) {
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("ks_id",ksExpDTO.getKsId());
+                map.put("ks_id", ksExpDTO.getKsId());
                 ksExpService.removeByMap(map);
                 KsExp ksExp1 = new KsExp();
                 ksExp1.setCjr(getUserId());
@@ -135,8 +134,7 @@ public class KsExpServiceImpl extends ServiceImpl<KsExpMapper, KsExp> implements
                 ksExps.add(ksExp1);
             }
             return ksExpService.saveBatch(ksExps);
-            }
-        return true;
+        }
     }
 
     /**

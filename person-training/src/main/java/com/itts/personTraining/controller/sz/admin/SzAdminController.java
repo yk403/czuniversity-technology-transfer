@@ -194,7 +194,7 @@ public class SzAdminController {
         if (dslb == null) {
             throw new WebException(TEACHER_TYPE_ISEMPTY_ERROR);
         }
-        if (!dslb.equals(UserTypeEnum.TUTOR.getKey()) && !dslb.equals(UserTypeEnum.CORPORATE_MENTOR.getKey()) && !dslb.equals(UserTypeEnum.TEACHER.getKey())) {
+        if (!dslb.equals(UserTypeEnum.TUTOR.getKey()) && !dslb.equals(UserTypeEnum.CORPORATE_MENTOR.getKey()) && !dslb.equals(UserTypeEnum.TEACHER.getKey()) && !dslb.equals(UserTypeEnum.SCHOOL_LEADER.getKey())) {
             throw new WebException(TEACHER_TYPE_ERROR);
         }
         if (sz.getSsjgId() == null) {

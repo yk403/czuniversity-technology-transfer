@@ -6,9 +6,7 @@ import com.itts.personTraining.service.xs.XsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
@@ -35,5 +33,14 @@ public class SzController {
     @ApiOperation(value = "查询师资综合信息")
     public ResponseUtil getByYhId() {
         return ResponseUtil.success(szService.getByYhId());
+    }
+
+    /**
+     * 根据机构编号查询师资信息
+     */
+    @GetMapping("/getByJgBh")
+    @ApiOperation(value = "根据机构编号查询师资信息")
+    public ResponseUtil getByJgBh(@RequestParam("code") String code) {
+        return ResponseUtil.success(szService.getByJgBh(code));
     }
 }

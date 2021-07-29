@@ -11,8 +11,10 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.SzMsgDTO;
 import com.itts.personTraining.enums.UserTypeEnum;
+import com.itts.personTraining.feign.userservice.JgglFeignService;
 import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.mapper.tzSz.TzSzMapper;
+import com.itts.personTraining.model.jggl.Jggl;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.model.yh.GetYhVo;
@@ -28,6 +30,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+
+import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -53,6 +57,8 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
     private YhService yhService;
     @Autowired
     private UserFeignService userFeignService;
+    @Autowired
+    private JgglFeignService jgglFeignService;
     @Resource
     private SzMapper szMapper;
     @Resource
@@ -245,6 +251,25 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
                 break;
         }
         return szMsgDTO;
+    }
+
+    /**
+     * 根据机构编号查询师资信息
+     * @param code
+     * @return
+     */
+    @Override
+    public List<Sz> getByJgBh(String code) {
+        Object data = jgglFeignService.getByCode(code).getData();
+        if (data == null) {
+            throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
+        }
+        Jggl jggl = JSONObject.parseObject(JSON.toJSON(data).toString(), Jggl.class);
+        if (jggl != null) {
+            QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<Sz>().eq("ssjg_id", jggl.getId()).eq("sfsc", false);
+            return szMapper.selectList(szQueryWrapper);
+        }
+        return null;
     }
 
     /**

@@ -5,6 +5,8 @@ import com.itts.personTraining.dto.SzMsgDTO;
 import com.itts.personTraining.model.sz.Sz;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 师资表 服务类
@@ -82,4 +84,11 @@ public interface SzService extends IService<Sz> {
      * @return
      */
     SzMsgDTO getByYhId();
+
+    /**
+     * 根据机构编号查询师资信息
+     * @param code
+     * @return
+     */
+    List<Sz> getByJgBh(String code);
 }
