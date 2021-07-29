@@ -259,6 +259,9 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
     @Override
     public Sz getByJgBh(String code) {
         Object data = jgglFeignService.getByCode(code).getData();
+        if (data == null) {
+            throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
+        }
         Jggl jggl = JSONObject.parseObject(JSON.toJSON(data).toString(), Jggl.class);
         if (jggl != null) {
             return szService.getOne(new QueryWrapper<Sz>().eq("ssjg_id", jggl.getId()).eq("sfsc", false));
