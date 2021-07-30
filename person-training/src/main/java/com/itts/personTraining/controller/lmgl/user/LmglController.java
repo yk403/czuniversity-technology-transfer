@@ -34,7 +34,7 @@ public class LmglController {
     private LmglService lmglService;
 
     @Autowired
-    private GroupFeignService groupFeignService
+    private GroupFeignService groupFeignService;
 
     /**
      * 查询
