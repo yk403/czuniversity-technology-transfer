@@ -74,6 +74,15 @@ public class XwglAdminController {
         }
         return ResponseUtil.success(xwglService.update(xwgl));
     }
+    /**
+     * 更新
+     */
+    @ApiOperation(value = "更新状态")
+    @PutMapping("/updateState/")
+    public ResponseUtil updateS(@RequestParam(value = "id") Long id,
+                                @RequestParam(value = "zt") String zt) throws WebException {
+        return ResponseUtil.success(xwglService.updateState(id, zt));
+    }
 
     /**
      * 发布
