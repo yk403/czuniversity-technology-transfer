@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.mapper.lmgl.LmglMapper;
+import com.itts.personTraining.model.gngl.Gngl;
 import com.itts.personTraining.model.lbt.Lbt;
 import com.itts.personTraining.model.lmgl.Lmgl;
 import com.itts.personTraining.model.rmdt.Rmdt;
@@ -140,6 +141,23 @@ public class LmglServiceImpl extends ServiceImpl<LmglMapper, Lmgl> implements Lm
         lmgl.setPx(px1);
         lmglMapper.updateById(lmgl);
         lmglMapper.updateById(two);
+        return true;
+    }
+
+    @Override
+    public Boolean use(Long id) {
+        Lmgl lmgl = get(id);
+        Long userId = getUserId();
+        Boolean sfsy = lmgl.getSfsy();
+        if(sfsy){
+            lmgl.setSfsy(false);
+            lmgl.setGxr(userId);
+            lmglMapper.updateById(lmgl);
+        }else{
+            lmgl.setSfsy(true);
+            lmgl.setGxr(userId);
+            lmglMapper.updateById(lmgl);
+        }
         return true;
     }
 

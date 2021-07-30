@@ -44,6 +44,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -173,8 +176,44 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             }
             stuDTO.setPcIds(pcIds);
         }
+        /*List<StuDTO> stuDTOS = deleteNullData(stuDTOList);*/
         return stuDTOList;
     }
+    /*//替换null
+    public List<StuDTO> deleteNullData(List<StuDTO> newList){
+        //反射获取类
+        Class c = StuDTO.class;
+        //获取DTO对象的所有定义的属性信息Filed
+        Field[] fileds = c.getDeclaredFields();
+        for(int i=0;i<newList.size();i++){
+            StuDTO stuDTO = newList.get(i);
+            for(int j=0;j<fileds.length;j++){
+                Field f = fileds[j];
+                try {
+                    //对象中的属性是private的需要设置accessible才可用
+                    f.setAccessible(true);
+                    //遍历每个属性值
+                    if(f.get(stuDTO) == null){
+                        //拼接set方法
+                        String methodName = "set" + f.getName().substring(0,1).toUpperCase()+f.getName().substring(1,f.getName().length());
+                        //获取方法
+                        Method method = c.getDeclaredMethod(methodName, f.getType().getCanonicalName().getClass());
+                        //直接给属性赋值null会报空指针
+                        String nullName = "";
+                        //调用方法
+                        method.invoke(stuDTO,nullName);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return newList;
+    }*/
 
     /**
      * 查询教务管理列表

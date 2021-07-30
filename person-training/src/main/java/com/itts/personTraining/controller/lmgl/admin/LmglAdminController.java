@@ -4,6 +4,7 @@ package com.itts.personTraining.controller.lmgl.admin;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.model.gngl.Gngl;
 import com.itts.personTraining.model.lmgl.Lmgl;
 import com.itts.personTraining.service.lmgl.LmglService;
 import io.swagger.annotations.Api;
@@ -100,6 +101,17 @@ public class LmglAdminController {
     public ResponseUtil down(@RequestParam(value = "jgId")Long jgId,
                              @RequestParam(value = "id")Long id)throws WebException{
         return ResponseUtil.success(lmglService.down(jgId, id));
+    }
+    @PutMapping("/use/{id}")
+    public ResponseUtil use(@PathVariable("id") Long id) throws WebException {
+        if (id == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        Lmgl lmgl = lmglService.get(id);
+        if (lmgl == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+        return ResponseUtil.success(lmglService.use(id));
     }
     /**
      * 校验参数是否合法

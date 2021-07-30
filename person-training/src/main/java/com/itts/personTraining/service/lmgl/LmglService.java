@@ -30,4 +30,5 @@ public interface LmglService extends IService<Lmgl> {
 
     Boolean up(Long jgId,Long id);
     Boolean down(Long jgId,Long id);
+    Boolean use(Long id);
 }
