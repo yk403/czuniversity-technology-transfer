@@ -1,9 +1,9 @@
 package com.itts.personTraining.service.sz;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.dto.SzMsgDTO;
 import com.itts.personTraining.model.sz.Sz;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public interface SzService extends IService<Sz> {
      * @param hyly
      * @return
      */
-    PageInfo<Sz> findByPage(Integer pageNum, Integer pageSize, String dsxm, String dslb, String hyly);
+    PageInfo<Sz> findByPage(Integer pageNum, Integer pageSize, String dsxm, String dslb, String hyly, Long groupId);
 
     /**
      * 根据id查询师资详情
