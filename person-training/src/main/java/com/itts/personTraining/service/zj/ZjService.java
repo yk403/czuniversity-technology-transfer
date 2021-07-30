@@ -26,6 +26,7 @@ public interface ZjService extends IService<Zj> {
      */
     PageInfo<Zj> findByPage(Integer pageNum, Integer pageSize, String yjly, String name);
 
+    List<Zj> findExport(String yjly, String name);
     /**
      * 查询所有专家
      * @return
