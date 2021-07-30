@@ -132,13 +132,13 @@ public class JgglController {
     */
     @GetMapping("/get/by/code/")
     @ApiOperation(value = "获取详情")
-    public ResponseUtil getByCode(@RequestParam("code") String code){
+    public ResponseUtil getByCode(@RequestParam(value = "code", required = false) String code){
 
         if(StringUtils.isBlank(code)){
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        Jggl jggl = jgglService.getOne(new QueryWrapper<Jggl>().eq("sfsc", false).eq("jgbm", code));
+        Jggl jggl = jgglService.getOne(new QueryWrapper<Jggl>().eq("sfsc", false).eq(StringUtils.isNotBlank(code),"jgbm", code));
 
         return ResponseUtil.success(jggl);
     }

@@ -16,5 +16,5 @@ public interface JgglFeignService {
      *通过编码获取数据
      */
     @GetMapping(ADMIN_BASE_URL + "/v1/jggl/get/by/code/")
-    ResponseUtil getByCode(@RequestParam("code") String code);
+    ResponseUtil getByCode(@RequestParam(value = "code", required = false) String code);
 }

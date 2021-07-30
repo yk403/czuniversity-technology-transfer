@@ -4,24 +4,23 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.SzMsgDTO;
-import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.feign.userservice.JgglFeignService;
 import com.itts.personTraining.feign.userservice.UserFeignService;
-import com.itts.personTraining.mapper.tzSz.TzSzMapper;
-import com.itts.personTraining.model.jggl.Jggl;
-import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.mapper.sz.SzMapper;
+import com.itts.personTraining.mapper.tzSz.TzSzMapper;
+import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.model.yh.Yh;
 import com.itts.personTraining.service.sz.SzService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.yh.YhService;
+import com.itts.personTraining.vo.jggl.JgglVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -30,13 +29,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 import static com.itts.personTraining.enums.UserTypeEnum.IN;
-import static com.itts.personTraining.enums.UserTypeEnum.TUTOR;
 
 /**
  * <p>
@@ -262,11 +259,14 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
      */
     @Override
     public List<Sz> getByJgBh(String code) {
-        Object data = jgglFeignService.getByCode(code).getData();
-        if (data == null) {
+
+        ResponseUtil response = jgglFeignService.getByCode(code);
+        if (response == null || response.getErrCode().intValue() != 0) {
             throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
         }
-        Jggl jggl = JSONObject.parseObject(JSON.toJSON(data).toString(), Jggl.class);
+
+        JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {
+        });
         if (jggl != null) {
             QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<Sz>().eq("ssjg_id", jggl.getId()).eq("sfsc", false);
             return szMapper.selectList(szQueryWrapper);
