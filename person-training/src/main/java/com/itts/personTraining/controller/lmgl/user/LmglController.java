@@ -1,17 +1,20 @@
 package com.itts.personTraining.controller.lmgl.user;
 
 
+import com.alibaba.fastjson.TypeReference;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.feign.userservice.GroupFeignService;
 import com.itts.personTraining.model.lmgl.Lmgl;
 import com.itts.personTraining.service.lmgl.LmglService;
+import com.itts.personTraining.vo.jggl.JgglVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 
 /**
@@ -30,16 +33,29 @@ public class LmglController {
     @Autowired
     private LmglService lmglService;
 
+    @Autowired
+    private GroupFeignService groupFeignService
+
     /**
      * 查询
      */
     @GetMapping("/list/")
     @ApiOperation(value = "查询")
-    public ResponseUtil getList(@RequestParam(value = "jgId") Long jgId) {
-        if(jgId == null){
+    public ResponseUtil getList(@RequestParam(value = "jgCode", required = false) String jgCode) {
+
+        if(StringUtils.isBlank(jgCode)){
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(lmglService.findList(jgId));
+
+        ResponseUtil response = groupFeignService.getByCode(jgCode);
+        if(response == null || response.getErrCode().intValue() != 0){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {
+        });
+
+        return ResponseUtil.success(lmglService.findList(jggl.getId()));
     }
 
     /**
