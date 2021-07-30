@@ -39,6 +39,8 @@ public interface XwglService extends IService<Xwgl> {
      * @return
      */
     Xwgl update(Xwgl xwgl);
+
+    Boolean updateState(Long id,String state);
     /**
      * 根据id查询信息
      * @param id

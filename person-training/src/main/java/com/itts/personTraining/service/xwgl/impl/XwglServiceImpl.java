@@ -87,6 +87,14 @@ public class XwglServiceImpl extends ServiceImpl<XwglMapper, Xwgl> implements Xw
     }
 
     @Override
+    public Boolean updateState(Long id, String state) {
+        Xwgl xwgl = get(id);
+        xwgl.setZt(state);
+        xwglMapper.updateById(xwgl);
+        return true;
+    }
+
+    @Override
     public Xwgl get(Long id) {
         QueryWrapper<Xwgl> xwglQueryWrapper = new QueryWrapper<>();
         xwglQueryWrapper.eq("sfsc", false)

@@ -11,10 +11,13 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.SzMsgDTO;
+import com.itts.personTraining.enums.SsmkEnum;
 import com.itts.personTraining.feign.userservice.JgglFeignService;
+import com.itts.personTraining.feign.userservice.SjzdFeignService;
 import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.tzSz.TzSzMapper;
+import com.itts.personTraining.model.sjzd.Sjzd;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.model.yh.Yh;
@@ -29,7 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -60,6 +63,8 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
     private SzMapper szMapper;
     @Resource
     private TzSzMapper tzSzMapper;
+    @Resource
+    private SjzdFeignService sjzdFeignService;
 
     /**
      * 获取师资列表
@@ -86,6 +91,42 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
                     .orderByDesc("cjsj");
         }
         return new PageInfo<>(szMapper.selectList(szQueryWrapper));
+    }
+
+    @Override
+    public List<Sz> findExport(String dsxm, String dslb, String hyly) {
+        QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
+        szQueryWrapper.eq("sfsc",false)
+                .like(StringUtils.isNotBlank(dsxm),"dsxm", dsxm)
+                .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
+                .eq(StringUtils.isNotBlank(hyly),"hyly", hyly)
+                .orderByDesc("cjsj");
+        List<Sz> szs = szMapper.selectList(szQueryWrapper);
+
+        ResponseUtil list2 = sjzdFeignService.getList(null, null, SsmkEnum.POLITICS_STATUS.getKey());
+        List<Sjzd> sjzd2 = new ArrayList<>();
+        if(list2.getErrCode().intValue() == 0){
+            sjzd2= list2.conversionData(new TypeReference<List<Sjzd>>() {});
+        }
+        Map<String, String> HashMap1 = new HashMap<>();
+        HashMap1.put("tutor","研究生导师");
+        HashMap1.put("corporate_mentor","企业导师");
+        HashMap1.put("teacher","授课教师");
+        HashMap1.put("school_leader","领导");
+
+        for (Sz sz : szs) {
+            for (Sjzd sjzd : sjzd2) {
+                if(Objects.equals(sjzd.getZdbm(),sz.getZzmm())){
+                    sz.setZzmm(sjzd.getZdbm());
+                }
+            }
+            for (String s : HashMap1.keySet()) {
+                if(Objects.equals(s,sz.getDslb())){
+                    sz.setDslb(HashMap1.get(s));
+                }
+            }
+        }
+        return szs;
     }
 
     /**
