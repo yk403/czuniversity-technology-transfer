@@ -72,8 +72,9 @@ public class SzAdminController {
     @ApiOperation(value = "根据条件查询师资详情")
     public ResponseUtil selectByCondition(@RequestParam(value = "dsbh",required = false) String dsbh,
                                           @RequestParam(value = "xb",required = false) String xb,
-                                          @RequestParam(value = "yhId",required = false) Long yhId) {
-        return ResponseUtil.success(szService.selectByCondition(dsbh,xb,yhId));
+                                          @RequestParam(value = "yhId",required = false) Long yhId,
+                                          @RequestParam(value = "groupId",required = false) Long groupId) {
+        return ResponseUtil.success(szService.selectByCondition(dsbh,xb,yhId,groupId));
     }
 
     /**
@@ -88,7 +89,7 @@ public class SzAdminController {
     public ResponseUtil add(@RequestBody Sz sz, HttpServletRequest request) throws WebException {
         //检查参数是否合法
         checkRequest(sz);
-        if (szService.selectByCondition(sz.getDsbh(),null,null) != null) {
+        if (szService.selectByCondition(sz.getDsbh(),null,null,null) != null) {
             throw new WebException(TEACHER_NUMBER_EXISTS_ERROR);
         }
         if (!szService.add(sz,request.getHeader("token"))) {
@@ -137,7 +138,7 @@ public class SzAdminController {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         if (!szOld.getDsbh().equals(sz.getDsbh())) {
-            if (szService.selectByCondition(sz.getDsbh(),null,null) != null) {
+            if (szService.selectByCondition(sz.getDsbh(),null,null,null) != null) {
                 throw new WebException(TEACHER_NUMBER_EXISTS_ERROR);
             }
         }

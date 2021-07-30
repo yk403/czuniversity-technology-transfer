@@ -135,7 +135,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
             xs.setXz(data.getXz());
         }
         if(!StringUtils.isBlank(data.getYzydsbh())){
-            Sz sz = szService.selectByCondition(data.getYzydsbh(), null, null);
+            Sz sz = szService.selectByCondition(data.getYzydsbh(), null, null,null);
             if (sz != null) {
                 xs.setYzydsId(sz.getId());
             }
