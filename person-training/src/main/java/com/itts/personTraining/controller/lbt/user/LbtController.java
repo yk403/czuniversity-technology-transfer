@@ -1,13 +1,17 @@
 package com.itts.personTraining.controller.lbt.user;
 
 
+import com.alibaba.fastjson.TypeReference;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.feign.userservice.GroupFeignService;
 import com.itts.personTraining.model.lbt.Lbt;
 import com.itts.personTraining.service.lbt.LbtService;
+import com.itts.personTraining.vo.jggl.JgglVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,13 +34,26 @@ public class LbtController {
     @Autowired
     private LbtService lbtService;
 
+    @Autowired
+    private GroupFeignService groupFeignService;
     /**
      * 查询
      */
     @GetMapping("/list/")
     @ApiOperation(value = "查询")
-    public ResponseUtil getList(@RequestParam(value = "jgId") Long jgId) {
-        return ResponseUtil.success(lbtService.findList(jgId));
+    public ResponseUtil getList(@RequestParam(value = "jgCode") String jgCode) {
+        if(StringUtils.isBlank(jgCode)){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        ResponseUtil response = groupFeignService.getByCode(jgCode);
+        if(response == null || response.getErrCode().intValue() != 0){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {
+        });
+        return ResponseUtil.success(lbtService.findList(jggl.getId()));
     }
 
     /**

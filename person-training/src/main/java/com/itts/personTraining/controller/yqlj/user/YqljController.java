@@ -1,13 +1,18 @@
 package com.itts.personTraining.controller.yqlj.user;
 
 
+import com.alibaba.fastjson.TypeReference;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.feign.userservice.GroupFeignService;
 import com.itts.personTraining.model.yqlj.Yqlj;
 import com.itts.personTraining.service.yqlj.YqljService;
+import com.itts.personTraining.vo.jggl.JgglVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +35,8 @@ public class YqljController {
 
     @Resource
     private YqljService yqljService;
+    @Autowired
+    private GroupFeignService groupFeignService;
     /**
      * 查询
      */
@@ -37,10 +44,20 @@ public class YqljController {
     @ApiOperation(value = "查询新闻")
     public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                @RequestParam(value = "jgId") Long jgId,
+                                @RequestParam(value = "jgCode") String jgCode,
                                 @RequestParam(value = "zt",required = false) String zt,
                                 @RequestParam(value = "lx",required = false) String lx) throws WebException {
-        return ResponseUtil.success(yqljService.findByPage(pageNum, pageSize, jgId, zt, lx));
+        if(StringUtils.isBlank(jgCode)){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        ResponseUtil response = groupFeignService.getByCode(jgCode);
+        if(response == null || response.getErrCode().intValue() != 0){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {
+        });        return ResponseUtil.success(yqljService.findByPage(pageNum, pageSize, jggl.getId(), zt, lx));
     }
 
     /**

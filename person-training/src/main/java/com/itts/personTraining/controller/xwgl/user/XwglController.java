@@ -1,12 +1,17 @@
 package com.itts.personTraining.controller.xwgl.user;
 
+import com.alibaba.fastjson.TypeReference;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.feign.userservice.GroupFeignService;
 import com.itts.personTraining.model.xwgl.Xwgl;
 import com.itts.personTraining.service.xwgl.XwglService;
+import com.itts.personTraining.vo.jggl.JgglVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +36,8 @@ public class XwglController {
 
     @Resource
     private XwglService xwglService;
+    @Autowired
+    private GroupFeignService groupFeignService;
 
     /**
      * 查询
@@ -39,11 +46,22 @@ public class XwglController {
     @ApiOperation(value = "查询新闻")
     public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                @RequestParam(value = "jgId", required = false) Long jgId,
+                                @RequestParam(value = "jgCode", required = false) String jgCode,
                                 @RequestParam(value = "zt", required = false) String zt,
                                 @RequestParam(value = "lx", required = false) String lx,
                                 @RequestParam(value = "xwbt", required = false) String xwbt) throws WebException {
-        return ResponseUtil.success(xwglService.findByPage(pageNum, pageSize, jgId, zt, lx, xwbt));
+        if(StringUtils.isBlank(jgCode)){
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        ResponseUtil response = groupFeignService.getByCode(jgCode);
+        if(response == null || response.getErrCode().intValue() != 0){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {
+        });
+        return ResponseUtil.success(xwglService.findByPage(pageNum, pageSize, jggl.getId(), zt, lx, xwbt));
     }
 
 
