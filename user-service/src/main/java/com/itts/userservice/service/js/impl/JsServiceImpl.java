@@ -387,6 +387,10 @@ public class JsServiceImpl implements JsService {
         jsMapper.updateById(js);
 
         if (CollectionUtils.isEmpty(request.getCdCzIds())) {
+
+            //删除当前角色所有菜单、操作关联
+            deleteJsCdCzGlByJsIdAndCdIdAndCzIds(request.getId(), null, null);
+            deleteJsCdGlByJsIdAndCdIds(request.getId(), null);
             return js;
         }
 
