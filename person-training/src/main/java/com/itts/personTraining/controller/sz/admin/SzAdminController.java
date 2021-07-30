@@ -49,6 +49,13 @@ public class SzAdminController {
                                    @RequestParam(value = "groupId", required = false) Long groupId) {
         return ResponseUtil.success(szService.findByPage(pageNum, pageSize, dsxm, dslb, hyly, groupId));
     }
+    @GetMapping("/getlist")
+    @ApiOperation(value = "获取师资excel列表")
+    public ResponseUtil findExport(@RequestParam(value = "dsxm", required = false) String dsxm,
+                                   @RequestParam(value = "dslb", required = false) String dslb,
+                                   @RequestParam(value = "hyly", required = false) String hyly) {
+        return ResponseUtil.success(szService.findExport(dsxm, dslb, hyly));
+    }
 
     /**
      * 根据id查询师资详情

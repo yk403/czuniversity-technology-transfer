@@ -2,15 +2,19 @@ package com.itts.personTraining.service.zj.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.enums.SsmkEnum;
 import com.itts.personTraining.enums.UserTypeEnum;
+import com.itts.personTraining.feign.userservice.SjzdFeignService;
 import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.model.kc.Kc;
+import com.itts.personTraining.model.sjzd.Sjzd;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.model.yh.Yh;
@@ -27,7 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
@@ -55,6 +59,8 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
     private UserFeignService userFeignService;
     @Resource
     private ZjMapper zjMapper;
+    @Resource
+    private SjzdFeignService sjzdFeignService;
 
     /**
      * 分页查询专家列表
@@ -79,6 +85,49 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
                     .orderByDesc("cjsj");
         }
         return new PageInfo<>(zjMapper.selectList(zjQueryWrapper));
+    }
+
+    @Override
+    public List<Zj> findExport(String yjly, String name) {
+        QueryWrapper<Zj> zjQueryWrapper = new QueryWrapper<>();
+        zjQueryWrapper.eq("sfsc",false)
+                .eq(StringUtils.isNotBlank(yjly),"yjly",yjly)
+                .like(StringUtils.isNotBlank(name),"xm",name)
+                .orderByDesc("cjsj");
+        List<Zj> zjs = zjMapper.selectList(zjQueryWrapper);
+
+        ResponseUtil list2 = sjzdFeignService.getList(null, null, SsmkEnum.POLITICS_STATUS.getKey());
+        List<Sjzd> sjzd2 = new ArrayList<>();
+        if(list2.getErrCode().intValue() == 0){
+            sjzd2= list2.conversionData(new TypeReference<List<Sjzd>>() {});
+        }
+        ResponseUtil list3 = sjzdFeignService.getList(null, null, SsmkEnum.TECHNICAL_FIELD.getKey());
+        List<Sjzd> sjzd3 = new ArrayList<>();
+        if(list3.getErrCode().intValue() == 0){
+            sjzd3= list3.conversionData(new TypeReference<List<Sjzd>>() {});
+        }
+        Map<String, String> HashMap1 = new HashMap<>();
+        HashMap1.put("professor","内部");
+        HashMap1.put("school_leader","外部");
+
+        for (Zj zj : zjs) {
+            for (Sjzd sjzd : sjzd2) {
+                if(Objects.equals(sjzd.getZdbm(),zj.getZzmm())){
+                    zj.setZzmm(sjzd.getZdmc());
+                }
+            }
+            for (Sjzd sjzd : sjzd3) {
+                if(Objects.equals(sjzd.getZdbm(),zj.getYjly())){
+                    zj.setYjly(sjzd.getZdmc());
+                }
+            }
+            for (String s : HashMap1.keySet()) {
+                if(Objects.equals(s,zj.getLx())){
+                    zj.setLx(HashMap1.get(s));
+                }
+            }
+        }
+        return zjs;
     }
 
     /**

@@ -51,6 +51,12 @@ public class ZjAdminController {
                                    @RequestParam(value = "name", required = false) String name) {
         return ResponseUtil.success(zjService.findByPage(pageNum, pageSize, yjly, name));
     }
+    @GetMapping("/getlist")
+    @ApiOperation(value = "获取excel列表")
+    public ResponseUtil findExport(@RequestParam(value = "yjly", required = false) String yjly,
+                                   @RequestParam(value = "name", required = false) String name) {
+        return ResponseUtil.success(zjService.findExport(yjly, name));
+    }
 
     /**
      * 根据id查询专家信息
