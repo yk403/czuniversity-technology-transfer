@@ -26,7 +26,7 @@ import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 @RestController
 @RequestMapping(ADMIN_BASE_URL +"/v1/yqlj")
 @Api(value = "YqljAdminController", tags = "友情链接后台管理")
-public class YqljController {
+public class YqljAdminController {
 
     @Resource
     private YqljService yqljService;

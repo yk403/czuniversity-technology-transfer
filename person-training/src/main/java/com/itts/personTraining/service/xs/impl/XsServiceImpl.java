@@ -47,6 +47,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -119,29 +120,50 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     @Override
     public List<StuDTO> findExport(Long pcId, String xslbmc, String jyxs, String name) {
         List<StuDTO> stuDTOList = xsMapper.findXsList(pcId,xslbmc,jyxs,name);
-        List<Sjzd> data1 = (List<Sjzd>)sjzdFeignService.getList(null, null, SsmkEnum.USER_TYPE.getKey()).getData();
-        List<Sjzd> data2 = (List<Sjzd>)sjzdFeignService.getList(null, null, SsmkEnum.POLITICS_STATUS.getKey()).getData();
-        List<Sjzd> data3 = (List<Sjzd>)sjzdFeignService.getList(null, null, SsmkEnum.STUDY_TYPE.getKey()).getData();
-        List<Sjzd> data4 = (List<Sjzd>)sjzdFeignService.getList(null, null, SsmkEnum.STUDY_MODE.getKey()).getData();
+
+        ResponseUtil  list1= sjzdFeignService.getList(null, null, SsmkEnum.USER_TYPE.getKey());
+        List<Sjzd> sjzd1 = new ArrayList<>();
+        if(list1.getErrCode().intValue() == 0){
+            sjzd1= list1.conversionData(new TypeReference<List<Sjzd>>() {});
+        }
+
+        ResponseUtil list2 = sjzdFeignService.getList(null, null, SsmkEnum.POLITICS_STATUS.getKey());
+        List<Sjzd> sjzd2 = new ArrayList<>();
+        if(list2.getErrCode().intValue() == 0){
+            sjzd2= list2.conversionData(new TypeReference<List<Sjzd>>() {});
+        }
+
+        ResponseUtil list3 = sjzdFeignService.getList(null, null, SsmkEnum.STUDY_TYPE.getKey());
+        List<Sjzd> sjzd3 = new ArrayList<>();
+        if(list3.getErrCode().intValue() == 0){
+            sjzd3= list3.conversionData(new TypeReference<List<Sjzd>>() {});
+        }
+
+        ResponseUtil response4 = sjzdFeignService.getList(null, null, SsmkEnum.STUDY_MODE.getKey());
+        List<Sjzd> data4=new ArrayList<Sjzd>();
+        if(response4.getErrCode().intValue() == 0){
+             data4= response4.conversionData(new TypeReference<List<Sjzd>>() {});
+        }
+
         for (StuDTO stuDTO : stuDTOList) {
             List<Long> pcIds = pcXsMapper.selectByXsId(stuDTO.getId());
-            for (Sjzd sjzd : data1) {
-                if(sjzd.getZdbm()==stuDTO.getXslbId()){
+            for (Sjzd sjzd : sjzd1) {
+                if(Objects.equals(sjzd.getZdbm(),stuDTO.getXslbId())){
                     stuDTO.setZzmm(sjzd.getZdmc());
                 }
             }
-            for (Sjzd sjzd : data2) {
-                if(sjzd.getZdbm()==stuDTO.getZzmm()){
+            for (Sjzd sjzd : sjzd2) {
+                if(Objects.equals(sjzd.getZdbm(),stuDTO.getZzmm())){
                     stuDTO.setZzmm(sjzd.getZdmc());
                 }
             }
-            for (Sjzd sjzd : data3) {
-                if(sjzd.getZdbm()==stuDTO.getRxfs()){
+            for (Sjzd sjzd : sjzd3) {
+                if(Objects.equals(sjzd.getZdbm(),stuDTO.getRxfs())){
                     stuDTO.setZzmm(sjzd.getZdmc());
                 }
             }
             for (Sjzd sjzd : data4) {
-                if(sjzd.getZdbm()==stuDTO.getXxxs()){
+                if(Objects.equals(sjzd.getZdbm(),stuDTO.getXxxs())){
                     stuDTO.setZzmm(sjzd.getZdmc());
                 }
             }
