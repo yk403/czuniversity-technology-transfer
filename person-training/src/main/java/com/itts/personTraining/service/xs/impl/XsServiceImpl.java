@@ -149,22 +149,26 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             List<Long> pcIds = pcXsMapper.selectByXsId(stuDTO.getId());
             for (Sjzd sjzd : sjzd1) {
                 if(Objects.equals(sjzd.getZdbm(),stuDTO.getXslbId())){
-                    stuDTO.setZzmm(sjzd.getZdmc());
+                    stuDTO.setXslbId(sjzd.getZdmc());
+                    break;
                 }
             }
             for (Sjzd sjzd : sjzd2) {
                 if(Objects.equals(sjzd.getZdbm(),stuDTO.getZzmm())){
                     stuDTO.setZzmm(sjzd.getZdmc());
+                    break;
                 }
             }
             for (Sjzd sjzd : sjzd3) {
                 if(Objects.equals(sjzd.getZdbm(),stuDTO.getRxfs())){
-                    stuDTO.setZzmm(sjzd.getZdmc());
+                    stuDTO.setRxfs(sjzd.getZdmc());
+                    break;
                 }
             }
             for (Sjzd sjzd : data4) {
                 if(Objects.equals(sjzd.getZdbm(),stuDTO.getXxxs())){
-                    stuDTO.setZzmm(sjzd.getZdmc());
+                    stuDTO.setXxxs(sjzd.getZdmc());
+                    break;
                 }
             }
             stuDTO.setPcIds(pcIds);
