@@ -139,7 +139,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             yh.setJgId(ssjgId);
             yhService.update(yh,token);
             sz.setYhId(getYhVo.getId());
-            Sz sz1 = szService.selectByCondition(dsbh,null, null);
+            Sz sz1 = szService.selectByCondition(dsbh,null, null,null);
             if (sz1 != null) {
                 //存在,则更新
                 sz.setId(sz1.getId());
@@ -166,7 +166,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
             Long yh1Id = yh1.getId();
             sz.setYhId(yh1Id);
-            Sz sz1 = szService.selectByCondition(dsbh,null, null);
+            Sz sz1 = szService.selectByCondition(dsbh,null, null,null);
             if (sz1 != null) {
                 //存在,则更新
                 sz.setId(sz1.getId());
@@ -200,16 +200,18 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
      * 根据条件查询师资信息
      * @param dsbh
      * @param yhId
+     * @param groupId
      * @return
      */
     @Override
-    public Sz selectByCondition(String dsbh, String xb, Long yhId) {
-        log.info("【人才培养 - 根据师资编号:{},性别:{},用户id:{}查询师资信息】",dsbh,yhId);
+    public Sz selectByCondition(String dsbh, String xb, Long yhId, Long groupId) {
+        log.info("【人才培养 - 根据师资编号:{},性别:{},用户id:{},机构id:{}查询师资信息】",dsbh,yhId,groupId);
         QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
         szQueryWrapper.eq("sfsc",false)
                 .eq(StringUtils.isNotBlank(dsbh),"dsbh",dsbh)
                 .eq(StringUtils.isNotBlank(xb),"xb",xb)
-                .eq(yhId != null,"yh_id",yhId);
+                .eq(yhId != null,"yh_id",yhId)
+                .eq(groupId != null,"ssjg_id",groupId);
         return szMapper.selectOne(szQueryWrapper);
     }
 
@@ -302,7 +304,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             yh.setYhlb(yhlb);
             yh.setJgId(ssjgId);
             yhService.update(yh,token);
-            Sz sz1 = szService.selectByCondition(dsbh,null, null);
+            Sz sz1 = szService.selectByCondition(dsbh,null, null,null);
             if (sz1 != null) {
                 //存在,则更新
                 sz.setId(sz1.getId());
@@ -328,7 +330,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
             Long yh1Id = yh1.getId();
             sz.setYhId(yh1Id);*/
-            Sz sz1 = szService.selectByCondition(dsbh,null, null);
+            Sz sz1 = szService.selectByCondition(dsbh,null, null,null);
             if (sz1 != null) {
                 //存在,则更新
                 sz.setId(sz1.getId());

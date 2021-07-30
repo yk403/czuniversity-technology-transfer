@@ -231,7 +231,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
             yh.setJgId(ssjgId);
             yh.setLxdh(lxdh);
             yhService.update(yh,token);
-            Sz sz1 = szService.selectByCondition(dsbh,null, null);
+            Sz sz1 = szService.selectByCondition(dsbh,null, null,null);
             if (sz1 != null) {
                 //存在,则更新
                 sz.setId(sz1.getId());
@@ -268,7 +268,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
             Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
             Long yh1Id = yh1.getId();
             sz.setYhId(yh1Id);
-            Sz sz1 = szService.selectByCondition(dsbh,null, null);
+            Sz sz1 = szService.selectByCondition(dsbh,null, null,null);
             if (sz1 != null) {
                 //存在,则更新
                 sz.setId(sz1.getId());
