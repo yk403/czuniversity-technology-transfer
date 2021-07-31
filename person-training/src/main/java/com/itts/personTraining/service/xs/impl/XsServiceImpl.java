@@ -380,7 +380,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 Yh yh = new Yh();
                 String xm = stuDTO.getXm();
                 Long jgId = stuDTO.getJgId();
-                //String lxdh = stuDTO.getLxdh();
+                String lxdh = stuDTO.getLxdh();
                 String yhlx = IN.getKey();
                 String yhlb = POSTGRADUATE.getKey();
                 if (data != null) {
@@ -414,7 +414,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh.setYhm(xh);
                     yh.setMm(xh);
                     yh.setZsxm(xm);
-                    //yh.setLxdh(lxdh);
+                    yh.setLxdh(lxdh);
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
