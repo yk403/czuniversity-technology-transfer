@@ -68,11 +68,12 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
      * @param pageSize
      * @param yjly
      * @param name
+     * @param lx
      * @return
      */
     @Override
-    public PageInfo<Zj> findByPage(Integer pageNum, Integer pageSize, String yjly, String name) {
-        log.info("【人才培养 - 分页条件查询专家列表,研究类型:{},姓名:{}】",yjly,name);
+    public PageInfo<Zj> findByPage(Integer pageNum, Integer pageSize, String yjly, String name, String lx) {
+        log.info("【人才培养 - 分页条件查询专家列表,研究类型:{},姓名:{},类型:{}】",yjly,name,lx);
         QueryWrapper<Zj> zjQueryWrapper = new QueryWrapper<>();
         if (pageNum == -1) {
             zjQueryWrapper.eq("sfsc",false)
@@ -82,6 +83,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             zjQueryWrapper.eq("sfsc",false)
                     .eq(StringUtils.isNotBlank(yjly),"yjly",yjly)
                     .like(StringUtils.isNotBlank(name),"xm",name)
+                    .like(StringUtils.isNotBlank(lx),"lx",lx)
                     .orderByDesc("cjsj");
         }
         return new PageInfo<>(zjMapper.selectList(zjQueryWrapper));

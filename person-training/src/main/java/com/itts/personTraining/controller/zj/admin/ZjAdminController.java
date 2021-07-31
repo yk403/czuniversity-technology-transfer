@@ -17,8 +17,7 @@ import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
-import static com.itts.personTraining.enums.UserTypeEnum.PROFESSOR;
-import static com.itts.personTraining.enums.UserTypeEnum.SCHOOL_LEADER;
+import static com.itts.personTraining.enums.UserTypeEnum.*;
 
 /**
  * <p>
@@ -48,8 +47,9 @@ public class ZjAdminController {
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "yjly", required = false) String yjly,
-                                   @RequestParam(value = "name", required = false) String name) {
-        return ResponseUtil.success(zjService.findByPage(pageNum, pageSize, yjly, name));
+                                   @RequestParam(value = "name", required = false) String name,
+                                   @RequestParam(value = "lx", required = false) String lx) {
+        return ResponseUtil.success(zjService.findByPage(pageNum, pageSize, yjly, name, lx));
     }
     @GetMapping("/getlist")
     @ApiOperation(value = "获取excel列表")
@@ -169,7 +169,7 @@ public class ZjAdminController {
         if (zj.getBh() == null) {
             throw new WebException(PROFESSOR_NUMBER_ISEMPTY_ERROR);
         }
-        if (!zj.getLx().equals(SCHOOL_LEADER.getKey()) && !zj.getLx().equals(PROFESSOR.getKey())) {
+        if (!zj.getLx().equals(OUT_PROFESSOR.getMsg()) && !zj.getLx().equals(PROFESSOR.getMsg())) {
             throw new WebException(PROFESSOR_TYPE_ERROR);
         }
         List<Zj> zjList = zjService.getAll();

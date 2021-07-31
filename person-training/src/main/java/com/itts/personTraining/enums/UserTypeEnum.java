@@ -27,7 +27,9 @@ public enum UserTypeEnum {
 
     SCHOOL_LEADER("school_leader", "校领导"),
 
-    PROFESSOR("professor","内部专家"),
+    PROFESSOR("professor","内部"),
+
+    OUT_PROFESSOR("out_professor","外部"),
 
     IN("in", "内部用户");
 
