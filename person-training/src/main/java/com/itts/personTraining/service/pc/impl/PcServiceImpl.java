@@ -67,13 +67,13 @@ public class PcServiceImpl implements PcService {
      * @return
      */
     @Override
-    public PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize, String pch, String pcmc) {
+    public PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize, String name) {
         log.info("【人才培养 - 分页查询批次】");
         PageHelper.startPage(pageNum,pageSize);
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
         pcQueryWrapper.eq("sfsc",false)
-                      .eq(StringUtils.isNotBlank(pch),"pch",pch)
-                      .like(StringUtils.isNotBlank(pch),"pcmc",pcmc)
+                      .like(StringUtils.isNotBlank(name),"pch",name).or()
+                      .like(StringUtils.isNotBlank(name),"pcmc",name)
                       .orderByDesc("cjsj");
         List<Pc> pcs = pcMapper.selectList(pcQueryWrapper);
         return new PageInfo<>(pcs);
