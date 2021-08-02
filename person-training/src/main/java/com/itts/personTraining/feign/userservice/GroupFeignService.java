@@ -25,4 +25,10 @@ public interface GroupFeignService {
     @GetMapping("/admin/api/v1/jggl/get/by/code/")
     ResponseUtil getByCode(@RequestParam(value = "code") String code);
 
+    /**
+     * 通过编码获取当前机构下的子机构
+     */
+    @GetMapping("/admin/api/v1/jggl/find/children/by/code/")
+    ResponseUtil findChildrenByCode(@RequestParam(value = "code") String code);
+
 }

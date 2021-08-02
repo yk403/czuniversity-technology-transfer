@@ -9,12 +9,14 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.feign.userservice.GroupFeignService;
 import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.request.xxzy.BuyXxzyRequest;
 import com.itts.personTraining.service.xxzy.XxzyService;
+import com.itts.personTraining.vo.jggl.JgglVO;
 import com.itts.personTraining.vo.xxzy.GetXxzyVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @Description：
@@ -39,162 +42,228 @@ import java.util.Objects;
 @Api(tags = "学习资源 - 门户")
 public class XxzyController {
 
-    @Autowired
-    private XxzyService xxzyService;
+  @Autowired
+  private GroupFeignService groupFeignService;
+  @Autowired
+  private UserFeignService userFeignService;
+  @Autowired
+  private XxzyService xxzyService;
 
-    @Autowired
-    private UserFeignService userFeignService;
+  @ApiOperation(value = "购买学习资源")
+  @PostMapping("/buy/")
+  public ResponseUtil buy(@RequestBody BuyXxzyRequest buyXxzyRequest) {
 
-    @ApiOperation(value = "列表")
-    @GetMapping("/list/")
-    public ResponseUtil list(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                             @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                             @ApiParam(value = "资源类型：in-内部资源；out-外部资源") @RequestParam(value = "type") String type,
-                             @ApiParam(value = "一级分类") @RequestParam(value = "firstCategory", required = false) String firstCategory,
-                             @ApiParam(value = "二级分类") @RequestParam(value = "secondCategory", required = false) String secondCategory,
-                             @ApiParam(value = "资源类型: video - 视频; textbook - 教材; courseware - 课件") @RequestParam(value = "category", required = false) String category,
-                             @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction,
-                             @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
-                             @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
-                             @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId,
-                             @ApiParam(value = "机构编码") @RequestParam(value = "groupCode", required = false) String groupCode) {
+    checkBuyRequest(buyXxzyRequest);
 
-        PageInfo<GetXxzyVO> result = xxzyService.listVO(pageNum, pageSize, type, firstCategory, secondCategory, category, direction, courseId, condition, groupId, groupCode);
-
-        return ResponseUtil.success(result);
+    LoginUser loginUser = SystemConstant.threadLocal.get();
+    if (loginUser == null) {
+      throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
     }
 
-    @ApiOperation(value = "获取云课堂课程列表")
-    @GetMapping("/get/cloudClassroom/course/")
-    public ResponseUtil getCourse(@ApiParam("用户类别") @RequestParam("userType") String userType,
-                                  @ApiParam("教育类型") @RequestParam(value = "educationType", required = false) String educationType,
-                                  @ApiParam("学员类型字符串，多个以\",\"分割") @RequestParam("studentType") String studentType,
-                                  @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId) {
+    Xxzy xxzy = xxzyService.getOne(new QueryWrapper<Xxzy>()
+        .eq("id", buyXxzyRequest.getSpId())
+        .eq("sfsc", false)
+        .eq("sfsj", true));
 
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        if (loginUser == null) {
-
-            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
-        }
-
-        ResponseUtil response = userFeignService.get();
-        if (response.getErrCode().intValue() != 0) {
-
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-        }
-
-        GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
-        });
-
-        if (!Objects.equals(userType, vo.getYhlb())) {
-
-            throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
-        }
-
-        List<Kc> kcs = xxzyService.getCloudClassroomCourse(userType, educationType, studentType, groupId);
-
-        return ResponseUtil.success(kcs);
+    if (xxzy == null) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
     }
 
-    @ApiOperation("获取云课堂学习资源列表")
-    @GetMapping("/get/cloudClassroom/")
-    public ResponseUtil getCloudClassroomStudyResource(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                       @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                                       @ApiParam(value = "资源类型：in-内部资源；out-外部资源") @RequestParam(value = "type") String type,
-                                                       @ApiParam(value = "一级分类") @RequestParam(value = "firstCategory", required = false) String firstCategory,
-                                                       @ApiParam(value = "二级分类") @RequestParam(value = "secondCategory", required = false) String secondCategory,
-                                                       @ApiParam(value = "资源类型: video - 视频; textbook - 教材; courseware - 课件") @RequestParam(value = "category", required = false) String category,
-                                                       @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction,
-                                                       @ApiParam(value = "课程ID字符串，多个以\",\"分割") @RequestParam(value = "courseIds", required = false) String courseIds,
-                                                       @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
-                                                       @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId) {
+    ResponseUtil result = xxzyService.buy(buyXxzyRequest);
 
-        PageHelper.startPage(pageNum, pageSize);
+    return result;
+  }
 
-        List<Xxzy> xxzys = xxzyService.list(new QueryWrapper<Xxzy>().eq("sfsc", false).eq("sfsj", true).eq("zylb", type).
-                eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory).eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory)
-                .eq(StringUtils.isNotBlank(category), "zylx", category).eq(StringUtils.isNotBlank(direction), "zyfx", direction)
-                .in(CollectionUtils.isEmpty(Arrays.asList(courseIds.split(",").clone())), "kc_id", Arrays.asList(courseIds.split(",").clone()))
-                .like(StringUtils.isNotBlank(condition), "mc", condition)
-                .eq(groupId != null, "jg_id", groupId));
+  /**
+   * 校验购买参数是否合法
+   */
+  private void checkBuyRequest(BuyXxzyRequest buyXxzyRequest) {
 
-        PageInfo pageInfo = new PageInfo(xxzys);
-
-        return ResponseUtil.success(pageInfo);
-
+    if (buyXxzyRequest == null) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
     }
 
-    @ApiOperation(value = "获取详情")
-    @GetMapping("/get/{id}")
-    public ResponseUtil get(@PathVariable("id") Long id) {
-
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        if (loginUser == null) {
-            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
-        }
-
-        GetXxzyVO vo = xxzyService.get(id);
-
-        if (vo == null || vo.getSfsc() || !vo.getSfsj()) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-        }
-
-        Xxzy xxzy = xxzyService.getById(id);
-        xxzy.setLll(xxzy.getLll().intValue() + 1);
-
-        xxzyService.updateById(xxzy);
-
-        return ResponseUtil.success(vo);
+    if (buyXxzyRequest.getSpId() == null) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
     }
 
-    @ApiOperation(value = "购买学习资源")
-    @PostMapping("/buy/")
-    public ResponseUtil buy(@RequestBody BuyXxzyRequest buyXxzyRequest) {
-
-        checkBuyRequest(buyXxzyRequest);
-
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        if (loginUser == null) {
-            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
-        }
-
-        Xxzy xxzy = xxzyService.getOne(new QueryWrapper<Xxzy>()
-                .eq("id", buyXxzyRequest.getSpId())
-                .eq("sfsc", false)
-                .eq("sfsj", true));
-
-        if (xxzy == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-        }
-
-        ResponseUtil result = xxzyService.buy(buyXxzyRequest);
-
-        return result;
+    if (StringUtils.isBlank(buyXxzyRequest.getSpmc())) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
     }
 
-    @ApiOperation(value = "支付金额")
-    @GetMapping("/pay/")
-    public ResponseUtil pay(@RequestParam("orderNo") String orderNo, @RequestParam("payType") String payType
-            , HttpServletResponse response) throws Exception {
+    if (buyXxzyRequest.getZsl() == null) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+    }
 
-        if (StringUtils.isBlank(payType)) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
+    if (buyXxzyRequest.getZje() == null) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+    }
 
-        ResponseUtil result = xxzyService.pay(orderNo, payType);
-        if (result.getErrCode().intValue() != 0) {
+    if (buyXxzyRequest.getSjzfje() == null) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+    }
 
-            throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
-        }
+    if (StringUtils.isBlank(buyXxzyRequest.getLxdh())) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+    }
+  }
 
-        if (result.getData() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
-        }
+  @ApiOperation(value = "基地云平台获取学习资源")
+  @GetMapping("/could/list/")
+  public ResponseUtil cloudList(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                @ApiParam(value = "资源类型：in-内部资源；out-外部资源") @RequestParam(value = "type") String type,
+                                @ApiParam(value = "一级分类") @RequestParam(value = "firstCategory", required = false) String firstCategory,
+                                @ApiParam(value = "二级分类") @RequestParam(value = "secondCategory", required = false) String secondCategory,
+                                @ApiParam(value = "资源类型: video - 视频; textbook - 教材; courseware - 课件") @RequestParam(value = "category", required = false) String category,
+                                @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction,
+                                @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
+                                @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
+                                @ApiParam(value = "机构编码") @RequestParam(value = "groupCode", required = false) String groupCode) {
 
-        String codeUrl = result.getData().toString();
-        if (StringUtils.isBlank(codeUrl)) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
-        }
+    ResponseUtil childrenResponse = groupFeignService.findChildrenByCode(groupCode);
+    if (childrenResponse == null || childrenResponse.getErrCode().intValue() != 0) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+    }
+
+    List<JgglVO> childrenGroup = childrenResponse.conversionData(new TypeReference<List<JgglVO>>() {
+    });
+    if (CollectionUtils.isEmpty(childrenGroup)) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+    }
+
+    List<Long> jgIds = childrenGroup.stream().map(JgglVO::getId).collect(Collectors.toList());
+
+    PageInfo<GetXxzyVO> result = xxzyService.findByJgId(pageNum, pageSize, type, firstCategory, secondCategory, category, direction, courseId, condition, jgIds);
+
+    return ResponseUtil.success(result);
+  }
+
+  @ApiOperation(value = "获取详情")
+  @GetMapping("/get/{id}")
+  public ResponseUtil get(@PathVariable("id") Long id) {
+
+    LoginUser loginUser = SystemConstant.threadLocal.get();
+    if (loginUser == null) {
+      throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+    }
+
+    GetXxzyVO vo = xxzyService.get(id);
+
+    if (vo == null || vo.getSfsc() || !vo.getSfsj()) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+    }
+
+    Xxzy xxzy = xxzyService.getById(id);
+    xxzy.setLll(xxzy.getLll().intValue() + 1);
+
+    xxzyService.updateById(xxzy);
+
+    return ResponseUtil.success(vo);
+  }
+
+  @ApiOperation("获取云课堂学习资源列表")
+  @GetMapping("/get/cloudClassroom/")
+  public ResponseUtil getCloudClassroomStudyResource(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                     @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                                     @ApiParam(value = "资源类型：in-内部资源；out-外部资源") @RequestParam(value = "type") String type,
+                                                     @ApiParam(value = "一级分类") @RequestParam(value = "firstCategory", required = false) String firstCategory,
+                                                     @ApiParam(value = "二级分类") @RequestParam(value = "secondCategory", required = false) String secondCategory,
+                                                     @ApiParam(value = "资源类型: video - 视频; textbook - 教材; courseware - 课件") @RequestParam(value = "category", required = false) String category,
+                                                     @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction,
+                                                     @ApiParam(value = "课程ID字符串，多个以\",\"分割") @RequestParam(value = "courseIds", required = false) String courseIds,
+                                                     @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
+                                                     @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId) {
+
+    PageHelper.startPage(pageNum, pageSize);
+
+    List<Xxzy> xxzys = xxzyService.list(new QueryWrapper<Xxzy>().eq("sfsc", false).eq("sfsj", true).eq("zylb", type).
+        eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory).eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory)
+        .eq(StringUtils.isNotBlank(category), "zylx", category).eq(StringUtils.isNotBlank(direction), "zyfx", direction)
+        .in(CollectionUtils.isEmpty(Arrays.asList(courseIds.split(",").clone())), "kc_id", Arrays.asList(courseIds.split(",").clone()))
+        .like(StringUtils.isNotBlank(condition), "mc", condition)
+        .eq(groupId != null, "jg_id", groupId));
+
+    PageInfo pageInfo = new PageInfo(xxzys);
+
+    return ResponseUtil.success(pageInfo);
+
+  }
+
+  @ApiOperation(value = "获取云课堂课程列表")
+  @GetMapping("/get/cloudClassroom/course/")
+  public ResponseUtil getCourse(@ApiParam("用户类别") @RequestParam("userType") String userType,
+                                @ApiParam("教育类型") @RequestParam(value = "educationType", required = false) String educationType,
+                                @ApiParam("学员类型字符串，多个以\",\"分割") @RequestParam("studentType") String studentType,
+                                @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId) {
+
+    LoginUser loginUser = SystemConstant.threadLocal.get();
+    if (loginUser == null) {
+
+      throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+    }
+
+    ResponseUtil response = userFeignService.get();
+    if (response.getErrCode().intValue() != 0) {
+
+      throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+    }
+
+    GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
+    });
+
+    if (!Objects.equals(userType, vo.getYhlb())) {
+
+      throw new WebException(ErrorCodeEnum.NOT_PERMISSION_ERROR);
+    }
+
+    List<Kc> kcs = xxzyService.getCloudClassroomCourse(userType, educationType, studentType, groupId);
+
+    return ResponseUtil.success(kcs);
+  }
+
+  @ApiOperation(value = "列表")
+  @GetMapping("/list/")
+  public ResponseUtil list(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                           @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                           @ApiParam(value = "资源类型：in-内部资源；out-外部资源") @RequestParam(value = "type") String type,
+                           @ApiParam(value = "一级分类") @RequestParam(value = "firstCategory", required = false) String firstCategory,
+                           @ApiParam(value = "二级分类") @RequestParam(value = "secondCategory", required = false) String secondCategory,
+                           @ApiParam(value = "资源类型: video - 视频; textbook - 教材; courseware - 课件") @RequestParam(value = "category", required = false) String category,
+                           @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction,
+                           @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
+                           @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
+                           @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId,
+                           @ApiParam(value = "机构编码") @RequestParam(value = "groupCode", required = false) String groupCode) {
+
+    PageInfo<GetXxzyVO> result = xxzyService.listVO(pageNum, pageSize, type, firstCategory, secondCategory, category, direction, courseId, condition, groupId, groupCode);
+
+    return ResponseUtil.success(result);
+  }
+
+  @ApiOperation(value = "支付金额")
+  @GetMapping("/pay/")
+  public ResponseUtil pay(@RequestParam("orderNo") String orderNo, @RequestParam("payType") String payType
+      , HttpServletResponse response) throws Exception {
+
+    if (StringUtils.isBlank(payType)) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+    }
+
+    ResponseUtil result = xxzyService.pay(orderNo, payType);
+    if (result.getErrCode().intValue() != 0) {
+
+      throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
+    }
+
+    if (result.getData() == null) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
+    }
+
+    String codeUrl = result.getData().toString();
+    if (StringUtils.isBlank(codeUrl)) {
+      throw new WebException(ErrorCodeEnum.SYSTEM_NET_ERROR);
+    }
 
 /*        Map<EncodeHintType, Object> hints = Maps.newHashMap();
 
@@ -207,40 +276,6 @@ public class XxzyController {
         OutputStream outputStream = response.getOutputStream();
 
         MatrixToImageWriter.writeToStream(bitMatrix, "png", outputStream);*/
-        return ResponseUtil.success("返回成功",codeUrl);
-    }
-
-    /**
-     * 校验购买参数是否合法
-     */
-    private void checkBuyRequest(BuyXxzyRequest buyXxzyRequest) {
-
-        if (buyXxzyRequest == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-
-        if (buyXxzyRequest.getSpId() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-
-        if (StringUtils.isBlank(buyXxzyRequest.getSpmc())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-
-        if (buyXxzyRequest.getZsl() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-
-        if (buyXxzyRequest.getZje() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-
-        if (buyXxzyRequest.getSjzfje() == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-
-        if (StringUtils.isBlank(buyXxzyRequest.getLxdh())) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-    }
+    return ResponseUtil.success("返回成功", codeUrl);
+  }
 }

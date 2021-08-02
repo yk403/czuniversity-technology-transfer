@@ -58,421 +58,448 @@ import java.util.stream.Collectors;
 @Service
 public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements XxzyService {
 
-    @Autowired
-    private XxzyMapper xxzyMapper;
+  @Autowired
+  private FjzyMapper fjzyMapper;
+  @Autowired
+  private GroupFeignService groupFeignService;
+  @Autowired
+  private KcMapper kcMapper;
+  @Autowired
+  private OrderFeignService orderFeignService;
+  @Autowired
+  private SzMapper szMapper;
+  @Autowired
+  private XxzyMapper xxzyMapper;
+  @Autowired
+  private XxzyscMapper xxzyscMapper;
 
-    @Autowired
-    private FjzyMapper fjzyMapper;
+  /**
+   * 新增
+   */
+  @Override
+  public Xxzy add(AddXxzyRequest addXxzyRequest) {
 
-    @Autowired
-    private XxzyscMapper xxzyscMapper;
+    LoginUser loginUser = SystemConstant.threadLocal.get();
 
-    @Autowired
-    private OrderFeignService orderFeignService;
-
-    @Autowired
-    private GroupFeignService groupFeignService;
-
-    @Autowired
-    private KcMapper kcMapper;
-
-    @Autowired
-    private SzMapper szMapper;
-
-    /**
-     * 获取列表 - 分页
-     */
-    @Override
-    public PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type,
-                               String firstCategory, String secondCategory, String category,
-                               Long courseId, String condition, Long groupId) {
-
-        PageHelper.startPage(pageNum, pageSize);
-
-        QueryWrapper query = new QueryWrapper();
-
-        query.eq("zylb", type);
-        query.eq("sfsc", false);
-
-        if (StringUtils.isNotBlank(firstCategory)) {
-            query.eq("zyyjfl", firstCategory);
-        }
-
-        if (StringUtils.isNotBlank(secondCategory)) {
-            query.eq("zyejfl", secondCategory);
-        }
-
-        if (courseId != null) {
-            query.eq("kc_id", courseId);
-        }
-
-        if (StringUtils.isNotBlank(condition)) {
-            query.like("mc", condition.trim());
-        }
-
-        if (StringUtils.isNotBlank(category)) {
-            query.eq("zylx", category);
-        }
-
-        if(groupId != null){
-            query.eq("jg_id", groupId);
-        }
-
-        query.orderByDesc("cjsj");
-
-        List xxzys = xxzyMapper.selectList(query);
-
-        PageInfo pageInfo = new PageInfo(xxzys);
-
-        return pageInfo;
+    Long userId = null;
+    if (loginUser != null) {
+      userId = loginUser.getUserId();
     }
 
-    /**
-     * 获取列表 - 分页
-     */
-    @Override
-    public PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
-                                      String secondCategory, String category, String direction, Long courseId,
-                                      String condition, Long groupId, String groupCode) {
+    Xxzy xxzy = new Xxzy();
+    BeanUtils.copyProperties(addXxzyRequest, xxzy);
 
-        PageHelper.startPage(pageNum, pageSize);
+    Date now = new Date();
 
-        QueryWrapper<Xxzy> query = new QueryWrapper();
+    xxzy.setCjr(userId);
+    xxzy.setGxr(userId);
+    xxzy.setCjsj(now);
+    xxzy.setGxsj(now);
+    xxzy.setZz(loginUser.getRealName());
 
-        query.eq("zylb", type);
-        query.eq("sfsc", false);
-        query.eq("sfsj", true);
+    if (!CollectionUtils.isEmpty(addXxzyRequest.getFjzys())) {
 
-        if (StringUtils.isNotBlank(firstCategory)) {
-            query.eq("zyyjfl", firstCategory);
-        }
+      String fjzyId = CommonUtils.generateUUID();
+      xxzy.setFjzyId(fjzyId);
 
-        if (StringUtils.isNotBlank(secondCategory)) {
-            query.eq("zyejfl", secondCategory);
-        }
+      List<AddFjzyRequest> fjzys = addXxzyRequest.getFjzys();
 
-        if (StringUtils.isNotBlank(category)) {
-            query.eq("zylx", category);
-        }
+      for (AddFjzyRequest addFjzy : fjzys) {
 
-        if (StringUtils.isNotBlank(direction)) {
-            query.eq("zyfx", direction);
-        }
+        Fjzy fjzy = new Fjzy();
+        BeanUtils.copyProperties(addFjzy, fjzy);
 
-        if (courseId != null) {
-            query.eq("kc_id", courseId);
-        }
+        fjzy.setFjzyId(fjzyId);
+        fjzy.setCjr(userId);
+        fjzy.setCjsj(now);
 
-        if (StringUtils.isNotBlank(condition)) {
-            query.like("mc", condition.trim());
-        }
+        fjzyMapper.insert(fjzy);
+      }
+    }
+    xxzyMapper.insert(xxzy);
 
-        if(groupId != null){
-            query.eq("jg_id", groupId);
-        }
+    return xxzy;
+  }
 
-        if(StringUtils.isNotBlank(groupCode)){
-            ResponseUtil response = groupFeignService.getByCode(groupCode);
-            if(response.getErrCode().intValue() == 0){
+  /**
+   * 购买学习资源
+   */
+  @Override
+  public ResponseUtil buy(BuyXxzyRequest buyXxzyRequest) {
 
-                JgglVO jg = response.conversionData(new TypeReference<JgglVO>() {
-                });
+    AddDdxfjlRequest request = new AddDdxfjlRequest();
+    BeanUtils.copyProperties(buyXxzyRequest, request);
 
-                if(jg != null){
-                    query.eq("jg_id", jg.getId());
-                }
-            }
-        }
+    request.setXtlx(SystemTypeEnum.TALENT_TRAINING.getKey());
+    request.setDdmc("购买" + buyXxzyRequest.getSpmc() + "学习资源");
+    request.setXflx("购买学习资源");
+    request.setXfsm("购买" + buyXxzyRequest.getSpmc() + "学习资源");
 
-        query.orderByDesc("cjsj");
+    ResponseUtil result = orderFeignService.createOrder(request);
 
-        List<Xxzy> list = xxzyMapper.selectList(query);
-        PageInfo<Xxzy> page = new PageInfo<>(list);
+    return result;
+  }
 
-        PageInfo<GetXxzyVO> pageInfo = new PageInfo<>();
+  /**
+   * 删除附件资源
+   */
+  @Override
+  public void deleteFjzy(Long fjzyId) {
 
-        BeanUtils.copyProperties(page, pageInfo);
+    fjzyMapper.deleteById(fjzyId);
 
-        if (CollectionUtils.isEmpty(list)) {
+  }
 
-            return pageInfo;
-        }
+  /**
+   * 通过机构ID获取数据
+   */
+  @Override
+  public PageInfo<GetXxzyVO> findByJgId(Integer pageNum, Integer pageSize, String type, String firstCategory,
+                                        String secondCategory, String category, String direction, Long courseId, String condition, List<Long> jgIds) {
 
-        List<GetXxzyVO> voList = list.stream().map(obj -> {
+    PageHelper.startPage(pageNum, pageSize);
 
-            GetXxzyVO vo = new GetXxzyVO();
-            BeanUtils.copyProperties(obj, vo);
+    List<Xxzy> result = xxzyMapper.selectList(new QueryWrapper<Xxzy>().eq("zylb", type).eq("sfsc", false)
+        .eq("sfsj", true).eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory)
+        .eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory).eq(StringUtils.isNotBlank(category), "zylx", category)
+        .eq(StringUtils.isNotBlank(direction), "zyfx", direction).eq(courseId != null, "kc_id", courseId)
+        .like(StringUtils.isNotBlank(condition), "mc", condition.trim()));
 
-            vo.setSfgm(false);
+    PageInfo pageInfo = new PageInfo(result);
 
-            return vo;
-        }).collect(Collectors.toList());
+    PageInfo pageResult = new PageInfo();
+    BeanUtils.copyProperties(pageInfo, pageResult);
 
-        pageInfo.setList(voList);
+    List<GetXxzyVO> voList = result.stream().map(obj -> {
 
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        if (loginUser == null) {
+      GetXxzyVO vo = new GetXxzyVO();
+      BeanUtils.copyProperties(obj, vo);
 
-            return pageInfo;
-        }
+      return vo;
+    }).collect(Collectors.toList());
 
-        ResponseUtil response = orderFeignService.getByUserId();
-        if (response.getErrCode().intValue() != 0) {
+    pageResult.setList(voList);
 
-            return pageInfo;
-        }
+    return pageResult;
+  }
 
-        if (response.getData() == null) {
-            return pageInfo;
-        }
+  /**
+   * 获取详情
+   */
+  @Override
+  public GetXxzyVO get(Long id) {
 
-        List<GetDdxfjlVO> ddxfjls = response.conversionData(new TypeReference<List<GetDdxfjlVO>>() {
-        });
 
-        //获取订单中商品ID
-        List<Long> spIds = ddxfjls.stream().map(GetDdxfjlVO::getSpId).collect(Collectors.toList());
+    Xxzy xxzy = xxzyMapper.selectOne(new QueryWrapper<Xxzy>().eq("id", id).eq("sfsc", false));
 
-        //获取当前查询列表的商品是否为已支付订单
-        Map<Long, GetXxzyVO> xxzyMap = voList.stream().collect(Collectors.toMap(GetXxzyVO::getId, Function.identity()));
-
-        spIds.forEach(spId -> {
-
-            GetXxzyVO xxzy = xxzyMap.get(spId);
-            if (xxzy != null) {
-
-                xxzy.setSfgm(true);
-            }
-        });
-
-        //获取我收藏的学习资源
-        List<Xxzysc> xxzyscs = xxzyscMapper.selectList(new QueryWrapper<Xxzysc>()
-                .eq("yh_id", loginUser.getUserId()));
-
-        List<Long> xxzyscIds = xxzyscs.stream().map(Xxzysc::getXxzyId).collect(Collectors.toList());
-
-        xxzyscIds.forEach(xxzyscId -> {
-
-            GetXxzyVO xxzy = xxzyMap.get(xxzyscId);
-
-            if (xxzy != null) {
-                xxzy.setSfshouc(true);
-            }
-        });
-
-        return pageInfo;
+    if (xxzy == null) {
+      return null;
     }
 
-    /**
-     * 获取云课堂课程列表
-     */
-    @Override
-    public List<Kc> getCloudClassroomCourse(String userType, String educationType, String studentType, Long groupId) {
+    GetXxzyVO vo = new GetXxzyVO();
+    BeanUtils.copyProperties(xxzy, vo);
 
-        List<Kc> kcs = Lists.newArrayList();
+    if (StringUtils.isNotBlank(xxzy.getFjzyId())) {
 
-        //判断用户是否是授课教师
-        if (Objects.equals(userType, UserTypeEnum.TEACHER.getKey())) {
+      List<AddFjzyRequest> fjzys = fjzyMapper.selectList(new QueryWrapper<Fjzy>().eq("fjzy_id", xxzy.getFjzyId()))
+          .stream().map(obj -> {
 
-            LoginUser loginUser = SystemConstant.threadLocal.get();
+            AddFjzyRequest request = new AddFjzyRequest();
+            BeanUtils.copyProperties(obj, request);
+            return request;
 
-            Sz sz = szMapper.getSzByYhId(loginUser.getUserId());
+          }).collect(Collectors.toList());
 
-            kcs = kcMapper.findBySzId(sz.getId(), educationType, studentType, groupId);
+      vo.setFjzys(fjzys);
+    }
 
-        } else {
+    return vo;
+  }
 
-            List<String> studentTypes = Lists.newArrayList(studentType.split(","));
-            if (CollectionUtils.isEmpty(studentTypes)) {
-                return kcs;
-            }
+  /**
+   * 获取云课堂课程列表
+   */
+  @Override
+  public List<Kc> getCloudClassroomCourse(String userType, String educationType, String studentType, Long groupId) {
 
-            kcs = kcMapper.findByType(educationType, studentTypes, groupId);
-        }
+    List<Kc> kcs = Lists.newArrayList();
 
+    //判断用户是否是授课教师
+    if (Objects.equals(userType, UserTypeEnum.TEACHER.getKey())) {
+
+      LoginUser loginUser = SystemConstant.threadLocal.get();
+
+      Sz sz = szMapper.getSzByYhId(loginUser.getUserId());
+
+      kcs = kcMapper.findBySzId(sz.getId(), educationType, studentType, groupId);
+
+    } else {
+
+      List<String> studentTypes = Lists.newArrayList(studentType.split(","));
+      if (CollectionUtils.isEmpty(studentTypes)) {
         return kcs;
+      }
+
+      kcs = kcMapper.findByType(educationType, studentTypes, groupId);
     }
 
-    /**
-     * 获取详情
-     */
-    @Override
-    public GetXxzyVO get(Long id) {
+    return kcs;
+  }
 
+  /**
+   * 获取列表 - 分页
+   */
+  @Override
+  public PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type,
+                             String firstCategory, String secondCategory, String category,
+                             Long courseId, String condition, Long groupId) {
 
-        Xxzy xxzy = xxzyMapper.selectOne(new QueryWrapper<Xxzy>().eq("id", id).eq("sfsc", false));
+    PageHelper.startPage(pageNum, pageSize);
 
-        if (xxzy == null) {
-            return null;
-        }
+    QueryWrapper query = new QueryWrapper();
 
-        GetXxzyVO vo = new GetXxzyVO();
-        BeanUtils.copyProperties(xxzy, vo);
+    query.eq("zylb", type);
+    query.eq("sfsc", false);
 
-        if (StringUtils.isNotBlank(xxzy.getFjzyId())) {
-
-            List<AddFjzyRequest> fjzys = fjzyMapper.selectList(new QueryWrapper<Fjzy>().eq("fjzy_id", xxzy.getFjzyId()))
-                    .stream().map(obj -> {
-
-                        AddFjzyRequest request = new AddFjzyRequest();
-                        BeanUtils.copyProperties(obj, request);
-                        return request;
-
-                    }).collect(Collectors.toList());
-
-            vo.setFjzys(fjzys);
-        }
-
-        return vo;
+    if (StringUtils.isNotBlank(firstCategory)) {
+      query.eq("zyyjfl", firstCategory);
     }
 
-    /**
-     * 新增
-     */
-    @Override
-    public Xxzy add(AddXxzyRequest addXxzyRequest) {
-
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-
-        Long userId = null;
-        if (loginUser != null) {
-            userId = loginUser.getUserId();
-        }
-
-        Xxzy xxzy = new Xxzy();
-        BeanUtils.copyProperties(addXxzyRequest, xxzy);
-
-        Date now = new Date();
-
-        xxzy.setCjr(userId);
-        xxzy.setGxr(userId);
-        xxzy.setCjsj(now);
-        xxzy.setGxsj(now);
-        xxzy.setZz(loginUser.getRealName());
-
-        if (!CollectionUtils.isEmpty(addXxzyRequest.getFjzys())) {
-
-            String fjzyId = CommonUtils.generateUUID();
-            xxzy.setFjzyId(fjzyId);
-
-            List<AddFjzyRequest> fjzys = addXxzyRequest.getFjzys();
-
-            for (AddFjzyRequest addFjzy : fjzys) {
-
-                Fjzy fjzy = new Fjzy();
-                BeanUtils.copyProperties(addFjzy, fjzy);
-
-                fjzy.setFjzyId(fjzyId);
-                fjzy.setCjr(userId);
-                fjzy.setCjsj(now);
-
-                fjzyMapper.insert(fjzy);
-            }
-        }
-        xxzyMapper.insert(xxzy);
-
-        return xxzy;
+    if (StringUtils.isNotBlank(secondCategory)) {
+      query.eq("zyejfl", secondCategory);
     }
 
-    /**
-     * 更新
-     */
-    @Override
-    public Xxzy update(UpdateXxzyRequest updateXxzyRequest, Xxzy xxzy, Long userId) {
-
-        Date now = new Date();
-
-        BeanUtils.copyProperties(updateXxzyRequest, xxzy, "cjr", "cjsj", "fjzy_id", "lll", "zz", "sfsc", "sfsj", "sjsj");
-        xxzy.setGxsj(now);
-        xxzy.setGxr(userId);
-
-        xxzyMapper.update(xxzy);
-
-        if (!CollectionUtils.isEmpty(updateXxzyRequest.getFjzys())) {
-
-            List<AddFjzyRequest> fjzys = updateXxzyRequest.getFjzys();
-
-            String xxzyFjzyId = xxzy.getFjzyId();
-
-            //判断当前学习资源是否有附件资源
-            if (StringUtils.isNotBlank(xxzyFjzyId)) {
-
-                //删除当前所有的附件资源，增加新的附件资源
-                fjzyMapper.delete(new QueryWrapper<Fjzy>().eq("fjzy_id", xxzy.getFjzyId()));
-
-            } else {
-
-                xxzyFjzyId = CommonUtils.generateUUID();
-            }
-
-            for (AddFjzyRequest addFjzy : fjzys) {
-
-                Fjzy fjzy = new Fjzy();
-                BeanUtils.copyProperties(addFjzy, fjzy);
-
-                fjzy.setFjzyId(xxzyFjzyId);
-                fjzy.setCjr(userId);
-                fjzy.setCjsj(now);
-
-                fjzyMapper.insert(fjzy);
-            }
-        }
-
-        return xxzy;
+    if (courseId != null) {
+      query.eq("kc_id", courseId);
     }
 
-    /**
-     * 删除附件资源
-     */
-    @Override
-    public void deleteFjzy(Long fjzyId) {
-
-        fjzyMapper.deleteById(fjzyId);
-
+    if (StringUtils.isNotBlank(condition)) {
+      query.like("mc", condition.trim());
     }
 
-    /**
-     * 购买学习资源
-     */
-    @Override
-    public ResponseUtil buy(BuyXxzyRequest buyXxzyRequest) {
-
-        AddDdxfjlRequest request = new AddDdxfjlRequest();
-        BeanUtils.copyProperties(buyXxzyRequest, request);
-
-        request.setXtlx(SystemTypeEnum.TALENT_TRAINING.getKey());
-        request.setDdmc("购买" + buyXxzyRequest.getSpmc() + "学习资源");
-        request.setXflx("购买学习资源");
-        request.setXfsm("购买" + buyXxzyRequest.getSpmc() + "学习资源");
-
-        ResponseUtil result = orderFeignService.createOrder(request);
-
-        return result;
+    if (StringUtils.isNotBlank(category)) {
+      query.eq("zylx", category);
     }
 
-    /**
-     * 支付金额
-     */
-    @Override
-    public  ResponseUtil pay(String orderNo, String payType) {
+    if (groupId != null) {
+      query.eq("jg_id", groupId);
+    }
 
-        ResponseUtil response = orderFeignService.getByCode(orderNo);
-        if (response.getErrCode().intValue() != 0) {
+    query.orderByDesc("cjsj");
 
-            return response;
-        }
+    List xxzys = xxzyMapper.selectList(query);
 
-        if (response.getData() == null) {
-            return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR.getCode(), "订单不存在");
-        }
+    PageInfo pageInfo = new PageInfo(xxzys);
 
-        GetDdxfjlVO ddxfjl = response.conversionData(new TypeReference<GetDdxfjlVO>() {
+    return pageInfo;
+  }
+
+  /**
+   * 获取列表 - 分页
+   */
+  @Override
+  public PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
+                                    String secondCategory, String category, String direction, Long courseId,
+                                    String condition, Long groupId, String groupCode) {
+
+    PageHelper.startPage(pageNum, pageSize);
+
+    QueryWrapper<Xxzy> query = new QueryWrapper();
+
+    query.eq("zylb", type);
+    query.eq("sfsc", false);
+    query.eq("sfsj", true);
+
+    if (StringUtils.isNotBlank(firstCategory)) {
+      query.eq("zyyjfl", firstCategory);
+    }
+
+    if (StringUtils.isNotBlank(secondCategory)) {
+      query.eq("zyejfl", secondCategory);
+    }
+
+    if (StringUtils.isNotBlank(category)) {
+      query.eq("zylx", category);
+    }
+
+    if (StringUtils.isNotBlank(direction)) {
+      query.eq("zyfx", direction);
+    }
+
+    if (courseId != null) {
+      query.eq("kc_id", courseId);
+    }
+
+    if (StringUtils.isNotBlank(condition)) {
+      query.like("mc", condition.trim());
+    }
+
+    if (groupId != null) {
+      query.eq("jg_id", groupId);
+    }
+
+    if (StringUtils.isNotBlank(groupCode)) {
+      ResponseUtil response = groupFeignService.getByCode(groupCode);
+      if (response.getErrCode().intValue() == 0) {
+
+        JgglVO jg = response.conversionData(new TypeReference<JgglVO>() {
         });
 
-        ddxfjl.setZffs(payType);
-
-        //如果是微信支付、支付宝支付调用三方支付接口
-        ResponseUtil payResponse = orderFeignService.pay(ddxfjl);
-
-        return payResponse;
+        if (jg != null) {
+          query.eq("jg_id", jg.getId());
+        }
+      }
     }
+
+    query.orderByDesc("cjsj");
+
+    List<Xxzy> list = xxzyMapper.selectList(query);
+    PageInfo<Xxzy> page = new PageInfo<>(list);
+
+    PageInfo<GetXxzyVO> pageInfo = new PageInfo<>();
+
+    BeanUtils.copyProperties(page, pageInfo);
+
+    if (CollectionUtils.isEmpty(list)) {
+
+      return pageInfo;
+    }
+
+    List<GetXxzyVO> voList = list.stream().map(obj -> {
+
+      GetXxzyVO vo = new GetXxzyVO();
+      BeanUtils.copyProperties(obj, vo);
+
+      vo.setSfgm(false);
+
+      return vo;
+    }).collect(Collectors.toList());
+
+    pageInfo.setList(voList);
+
+    LoginUser loginUser = SystemConstant.threadLocal.get();
+    if (loginUser == null) {
+
+      return pageInfo;
+    }
+
+    ResponseUtil response = orderFeignService.getByUserId();
+    if (response.getErrCode().intValue() != 0) {
+
+      return pageInfo;
+    }
+
+    if (response.getData() == null) {
+      return pageInfo;
+    }
+
+    List<GetDdxfjlVO> ddxfjls = response.conversionData(new TypeReference<List<GetDdxfjlVO>>() {
+    });
+
+    //获取订单中商品ID
+    List<Long> spIds = ddxfjls.stream().map(GetDdxfjlVO::getSpId).collect(Collectors.toList());
+
+    //获取当前查询列表的商品是否为已支付订单
+    Map<Long, GetXxzyVO> xxzyMap = voList.stream().collect(Collectors.toMap(GetXxzyVO::getId, Function.identity()));
+
+    spIds.forEach(spId -> {
+
+      GetXxzyVO xxzy = xxzyMap.get(spId);
+      if (xxzy != null) {
+
+        xxzy.setSfgm(true);
+      }
+    });
+
+    //获取我收藏的学习资源
+    List<Xxzysc> xxzyscs = xxzyscMapper.selectList(new QueryWrapper<Xxzysc>()
+        .eq("yh_id", loginUser.getUserId()));
+
+    List<Long> xxzyscIds = xxzyscs.stream().map(Xxzysc::getXxzyId).collect(Collectors.toList());
+
+    xxzyscIds.forEach(xxzyscId -> {
+
+      GetXxzyVO xxzy = xxzyMap.get(xxzyscId);
+
+      if (xxzy != null) {
+        xxzy.setSfshouc(true);
+      }
+    });
+
+    return pageInfo;
+  }
+
+  /**
+   * 支付金额
+   */
+  @Override
+  public ResponseUtil pay(String orderNo, String payType) {
+
+    ResponseUtil response = orderFeignService.getByCode(orderNo);
+    if (response.getErrCode().intValue() != 0) {
+
+      return response;
+    }
+
+    if (response.getData() == null) {
+      return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR.getCode(), "订单不存在");
+    }
+
+    GetDdxfjlVO ddxfjl = response.conversionData(new TypeReference<GetDdxfjlVO>() {
+    });
+
+    ddxfjl.setZffs(payType);
+
+    //如果是微信支付、支付宝支付调用三方支付接口
+    ResponseUtil payResponse = orderFeignService.pay(ddxfjl);
+
+    return payResponse;
+  }
+
+  /**
+   * 更新
+   */
+  @Override
+  public Xxzy update(UpdateXxzyRequest updateXxzyRequest, Xxzy xxzy, Long userId) {
+
+    Date now = new Date();
+
+    BeanUtils.copyProperties(updateXxzyRequest, xxzy, "cjr", "cjsj", "fjzy_id", "lll", "zz", "sfsc", "sfsj", "sjsj");
+    xxzy.setGxsj(now);
+    xxzy.setGxr(userId);
+
+    xxzyMapper.update(xxzy);
+
+    if (!CollectionUtils.isEmpty(updateXxzyRequest.getFjzys())) {
+
+      List<AddFjzyRequest> fjzys = updateXxzyRequest.getFjzys();
+
+      String xxzyFjzyId = xxzy.getFjzyId();
+
+      //判断当前学习资源是否有附件资源
+      if (StringUtils.isNotBlank(xxzyFjzyId)) {
+
+        //删除当前所有的附件资源，增加新的附件资源
+        fjzyMapper.delete(new QueryWrapper<Fjzy>().eq("fjzy_id", xxzy.getFjzyId()));
+
+      } else {
+
+        xxzyFjzyId = CommonUtils.generateUUID();
+      }
+
+      for (AddFjzyRequest addFjzy : fjzys) {
+
+        Fjzy fjzy = new Fjzy();
+        BeanUtils.copyProperties(addFjzy, fjzy);
+
+        fjzy.setFjzyId(xxzyFjzyId);
+        fjzy.setCjr(userId);
+        fjzy.setCjsj(now);
+
+        fjzyMapper.insert(fjzy);
+      }
+    }
+
+    return xxzy;
+  }
 }

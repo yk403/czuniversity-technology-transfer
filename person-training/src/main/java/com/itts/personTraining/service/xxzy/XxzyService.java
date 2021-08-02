@@ -22,51 +22,58 @@ import java.util.List;
  */
 public interface XxzyService extends IService<Xxzy> {
 
-    /**
-     * 获取列表 - 分页
-     */
-    PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type, String firstCategory,
-                        String secondCategory, String category, Long courseId, String condition, Long groupId);
+  /**
+   * 新增
+   */
+  Xxzy add(AddXxzyRequest addXxzyRequest);
 
-    /**
-     * 获取列表 - 分页
-     */
-    PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
-                               String secondCategory, String category, String direction, Long courseId,
-                               String condition, Long groupId, String groupCode);
+  /**
+   * 购买学习资源
+   */
+  ResponseUtil buy(BuyXxzyRequest buyXxzyRequest);
 
-    /**
-     * 获取云课堂课程列表
-     */
-    List<Kc> getCloudClassroomCourse(String userType, String educationType, String studentType, Long groupId);
+  /**
+   * 删除附件资源
+   */
+  void deleteFjzy(Long fjzyId);
 
-    /**
-     * 获取详情
-     */
-    GetXxzyVO get(Long id);
+  /**
+   * 通过机构ID获取数据
+   */
+  PageInfo<GetXxzyVO> findByJgId(Integer pageNum, Integer pageSize, String type, String firstCategory,
+                                 String secondCategory, String category, String direction, Long courseId,
+                                 String condition, List<Long> jgIds);
 
-    /**
-     * 新增
-     */
-    Xxzy add(AddXxzyRequest addXxzyRequest);
+  /**
+   * 获取详情
+   */
+  GetXxzyVO get(Long id);
 
-    /**
-     * 更新
-     */
-    Xxzy update(UpdateXxzyRequest updateXxzyRequest, Xxzy xxzy, Long userId);
+  /**
+   * 获取云课堂课程列表
+   */
+  List<Kc> getCloudClassroomCourse(String userType, String educationType, String studentType, Long groupId);
 
-    /**
-     * 删除附件资源
-     */
-    void deleteFjzy(Long fjzyId);
+  /**
+   * 获取列表 - 分页
+   */
+  PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type, String firstCategory,
+                      String secondCategory, String category, Long courseId, String condition, Long groupId);
 
-    /**
-     * 购买学习资源
-     */
-    ResponseUtil buy(BuyXxzyRequest buyXxzyRequest);
+  /**
+   * 获取列表 - 分页
+   */
+  PageInfo<GetXxzyVO> listVO(Integer pageNum, Integer pageSize, String type, String firstCategory,
+                             String secondCategory, String category, String direction, Long courseId,
+                             String condition, Long groupId, String groupCode);
 
-    /**
-     * 支付金额
-     */
-    ResponseUtil pay(String orderNo, String payType);
+  /**
+   * 支付金额
+   */
+  ResponseUtil pay(String orderNo, String payType);
+
+  /**
+   * 更新
+   */
+  Xxzy update(UpdateXxzyRequest updateXxzyRequest, Xxzy xxzy, Long userId);
 }
