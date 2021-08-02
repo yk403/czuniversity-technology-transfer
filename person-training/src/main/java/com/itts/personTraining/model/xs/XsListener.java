@@ -245,7 +245,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     yh.setYhm(xh);
                     yh.setMm(xh);
                     yh.setZsxm(xm);
-                    //yh.setLxdh(lxdh);
+                    yh.setLxdh(lxdh);
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);

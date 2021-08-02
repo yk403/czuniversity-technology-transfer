@@ -22,9 +22,10 @@ public interface ZjService extends IService<Zj> {
      * @param pageSize
      * @param yjly
      * @param name
+     * @param lx
      * @return
      */
-    PageInfo<Zj> findByPage(Integer pageNum, Integer pageSize, String yjly, String name);
+    PageInfo<Zj> findByPage(Integer pageNum, Integer pageSize, String yjly, String name, String lx);
 
     List<Zj> findExport(String yjly, String name);
     /**

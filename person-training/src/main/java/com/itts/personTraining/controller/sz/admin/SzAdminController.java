@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR;
 
 /**
  * <p>
@@ -46,8 +45,9 @@ public class SzAdminController {
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "dsxm", required = false) String dsxm,
                                    @RequestParam(value = "dslb", required = false) String dslb,
-                                   @RequestParam(value = "hyly", required = false) String hyly) {
-        return ResponseUtil.success(szService.findByPage(pageNum, pageSize, dsxm, dslb, hyly));
+                                   @RequestParam(value = "hyly", required = false) String hyly,
+                                   @RequestParam(value = "groupId", required = false) Long groupId) {
+        return ResponseUtil.success(szService.findByPage(pageNum, pageSize, dsxm, dslb, hyly, groupId));
     }
     @GetMapping("/getlist")
     @ApiOperation(value = "获取师资excel列表")
