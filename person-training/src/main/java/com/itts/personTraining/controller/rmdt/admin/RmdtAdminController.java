@@ -28,7 +28,7 @@ import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
  */
 @RestController
 @RequestMapping(ADMIN_BASE_URL +"/v1/rmdt")
-@Api(tags="热门动态")
+@Api(value = "RmdtAdminController",tags="热门动态")
 public class RmdtAdminController {
 
     @Resource

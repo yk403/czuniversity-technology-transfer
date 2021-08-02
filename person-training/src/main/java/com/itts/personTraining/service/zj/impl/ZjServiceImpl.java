@@ -116,16 +116,19 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             for (Sjzd sjzd : sjzd2) {
                 if(Objects.equals(sjzd.getZdbm(),zj.getZzmm())){
                     zj.setZzmm(sjzd.getZdmc());
+                    break;
                 }
             }
             for (Sjzd sjzd : sjzd3) {
                 if(Objects.equals(sjzd.getZdbm(),zj.getYjly())){
                     zj.setYjly(sjzd.getZdmc());
+                    break;
                 }
             }
             for (String s : HashMap1.keySet()) {
                 if(Objects.equals(s,zj.getLx())){
                     zj.setLx(HashMap1.get(s));
+                    break;
                 }
             }
         }
