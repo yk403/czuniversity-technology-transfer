@@ -30,9 +30,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -302,15 +304,16 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
     @Override
     public List<Sz> getByJgBh(String code) {
 
-        ResponseUtil response = jgglFeignService.getByCode(code);
+        ResponseUtil response = jgglFeignService.findChildrenByCode(code);
         if (response == null || response.getErrCode().intValue() != 0) {
             throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
         }
 
-        JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {
+        List<JgglVO> jgglVOList = response.conversionData(new TypeReference<List<JgglVO>>() {
         });
-        if (jggl != null) {
-            QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<Sz>().eq("ssjg_id", jggl.getId()).eq("sfsc", false);
+        List<Long> ids = jgglVOList.stream().map(JgglVO::getId).collect(Collectors.toList());
+        if (!CollectionUtils.isEmpty(ids)) {
+            QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<Sz>().eq("sfsc", false).in("ssjg_id",ids);
             return szMapper.selectList(szQueryWrapper);
         }
         return null;
