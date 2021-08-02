@@ -155,9 +155,9 @@
     </select>
     <select id="findXsList" resultType="com.itts.personTraining.dto.StuDTO">
         select xs.*, sz.dsbh as yzydsbh, sz.dsxm as yzydsxm, tsz.dsbh as qydsbh, tsz.dsxm as qydsxm
-        from t_xs xs left join t_sz sz on (xs.yzyds_id=sz.id) left join t_sz tsz on (xs.qyds_id=tsz.id)
+        from t_xs xs left join t_sz sz on (xs.yzyds_id=sz.id) left join t_sz tsz on (xs.qyds_id=tsz.id) left join t_pc_xs tpx on (tpx.xs_id=xs.id)
         where xs.sfsc = false
-            <if test="pcId != null">and xs.pc_id = #{pcId}</if>
+            <if test="pcId != null">and tpx.pc_id = #{pcId}</if>
             <if test="xslbmc != null and xslbmc != ''">and xs.xslbmc like concat('%',trim(#{xslbmc}),'%')</if>
             <if test="jyxs != null and jyxs != ''" >and xs.jyxs like concat('%',trim(#{jyxs}),'%')</if>
             <if test="name != null and name != ''">and (xs.xh like concat('%',trim(#{name}),'%') or xs.xm like concat('%',trim(#{name}),'%'))</if>
