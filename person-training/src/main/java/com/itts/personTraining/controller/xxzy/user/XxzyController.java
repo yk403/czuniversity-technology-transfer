@@ -119,9 +119,9 @@ public class XxzyController {
                                 @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction,
                                 @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
                                 @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
-                                @ApiParam(value = "机构编码") @RequestParam(value = "groupCode", required = false) String groupCode) {
+                                @ApiParam(value = "机构编码") @RequestParam(value = "jgCode", required = false) String jgCode) {
 
-    ResponseUtil childrenResponse = groupFeignService.findChildrenByCode(groupCode);
+    ResponseUtil childrenResponse = groupFeignService.findChildrenByCode(jgCode);
     if (childrenResponse == null || childrenResponse.getErrCode().intValue() != 0) {
       throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
     }
