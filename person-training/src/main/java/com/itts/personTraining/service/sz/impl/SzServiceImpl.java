@@ -118,11 +118,13 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             for (Sjzd sjzd : sjzd2) {
                 if(Objects.equals(sjzd.getZdbm(),sz.getZzmm())){
                     sz.setZzmm(sjzd.getZdmc());
+                    break;
                 }
             }
             for (String s : HashMap1.keySet()) {
                 if(Objects.equals(s,sz.getDslb())){
                     sz.setDslb(HashMap1.get(s));
+                    break;
                 }
             }
         }
