@@ -9,13 +9,17 @@ import com.itts.personTraining.feign.userservice.GroupFeignService;
 import com.itts.personTraining.model.stgl.Stgl;
 import com.itts.personTraining.service.stgl.StglService;
 import com.itts.personTraining.vo.jggl.JgglVO;
+import com.itts.personTraining.vo.stgl.StVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.itts.common.constant.SystemConstant.BASE_URL;
 
 /**
@@ -52,7 +56,35 @@ public class StglController {
 
         JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {
         });
-        return ResponseUtil.success(stglService.findList(jggl.getId()));
+
+        List<Stgl> result = stglService.findList(jggl.getId());
+
+        List<StVO> voList = result.stream().map(st -> {
+
+            StVO vo = new StVO();
+
+            BeanUtils.copyProperties(st, vo);
+
+            if (StringUtils.equals(st.getMc(), "需求大厅")) {
+                vo.setComponentName("Demand");
+            }
+
+            if (StringUtils.equals(st.getMc(), "技术成果")) {
+                vo.setComponentName("Achievement");
+            }
+
+            if (StringUtils.equals(st.getMc(), "教学资源")) {
+                vo.setComponentName("Resource");
+            }
+
+            if (StringUtils.equals(st.getMc(), "师资团队")) {
+                vo.setComponentName("Teacher");
+            }
+
+            return vo;
+        }).collect(Collectors.toList());
+
+        return ResponseUtil.success(voList);
     }
 
     /**
