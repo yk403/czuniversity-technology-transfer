@@ -163,7 +163,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         .eq("sfsj", true).eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory)
         .eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory).eq(StringUtils.isNotBlank(category), "zylx", category)
         .eq(StringUtils.isNotBlank(direction), "zyfx", direction).eq(courseId != null, "kc_id", courseId)
-        .like(StringUtils.isNotBlank(condition), "mc", condition.trim()));
+        .like(StringUtils.isNotBlank(condition), "mc", condition).in(!CollectionUtils.isEmpty(jgIds), "jg_id", jgIds));
 
     PageInfo pageInfo = new PageInfo(result);
 
