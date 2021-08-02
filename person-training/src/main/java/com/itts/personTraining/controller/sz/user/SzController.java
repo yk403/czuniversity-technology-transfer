@@ -40,7 +40,7 @@ public class SzController {
      */
     @GetMapping("/getByJgBh")
     @ApiOperation(value = "根据机构编号查询师资信息")
-    public ResponseUtil getByJgBh(@RequestParam("code") String code) {
-        return ResponseUtil.success(szService.getByJgBh(code));
+    public ResponseUtil getByJgBh(@RequestParam("jgCode") String jgCode) {
+        return ResponseUtil.success(szService.getByJgBh(jgCode));
     }
 }
