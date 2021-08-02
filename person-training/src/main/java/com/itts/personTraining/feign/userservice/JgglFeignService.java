@@ -17,4 +17,12 @@ public interface JgglFeignService {
      */
     @GetMapping(ADMIN_BASE_URL + "/v1/jggl/get/by/code/")
     ResponseUtil getByCode(@RequestParam(value = "code", required = false) String code);
+
+    /**
+     * 获取当前机构编码下所有子机构信息
+     * @param code
+     * @return
+     */
+    @GetMapping(ADMIN_BASE_URL + "/v1/jggl/find/children/by/code/")
+    ResponseUtil findChildrenByCode(@RequestParam("code") String code);
 }
