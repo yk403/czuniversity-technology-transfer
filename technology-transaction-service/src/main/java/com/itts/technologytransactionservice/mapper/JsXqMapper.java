@@ -55,4 +55,6 @@ public interface JsXqMapper extends BaseMapper<TJsXq> {
      * @return
      */
     List<TJsXq> findGdJsXq(@Param("map") Map map);
+
+    List<TJsXq> findJsXqByIds(@Param("ids") List<Integer> ids);
 }

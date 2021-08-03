@@ -256,7 +256,15 @@
 			</otherwise>
 		</choose>
 	</select>
-	<update id="updateTJsXq">
+    <select id="findJsXqByIds" resultType="com.itts.technologytransactionservice.model.TJsXq">
+		select *
+		from t_js_xq tjx
+		where tjx.id in
+		<foreach item="id" collection="ids" index="index" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+    <update id="updateTJsXq">
 		update t_js_xq
 		<set>
 			<if test="xqmc != null">xqmc = #{xqmc},</if>

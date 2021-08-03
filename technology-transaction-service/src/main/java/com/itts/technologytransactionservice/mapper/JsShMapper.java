@@ -51,4 +51,6 @@ public interface JsShMapper extends BaseMapper<TJsSh> {
      * @param tJsXq
      */
     boolean updateTJsShs(TJsSh tJsSh);
+
+    void updateByXqIds(@Param("jsXqIds") List<Integer> jsXqIds);
 }

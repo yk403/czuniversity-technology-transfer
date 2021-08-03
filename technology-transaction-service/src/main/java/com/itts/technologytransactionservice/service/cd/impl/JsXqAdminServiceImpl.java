@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.service.cd.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -17,6 +18,7 @@ import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.cd.JsShAdminService;
 import com.itts.technologytransactionservice.service.cd.JsXqAdminService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
@@ -206,7 +209,8 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
             return false;
         }
         //系统消息
-        List<TJsXq> tJsXqs=jsXqMapper.selectBatchIds(ids);
+        List<TJsXq> tJsXqs=jsXqMapper.findJsXqByIds(ids);
+        jsShMapper.updateByXqIds(ids);
         for (TJsXq tJsXq:tJsXqs) {
             jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsXq.getUserId().longValue(),0,0,tJsXq.getXqmc());
         }

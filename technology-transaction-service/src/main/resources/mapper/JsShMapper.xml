@@ -108,5 +108,14 @@
         </set>
         where id = #{id}
     </update>
+    <update id="updateByXqIds">
+        update t_js_sh tjs
+        set tjs.fbshzt = 2
+        where tjs.is_delete = false and tjs.xq_id in
+        <foreach item="jsXqId" collection="jsXqIds" index="index" open="(" separator="," close=")">
+        #{jsXqId}
+        </foreach>
+
+    </update>
 
 </mapper>
