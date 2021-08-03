@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -218,10 +219,10 @@ public class XsAdminController {
         }
         String xh = stuDTO.getXh();
         String lxdh = stuDTO.getLxdh();
-        if (xh == null && lxdh == null) {
+        if (StringUtils.isEmpty(xh) && StringUtils.isEmpty(lxdh)) {
             throw new WebException(NUMBER_AND_PHONE_ISEMPTY_ERROR);
         }
-        if (xh != null) {
+        if (!StringUtils.isEmpty(xh)) {
             checkXsExist(xh, null);
         } else {
             checkXsExist(null, lxdh);
