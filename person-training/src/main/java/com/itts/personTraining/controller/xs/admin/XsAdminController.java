@@ -18,6 +18,7 @@ import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.personTraining.enums.UserTypeEnum.POSTGRADUATE;
 
 /**
  * <p>

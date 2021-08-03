@@ -180,7 +180,7 @@ public class XxzyController {
     List<Xxzy> xxzys = xxzyService.list(new QueryWrapper<Xxzy>().eq("sfsc", false).eq("sfsj", true).eq("zylb", type).
         eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory).eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory)
         .eq(StringUtils.isNotBlank(category), "zylx", category).eq(StringUtils.isNotBlank(direction), "zyfx", direction)
-        .in(CollectionUtils.isEmpty(Arrays.asList(courseIds.split(",").clone())), "kc_id", Arrays.asList(courseIds.split(",").clone()))
+        .in(!CollectionUtils.isEmpty(Arrays.asList(courseIds.split(","))), "kc_id", Arrays.asList(courseIds.split(",")))
         .like(StringUtils.isNotBlank(condition), "mc", condition)
         .eq(groupId != null, "jg_id", groupId));
 
