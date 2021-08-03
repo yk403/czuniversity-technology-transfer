@@ -97,9 +97,12 @@ public class HuaweiyunOss {
             if (200 == statusCode) {
                 return true;
             }
-            obsClient.close();
-        } catch (IOException e) {
-            log.info("文件上传失败：{}", e.getMessage(), e);
+        } finally {
+            try {
+                obsClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }

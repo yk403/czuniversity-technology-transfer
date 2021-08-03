@@ -46,7 +46,7 @@ public class XwglController {
     @ApiOperation(value = "查询新闻")
     public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                @RequestParam(value = "jgCode", required = false) String jgCode,
+                                @RequestParam(value = "jgCode") String jgCode,
                                 @RequestParam(value = "zt", required = false) String zt,
                                 @RequestParam(value = "lx", required = false) String lx,
                                 @RequestParam(value = "xwbt", required = false) String xwbt) throws WebException {
