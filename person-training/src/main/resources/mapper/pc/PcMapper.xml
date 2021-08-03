@@ -66,6 +66,11 @@
         from t_pc pc left join t_pc_xs tpx on (tpx.pc_id=pc.id)
         where pc.sfsc = false and tpx.xs_id = #{xsId}
     </select>
+    <select id="findPcs" resultType="com.itts.personTraining.model.pc.Pc">
+        select *
+        from t_pc pc
+        where pc.sfsc = false and pc.id not in (select distinct tpj.pc_id from t_py_jh tpj left join t_pc pc on (pc.id=tpj.pc_id) where tpj.sfsc = false and pc.sfsc = false )
+    </select>
 
     <update id="updatePcList"  parameterType="java.util.List">
         update sfsc =true

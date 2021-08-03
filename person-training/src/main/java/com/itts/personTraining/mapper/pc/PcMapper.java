@@ -69,4 +69,11 @@ public interface PcMapper extends BaseMapper<Pc> {
      * @return
      */
     List<String> findXylxByXsId(@Param("xsId") Long xsId);
+
+    /**
+     * 查询未录入批次
+     * @return
+     */
+    List<Pc> findPcs();
+
 }
