@@ -41,7 +41,7 @@ public class LmglController {
      */
     @GetMapping("/list/")
     @ApiOperation(value = "查询")
-    public ResponseUtil getList(@RequestParam(value = "jgCode", required = false) String jgCode) {
+    public ResponseUtil getList(@RequestParam(value = "jgCode") String jgCode) {
 
         if(StringUtils.isBlank(jgCode)){
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
