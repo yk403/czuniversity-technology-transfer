@@ -47,6 +47,15 @@ public class PcAdminController {
     }
 
     /**
+     * 查询未录入批次
+     */
+    @GetMapping("/findPcs")
+    @ApiModelProperty(value = "查询未录入批次")
+    public ResponseUtil findPcs(){
+        return ResponseUtil.success(pcService.findPcs());
+    }
+
+    /**
      * 根据id获取批次详情
      * @param id
      * @return

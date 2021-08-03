@@ -238,6 +238,17 @@ public class PcServiceImpl implements PcService {
     }
 
     /**
+     * 查询未录入批次
+     * @return
+     */
+    @Override
+    public List<Pc> findPcs() {
+        log.info("【人才培养 - 查询未录入批次】");
+        List<Pc> pcList = pcMapper.findPcs();
+        return pcList;
+    }
+
+    /**
      * 根据教育类型查询批次信息
      * @param jylx
      * @return
