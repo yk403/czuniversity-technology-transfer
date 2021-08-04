@@ -145,6 +145,11 @@ public class SjDTO {
     private Date jsrq;
 
     /**
+     * 是否下发(0:否;1:是)
+     */
+    private Boolean sfxf;
+
+    /**
      * 是否删除(0:否;1:是)
      */
     private Boolean sfsc;

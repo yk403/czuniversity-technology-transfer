@@ -231,6 +231,9 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
             if (ON_LINE.getMsg().equals(ks.getKslb())) {
                 return true;
             }
+            if (CollectionUtils.isEmpty(szIds)) {
+                return true;
+            }
             HashMap<String, Object> map = new HashMap<>();
             map.put("ks_id",ks.getId());
             if (szIds != null && szIds.size() > 0) {
