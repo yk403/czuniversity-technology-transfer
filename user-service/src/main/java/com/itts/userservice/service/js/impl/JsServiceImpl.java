@@ -60,8 +60,10 @@ public class JsServiceImpl implements JsService {
      */
     @Override
     public PageInfo<Js> findByPage(Integer pageNum, Integer pageSize, String name, String systemType) {
+        if(pageNum != -1){
+            PageHelper.startPage(pageNum, pageSize);
+        }
 
-        PageHelper.startPage(pageNum, pageSize);
 
         QueryWrapper<Js> query = new QueryWrapper<>();
         query.eq("sfsc", false);
