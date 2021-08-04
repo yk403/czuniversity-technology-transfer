@@ -191,8 +191,16 @@
 			</otherwise>
 		</choose>
 	</select>
+    <select id="findByJsCgIds" resultType="com.itts.technologytransactionservice.model.TJsCg">
+		select *
+		from t_js_cg tjc
+		where tjc.is_delete = false and tjc.id in
+		<foreach item="id" collection="ids" index="index" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
 
-	<update id="updateTJsCg">
+    <update id="updateTJsCg">
 		update t_js_cg
 		<set>
 			<if test="cgmc != null">cgmc = #{cgmc},</if>

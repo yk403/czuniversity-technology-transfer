@@ -29,7 +29,7 @@
         id, pc_id, fjzy_id, jhmc, pymb, xzyxxnx, pyfshff, pyfaypyjh, kcszhxfgd, sjlw, pygl, sfsc, sfxf, xfsj, cjr, gxsj, gxr
     </sql>
     <select id="findByPage" resultType="com.itts.personTraining.dto.PyJhDTO">
-        select tpj.id as id, pc_id,pc.pch as pch, pc.jylx as jylx, jhmc, pymb, xzyxxnx, pyfshff, pyfaypyjh, kcszhxfgd, sjlw, pygl, fjzy_id, tpj.sfsc as sfsc, tpj.sfxf, tpj.xfsj, tpj.cjsj, tpj.cjr, tpj.gxsj, tpj.gxr
+        select tpj.id as id, pc_id,pc.pch as pch, pc.pcmc as pcmc, pc.jylx as jylx, jhmc, pymb, xzyxxnx, pyfshff, pyfaypyjh, kcszhxfgd, sjlw, pygl, fjzy_id, tpj.sfsc as sfsc, tpj.sfxf, tpj.xfsj, tpj.cjsj, tpj.cjr, tpj.gxsj, tpj.gxr
         from t_py_jh tpj left join t_pc pc on (tpj.pc_id = pc.id)
         where
             tpj.sfsc = false and pc.sfsc = false

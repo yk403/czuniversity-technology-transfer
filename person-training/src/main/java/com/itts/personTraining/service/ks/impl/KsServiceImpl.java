@@ -1,16 +1,15 @@
 package com.itts.personTraining.service.ks.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
-import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.KsDTO;
 import com.itts.personTraining.dto.KsExpDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
-import com.itts.personTraining.enums.BmfsEnum;
+import com.itts.personTraining.mapper.ks.KsMapper;
 import com.itts.personTraining.mapper.ksExp.KsExpMapper;
 import com.itts.personTraining.mapper.ksXs.KsXsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
@@ -19,7 +18,6 @@ import com.itts.personTraining.mapper.szKs.SzKsMapper;
 import com.itts.personTraining.mapper.szKsExp.SzKsExpMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.ks.Ks;
-import com.itts.personTraining.mapper.ks.KsMapper;
 import com.itts.personTraining.model.ksExp.KsExp;
 import com.itts.personTraining.model.ksXs.KsXs;
 import com.itts.personTraining.model.pc.Pc;
@@ -29,7 +27,6 @@ import com.itts.personTraining.model.tz.Tz;
 import com.itts.personTraining.model.tzSz.TzSz;
 import com.itts.personTraining.model.tzXs.TzXs;
 import com.itts.personTraining.service.ks.KsService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.ksExp.KsExpService;
 import com.itts.personTraining.service.ksXs.KsXsService;
 import com.itts.personTraining.service.szKs.SzKsService;
@@ -50,13 +47,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 import static com.itts.personTraining.enums.BmfsEnum.OFF_LINE;
 import static com.itts.personTraining.enums.BmfsEnum.ON_LINE;
-import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
-import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
 
 /**
  * <p>
@@ -286,9 +282,12 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 //学历学位教育,通过批次id查询学员ids(研究生)
                 List<Long> xsIds = xsMapper.findXsIdsByPcId(pc.getId());
                 //通过考试id查询考试扩展集合
-                List<KsExpDTO> ksExpDTOs = ksExpMapper.findByCondition(null, ks.getId());
+                List<KsExpDTO> ksExpDTOList = ksExpMapper.findByCondition(null, ks.getId());
+                List<KsExpDTO> ksExpDTOS = ksExpDTOList.stream().filter(obj->
+                        obj.getKsrq() != null
+                ).collect(Collectors.toList());
                 String nr = "您好，您此批次："+pc.getPch()+ks.getKsmc()+"的";
-                for (KsExpDTO ksExpDTO : ksExpDTOs) {
+                for (KsExpDTO ksExpDTO : ksExpDTOS) {
                     nr += ksExpDTO.getKcmc()+"课程将于"+DateUtils.getDateFormat(ksExpDTO.getKsrq())+"，"+ksExpDTO.getKskssj()+"—"+ksExpDTO.getKsjssj()+"在"+ksExpDTO.getJxlmc()+ksExpDTO.getJsbh()+"进行考试，";
                     tz1.setNr("您好，您将于"+DateUtils.getDateFormat(ksExpDTO.getKsrq())+"，"+ksExpDTO.getKskssj()+"—"+ksExpDTO.getKsjssj()+"在"+ksExpDTO.getJxlmc()+ksExpDTO.getJsbh()+"进行"+ksExpDTO.getKcmc()+"课程的监考，请悉知！");
                     tz1.setCjr(userId);

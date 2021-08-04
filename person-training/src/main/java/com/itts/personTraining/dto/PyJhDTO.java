@@ -45,6 +45,12 @@ public class PyJhDTO {
     private String pch;
 
     /**
+     * 批次名称
+     */
+    @ApiModelProperty(value = "批次名称")
+    private String pcmc;
+
+    /**
      * 教育类型
      */
     @ApiModelProperty(value = "教育类型", required = true)

@@ -266,7 +266,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
             return false;
         }
         //系统消息
-        List<TJsCg> tJsCgs=jsCgMapper.selectBatchIds(ids);
+        List<TJsCg> tJsCgs=jsCgMapper.findByJsCgIds(ids);
         for (TJsCg tJsCg:tJsCgs) {
             jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),0,0,tJsCg.getCgmc());
         }
