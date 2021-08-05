@@ -52,7 +52,7 @@ public class GgtzServiceImpl extends ServiceImpl<GgtzMapper, Ggtz> implements Gg
         if(StringUtils.isNotBlank(zt)){
             ggtzQueryWrapper.eq("zt",zt);
         }
-        if(StringUtils.isNotBlank(zt)){
+        if(StringUtils.isNotBlank(lx)){
             ggtzQueryWrapper.eq("lx",lx);
         }
         if(StringUtils.isNotBlank(tzbt)){
