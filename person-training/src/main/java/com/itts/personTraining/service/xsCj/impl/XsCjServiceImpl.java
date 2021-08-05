@@ -219,6 +219,9 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     @Override
     public PageInfo<XsCjDTO> findPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String yx, String jylx) {
         PageHelper.startPage(pageNum,pageSize);
+        if(jylx == null){
+            jylx = ACADEMIC_DEGREE_EDUCATION.getKey();
+        }
         List<XsCjDTO> xs = xsCjMapper.findXs(pcId, xh, xm, yx,jylx);
         List<XsCjDTO> xsCjDTOs = null;
 
