@@ -216,6 +216,60 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         return new PageInfo<>(xsCjDTOs);
     }
 
+    @Override
+    public PageInfo<XsCjDTO> findPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String yx, String jylx) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<XsCjDTO> xs = xsCjMapper.findXs(pcId, xh, xm, yx,jylx);
+        List<XsCjDTO> xsCjDTOs = null;
+
+        if (pcId == null && jylx == null) {
+            xsCjDTOs = getXsCjDTOS(pcId, xh, xm, yx);
+            if (CollectionUtils.isNotEmpty(xsCjDTOs)) {
+                for (XsCjDTO x : xs) {
+                    for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                        if(x.getXsId() == xsCjDTO.getXsId()) {
+                            x.setXsKcCjDTOList(xsCjDTO.getXsKcCjDTOList());
+                            x.setZxf(xsCjDTO.getZxf());
+                        }
+                    }
+                }
+            }
+        } else {
+            if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
+                //学历学位教育
+                xsCjDTOs = getXsCjDTOS(pcId, xh, xm, yx);
+                if (CollectionUtils.isNotEmpty(xsCjDTOs)) {
+                    for (XsCjDTO x : xs) {
+                        for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                            if(x.getXsId() == xsCjDTO.getXsId()) {
+                                x.setXsKcCjDTOList(xsCjDTO.getXsKcCjDTOList());
+                                x.setZxf(xsCjDTO.getZxf());
+                            }
+                        }
+                    }
+                }
+            } else if (ADULT_EDUCATION.getKey().equals(jylx)) {
+                //继续教育
+                xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,yx,jylx);
+                if (CollectionUtils.isNotEmpty(xsCjDTOs)) {
+                    for (XsCjDTO x : xs) {
+                        for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                            if(x.getXsId() == xsCjDTO.getXsId()) {
+                                x.setXsKcCjDTOList(xsCjDTO.getXsKcCjDTOList());
+                                x.setZxf(xsCjDTO.getZxf());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (CollectionUtils.isEmpty(xsCjDTOs)) {
+            return new PageInfo<>(Collections.EMPTY_LIST);
+        }
+
+        return new PageInfo<>(xs);
+    }
+
     /**
      * 更新学生成绩
      * @param xsCjDTO
