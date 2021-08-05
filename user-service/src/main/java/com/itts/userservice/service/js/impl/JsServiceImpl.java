@@ -21,6 +21,7 @@ import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.vo.GetJsCdCzGlVO;
 import com.itts.userservice.vo.GetJsCdGlVO;
 import com.itts.userservice.vo.GetJsVO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Primary;
@@ -41,6 +42,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Primary
+@Slf4j
 public class JsServiceImpl implements JsService {
 
     @Resource
@@ -60,6 +62,7 @@ public class JsServiceImpl implements JsService {
      */
     @Override
     public PageInfo<Js> findByPage(Integer pageNum, Integer pageSize, String name, String systemType) {
+        log.info("分页是否起效,pageNum:{}",pageNum);
         if(pageNum != -1){
             PageHelper.startPage(pageNum, pageSize);
         }
