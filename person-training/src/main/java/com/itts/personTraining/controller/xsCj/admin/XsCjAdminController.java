@@ -66,6 +66,24 @@ public class XsCjAdminController {
                                    @RequestParam(value = "jylx", required = false) String jylx) {
         return ResponseUtil.success(xsCjService.findByPage(pageNum, pageSize, pcId, xh, xm, xymc, jylx));
     }
+    /**
+     * 分页查询学生成绩列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/getlist")
+    @ApiOperation(value = "分页查询学生成绩列表")
+    public ResponseUtil findPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                   @RequestParam(value = "pcId", required = false) Long pcId,
+                                   @RequestParam(value = "xh", required = false) String xh,
+                                   @RequestParam(value = "xm", required = false) String xm,
+                                   @RequestParam(value = "xymc", required = false) String xymc,
+                                   @RequestParam(value = "jylx", required = false) String jylx) {
+        return ResponseUtil.success(xsCjService.findPage(pageNum, pageSize, pcId, xh, xm, xymc, jylx));
+    }
 
     /**
      * 根据id查询学生成绩详情
