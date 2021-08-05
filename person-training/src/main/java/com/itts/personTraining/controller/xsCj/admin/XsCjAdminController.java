@@ -55,7 +55,7 @@ public class XsCjAdminController {
      * @param pageSize
      * @return
      */
-    @GetMapping("/list")
+    @GetMapping("/getlist")
     @ApiOperation(value = "分页查询学生成绩列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
@@ -73,7 +73,7 @@ public class XsCjAdminController {
      * @param pageSize
      * @return
      */
-    @GetMapping("/getlist")
+    @GetMapping("/list")
     @ApiOperation(value = "分页查询学生成绩列表")
     public ResponseUtil findPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
