@@ -247,8 +247,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 if (CollectionUtils.isNotEmpty(xsCjDTOs)) {
                     for (XsCjDTO x : xs) {
                         for (XsCjDTO xsCjDTO : xsCjDTOs) {
-                            if(x.getXsId() == xsCjDTO.getXsId()) {
-                                x.setXsKcCjDTOList(xsCjDTO.getXsKcCjDTOList());
+                            if(Objects.equals(x.getXsId(),xsCjDTO.getXsId())) {
+
                                 x.setZxf(xsCjDTO.getZxf());
                                 x.setSfxf(xsCjDTO.getSfxf());
                                 x.setType(xsCjDTO.getType());
