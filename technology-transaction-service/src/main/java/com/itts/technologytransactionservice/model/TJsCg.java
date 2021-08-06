@@ -163,7 +163,7 @@ public class TJsCg implements Serializable {
 	/**
 	 * 发布时间
 	 */
-	private String createTime;
+	//private String createTime;
 	/**
 	 * 发布状态
 	 */
@@ -300,4 +300,8 @@ public class TJsCg implements Serializable {
 	* @Date: 2021/6/30
 	*/
 	private String cgxqtpmc;
+	/**
+	 * 采集方式(0为审核采集，1为管理员采集)
+	 */
+	private Integer cjfs;
 }

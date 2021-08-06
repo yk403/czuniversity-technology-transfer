@@ -132,7 +132,7 @@ public class TJsXq implements Serializable {
 	/**
 	 * 发布时间
 	 */
-	private String createTime;
+	//private String createTime;
 	/**
 	 * 发布状态
 	 */
@@ -318,4 +318,8 @@ public class TJsXq implements Serializable {
 	 * @Date: 2021/6/30
 	 */
 	private String xqxqtp;
+	/**
+	 * 采集方式(0为审核采集，1为管理员采集)
+	 */
+	private Integer cjfs;
 }

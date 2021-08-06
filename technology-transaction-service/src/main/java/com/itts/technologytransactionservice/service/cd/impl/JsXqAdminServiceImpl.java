@@ -129,8 +129,16 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         if (tJsXq2 != null) {
             return false;
         }
-        //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
-        tJsXq.setUserId(Integer.parseInt(String.valueOf(getUserId())));
+        if(tJsXq.getCjfs()!=null){
+            if(tJsXq.getCjfs()==1){
+            }else{
+                //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
+                tJsXq.setUserId(Integer.parseInt(String.valueOf(getUserId())));
+            }
+        }else{
+            //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
+            tJsXq.setUserId(Integer.parseInt(String.valueOf(getUserId())));
+        }
         tJsXq.setReleaseType("技术需求");
         tJsXq.setCjsj(new Date());
         tJsXq.setGxsj(new Date());

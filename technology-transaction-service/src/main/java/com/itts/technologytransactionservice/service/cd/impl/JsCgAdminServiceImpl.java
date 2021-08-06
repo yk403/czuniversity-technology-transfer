@@ -213,8 +213,17 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         if (tJsCg2 != null) {
             return false;
         }
-        //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
-        tJsCg.setUserId(Integer.parseInt(String.valueOf(getUserId())));
+        if(tJsCg.getCjfs()!=null){
+            if(tJsCg.getCjfs()==1){
+            }else{
+                //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
+                tJsCg.setUserId(Integer.parseInt(String.valueOf(getUserId())));
+            }
+        }else{
+            //TODO 从ThreadLocal中取userId,暂时是假数据,管理员id为1
+            tJsCg.setUserId(Integer.parseInt(String.valueOf(getUserId())));
+        }
+
         tJsCg.setReleaseType("技术成果");
         tJsCg.setCjsj(new Date());
         tJsCg.setGxsj(new Date());

@@ -164,5 +164,4 @@ public class TJsCgDto implements Serializable {
     @ExcelProperty(value = "活动id", index = 26)
     @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String jshdId;
-
 }

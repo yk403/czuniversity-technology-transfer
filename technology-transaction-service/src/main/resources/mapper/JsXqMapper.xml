@@ -78,6 +78,7 @@
 			<if test="map.assistanceStatus != null and map.assistanceStatus != ''"> and sh.assistance_status = #{map.assistanceStatus} </if>
 			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and sh.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 			<if test="map.type == 0"> and xq.user_id != #{map.userId} </if>
+			<if test="map.type == 2"> and xq.user_id is null </if>
             <if test="map.yxqkssj != null"> and xq.yxqkssj = #{map.yxqkssj} </if>
             <if test="map.yxqjssj != null"> and xq.yxqjssj = #{map.yxqjssj} </if>
 			<if test="map.jshdId != null"> and xq.jshd_id = #{map.jshdId} </if>
