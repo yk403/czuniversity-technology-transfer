@@ -235,6 +235,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                             x.setZxf(xsCjDTO.getZxf());
                             x.setSfxf(xsCjDTO.getSfxf());
                             x.setId(xsCjDTO.getId());
+                            x.setType(xsCjDTO.getType());
                         }
                     }
                 }
@@ -251,6 +252,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                                 x.setZxf(xsCjDTO.getZxf());
                                 x.setSfxf(xsCjDTO.getSfxf());
                                 x.setId(xsCjDTO.getId());
+                                x.setType(xsCjDTO.getType());
                             }
                         }
                     }
@@ -266,6 +268,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                                 x.setZxf(xsCjDTO.getZxf());
                                 x.setSfxf(xsCjDTO.getSfxf());
                                 x.setId(xsCjDTO.getId());
+                                x.setType(xsCjDTO.getType());
                             }
                         }
                     }
