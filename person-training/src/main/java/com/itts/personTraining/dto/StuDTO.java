@@ -157,6 +157,12 @@ public class StuDTO {
     private String rxfs;
 
     /**
+     * 报名方式
+     */
+    @ApiModelProperty(value = "报名方式")
+    private String bmfs;
+
+    /**
      * 原毕业院校
      */
     @ApiModelProperty(value = "原毕业院校", required = true)

@@ -308,31 +308,34 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                 tz.setGxr(userId);
                 saveTzAndTzXs(tz, xsIds,null);
             } else if (ks.getType() == 2) {
-                //继续教育,通过批次id和报名方式(线下)查询学员ids(经纪人)
-                List<Long> xsIds = xsMapper.findXsIdsByPcIdAndBmfs(pc.getId(),OFF_LINE.getMsg());
-                if (CollectionUtils.isNotEmpty(xsIds)) {
-                    tz.setNr("您好，您此批次："+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsrq())+"，"+ks.getKskssj()+"--"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行考试，请悉知！");
-                    tz.setCjr(userId);
-                    tz.setGxr(userId);
-                    saveTzAndTzXs(tz, xsIds, null);
-                    tz1.setNr("您好，您将于"+DateUtils.getDateFormat(ks.getKsrq())+"，"+ks.getKskssj()+"--"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行监考，请悉知！");
-                    tz1.setCjr(userId);
-                    tz1.setGxr(userId);
-                    if (tzService.save(tz1)) {
-                        List<Long> szIds = szKsMapper.getByKsId(ks.getId());
-                        saveTzSz(tz1, szIds);
-                    } else {
-                        throw new ServiceException(INSERT_FAIL);
+                if (ks.getKslb().equals(ON_LINE.getMsg())) {
+                    //继续教育,通过批次id和报名方式(线上)查询学员ids(经纪人)
+                    List<Long> xsIdList = xsMapper.findXsIdsByPcIdAndBmfs(pc.getId(),ON_LINE.getMsg());
+                    if (CollectionUtils.isNotEmpty(xsIdList)) {
+                        tz2.setNr("您好，您此批次："+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsksnyr())+"至"+DateUtils.getDateFormat(ks.getKsjsnyr())+"进行线上考试，请悉知！");
+                        tz2.setCjr(userId);
+                        tz2.setGxr(userId);
+                        tz2.setKssjId(ks.getKssjId());
+                        saveTzAndTzXs(tz2, xsIdList, ks.getKssc());
                     }
-                }
-                //继续教育,通过批次id和报名方式(线上)查询学员ids(经纪人)
-                List<Long> xsIdList = xsMapper.findXsIdsByPcIdAndBmfs(pc.getId(),ON_LINE.getMsg());
-                if (CollectionUtils.isNotEmpty(xsIdList)) {
-                    tz2.setNr("您好，您此批次："+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsksnyr())+"至"+DateUtils.getDateFormat(ks.getKsjsnyr())+"进行线上考试，请悉知！");
-                    tz2.setCjr(userId);
-                    tz2.setGxr(userId);
-                    tz2.setKssjId(ks.getKssjId());
-                    saveTzAndTzXs(tz2, xsIdList, ks.getKssc());
+                } else {
+                    //继续教育,通过批次id和报名方式(线下)查询学员ids(经纪人)
+                    List<Long> xsIds = xsMapper.findXsIdsByPcIdAndBmfs(pc.getId(),OFF_LINE.getMsg());
+                    if (CollectionUtils.isNotEmpty(xsIds)) {
+                        tz.setNr("您好，您此批次："+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsrq())+"，"+ks.getKskssj()+"--"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行考试，请悉知！");
+                        tz.setCjr(userId);
+                        tz.setGxr(userId);
+                        saveTzAndTzXs(tz, xsIds, null);
+                        tz1.setNr("您好，您将于"+DateUtils.getDateFormat(ks.getKsrq())+"，"+ks.getKskssj()+"--"+ks.getKsjssj()+"在"+ks.getKsdd()+"进行监考，请悉知！");
+                        tz1.setCjr(userId);
+                        tz1.setGxr(userId);
+                        if (tzService.save(tz1)) {
+                            List<Long> szIds = szKsMapper.getByKsId(ks.getId());
+                            saveTzSz(tz1, szIds);
+                        } else {
+                            throw new ServiceException(INSERT_FAIL);
+                        }
+                    }
                 }
             }
         }
