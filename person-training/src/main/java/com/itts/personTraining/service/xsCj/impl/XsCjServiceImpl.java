@@ -253,6 +253,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                                 x.setSfxf(xsCjDTO.getSfxf());
                                 x.setType(xsCjDTO.getType());
                                 x.setSfsc(xsCjDTO.getSfsc());
+                                x.setZhcj(xsCjDTO.getZhcj());
                             }
                         }
                     }
