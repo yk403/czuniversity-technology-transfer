@@ -9,11 +9,9 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
+import com.itts.technologytransactionservice.mapper.JsXqDoMapper;
 import com.itts.technologytransactionservice.mapper.JsXqMapper;
-import com.itts.technologytransactionservice.model.TJsCg;
-import com.itts.technologytransactionservice.model.TJsFb;
-import com.itts.technologytransactionservice.model.TJsSh;
-import com.itts.technologytransactionservice.model.TJsXq;
+import com.itts.technologytransactionservice.model.*;
 import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.cd.JsShAdminService;
 import com.itts.technologytransactionservice.service.cd.JsXqAdminService;
@@ -45,6 +43,8 @@ import static com.itts.common.enums.ErrorCodeEnum.ISSUE_BATCH_FAIL;
 public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements JsXqAdminService {
     @Autowired
     private JsXqMapper jsXqMapper;
+    @Autowired
+    private JsXqDoMapper jsXqDoMapper;
     @Autowired
     private JsShAdminService jsShAdminService;
     @Autowired
@@ -220,7 +220,11 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         List<TJsXq> tJsXqs=jsXqMapper.findJsXqByIds(ids);
         jsShMapper.updateByXqIds(ids);
         for (TJsXq tJsXq:tJsXqs) {
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsXq.getUserId().longValue(),0,0,tJsXq.getXqmc());
+            if(tJsXq.getUserId()!=null){
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsXq.getUserId().longValue(),0,0,tJsXq.getXqmc());
+            }else{
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),null,0,0,tJsXq.getXqmc());
+            }
         }
         return true;
     }
@@ -242,9 +246,9 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
             return false;
         }
         //系统消息
-        List<TJsXq> tJsXqs=jsXqMapper.selectBatchIds(ids);
-        for (TJsXq tJsXq:tJsXqs) {
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsXq.getUserId().longValue(),1,0,tJsXq.getXqmc());
+        List<TJsXqDo> tJsXqs=jsXqDoMapper.selectBatchIds(ids);
+        for (TJsXqDo tJsXqDo:tJsXqs) {
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsXqDo.getUserId()==null?null:tJsXqDo.getUserId().longValue(),1,0,tJsXqDo.getXqmc());
         }
         return true;
     }

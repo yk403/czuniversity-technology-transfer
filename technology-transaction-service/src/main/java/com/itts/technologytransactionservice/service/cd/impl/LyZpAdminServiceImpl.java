@@ -96,10 +96,10 @@ public class LyZpAdminServiceImpl extends ServiceImpl<LyZpMapper, LyZp> implemen
             throw new ServiceException("审核操作失败!");
         }
         if(lyZp.getFbshzt().equals(2)){
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyZp.getUserId().longValue(),4,0,lyZp.getZpmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyZp.getUserId()==null?null:lyZp.getUserId().longValue(),4,0,lyZp.getZpmc());
         }
         if(lyZp.getFbshzt().equals(4)){
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyZp.getUserId().longValue(),4,1,lyZp.getZpmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyZp.getUserId()==null?null:lyZp.getUserId().longValue(),4,1,lyZp.getZpmc());
         }
         return true;
     }

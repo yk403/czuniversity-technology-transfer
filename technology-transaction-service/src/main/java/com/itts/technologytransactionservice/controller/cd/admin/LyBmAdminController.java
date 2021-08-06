@@ -92,10 +92,10 @@ public class LyBmAdminController {
             throw new WebException(UPDATE_FAIL);
         }
         if(lyBm.getShzt().equals(2)){
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyBm.getUserId().longValue(),5,0,lyHdAdminService.getById(lyBm.getHdId()).getHdmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyBm.getUserId()==null?null:lyBm.getUserId().longValue(),5,0,lyHdAdminService.getById(lyBm.getHdId()).getHdmc());
         }
         if(lyBm.getShzt().equals(1)){
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyBm.getUserId().longValue(),5,1,lyHdAdminService.getById(lyBm.getHdId()).getHdmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),lyBm.getUserId()==null?null:lyBm.getUserId().longValue(),5,1,lyHdAdminService.getById(lyBm.getHdId()).getHdmc());
         }
         return ResponseUtil.success("报名审核成功!");
 

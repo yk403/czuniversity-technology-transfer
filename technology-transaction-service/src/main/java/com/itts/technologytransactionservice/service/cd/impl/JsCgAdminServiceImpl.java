@@ -7,10 +7,12 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
+import com.itts.technologytransactionservice.mapper.JsCgDoMapper;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
 import com.itts.technologytransactionservice.mapper.JsHdMapper;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.model.TJsCg;
+import com.itts.technologytransactionservice.model.TJsCgDo;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.cd.JsCgAdminService;
@@ -40,6 +42,8 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements JsCgAdminService {
     @Autowired
     private JsCgMapper jsCgMapper;
+    @Autowired
+    private JsCgDoMapper jsCgDoMapper;
     @Autowired
     private JsXtxxService jsXtxxService;
     @Autowired
@@ -277,7 +281,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         //系统消息
         List<TJsCg> tJsCgs=jsCgMapper.findByJsCgIds(ids);
         for (TJsCg tJsCg:tJsCgs) {
-            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),0,0,tJsCg.getCgmc());
+            jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId() == null?null:tJsCg.getUserId().longValue(),0,0,tJsCg.getCgmc());
         }
 
         return true;
@@ -303,13 +307,13 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
             return false;
         }
         //系统消息
-        List<TJsCg> tJsCgs=jsCgMapper.selectBatchIds(ids);
-        for (TJsCg tJsCg:tJsCgs) {
+        List<TJsCgDo> tJsCgs=jsCgDoMapper.selectBatchIds(ids);
+        for (TJsCgDo tJsCgDo:tJsCgs) {
             if(tJsShes.get(0).getJylx() == 0){
-                jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),2,0,tJsCg.getCgmc());
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCgDo.getUserId()==null?null:tJsCgDo.getUserId().longValue(),2,0,tJsCgDo.getCgmc());
             }
             if(tJsShes.get(0).getJylx() == 2){
-                jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCg.getUserId().longValue(),3,0,tJsCg.getCgmc());
+                jsXtxxService.addXtxx(jsXtxxService.getUserId(),tJsCgDo.getUserId()==null?null:tJsCgDo.getUserId().longValue(),3,0,tJsCgDo.getCgmc());
             }
         }
         return true;
