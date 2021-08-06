@@ -233,6 +233,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                         if(x.getXsId() == xsCjDTO.getXsId()) {
                             x.setXsKcCjDTOList(xsCjDTO.getXsKcCjDTOList());
                             x.setZxf(xsCjDTO.getZxf());
+                            x.setSfxf(xsCjDTO.getSfxf());
+                            x.setId(xsCjDTO.getId());
                         }
                     }
                 }
@@ -247,6 +249,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                             if(x.getXsId() == xsCjDTO.getXsId()) {
                                 x.setXsKcCjDTOList(xsCjDTO.getXsKcCjDTOList());
                                 x.setZxf(xsCjDTO.getZxf());
+                                x.setSfxf(xsCjDTO.getSfxf());
+                                x.setId(xsCjDTO.getId());
                             }
                         }
                     }
@@ -260,6 +264,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                             if(x.getXsId() == xsCjDTO.getXsId()) {
                                 x.setXsKcCjDTOList(xsCjDTO.getXsKcCjDTOList());
                                 x.setZxf(xsCjDTO.getZxf());
+                                x.setSfxf(xsCjDTO.getSfxf());
+                                x.setId(xsCjDTO.getId());
                             }
                         }
                     }
