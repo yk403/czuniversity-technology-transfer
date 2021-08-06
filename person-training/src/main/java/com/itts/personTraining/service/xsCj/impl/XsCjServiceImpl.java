@@ -223,43 +223,27 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             jylx = ACADEMIC_DEGREE_EDUCATION.getKey();
         }
         List<XsCjDTO> xs = xsCjMapper.findXs(pcId, xh, xm, yx,jylx);
-        List<XsCjDTO> xsCjDTOs = null;
 
         if (pcId == null && jylx == null) {
-            xsCjDTOs = getXsCjDTOS(pcId, xh, xm, yx);
-            if (CollectionUtils.isNotEmpty(xsCjDTOs)) {
-                for (XsCjDTO x : xs) {
-                    for (XsCjDTO xsCjDTO : xsCjDTOs) {
-                        if(x.getXsId() == xsCjDTO.getXsId()) {
-                            x.setXsKcCjDTOList(xsCjDTO.getXsKcCjDTOList());
-                            x.setZxf(xsCjDTO.getZxf());
-                            x.setSfxf(xsCjDTO.getSfxf());
-                            x.setType(xsCjDTO.getType());
-                            x.setSfsc(xsCjDTO.getSfsc());
-                        }
-                    }
-                }
+            for (XsCjDTO x : xs) {
+                XsCjDTO byXsCjId = xsKcCjService.getByXsCjId(x.getId(), Integer.parseInt(TECHNOLOGY_TRANSFER_COURSE.getKey()), x.getXsId());
+                x.setXsKcCjDTOList(byXsCjId.getXsKcCjDTOList());
+                Integer zxf = x.getXsKcCjDTOList().stream().collect(Collectors.summingInt(XsKcCjDTO::getDqxf));
+                x.setZxf(zxf);
             }
         } else {
             if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
                 //学历学位教育
-                xsCjDTOs = getXsCjDTOS(pcId, xh, xm, yx);
-                if (CollectionUtils.isNotEmpty(xsCjDTOs)) {
-                    for (XsCjDTO x : xs) {
-                        for (XsCjDTO xsCjDTO : xsCjDTOs) {
-                            if(x.getXsId() == xsCjDTO.getXsId()) {
-                                x.setXsKcCjDTOList(xsCjDTO.getXsKcCjDTOList());
-                                x.setZxf(xsCjDTO.getZxf());
-                                x.setSfxf(xsCjDTO.getSfxf());
-                                x.setType(xsCjDTO.getType());
-                                x.setSfsc(xsCjDTO.getSfsc());
-                            }
-                        }
-                    }
+                for (XsCjDTO x : xs) {
+                    XsCjDTO byXsCjId = xsKcCjService.getByXsCjId(x.getId(), Integer.parseInt(TECHNOLOGY_TRANSFER_COURSE.getKey()), x.getXsId());
+                    x.setXsKcCjDTOList(byXsCjId.getXsKcCjDTOList());
+                    Integer zxf = x.getXsKcCjDTOList().stream().collect(Collectors.summingInt(XsKcCjDTO::getDqxf));
+                    x.setZxf(zxf);
                 }
+
             } else if (ADULT_EDUCATION.getKey().equals(jylx)) {
                 //继续教育
-                xsCjDTOs = xsCjMapper.findXsCj(pcId,xh,xm,yx,jylx);
+                List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCj(pcId, xh, xm, yx, jylx);
                 if (CollectionUtils.isNotEmpty(xsCjDTOs)) {
                     for (XsCjDTO x : xs) {
                         for (XsCjDTO xsCjDTO : xsCjDTOs) {
@@ -275,7 +259,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 }
             }
         }
-        if (CollectionUtils.isEmpty(xsCjDTOs)) {
+        if (CollectionUtils.isEmpty(xs)) {
             return new PageInfo<>(Collections.EMPTY_LIST);
         }
 
