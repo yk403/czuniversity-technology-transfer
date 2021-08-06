@@ -71,7 +71,7 @@
         order by txc.sfxf asc, txc.cjsj desc
     </select>
     <select id="findXs" resultType="com.itts.personTraining.dto.XsCjDTO">
-        select  xs.id as xsId,xs.xh, xs.xm, xs.yzy, xs.yx, pc.pch, pc.pcmc,pc.id as pcId
+        select  xs.id as xsId,xs.xh, xs.xm, xs.yzy, xs.yx, pc.pch, pc.pcmc,pc.id as pcId,txc.id as id
         from t_xs xs  left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id) left join t_xs_cj txc on (txc.xs_id=xs.id and txc.pc_id=pc.id)
         where  xs.sfsc = false and pc.sfsc = false  and txc.sfsc =false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
