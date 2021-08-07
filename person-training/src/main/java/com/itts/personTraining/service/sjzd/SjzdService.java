@@ -38,6 +38,7 @@ public interface SjzdService {
                          @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary,
                          @ApiParam(value = "字典编码") @RequestParam(value = "zdbm", required = false) String zdbm,
                          @ApiParam(value = "父级字典ID") @RequestParam(value = "parentId", required = false) Long parentId,
+                         @ApiParam(value = "父级字典Code") @RequestParam(value = "parentCode", required = false) String parentCode,
                          @RequestHeader(name = "token") String token);
 
 }
