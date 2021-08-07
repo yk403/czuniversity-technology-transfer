@@ -4,11 +4,13 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.PkDTO;
+import com.itts.personTraining.enums.EduTypeEnum;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pk.Pk;
 import com.itts.personTraining.mapper.pk.PkMapper;
 import com.itts.personTraining.model.sz.Sz;
+import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.pk.PkService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.pkKc.PkKcService;
@@ -47,7 +49,8 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     private PkKcService pkKcService;
     @Resource
     private SzMapper szMapper;
-
+    @Resource
+    private PcService pcService;
     /**
      * 查询排课信息
      *
@@ -57,7 +60,14 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     @Override
     public List<PkDTO> findPkInfo(Long pcId) {
         log.info("【人才培养 - 查询排课信息,上课开始时间:{},批次id:{}】", pcId);
-        List<PkDTO> pkDTOs = pkMapper.findPkInfo(pcId);
+        Pc pc = pcService.get(pcId);
+        List<PkDTO> pkDTOs = null;
+        if(Objects.equals(pc.getJylx(), EduTypeEnum.ACADEMIC_DEGREE_EDUCATION.getKey())){
+            pkDTOs = pkMapper.findPkInfo(pcId);
+        }else if(Objects.equals(pc.getJylx(), EduTypeEnum.ADULT_EDUCATION.getKey())){
+            pkDTOs = pkMapper.findPk(pcId);
+        }
+
         /*Map<String, List<PkDTO>> groupByXqs = pkDTOs.stream().collect(Collectors.groupingBy(PkDTO::getXqs));
         //遍历分组
         List<String> xqsList = new ArrayList<>();
