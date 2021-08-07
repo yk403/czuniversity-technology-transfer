@@ -402,7 +402,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     @Override
     public Map<String, Object> getByCategory(Integer pageNum,Integer pageSize,Long pcId,String name) {
         log.info("【人才培养 - 查询学生成绩信息(综合信息)】");
-        PageHelper.startPage(pageNum,pageSize);
+
         Map<String, Object> map = new HashMap<>();
         Long userId = getUserId();
         String userCategory = getUserCategory();
@@ -469,11 +469,16 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                         kssjId = ksMapper.getByPcId(pcId);
                     }
                     XsCjDTO xsCjDTO = xsCjMapper.selectByPcIdAndXsId(pcId, xsMsgDTO1.getId());
+                    PageInfo<XsKcCjDTO> xsKcCjDTOPageInfo = null;
                     if (xsCjDTO != null) {
                         xsCjDTO.setKssjId(kssjId);
                         //通过批次id查询出对应所有课程
+                        PageHelper.startPage(pageNum,pageSize);
                         List<XsKcCjDTO> xsKcCjDTOs = kcMapper.findXsKcCjByPcId(pcId);
-                        xsCjDTO.setXsKcCjDTOList(xsKcCjDTOs);
+                        xsKcCjDTOPageInfo = new PageInfo<>(xsKcCjDTOs);
+                    }
+                    if (xsKcCjDTOPageInfo != null) {
+                        map.put("pageInfo",xsKcCjDTOPageInfo);
                     }
                     map.put("broker",xsCjDTO);
                 } else {
@@ -490,6 +495,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 String currentYear = getCurrentYear();
                 List<Long> pcIds = pcMapper.findPcIdsByYear(currentYear);
                 if (CollectionUtils.isNotEmpty(xsIds) && CollectionUtils.isNotEmpty(pcIds)) {
+                    PageHelper.startPage(pageNum,pageSize);
                     List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByXsIdsAndPcIds(xsIds,pcIds,name);
                     PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
                     map.put("tutor",xsCjPageInfo);
@@ -512,6 +518,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                     //默认查询最新批次信息
                     pcId = pcIdList.get(0);
                 }*/
+                PageHelper.startPage(pageNum,pageSize);
                 List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByPcIdAndName(pcId,name);
                 List<Long> xsIdList = new ArrayList<>();
                 for (XsCjDTO xsCjDTO : xsCjDTOs) {
