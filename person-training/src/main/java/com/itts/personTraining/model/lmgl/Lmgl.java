@@ -101,5 +101,7 @@ public class Lmgl implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date jysj;
 
+    private String lmbm;
+
 
 }
