@@ -16,11 +16,12 @@
         <result column="cjr" property="cjr" />
         <result column="gxsj" property="gxsj" />
         <result column="gxr" property="gxr" />
+        <result column="lmbm" property="lmbm" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, mc, tbmc,tbdz, wz,px, jg_id, sfsc, cjsj, cjr, gxsj, gxr
+        id, mc, tbmc,tbdz, wz,px, jg_id, sfsc, cjsj, cjr, gxsj, gxr,lmbm
     </sql>
 
 </mapper>
