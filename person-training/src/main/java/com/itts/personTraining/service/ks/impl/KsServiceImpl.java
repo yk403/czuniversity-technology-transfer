@@ -315,6 +315,8 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
                         tz2.setNr("您好，您此批次："+pc.getPch()+"的"+ks.getKsmc()+"将于"+DateUtils.getDateFormat(ks.getKsksnyr())+"至"+DateUtils.getDateFormat(ks.getKsjsnyr())+"进行线上考试，请悉知！");
                         tz2.setCjr(userId);
                         tz2.setGxr(userId);
+                        tz2.setKsksnyr(ks.getKsksnyr());
+                        tz2.setKsjsnyr(ks.getKsjsnyr());
                         tz2.setKssjId(ks.getKssjId());
                         saveTzAndTzXs(tz2, xsIdList, ks.getKssc());
                     }

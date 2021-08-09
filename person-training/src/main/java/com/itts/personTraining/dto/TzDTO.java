@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
@@ -58,6 +59,16 @@ public class TzDTO {
      * 考试时长
      */
     private String kssc;
+
+    /**
+     * 考试开始年月日
+     */
+    private Date ksksnyr;
+
+    /**
+     * 考试结束年月日
+     */
+    private Date ksjsnyr;
 
     /**
      * 是否删除
