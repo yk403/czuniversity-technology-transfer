@@ -115,6 +115,24 @@ public class ZjAdminController {
     }
 
     /**
+     * 新增专家(外部调用)
+     *
+     * @param zj
+     * @return
+     * @throws WebException
+     */
+    @PostMapping("/addZj")
+    @ApiOperation(value = "新增专家(外部调用)")
+    public ResponseUtil addZj(@RequestBody Zj zj) throws WebException {
+        //检查参数是否合法
+        checkAddRequest(zj);
+        if (!zjService.addZj(zj)) {
+            throw new WebException(INSERT_FAIL);
+        }
+        return ResponseUtil.success("新增专家成功!");
+    }
+
+    /**
      * 更新专家信息
      * @param zj
      * @return
