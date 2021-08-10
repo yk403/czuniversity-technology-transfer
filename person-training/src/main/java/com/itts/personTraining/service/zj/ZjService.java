@@ -78,4 +78,11 @@ public interface ZjService extends IService<Zj> {
      * @return
      */
     boolean addZj(Zj zj);
+
+    /**
+     * 更新专家(外部调用)
+     * @param zj
+     * @return
+     */
+    boolean updateZj(Zj zj);
 }

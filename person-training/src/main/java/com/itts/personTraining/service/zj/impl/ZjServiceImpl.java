@@ -305,6 +305,18 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
     }
 
     /**
+     * 更新专家(外部调用)
+     * @param zj
+     * @return
+     */
+    @Override
+    public boolean updateZj(Zj zj) {
+        log.info("【人才培养 - 更新专家(外部调用):{}】",zj);
+        zj.setGxr(getUserId());
+        return zjService.updateById(zj);
+    }
+
+    /**
      * 获取当前用户id
      * @return
      */

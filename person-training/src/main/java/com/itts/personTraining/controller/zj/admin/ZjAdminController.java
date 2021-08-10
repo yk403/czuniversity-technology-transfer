@@ -158,6 +158,28 @@ public class ZjAdminController {
     }
 
     /**
+     * 更新专家信息(外部调用)
+     * @param zj
+     * @return
+     * @throws WebException
+     */
+    @PutMapping("/updateZj")
+    @ApiOperation(value = "更新专家信息(外部调用)")
+    public ResponseUtil updateZj(@RequestBody Zj zj) throws WebException {
+        //检查数据库中是否存在要更新的数据
+        Zj zjOld = zjService.get(zj.getId());
+        if (zjOld == null) {
+            throw new WebException(SYSTEM_NOT_FIND_ERROR);
+        }
+        checkUpdateRequest(zj);
+        if (!zjService.updateZj(zj)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("更新专家成功!");
+
+    }
+
+    /**
      * 根据id删除专家信息
      * @param id
      * @return
