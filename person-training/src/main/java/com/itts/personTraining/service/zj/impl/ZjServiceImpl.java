@@ -274,18 +274,20 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
     }
 
     /**
-     * 根据姓名电话查询专家信息
+     * 根据姓名/电话/用户id查询专家信息
      * @param xm
      * @param dh
+     * @param yhId
      * @return
      */
     @Override
-    public Zj getByXmDh(String xm, String dh) {
-        log.info("【人才培养 - 根据姓名:{},电话:{}查询专家信息】",xm,dh);
+    public Zj getByXmDh(String xm, String dh, Long yhId) {
+        log.info("【人才培养 - 根据姓名:{},电话:{},用户Id查询专家信息】",xm,dh,yhId);
         QueryWrapper<Zj> zjQueryWrapper = new QueryWrapper<>();
         zjQueryWrapper.eq("sfsc",false)
                 .eq(StringUtils.isNotBlank(xm),"xm",xm)
-                .eq(StringUtils.isNotBlank(dh),"dh",dh);
+                .eq(StringUtils.isNotBlank(dh),"dh",dh)
+                .eq(yhId != null,"yhId",yhId);
         return zjMapper.selectOne(zjQueryWrapper);
     }
 

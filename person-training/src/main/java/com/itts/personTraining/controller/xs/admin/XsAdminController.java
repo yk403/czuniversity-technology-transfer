@@ -183,7 +183,7 @@ public class XsAdminController {
 
     /**
      * 更新学员(外部调用)
-     * @param stuDTO
+     * @param xs
      * @return
      * @throws WebException
      */
