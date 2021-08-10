@@ -1,6 +1,7 @@
 package com.itts.userservice.service.yh.impl;
 
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -9,13 +10,18 @@ import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.RedisConstant;
 import com.itts.common.constant.SystemConstant;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.WebException;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.enmus.TypeEnum;
 import com.itts.userservice.enmus.UserCategoryEnum;
 import com.itts.userservice.enmus.UserTypeEnum;
-import com.itts.userservice.feign.persontraining.ZjRpcService;
+import com.itts.userservice.feign.persontraining.sz.SzRpcService;
+import com.itts.userservice.feign.persontraining.xs.XsRpcService;
+import com.itts.userservice.feign.persontraining.zj.ZjRpcService;
 import com.itts.userservice.feign.persontraining.jdxy.JdxyRpcService;
 import com.itts.userservice.feign.persontraining.szgl.SzglRpcService;
 import com.itts.userservice.mapper.cd.CdMapper;
@@ -28,6 +34,8 @@ import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.js.Js;
 import com.itts.userservice.model.sjzd.Sjzd;
+import com.itts.userservice.model.sz.Sz;
+import com.itts.userservice.model.xs.Xs;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.model.yh.YhJsGl;
 import com.itts.userservice.model.zj.Zj;
@@ -96,6 +104,10 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
     private SjzdMapper sjzdMapper;
     @Resource
     private ZjRpcService zjRpcService;
+    @Resource
+    private SzRpcService szRpcService;
+    @Resource
+    private XsRpcService xsRpcService;
 
     /**
      * 获取列表 - 分页
@@ -405,6 +417,53 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
         if (loginUser != null) {
             userId = loginUser.getUserId();
         }
+        Long id = old.getId();
+        if(!request.getJgId().equals(old.getJgId())){
+            if(request.getYhlb().equals("professor") || request.getYhlb().equals("out_professor")){
+                ResponseUtil response = zjRpcService.get(id);
+                if(response == null){
+                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                }
+                if(response.getErrCode().intValue() != 0){
+                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                }
+                Zj zj = response.conversionData(new TypeReference<Zj>(){});
+                if(zj == null){
+                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                }
+                zj.setJgId(request.getJgId());
+                zjRpcService.update(zj);
+            }else if(request.getYhlb().equals("postgraduate") || request.getYhlb().equals("broker")){
+                ResponseUtil response= xsRpcService.get(null,null,id);
+                if(response == null){
+                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                }
+                if(response.getErrCode().intValue() != 0){
+                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                }
+                Xs xs = response.conversionData(new TypeReference<Xs>(){});
+                if(xs == null){
+                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                }
+                xs.setJgId(request.getJgId());
+                xsRpcService.update(xs);
+            }else if(request.getYhlb().equals("tutor") || request.getYhlb().equals("corporate_mentor")|| request.getYhlb().equals("teacher")){
+                ResponseUtil response = szRpcService.get(null,null,id,null);
+                if(response == null){
+                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                }
+                if(response.getErrCode().intValue() != 0){
+                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                }
+                Sz sz = response.conversionData(new TypeReference<Sz>(){});
+                if(sz == null){
+                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                }
+                sz.setSsjgId(request.getJgId());
+                szRpcService.update(sz);
+            }
+
+        }
 
         Date now = new Date();
 
@@ -434,6 +493,7 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
                 yhJsGlMapper.insert(yhJsGl);
             }
         }
+
 
         GetYhVO vo = new GetYhVO();
         BeanUtils.copyProperties(old, vo);
