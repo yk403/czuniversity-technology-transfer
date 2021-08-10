@@ -1,22 +1,21 @@
-package com.itts.personTraining.model.zj;
+package com.itts.userservice.model.zj;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.util.Date;
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
  * 专家表
  * </p>
  *
- * @author liuyingming
- * @since 2021-05-25
+ * @author fuli
+ * @since 2021-08-10
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

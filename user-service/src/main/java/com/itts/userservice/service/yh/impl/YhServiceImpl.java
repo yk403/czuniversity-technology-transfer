@@ -14,6 +14,7 @@ import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.enmus.UserCategoryEnum;
 import com.itts.userservice.enmus.UserTypeEnum;
+import com.itts.userservice.feign.persontraining.ZjRpcService;
 import com.itts.userservice.feign.persontraining.jdxy.JdxyRpcService;
 import com.itts.userservice.feign.persontraining.szgl.SzglRpcService;
 import com.itts.userservice.mapper.cd.CdMapper;
@@ -28,6 +29,7 @@ import com.itts.userservice.model.js.Js;
 import com.itts.userservice.model.sjzd.Sjzd;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.model.yh.YhJsGl;
+import com.itts.userservice.model.zj.Zj;
 import com.itts.userservice.request.jsxy.AddJdxyRequest;
 import com.itts.userservice.request.szgl.AddSzglRequest;
 import com.itts.userservice.request.yh.AddYhRequest;
@@ -91,6 +93,8 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
 
     @Autowired
     private SjzdMapper sjzdMapper;
+    @Resource
+    private ZjRpcService zjRpcService;
 
     /**
      * 获取列表 - 分页
@@ -636,6 +640,34 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
         szglRpcService.addSzgl(request, token);
     }
 
+    private void addZj(Yh yh) {
+
+        if (yh == null) {
+            return;
+        }
+
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        Long userId = null;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        }
+
+        Date now = new Date();
+
+        Zj request = new Zj();
+
+
+        request.setYhId(yh.getId());
+        request.setBh(yh.getYhbh());
+        request.setXm(yh.getZsxm());
+        request.setJgId(yh.getJgId());
+
+        request.setCjr(userId);
+        request.setGxr(userId);
+
+        zjRpcService.add(request);
+    }
+
     /**
      * 新增师资管理或基地学员
      */
@@ -650,8 +682,10 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
             case "corporate_mentor":
             case "teacher":
             case "school_leader":
-            case "professor":
                 addSzgl(yh, token);
+                break;
+            case "professor":
+                addZj(yh);
                 break;
         }
     }
