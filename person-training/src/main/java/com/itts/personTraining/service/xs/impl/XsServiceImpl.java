@@ -42,6 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
@@ -531,10 +532,9 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         stuDTO.setGxr(userId);
         Xs xs = new Xs();
         BeanUtils.copyProperties(stuDTO,xs);
-        return xsService.updateById(xs);
-        /*if () {
+        if (xsService.updateById(xs)) {
             List<Long> pcIds = stuDTO.getPcIds();
-            if (pcIds != null && pcIds.size() > 0) {
+            if (!CollectionUtils.isEmpty(pcIds)) {
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("xs_id",stuDTO.getId());
                 List<PcXs> pcXsList = new ArrayList<>();
@@ -550,7 +550,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 return false;
             }
         }
-        return false;*/
+        return false;
     }
 
     /**
