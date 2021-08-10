@@ -163,9 +163,10 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
         //通过手机号查询
         Object data = yhService.getByPhone(zj.getDh(), token).getData();
         String yhlx = IN.getKey();
-        String yhlb = zj.getLx();
+        String yhlb = PROFESSOR.getKey();
         String bh = zj.getBh();
         String xm = zj.getXm();
+        String dh = zj.getDh();
         if (data != null) {
             //用户表存在用户信息,更新用户信息,专家表判断是否存在
             GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
@@ -177,6 +178,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             yh.setZsxm(xm);
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
+            yh.setLxdh(dh);
             yhService.update(yh,token);
             Zj zj1 = zjMapper.getByCondition(zj.getDh());
             zj.setYhId(getYhVo.getId());
@@ -198,6 +200,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             yh.setZsxm(xm);
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
+            yh.setLxdh(dh);
             Object data1 = yhService.rpcAdd(yh, token).getData();
             if (data1 == null) {
                 throw new ServiceException(USER_INSERT_ERROR);
