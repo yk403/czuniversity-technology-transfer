@@ -179,7 +179,21 @@ public class XsAdminController {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新学员成功!");
+    }
 
+    /**
+     * 更新学员(外部调用)
+     * @param stuDTO
+     * @return
+     * @throws WebException
+     */
+    @PutMapping("/updateXs")
+    @ApiOperation(value = "更新学员(外部调用)")
+    public ResponseUtil updateXs(@RequestBody Xs xs) throws WebException {
+        if (!xsService.updateXs(xs)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("更新学员成功!");
     }
 
     /**
