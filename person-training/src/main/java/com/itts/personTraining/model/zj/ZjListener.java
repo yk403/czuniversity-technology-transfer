@@ -26,10 +26,8 @@ import javax.annotation.Resource;
 import java.util.Date;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
-import static com.itts.common.enums.ErrorCodeEnum.USER_INSERT_ERROR;
-import static com.itts.personTraining.enums.UserTypeEnum.IN;
-import static com.itts.personTraining.enums.UserTypeEnum.PROFESSOR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.personTraining.enums.UserTypeEnum.*;
 import static com.itts.personTraining.enums.ZzmmEnum.*;
 import static com.itts.personTraining.enums.jslyEnum.*;
 
@@ -212,7 +210,7 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
 
     @Override
     public void onException(Exception exception, AnalysisContext context) throws Exception {
-        System.out.println("helloTwo");
+        log.info("helloTwo");
         throw exception;
     }
 
@@ -222,7 +220,14 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
         //通过手机号查询
         Object data = yhService.getByPhone(zj.getDh(), token).getData();
         String yhlx = IN.getKey();
-        String yhlb = PROFESSOR.getKey();
+        String yhlb ;
+        if (PROFESSOR.getMsg().equals(zj.getLx())) {
+            yhlb = PROFESSOR.getKey();
+        } else if (OUT_PROFESSOR.getMsg().equals(zj.getLx())) {
+            yhlb = OUT_PROFESSOR.getKey();
+        } else {
+            throw new ServiceException(PROFESSOR_TYPE_ERROR);
+        }
         String bh = zj.getBh();
         String xm = zj.getXm();
         String lxdh = zj.getDh();
