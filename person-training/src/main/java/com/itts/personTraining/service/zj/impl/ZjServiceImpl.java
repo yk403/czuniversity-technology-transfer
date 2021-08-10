@@ -9,6 +9,8 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.dto.SzMsgDTO;
+import com.itts.personTraining.dto.ZjInfoDTO;
 import com.itts.personTraining.enums.SsmkEnum;
 import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.feign.userservice.SjzdFeignService;
@@ -317,6 +319,44 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
     }
 
     /**
+     * 查询专家综合信息
+     * @return
+     */
+    @Override
+    public ZjInfoDTO getByYhId() {
+        Long userId = getUserId();
+        log.info("【人才培养 - 查询专家综合信息,用户id:{}】",userId);
+        ZjInfoDTO zjInfoDTO = new ZjInfoDTO();
+        Zj zjByYhId = zjMapper.getZjByYhId(userId);
+        if (zjByYhId == null) {
+            throw new ServiceException(PROFESSOR_MSG_NOT_EXISTS_ERROR);
+        }
+        Long zjId = zjByYhId.getId();
+        BeanUtils.copyProperties(zjByYhId,zjInfoDTO);
+        String userCategory = getUserCategory();
+        ResponseUtil response = userFeignService.get();
+        if(response.getErrCode() != 0 ){
+            throw new ServiceException(USER_NOT_FIND_ERROR);
+        }
+        GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
+        });
+        switch (userCategory) {
+            case "professor":
+                zjInfoDTO.setKstz(0L);
+                zjInfoDTO.setCjtz(0L);
+                zjInfoDTO.setSjtz(0L);
+                //TODO: 暂时假数据
+                zjInfoDTO.setXftz(0L);
+                zjInfoDTO.setQttz(0L);
+                zjInfoDTO.setYhMsg(vo);
+                break;
+            default:
+                break;
+        }
+        return zjInfoDTO;
+    }
+
+    /**
      * 获取当前用户id
      * @return
      */
@@ -329,6 +369,21 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    /**
+     * 获取当前用户id所属类别
+     * @return
+     */
+    private String getUserCategory() {
+        LoginUser loginUser = threadLocal.get();
+        String userCategory;
+        if (loginUser != null) {
+            userCategory = loginUser.getUserCategory();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userCategory;
     }
 
 }

@@ -20,4 +20,11 @@ public interface ZjMapper extends BaseMapper<Zj> {
      * @return
      */
     Zj getByCondition(@Param("dh") String dh);
+
+    /**
+     * 根据用户id查询专家信息
+     * @param yhId
+     * @return
+     */
+    Zj getZjByYhId(@Param("yhId") Long yhId);
 }
