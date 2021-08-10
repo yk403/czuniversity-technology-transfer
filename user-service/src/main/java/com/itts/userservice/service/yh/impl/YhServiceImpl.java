@@ -12,6 +12,7 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
 import com.itts.userservice.dto.YhDTO;
+import com.itts.userservice.enmus.TypeEnum;
 import com.itts.userservice.enmus.UserCategoryEnum;
 import com.itts.userservice.enmus.UserTypeEnum;
 import com.itts.userservice.feign.persontraining.ZjRpcService;
@@ -79,7 +80,7 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
     @Resource
     private JsMapper jsMapper;
 
-    @Autowired
+    @Resource
     private CdMapper cdMapper;
 
     @Resource
@@ -91,7 +92,7 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
     @Autowired
     private SzglRpcService szglRpcService;
 
-    @Autowired
+    @Resource
     private SjzdMapper sjzdMapper;
     @Resource
     private ZjRpcService zjRpcService;
@@ -655,7 +656,11 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
         Date now = new Date();
 
         Zj request = new Zj();
-
+        if(yh.getYhlb().equals("professor")){
+            request.setLx(TypeEnum.IN.getMsg());
+        }else {
+            request.setLx(TypeEnum.OUT.getMsg());
+        }
 
         request.setYhId(yh.getId());
         request.setBh(yh.getYhbh());
@@ -685,6 +690,7 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
                 addSzgl(yh, token);
                 break;
             case "professor":
+            case "out_professor":
                 addZj(yh);
                 break;
         }
