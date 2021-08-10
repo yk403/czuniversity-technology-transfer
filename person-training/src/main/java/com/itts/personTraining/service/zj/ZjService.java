@@ -70,4 +70,11 @@ public interface ZjService extends IService<Zj> {
      * @return
      */
     Zj getByXmDh(String xm, String dh);
+
+    /**
+     * 新增专家(外部调用)
+     * @param zj
+     * @return
+     */
+    boolean addZj(Zj zj);
 }

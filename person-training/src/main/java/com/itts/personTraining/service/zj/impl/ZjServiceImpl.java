@@ -278,6 +278,20 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
     }
 
     /**
+     * 新增专家(外部调用)
+     * @param zj
+     * @return
+     */
+    @Override
+    public boolean addZj(Zj zj) {
+        log.info("【人才培养 - 新增专家(外部调用):{}】",zj);
+        zj.setGxr(getUserId());
+        zj.setCjr(getUserId());
+        zj.setLx(PROFESSOR.getMsg());
+        return zjService.save(zj);
+    }
+
+    /**
      * 获取当前用户id
      * @return
      */
