@@ -12,6 +12,8 @@ public interface PcRpcService {
 
     @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/pc/getAll")
     ResponseUtil getAll();
+    @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/pc/getByJylx/{jylx}")
+    ResponseUtil getByJylx(@PathVariable("jylx")String jylx);
 
     @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/pc/get/{id}")
     ResponseUtil getByOne(@PathVariable("id")Long id);
