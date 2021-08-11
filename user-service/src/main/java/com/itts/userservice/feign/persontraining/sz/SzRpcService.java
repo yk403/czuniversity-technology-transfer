@@ -16,9 +16,9 @@ public interface SzRpcService {
 
     @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/Sz/getByCondition")
     ResponseUtil get(@RequestParam(value = "dsbh",required = false) String dsbh,
-                                          @RequestParam(value = "xb",required = false) String xb,
-                                          @RequestParam(value = "yhId",required = false) Long yhId,
-                                          @RequestParam(value = "groupId",required = false) Long groupId);
+                                   @RequestParam(value = "xb",required = false) String xb,
+                                   @RequestParam(value = "yhId",required = false) Long yhId,
+                                   @RequestParam(value = "groupId",required = false) Long groupId);
 
 
 

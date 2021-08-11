@@ -16,8 +16,10 @@ public interface ZjRpcService {
     @PostMapping(SystemConstant.ADMIN_BASE_URL + "/v1/zj/addZj")
     ResponseUtil add(@RequestBody Zj zj) throws WebException;
 
-    @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/zj/get/{id}")
-    ResponseUtil get(@PathVariable("id") Long id);
+    @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/zj//getByXmDh")
+    ResponseUtil get(@RequestParam(value = "xm", required = false) String xm,
+                                  @RequestParam(value = "dh", required = false) String dh,
+                                  @RequestParam(value = "yhId", required = false) Long yhId);
 
 
     @PutMapping(SystemConstant.ADMIN_BASE_URL + "/v1/zj/updateZj")

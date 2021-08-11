@@ -418,9 +418,9 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
             userId = loginUser.getUserId();
         }
         Long id = old.getId();
-        if(!request.getJgId().equals(old.getJgId())){
+        if(!request.getJgId().equals(old.getJgId()) && !request.getZsxm().equals(old.getZsxm()) && !request.getLxdh().equals(old.getLxdh())){
             if(request.getYhlb().equals("professor") || request.getYhlb().equals("out_professor")){
-                ResponseUtil response = zjRpcService.get(id);
+                ResponseUtil response = zjRpcService.get(null,null,id);
                 if(response == null){
                     throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
                 }
@@ -431,6 +431,8 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
                 if(zj == null){
                     throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
                 }
+                zj.setXm(request.getZsxm());
+                zj.setDh(request.getLxdh());
                 zj.setJgId(request.getJgId());
                 zjRpcService.update(zj);
             }else if(request.getYhlb().equals("postgraduate") || request.getYhlb().equals("broker")){
@@ -445,6 +447,8 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
                 if(xs == null){
                     throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
                 }
+                xs.setXm(request.getZsxm());
+                xs.setLxdh(request.getLxdh());
                 xs.setJgId(request.getJgId());
                 xsRpcService.update(xs);
             }else if(request.getYhlb().equals("tutor") || request.getYhlb().equals("corporate_mentor")|| request.getYhlb().equals("teacher")){
@@ -459,6 +463,8 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
                 if(sz == null){
                     throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
                 }
+                sz.setDsxm(request.getZsxm());
+                sz.setDh(request.getLxdh());
                 sz.setSsjgId(request.getJgId());
                 szRpcService.update(sz);
             }
