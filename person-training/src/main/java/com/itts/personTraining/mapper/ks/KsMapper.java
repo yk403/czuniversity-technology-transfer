@@ -41,9 +41,10 @@ public interface KsMapper extends BaseMapper<Ks> {
     List<KsDTO> getByXsId(@Param("xsId") Long xsId);
 
     /**
-     * 根据批次id查询考试试卷id
+     * 根据批次id和考试类别查询考试试卷id
      * @param pcId
+     * @param kslb
      * @return
      */
-    Long getByPcId(@Param("pcId") Long pcId);
+    Long getByPcIdAndKslb(@Param("pcId") Long pcId,@Param("kslb") String kslb);
 }

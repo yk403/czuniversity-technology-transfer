@@ -466,7 +466,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 if (xsMsgDTO1 != null) {
                     Long kssjId = null;
                     if (ON_LINE.getMsg().equals(xsMsgDTO1.getBmfs())) {
-                        kssjId = ksMapper.getByPcId(pcId);
+                        kssjId = ksMapper.getByPcIdAndKslb(pcId,ON_LINE.getMsg());
                     }
                     XsCjDTO xsCjDTO = xsCjMapper.selectByPcIdAndXsId(pcId, xsMsgDTO1.getId());
                     PageInfo<XsKcCjDTO> xsKcCjDTOPageInfo = null;
@@ -520,23 +520,27 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 }*/
                 PageHelper.startPage(pageNum,pageSize);
                 List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByPcIdAndName(pcId,name);
-                List<Long> xsIdList = new ArrayList<>();
-                for (XsCjDTO xsCjDTO : xsCjDTOs) {
-                    xsIdList.add(xsCjDTO.getXsId());
-                }
-                //查询出报名方式是线上的学生ids
-                List<Long> xsxsIds = xsMapper.findXsIdsByBmfs(xsIdList, ON_LINE.getMsg());
-                //通过批次id查出对应的试卷id
-                Long kssjId = ksMapper.getByPcId(pcId);
-                for (XsCjDTO xsCjDTO : xsCjDTOs) {
-                    for (Long xsxsId : xsxsIds) {
-                        if (xsxsId.equals(xsCjDTO.getXsId())) {
-                            xsCjDTO.setKssjId(kssjId);
+                if (CollectionUtils.isEmpty(xsCjDTOs)) {
+                    map.put("teacher",null);
+                } else {
+                    List<Long> xsIdList = new ArrayList<>();
+                    for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                        xsIdList.add(xsCjDTO.getXsId());
+                    }
+                    //查询出报名方式是线上的学生ids
+                    List<Long> xsxsIds = xsMapper.findXsIdsByBmfs(xsIdList, ON_LINE.getMsg());
+                    //通过批次id和考试类别查出对应的试卷id
+                    Long kssjId = ksMapper.getByPcIdAndKslb(pcId,ON_LINE.getMsg());
+                    for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                        for (Long xsxsId : xsxsIds) {
+                            if (xsxsId.equals(xsCjDTO.getXsId())) {
+                                xsCjDTO.setKssjId(kssjId);
+                            }
                         }
                     }
+                    PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
+                    map.put("teacher",xsCjPageInfo);
                 }
-                PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
-                map.put("teacher",xsCjPageInfo);
                 break;
             //管理员
             case "administrator":
