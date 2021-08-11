@@ -64,12 +64,13 @@ public interface ZjService extends IService<Zj> {
     boolean delete(Zj zj);
 
     /**
-     * 根据姓名电话查询专家信息
+     * 根据姓名电话用户id查询专家信息
      * @param xm
      * @param dh
+     * @param yhId
      * @return
      */
-    Zj getByXmDh(String xm, String dh);
+    Zj getByXmDh(String xm, String dh, Long yhId);
 
     /**
      * 新增专家(外部调用)
@@ -77,4 +78,11 @@ public interface ZjService extends IService<Zj> {
      * @return
      */
     boolean addZj(Zj zj);
+
+    /**
+     * 更新专家(外部调用)
+     * @param zj
+     * @return
+     */
+    boolean updateZj(Zj zj);
 }

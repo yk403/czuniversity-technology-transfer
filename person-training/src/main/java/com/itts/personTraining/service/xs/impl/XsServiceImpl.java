@@ -362,6 +362,18 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     }
 
     /**
+     * 更新学员(外部调用)
+     * @param xs
+     * @return
+     */
+    @Override
+    public boolean updateXs(Xs xs) {
+        log.info("【人才培养 - 更新学员(外部调用):{}】",xs);
+        xs.setGxr(getUserId());
+        return xsService.updateById(xs);
+    }
+
+    /**
      * 新增学员
      * @param stuDTO
      * @return

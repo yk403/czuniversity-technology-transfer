@@ -34,10 +34,9 @@ import javax.annotation.Resource;
 import java.util.*;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
-import static com.itts.common.enums.ErrorCodeEnum.USER_INSERT_ERROR;
-import static com.itts.personTraining.enums.UserTypeEnum.IN;
-import static com.itts.personTraining.enums.UserTypeEnum.PROFESSOR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.personTraining.enums.UserTypeEnum.*;
+import static com.itts.personTraining.enums.UserTypeEnum.OUT_PROFESSOR;
 
 /**
  * <p>
@@ -163,10 +162,18 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
         //通过手机号查询
         Object data = yhService.getByPhone(zj.getDh(), token).getData();
         String yhlx = IN.getKey();
-        String yhlb = PROFESSOR.getKey();
+        String yhlb ;
+        if (PROFESSOR.getMsg().equals(zj.getLx())) {
+            yhlb = PROFESSOR.getKey();
+        } else if (OUT_PROFESSOR.getMsg().equals(zj.getLx())) {
+            yhlb = OUT_PROFESSOR.getKey();
+        } else {
+            throw new ServiceException(PROFESSOR_TYPE_ERROR);
+        }
         String bh = zj.getBh();
         String xm = zj.getXm();
         String dh = zj.getDh();
+        Long jgId = zj.getJgId();
         if (data != null) {
             //用户表存在用户信息,更新用户信息,专家表判断是否存在
             GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
@@ -179,6 +186,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
             yh.setLxdh(dh);
+            yh.setJgId(jgId);
             yhService.update(yh,token);
             Zj zj1 = zjMapper.getByCondition(zj.getDh());
             zj.setYhId(getYhVo.getId());
@@ -201,6 +209,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
             yh.setLxdh(dh);
+            yh.setJgId(jgId);
             Object data1 = yhService.rpcAdd(yh, token).getData();
             if (data1 == null) {
                 throw new ServiceException(USER_INSERT_ERROR);
@@ -265,18 +274,20 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
     }
 
     /**
-     * 根据姓名电话查询专家信息
+     * 根据姓名/电话/用户id查询专家信息
      * @param xm
      * @param dh
+     * @param yhId
      * @return
      */
     @Override
-    public Zj getByXmDh(String xm, String dh) {
-        log.info("【人才培养 - 根据姓名:{},电话:{}查询专家信息】",xm,dh);
+    public Zj getByXmDh(String xm, String dh, Long yhId) {
+        log.info("【人才培养 - 根据姓名:{},电话:{},用户Id查询专家信息】",xm,dh,yhId);
         QueryWrapper<Zj> zjQueryWrapper = new QueryWrapper<>();
         zjQueryWrapper.eq("sfsc",false)
                 .eq(StringUtils.isNotBlank(xm),"xm",xm)
-                .eq(StringUtils.isNotBlank(dh),"dh",dh);
+                .eq(StringUtils.isNotBlank(dh),"dh",dh)
+                .eq(yhId != null,"yhId",yhId);
         return zjMapper.selectOne(zjQueryWrapper);
     }
 
@@ -290,8 +301,19 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
         log.info("【人才培养 - 新增专家(外部调用):{}】",zj);
         zj.setGxr(getUserId());
         zj.setCjr(getUserId());
-        zj.setLx(PROFESSOR.getMsg());
         return zjService.save(zj);
+    }
+
+    /**
+     * 更新专家(外部调用)
+     * @param zj
+     * @return
+     */
+    @Override
+    public boolean updateZj(Zj zj) {
+        log.info("【人才培养 - 更新专家(外部调用):{}】",zj);
+        zj.setGxr(getUserId());
+        return zjService.updateById(zj);
     }
 
     /**

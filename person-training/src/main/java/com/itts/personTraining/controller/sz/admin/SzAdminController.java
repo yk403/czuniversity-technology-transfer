@@ -157,6 +157,22 @@ public class SzAdminController {
     }
 
     /**
+     * 更新师资(外部调用)
+     *
+     * @param sz
+     * @return
+     * @throws WebException
+     */
+    @PutMapping("/updateSz")
+    @ApiOperation(value = "更新师资(外部调用)")
+    public ResponseUtil updateSz(@RequestBody Sz sz) throws WebException {
+        if (!szService.updateSz(sz)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("更新师资成功!");
+    }
+
+    /**
      * 删除师资
      * @param id
      * @return

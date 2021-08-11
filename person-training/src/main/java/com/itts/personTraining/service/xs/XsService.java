@@ -107,4 +107,11 @@ public interface XsService extends IService<Xs> {
      * @return
      */
     boolean updateUser(StuDTO stuDTO);
+
+    /**
+     * 更新学员(外部调用)
+     * @param xs
+     * @return
+     */
+    boolean updateXs(Xs xs);
 }

@@ -325,6 +325,18 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
     }
 
     /**
+     * 更新师资(外部调用)
+     * @param sz
+     * @return
+     */
+    @Override
+    public boolean updateSz(Sz sz) {
+        log.info("【人才培养 - 更新师资(外部调用):{}】",sz);
+        sz.setGxr(getUserId());
+        return szService.updateById(sz);
+    }
+
+    /**
      * 更新师资
      * @param sz
      * @return

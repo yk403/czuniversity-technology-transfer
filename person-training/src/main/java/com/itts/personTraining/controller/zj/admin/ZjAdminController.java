@@ -10,6 +10,7 @@ import com.itts.personTraining.service.zj.ZjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,20 +72,22 @@ public class ZjAdminController {
     }
 
     /**
-     * 根据姓名/电话查询专家信息
+     * 根据姓名/电话/用户id查询专家信息
      *
      * @param xm
      * @param dh
+     * @param yhId
      * @return
      */
     @GetMapping("/getByXmDh")
-    @ApiOperation(value = "根据姓名/电话查询专家信息")
+    @ApiOperation(value = "根据姓名/电话/用户id查询专家信息")
     public ResponseUtil getByXmDh(@RequestParam(value = "xm", required = false) String xm,
-                                  @RequestParam(value = "dh", required = false) String dh) {
-        if (xm == null && dh == null) {
-            throw new WebException(NAME_PHONE_ISEMPTY_ERROR);
+                                  @RequestParam(value = "dh", required = false) String dh,
+                                  @RequestParam(value = "yhId", required = false) Long yhId) {
+        if (StringUtils.isEmpty(xm) && StringUtils.isEmpty(dh) && yhId == null) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(zjService.getByXmDh(xm,dh));
+        return ResponseUtil.success(zjService.getByXmDh(xm,dh,yhId));
     }
 
     /**
@@ -148,6 +151,28 @@ public class ZjAdminController {
         }
         checkUpdateRequest(zj);
         if (!zjService.update(zj)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("更新专家成功!");
+
+    }
+
+    /**
+     * 更新专家信息(外部调用)
+     * @param zj
+     * @return
+     * @throws WebException
+     */
+    @PutMapping("/updateZj")
+    @ApiOperation(value = "更新专家信息(外部调用)")
+    public ResponseUtil updateZj(@RequestBody Zj zj) throws WebException {
+        //检查数据库中是否存在要更新的数据
+        Zj zjOld = zjService.get(zj.getId());
+        if (zjOld == null) {
+            throw new WebException(SYSTEM_NOT_FIND_ERROR);
+        }
+        checkUpdateRequest(zj);
+        if (!zjService.updateZj(zj)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新专家成功!");
