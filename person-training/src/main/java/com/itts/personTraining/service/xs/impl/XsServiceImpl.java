@@ -548,6 +548,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         });
         if (vo != null) {
             Yh yh = new Yh();
+            yh.setId(vo.getId());
             yh.setYhbh(stuDTO.getXh());
             yh.setYhm(stuDTO.getXh());
             yh.setMm(stuDTO.getXh());
