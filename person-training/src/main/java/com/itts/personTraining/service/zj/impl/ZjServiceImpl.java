@@ -254,21 +254,22 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
     @Override
     public boolean update(Zj zj,String token) {
         log.info("【人才培养 - 更新专家:{}信息】",zj);
-        Zj zjOld = zjService.get(zj.getId());
+        Zj zjOld = zjService.getById(zj.getId());
         ResponseUtil response = yhService.getByPhone(zjOld.getDh(), token);
+        String yhlb = zj.getLx();
         if(response.getErrCode() != 0 ){
             throw new ServiceException(USER_NOT_FIND_ERROR);
         }
         GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
         });
-        String yhlb ;
-        if (PROFESSOR.getMsg().equals(zj.getLx())) {
+        if (PROFESSOR.getMsg().equals(yhlb)) {
             yhlb = PROFESSOR.getKey();
-        } else if (OUT_PROFESSOR.getMsg().equals(zj.getLx())) {
+        } else if (OUT_PROFESSOR.getMsg().equals(yhlb)) {
             yhlb = OUT_PROFESSOR.getKey();
         } else {
             throw new ServiceException(PROFESSOR_TYPE_ERROR);
         }
+        String yhlx = IN.getKey();
         if (vo != null) {
             Yh yh = new Yh();
             yh.setId(vo.getId());
@@ -278,6 +279,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             yh.setZsxm(zj.getXm());
             yh.setYhlb(yhlb);
             yh.setLxdh(zj.getDh());
+            yh.setYhlx(yhlx);
             yh.setJgId(zj.getJgId());
             yh.setGxr(getUserId());
             yhService.update(yh,token);
