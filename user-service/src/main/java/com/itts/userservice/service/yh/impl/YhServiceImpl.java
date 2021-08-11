@@ -261,7 +261,11 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
     @Transactional(rollbackFor = Exception.class)
     @Override
     public GetYhVO add(AddYhRequest addYhRequest, String token) {
-
+        Yh old = yhMapper.selectOne(new QueryWrapper<Yh>().eq("lxdh", addYhRequest.getLxdh())
+                .eq("sfsc", false));
+        if(old != null){
+            throw new WebException(ErrorCodeEnum.PHONE_NUMBER_EXISTS_ERROR);
+        }
         LoginUser loginUser = SystemConstant.threadLocal.get();
         Long userId = null;
 
@@ -431,6 +435,13 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
      */
     @Override
     public GetYhVO update(AddYhRequest request, Yh old) {
+        if(!old.getLxdh().equals(request.getLxdh())){
+            Yh two = yhMapper.selectOne(new QueryWrapper<Yh>().eq("lxdh", request.getLxdh())
+                    .eq("sfsc", false));
+            if(two != null){
+                throw new WebException(ErrorCodeEnum.PHONE_NUMBER_EXISTS_ERROR);
+            }
+        }
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
         Long userId = null;
