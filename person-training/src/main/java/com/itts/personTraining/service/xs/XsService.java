@@ -61,9 +61,10 @@ public interface XsService extends IService<Xs> {
     /**
      * 更新学员
      * @param stuDTO
+     * param token
      * @return
      */
-    boolean update(StuDTO stuDTO);
+    boolean update(StuDTO stuDTO,String token);
 
     /**
      * 删除学员

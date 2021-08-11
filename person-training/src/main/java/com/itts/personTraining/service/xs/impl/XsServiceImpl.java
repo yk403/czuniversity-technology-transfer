@@ -538,8 +538,25 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      * @return
      */
     @Override
-    public boolean update(StuDTO stuDTO) {
+    public boolean update(StuDTO stuDTO,String token) {
         log.info("【人才培养 - 更新学员:{}】",stuDTO);
+        ResponseUtil response = yhService.getByPhone(stuDTO.getLxdh(), token);
+        if(response.getErrCode() != 0 ){
+            throw new ServiceException(USER_NOT_FIND_ERROR);
+        }
+        GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
+        });
+        if (vo != null) {
+            Yh yh = new Yh();
+            yh.setYhbh(stuDTO.getXh());
+            yh.setYhm(stuDTO.getXh());
+            yh.setMm(stuDTO.getXh());
+            yh.setZsxm(stuDTO.getXm());
+            yh.setLxdh(stuDTO.getLxdh());
+            yh.setYhlx(IN.getKey());
+            yh.setJgId(stuDTO.getJgId());
+            yhService.update(yh,token);
+        }
         Long userId = getUserId();
         stuDTO.setGxr(userId);
         Xs xs = new Xs();
