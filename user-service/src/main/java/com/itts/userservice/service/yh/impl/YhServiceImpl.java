@@ -418,7 +418,7 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
             userId = loginUser.getUserId();
         }
         Long id = old.getId();
-        if(!request.getJgId().equals(old.getJgId()) && !request.getZsxm().equals(old.getZsxm()) && !request.getLxdh().equals(old.getLxdh())){
+        if(!request.getJgId().equals(old.getJgId()) || !request.getZsxm().equals(old.getZsxm()) || !request.getLxdh().equals(old.getLxdh())){
             if(request.getYhlb().equals("professor") || request.getYhlb().equals("out_professor")){
                 ResponseUtil response = zjRpcService.get(null,null,id);
                 if(response == null){
