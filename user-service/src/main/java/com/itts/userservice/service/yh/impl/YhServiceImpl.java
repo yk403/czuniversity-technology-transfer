@@ -12,6 +12,7 @@ import com.itts.common.constant.RedisConstant;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
+import com.itts.common.utils.DateUtils;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.dto.JsDTO;
 import com.itts.userservice.dto.MenuDTO;
@@ -19,6 +20,7 @@ import com.itts.userservice.dto.YhDTO;
 import com.itts.userservice.enmus.TypeEnum;
 import com.itts.userservice.enmus.UserCategoryEnum;
 import com.itts.userservice.enmus.UserTypeEnum;
+import com.itts.userservice.feign.persontraining.pc.PcRpcService;
 import com.itts.userservice.feign.persontraining.sz.SzRpcService;
 import com.itts.userservice.feign.persontraining.xs.XsRpcService;
 import com.itts.userservice.feign.persontraining.zj.ZjRpcService;
@@ -33,6 +35,7 @@ import com.itts.userservice.mapper.yh.YhMapper;
 import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.js.Js;
+import com.itts.userservice.model.pc.Pc;
 import com.itts.userservice.model.sjzd.Sjzd;
 import com.itts.userservice.model.sz.Sz;
 import com.itts.userservice.model.xs.Xs;
@@ -108,6 +111,8 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
     private SzRpcService szRpcService;
     @Resource
     private XsRpcService xsRpcService;
+    @Resource
+    private PcRpcService pcRpcService;
 
     /**
      * 获取列表 - 分页
@@ -269,6 +274,22 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
         Yh yh = new Yh();
 
         BeanUtils.copyProperties(addYhRequest, yh);
+        if(yh.getYhlb().equals("broker") && addYhRequest.getPcId()!= null){
+            ResponseUtil response = pcRpcService.getByOne(addYhRequest.getPcId());
+            if(response == null){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            }
+            if(response.getErrCode().intValue() != 0){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            }
+            Pc pc = response.conversionData(new TypeReference<Pc>(){});
+            if(pc == null){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            }
+            String bh = redisTemplate.opsForValue().increment(pc.getPch()).toString();
+            String xh = pc.getJylx() + StringUtils.replace(DateUtils.toString(pc.getRxrq()),"/","") + String.format("%03d", Long.parseLong(bh));
+            yh.setYhbh(xh);
+        }
 
         yh.setMm(new BCryptPasswordEncoder().encode(addYhRequest.getMm()));
 
