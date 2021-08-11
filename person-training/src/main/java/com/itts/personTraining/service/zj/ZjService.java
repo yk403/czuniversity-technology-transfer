@@ -1,6 +1,7 @@
 package com.itts.personTraining.service.zj;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.ZjInfoDTO;
 import com.itts.personTraining.model.zj.Zj;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -85,4 +86,10 @@ public interface ZjService extends IService<Zj> {
      * @return
      */
     boolean updateZj(Zj zj);
+
+    /**
+     * 查询专家综合信息
+     * @return
+     */
+    ZjInfoDTO getByYhId();
 }
