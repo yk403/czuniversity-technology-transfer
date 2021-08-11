@@ -289,7 +289,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
         zjQueryWrapper.eq("sfsc",false)
                 .eq(StringUtils.isNotBlank(xm),"xm",xm)
                 .eq(StringUtils.isNotBlank(dh),"dh",dh)
-                .eq(yhId != null,"yhId",yhId);
+                .eq(yhId != null,"yh_id",yhId);
         return zjMapper.selectOne(zjQueryWrapper);
     }
 
