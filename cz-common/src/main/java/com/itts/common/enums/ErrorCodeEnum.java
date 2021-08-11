@@ -129,6 +129,7 @@ public enum ErrorCodeEnum {
     STARTDATE_GREATER_THAN_ENDDATE_ERROR(-45054,"开始日期不可大于结束日期!"),
     PROFESSOR_TYPE_ERROR(-45055,"专家类型有误!"),
     PROFESSOR_MSG_NOT_EXISTS_ERROR(-45047, "老师信息不存在"),
+    EXAM_MSG_EXISTS_ERROR(-45048, "考试信息已存在!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

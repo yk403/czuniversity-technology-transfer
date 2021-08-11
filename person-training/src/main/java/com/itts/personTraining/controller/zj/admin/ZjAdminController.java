@@ -143,14 +143,14 @@ public class ZjAdminController {
      */
     @PutMapping("/update")
     @ApiOperation(value = "更新专家信息")
-    public ResponseUtil update(@RequestBody Zj zj) throws WebException {
+    public ResponseUtil update(@RequestBody Zj zj, HttpServletRequest request) throws WebException {
         //检查数据库中是否存在要更新的数据
         Zj zjOld = zjService.get(zj.getId());
         if (zjOld == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         checkUpdateRequest(zj);
-        if (!zjService.update(zj)) {
+        if (!zjService.update(zj, request.getHeader("token"))) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新专家成功!");
