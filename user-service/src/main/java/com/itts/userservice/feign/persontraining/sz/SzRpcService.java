@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface SzRpcService {
 
 
-    @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/Sz/getByCondition")
+    @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/sz/getByCondition")
     ResponseUtil get(@RequestParam(value = "dsbh",required = false) String dsbh,
                                    @RequestParam(value = "xb",required = false) String xb,
                                    @RequestParam(value = "yhId",required = false) Long yhId,
@@ -22,6 +22,6 @@ public interface SzRpcService {
 
 
 
-    @PutMapping(SystemConstant.ADMIN_BASE_URL + "/v1/Sz/updateSz")
+    @PutMapping(SystemConstant.ADMIN_BASE_URL + "/v1/sz/updateSz")
     ResponseUtil update(@RequestBody Sz sz) throws WebException;
 }

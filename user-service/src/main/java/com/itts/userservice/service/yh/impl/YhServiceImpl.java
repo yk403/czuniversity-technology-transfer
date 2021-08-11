@@ -451,7 +451,7 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
                 xs.setLxdh(request.getLxdh());
                 xs.setJgId(request.getJgId());
                 xsRpcService.update(xs);
-            }else if(request.getYhlb().equals("tutor") || request.getYhlb().equals("corporate_mentor")|| request.getYhlb().equals("teacher")){
+            }else if(request.getYhlb().equals("tutor") || request.getYhlb().equals("corporate_mentor")|| request.getYhlb().equals("teacher")|| request.getYhlb().equals("school_leader")){
                 ResponseUtil response = szRpcService.get(null,null,id,null);
                 if(response == null){
                     throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
