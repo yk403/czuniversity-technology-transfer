@@ -266,6 +266,16 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
         if(old != null){
             throw new WebException(ErrorCodeEnum.PHONE_NUMBER_EXISTS_ERROR);
         }
+        Yh old2 = yhMapper.selectOne(new QueryWrapper<Yh>().eq("yhbh", addYhRequest.getYhbh())
+                .eq("sfsc", false));
+        if(old2 != null){
+            throw new WebException(ErrorCodeEnum.USER_NUMBER_EXISTS_ERROR);
+        }
+        Yh old3 = yhMapper.selectOne(new QueryWrapper<Yh>().eq("yhm", addYhRequest.getYhm())
+                .eq("sfsc", false));
+        if(old3 != null){
+            throw new WebException(ErrorCodeEnum.USER_NAME_EXISTS_ERROR);
+        }
         LoginUser loginUser = SystemConstant.threadLocal.get();
         Long userId = null;
 

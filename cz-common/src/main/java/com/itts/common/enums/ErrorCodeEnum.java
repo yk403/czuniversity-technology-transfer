@@ -137,6 +137,8 @@ public enum ErrorCodeEnum {
     USER_DELETE_MENU_HAVE_CHILD_ERROR(-440002, "删除菜单失败，该菜单下有子级菜单"),
     USER_DELETE_GROUP_HAVE_CHILD_ERROR(-440003, "删除机构失败，该机构下有子级机构"),
     USER_VIDEO_DATE_ERROR(-440004, "视频直播开始时间大于直播结束时间"),
+    USER_NUMBER_EXISTS_ERROR(-44005, "编号已存在!"),
+    USER_NAME_EXISTS_ERROR(-44006, "用户名已存在!"),
     //====================       用户服务错误提示END     ====================
 
     //====================       三方华为云服务错误提示（服务码450）      ====================
