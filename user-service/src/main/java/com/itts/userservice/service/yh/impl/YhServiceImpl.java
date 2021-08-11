@@ -439,57 +439,59 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
             userId = loginUser.getUserId();
         }
         Long id = old.getId();
-        if(!request.getJgId().equals(old.getJgId()) || !request.getZsxm().equals(old.getZsxm()) || !request.getLxdh().equals(old.getLxdh())){
-            if(request.getYhlb().equals("professor") || request.getYhlb().equals("out_professor")){
-                ResponseUtil response = zjRpcService.get(null,null,id);
-                if(response == null){
-                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        if (StringUtils.equals(UserTypeEnum.IN_USER.getCode(), request.getYhlx())) {
+            if(!request.getJgId().equals(old.getJgId()) || !request.getZsxm().equals(old.getZsxm()) || !request.getLxdh().equals(old.getLxdh())){
+                if(request.getYhlb().equals("professor") || request.getYhlb().equals("out_professor")){
+                    ResponseUtil response = zjRpcService.get(null,null,id);
+                    if(response == null){
+                        throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                    }
+                    if(response.getErrCode().intValue() != 0){
+                        throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                    }
+                    Zj zj = response.conversionData(new TypeReference<Zj>(){});
+                    if(zj == null){
+                        throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                    }
+                    zj.setXm(request.getZsxm());
+                    zj.setDh(request.getLxdh());
+                    zj.setJgId(request.getJgId());
+                    zjRpcService.update(zj);
+                }else if(request.getYhlb().equals("postgraduate") || request.getYhlb().equals("broker")){
+                    ResponseUtil response= xsRpcService.get(null,null,id);
+                    if(response == null){
+                        throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                    }
+                    if(response.getErrCode().intValue() != 0){
+                        throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                    }
+                    Xs xs = response.conversionData(new TypeReference<Xs>(){});
+                    if(xs == null){
+                        throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                    }
+                    xs.setXm(request.getZsxm());
+                    xs.setLxdh(request.getLxdh());
+                    xs.setJgId(request.getJgId());
+                    xsRpcService.update(xs);
+                }else if(request.getYhlb().equals("tutor") || request.getYhlb().equals("corporate_mentor")|| request.getYhlb().equals("teacher")|| request.getYhlb().equals("school_leader")){
+                    ResponseUtil response = szRpcService.get(null,null,id,null);
+                    if(response == null){
+                        throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                    }
+                    if(response.getErrCode().intValue() != 0){
+                        throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                    }
+                    Sz sz = response.conversionData(new TypeReference<Sz>(){});
+                    if(sz == null){
+                        throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                    }
+                    sz.setDsxm(request.getZsxm());
+                    sz.setDh(request.getLxdh());
+                    sz.setSsjgId(request.getJgId());
+                    szRpcService.update(sz);
                 }
-                if(response.getErrCode().intValue() != 0){
-                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-                }
-                Zj zj = response.conversionData(new TypeReference<Zj>(){});
-                if(zj == null){
-                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-                }
-                zj.setXm(request.getZsxm());
-                zj.setDh(request.getLxdh());
-                zj.setJgId(request.getJgId());
-                zjRpcService.update(zj);
-            }else if(request.getYhlb().equals("postgraduate") || request.getYhlb().equals("broker")){
-                ResponseUtil response= xsRpcService.get(null,null,id);
-                if(response == null){
-                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-                }
-                if(response.getErrCode().intValue() != 0){
-                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-                }
-                Xs xs = response.conversionData(new TypeReference<Xs>(){});
-                if(xs == null){
-                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-                }
-                xs.setXm(request.getZsxm());
-                xs.setLxdh(request.getLxdh());
-                xs.setJgId(request.getJgId());
-                xsRpcService.update(xs);
-            }else if(request.getYhlb().equals("tutor") || request.getYhlb().equals("corporate_mentor")|| request.getYhlb().equals("teacher")|| request.getYhlb().equals("school_leader")){
-                ResponseUtil response = szRpcService.get(null,null,id,null);
-                if(response == null){
-                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-                }
-                if(response.getErrCode().intValue() != 0){
-                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-                }
-                Sz sz = response.conversionData(new TypeReference<Sz>(){});
-                if(sz == null){
-                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-                }
-                sz.setDsxm(request.getZsxm());
-                sz.setDh(request.getLxdh());
-                sz.setSsjgId(request.getJgId());
-                szRpcService.update(sz);
-            }
 
+            }
         }
 
         Date now = new Date();
