@@ -102,4 +102,10 @@ public interface KcMapper extends BaseMapper<Kc> {
      * @return
      */
     List<KcbDTO> findByPcId(@Param("pcId") Long pcId);
+    /**
+     * 查询经纪人课程表
+     * @param pcId
+     * @return
+     */
+    List<KcbDTO> findPcId(@Param("pcId") Long pcId);
 }
