@@ -402,7 +402,6 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     @Override
     public Map<String, Object> getByCategory(Integer pageNum,Integer pageSize,Long pcId,String name) {
         log.info("【人才培养 - 查询学生成绩信息(综合信息)】");
-
         Map<String, Object> map = new HashMap<>();
         Long userId = getUserId();
         String userCategory = getUserCategory();
@@ -544,7 +543,6 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 break;
             //管理员
             case "administrator":
-            //校领导
             case "school_leader":
 
                 break;
