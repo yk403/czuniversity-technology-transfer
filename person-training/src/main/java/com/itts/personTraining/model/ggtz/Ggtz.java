@@ -22,7 +22,7 @@ import java.util.Date;
 public class Ggtz implements Serializable {
 
 
-    private static final long serialVersionUID = -4672068901247847224L;
+    private static final long serialVersionUID = -2045405826614482517L;
     /**
      * 主键ID
      */
