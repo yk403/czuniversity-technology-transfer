@@ -54,8 +54,8 @@ public class SjController {
      */
     @GetMapping("/findByCategory")
     @ApiOperation(value = "根据用户类别查询实践信息(前)")
-    public ResponseUtil findByCategory() {
-        return ResponseUtil.success(sjService.findByCategory());
+    public ResponseUtil findByCategory(@RequestParam(value = "pcId", required = false) Long pcId) {
+        return ResponseUtil.success(sjService.findByCategory(pcId));
     }
 
     /**

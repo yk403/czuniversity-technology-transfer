@@ -93,5 +93,5 @@ public interface SjService extends IService<Sj> {
      * 根据用户类别查询实践信息(前)
      * @return
      */
-    List<SjDTO> findByCategory();
+    List<SjDTO> findByCategory(Long pcId);
 }

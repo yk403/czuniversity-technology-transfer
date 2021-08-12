@@ -229,6 +229,8 @@ public class PcServiceImpl implements PcService {
                 break;
             case "school_leader":
             case "administrator":
+            case "professor":
+            case "out_professor":
                 pcList = pyJhMapper.findAllPc();
                 break;
             default:
