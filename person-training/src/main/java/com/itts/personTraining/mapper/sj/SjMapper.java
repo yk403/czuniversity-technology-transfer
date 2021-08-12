@@ -27,6 +27,12 @@ public interface SjMapper extends BaseMapper<Sj> {
     List<SjDTO> getByCondition(@Param("pcId") Long pcId, @Param("sjlx") String sjlx, @Param("name") String name);
 
     /**
+     * 条件查询实践信息
+     *
+     * @return
+     */
+    List<SjDTO> getCondition(@Param("pcId") Long pcId);
+    /**
      * 根据id查询实践详情
      * @param id
      * @return

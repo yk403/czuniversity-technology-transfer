@@ -245,53 +245,53 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
             case "postgraduate":
             case "broker":
                 if(pcId != null){
-                    sjDTOs = sjMapper.getByCondition(pcId, null, null);
+                    sjDTOs = sjMapper.getCondition(pcId);
                 }else {
                     XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
                     if (xsMsg == null) {
                         throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
                     }
                     pcList = pcXsMapper.findPcByXsId(xsMsg.getId());
-                    sjDTOs = sjMapper.getByCondition(pcList.get(0).getId(), null, null);
+                    sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
                 }
                 break;
             case "tutor":
                 if(pcId != null){
-                    sjDTOs = sjMapper.getByCondition(pcId, null, null);
+                    sjDTOs = sjMapper.getCondition(pcId);
                 }else {
                     Sz yzyds = szMapper.getSzByYhId(userId);
                     if (yzyds == null) {
                         throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
                     }
                     pcList = pcXsMapper.findByYzydsIdOrQydsId(yzyds.getId(),null);
-                    sjDTOs = sjMapper.getByCondition(pcList.get(0).getId(), null, null);
+                    sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
                 }
 
                 break;
             //企业导师
             case "corporate_mentor":
                 if(pcId != null){
-                    sjDTOs = sjMapper.getByCondition(pcId, null, null);
+                    sjDTOs = sjMapper.getCondition(pcId);
                 }else {
                     Sz qyds = szMapper.getSzByYhId(userId);
                     if (qyds == null) {
                         throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
                     }
                     pcList = pcXsMapper.findByYzydsIdOrQydsId(null,qyds.getId());
-                    sjDTOs = sjMapper.getByCondition(pcList.get(0).getId(), null, null);
+                    sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
                 }
 
                 break;
             case "teacher":
                 if(pcId != null){
-                    sjDTOs = sjMapper.getByCondition(pcId, null, null);
+                    sjDTOs = sjMapper.getCondition(pcId);
                 }else {
                     Sz skjs = szMapper.getSzByYhId(userId);
                     if (skjs == null) {
                         throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
                     }
                     pcList = pkMapper.findPcsBySzId(skjs.getId());
-                    sjDTOs = sjMapper.getByCondition(pcList.get(0).getId(), null, null);
+                    sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
                 }
 
                 break;
@@ -300,10 +300,10 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
             case "professor":
             case "out_professor":
                 if(pcId != null){
-                    sjDTOs = sjMapper.getByCondition(pcId, null, null);
+                    sjDTOs = sjMapper.getCondition(pcId);
                 }else {
                     pcList = pyJhMapper.findAllPc();
-                    sjDTOs = sjMapper.getByCondition(pcList.get(0).getId(), null, null);
+                    sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
                 }
 
                 break;
