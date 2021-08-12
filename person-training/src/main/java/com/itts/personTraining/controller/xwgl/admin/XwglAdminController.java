@@ -166,6 +166,9 @@ public class XwglAdminController {
         if (xwgl.getXwbt() == null) {
             throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
         }
+        if (xwgl.getJj() == null) {
+            throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
+        }
         if (xwgl.getXwnr() == null) {
             throw new WebException((ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR));
         }
