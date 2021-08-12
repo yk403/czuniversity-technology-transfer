@@ -41,7 +41,7 @@ public class Xwgl implements Serializable {
     /**
      * 简介
      */
-    private String jj;
+    private String xwjj;
 
     /**
      * 新闻图片名称

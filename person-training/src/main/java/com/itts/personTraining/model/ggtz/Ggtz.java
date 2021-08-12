@@ -41,7 +41,7 @@ public class Ggtz implements Serializable {
     /**
      * 简介
      */
-    private String jj;
+    private String tzjj;
 
     /**
      * 通知图片名称

@@ -7,7 +7,7 @@
         <id column="id" property="id" />
         <result column="xwbt" property="xwbt" />
         <result column="xwnr" property="xwnr" />
-        <result column="jj" property="jj" />
+        <result column="xwjj" property="xwjj" />
         <result column="xwtpmc" property="xwtpmc" />
         <result column="xwtpdz" property="xwtpdz" />
         <result column="xwfbr" property="xwfbr" />
@@ -27,7 +27,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, xwbt,jj, xwnr, xwtpmc,xwtpdz, xwfbr, sj, lx, jg_id, zt, fbsj, tj, bz, sfsc, cjsj, cjr, gxsj, gxr
+        id, xwbt,xwjj, xwnr, xwtpmc,xwtpdz, xwfbr, sj, lx, jg_id, zt, fbsj, tj, bz, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>

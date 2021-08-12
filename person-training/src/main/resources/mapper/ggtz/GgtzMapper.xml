@@ -7,7 +7,7 @@
         <id column="id" property="id" />
         <result column="tzbt" property="tzbt" />
         <result column="tzwnr" property="tzwnr" />
-        <result column="jj" property="jj" />
+        <result column="tzjj" property="tzjj" />
         <result column="tztpmc" property="tztpmc" />
         <result column="tztpdz" property="tztpdz" />
         <result column="sj" property="sj" />
@@ -25,7 +25,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, tzbt, tzwnr,jj, tztpmc,tztpdz, sj, lx, jg_id, zt, fbsj, bz, sfsc, cjsj, cjr, gxsj, gxr
+        id, tzbt, tzwnr,tzjj, tztpmc,tztpdz, sj, lx, jg_id, zt, fbsj, bz, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
 </mapper>
