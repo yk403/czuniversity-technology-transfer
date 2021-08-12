@@ -5,6 +5,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.PkDTO;
+import com.itts.personTraining.model.pk.Pk;
 import com.itts.personTraining.service.pk.PkService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -141,12 +142,12 @@ public class PkAdminController {
         if (id == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        PkDTO pkDTO = pkService.get(id);
-        if (pkDTO == null) {
+        Pk pk = pkService.get(id);
+        if (pk == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新删除状态
-        if (!pkService.delete(pkDTO)) {
+        if (!pkService.delete(pk)) {
             throw new WebException(DELETE_FAIL);
         }
         return ResponseUtil.success("删除排课成功!");

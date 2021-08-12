@@ -1,5 +1,6 @@
 package com.itts.personTraining.service.pk.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
@@ -91,9 +92,12 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
      * @return
      */
     @Override
-    public PkDTO get(Long id) {
+    public Pk get(Long id) {
         log.info("【人才培养 - 根据id:{}查询排课信息】", id);
-        return pkMapper.getPkById(id);
+        QueryWrapper<Pk> pkQueryWrapper = new QueryWrapper<>();
+        pkQueryWrapper.eq("sfsc",false)
+                      .eq("id",id);
+        return pkMapper.selectOne(pkQueryWrapper);
     }
 
     /**
@@ -134,17 +138,15 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk> implements PkServic
     /**
      * 删除排课
      *
-     * @param pkDTO
+     * @param pk
      * @return
      */
     @Override
-    public boolean delete(PkDTO pkDTO) {
-        log.info("【人才培养 - 删除排课:{}】", pkDTO);
+    public boolean delete(Pk pk) {
+        log.info("【人才培养 - 删除排课:{}】", pk);
         //设置删除状态
-        pkDTO.setSfsc(true);
-        pkDTO.setGxr(getUserId());
-        Pk pk = new Pk();
-        BeanUtils.copyProperties(pkDTO, pk);
+        pk.setSfsc(true);
+        pk.setGxr(getUserId());
         return pkService.updateById(pk);
     }
 
