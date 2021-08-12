@@ -1,10 +1,13 @@
 package com.itts.personTraining.service.ks.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.KsDTO;
 import com.itts.personTraining.dto.KsExpDTO;
@@ -153,6 +156,14 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
     @Override
     public boolean add(KsDTO ksDTO) {
         log.info("【人才培养 - 新增考试:{}】",ksDTO);
+        QueryWrapper<Ks> ksQueryWrapper = new QueryWrapper<>();
+        ksQueryWrapper.eq("pc_id",ksDTO.getPcId())
+                .eq("kslx","exam_type_01")
+                .eq("sfsc",false);
+        Ks ks1 = ksMapper.selectOne(ksQueryWrapper);
+        if(ks1 != null){
+            throw new WebException(SYSTEM_FIND_ERROR);
+        }
         Long userId = getUserId();
         Ks ks = new Ks();
         ksDTO.setCjr(userId);
