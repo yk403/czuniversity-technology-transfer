@@ -53,4 +53,5 @@ public interface YhService {
     @ApiOperation(value = "新增用户(前台)")
     @PostMapping(BASE_URL + "/v1/yh/rpc/add/")
     ResponseUtil rpcAdd(@RequestBody RpcAddYhRequest yh) throws WebException;
+
 }

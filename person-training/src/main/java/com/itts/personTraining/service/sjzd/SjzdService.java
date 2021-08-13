@@ -1,6 +1,7 @@
 package com.itts.personTraining.service.sjzd;
 
 import com.itts.common.utils.common.ResponseUtil;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
+import static com.itts.common.constant.SystemConstant.BASE_URL;
 
 /**
  * @Description：数据字典
@@ -40,5 +42,14 @@ public interface SjzdService {
                          @ApiParam(value = "父级字典ID") @RequestParam(value = "parentId", required = false) Long parentId,
                          @ApiParam(value = "父级字典Code") @RequestParam(value = "parentCode", required = false) String parentCode,
                          @RequestHeader(name = "token") String token);
+
+    /**
+     * 获取列表
+     */
+    @GetMapping(BASE_URL + "/v1/sjzd/findList/")
+    @ApiOperation(value = "获取列表")
+    ResponseUtil findList(@RequestParam(value = "xtlb", required = false) String xtlb,
+                                @RequestParam(value = "mklx", required = false) String mklx,
+                                @RequestParam(value = "ssmk", required = false) String ssmk);
 
 }
