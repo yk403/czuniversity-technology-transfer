@@ -180,6 +180,14 @@
         from t_xs_cj txc
         where txc.sfsc = false and txc.sfxf = false and txc.id = #{xsCjId}
     </select>
+    <select id="findXsCjBYPcId" resultType="com.itts.personTraining.dto.XsCjDTO">
+        select txc.*, xs.id as xs_id, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch, pc.pcmc
+        from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
+        where txc.sfsc = false and txc.sfxf = true and xs.sfsc = false and pc.sfsc = false
+        <if test="name != null and name != ''">and (xs.xh like concat('%',trim(#{name}),'%') or xs.xm like concat('%',trim(#{name}),'%'))</if>
+        and txc.pc_id = #{pcId}
+        order by txc.cjsj desc
+    </select>
 
 
 </mapper>

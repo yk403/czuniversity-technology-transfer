@@ -135,4 +135,11 @@ public interface XsCjMapper extends BaseMapper<XsCj> {
      * @return
      */
     Long findXsIdsByXsCjId(@Param("xsCjId") Long xsCjId);
+
+    /**
+     *
+     * @param pcId
+     * @return
+     */
+    List<XsCjDTO> findXsCjBYPcId(@Param("pcId") Long pcId);
 }
