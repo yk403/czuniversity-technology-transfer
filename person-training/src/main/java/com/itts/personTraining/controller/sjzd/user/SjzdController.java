@@ -28,7 +28,7 @@ public class SjzdController {
     /**
      * 获取列表
      */
-    @GetMapping("/v1//findList/")
+    @GetMapping("/findList/")
     public ResponseUtil findList(@RequestParam(value = "xtlb", required = false) String xtlb,
                          @RequestParam(value = "mklx", required = false) String mklx,
                          @RequestParam(value = "ssmk", required = false) String ssmk){
