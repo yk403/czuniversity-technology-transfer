@@ -47,4 +47,15 @@ public class TzController {
         return ResponseUtil.success(tzService.getTzDTOById(id));
     }
 
+    /**
+     * 根据用户类别查询通知信息数
+     *
+     * @return
+     */
+    @GetMapping("/getTzCountByCategory")
+    @ApiOperation(value = "根据通知id查询通知信息(前)")
+    public ResponseUtil getTzCountByCategory() {
+        return ResponseUtil.success(tzService.getTzCountByCategory());
+    }
+
 }

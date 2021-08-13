@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.dto.TzCountDTO;
 import com.itts.personTraining.dto.TzDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.sz.SzMapper;
@@ -126,6 +127,18 @@ public class TzServiceImpl extends ServiceImpl<TzMapper, Tz> implements TzServic
         }
 
         return tzDTO;
+    }
+
+    /**
+     * 根据用户类别查询通知数
+     * @return
+     */
+    @Override
+    public TzCountDTO getTzCountByCategory() {
+        String userCategory = getUserCategory();
+        log.info("【人才培养 - 根据用户类别:{}查询通知数】",userCategory);
+
+        return null;
     }
 
     /**

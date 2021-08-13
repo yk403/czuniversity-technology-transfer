@@ -17,7 +17,7 @@ import java.util.Date;
  * @Description: 通知DTO
  */
 @Data
-@ApiModel("实践对象")
+@ApiModel("通知对象")
 public class TzDTO {
     /**
      * 主键

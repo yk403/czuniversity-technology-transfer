@@ -2,6 +2,7 @@ package com.itts.personTraining.service.tz;
 
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.dto.StuDTO;
+import com.itts.personTraining.dto.TzCountDTO;
 import com.itts.personTraining.dto.TzDTO;
 import com.itts.personTraining.model.tz.Tz;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -31,4 +32,10 @@ public interface TzService extends IService<Tz> {
      * @return
      */
     TzDTO getTzDTOById(Long id);
+
+    /**
+     * 根据用户类别查询通知数
+     * @return
+     */
+    TzCountDTO getTzCountByCategory();
 }
