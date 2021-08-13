@@ -43,13 +43,6 @@ public interface SjzdService {
                          @ApiParam(value = "父级字典Code") @RequestParam(value = "parentCode", required = false) String parentCode,
                          @RequestHeader(name = "token") String token);
 
-    /**
-     * 获取列表
-     */
-    @GetMapping(BASE_URL + "/v1/sjzd/findList/")
-    @ApiOperation(value = "获取列表")
-    ResponseUtil findList(@RequestParam(value = "xtlb", required = false) String xtlb,
-                                @RequestParam(value = "mklx", required = false) String mklx,
-                                @RequestParam(value = "ssmk", required = false) String ssmk);
+
 
 }
