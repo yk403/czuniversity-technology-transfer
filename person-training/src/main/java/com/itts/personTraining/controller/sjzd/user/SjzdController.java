@@ -20,7 +20,7 @@ import static com.itts.common.constant.SystemConstant.BASE_URL;
  */
 @RestController
 @RequestMapping(BASE_URL + "/v1/sjzd")
-@Api(value = "PcAdminController", tags = "数据字典-门户")
+@Api(value = "SjzdController", tags = "数据字典-门户")
 public class SjzdController {
 
     @Autowired
