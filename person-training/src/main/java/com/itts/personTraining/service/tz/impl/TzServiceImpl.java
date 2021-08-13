@@ -58,13 +58,13 @@ public class TzServiceImpl extends ServiceImpl<TzMapper, Tz> implements TzServic
     @Override
     public PageInfo<TzDTO> findByCategory(Integer pageNum, Integer pageSize, String tzlx) {
         log.info("【人才培养 - 根据用户类别分页条件查询通知信息(前),通知类型:{}】",tzlx);
-        PageHelper.startPage(pageNum, pageSize);
         Long userId = getUserId();
         String userCategory = getUserCategory();
         List<TzDTO> tzDTOList = null;
         switch (userCategory) {
             case "postgraduate":
             case "broker":
+                PageHelper.startPage(pageNum, pageSize);
                 XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
                 if (xsMsgDTO == null) {
                     throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
@@ -74,6 +74,7 @@ public class TzServiceImpl extends ServiceImpl<TzMapper, Tz> implements TzServic
             case "tutor":
             case "corporate_mentor":
             case "teacher":
+                PageHelper.startPage(pageNum, pageSize);
                 Sz sz = szMapper.getSzByYhId(userId);
                 if (sz == null) {
                     throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
