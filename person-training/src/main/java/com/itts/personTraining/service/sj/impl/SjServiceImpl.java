@@ -252,6 +252,9 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                         throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
                     }
                     pcList = pcXsMapper.findPcByXsId(xsMsg.getId());
+                    if(pcList == null){
+                        return sjDTOs;
+                    }
                     sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
                 }
                 break;
@@ -264,6 +267,9 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                         throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
                     }
                     pcList = pcXsMapper.findByYzydsIdOrQydsId(yzyds.getId(),null);
+                    if(pcList == null){
+                        return sjDTOs;
+                    }
                     sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
                 }
 
@@ -278,6 +284,9 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                         throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
                     }
                     pcList = pcXsMapper.findByYzydsIdOrQydsId(null,qyds.getId());
+                    if(pcList == null){
+                        return sjDTOs;
+                    }
                     sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
                 }
 
@@ -291,6 +300,9 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                         throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
                     }
                     pcList = pkMapper.findPcsBySzId(skjs.getId());
+                    if(pcList == null){
+                        return sjDTOs;
+                    }
                     sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
                 }
 
@@ -303,6 +315,9 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                     sjDTOs = sjMapper.getCondition(pcId);
                 }else {
                     pcList = pyJhMapper.findAllPc();
+                    if(pcList == null){
+                        return sjDTOs;
+                    }
                     sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
                 }
 
