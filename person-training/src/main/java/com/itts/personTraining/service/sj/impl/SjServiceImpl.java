@@ -1,5 +1,6 @@
 package com.itts.personTraining.service.sj.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
@@ -243,7 +244,6 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
         List<Pc>  pcList = null;
         switch (userCategory) {
             case "postgraduate":
-            case "broker":
                 if(pcId != null){
                     sjDTOs = sjMapper.getCondition(pcId);
                 }else {
@@ -255,7 +255,13 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                     if(pcList == null){
                         return sjDTOs;
                     }
-                    sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
+                    QueryWrapper<Sj> sjQueryWrapper = new QueryWrapper<>();
+                    sjQueryWrapper.eq("pc_id",pcList.get(0).getId())
+                            .eq("xs_id",xsMsg.getId())
+                            .eq("sfsc",false)
+                            .eq("sfxf",true);
+                    Sj sj = sjMapper.selectOne(sjQueryWrapper);
+                    BeanUtils.copyProperties(sj,sjDTOs);
                 }
                 break;
             case "tutor":
