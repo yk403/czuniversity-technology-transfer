@@ -53,7 +53,7 @@ public class TzController {
      * @return
      */
     @GetMapping("/getTzCountByCategory")
-    @ApiOperation(value = "根据通知id查询通知信息数(前)")
+    @ApiOperation(value = "根据用户类别查询通知信息数")
     public ResponseUtil getTzCountByCategory() {
         return ResponseUtil.success(tzService.getTzCountByCategory());
     }

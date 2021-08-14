@@ -137,7 +137,7 @@ public class TzServiceImpl extends ServiceImpl<TzMapper, Tz> implements TzServic
     public TzCountDTO getTzCountByCategory() {
         String userCategory = getUserCategory();
         log.info("【人才培养 - 根据用户类别:{}查询通知数】",userCategory);
-        TzCountDTO tzCountDTO = null;
+        TzCountDTO tzCountDTO = new TzCountDTO();
         switch (userCategory) {
             case "postgraduate":
             case "broker":
