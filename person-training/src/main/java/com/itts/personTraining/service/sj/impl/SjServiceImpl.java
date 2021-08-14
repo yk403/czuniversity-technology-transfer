@@ -254,12 +254,15 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                             .eq("xs_id",xsMsg.getId())
                             .eq("sfsc",false)
                             .eq("sfxf",true);
-                    Sj sj = sjMapper.selectOne(sjQueryWrapper);
-                    SjDTO sjDTO = new SjDTO();
-                    BeanUtils.copyProperties(sj,sjDTO);
-                    sjDTO.setXh(xsMsg.getXh());
-                    sjDTO.setXm(xsMsg.getXm());
-                    sjDTOs.add(sjDTO);
+                    List<Sj> sjs = sjMapper.selectList(sjQueryWrapper);
+                    for (int i = 0; i < sjs.size(); i++) {
+                        Sj sj = sjs.get(i);
+                        SjDTO sjDTO = new SjDTO();
+                        BeanUtils.copyProperties(sj,sjDTO);
+                        sjDTO.setXh(xsMsg.getXh());
+                        sjDTO.setXm(xsMsg.getXm());
+                        sjDTOs.add(sjDTO);
+                    }
                 }else {
                     XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
                     if (xsMsg == null) {
@@ -274,12 +277,15 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                             .eq("xs_id",xsMsg.getId())
                             .eq("sfsc",false)
                             .eq("sfxf",true);
-                    Sj sj = sjMapper.selectOne(sjQueryWrapper);
-                    SjDTO sjDTO = new SjDTO();
-                    BeanUtils.copyProperties(sj,sjDTO);
-                    sjDTO.setXh(xsMsg.getXh());
-                    sjDTO.setXm(xsMsg.getXm());
-                    sjDTOs.add(sjDTO);
+                    List<Sj> sjs = sjMapper.selectList(sjQueryWrapper);
+                    for (int i = 0; i < sjs.size(); i++) {
+                        Sj sj = sjs.get(i);
+                        SjDTO sjDTO = new SjDTO();
+                        BeanUtils.copyProperties(sj,sjDTO);
+                        sjDTO.setXh(xsMsg.getXh());
+                        sjDTO.setXm(xsMsg.getXm());
+                        sjDTOs.add(sjDTO);
+                    }
                 }
                 break;
             case "tutor":
