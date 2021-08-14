@@ -50,7 +50,7 @@
         <if test="dh != null and dh != ''">and zj.dh = #{dh}</if>
     </select>
     <select id="getZjByYhId" resultType="com.itts.personTraining.model.zj.Zj">
-        select
+        select zj.*
         from t_zj zj
         where zj.sfsc = false and zj.yh_id = #{yhId}
     </select>
