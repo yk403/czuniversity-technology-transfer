@@ -245,7 +245,19 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
         switch (userCategory) {
             case "postgraduate":
                 if(pcId != null){
-                    sjDTOs = sjMapper.getCondition(pcId);
+                    XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
+                    if (xsMsg == null) {
+                        throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+                    }
+                    QueryWrapper<Sj> sjQueryWrapper = new QueryWrapper<>();
+                    sjQueryWrapper.eq("pc_id",pcId)
+                            .eq("xs_id",xsMsg.getId())
+                            .eq("sfsc",false)
+                            .eq("sfxf",true);
+                    Sj sj = sjMapper.selectOne(sjQueryWrapper);
+                    SjDTO sjDTO = new SjDTO();
+                    BeanUtils.copyProperties(sj,sjDTO);
+                    sjDTOs.add(sjDTO);
                 }else {
                     XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
                     if (xsMsg == null) {
