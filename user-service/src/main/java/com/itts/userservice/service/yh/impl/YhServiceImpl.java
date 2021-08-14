@@ -514,6 +514,25 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
 
             }
         }
+        if(!Objects.equals(request.getYhlb(),old.getYhlb())){
+            yhJsGlMapper.deleteByUserId(old.getId());
+            //设置默认角色
+            Js defaultJs = jsMapper.getDefault(request.getYhlx(), request.getYhlb());
+
+            if (defaultJs != null) {
+
+                YhJsGl yhJsGl = new YhJsGl();
+
+                yhJsGl.setJsId(defaultJs.getId());
+                yhJsGl.setYhId(request.getId());
+                yhJsGl.setGxsj(new Date());
+                yhJsGl.setCjsj(new Date());
+                yhJsGl.setCjr(userId);
+                yhJsGl.setGxr(userId);
+
+                yhJsGlMapper.insert(yhJsGl);
+            }
+        }
 
         Date now = new Date();
 
