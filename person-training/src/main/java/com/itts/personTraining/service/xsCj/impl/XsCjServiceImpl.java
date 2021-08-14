@@ -548,7 +548,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             case "out_professor":
                 PageHelper.startPage(pageNum,pageSize);
                 //根据批次查询学生成绩
-                List<XsCjDTO> xsCjDTOS = xsCjMapper.findXsCjBYPcId(pcId);
+                List<XsCjDTO> xsCjDTOS = xsCjMapper.findXsCjBYPcId(pcId,name);
                 PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOS);
                 map.put("other",xsCjPageInfo);
                 break;
