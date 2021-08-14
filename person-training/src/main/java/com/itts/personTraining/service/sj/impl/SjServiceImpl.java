@@ -240,7 +240,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
         Long userId = getUserId();
         String userCategory = getUserCategory();
         log.info("【人才培养 - 根据创建人:{}查询实践信息(前),类别:{}】",userId,userCategory);
-        List<SjDTO> sjDTOs = null;
+        List<SjDTO> sjDTOs = new ArrayList<SjDTO>();
         List<Pc>  pcList = null;
         switch (userCategory) {
             case "postgraduate":
@@ -261,7 +261,9 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                             .eq("sfsc",false)
                             .eq("sfxf",true);
                     Sj sj = sjMapper.selectOne(sjQueryWrapper);
-                    BeanUtils.copyProperties(sj,sjDTOs);
+                    SjDTO sjDTO = new SjDTO();
+                    BeanUtils.copyProperties(sj,sjDTO);
+                    sjDTOs.add(sjDTO);
                 }
                 break;
             case "tutor":
