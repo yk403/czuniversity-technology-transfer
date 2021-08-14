@@ -257,6 +257,8 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                     Sj sj = sjMapper.selectOne(sjQueryWrapper);
                     SjDTO sjDTO = new SjDTO();
                     BeanUtils.copyProperties(sj,sjDTO);
+                    sjDTO.setXh(xsMsg.getXh());
+                    sjDTO.setXm(xsMsg.getXm());
                     sjDTOs.add(sjDTO);
                 }else {
                     XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
@@ -275,6 +277,8 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                     Sj sj = sjMapper.selectOne(sjQueryWrapper);
                     SjDTO sjDTO = new SjDTO();
                     BeanUtils.copyProperties(sj,sjDTO);
+                    sjDTO.setXh(xsMsg.getXh());
+                    sjDTO.setXm(xsMsg.getXm());
                     sjDTOs.add(sjDTO);
                 }
                 break;
