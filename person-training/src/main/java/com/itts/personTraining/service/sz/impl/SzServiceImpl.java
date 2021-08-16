@@ -198,7 +198,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             }
         } else {
             //用户表没有用户信息,新增用户信息,师资表查询是否存在
-            ResponseUtil byPhone = yhService.getByPhone(dh,token);
+            /*ResponseUtil byPhone = yhService.getByPhone(dh,token);
             GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(byPhone).toString(), GetYhVo.class);
             if(getYhVo != null){
                 throw new WebException(ErrorCodeEnum.PHONE_NUMBER_EXISTS_ERROR);
@@ -207,7 +207,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             GetYhVo getYhVo1 = JSONObject.parseObject(JSON.toJSON(byCode).toString(), GetYhVo.class);
             if(getYhVo1 != null){
                 throw new WebException(ErrorCodeEnum.USER_NUMBER_EXISTS_ERROR);
-            }
+            }*/
             Yh yh = new Yh();
             yh.setYhbh(dsbh);
             yh.setYhm(dsbh);
