@@ -215,8 +215,12 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
 
         Yh yh = yhMapper.selectOne(new QueryWrapper<Yh>().eq("yhbh", code)
                 .eq("sfsc", false));
-
         GetYhVO vo = new GetYhVO();
+        if(yh == null){
+
+            return vo;
+        }
+
         BeanUtils.copyProperties(yh, vo);
 
         return vo;
