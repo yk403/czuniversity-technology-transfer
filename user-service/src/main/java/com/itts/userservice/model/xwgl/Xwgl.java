@@ -22,7 +22,7 @@ import java.util.Date;
 public class Xwgl implements Serializable {
 
 
-    private static final long serialVersionUID = 4977245899622447382L;
+    private static final long serialVersionUID = -5482773469741428877L;
     /**
      * 主键ID
      */
@@ -43,6 +43,10 @@ public class Xwgl implements Serializable {
      * 新闻图片名称
      */
     private String xwtpmc;
+    /**
+     * 简介
+     */
+    private String xwjj;
     /**
      * 新闻图片
      */

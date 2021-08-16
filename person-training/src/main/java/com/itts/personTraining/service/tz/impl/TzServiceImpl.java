@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.dto.TzCountDTO;
 import com.itts.personTraining.dto.TzDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.sz.SzMapper;
@@ -58,13 +59,13 @@ public class TzServiceImpl extends ServiceImpl<TzMapper, Tz> implements TzServic
     @Override
     public PageInfo<TzDTO> findByCategory(Integer pageNum, Integer pageSize, String tzlx) {
         log.info("【人才培养 - 根据用户类别分页条件查询通知信息(前),通知类型:{}】",tzlx);
-        PageHelper.startPage(pageNum, pageSize);
         Long userId = getUserId();
         String userCategory = getUserCategory();
         List<TzDTO> tzDTOList = null;
         switch (userCategory) {
             case "postgraduate":
             case "broker":
+                PageHelper.startPage(pageNum, pageSize);
                 XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
                 if (xsMsgDTO == null) {
                     throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
@@ -74,6 +75,7 @@ public class TzServiceImpl extends ServiceImpl<TzMapper, Tz> implements TzServic
             case "tutor":
             case "corporate_mentor":
             case "teacher":
+                PageHelper.startPage(pageNum, pageSize);
                 Sz sz = szMapper.getSzByYhId(userId);
                 if (sz == null) {
                     throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
@@ -125,6 +127,61 @@ public class TzServiceImpl extends ServiceImpl<TzMapper, Tz> implements TzServic
         }
 
         return tzDTO;
+    }
+
+    /**
+     * 根据用户类别查询通知数
+     * @return
+     */
+    @Override
+    public TzCountDTO getTzCountByCategory() {
+        String userCategory = getUserCategory();
+        log.info("【人才培养 - 根据用户类别:{}查询通知数】",userCategory);
+        TzCountDTO tzCountDTO = new TzCountDTO();
+        switch (userCategory) {
+            case "postgraduate":
+            case "broker":
+                XsMsgDTO xsMsgDTO = xsMapper.getByYhId(getUserId());
+                if (xsMsgDTO == null) {
+                    throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+                }
+                Long xsId = xsMsgDTO.getId();
+                tzCountDTO.setKstz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"考试通知",false));
+                tzCountDTO.setCjtz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"成绩通知",false));
+                tzCountDTO.setSjtz(tzXsMapper.getTzCountByXsIdAndTzlx(xsId,"实践通知",false));
+                //TODO 暂无
+                tzCountDTO.setXftz(0L);
+                tzCountDTO.setQttz(0L);
+                break;
+            case "tutor":
+            case "corporate_mentor":
+            case "teacher":
+                Sz szByYhId = szMapper.getSzByYhId(getUserId());
+                if (szByYhId == null) {
+                    throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                }
+                Long szId = szByYhId.getId();
+                tzCountDTO.setKstz(tzSzMapper.getTzCountBySzIdAndTzlx(szId,"考试通知",false));
+                tzCountDTO.setCjtz(tzSzMapper.getTzCountBySzIdAndTzlx(szId,"成绩通知",false));
+                tzCountDTO.setSjtz(tzSzMapper.getTzCountBySzIdAndTzlx(szId,"实践通知",false));
+                //TODO 暂无
+                tzCountDTO.setXftz(0L);
+                tzCountDTO.setQttz(0L);
+                break;
+            case "administrator":
+            case "school_leader":
+            case "professor":
+            case "out_professor":
+                //TODO 暂无
+                tzCountDTO.setKstz(0L);
+                tzCountDTO.setCjtz(0L);
+                tzCountDTO.setSjtz(0L);
+                tzCountDTO.setXftz(0L);
+                tzCountDTO.setQttz(0L);
+            default:
+                break;
+        }
+        return tzCountDTO;
     }
 
     /**

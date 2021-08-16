@@ -125,9 +125,10 @@ public class PcAdminController {
                          @ApiParam(value = "所属模块编码") @RequestParam(value = "dictionary",required = false) String dictionary,
                          @ApiParam(value = "字典编码") @RequestParam(value = "zdbm", required = false) String zdbm,
                          @ApiParam(value = "父级字典ID") @RequestParam(value = "parentId", required = false) Long parentId,
+                         @ApiParam(value = "父级字典Code") @RequestParam(value = "parentCode", required = false) String parentCode,
                          HttpServletRequest request){
 
-        return sjzdService.getList(pageNum, pageSize, model, systemType, dictionary, zdbm, parentId, request.getHeader("token"));
+        return sjzdService.getList(pageNum, pageSize, model, systemType, dictionary, zdbm, parentId,parentCode, request.getHeader("token"));
     }
     /**
      * 新增批次

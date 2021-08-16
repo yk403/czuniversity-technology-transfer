@@ -128,6 +128,8 @@ public enum ErrorCodeEnum {
     STUDENT_NOT_SELECTED_ERROR(-45053,"未选择学生，无法下发!"),
     STARTDATE_GREATER_THAN_ENDDATE_ERROR(-45054,"开始日期不可大于结束日期!"),
     PROFESSOR_TYPE_ERROR(-45055,"专家类型有误!"),
+    PROFESSOR_MSG_NOT_EXISTS_ERROR(-45047, "老师信息不存在"),
+    EXAM_MSG_EXISTS_ERROR(-45048, "考试信息已存在!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
@@ -135,6 +137,8 @@ public enum ErrorCodeEnum {
     USER_DELETE_MENU_HAVE_CHILD_ERROR(-440002, "删除菜单失败，该菜单下有子级菜单"),
     USER_DELETE_GROUP_HAVE_CHILD_ERROR(-440003, "删除机构失败，该机构下有子级机构"),
     USER_VIDEO_DATE_ERROR(-440004, "视频直播开始时间大于直播结束时间"),
+    USER_NUMBER_EXISTS_ERROR(-44005, "编号已存在!"),
+    USER_NAME_EXISTS_ERROR(-44006, "用户名已存在!"),
     //====================       用户服务错误提示END     ====================
 
     //====================       三方华为云服务错误提示（服务码450）      ====================

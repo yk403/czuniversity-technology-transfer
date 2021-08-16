@@ -32,7 +32,7 @@ public interface PkService extends IService<Pk> {
      * @param id
      * @return
      */
-    PkDTO get(Long id);
+    Pk get(Long id);
 
     /**
      * 新增排课
@@ -50,10 +50,10 @@ public interface PkService extends IService<Pk> {
 
     /**
      * 删除排课
-     * @param pkDTO
+     * @param pk
      * @return
      */
-    boolean delete(PkDTO pkDTO);
+    boolean delete(Pk pk);
 
     /**
      * 批量新增排课

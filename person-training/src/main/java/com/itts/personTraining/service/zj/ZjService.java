@@ -1,6 +1,7 @@
 package com.itts.personTraining.service.zj;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.ZjInfoDTO;
 import com.itts.personTraining.model.zj.Zj;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -52,9 +53,10 @@ public interface ZjService extends IService<Zj> {
     /**
      * 更新专家
      * @param zj
+     * @param token
      * @return
      */
-    boolean update(Zj zj);
+    boolean update(Zj zj,String token);
 
     /**
      * 删除专家信息
@@ -64,10 +66,31 @@ public interface ZjService extends IService<Zj> {
     boolean delete(Zj zj);
 
     /**
-     * 根据姓名电话查询专家信息
+     * 根据姓名电话用户id查询专家信息
      * @param xm
      * @param dh
+     * @param yhId
      * @return
      */
-    Zj getByXmDh(String xm, String dh);
+    Zj getByXmDh(String xm, String dh, Long yhId);
+
+    /**
+     * 新增专家(外部调用)
+     * @param zj
+     * @return
+     */
+    boolean addZj(Zj zj);
+
+    /**
+     * 更新专家(外部调用)
+     * @param zj
+     * @return
+     */
+    boolean updateZj(Zj zj);
+
+    /**
+     * 查询专家综合信息
+     * @return
+     */
+    ZjInfoDTO getByYhId();
 }

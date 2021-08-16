@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -42,6 +44,18 @@ public class Tz implements Serializable {
      * 通知类型
      */
     private String tzlx;
+
+    /**
+     * 考试开始年月日
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ksksnyr;
+
+    /**
+     * 考试结束年月日
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date ksjsnyr;
 
     /**
      * 内容

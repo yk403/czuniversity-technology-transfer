@@ -10,14 +10,17 @@ import com.itts.personTraining.feign.userservice.GroupFeignService;
 import com.itts.personTraining.model.rmdt.Rmdt;
 import com.itts.personTraining.service.rmdt.RmdtService;
 import com.itts.personTraining.vo.jggl.JgglVO;
+import com.itts.personTraining.vo.rmdt.RmVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
@@ -65,7 +68,19 @@ public class RmdtController {
         List<Rmdt> list = rmdtService.list(new QueryWrapper<Rmdt>().eq(jgglVO.getId() != null, "jg_id", jgglVO.getId())
         .orderByAsc("px"));
 
-        return ResponseUtil.success(list);
+        List<RmVO> collect = list.stream().map(rmdt -> {
+            RmVO rmVO = new RmVO();
+            BeanUtils.copyProperties(rmdt, rmVO);
+            if (StringUtils.equals(rmdt.getMc(), "新闻")) {
+                rmVO.setComponentName("PopNews");
+            }
+            if (StringUtils.equals(rmdt.getMc(), "公告")) {
+                rmVO.setComponentName("PopNotice");
+            }
+            return rmVO;
+        }).collect(Collectors.toList());
+
+        return ResponseUtil.success(collect);
     }
 }
 

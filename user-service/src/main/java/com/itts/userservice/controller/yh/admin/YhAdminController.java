@@ -324,11 +324,7 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
 
-        if (StringUtils.equals(yh.getYhlx(), UserTypeEnum.IN_USER.getCode())) {
-            if (StringUtils.isBlank(yh.getYhlb())) {
-                throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-            }
-        }
+
 
         if (StringUtils.isBlank(yh.getYhm())) {
             throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);

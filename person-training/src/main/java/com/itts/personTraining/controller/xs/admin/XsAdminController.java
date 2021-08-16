@@ -165,7 +165,7 @@ public class XsAdminController {
      */
     @PutMapping("/update")
     @ApiOperation(value = "更新学员")
-    public ResponseUtil update(@RequestBody StuDTO stuDTO) throws WebException {
+    public ResponseUtil update(@RequestBody StuDTO stuDTO,HttpServletRequest request) throws WebException {
         Long id = stuDTO.getId();
         //检查参数是否合法
         if (id == null) {
@@ -175,11 +175,25 @@ public class XsAdminController {
         if (xsService.get(id) == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        if (!xsService.update(stuDTO)) {
+        if (!xsService.update(stuDTO,request.getHeader("token"))) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新学员成功!");
+    }
 
+    /**
+     * 更新学员(外部调用)
+     * @param xs
+     * @return
+     * @throws WebException
+     */
+    @PutMapping("/updateXs")
+    @ApiOperation(value = "更新学员(外部调用)")
+    public ResponseUtil updateXs(@RequestBody Xs xs) throws WebException {
+        if (!xsService.updateXs(xs)) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success("更新学员成功!");
     }
 
     /**

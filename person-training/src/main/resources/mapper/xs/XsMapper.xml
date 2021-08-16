@@ -185,7 +185,7 @@
         select xs.id
         from t_xs xs
         where xs.sfsc = false
-          and xs.bmfs = #{bmfs}
+          and (xs.bmfs is null or xs.bmfs = '')
           and xs.id in (select tpx.xs_id from t_pc_xs tpx where tpx.pc_id = #{pcId})
     </select>
     <select id="findXsIdsByPcId" resultType="java.lang.Long">

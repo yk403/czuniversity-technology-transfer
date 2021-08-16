@@ -71,7 +71,7 @@
         order by txc.sfxf asc, txc.cjsj desc
     </select>
     <select id="findXs" resultType="com.itts.personTraining.dto.XsCjDTO">
-        select  xs.id as xsId,xs.xh, xs.xm, xs.yzy, xs.yx, pc.pch, pc.pcmc,pc.id as pcId,txc.id as id
+        select  xs.id as xsId,xs.xh, xs.xm, xs.yzy, xs.yx, pc.pch, pc.pcmc,pc.id as pcId,txc.id as id,txc.sfsc,txc.type,txc.sfxf
         from t_xs xs  left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id) left join t_xs_cj txc on (txc.xs_id=xs.id and txc.pc_id=pc.id)
         where  xs.sfsc = false and pc.sfsc = false  and txc.sfsc =false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
@@ -179,6 +179,14 @@
         select txc.xs_id
         from t_xs_cj txc
         where txc.sfsc = false and txc.sfxf = false and txc.id = #{xsCjId}
+    </select>
+    <select id="findXsCjBYPcId" resultType="com.itts.personTraining.dto.XsCjDTO">
+        select txc.*, xs.xh, xs.xm, xs.yx, xs.yzy, pc.id as pc_id, pc.pch, pc.pcmc, pc.jylx
+        from t_xs_cj txc left join t_xs xs on (xs.id=txc.xs_id) left join t_pc pc on (pc.id=txc.pc_id)
+        where txc.sfsc = false and txc.sfxf = true and xs.sfsc = false and pc.sfsc = false
+        <if test="name != null and name != ''">and (xs.xh like concat('%',trim(#{name}),'%') or xs.xm like concat('%',trim(#{name}),'%'))</if>
+        and txc.pc_id = #{pcId}
+        order by txc.cjsj desc
     </select>
 
 

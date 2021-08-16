@@ -42,6 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
@@ -361,6 +362,18 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     }
 
     /**
+     * 更新学员(外部调用)
+     * @param xs
+     * @return
+     */
+    @Override
+    public boolean updateXs(Xs xs) {
+        log.info("【人才培养 - 更新学员(外部调用):{}】",xs);
+        xs.setGxr(getUserId());
+        return xsService.updateById(xs);
+    }
+
+    /**
      * 新增学员
      * @param stuDTO
      * @return
@@ -525,16 +538,33 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      * @return
      */
     @Override
-    public boolean update(StuDTO stuDTO) {
+    public boolean update(StuDTO stuDTO,String token) {
         log.info("【人才培养 - 更新学员:{}】",stuDTO);
+        ResponseUtil response = yhService.getByPhone(stuDTO.getLxdh(), token);
+        if(response.getErrCode() != 0 ){
+            throw new ServiceException(USER_NOT_FIND_ERROR);
+        }
+        GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
+        });
+        if (vo != null) {
+            Yh yh = new Yh();
+            yh.setId(vo.getId());
+            yh.setYhbh(stuDTO.getXh());
+            yh.setYhm(stuDTO.getXh());
+            yh.setMm(stuDTO.getXh());
+            yh.setZsxm(stuDTO.getXm());
+            yh.setLxdh(stuDTO.getLxdh());
+            yh.setYhlx(IN.getKey());
+            yh.setJgId(stuDTO.getJgId());
+            yhService.update(yh,token);
+        }
         Long userId = getUserId();
         stuDTO.setGxr(userId);
         Xs xs = new Xs();
         BeanUtils.copyProperties(stuDTO,xs);
-        return xsService.updateById(xs);
-        /*if () {
+        if (xsService.updateById(xs)) {
             List<Long> pcIds = stuDTO.getPcIds();
-            if (pcIds != null && pcIds.size() > 0) {
+            if (!CollectionUtils.isEmpty(pcIds)) {
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("xs_id",stuDTO.getId());
                 List<PcXs> pcXsList = new ArrayList<>();
@@ -549,8 +579,9 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 }
                 return false;
             }
+            return true;
         }
-        return false;*/
+        return false;
     }
 
     /**

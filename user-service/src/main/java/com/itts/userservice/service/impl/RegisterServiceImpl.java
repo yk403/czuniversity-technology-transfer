@@ -46,6 +46,7 @@ public class RegisterServiceImpl implements RegisterService {
         yh.setYhm(request.getUserName());
         yh.setMm(new BCryptPasswordEncoder().encode(request.getPassword()));
         yh.setLxdh(request.getMobile());
+        yh.setYhlb(js.getJslb());
         yh.setCjsj(now);
         yh.setGxsj(now);
         yhMapper.insert(yh);

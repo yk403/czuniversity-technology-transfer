@@ -74,7 +74,7 @@ public class JsServiceImpl implements JsService {
             query.like("jsmc", name);
         }
         if (StringUtils.isNotBlank(systemType)) {
-            query.eq("xtlx", systemType);
+            query.eq("yhjslx", systemType);
         }
 
         query.orderByDesc("cjsj");
@@ -206,7 +206,7 @@ public class JsServiceImpl implements JsService {
 
             } else {
 
-                Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>()
+                Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>().eq("jslb", request.getJslb())
                         .eq("yhjslx", UserTypeEnum.OUT_USER.getCode()).eq("sfmr", true));
 
                 if (updateDefaultJs != null) {
@@ -307,7 +307,7 @@ public class JsServiceImpl implements JsService {
                 }
             } else {
 
-                Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>()
+                Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>().eq("jslb", Js.getJslb())
                         .eq("yhjslx", UserTypeEnum.OUT_USER.getCode()).eq("sfmr", true));
 
                 if (updateDefaultJs != null) {

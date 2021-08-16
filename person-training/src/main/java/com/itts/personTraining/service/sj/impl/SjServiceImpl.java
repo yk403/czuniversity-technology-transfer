@@ -1,5 +1,6 @@
 package com.itts.personTraining.service.sj.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
@@ -8,10 +9,15 @@ import com.itts.common.utils.DateUtils;
 import com.itts.personTraining.dto.SjDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
 import com.itts.personTraining.mapper.pc.PcMapper;
+import com.itts.personTraining.mapper.pcXs.PcXsMapper;
+import com.itts.personTraining.mapper.pk.PkMapper;
+import com.itts.personTraining.mapper.pyjh.PyJhMapper;
+import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.sj.Sj;
 import com.itts.personTraining.mapper.sj.SjMapper;
+import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.tz.Tz;
 import com.itts.personTraining.model.tzSz.TzSz;
 import com.itts.personTraining.model.tzXs.TzXs;
@@ -36,8 +42,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
-import static com.itts.common.enums.ErrorCodeEnum.INSERT_FAIL;
+import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.common.enums.ErrorCodeEnum.TEACHER_MSG_NOT_EXISTS_ERROR;
 
 /**
  * <p>
@@ -66,6 +72,15 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     private PcMapper pcMapper;
     @Resource
     private XsMapper xsMapper;
+
+    @Resource
+    private PcXsMapper pcXsMapper;
+    @Resource
+    private SzMapper szMapper;
+    @Resource
+    private PkMapper pkMapper;
+    @Resource
+    private PyJhMapper pyJhMapper;
 
 
     /**
@@ -221,17 +236,121 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
      * @return
      */
     @Override
-    public List<SjDTO> findByCategory() {
+    public List<SjDTO> findByCategory(Long pcId) {
         Long userId = getUserId();
         String userCategory = getUserCategory();
         log.info("【人才培养 - 根据创建人:{}查询实践信息(前),类别:{}】",userId,userCategory);
-        List<SjDTO> sjDTOs = null;
+        List<SjDTO> sjDTOs = new ArrayList<SjDTO>();
+        List<Pc>  pcList = null;
         switch (userCategory) {
             case "postgraduate":
-                sjDTOs = sjMapper.findByCategory(userId,null);
+                if(pcId != null){
+                    XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
+                    if (xsMsg == null) {
+                        throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+                    }
+                    QueryWrapper<Sj> sjQueryWrapper = new QueryWrapper<>();
+                    sjQueryWrapper.eq("pc_id",pcId)
+                            .eq("xs_id",xsMsg.getId())
+                            .eq("sfsc",false)
+                            .eq("sfxf",true);
+                    List<Sj> sjs = sjMapper.selectList(sjQueryWrapper);
+                    for (int i = 0; i < sjs.size(); i++) {
+                        Sj sj = sjs.get(i);
+                        SjDTO sjDTO = new SjDTO();
+                        BeanUtils.copyProperties(sj,sjDTO);
+                        sjDTO.setXh(xsMsg.getXh());
+                        sjDTO.setXm(xsMsg.getXm());
+                        sjDTOs.add(sjDTO);
+                    }
+                }else {
+                    XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
+                    if (xsMsg == null) {
+                        throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+                    }
+                    pcList = pcXsMapper.findPcByXsId(xsMsg.getId());
+                    if(pcList == null){
+                        return sjDTOs;
+                    }
+                    QueryWrapper<Sj> sjQueryWrapper = new QueryWrapper<>();
+                    sjQueryWrapper.eq("pc_id",pcList.get(0).getId())
+                            .eq("xs_id",xsMsg.getId())
+                            .eq("sfsc",false)
+                            .eq("sfxf",true);
+                    List<Sj> sjs = sjMapper.selectList(sjQueryWrapper);
+                    for (int i = 0; i < sjs.size(); i++) {
+                        Sj sj = sjs.get(i);
+                        SjDTO sjDTO = new SjDTO();
+                        BeanUtils.copyProperties(sj,sjDTO);
+                        sjDTO.setXh(xsMsg.getXh());
+                        sjDTO.setXm(xsMsg.getXm());
+                        sjDTOs.add(sjDTO);
+                    }
+                }
                 break;
+            case "tutor":
+                if(pcId != null){
+                    sjDTOs = sjMapper.getCondition(pcId);
+                }else {
+                    Sz yzyds = szMapper.getSzByYhId(userId);
+                    if (yzyds == null) {
+                        throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                    }
+                    pcList = pcXsMapper.findByYzydsIdOrQydsId(yzyds.getId(),null);
+                    if(pcList == null){
+                        return sjDTOs;
+                    }
+                    sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
+                }
+
+                break;
+            //企业导师
             case "corporate_mentor":
-                sjDTOs = sjMapper.findByCategory(null,userId);
+                if(pcId != null){
+                    sjDTOs = sjMapper.getCondition(pcId);
+                }else {
+                    Sz qyds = szMapper.getSzByYhId(userId);
+                    if (qyds == null) {
+                        throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                    }
+                    pcList = pcXsMapper.findByYzydsIdOrQydsId(null,qyds.getId());
+                    if(pcList == null){
+                        return sjDTOs;
+                    }
+                    sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
+                }
+
+                break;
+            case "teacher":
+                if(pcId != null){
+                    sjDTOs = sjMapper.getCondition(pcId);
+                }else {
+                    Sz skjs = szMapper.getSzByYhId(userId);
+                    if (skjs == null) {
+                        throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
+                    }
+                    pcList = pkMapper.findPcsBySzId(skjs.getId());
+                    if(pcList == null){
+                        return sjDTOs;
+                    }
+                    sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
+                }
+
+                break;
+            case "school_leader":
+            case "administrator":
+            case "professor":
+            case "out_professor":
+                if(pcId != null){
+                    sjDTOs = sjMapper.getCondition(pcId);
+                }else {
+                    pcList = pyJhMapper.findAllPc();
+                    if(pcList == null){
+                        return sjDTOs;
+                    }
+                    sjDTOs = sjMapper.getCondition(pcList.get(0).getId());
+                }
+
                 break;
             default:
                 break;

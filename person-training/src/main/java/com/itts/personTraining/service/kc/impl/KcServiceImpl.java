@@ -371,7 +371,6 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         List<KcbDTO> collect =null;
         switch(userCategory) {
             case "postgraduate":
-            case "broker":
                 XsMsgDTO xsMsg = xsMapper.getByYhId(userId);
                 if (xsMsg == null) {
                     throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
@@ -389,6 +388,26 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                 } else {
                     collect = kcMapper.findByPcId(pcId);
+                }
+                break;
+            case "broker":
+                XsMsgDTO xs = xsMapper.getByYhId(userId);
+                if (xs == null) {
+                    throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
+                }
+                if (pcId == null) {
+                    List<Pc>  pcList = pcXsMapper.findPcByXsId(xs.getId());
+                    if (CollectionUtils.isEmpty(pcList)) {
+                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                    }
+                    Long id = pcList.get(0).getId();
+                    if(id!=null){
+                        collect = kcMapper.findPcId(id);
+                    }else {
+                        collect=null;
+                    }
+                } else {
+                    collect = kcMapper.findPcId(pcId);
                 }
                 break;
             case "tutor":

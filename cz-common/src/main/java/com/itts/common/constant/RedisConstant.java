@@ -56,4 +56,10 @@ public class RedisConstant {
      * 角色菜单操作关联前缀
      */
     public static final String ROLE_MENU_OPTIONS_PREFIX = "itts:user:js_cd_cz";
+
+    /**
+     * 经纪人编号前缀
+     */
+    //public static final String PERSON_TRAINING_BROKER_NUMBER_PREFIX = "itts:persontraining:broker:number:";
+
 }

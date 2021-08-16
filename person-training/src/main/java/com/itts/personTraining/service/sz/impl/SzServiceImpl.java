@@ -168,6 +168,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         Long ssjgId = sz.getSsjgId();
         String dsbh = sz.getDsbh();
         String dsxm = sz.getDsxm();
+        String dh = sz.getDh();
         if (data != null) {
             //用户表存在用户信息,更新用户信息,师资表判断是否存在
             GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
@@ -180,6 +181,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
             yh.setJgId(ssjgId);
+            yh.setLxdh(dh);
             yhService.update(yh,token);
             sz.setYhId(getYhVo.getId());
             Sz sz1 = szService.selectByCondition(dsbh,null, null,null);
@@ -201,6 +203,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             yh.setZsxm(dsxm);
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
+            yh.setLxdh(dh);
             yh.setJgId(ssjgId);
             Object data1 = yhService.rpcAdd(yh, token).getData();
             if (data1 == null) {
@@ -319,6 +322,18 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             return szMapper.selectList(szQueryWrapper);
         }
         return null;
+    }
+
+    /**
+     * 更新师资(外部调用)
+     * @param sz
+     * @return
+     */
+    @Override
+    public boolean updateSz(Sz sz) {
+        log.info("【人才培养 - 更新师资(外部调用):{}】",sz);
+        sz.setGxr(getUserId());
+        return szService.updateById(sz);
     }
 
     /**

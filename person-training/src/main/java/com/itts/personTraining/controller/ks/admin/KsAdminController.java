@@ -157,6 +157,12 @@ public class KsAdminController {
         if (ksDTO.getKsExps() == null) {
             throw new WebException(COURSE_ISEMPTY_ERROR);
         }
+        Ks ks = ksService.getById(ksDTO.getId());
+        if (ks != null) {
+            if (ksDTO.getPcId().equals(ks.getPcId()) && ksDTO.getKslb().equals(ks.getKslb())) {
+                throw new WebException(EXAM_MSG_EXISTS_ERROR);
+            }
+        }
     }
 }
 

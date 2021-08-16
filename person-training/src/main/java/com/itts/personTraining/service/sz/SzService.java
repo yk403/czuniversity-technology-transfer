@@ -93,4 +93,11 @@ public interface SzService extends IService<Sz> {
      * @return
      */
     List<Sz> getByJgBh(String code);
+
+    /**
+     * 更新师资(外部调用)
+     * @param sz
+     * @return
+     */
+    boolean updateSz(Sz sz);
 }

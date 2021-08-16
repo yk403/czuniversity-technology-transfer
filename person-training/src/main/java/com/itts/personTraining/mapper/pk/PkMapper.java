@@ -25,6 +25,7 @@ public interface PkMapper extends BaseMapper<Pk> {
 
     List<PkDTO> findPkInfo(@Param("pcId") Long pcId);
 
+    List<PkDTO> findPk(@Param("pcId") Long pcId);
     /**
      * 根据开学日期查询所有排课信息
      * @param kxrq

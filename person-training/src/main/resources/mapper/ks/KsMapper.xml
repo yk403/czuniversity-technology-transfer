@@ -86,11 +86,11 @@
     <select id="getByXsId" resultMap="BaseResultMap">
 
     </select>
-    <select id="getByPcId" resultType="java.lang.Long">
+    <select id="getByPcIdAndKslb" resultType="java.lang.Long">
         select ks.kssj_id
         from t_ks ks
         where ks.sfsc = false
-        and ks.pc_id = #{pcId}
+        and ks.pc_id = #{pcId} and ks.kslb = #{kslb}
     </select>
 
 </mapper>
