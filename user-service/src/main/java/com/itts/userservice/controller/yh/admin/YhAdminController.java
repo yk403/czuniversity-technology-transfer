@@ -169,9 +169,7 @@ public class YhAdminController {
 
         GetYhVO yh = yhService.getByCode(code);
 
-        if (yh == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-        }
+
 
         return ResponseUtil.success(yh);
     }
@@ -182,9 +180,7 @@ public class YhAdminController {
 
         GetYhVO yh = yhService.getByphone(phone);
 
-        if (yh == null) {
-            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-        }
+
 
         return ResponseUtil.success(yh);
     }

@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.SzMsgDTO;
 import com.itts.personTraining.enums.SsmkEnum;
@@ -206,6 +208,16 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             yh.setLxdh(dh);
             yh.setJgId(ssjgId);
             Object data1 = yhService.rpcAdd(yh, token).getData();
+            ResponseUtil byPhone = yhService.getByPhone(dh,token);
+            GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(byPhone).toString(), GetYhVo.class);
+            if(getYhVo != null){
+                throw new WebException(ErrorCodeEnum.PHONE_NUMBER_EXISTS_ERROR);
+            }
+            ResponseUtil byCode = yhService.getByCode(dsbh, token);
+            GetYhVo getYhVo1 = JSONObject.parseObject(JSON.toJSON(byCode).toString(), GetYhVo.class);
+            if(getYhVo1 != null){
+                throw new WebException(ErrorCodeEnum.USER_NUMBER_EXISTS_ERROR);
+            }
             if (data1 == null) {
                 throw new ServiceException(USER_INSERT_ERROR);
             }
