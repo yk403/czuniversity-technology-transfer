@@ -217,7 +217,7 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
                 .eq("sfsc", false));
         GetYhVO vo = new GetYhVO();
         if(yh == null){
-
+            vo =null;
             return vo;
         }
 
