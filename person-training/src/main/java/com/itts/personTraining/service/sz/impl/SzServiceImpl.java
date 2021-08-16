@@ -198,16 +198,6 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             }
         } else {
             //用户表没有用户信息,新增用户信息,师资表查询是否存在
-            Yh yh = new Yh();
-            yh.setYhbh(dsbh);
-            yh.setYhm(dsbh);
-            yh.setMm(dsbh);
-            yh.setZsxm(dsxm);
-            yh.setYhlx(yhlx);
-            yh.setYhlb(yhlb);
-            yh.setLxdh(dh);
-            yh.setJgId(ssjgId);
-            Object data1 = yhService.rpcAdd(yh, token).getData();
             ResponseUtil byPhone = yhService.getByPhone(dh,token);
             GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(byPhone).toString(), GetYhVo.class);
             if(getYhVo != null){
@@ -218,6 +208,17 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             if(getYhVo1 != null){
                 throw new WebException(ErrorCodeEnum.USER_NUMBER_EXISTS_ERROR);
             }
+            Yh yh = new Yh();
+            yh.setYhbh(dsbh);
+            yh.setYhm(dsbh);
+            yh.setMm(dsbh);
+            yh.setZsxm(dsxm);
+            yh.setYhlx(yhlx);
+            yh.setYhlb(yhlb);
+            yh.setLxdh(dh);
+            yh.setJgId(ssjgId);
+            Object data1 = yhService.rpcAdd(yh, token).getData();
+
             if (data1 == null) {
                 throw new ServiceException(USER_INSERT_ERROR);
             }
