@@ -198,16 +198,29 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             }
         } else {
             //用户表没有用户信息,新增用户信息,师资表查询是否存在
-            /*ResponseUtil byPhone = yhService.getByPhone(dh,token);
-            GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(byPhone).toString(), GetYhVo.class);
+            ResponseUtil byPhone = yhService.getByPhone(dh,token);
+            if(byPhone == null){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            }
+            if(byPhone.getErrCode().intValue() != 0){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            }
+            GetYhVo getYhVo = byPhone.conversionData(new TypeReference<GetYhVo>(){});
             if(getYhVo != null){
                 throw new WebException(ErrorCodeEnum.PHONE_NUMBER_EXISTS_ERROR);
             }
+
             ResponseUtil byCode = yhService.getByCode(dsbh, token);
-            GetYhVo getYhVo1 = JSONObject.parseObject(JSON.toJSON(byCode).toString(), GetYhVo.class);
+            if(byCode == null){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            }
+            if(byCode.getErrCode().intValue() != 0){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            }
+            GetYhVo getYhVo1 = byPhone.conversionData(new TypeReference<GetYhVo>(){});
             if(getYhVo1 != null){
                 throw new WebException(ErrorCodeEnum.USER_NUMBER_EXISTS_ERROR);
-            }*/
+            }
             Yh yh = new Yh();
             yh.setYhbh(dsbh);
             yh.setYhm(dsbh);
