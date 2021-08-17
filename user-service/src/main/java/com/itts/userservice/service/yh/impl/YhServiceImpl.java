@@ -215,8 +215,12 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
 
         Yh yh = yhMapper.selectOne(new QueryWrapper<Yh>().eq("yhbh", code)
                 .eq("sfsc", false));
-
         GetYhVO vo = new GetYhVO();
+        if(yh == null){
+            vo =null;
+            return vo;
+        }
+
         BeanUtils.copyProperties(yh, vo);
 
         return vo;
@@ -230,8 +234,12 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
 
         Yh yh = yhMapper.selectOne(new QueryWrapper<Yh>().eq("lxdh", phone)
                 .eq("sfsc", false));
-
         GetYhVO vo = new GetYhVO();
+        if(yh == null){
+            vo = null;
+            return vo;
+        }
+
         BeanUtils.copyProperties(yh, vo);
 
         return vo;
@@ -367,7 +375,16 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
      */
     @Override
     public GetYhVO rpcAdd(RpcAddYhRequest addYhRequest) {
-
+        Yh old = yhMapper.selectOne(new QueryWrapper<Yh>().eq("lxdh", addYhRequest.getLxdh())
+                .eq("sfsc", false));
+        if(old != null){
+            throw new WebException(ErrorCodeEnum.PHONE_NUMBER_EXISTS_ERROR);
+        }
+        Yh old2 = yhMapper.selectOne(new QueryWrapper<Yh>().eq("yhbh", addYhRequest.getYhbh())
+                .eq("sfsc", false));
+        if(old2 != null){
+            throw new WebException(ErrorCodeEnum.USER_NUMBER_EXISTS_ERROR);
+        }
         LoginUser loginUser = SystemConstant.threadLocal.get();
 
         Long userId = null;

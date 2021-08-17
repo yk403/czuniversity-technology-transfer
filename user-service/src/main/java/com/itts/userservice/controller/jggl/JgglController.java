@@ -154,6 +154,7 @@ public class JgglController {
 
     /**
      * 新增
+     * @author fl
      */
     @PostMapping("/add/")
     @ApiOperation(value = "新增")
@@ -206,6 +207,7 @@ public class JgglController {
 
     /**
      * 更新
+     * @author fl
      */
     @ApiOperation(value = "更新")
     @PutMapping("/update/")
@@ -227,14 +229,37 @@ public class JgglController {
         String cjold = group.getCj();
         //父级编码修改情况区分
         if (jggl.getFjbm().equals(jggl.getJgbm())) {
+            if(!jggl.getJgmc().equals(group.getJgmc())){
+                QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
+                jgglQueryWrapper.eq("fjbm",group.getJgbm())
+                        .eq("sfsc",false);
+                List<Jggl> list = jgglService.list(jgglQueryWrapper);
+                for (int i = 0; i < list.size(); i++) {
+                    Jggl jggl1 = list.get(i);
+                    jggl1.setFjmc(jggl.getJgmc());
+                    jgglService.update(jggl1);
+                }
+            }
             BeanUtils.copyProperties(jggl, group, "id", "cjsj", "cjr", "fjbm");
             group.setGxsj(new Date());
             jgglService.update(group);
             return ResponseUtil.success(group);
         } else if (jggl.getFjbm().equals(group.getFjbm())) {
+            if(!jggl.getJgmc().equals(group.getJgmc())){
+                QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
+                jgglQueryWrapper.eq("fjbm",group.getJgbm())
+                        .eq("sfsc",false);
+                List<Jggl> list = jgglService.list(jgglQueryWrapper);
+                for (int i = 0; i < list.size(); i++) {
+                    Jggl jggl1 = list.get(i);
+                    jggl1.setFjmc(jggl.getJgmc());
+                    jgglService.update(jggl1);
+                }
+            }
             BeanUtils.copyProperties(jggl, group, "id", "cjsj", "cjr");
             group.setGxsj(new Date());
             jgglService.update(group);
+
             return ResponseUtil.success(group);
         } else {
             //获取当前机构的所有子机构
