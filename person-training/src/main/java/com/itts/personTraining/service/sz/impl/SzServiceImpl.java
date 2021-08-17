@@ -202,9 +202,6 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             if(byPhone == null){
                 throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
             }
-            if(byPhone.getErrCode().intValue() != 0){
-                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-            }
             GetYhVo getYhVo = byPhone.conversionData(new TypeReference<GetYhVo>(){});
             if(getYhVo != null){
                 throw new WebException(ErrorCodeEnum.PHONE_NUMBER_EXISTS_ERROR);
