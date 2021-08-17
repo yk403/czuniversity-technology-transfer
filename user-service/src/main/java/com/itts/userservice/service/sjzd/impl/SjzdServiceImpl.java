@@ -5,13 +5,18 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
+import com.itts.userservice.feign.technologytransactionservice.jslb.JslbService;
+import com.itts.userservice.feign.technologytransactionservice.jsly.JslyService;
 import com.itts.userservice.mapper.sjzd.SjzdMapper;
+import com.itts.userservice.model.jslb.TJsLb;
+import com.itts.userservice.model.jsly.TJsLy;
 import com.itts.userservice.model.sjzd.Sjzd;
 import com.itts.userservice.request.sjzd.*;
 import com.itts.userservice.service.sjzd.SjzdService;
 import com.itts.userservice.vo.SjzdModelVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -34,6 +39,10 @@ public class SjzdServiceImpl implements SjzdService {
 
     @Resource
     private SjzdMapper sjzdMapper;
+    @Resource
+    private JslbService jslbService;
+    @Resource
+    private JslyService jslyService;
 
     /**
      * 获取数据字典模块列表
@@ -43,9 +52,9 @@ public class SjzdServiceImpl implements SjzdService {
 
         PageHelper.startPage(pageNum, pageSize);
 
-        List<SjzdModelVO> sjzdModels = sjzdMapper.findDictionaryModel(model, systemType, condition);
+        List<SjzdModelVO> sjzdModels=sjzdMapper.findDictionaryModel(model, systemType, condition);
 
-        PageInfo<SjzdModelVO> pageInfo = new PageInfo<>(sjzdModels);
+        PageInfo<SjzdModelVO> pageInfo=new PageInfo<>(sjzdModels);
 
         return pageInfo;
     }
@@ -56,7 +65,7 @@ public class SjzdServiceImpl implements SjzdService {
     @Override
     public List<Sjzd> findBySsmk(String xtlb, String mklx, String ssmk) {
 
-        List<Sjzd> sjzds = sjzdMapper.findBySsmk(xtlb, mklx, ssmk);
+        List<Sjzd> sjzds=sjzdMapper.findBySsmk(xtlb, mklx, ssmk);
         return sjzds;
     }
 
@@ -64,13 +73,13 @@ public class SjzdServiceImpl implements SjzdService {
      * 获取列表
      */
     @Override
-    public PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType, String dictionary, String zdbm, Long parentId,String parentCode) {
+    public PageInfo<Sjzd> findByPage(Integer pageNum, Integer pageSize, String model, String systemType, String dictionary, String zdbm, Long parentId, String parentCode) {
 
         if (pageSize != -1) {
             PageHelper.startPage(pageNum, pageSize);
         }
 
-        QueryWrapper<Sjzd> objectQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<Sjzd> objectQueryWrapper=new QueryWrapper<>();
         objectQueryWrapper.eq("sfsc", false);
 
         if (StringUtils.isNotBlank(model)) {
@@ -98,8 +107,8 @@ public class SjzdServiceImpl implements SjzdService {
 
         objectQueryWrapper.orderByAsc("px").orderByDesc("cjsj");
 
-        List<Sjzd> sjzds = sjzdMapper.selectList(objectQueryWrapper);
-        PageInfo<Sjzd> shzdPageInfo = new PageInfo<>(sjzds);
+        List<Sjzd> sjzds=sjzdMapper.selectList(objectQueryWrapper);
+        PageInfo<Sjzd> shzdPageInfo=new PageInfo<>(sjzds);
         return shzdPageInfo;
     }
 
@@ -111,7 +120,7 @@ public class SjzdServiceImpl implements SjzdService {
      */
     @Override
     public Sjzd get(Long id) {
-        Sjzd sjzd = sjzdMapper.selectById(id);
+        Sjzd sjzd=sjzdMapper.selectById(id);
         return sjzd;
     }
 
@@ -121,9 +130,9 @@ public class SjzdServiceImpl implements SjzdService {
     @Override
     public GetSjzdRequest get(String xtlb, String mklx, String ssmk) {
 
-        List<Sjzd> sjzds = sjzdMapper.findBySsmk(xtlb, mklx, ssmk);
+        List<Sjzd> sjzds=sjzdMapper.findBySsmk(xtlb, mklx, ssmk);
 
-        GetSjzdRequest getSjzdRequest = new GetSjzdRequest();
+        GetSjzdRequest getSjzdRequest=new GetSjzdRequest();
 
         if (CollectionUtils.isEmpty(sjzds)) {
             return null;
@@ -137,11 +146,11 @@ public class SjzdServiceImpl implements SjzdService {
         getSjzdRequest.setFjBm(sjzds.get(0).getFjBm());
         getSjzdRequest.setFjmc(sjzds.get(0).getFjmc());
 
-        List<GetSjzdItemRequest> getSjzdItemRequests = Lists.newArrayList();
+        List<GetSjzdItemRequest> getSjzdItemRequests=Lists.newArrayList();
 
         for (Sjzd sjzd : sjzds) {
 
-            GetSjzdItemRequest getSjzdItemRequest = new GetSjzdItemRequest();
+            GetSjzdItemRequest getSjzdItemRequest=new GetSjzdItemRequest();
 
             BeanUtils.copyProperties(sjzd, getSjzdItemRequest);
 
@@ -166,8 +175,8 @@ public class SjzdServiceImpl implements SjzdService {
     public PageInfo<Sjzd> selectByString(Integer pageNum, Integer pageSize, String string, String ssmk) {
 
         PageHelper.startPage(pageNum, pageSize);
-        List<Sjzd> sjzdList = sjzdMapper.selectByNameOrCode(string, ssmk);
-        PageInfo<Sjzd> shzdPageInfo = new PageInfo<>(sjzdList);
+        List<Sjzd> sjzdList=sjzdMapper.selectByNameOrCode(string, ssmk);
+        PageInfo<Sjzd> shzdPageInfo=new PageInfo<>(sjzdList);
         return shzdPageInfo;
     }
 
@@ -181,24 +190,24 @@ public class SjzdServiceImpl implements SjzdService {
     @Override
     public AddSjzdRequest add(AddSjzdRequest sjzd) {
 
-        LoginUser loginUser = threadLocal.get();
+        LoginUser loginUser=threadLocal.get();
 
-        Long userId = null;
+        Long userId=null;
         if (loginUser != null) {
-            userId = loginUser.getUserId();
+            userId=loginUser.getUserId();
         }
 
-        QueryWrapper query = new QueryWrapper();
+        QueryWrapper query=new QueryWrapper();
         query.eq("zdbm", sjzd.getFjBm());
 
-        Sjzd fjzd = sjzdMapper.selectOne(query);
+        Sjzd fjzd=sjzdMapper.selectOne(query);
 
-        Date now = new Date();
+        Date now=new Date();
 
         //循环便利，
         for (AddSjzdItemRequest sjzdItem : sjzd.getSjzdItems()) {
 
-            Sjzd addSjzd = new Sjzd();
+            Sjzd addSjzd=new Sjzd();
 
             BeanUtils.copyProperties(sjzd, addSjzd);
 
@@ -222,6 +231,26 @@ public class SjzdServiceImpl implements SjzdService {
             addSjzd.setGxsj(now);
             addSjzd.setGxr(userId);
             sjzdMapper.insert(addSjzd);
+            //判断添加的数据字典是否是技术类别或者技术领域
+            if (addSjzd.getSsmk() != null) {
+                if (addSjzd.getSsmk().equals("technology_category")) {
+                    TJsLb tJsLb=new TJsLb();
+                    tJsLb.setId(addSjzd.getId());
+                    tJsLb.setBh(addSjzd.getXtlb());
+                    tJsLb.setMc(addSjzd.getZdmc());
+                    tJsLb.setXq(addSjzd.getZdmc()+"详情");
+                    jslbService.save(tJsLb);
+                }
+                if (addSjzd.getSsmk().equals("technical_field")) {
+                    TJsLy tJsLy=new TJsLy();
+                    tJsLy.setId(addSjzd.getId());
+                    tJsLy.setBh(addSjzd.getXtlb());
+                    tJsLy.setMc(addSjzd.getZdmc());
+                    tJsLy.setXq(addSjzd.getZdmc()+"详情");
+                    jslyService.save(tJsLy);
+                }
+
+            }
         }
 
         return sjzd;
@@ -236,16 +265,16 @@ public class SjzdServiceImpl implements SjzdService {
     @Override
     public UpdateSjzdRequest update(UpdateSjzdRequest sjzd) {
 
-        LoginUser loginUser = threadLocal.get();
+        LoginUser loginUser=threadLocal.get();
 
-        Long userId = null;
+        Long userId=null;
         if (loginUser != null) {
-            userId = loginUser.getUserId();
+            userId=loginUser.getUserId();
         }
 
-        List<Sjzd> oldSjzds = sjzdMapper.findBySsmk(sjzd.getXtlb(), sjzd.getMklx(), sjzd.getSsmk());
+        List<Sjzd> oldSjzds=sjzdMapper.findBySsmk(sjzd.getXtlb(), sjzd.getMklx(), sjzd.getSsmk());
 
-        Date now = new Date();
+        Date now=new Date();
 
         if (!CollectionUtils.isEmpty(oldSjzds)) {
 
@@ -256,15 +285,15 @@ public class SjzdServiceImpl implements SjzdService {
             }
         }
 
-        QueryWrapper query = new QueryWrapper();
+        QueryWrapper query=new QueryWrapper();
         query.eq("zdbm", sjzd.getFjBm());
 
-        Sjzd fjzd = sjzdMapper.selectOne(query);
+        Sjzd fjzd=sjzdMapper.selectOne(query);
 
         //增加新的数据字典
         for (UpdateSjzdItemRequest sjzdItem : sjzd.getSjzdItems()) {
 
-            Sjzd addSjzd = new Sjzd();
+            Sjzd addSjzd=new Sjzd();
 
             BeanUtils.copyProperties(sjzd, addSjzd);
 
@@ -289,6 +318,26 @@ public class SjzdServiceImpl implements SjzdService {
             addSjzd.setGxsj(now);
             addSjzd.setGxr(userId);
             sjzdMapper.insert(addSjzd);
+            //判断修改的数据字典是否是技术类别或者技术领域
+            if (addSjzd.getSsmk() != null) {
+                if (addSjzd.getSsmk().equals("technology_category")) {
+                    TJsLb tJsLb=new TJsLb();
+                    tJsLb.setId(addSjzd.getId());
+                    tJsLb.setBh(addSjzd.getXtlb());
+                    tJsLb.setMc(addSjzd.getZdmc());
+                    tJsLb.setXq(addSjzd.getZdmc()+"详情");
+                    jslbService.update(tJsLb);
+                }
+                if (addSjzd.getSsmk().equals("technical_field")) {
+                    TJsLy tJsLy=new TJsLy();
+                    tJsLy.setId(addSjzd.getId());
+                    tJsLy.setBh(addSjzd.getXtlb());
+                    tJsLy.setMc(addSjzd.getZdmc());
+                    tJsLy.setXq(addSjzd.getZdmc()+"详情");
+                    jslyService.update(tJsLy);
+                }
+
+            }
         }
 
         return sjzd;
@@ -301,5 +350,17 @@ public class SjzdServiceImpl implements SjzdService {
     public void delete(Long id) {
 
         sjzdMapper.deleteById(id);
+        Sjzd addSjzd=sjzdMapper.selectById(id);
+        //判断删除的数据字典是否是技术类别或者技术领域
+        if (addSjzd.getSsmk() != null) {
+            if (addSjzd.getSsmk().equals("technology_category")) {
+
+                jslbService.remove(Long.toString(id));
+            }
+            if (addSjzd.getSsmk().equals("technical_field")) {
+                jslyService.remove(Long.toString(id));
+            }
+
+        }
     }
 }
