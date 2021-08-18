@@ -160,6 +160,8 @@
             <if test="pcId != null">and tpx.pc_id = #{pcId}</if>
             <if test="xslbmc != null and xslbmc != ''">and xs.xslbmc like concat('%',trim(#{xslbmc}),'%')</if>
             <if test="jyxs != null and jyxs != ''" >and xs.jyxs like concat('%',trim(#{jyxs}),'%')</if>
+            <if test="qydsId != null and qydsId != ''" >and xs.qyds_id = #{qydsId}</if>
+            <if test="yzydsId != null and yzydsId != ''" >and xs.yzyds_id = #{yzydsId}</if>
             <if test="name != null and name != ''">and (xs.xh like concat('%',trim(#{name}),'%') or xs.xm like concat('%',trim(#{name}),'%'))</if>
         order by xs.cjsj desc
     </select>

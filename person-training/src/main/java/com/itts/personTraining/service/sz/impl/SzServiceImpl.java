@@ -98,6 +98,24 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         return new PageInfo<>(szMapper.selectList(szQueryWrapper));
     }
 
+    /**
+     * @author fuli
+     * @return
+     */
+    @Override
+    public List<Sz> findXsBySz(String dslb) {
+        QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
+        szQueryWrapper.eq("sfsc",false)
+                .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
+                .orderByDesc("cjsj");
+        List<Sz> szs = szMapper.selectList(szQueryWrapper);
+        List<Sz> collect = szs.stream().map(sz -> {
+            sz.setDsxm(sz.getDsxm() + "(" + sz.getDsbh() + ")");
+            return sz;
+        }).collect(Collectors.toList());
+        return collect;
+    }
+
     @Override
     public List<Sz> findExport(String dsxm, String dslb, String hyly) {
         QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();

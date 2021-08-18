@@ -49,6 +49,25 @@ public class SzAdminController {
                                    @RequestParam(value = "groupId", required = false) Long groupId) {
         return ResponseUtil.success(szService.findByPage(pageNum, pageSize, dsxm, dslb, hyly, groupId));
     }
+
+    /**
+     * 学生下拉框查询师资列表
+     * @author fuli
+     * @return
+     */
+    @GetMapping("/list/findXsBySz")
+    @ApiOperation(value = "获取师资列表")
+    public ResponseUtil findXsBySz(@RequestParam(value = "dslb", required = false) String dslb) {
+        return ResponseUtil.success(szService.findXsBySz(dslb));
+    }
+
+    /**
+     * @author fuli
+     * @param dsxm
+     * @param dslb
+     * @param hyly
+     * @return
+     */
     @GetMapping("/getlist")
     @ApiOperation(value = "获取师资excel列表")
     public ResponseUtil findExport(@RequestParam(value = "dsxm", required = false) String dsxm,
