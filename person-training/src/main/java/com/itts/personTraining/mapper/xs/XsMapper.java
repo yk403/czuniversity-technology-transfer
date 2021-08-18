@@ -21,7 +21,7 @@ import java.util.List;
 @Repository
 public interface XsMapper extends BaseMapper<Xs> {
 
-    List<JwglDTO> findJwglList(@Param("string")String string,@Param("yx")String yx,@Param("pcId")Long pcId);
+
     /**
      * 课程学生关联
      */
@@ -35,7 +35,7 @@ public interface XsMapper extends BaseMapper<Xs> {
      * @param name
      * @return
      */
-    List<StuDTO> findXsList(@Param("pcId") Long pcId, @Param("xslbmc") String xslbmc, @Param("jyxs") String jyxs, @Param("name") String name);
+    List<StuDTO> findXsList(@Param("pcId") Long pcId, @Param("xslbmc") String xslbmc, @Param("jyxs") String jyxs, @Param("name") String name,@Param("qydsId") Long qydsId,@Param("yzydsId") Long yzydsId);
 
     /**
      * 通过用户id查询学生信息
@@ -53,7 +53,7 @@ public interface XsMapper extends BaseMapper<Xs> {
     Xs getByXhAndXm(@Param("xh") String xh, @Param("xm") String xm);
 
     /**
-     * 根据师资用户id查询学生ids
+     * 根据原专业导师用户id查询学生ids
      * @param yhId
      * @return
      */
@@ -81,4 +81,11 @@ public interface XsMapper extends BaseMapper<Xs> {
      * @return
      */
     List<Long> findXsIdsByBmfs(@Param("xsIdList") List<Long> xsIdList, @Param("bmfs") String bmfs);
+
+    /**
+     * 根据原专业导师用户id查询学生ids
+     * @param yhId
+     * @return
+     */
+    List<Long> findXsIdsByQydsYhId(@Param("yhId") Long yhId);
 }

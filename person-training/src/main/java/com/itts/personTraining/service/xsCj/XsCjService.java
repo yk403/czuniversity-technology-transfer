@@ -121,7 +121,8 @@ public interface XsCjService extends IService<XsCj> {
      * @param pageNum
      * @param pageSize
      * @param pcId
+     * @param xsId
      * @return
      */
-    AbilityInfoDTO getAbilityByCategory(Integer pageNum, Integer pageSize, Long pcId);
+    AbilityInfoDTO getAbilityByCategory(Integer pageNum, Integer pageSize, Long pcId, Long xsId);
 }

@@ -74,14 +74,14 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
      * 获取师资列表
      * @param pageNum
      * @param pageSize
-     * @param dsxm
+     * @param name
      * @param dslb
      * @param hyly
      * @return
      */
     @Override
-    public PageInfo<Sz> findByPage(Integer pageNum, Integer pageSize, String dsxm, String dslb, String hyly, Long groupId) {
-        log.info("【人才培养 - 分页条件查询师资列表,导师姓名:{},导师类别:{},行业领域:{}】",dsxm,dslb,hyly);
+    public PageInfo<Sz> findByPage(Integer pageNum, Integer pageSize, String name, String dslb, String hyly, Long groupId) {
+        log.info("【人才培养 - 分页条件查询师资列表,导师编号/姓名:{},导师类别:{},行业领域:{}】",name,dslb,hyly);
         QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
         if (pageNum == -1) {
             szQueryWrapper.eq("sfsc",false)
@@ -89,13 +89,31 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         } else {
             PageHelper.startPage(pageNum, pageSize);
             szQueryWrapper.eq("sfsc",false)
-                    .like(StringUtils.isNotBlank(dsxm),"dsxm", dsxm)
+                    .like(StringUtils.isNotBlank(name),"dsxm", name.trim()).or().like(StringUtils.isNotBlank(name),"dsbh", name.trim())
                     .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
                     .eq(StringUtils.isNotBlank(hyly),"hyly", hyly)
                     .eq(groupId != null, "ssjg_id", groupId)
                     .orderByDesc("cjsj");
         }
         return new PageInfo<>(szMapper.selectList(szQueryWrapper));
+    }
+
+    /**
+     * @author fuli
+     * @return
+     */
+    @Override
+    public List<Sz> findXsBySz(String dslb) {
+        QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
+        szQueryWrapper.eq("sfsc",false)
+                .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
+                .orderByDesc("cjsj");
+        List<Sz> szs = szMapper.selectList(szQueryWrapper);
+        List<Sz> collect = szs.stream().map(sz -> {
+            sz.setDsxm(sz.getDsxm() + "(" + sz.getDsbh() + ")");
+            return sz;
+        }).collect(Collectors.toList());
+        return collect;
     }
 
     @Override
@@ -200,9 +218,6 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             //用户表没有用户信息,新增用户信息,师资表查询是否存在
             ResponseUtil byPhone = yhService.getByPhone(dh,token);
             if(byPhone == null){
-                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-            }
-            if(byPhone.getErrCode().intValue() != 0){
                 throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
             }
             GetYhVo getYhVo = byPhone.conversionData(new TypeReference<GetYhVo>(){});
@@ -313,6 +328,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             case "tutor":
             case "corporate_mentor":
             case "teacher":
+            case "school_leader":
                 szMsgDTO.setKstz(tzSzMapper.getTzCountBySzIdAndTzlx(szId,"考试通知",false));
                 szMsgDTO.setCjtz(tzSzMapper.getTzCountBySzIdAndTzlx(szId,"成绩通知",false));
                 szMsgDTO.setSjtz(tzSzMapper.getTzCountBySzIdAndTzlx(szId,"实践通知",false));

@@ -46,6 +46,8 @@ import static com.itts.personTraining.enums.BmfsEnum.ON_LINE;
 import static com.itts.personTraining.enums.CourseTypeEnum.*;
 import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
 import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
+import static com.itts.personTraining.enums.UserTypeEnum.BROKER;
+import static com.itts.personTraining.enums.UserTypeEnum.POSTGRADUATE;
 
 /**
  * <p>
@@ -486,8 +488,6 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 break;
             //研究生导师
             case "tutor":
-            //企业导师
-            case "corporate_mentor":
                 //根据师资用户id查询学生ids
                 List<Long> xsIds = xsMapper.findXsIdsBySzYhId(userId);
                 //默认查询当前年份的批次号
@@ -500,6 +500,22 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                     map.put("tutor",xsCjPageInfo);
                 } else {
                     map.put("tutor",null);
+                }
+                break;
+            //企业导师
+            case "corporate_mentor":
+                //根据师资用户id查询学生ids
+                List<Long> xsList = xsMapper.findXsIdsByQydsYhId(userId);
+                //默认查询当前年份的批次号
+                String current = getCurrentYear();
+                List<Long> pcList = pcMapper.findPcIdsByYear(current);
+                if (CollectionUtils.isNotEmpty(xsList) && CollectionUtils.isNotEmpty(pcList)) {
+                    PageHelper.startPage(pageNum,pageSize);
+                    List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByXsIdsAndPcIds(xsList,pcList,name);
+                    PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
+                    map.put("corporate_mentor",xsCjPageInfo);
+                } else {
+                    map.put("corporate_mentor",null);
                 }
                 break;
             //任课教师
@@ -588,34 +604,57 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
      * @param pageNum
      * @param pageSize
      * @param pcId
+     * @param xsId
      * @return
      */
     @Override
-    public AbilityInfoDTO getAbilityByCategory(Integer pageNum, Integer pageSize, Long pcId) {
+    public AbilityInfoDTO getAbilityByCategory(Integer pageNum, Integer pageSize, Long pcId, Long xsId) {
         Long userId = getUserId();
         log.info("【人才培养 - 根据用户id:{}查询学生能力提升信息】",userId);
-        String userCategory = getUserCategory();
         AbilityInfoDTO abilityInfoDTO = new AbilityInfoDTO();
+        String userCategory;
+        Pc pc;
+        if (xsId == null) {
+            xsId = xsMapper.getByYhId(userId).getId();
+            userCategory = getUserCategory();
+            if (xsId == null) {
+                throw new ServiceException(NO_STUDENT_MSG_ERROR);
+            }
+            if (pcId == null) {
+                List<Pc>  pcList = pcXsMapper.findPcByXsId(xsId);
+                if (CollectionUtils.isEmpty(pcList)) {
+                    throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                }
+                //批次为空,则默认最新批次
+                pc = pcList.get(0);
+                pcId = pc.getId();
+            }
+        } else {
+            if (pcId == null) {
+                List<Pc>  pcList = pcXsMapper.findPcByXsId(xsId);
+                if (CollectionUtils.isEmpty(pcList)) {
+                    throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
+                }
+                //批次为空,则默认最新批次
+                pc = pcList.get(0);
+                pcId = pc.getId();
+            } else {
+                pc = pcMapper.selectOne(new QueryWrapper<Pc>().eq("sfsc", false).eq("id", pcId));
+            }
+            String jylx = pc.getJylx();
+            if (jylx.equals(ACADEMIC_DEGREE_EDUCATION.getKey())) {
+                userCategory = POSTGRADUATE.getKey();
+            } else {
+                userCategory = BROKER.getKey();
+            }
+        }
+        XsCjDTO xsCjDTO1 = xsCjMapper.selectByPcIdAndXsId(pcId, xsId);
         switch (userCategory) {
             //研究生
             case "postgraduate":
-                XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
-                Long xsId = xsMsgDTO.getId();
-                if (xsId == null) {
-                    throw new ServiceException(NO_STUDENT_MSG_ERROR);
-                }
-                if (pcId == null) {
-                    List<Pc>  pcList = pcXsMapper.findPcByXsId(xsMsgDTO.getId());
-                    if (CollectionUtils.isEmpty(pcList)) {
-                        throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
-                    }
-                    //批次为空,则默认最新批次
-                    pcId = pcList.get(0).getId();
-                }
                 //统计原专业成绩
                 Integer zycj = xsKcCjMapper.getAvgYzy(xsId);
                 abilityInfoDTO.setZycj(zycj);
-                XsCjDTO xsCjDTO1 = xsCjMapper.selectByPcIdAndXsId(pcId, xsId);
                 if (xsCjDTO1 != null) {
                     //统计辅修专业成绩(技术转移理论成绩)
                     Integer fxcj = xsKcCjMapper.getAvgfxcj(xsCjDTO1.getId(), THEORY_CLASS.getKey());
@@ -628,6 +667,17 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 //实训成绩
                 abilityInfoDTO.setSxcj(xsKcCjMapper.getAvgfxcj(xsCjDTO1.getId(), PRACTICAL_TRAINING.getKey()));
                 abilityInfoDTO.setXl(30);
+                break;
+            //经纪人
+            case "broker":
+                if (xsCjDTO1 != null) {
+                    //统计辅修专业成绩(技术转移理论成绩)
+                    abilityInfoDTO.setFxcj(Integer.parseInt(xsCjDTO1.getZhcj()));
+                } else {
+                    throw new ServiceException(NO_STUDENT_MSG_ERROR);
+                }
+                //实训成绩
+                abilityInfoDTO.setSxcj(xsKcCjMapper.getAvgfxcj(xsCjDTO1.getId(), PRACTICAL_TRAINING.getKey()));
                 break;
             default:
                 break;

@@ -68,9 +68,10 @@ public class XsCjController {
     @GetMapping("/getAbilityByCategory")
     @ApiOperation(value = "查询学生能力提升信息")
     public ResponseUtil getAbilityByCategory(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                      @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                      @RequestParam(value = "pcId",required = false) Long pcId) {
-        return ResponseUtil.success(xsCjService.getAbilityByCategory(pageNum,pageSize,pcId));
+                                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                             @RequestParam(value = "pcId",required = false) Long pcId,
+                                             @RequestParam(value = "xsId",required = false) Long xsId) {
+        return ResponseUtil.success(xsCjService.getAbilityByCategory(pageNum,pageSize,pcId,xsId));
     }
 
 }
