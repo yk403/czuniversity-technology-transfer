@@ -280,7 +280,17 @@ public class SjzdServiceImpl implements SjzdService {
 
             //删除所有旧的数据字典
             for (Sjzd oldSjzd : oldSjzds) {
+                //判断删除的数据字典是否是技术类别或者技术领域
+                if (oldSjzd.getSsmk() != null) {
+                    if (oldSjzd.getSsmk().equals("technology_category")) {
 
+                        jslbService.remove(Long.toString(oldSjzd.getId()));
+                    }
+                    if (oldSjzd.getSsmk().equals("technical_field")) {
+                        jslyService.remove(Long.toString(oldSjzd.getId()));
+                    }
+
+                }
                 sjzdMapper.deleteById(oldSjzd.getId());
             }
         }
@@ -326,7 +336,7 @@ public class SjzdServiceImpl implements SjzdService {
                     tJsLb.setBh(addSjzd.getXtlb());
                     tJsLb.setMc(addSjzd.getZdmc());
                     tJsLb.setXq(addSjzd.getZdmc()+"详情");
-                    jslbService.update(tJsLb);
+                    jslbService.save(tJsLb);
                 }
                 if (addSjzd.getSsmk().equals("technical_field")) {
                     TJsLy tJsLy=new TJsLy();
@@ -334,7 +344,7 @@ public class SjzdServiceImpl implements SjzdService {
                     tJsLy.setBh(addSjzd.getXtlb());
                     tJsLy.setMc(addSjzd.getZdmc());
                     tJsLy.setXq(addSjzd.getZdmc()+"详情");
-                    jslyService.update(tJsLy);
+                    jslyService.save(tJsLy);
                 }
 
             }
