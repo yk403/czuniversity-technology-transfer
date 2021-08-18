@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -162,6 +163,21 @@ public class YhAdminController {
 
         return ResponseUtil.success(getYhVO);
     }
+    /**
+     * 获取详情
+     *
+     * @param id
+     * @author fl
+     */
+    @GetMapping("/getBy/{id}")
+    @ApiOperation(value = "获取详情")
+    public ResponseUtil getById(@PathVariable("id") Long id) {
+
+        Yh yh = yhService.get(id);
+
+        return ResponseUtil.success(yh);
+    }
+
 
     @ApiOperation(value = "通过用户编号查询")
     @GetMapping("/get/by/code/")
@@ -266,6 +282,24 @@ public class YhAdminController {
         GetYhVO result = yhService.update(addYhRequest, old);
 
         return ResponseUtil.success(result);
+    }
+    /**
+     * 更新
+     *
+     * @author fl
+     */
+    @ApiOperation(value = "更新")
+    @PutMapping("/updateYh")
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseUtil updateYh(@RequestBody Yh yh) throws WebException {
+        Yh byId = yhService.getById(yh.getId());
+        if(byId == null){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+        BeanUtils.copyProperties(yh,byId);
+        byId.setGxsj(new Date());
+        byId.setGxr(yh.getId());
+        return ResponseUtil.success(yhService.updateById(byId));
     }
 
     @ApiOperation(value = "重置密码")
