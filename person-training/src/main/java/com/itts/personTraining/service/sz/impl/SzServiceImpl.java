@@ -328,6 +328,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             case "tutor":
             case "corporate_mentor":
             case "teacher":
+            case "school_leader":
                 szMsgDTO.setKstz(tzSzMapper.getTzCountBySzIdAndTzlx(szId,"考试通知",false));
                 szMsgDTO.setCjtz(tzSzMapper.getTzCountBySzIdAndTzlx(szId,"成绩通知",false));
                 szMsgDTO.setSjtz(tzSzMapper.getTzCountBySzIdAndTzlx(szId,"实践通知",false));

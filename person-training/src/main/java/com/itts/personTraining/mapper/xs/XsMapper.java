@@ -21,7 +21,7 @@ import java.util.List;
 @Repository
 public interface XsMapper extends BaseMapper<Xs> {
 
-    List<JwglDTO> findJwglList(@Param("string")String string,@Param("yx")String yx,@Param("pcId")Long pcId);
+
     /**
      * 课程学生关联
      */

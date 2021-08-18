@@ -38,121 +38,14 @@
         <result column="gxsj" property="gxsj" />
         <result column="gxr" property="gxr" />
     </resultMap>
-    <!-- 教务管理 -->
-    <resultMap id="JwglDTOMap" type="com.itts.personTraining.dto.JwglDTO">
-        <id column="id" property="id" />
-        <result column="xh" property="xh" />
-        <result column="xm" property="xm" />
-        <result column="nj" property="nj" />
-        <result column="xb" property="xb" />
-        <result column="csrq" property="csrq" />
-        <result column="xslb_id" property="xslbId" />
-        <result column="xslbmc" property="xslbmc" />
-        <result column="sfzh" property="sfzh" />
-        <result column="yjfx" property="yjfx" />
-        <result column="jg" property="jg" />
-        <result column="mz" property="mz" />
-        <result column="zzmm" property="zzmm" />
-        <result column="rxfs" property="rxfs" />
-        <result column="ybyyx" property="ybyyx" />
-        <result column="xz" property="xz" />
-        <result column="yx" property="yx" />
-        <result column="xxxs" property="xxxs" />
-        <result column="byjl" property="byjl" />
-        <result column="sfsc" property="sfsc" />
-        <result column="cjsj" property="cjsj" />
-        <result column="cjr" property="cjr" />
-        <result column="gxsj" property="gxsj" />
-        <result column="gxr" property="gxr" />
-        <result column="pcmc" property="pcmc" />
-        <collection property="kcList" ofType="com.itts.personTraining.model.kc.Kc">
-        <id column="id" property="id" />
-        <result column="zsmk_id" property="zsmkId" />
-        <result column="kcmc" property="kcmc" />
-        <result column="kcdm" property="kcdm" />
-        <result column="kclx" property="kclx" />
-        <result column="kcxs" property="kcxs" />
-        <result column="kcxf" property="kcxf" />
-        <result column="kkxq" property="kkxq" />
-        <result column="kkxy" property="kkxy" />
-        <result column="skfs" property="skfs" />
-        <result column="sfbx" property="sfbx" />
-        <result column="bz" property="bz" />
-        <result column="sfsc" property="sfsc" />
-        <result column="cjsj" property="cjsj" />
-        <result column="cjr" property="cjr" />
-        <result column="gxsj" property="gxsj" />
-        <result column="gxr" property="gxr" />
-        </collection>
-    </resultMap>
-    <!--学生对象-->
-    <resultMap id="StuDTOtMap" type="com.itts.personTraining.dto.StuDTO">
-        <id column="id" property="id" />
-        <result column="sz_id" property="szId" />
-        <!--<collection property="pcIds" ofType="long" >
-            <constructor>
-                <arg column="pc_id"/>
-            </constructor>
-        </collection>-->
-        <result column="jg_id" property="jgId" />
-        <result column="xh" property="xh" />
-        <result column="xm" property="xm" />
-        <result column="nj" property="nj" />
-        <result column="xb" property="xb" />
-        <result column="csrq" property="csrq" />
-        <result column="xslb_id" property="xslbId" />
-        <result column="xslbmc" property="xslbmc" />
-        <result column="sfzh" property="sfzh" />
-        <result column="yjfx" property="yjfx" />
-        <result column="jg" property="jg" />
-        <result column="mz" property="mz" />
-        <result column="zzmm" property="zzmm" />
-        <result column="rxfs" property="rxfs" />
-        <result column="ybyyx" property="ybyyx" />
-        <result column="xz" property="xz" />
-        <result column="dsbh" property="dsbh" />
-        <result column="dsxm" property="dsxm" />
-        <result column="yx" property="yx" />
-        <result column="xxxs" property="xxxs" />
-        <result column="byjl" property="byjl" />
-        <result column="rxrq" property="rxrq" />
-        <result column="lxdh" property="lxdh" />
-        <result column="jtdz" property="jtdz" />
-        <result column="yzydm" property="yzydm" />
-        <result column="yzy" property="yzy" />
-        <result column="zy_id" property="zyId" />
-        <result column="zymc" property="zymc" />
-        <result column="sfsc" property="sfsc" />
-        <result column="cjsj" property="cjsj" />
-        <result column="cjr" property="cjr" />
-        <result column="gxsj" property="gxsj" />
-        <result column="gxr" property="gxr" />
-    </resultMap>
+
 
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, xh, xm, yx, nj, xb, csrq, xslb_id, xslbmc, sfzh, yjfx, jg, mz, zzmm, rxfs, ybyyx, xz, dsbh, dsxm, yx, xxxs, byjl, rxrq, lxdh, jtdz, yzydm, yzy, zy_id, zymc, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
-    <!--教务管理-->
-    <select id="findJwglList" resultMap="JwglDTOMap">
-        select xs.*,pc.pcmc,kc.*
-        from t_xs xs
-        left join t_pc pc on pc.id = xs.pc_id
-        left join t_kc_xs kcxs on xs.id =kcxs.xs_id
-        left join t_kc kc on kc.id = kcxs.kc_id
-        where xs.sfsc =false and pc.sfsc =false and kcxs.sfsc = false and kc.sfsc = false
-        <if test="yx != null and yx != ''">
-            AND xs.yx =#{yx}
-        </if>
-        <if test="pcId != null and pcId != ''">
-            AND pc.id =#{pcId}
-        </if>
-        <if test="string != null and string != ''">
-            AND (xs.xm like concat('%',trim(#{string}),'%') or xs.xh like concat('%',trim(#{string}),'%'))
-        </if>
-        order by xs.cjsj desc
-    </select>
+
     <select id="findXsList" resultType="com.itts.personTraining.dto.StuDTO">
         select xs.*, sz.dsbh as yzydsbh, sz.dsxm as yzydsxm, tsz.dsbh as qydsbh, tsz.dsxm as qydsxm
         from t_xs xs left join t_sz sz on (xs.yzyds_id=sz.id) left join t_sz tsz on (xs.qyds_id=tsz.id) left join t_pc_xs tpx on (tpx.xs_id=xs.id)
