@@ -216,21 +216,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         return newList;
     }*/
 
-    /**
-     * 查询教务管理列表
-     * @param pageNum
-     * @param pageSize
-     * @param string
-     * @param yx
-     * @param pcId
-     * @return
-     */
-    @Override
-    public PageInfo<JwglDTO> findJwglByPage(Integer pageNum, Integer pageSize, String string, String yx, Long pcId) {
-        log.info("【人才培养 - 分页条件查询教务管理列表,编号/姓名:{},院系:{},批次id:{}】",string,yx,pcId);
-        PageHelper.startPage(pageNum,pageSize);
-        return new PageInfo<>(xsMapper.findJwglList(string, yx, pcId));
-    }
+
 
     /**
      * 根据id查询学员信息

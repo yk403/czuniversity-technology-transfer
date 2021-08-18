@@ -28,16 +28,7 @@ public class JwglAdminController {
     /*@Autowired
     private KcXsService kcXsService;*/
 
-    @GetMapping("/list/")
-    @ApiOperation(value = "教务管理列表")
-    public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                @RequestParam(value = "string", required = false) String string,
-                                @RequestParam(value = "pcId", required = false) Long pcId,
-                                @RequestParam(value = "yx", required = false) String yx){
-        PageInfo<JwglDTO> jwglByPage = xsService.findJwglByPage(pageNum, pageSize, string, yx ,pcId);
-        return ResponseUtil.success(jwglByPage);
-    }
+
 
     /**
      * 新增学生课程关联
