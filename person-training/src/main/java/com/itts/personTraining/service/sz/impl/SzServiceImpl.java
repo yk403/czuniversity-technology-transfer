@@ -89,10 +89,10 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         } else {
             PageHelper.startPage(pageNum, pageSize);
             szQueryWrapper.eq("sfsc",false)
-                    .like(StringUtils.isNotBlank(name),"dsxm", name.trim()).or().like(StringUtils.isNotBlank(name),"dsbh", name.trim())
                     .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
                     .eq(StringUtils.isNotBlank(hyly),"hyly", hyly)
                     .eq(groupId != null, "ssjg_id", groupId)
+                    .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
                     .orderByDesc("cjsj");
         }
         return new PageInfo<>(szMapper.selectList(szQueryWrapper));
