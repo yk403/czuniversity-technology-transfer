@@ -29,7 +29,21 @@ public interface YhService {
     @GetMapping(ADMIN_BASE_URL + "/v1/yh/get/by/phone/")
     @ApiOperation(value = "通过用户手机号查询")
     ResponseUtil getByPhone(@RequestParam("phone") String phone,@RequestHeader(name = "token") String token);
-
+    /**
+     * 获取详情
+     *
+     * @param id
+     * @author fl
+     */
+    @GetMapping(ADMIN_BASE_URL + "/v1/yh/getBy/{id}")
+    ResponseUtil getById(@PathVariable("id") Long id);
+    /**
+     * 更新
+     *
+     * @author fl
+     */
+    @PutMapping(ADMIN_BASE_URL + "/v1/yh/updateYh")
+    ResponseUtil updateYh(@RequestBody Yh yh);
     /**
      * 更新
      */
