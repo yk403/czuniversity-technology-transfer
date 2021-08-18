@@ -19,6 +19,7 @@ import com.itts.personTraining.service.xs.XsService;
 import com.itts.personTraining.service.yh.YhService;
 import com.itts.personTraining.service.yh.YhVOService;
 import com.itts.personTraining.service.zj.ZjService;
+import com.itts.personTraining.vo.yh.GetYhVO;
 import com.itts.personTraining.vo.yh.YhVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -177,6 +178,12 @@ public class YhServiceImpl implements YhVOService {
         return yhVO;
     }
     private Boolean getAndUpdate(Long userId,YhVO yhVO){
+        ResponseUtil byPhone = yhService.getByPhone(yhVO.getLxdh(), null);
+        GetYhVO getYhVO = byPhone.conversionData(new TypeReference<GetYhVO>() {});
+        if(getYhVO != null){
+            throw new ServiceException(PHONE_NUMBER_EXISTS_ERROR);
+        }
+
         ResponseUtil byId = yhService.getById(userId);
         if(byId.getErrCode() != 0 ){
             throw new ServiceException(USER_NOT_FIND_ERROR);

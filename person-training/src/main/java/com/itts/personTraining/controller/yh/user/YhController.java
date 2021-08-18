@@ -12,10 +12,7 @@ import com.itts.personTraining.vo.yh.YhVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -82,7 +79,7 @@ public class YhController {
      * 更新用户信息通过用户类别
      */
     @ApiOperation(value = "更新用户信息通过用户类别")
-    @GetMapping("/updateUser/info")
+    @PostMapping("/updateUser/info")
     public ResponseUtil updateInfo(@RequestBody YhVO yhVO) {
         YhVO yh = yhVOService.update(yhVO);
         return ResponseUtil.success(yh);
