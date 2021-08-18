@@ -512,7 +512,6 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                         addXsCj(dto);
                         return b;
                     } else {
-                        stuDTO.setId(dto.getId());
                         //不存在.则新增
                         boolean b = addXsAndPcXs(stuDTO);
                         addXsCj(dto);
