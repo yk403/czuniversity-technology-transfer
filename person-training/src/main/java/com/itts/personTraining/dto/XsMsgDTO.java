@@ -75,6 +75,12 @@ public class XsMsgDTO {
     private String lxdh;
 
     /**
+     * 原毕业院校
+     */
+    @ApiModelProperty(value = "原毕业院校")
+    private String ybyyx;
+
+    /**
      * 原专业代码
      */
     @ApiModelProperty(value = "原专业代码", required = true)
