@@ -490,12 +490,9 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             case "tutor":
                 //根据师资用户id查询学生ids
                 List<Long> xsIds = xsMapper.findXsIdsBySzYhId(userId);
-                //默认查询当前年份的批次号
-                String currentYear = getCurrentYear();
-                List<Long> pcIds = pcMapper.findPcIdsByYear(currentYear);
-                if (CollectionUtils.isNotEmpty(xsIds) && CollectionUtils.isNotEmpty(pcIds)) {
-                    PageHelper.startPage(pageNum,pageSize);
-                    List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByXsIdsAndPcIds(xsIds,pcIds,name);
+                PageHelper.startPage(pageNum,pageSize);
+                List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByXsIdsAndPcIds(xsIds,pcId,name);
+                if (CollectionUtils.isNotEmpty(xsCjDTOs)) {
                     PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
                     map.put("tutor",xsCjPageInfo);
                 } else {
@@ -506,13 +503,10 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
             case "corporate_mentor":
                 //根据师资用户id查询学生ids
                 List<Long> xsList = xsMapper.findXsIdsByQydsYhId(userId);
-                //默认查询当前年份的批次号
-                String current = getCurrentYear();
-                List<Long> pcList = pcMapper.findPcIdsByYear(current);
-                if (CollectionUtils.isNotEmpty(xsList) && CollectionUtils.isNotEmpty(pcList)) {
-                    PageHelper.startPage(pageNum,pageSize);
-                    List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByXsIdsAndPcIds(xsList,pcList,name);
-                    PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
+                PageHelper.startPage(pageNum,pageSize);
+                List<XsCjDTO> xsCjDTOList = xsCjMapper.findXsCjByXsIdsAndPcIds(xsList,pcId,name);
+                if (CollectionUtils.isNotEmpty(xsCjDTOList)) {
+                    PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOList);
                     map.put("corporate_mentor",xsCjPageInfo);
                 } else {
                     map.put("corporate_mentor",null);
@@ -534,26 +528,26 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                     pcId = pcIdList.get(0);
                 }*/
                 PageHelper.startPage(pageNum,pageSize);
-                List<XsCjDTO> xsCjDTOs = xsCjMapper.findXsCjByPcIdAndName(pcId,name);
-                if (CollectionUtils.isEmpty(xsCjDTOs)) {
+                List<XsCjDTO> xsCjlist = xsCjMapper.findXsCjByPcIdAndName(pcId,name);
+                if (CollectionUtils.isEmpty(xsCjlist)) {
                     map.put("teacher",null);
                 } else {
                     List<Long> xsIdList = new ArrayList<>();
-                    for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                    for (XsCjDTO xsCjDTO : xsCjlist) {
                         xsIdList.add(xsCjDTO.getXsId());
                     }
                     //查询出报名方式是线上的学生ids
                     List<Long> xsxsIds = xsMapper.findXsIdsByBmfs(xsIdList, ON_LINE.getMsg());
                     //通过批次id和考试类别查出对应的试卷id
                     Long kssjId = ksMapper.getByPcIdAndKslb(pcId,ON_LINE.getMsg());
-                    for (XsCjDTO xsCjDTO : xsCjDTOs) {
+                    for (XsCjDTO xsCjDTO : xsCjlist) {
                         for (Long xsxsId : xsxsIds) {
                             if (xsxsId.equals(xsCjDTO.getXsId())) {
                                 xsCjDTO.setKssjId(kssjId);
                             }
                         }
                     }
-                    PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjDTOs);
+                    PageInfo<XsCjDTO> xsCjPageInfo = new PageInfo<>(xsCjlist);
                     map.put("teacher",xsCjPageInfo);
                 }
                 break;
@@ -615,7 +609,8 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         String userCategory;
         Pc pc;
         if (xsId == null) {
-            xsId = xsMapper.getByYhId(userId).getId();
+            XsMsgDTO byYhId = xsMapper.getByYhId(userId);
+            xsId = byYhId.getId();
             userCategory = getUserCategory();
             if (xsId == null) {
                 throw new ServiceException(NO_STUDENT_MSG_ERROR);

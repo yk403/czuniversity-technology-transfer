@@ -119,10 +119,7 @@
         <foreach collection="xsIds" open="(" close=")" separator="," item="xsIds">
             #{xsIds}
         </foreach>
-          and txc.pc_id in
-        <foreach collection="pcIds" open="(" close=")" separator="," item="pcIds">
-            #{pcIds}
-        </foreach>
+        <if test="pcId != null">and txc.pc_id = #{pcId}</if>
         order by txc.cjsj desc
     </select>
     <select id="findXsKcCjByPcIdAndName" resultMap="BaseResultMap">
