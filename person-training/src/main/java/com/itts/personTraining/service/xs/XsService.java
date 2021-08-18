@@ -30,7 +30,7 @@ public interface XsService extends IService<Xs> {
      * @param name
      * @return
      */
-    PageInfo<StuDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbmc, String jyxs, String name);
+    PageInfo<StuDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbmc, String jyxs, String name,Long qydsId,Long yzydsId);
 
     List<StuDTO> findExport( Long pcId, String xslbmc, String jyxs, String name);
     /**

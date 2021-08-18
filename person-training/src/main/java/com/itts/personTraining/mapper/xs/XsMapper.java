@@ -35,7 +35,7 @@ public interface XsMapper extends BaseMapper<Xs> {
      * @param name
      * @return
      */
-    List<StuDTO> findXsList(@Param("pcId") Long pcId, @Param("xslbmc") String xslbmc, @Param("jyxs") String jyxs, @Param("name") String name);
+    List<StuDTO> findXsList(@Param("pcId") Long pcId, @Param("xslbmc") String xslbmc, @Param("jyxs") String jyxs, @Param("name") String name,@Param("qydsId") Long qydsId,@Param("yzydsId") Long yzydsId);
 
     /**
      * 通过用户id查询学生信息

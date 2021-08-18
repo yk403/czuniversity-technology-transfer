@@ -110,10 +110,10 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      * @return
      */
     @Override
-    public PageInfo<StuDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbmc, String jyxs, String name) {
+    public PageInfo<StuDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbmc, String jyxs, String name,Long qydsId,Long yzydsId) {
         log.info("【人才培养 - 分页条件查询学员列表,批次id:{},学生类别名称:{},教育形式:{},学号/姓名:{}】",pcId,xslbmc,jyxs,name);
         PageHelper.startPage(pageNum, pageSize);
-        List<StuDTO> stuDTOList = xsMapper.findXsList(pcId,xslbmc,jyxs,name);
+        List<StuDTO> stuDTOList = xsMapper.findXsList(pcId,xslbmc,jyxs,name,qydsId,yzydsId);
         for (StuDTO stuDTO : stuDTOList) {
             List<Long> pcIds = pcXsMapper.selectByXsId(stuDTO.getId());
             stuDTO.setPcIds(pcIds);
@@ -123,7 +123,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
 
     @Override
     public List<StuDTO> findExport(Long pcId, String xslbmc, String jyxs, String name) {
-        List<StuDTO> stuDTOList = xsMapper.findXsList(pcId,xslbmc,jyxs,name);
+        List<StuDTO> stuDTOList = xsMapper.findXsList(pcId,xslbmc,jyxs,name,null,null);
 
         ResponseUtil  list1= sjzdFeignService.getList(null, null, SsmkEnum.USER_TYPE.getKey());
         List<Sjzd> sjzd1 = new ArrayList<>();

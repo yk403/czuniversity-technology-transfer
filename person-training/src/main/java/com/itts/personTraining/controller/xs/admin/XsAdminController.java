@@ -53,8 +53,10 @@ public class XsAdminController {
                                    @RequestParam(value = "pcId", required = false) Long pcId,
                                    @RequestParam(value = "xslbmc", required = false) String xslbmc,
                                    @RequestParam(value = "jyxs", required = false) String jyxs,
-                                   @RequestParam(value = "name", required = false) String name) {
-        return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbmc, jyxs, name));
+                                   @RequestParam(value = "name", required = false) String name,
+                                   @RequestParam(value = "qydsId", required = false) Long qydsId,
+                                   @RequestParam(value = "yzydsId", required = false) Long yzydsId) {
+        return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbmc, jyxs, name,qydsId,yzydsId));
     }
     /**
      * 查询学员列表
