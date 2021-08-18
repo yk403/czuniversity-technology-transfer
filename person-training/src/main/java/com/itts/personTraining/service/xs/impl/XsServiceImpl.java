@@ -481,7 +481,10 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yhService.update(yh,token);
                     StuDTO dto = xsService.selectByCondition(null, null, yhId);
                     stuDTO.setId(dto.getId());
-                    return updateXsAndAddPcXs(stuDTO);
+                    boolean b = updateXsAndAddPcXs(stuDTO);
+                    //新增关联关系到学生成绩表
+                    addXsCj(dto);
+                    return b;
                 } else {
                     //说明用户表不存在该用户信息,则用户表新增,学生表查询判断是否存在
                     Yh yh = new Yh();
@@ -502,12 +505,18 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     stuDTO.setYhId(yh1Id);
                     StuDTO dto = xsService.selectByCondition(null, lxdh, null);
                     if (dto != null) {
-                        //存在,则更新
                         stuDTO.setId(dto.getId());
-                        return updateXsAndAddPcXs(stuDTO);
+                        //存在,则更新
+                        boolean b = updateXsAndAddPcXs(stuDTO);
+                        //新增关联关系到学生成绩表
+                        addXsCj(dto);
+                        return b;
                     } else {
+                        stuDTO.setId(dto.getId());
                         //不存在.则新增
-                        return addXsAndPcXs(stuDTO);
+                        boolean b = addXsAndPcXs(stuDTO);
+                        addXsCj(dto);
+                        return b;
                     }
                 }
             } else {
@@ -516,6 +525,18 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         } else {
             throw new ServiceException(EDU_TYPE_ERROR);
         }
+    }
+
+    /**
+     * 新增学生成绩关联关系
+     * @param dto
+     */
+    private void addXsCj(StuDTO dto) {
+        XsCjDTO xsCjDTO = new XsCjDTO();
+        xsCjDTO.setXsId(dto.getId());
+        xsCjDTO.setPcId(dto.getPcIds().get(0));
+        xsCjDTO.setType(2);
+        xsCjService.add(xsCjDTO);
     }
 
     /**
@@ -682,7 +703,6 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         xsCjDTO.setXsId(dto.getId());
         xsCjDTO.setPcId(dto.getPcIds().get(0));
         xsCjDTO.setType(1);
-        xsCjDTO.setSfxf(false);
         xsCjService.add(xsCjDTO);
         SjDTO sjDTO=new SjDTO();
         sjDTO.setXsId(dto.getId());
