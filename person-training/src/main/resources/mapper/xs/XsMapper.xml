@@ -204,6 +204,11 @@
             #{xsIdList}
         </foreach>
     </select>
+    <select id="findXsIdsByQydsYhId" resultType="java.lang.Long">
+        select xs.id
+        from t_xs xs
+        where xs.sfsc = false and xs.qyds_id = (select sz.id from t_sz sz where sz.sfsc = false and sz.yh_id = #{yhId})
+    </select>
 
     <!--新增学生课程关联-->
     <insert id="addKcList">

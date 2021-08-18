@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.enums.SqlLike;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
@@ -82,8 +83,9 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
         } else {
             PageHelper.startPage(pageNum, pageSize);
             zjQueryWrapper.eq("sfsc",false)
+
                     .eq(StringUtils.isNotBlank(yjly),"yjly",yjly)
-                    .like(StringUtils.isNotBlank(name),"xm",name)
+                    .like(StringUtils.isNotBlank(name),"xm",name.trim()).or().like(StringUtils.isNotBlank(name),"bh",name.trim())
                     .like(StringUtils.isNotBlank(lx),"lx",lx)
                     .orderByDesc("cjsj");
         }

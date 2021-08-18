@@ -53,7 +53,7 @@ public interface XsMapper extends BaseMapper<Xs> {
     Xs getByXhAndXm(@Param("xh") String xh, @Param("xm") String xm);
 
     /**
-     * 根据师资用户id查询学生ids
+     * 根据原专业导师用户id查询学生ids
      * @param yhId
      * @return
      */
@@ -81,4 +81,11 @@ public interface XsMapper extends BaseMapper<Xs> {
      * @return
      */
     List<Long> findXsIdsByBmfs(@Param("xsIdList") List<Long> xsIdList, @Param("bmfs") String bmfs);
+
+    /**
+     * 根据原专业导师用户id查询学生ids
+     * @param yhId
+     * @return
+     */
+    List<Long> findXsIdsByQydsYhId(@Param("yhId") Long yhId);
 }
