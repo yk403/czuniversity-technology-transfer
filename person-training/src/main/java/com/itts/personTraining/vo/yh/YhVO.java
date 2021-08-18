@@ -19,37 +19,37 @@ public class YhVO implements Serializable {
     /**
      * 用户名
      */
-    @ApiModelProperty(value = "用户名", required = true)
+    @ApiModelProperty(value = "用户名")
     private String yhm;
 
     /**
      * 用户编号
      */
-    @ApiModelProperty(value = "用户编号", required = true)
+    @ApiModelProperty(value = "用户编号")
     private String yhbh;
 
     /**
      * 真实姓名
      */
-    @ApiModelProperty(value = "真实姓名", required = true)
+    @ApiModelProperty(value = "真实姓名")
     private String zsxm;
 
     /**
      * 联系电话
      */
-    @ApiModelProperty(value = "联系电话", required = true)
+    @ApiModelProperty(value = "联系电话")
     private String lxdh;
 
     /**
      * 用户头像
      */
-    @ApiModelProperty(value = "用户头像", required = true)
+    @ApiModelProperty(value = "用户头像")
     private String yhtx;
 
     /**
      * 用户类型
      */
-    @ApiModelProperty(value = "用户类型", required = true)
+    @ApiModelProperty(value = "用户类型")
     private String yhlx;
 
     /**
