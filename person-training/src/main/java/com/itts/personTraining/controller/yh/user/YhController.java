@@ -79,7 +79,7 @@ public class YhController {
      * 更新用户信息通过用户类别
      */
     @ApiOperation(value = "更新用户信息通过用户类别")
-    @PostMapping("/updateUser/info")
+    @PutMapping("/updateUser/info")
     public ResponseUtil updateInfo(@RequestBody YhVO yhVO) {
         YhVO yh = yhVOService.update(yhVO);
         return ResponseUtil.success(yh);
