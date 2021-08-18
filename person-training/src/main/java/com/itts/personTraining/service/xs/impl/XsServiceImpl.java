@@ -10,9 +10,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.personTraining.dto.JwglDTO;
-import com.itts.personTraining.dto.StuDTO;
-import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.dto.*;
 import com.itts.personTraining.enums.SsmkEnum;
 import com.itts.personTraining.feign.userservice.SjzdFeignService;
 import com.itts.personTraining.feign.userservice.UserFeignService;
@@ -32,8 +30,10 @@ import com.itts.personTraining.model.yh.Yh;
 import com.itts.personTraining.request.feign.UpdateUserRequest;
 import com.itts.personTraining.service.pc.PcService;
 import com.itts.personTraining.service.pcXs.PcXsService;
+import com.itts.personTraining.service.sj.SjService;
 import com.itts.personTraining.service.xs.XsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.personTraining.service.xsCj.XsCjService;
 import com.itts.personTraining.service.yh.YhService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -98,6 +98,10 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     private PcMapper pcMapper;
     @Resource
     private TzXsMapper tzXsMapper;
+    @Autowired
+    private XsCjService xsCjService;
+    @Autowired
+    private SjService sjService;
 
     @Resource
     private SjzdFeignService sjzdFeignService;
@@ -396,11 +400,16 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     if (dto != null) {
                         //说明学生表存在,则更新
                         stuDTO.setId(dto.getId());
+                        //在学生表存在的情况下添加学生成绩表
+                        addXscjAndSj(dto);
                         return updateXsAndAddPcXs(stuDTO);
                     } else {
                         //说明学生表不存在
                         stuDTO.setYhId(getYhVo.getId());
                         if (addXsAndPcXs(stuDTO)) {
+                            //在学生表不存在的情况下添加学生成绩表
+                            StuDTO dto1 = selectByCondition(null, null, stuDTO.getYhId());
+                            addXscjAndSj(dto1);
                             yhService.update(yh, token);
                             return true;
                         }
@@ -428,10 +437,17 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     if (dto != null) {
                         //存在,则更新
                         stuDTO.setId(dto.getId());
-                        return updateXsAndAddPcXs(stuDTO);
+                        boolean b=updateXsAndAddPcXs(stuDTO);
+                        //在学生表存在的情况下添加学生成绩表
+                        addXscjAndSj(dto);
+                        return b;
                     } else {
                         //不存在.则新增
-                        return addXsAndPcXs(stuDTO);
+                        boolean b=addXsAndPcXs(stuDTO);
+                        //在学生表存在的情况下添加学生成绩表
+                        StuDTO dto1 = selectByCondition(null, null, dto.getYhId());
+                        addXscjAndSj(dto1);
+                        return b;
                     }
                 }
             } else {
@@ -660,5 +676,17 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         }
         return false;
     }
-
+    private void addXscjAndSj(StuDTO dto){
+        //添加学生成绩表和实践表
+        XsCjDTO xsCjDTO=new XsCjDTO();
+        xsCjDTO.setXsId(dto.getId());
+        xsCjDTO.setPcId(dto.getPcIds().get(0));
+        xsCjDTO.setType(1);
+        xsCjDTO.setSfxf(false);
+        xsCjService.add(xsCjDTO);
+        SjDTO sjDTO=new SjDTO();
+        sjDTO.setXsId(dto.getId());
+        sjDTO.setPcId(dto.getPcIds().get(0));
+        sjService.add(sjDTO);
+    }
 }
