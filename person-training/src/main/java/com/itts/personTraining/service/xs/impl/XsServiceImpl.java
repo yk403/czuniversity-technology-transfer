@@ -380,9 +380,6 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             String dtoXh = stuDTO.getXh();
             if (dtoXh != null) {
                 ResponseUtil result = yhService.getByCode(dtoXh, token);
-                if(result.getErrCode() != 0 ){
-                    throw new ServiceException(USER_NOT_FIND_ERROR);
-                }
                 GetYhVo data = result.conversionData(new TypeReference<GetYhVo>() {
                 });
                 Yh yh = new Yh();
@@ -432,9 +429,6 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
                     ResponseUtil data1 = yhService.rpcAdd(yh, token);
-                    if(data1.getErrCode() != 0 ){
-                        throw new ServiceException(USER_NOT_FIND_ERROR);
-                    }
                     GetYhVo yh1 = data1.conversionData(new TypeReference<GetYhVo>() {
                     });
                     Long yh1Id = yh1.getId();
@@ -466,9 +460,6 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             String phone = stuDTO.getLxdh();
             if (phone != null) {
                 ResponseUtil response = yhService.getByPhone(phone, token);
-                if(response.getErrCode() != 0 ){
-                    throw new ServiceException(USER_NOT_FIND_ERROR);
-                }
                 GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
                 });
                 //生成经纪人学号
@@ -506,9 +497,6 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh1.setYhlb(yhlb);
                     yh1.setJgId(jgId);
                     ResponseUtil responseUtil = yhService.rpcAdd(yh1, token);
-                    if (responseUtil.getErrCode() != 0) {
-                        throw new ServiceException(USER_NOT_FIND_ERROR);
-                    }
                     GetYhVo yh2 = response.conversionData(new TypeReference<GetYhVo>() {
                     });
                     Long yh2Id = yh2.getId();
