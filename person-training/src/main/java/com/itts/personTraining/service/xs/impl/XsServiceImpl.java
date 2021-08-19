@@ -508,7 +508,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     if (responseUtil.getData() == null) {
                         throw new ServiceException(INSERT_FAIL);
                     }
-                    GetYhVo yh2 = response.conversionData(new TypeReference<GetYhVo>() {
+                    GetYhVo yh2 = responseUtil.conversionData(new TypeReference<GetYhVo>() {
                     });
                     Long yh2Id = yh2.getId();
                     stuDTO.setYhId(yh2Id);
