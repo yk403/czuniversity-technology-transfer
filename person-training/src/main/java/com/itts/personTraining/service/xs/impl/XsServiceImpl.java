@@ -380,24 +380,25 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             String dtoXh = stuDTO.getXh();
             if (dtoXh != null) {
                 ResponseUtil result = yhService.getByCode(dtoXh, token);
+                Object data = result.getData();
                 Yh yh = new Yh();
                 String xm = stuDTO.getXm();
                 Long jgId = stuDTO.getJgId();
                 String lxdh = stuDTO.getLxdh();
                 String yhlx = IN.getKey();
                 String yhlb = POSTGRADUATE.getKey();
-                if (result.getErrCode() == 0) {
-                    GetYhVo data = result.conversionData(new TypeReference<GetYhVo>() {
+                if (data != null) {
+                    GetYhVo vo = result.conversionData(new TypeReference<GetYhVo>() {
                     });
                     //说明用户表存在该用户信息
                     //作更新操作
-                    yh.setId(data.getId());
+                    yh.setId(vo.getId());
                     yh.setZsxm(xm);
                     //yh.setLxdh(lxdh);
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
-                    StuDTO dto = xsService.selectByCondition(null, null, data.getId());
+                    StuDTO dto = xsService.selectByCondition(null, null, vo.getId());
                     if (dto != null) {
                         //说明学生表存在,则更新
                         stuDTO.setId(dto.getId());
@@ -407,7 +408,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                         return b;
                     } else {
                         //说明学生表不存在
-                        stuDTO.setYhId(data.getId());
+                        stuDTO.setYhId(vo.getId());
                         if (addXsAndPcXs(stuDTO)) {
                             //在学生表不存在的情况下添加学生成绩表
                             StuDTO dto1 = selectByCondition(null, null, stuDTO.getYhId());
@@ -470,7 +471,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 String lxdh = stuDTO.getLxdh();
                 String yhlx = IN.getKey();
                 String yhlb = BROKER.getKey();
-                if (response.getErrCode() == 0) {
+                if (response.getData() != null) {
                     GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
                     });
                     //说明用户服务存在用户信息
@@ -497,7 +498,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh1.setYhlb(yhlb);
                     yh1.setJgId(jgId);
                     ResponseUtil responseUtil = yhService.rpcAdd(yh1, token);
-                    if (responseUtil.getErrCode() != 0) {
+                    if (responseUtil.getData() == null) {
                         throw new ServiceException(INSERT_FAIL);
                     }
                     GetYhVo yh2 = response.conversionData(new TypeReference<GetYhVo>() {
