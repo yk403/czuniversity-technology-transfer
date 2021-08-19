@@ -80,8 +80,8 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
      * @return
      */
     @Override
-    public PageInfo<Sz> findByPage(Integer pageNum, Integer pageSize, String name, String dslb, String hyly, Long groupId) {
-        log.info("【人才培养 - 分页条件查询师资列表,导师编号/姓名:{},导师类别:{},行业领域:{}】",name,dslb,hyly);
+    public PageInfo<Sz> findByPage(Integer pageNum, Integer pageSize, String name, String dslb, String hyly, Long fjjgId, Long groupId) {
+        log.info("【人才培养 - 分页条件查询师资列表,导师编号/姓名:{},导师类别:{},行业领域:{},父级机构ID:{},机构ID:{}】",name,dslb,hyly,fjjgId,groupId);
         QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
         if (pageNum == -1) {
             szQueryWrapper.eq("sfsc",false)
@@ -91,6 +91,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             szQueryWrapper.eq("sfsc",false)
                     .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
                     .eq(StringUtils.isNotBlank(hyly),"hyly", hyly)
+                    .eq(fjjgId != null, "fjjg_id", fjjgId)
                     .eq(groupId != null, "ssjg_id", groupId)
                     .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
                     .orderByDesc("cjsj");

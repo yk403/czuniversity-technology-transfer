@@ -24,9 +24,11 @@ public interface SzService extends IService<Sz> {
      * @param name
      * @param dslb
      * @param hyly
+     * @param fjjgId
+     * @param groupId
      * @return
      */
-    PageInfo<Sz> findByPage(Integer pageNum, Integer pageSize, String name, String dslb, String hyly, Long groupId);
+    PageInfo<Sz> findByPage(Integer pageNum, Integer pageSize, String name, String dslb, String hyly, Long fjjgId, Long groupId);
 
     List<Sz>  findXsBySz(String dslb);
     List<Sz>  findExport(String dsxm, String dslb, String hyly);
