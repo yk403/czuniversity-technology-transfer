@@ -24,25 +24,6 @@ public class ExcelAdminController extends BaseController {
     @Autowired
     private ExcelAdminService excelAdminService;
 
-    /*    *//**
-     * 企业导入
-     * @param file
-     * @param headRowNumber
-     * @return
-     *//*
-    @PostMapping("/importCompany")
-    public R importCompany(@RequestParam(value = "file", required = true) MultipartFile file, @RequestParam(value = "headRowNumber", required = true) Integer headRowNumber){
-        String userId = getUserId();
-        try {
-            return  excelService.importCompany(userId,file,headRowNumber);
-//            EasyExcel.read(file.getInputStream(), StaffDO.class, new UploadDataListener(uploadDAO)).sheet().doRead();
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
-            return R.error();
-        }
-    }*/
-
     /**
      * 需求导入
      *

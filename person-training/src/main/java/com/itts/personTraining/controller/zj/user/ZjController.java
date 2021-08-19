@@ -1,15 +1,23 @@
 package com.itts.personTraining.controller.zj.user;
 
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.model.zj.Zj;
 import com.itts.personTraining.service.zj.ZjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.BASE_URL;
+import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.common.enums.ErrorCodeEnum.PROFESSOR_NUMBER_EXISTS_ERROR;
+import static com.itts.personTraining.enums.UserTypeEnum.OUT_PROFESSOR;
+import static com.itts.personTraining.enums.UserTypeEnum.PROFESSOR;
 
 /**
  * @Author: Austin
@@ -35,5 +43,45 @@ public class ZjController {
     public ResponseUtil getByYhId() {
         return ResponseUtil.success(zjService.getByYhId());
     }
+    /**
+     * 更新专家信息
+     * @param zj
+     * @return
+     * @throws WebException
+     */
+    @PutMapping("/update")
+    @ApiOperation(value = "更新专家信息")
+    public ResponseUtil update(@RequestBody Zj zj, HttpServletRequest request) throws WebException {
+        //检查数据库中是否存在要更新的数据
+        Zj zjOld = zjService.get(zj.getId());
+        if (zjOld == null) {
+            throw new WebException(SYSTEM_NOT_FIND_ERROR);
+        }
+        checkUpdateRequest(zj);
+        if (!zjService.update(zj, request.getHeader("token"))) {
+            throw new WebException(UPDATE_FAIL);
+        }
+        return ResponseUtil.success(zj);
 
+    }
+    /**
+     * 更新校验参数
+     */
+    private void checkUpdateRequest(Zj zj) throws WebException {
+        Zj zjOld = zjService.get(zj.getId());
+        if (zjOld == null) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        if (!zjOld.getDh().equals(zj.getDh())) {
+            List<Zj> zjList = zjService.getAll();
+            for (Zj zj1 : zjList) {
+                if (zj1.getDh().equals(zj.getDh())) {
+                    throw new WebException(PROFESSOR_PHONE_EXISTS_ERROR);
+                }
+                if (zj1.getBh().equals(zj.getBh())) {
+                    throw new WebException(PROFESSOR_NUMBER_EXISTS_ERROR);
+                }
+            }
+        }
+    }
 }
