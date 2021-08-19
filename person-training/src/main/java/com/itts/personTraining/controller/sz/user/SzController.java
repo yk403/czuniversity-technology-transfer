@@ -2,12 +2,14 @@ package com.itts.personTraining.controller.sz.user;
 
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.dto.SzMsgDTO;
 import com.itts.personTraining.enums.UserTypeEnum;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.service.sz.SzService;
 import com.itts.personTraining.service.xs.XsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,13 +55,15 @@ public class SzController {
     /**
      * 更新师资
      *
-     * @param sz
+     * @param
      * @return
      * @throws WebException
      */
     @PutMapping("/update")
     @ApiOperation(value = "更新师资")
-    public ResponseUtil update(@RequestBody Sz sz, HttpServletRequest request) throws WebException {
+    public ResponseUtil update(@RequestBody SzMsgDTO szMsgDTO, HttpServletRequest request) throws WebException {
+        Sz sz=new Sz();
+        BeanUtils.copyProperties(szMsgDTO,sz);
         checkRequest(sz);
         Long id = sz.getId();
         //检查参数是否合法
@@ -79,7 +83,7 @@ public class SzController {
         if (!szService.update(sz,request.getHeader("token"))) {
             throw new WebException(UPDATE_FAIL);
         }
-        return ResponseUtil.success(sz);
+        return ResponseUtil.success(szMsgDTO);
 
     }
     /**
@@ -96,8 +100,8 @@ public class SzController {
         if (!dslb.equals(UserTypeEnum.TUTOR.getKey()) && !dslb.equals(UserTypeEnum.CORPORATE_MENTOR.getKey()) && !dslb.equals(UserTypeEnum.TEACHER.getKey()) && !dslb.equals(UserTypeEnum.SCHOOL_LEADER.getKey())) {
             throw new WebException(TEACHER_TYPE_ERROR);
         }
-        if (sz.getSsjgId() == null) {
+       /* if (sz.getSsjgId() == null) {
             throw new WebException(ORGANIZATION_ISEMPTY_ERROR);
-        }
+        }*/
     }
 }

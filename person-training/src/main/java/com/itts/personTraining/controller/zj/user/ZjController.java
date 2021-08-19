@@ -2,10 +2,12 @@ package com.itts.personTraining.controller.zj.user;
 
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.dto.ZjInfoDTO;
 import com.itts.personTraining.model.zj.Zj;
 import com.itts.personTraining.service.zj.ZjService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +53,9 @@ public class ZjController {
      */
     @PutMapping("/update")
     @ApiOperation(value = "更新专家信息")
-    public ResponseUtil update(@RequestBody Zj zj, HttpServletRequest request) throws WebException {
+    public ResponseUtil update(@RequestBody ZjInfoDTO zjInfoDTO, HttpServletRequest request) throws WebException {
+        Zj zj=new Zj();
+        BeanUtils.copyProperties(zjInfoDTO,zj);
         //检查数据库中是否存在要更新的数据
         Zj zjOld = zjService.get(zj.getId());
         if (zjOld == null) {
@@ -61,7 +65,7 @@ public class ZjController {
         if (!zjService.update(zj, request.getHeader("token"))) {
             throw new WebException(UPDATE_FAIL);
         }
-        return ResponseUtil.success(zj);
+        return ResponseUtil.success(zjInfoDTO);
 
     }
     /**
