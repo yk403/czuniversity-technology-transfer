@@ -379,7 +379,12 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             //学历学位教育(研究生)
             String dtoXh = stuDTO.getXh();
             if (dtoXh != null) {
-                Object data = yhService.getByCode(dtoXh, token).getData();
+                ResponseUtil result = yhService.getByCode(dtoXh, token);
+                if(result.getErrCode() != 0 ){
+                    throw new ServiceException(USER_NOT_FIND_ERROR);
+                }
+                GetYhVo data = result.conversionData(new TypeReference<GetYhVo>() {
+                });
                 Yh yh = new Yh();
                 String xm = stuDTO.getXm();
                 Long jgId = stuDTO.getJgId();
@@ -388,24 +393,24 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 String yhlb = POSTGRADUATE.getKey();
                 if (data != null) {
                     //说明用户表存在该用户信息
-                    GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
                     //作更新操作
-                    yh.setId(getYhVo.getId());
+                    yh.setId(data.getId());
                     yh.setZsxm(xm);
                     //yh.setLxdh(lxdh);
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
-                    StuDTO dto = xsService.selectByCondition(null, null, getYhVo.getId());
+                    StuDTO dto = xsService.selectByCondition(null, null, data.getId());
                     if (dto != null) {
                         //说明学生表存在,则更新
                         stuDTO.setId(dto.getId());
                         //在学生表存在的情况下添加学生成绩表
-                        addXscjAndSj(dto);
-                        return updateXsAndAddPcXs(stuDTO);
+                        boolean b = updateXsAndAddPcXs(stuDTO);
+                        addXscjAndSj(stuDTO);
+                        return b;
                     } else {
                         //说明学生表不存在
-                        stuDTO.setYhId(getYhVo.getId());
+                        stuDTO.setYhId(data.getId());
                         if (addXsAndPcXs(stuDTO)) {
                             //在学生表不存在的情况下添加学生成绩表
                             StuDTO dto1 = selectByCondition(null, null, stuDTO.getYhId());
@@ -426,11 +431,12 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
-                    Object data1 = yhService.rpcAdd(yh, token).getData();
-                    if (data1 == null) {
-                        throw new ServiceException(USER_INSERT_ERROR);
+                    ResponseUtil data1 = yhService.rpcAdd(yh, token);
+                    if(data1.getErrCode() != 0 ){
+                        throw new ServiceException(USER_NOT_FIND_ERROR);
                     }
-                    Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
+                    GetYhVo yh1 = data1.conversionData(new TypeReference<GetYhVo>() {
+                    });
                     Long yh1Id = yh1.getId();
                     stuDTO.setYhId(yh1Id);
                     StuDTO dto = xsService.selectByCondition(xh, null, null);
@@ -443,11 +449,13 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                         return b;
                     } else {
                         //不存在.则新增
-                        boolean b=addXsAndPcXs(stuDTO);
                         //在学生表存在的情况下添加学生成绩表
-                        StuDTO dto1 = selectByCondition(null, null, dto.getYhId());
-                        addXscjAndSj(dto1);
-                        return b;
+                        if (addXsAndPcXs(stuDTO)) {
+                            StuDTO dto1 = selectByCondition(null, null, stuDTO.getYhId());
+                            addXscjAndSj(dto1);
+                            return true;
+                        }
+                        return false;
                     }
                 }
             } else {
@@ -485,11 +493,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh.setJgId(jgId);
                     yhService.update(yh,token);
                     StuDTO dto = xsService.selectByCondition(null, null, yhId);
-                    stuDTO.setId(dto.getId());
-                    boolean b = updateXsAndAddPcXs(stuDTO);
-                    //新增关联关系到学生成绩表
-                    addXsCj(dto);
-                    return b;
+                    return insertOrUpfateXs(stuDTO, yhId, dto);
                 } else {
                     //说明用户表不存在该用户信息,则用户表新增,学生表查询判断是否存在
                     Yh yh1 = new Yh();
@@ -510,25 +514,40 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     Long yh2Id = yh2.getId();
                     stuDTO.setYhId(yh2Id);
                     StuDTO dto = xsService.selectByCondition(null, lxdh, null);
-                    if (dto != null) {
-                        stuDTO.setId(dto.getId());
-                        //存在,则更新
-                        boolean b = updateXsAndAddPcXs(stuDTO);
-                        //新增关联关系到学生成绩表
-                        addXsCj(dto);
-                        return b;
-                    } else {
-                        //不存在.则新增
-                        boolean b = addXsAndPcXs(stuDTO);
-                        addXsCj(dto);
-                        return b;
-                    }
+                    return insertOrUpfateXs(stuDTO, yh2Id, dto);
                 }
             } else {
                 throw new ServiceException(PHONE_NUMBER_ISEMPTY_ERROR);
             }
         } else {
             throw new ServiceException(EDU_TYPE_ERROR);
+        }
+    }
+
+    /**
+     * 新增/更新学生
+     * @param stuDTO
+     * @param yhId
+     * @param dto
+     * @return
+     */
+    private boolean insertOrUpfateXs(StuDTO stuDTO, Long yhId, StuDTO dto) {
+        if (dto != null) {
+            stuDTO.setId(dto.getId());
+            //存在,则更新
+            boolean b = updateXsAndAddPcXs(stuDTO);
+            //新增关联关系到学生成绩表
+            addXsCj(dto);
+            return b;
+        } else {
+            //不存在.则新增
+            stuDTO.setYhId(yhId);
+            if (addXsAndPcXs(stuDTO)) {
+                StuDTO dto1 = selectByCondition(null, null, stuDTO.getYhId());
+                addXsCj(dto1);
+                return true;
+            }
+            return false;
         }
     }
 
