@@ -68,6 +68,7 @@ public class YhController {
     }
     /**
      * 获取用户信息通过用户类别
+     * @Author: fuli
      */
     @ApiOperation(value = "获取用户信息通过用户类别")
     @GetMapping("/getUser/info")
@@ -77,6 +78,7 @@ public class YhController {
     }
     /**
      * 更新用户信息通过用户类别
+     * @Author: fuli
      */
     @ApiOperation(value = "更新用户信息通过用户类别")
     @PutMapping("/updateUser/info")
