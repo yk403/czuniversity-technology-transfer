@@ -380,11 +380,6 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             String dtoXh = stuDTO.getXh();
             if (dtoXh != null) {
                 ResponseUtil result = yhService.getByCode(dtoXh, token);
-                GetYhVo  data = null;
-                if (result.getErrCode() == 0) {
-                    data = result.conversionData(new TypeReference<GetYhVo>() {
-                    });
-                }
                 Yh yh = new Yh();
                 String xm = stuDTO.getXm();
                 Long jgId = stuDTO.getJgId();
@@ -392,6 +387,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 String yhlx = IN.getKey();
                 String yhlb = POSTGRADUATE.getKey();
                 if (result.getErrCode() == 0) {
+                    GetYhVo data = result.conversionData(new TypeReference<GetYhVo>() {
+                    });
                     //说明用户表存在该用户信息
                     //作更新操作
                     yh.setId(data.getId());
@@ -463,11 +460,6 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             String phone = stuDTO.getLxdh();
             if (phone != null) {
                 ResponseUtil response = yhService.getByPhone(phone, token);
-                GetYhVo vo = null;
-                if (response.getErrCode() == 0) {
-                    vo = response.conversionData(new TypeReference<GetYhVo>() {
-                    });
-                }
                 //生成经纪人学号
                 Pc pc = pcService.get(stuDTO.getPcIds().get(0));
                 String bh = redisTemplate.opsForValue().increment(pc.getPch()).toString();
@@ -479,6 +471,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 String yhlx = IN.getKey();
                 String yhlb = BROKER.getKey();
                 if (response.getErrCode() == 0) {
+                    GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
+                    });
                     //说明用户服务存在用户信息
                     Yh yh = new Yh();
                     Long yhId = vo.getId();
