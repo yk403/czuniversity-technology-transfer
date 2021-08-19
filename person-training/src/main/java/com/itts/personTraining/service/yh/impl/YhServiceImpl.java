@@ -179,13 +179,8 @@ public class YhServiceImpl implements YhVOService {
         return yhVO;
     }
     private Boolean getAndUpdate(Long userId,YhVO yhVO){
-        ResponseUtil byPhone = yhService.getByPhone(yhVO.getLxdh(), null);
-        GetYhVO getYhVO = byPhone.conversionData(new TypeReference<GetYhVO>() {});
-        if(!Objects.equals(yhVO.getLxdh(),getYhVO.getLxdh())){
-            if(getYhVO != null){
-                throw new ServiceException(PHONE_NUMBER_EXISTS_ERROR);
-            }
-        }
+
+
         ResponseUtil byId = yhService.getById(userId);
         if(byId.getErrCode() != 0 ){
             throw new ServiceException(USER_NOT_FIND_ERROR);
@@ -194,9 +189,19 @@ public class YhServiceImpl implements YhVOService {
         if(yh == null){
             throw new ServiceException(USER_NOT_FIND_ERROR);
         }
-        yh.setYhtx(yhVO.getYhtx());
-        yh.setLxdh(yhVO.getLxdh());
-        yhService.updateYh(yh);
+        if(!Objects.equals(yh.getLxdh(),yhVO.getLxdh())){
+            ResponseUtil byPhone = yhService.getByPhone(yhVO.getLxdh(), null);
+            GetYhVO getYhVO = byPhone.conversionData(new TypeReference<GetYhVO>() {});
+            if(yhVO.getId() != getYhVO.getId()){
+                if(getYhVO != null){
+                throw new ServiceException(PHONE_NUMBER_EXISTS_ERROR);
+                }
+            }
+            yh.setYhtx(yhVO.getYhtx());
+            yh.setLxdh(yhVO.getLxdh());
+            yhService.updateYh(yh);
+        }
+
         return true;
     }
 
