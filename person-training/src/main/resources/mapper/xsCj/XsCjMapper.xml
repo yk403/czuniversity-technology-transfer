@@ -79,6 +79,7 @@
         <if test="xh != null and xh != ''"> and xs.xh like concat('%',trim(#{xh}),'%') </if>
         <if test="xm != null and xm != ''"> and xs.xm like concat('%',trim(#{xm}),'%') </if>
         <if test="yx != null and yx != ''"> and xs.yx like concat('%',trim(#{yx}),'%') </if>
+        order by txc.sfxf asc, txc.cjsj desc
     </select>
     <select id="findXsCj" resultType="com.itts.personTraining.dto.XsCjDTO">
         select txc.*, pc.pch, pc.pcmc, xs.xm, xs.xh, xs.yx

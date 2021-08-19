@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -49,6 +50,7 @@ import static com.itts.personTraining.enums.UserTypeEnum.*;
 @Slf4j
 @Data
 @Component
+@Transactional(rollbackFor = Exception.class)
 public class XsListener extends AnalysisEventListener<XsDTO> {
     private StringBuilder result=new StringBuilder();
     private Integer count=0;
@@ -217,7 +219,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                         xs.setId(dto.getId());
                         try {
                             updateXsAndAddPcXs(xs,pcId);
-                            //TODO 后期优化选择用mq同步
+
                             try {
                                 yhService.update(yh, token);
                                 count++;
