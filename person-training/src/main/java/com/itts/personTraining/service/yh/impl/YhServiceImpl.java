@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 import java.util.Date;
+import java.util.Objects;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -180,10 +181,11 @@ public class YhServiceImpl implements YhVOService {
     private Boolean getAndUpdate(Long userId,YhVO yhVO){
         ResponseUtil byPhone = yhService.getByPhone(yhVO.getLxdh(), null);
         GetYhVO getYhVO = byPhone.conversionData(new TypeReference<GetYhVO>() {});
-        if(getYhVO != null){
-            throw new ServiceException(PHONE_NUMBER_EXISTS_ERROR);
+        if(!Objects.equals(yhVO.getLxdh(),getYhVO.getLxdh())){
+            if(getYhVO != null){
+                throw new ServiceException(PHONE_NUMBER_EXISTS_ERROR);
+            }
         }
-
         ResponseUtil byId = yhService.getById(userId);
         if(byId.getErrCode() != 0 ){
             throw new ServiceException(USER_NOT_FIND_ERROR);
