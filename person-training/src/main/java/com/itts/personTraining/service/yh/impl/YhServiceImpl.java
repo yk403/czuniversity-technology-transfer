@@ -189,7 +189,7 @@ public class YhServiceImpl implements YhVOService {
         if(yh == null){
             throw new ServiceException(USER_NOT_FIND_ERROR);
         }
-        if(!Objects.equals(yh.getLxdh(),yhVO.getLxdh())){
+        if(!Objects.equals(yh.getLxdh(),yhVO.getLxdh()) || !Objects.equals(yh.getYhtx(),yhVO.getYhtx())){
             ResponseUtil byPhone = yhService.getByPhone(yhVO.getLxdh(), null);
             GetYhVO getYhVO = byPhone.conversionData(new TypeReference<GetYhVO>() {});
             if(yhVO.getId() != getYhVO.getId()){
