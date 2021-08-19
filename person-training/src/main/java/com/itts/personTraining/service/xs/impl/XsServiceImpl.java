@@ -457,7 +457,12 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             //继续教育(经纪人)
             String phone = stuDTO.getLxdh();
             if (phone != null) {
-                Object data = yhService.getByPhone(phone, token).getData();
+                ResponseUtil response = yhService.getByPhone(phone, token);
+                if(response.getErrCode() != 0 ){
+                    throw new ServiceException(USER_NOT_FIND_ERROR);
+                }
+                GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
+                });
                 //生成经纪人学号
                 Pc pc = pcService.get(stuDTO.getPcIds().get(0));
                 String bh = redisTemplate.opsForValue().increment(pc.getPch()).toString();
@@ -468,10 +473,10 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 String lxdh = stuDTO.getLxdh();
                 String yhlx = IN.getKey();
                 String yhlb = BROKER.getKey();
-                if (data != null) {
+                if (vo != null) {
                     //说明用户服务存在用户信息
-                    Yh yh = JSONObject.parseObject(JSON.toJSON(data).toString(), Yh.class);
-                    Long yhId = yh.getId();
+                    Yh yh = new Yh();
+                    Long yhId = vo.getId();
                     yh.setYhbh(xh);
                     yh.setZsxm(xm);
                     yh.setLxdh(lxdh);
@@ -487,22 +492,23 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     return b;
                 } else {
                     //说明用户表不存在该用户信息,则用户表新增,学生表查询判断是否存在
-                    Yh yh = new Yh();
-                    yh.setYhbh(xh);
-                    yh.setYhm(xh);
-                    yh.setMm(xh);
-                    yh.setZsxm(xm);
-                    yh.setLxdh(lxdh);
-                    yh.setYhlx(yhlx);
-                    yh.setYhlb(yhlb);
-                    yh.setJgId(jgId);
-                    Object data1 = yhService.rpcAdd(yh, token).getData();
-                    if (data1 == null) {
-                        throw new ServiceException(USER_INSERT_ERROR);
+                    Yh yh1 = new Yh();
+                    yh1.setYhbh(xh);
+                    yh1.setYhm(xh);
+                    yh1.setMm(xh);
+                    yh1.setZsxm(xm);
+                    yh1.setLxdh(lxdh);
+                    yh1.setYhlx(yhlx);
+                    yh1.setYhlb(yhlb);
+                    yh1.setJgId(jgId);
+                    ResponseUtil responseUtil = yhService.rpcAdd(yh1, token);
+                    if (responseUtil.getErrCode() != 0) {
+                        throw new ServiceException(USER_NOT_FIND_ERROR);
                     }
-                    Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
-                    Long yh1Id = yh1.getId();
-                    stuDTO.setYhId(yh1Id);
+                    GetYhVo yh2 = response.conversionData(new TypeReference<GetYhVo>() {
+                    });
+                    Long yh2Id = yh2.getId();
+                    stuDTO.setYhId(yh2Id);
                     StuDTO dto = xsService.selectByCondition(null, lxdh, null);
                     if (dto != null) {
                         stuDTO.setId(dto.getId());
