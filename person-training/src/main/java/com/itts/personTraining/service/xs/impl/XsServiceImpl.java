@@ -394,10 +394,14 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     //作更新操作
                     yh.setId(vo.getId());
                     yh.setZsxm(xm);
-                    //yh.setLxdh(lxdh);
+                    yh.setLxdh(lxdh);
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
+                    ResponseUtil update = yhService.update(yh, token);
+                    if (update.getData() == null) {
+                        throw new ServiceException(UPDATE_FAIL);
+                    }
                     StuDTO dto = xsService.selectByCondition(null, null, vo.getId());
                     if (dto != null) {
                         //说明学生表存在,则更新
@@ -413,7 +417,6 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                             //在学生表不存在的情况下添加学生成绩表
                             StuDTO dto1 = selectByCondition(null, null, stuDTO.getYhId());
                             addXscjAndSj(dto1);
-                            yhService.update(yh, token);
                             return true;
                         }
                         return false;
@@ -477,13 +480,17 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     //说明用户服务存在用户信息
                     Yh yh = new Yh();
                     Long yhId = vo.getId();
+                    yh.setId(yhId);
                     yh.setYhbh(xh);
                     yh.setZsxm(xm);
                     yh.setLxdh(lxdh);
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
-                    yhService.update(yh,token);
+                    ResponseUtil update = yhService.update(yh, token);
+                    if (update.getData() == null) {
+                        throw new ServiceException(UPDATE_FAIL);
+                    }
                     StuDTO dto = xsService.selectByCondition(null, null, yhId);
                     return insertOrUpfateXs(stuDTO, yhId, dto);
                 } else {
