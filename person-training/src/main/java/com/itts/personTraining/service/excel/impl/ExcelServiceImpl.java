@@ -219,6 +219,8 @@ public class ExcelServiceImpl implements ExcelService {
             .eq("xs_id",xs.getId());
             if(xsCjMapper.selectList(xsCjQueryWrapper).isEmpty()){
                 xsCjService.save(xsCj);
+            }else {
+                xsCjService.updateById(xsCj);
             }
             //存入学生课程成绩表
             QueryWrapper<Kc> kcQueryWrapper = new QueryWrapper<>();
@@ -264,7 +266,17 @@ public class ExcelServiceImpl implements ExcelService {
             xsKcCj.setGxr(userId);
             xsKcCj.setCjsj(new Date());
             xsKcCj.setGxsj(new Date());
-            xsKcCjService.save(xsKcCj);
+            QueryWrapper<XsKcCj> xsKcCjQueryWrapper = new QueryWrapper<>();
+            xsKcCjQueryWrapper.eq("xs_id",xs.getId())
+                    .eq("kc_id",kc.getId())
+                    .eq("sfsc",false);
+            XsKcCj one = xsKcCjService.getOne(xsKcCjQueryWrapper);
+            if(one == null){
+                xsKcCjService.save(xsKcCj);
+            }else {
+                xsKcCjService.updateById(xsKcCj);
+            }
+
         }
         return ResponseUtil.success();
     }
