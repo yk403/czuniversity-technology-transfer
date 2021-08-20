@@ -92,14 +92,14 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             //总基地
             if(Objects.equals(jglx,"headquarters")){
 
-                szQueryWrapper.eq("sfsc",false)
-                        .eq(StringUtils.isNotBlank(hyly),"hyly", hyly)
-                        .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
-                        .orderByDesc("cjsj");
-                if(StringUtils.isBlank(dslb)){
-                    szQueryWrapper.ne("dslb","cloud_admin");
+                if(StringUtils.isNotBlank(dslb)){
+                    szQueryWrapper.eq("sfsc",false).eq("dslb", dslb)
+                            .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
+                            .orderByDesc("cjsj");
                 }else {
-                    szQueryWrapper.eq(StringUtils.isNotBlank(dslb),"dslb", dslb);
+                    szQueryWrapper.eq("sfsc",false).ne("dslb","cloud_admin")
+                            .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
+                            .orderByDesc("cjsj");
                 }
 
             }else {
