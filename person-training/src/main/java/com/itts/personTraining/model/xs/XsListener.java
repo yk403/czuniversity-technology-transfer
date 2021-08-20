@@ -5,11 +5,16 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.DateUtils;
+import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.dto.SjDTO;
 import com.itts.personTraining.dto.StuDTO;
+import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsDTO;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
@@ -18,14 +23,18 @@ import com.itts.personTraining.model.pcXs.PcXs;
 import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.model.yh.Yh;
+import com.itts.personTraining.service.pcXs.PcXsService;
+import com.itts.personTraining.service.sj.SjService;
 import com.itts.personTraining.service.sz.SzService;
 import com.itts.personTraining.service.xs.XsService;
+import com.itts.personTraining.service.xsCj.XsCjService;
 import com.itts.personTraining.service.xy.XyService;
 import com.itts.personTraining.service.yh.YhService;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -34,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -74,6 +84,12 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
     private SzService szService;
     @Resource
     private RedisTemplate redisTemplate;
+    @Resource
+    private PcXsService pcXsService;
+    @Resource
+    private XsCjService xsCjService;
+    @Resource
+    private SjService sjService;
 
     public static XsListener xsListener;
 
@@ -195,7 +211,9 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
             String xsXh = xs.getXh();
             String lxdh = xs.getLxdh();
             if (xsXh != null) {
-                Object data = yhService.getByCode(xsXh, token).getData();
+                ResponseUtil result = yhService.getByCode(xsXh, token);
+                Object data = result.getData();
+
                 Yh yh = new Yh();
                 String xm = xs.getXm();
                 Long jgId = xs.getJgId();
@@ -204,7 +222,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                 String yhlb = POSTGRADUATE.getKey();
                 if (data != null) {
                     //说明用户表存在该用户信息
-                    GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
+                    GetYhVo getYhVo = result.conversionData(new TypeReference<GetYhVo>() {});
                     //作更新操作
                     yh.setId(getYhVo.getId());
                     yh.setZsxm(xm);
@@ -219,7 +237,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                         xs.setId(dto.getId());
                         try {
                             updateXsAndAddPcXs(xs,pcId);
-
+                            addXscjAndSj(dto);
                             try {
                                 yhService.update(yh, token);
                                 count++;
@@ -235,6 +253,8 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                         xs.setCjsj(new Date());
                         xs.setGxsj(new Date());
                         if (addXsAndPcXs(xs, pcId)) {
+                            StuDTO dto1 = xsService.selectByCondition(null, null, getYhVo.getId());
+                            addXscjAndSj(dto1);
                             count++;
                         } else {
                             throw new WebException(INSERT_FAIL);
@@ -265,6 +285,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                         xs.setId(dto.getId());
                         xs.setGxsj(new Date());
                         if (updateXsAndAddPcXs(xs, pcId)) {
+                            addXscjAndSj(dto);
                             count++;
                         } else {
                             throw new WebException(INSERT_FAIL);
@@ -274,6 +295,8 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                         xs.setCjsj(new Date());
                         xs.setGxsj(new Date());
                         if (addXsAndPcXs(xs, pcId)) {
+                            StuDTO dto1 = xsService.selectByCondition(xh, null, null);
+                            addXscjAndSj(dto1);
                             count++;
                         } else {
                             throw new WebException(INSERT_FAIL);
@@ -286,7 +309,8 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
             xs.setXslbmc(BROKER.getKey());
             String phone = xs.getLxdh();
             if (phone != null) {
-                Object data = yhService.getByPhone(phone, token).getData();
+                ResponseUtil response = yhService.getByPhone(phone, token);
+                Object data = response.getData();
                 //生成经纪人学号
                 String bh = redisTemplate.opsForValue().increment(pch).toString();
                 String xh = jylx + org.apache.commons.lang3.StringUtils.replace(DateUtils.toString(rxrq),"/","") + String.format("%03d", Long.parseLong(bh));
@@ -311,11 +335,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     StuDTO dto = xsService.selectByCondition(null, null, yhId);
                     xs.setId(dto.getId());
                     xs.setGxsj(new Date());
-                    if (updateXsAndAddPcXs(xs, pcId)) {
-                        count++;
-                    } else {
-                        throw new WebException(INSERT_FAIL);
-                    }
+                    insertOrUpfateXs(xs, yhId, dto);
                 } else {
                     //说明用户表不存在该用户信息,则用户表新增,学生表查询判断是否存在
                     Yh yh = new Yh();
@@ -327,30 +347,16 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
-                    Object data1 = yhService.rpcAdd(yh, token).getData();
-                    if (data1 == null) {
-                        throw new ServiceException(USER_INSERT_ERROR);
+                    ResponseUtil responseUtil = yhService.rpcAdd(yh, token);
+                    if (responseUtil.getData() == null) {
+                        throw new ServiceException(INSERT_FAIL);
                     }
-                    Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
+                    GetYhVo yh1 = responseUtil.conversionData(new TypeReference<GetYhVo>() {
+                    });
                     Long yh1Id = yh1.getId();
                     xs.setYhId(yh1Id);
                     StuDTO dto = xsService.selectByCondition(null, lxdh, null);
-                    if (dto != null) {
-                        //存在,则更新
-                        xs.setId(dto.getId());
-                        if (updateXsAndAddPcXs(xs,pcId)) {
-                            count++;
-                        } else {
-                            throw new WebException(INSERT_FAIL);
-                        }
-                    } else {
-                        //不存在.则新增
-                        if (addXsAndPcXs(xs,pcId)) {
-                            count++;
-                        } else {
-                            throw new WebException(INSERT_FAIL);
-                        }
-                    }
+                    insertOrUpfateXs(xs, yh1Id, dto);
                 }
             } else {
                 throw new ServiceException(PHONE_NUMBER_ISEMPTY_ERROR);
@@ -416,5 +422,114 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+
+    /**
+     * 新增
+     * @param stuDTO
+     * @return
+     */
+    private boolean addXsAndPcXs(Xs stuDTO) {
+        Xs xs = new Xs();
+        stuDTO.setCjr(getUserId());
+        stuDTO.setGxr(getUserId());
+        BeanUtils.copyProperties(stuDTO,xs);
+        if (xsService.save(xs)) {
+
+            if (pcId != null) {
+                PcXs pcXs = new PcXs();
+                pcXs.setXsId(xs.getId());
+                pcXs.setPcId(pcId);
+                return pcXsService.save(pcXs);
+            }
+        }
+        return false;
+    }
+    private void addXscjAndSj(StuDTO dto){
+        //添加学生成绩表和实践表
+        XsCjDTO xsCjDTO=new XsCjDTO();
+        xsCjDTO.setXsId(dto.getId());
+        xsCjDTO.setPcId(dto.getPcIds().get(0));
+        xsCjDTO.setType(1);
+        xsCjService.add(xsCjDTO);
+        SjDTO sjDTO=new SjDTO();
+        sjDTO.setXsId(dto.getId());
+        sjDTO.setPcId(dto.getPcIds().get(0));
+        sjService.add(sjDTO);
+    }
+    /**
+     * 新增/更新学生
+     * @param stuDTO
+     * @param yhId
+     * @param dto
+     * @return
+     */
+    private boolean insertOrUpfateXs(Xs stuDTO, Long yhId, StuDTO dto) {
+        if (dto != null) {
+            stuDTO.setId(dto.getId());
+            //存在,则更新
+            boolean b = updateXsAndAddPcXs(stuDTO);
+            //新增关联关系到学生成绩表
+            addXsCj(dto);
+            return b;
+        } else {
+            //不存在.则新增
+            stuDTO.setYhId(yhId);
+            if (addXsAndPcXs(stuDTO)) {
+                StuDTO dto1 = selectByCondition(null, null, stuDTO.getYhId());
+                addXsCj(dto1);
+                return true;
+            }
+            return false;
+        }
+    }
+    /**
+     * 新增学生成绩关联关系
+     * @param dto
+     */
+    private void addXsCj(StuDTO dto) {
+        XsCjDTO xsCjDTO = new XsCjDTO();
+        xsCjDTO.setXsId(dto.getId());
+        xsCjDTO.setPcId(dto.getPcIds().get(0));
+        xsCjDTO.setType(2);
+        xsCjService.add(xsCjDTO);
+    }
+    private StuDTO selectByCondition(String xh,String lxdh, Long yhId) {
+        log.info("【人才培养 - 根据学号:{},;联系电话:{},用户id:{}查询学员信息】",xh,lxdh,yhId);
+        QueryWrapper<Xs> xsQueryWrapper = new QueryWrapper<>();
+        xsQueryWrapper.eq("sfsc",false)
+                .eq(org.apache.commons.lang3.StringUtils.isNotBlank(xh),"xh",xh)
+                .eq(org.apache.commons.lang3.StringUtils.isNotBlank(lxdh),"lxdh",lxdh)
+                .eq(yhId != null,"yh_id",yhId);
+        Xs xs = xsMapper.selectOne(xsQueryWrapper);
+        if (xs == null) {
+            return null;
+        }
+        StuDTO stuDTO = new StuDTO();
+        BeanUtils.copyProperties(xs,stuDTO);
+        List<Long> pcIds = pcXsMapper.selectByXsId(xs.getId());
+        stuDTO.setPcIds(pcIds);
+        return stuDTO;
+    }
+    /**
+     * 更新
+     * @param stuDTO
+     * @return
+     */
+    private boolean updateXsAndAddPcXs(Xs stuDTO) {
+        Xs xs = new Xs();
+        stuDTO.setGxr(getUserId());
+        BeanUtils.copyProperties(stuDTO,xs);
+        if (xsService.updateById(xs)) {
+
+            if (pcId != null) {
+                PcXs pcXs = new PcXs();
+                pcXs.setXsId(xs.getId());
+                pcXs.setPcId(pcId);
+                return pcXsService.save(pcXs);
+            }
+        }
+        return false;
     }
 }

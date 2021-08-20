@@ -31,6 +31,7 @@ import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.itts.personTraining.model.zj.ZjListener;
 import com.itts.personTraining.service.excel.ExcelService;
 import com.itts.personTraining.service.kc.KcService;
+import com.itts.personTraining.service.pcXs.PcXsService;
 import com.itts.personTraining.service.sj.SjService;
 import com.itts.personTraining.service.sz.SzService;
 import com.itts.personTraining.service.xs.XsService;
@@ -99,6 +100,8 @@ public class ExcelServiceImpl implements ExcelService {
     private KcMapper kcMapper;
     @Resource
     private ZjMapper zjMapper;
+    @Resource
+    private PcXsService pcXsService;
 
 
     @Resource
@@ -120,6 +123,9 @@ public class ExcelServiceImpl implements ExcelService {
         xsListener.setRedisTemplate(redisTemplate);
         xsListener.setSzService(szService);
         xsListener.setXsService(xsService);
+        xsListener.setPcXsService(pcXsService);
+        xsListener.setSjService(sjService);
+        xsListener.setXsCjService(xsCjService);
         xsListener.setPcId(pcId);
         xsListener.setJylx(jylx);
         xsListener.setPch(pch);
