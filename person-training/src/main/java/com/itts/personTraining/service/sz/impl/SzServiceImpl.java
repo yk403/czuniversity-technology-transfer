@@ -91,7 +91,6 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             szQueryWrapper.eq("sfsc",false)
                     .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
                     .eq(StringUtils.isNotBlank(hyly),"hyly", hyly)
-                    .eq(fjjgId != null, "fjjg_id", fjjgId)
                     .eq(groupId != null, "ssjg_id", groupId)
                     .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
                     .orderByDesc("cjsj");

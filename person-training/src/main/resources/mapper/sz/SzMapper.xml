@@ -16,6 +16,7 @@
         <result column="zzmm" property="zzmm" />
         <result column="whcd" property="whcd" />
         <result column="yx" property="yx" />
+        <result column="ssjg_id" property="ssjgId" />
         <result column="gbzw" property="gbzw" />
         <result column="cszy_one" property="cszyOne" />
         <result column="cszy_two" property="cszyTwo" />
@@ -35,7 +36,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, yx, dsbh, dsxm, dh, xb, sfzh, jg, csrq, mz, zzmm, whcd, yx, gbzw, cszy_one, cszy_two, cszy_three, jszc, dwdh, zzdh, hxwsj, hxlyx, hxlsj, sxzy, zgxl, pzsdny, pzbdny, dssqsny, dbsqsny, zgzt, dslb, sczt, cjsj, cjr, gxsj, gxr
+        id, yx, dsbh, dsxm, dh, xb, sfzh, jg, csrq, mz, zzmm, whcd, yx, ssjg_id, gbzw, cszy_one, cszy_two, cszy_three, jszc, dwdh, zzdh, hxwsj, hxlyx, hxlsj, sxzy, zgxl, pzsdny, pzbdny, dssqsny, dbsqsny, zgzt, dslb, sczt, cjsj, cjr, gxsj, gxr
     </sql>
     <select id="getSzByYhId" resultType="com.itts.personTraining.model.sz.Sz">
         select *

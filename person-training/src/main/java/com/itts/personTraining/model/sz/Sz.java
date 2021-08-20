@@ -41,11 +41,6 @@ public class Sz implements Serializable {
     private String yx;
 
     /**
-     * 父级机构id
-     */
-    private Long fjjgId;
-
-    /**
      * 所属机构id
      */
     private Long ssjgId;
