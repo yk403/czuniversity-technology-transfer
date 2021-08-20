@@ -302,13 +302,14 @@ public class ExcelServiceImpl implements ExcelService {
      * @return
      */
     @Override
-    public ResponseUtil importZj(MultipartFile file, Integer headRowNumber, String token) {
+    public ResponseUtil importZj(MultipartFile file, Integer headRowNumber, Long jgId, String token) {
         ZjListener zjListener = new ZjListener();
         zjListener.setZjService(zjService);
         zjListener.setYhService(yhService);
         zjListener.setXyService(xyService);
         zjListener.setSzMapper(szMapper);
         zjListener.setZjMapper(zjMapper);
+        zjListener.setJgId(jgId);
         zjListener.setToken(token);
         try{
             EasyExcel.read(file.getInputStream(), ZjDTO.class, zjListener).headRowNumber(headRowNumber).sheet().doRead();

@@ -44,6 +44,7 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
     private StringBuilder result = new StringBuilder();
     private Integer count = 0;
     private String token;
+    private Long jgId;
     @Resource
     private SzMapper szMapper;
     @Resource
@@ -72,6 +73,10 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
         //编号
         if (!StringUtils.isBlank(data.getBh())) {
             zj.setBh(data.getBh());
+        }
+        //机构ID
+        if (jgId != null) {
+            zj.setJgId(jgId);
         }
         //姓名
         if (!StringUtils.isBlank(data.getXm())) {
