@@ -82,6 +82,15 @@ public class JgglController {
 
         return ResponseUtil.success(jggl);
     }
+    @ApiOperation(value = "获取当前机构id下所有子机构信息")
+    @GetMapping("/find/children/by/id/")
+    public ResponseUtil findChildrenByCode(@RequestParam("id") Long id){
+
+        Jggl jggl = jgglService.get(id);
+        List<Jggl> jgglList = jgglService.list(new QueryWrapper<Jggl>().likeRight("jgbm", jggl.getJgbm()).eq("sfsc", false));
+
+        return ResponseUtil.success(jgglList);
+    }
 
     /**
      * 查询机构，通过名称和编码

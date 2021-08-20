@@ -1,8 +1,10 @@
 package com.itts.personTraining.feign.userservice;
 
 import com.itts.common.utils.common.ResponseUtil;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
@@ -25,4 +27,16 @@ public interface JgglFeignService {
      */
     @GetMapping(ADMIN_BASE_URL + "/v1/jggl/find/children/by/code/")
     ResponseUtil findChildrenByCode(@RequestParam("code") String code);
+
+
+    @GetMapping(ADMIN_BASE_URL + "/v1/jggl/find/children/by/id/")
+    ResponseUtil findChildrenById(@RequestParam("id") Long id);
+    /**
+     * 获取详情
+     *
+     * @param id
+     * @author fl
+     */
+    @GetMapping(ADMIN_BASE_URL + "/v1/jggl/get/{id}")
+    ResponseUtil get(@PathVariable("id") Long id);
 }
