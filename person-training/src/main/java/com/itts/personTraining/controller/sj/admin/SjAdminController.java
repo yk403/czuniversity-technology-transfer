@@ -46,8 +46,9 @@ public class SjAdminController {
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "pcId", required = false) Long pcId,
                                    @RequestParam(value = "sjlx", required = false) String sjlx,
-                                   @RequestParam(value = "name", required = false) String name) {
-        return ResponseUtil.success(sjService.findByPage(pageNum, pageSize, pcId, sjlx, name));
+                                   @RequestParam(value = "name", required = false) String name,
+                                   @RequestParam(value = "export", required = false) Integer export) {
+        return ResponseUtil.success(sjService.findByPage(pageNum, pageSize, pcId, sjlx, name, export));
     }
 
     /**

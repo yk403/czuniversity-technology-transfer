@@ -51,9 +51,10 @@ public interface SjService extends IService<Sj> {
      * @param pcId
      * @param sjlx
      * @param name
+     * @param export
      * @return
      */
-    PageInfo<SjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String sjlx, String name);
+    PageInfo<SjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String sjlx, String name, Integer export);
 
     /**
      * 删除实践
@@ -94,4 +95,5 @@ public interface SjService extends IService<Sj> {
      * @return
      */
     List<SjDTO> findByCategory(Long pcId);
+
 }
