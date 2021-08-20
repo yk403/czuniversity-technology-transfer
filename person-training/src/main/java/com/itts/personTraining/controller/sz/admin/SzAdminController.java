@@ -46,8 +46,8 @@ public class SzAdminController {
                                    @RequestParam(value = "name", required = false) String name,
                                    @RequestParam(value = "dslb", required = false) String dslb,
                                    @RequestParam(value = "hyly", required = false) String hyly,
-                                   @RequestParam(value = "fjjgId") Long fjjgId,
-                                   @RequestParam(value = "jglx") String jglx) {
+                                   @RequestParam(value = "fjjgId", required = false) Long fjjgId,
+                                   @RequestParam(value = "jglx", required = false) String jglx) {
         return ResponseUtil.success(szService.findByPage(pageNum, pageSize, name, dslb, hyly, fjjgId, jglx));
     }
 
