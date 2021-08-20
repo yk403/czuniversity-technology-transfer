@@ -32,6 +32,7 @@
         from t_sj sj left join t_xs xs on (xs.id=sj.xs_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=sj.pc_id)
         where sj.sfsc = false and xs.sfsc = false and pc.sfsc = false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
+        <if test="export != null"> and sj.sfxf = true </if>
         <if test="sjlx != null and sjlx != ''"> and sj.sjlx = #{sjlx} </if>
         <if test="name != null and name != ''"> and (xs.xm like concat('%',trim(#{name}),'%') or xs.xh like concat('%',trim(#{name}),'%'))</if>
         order by sj.sfxf asc, sj.cjsj desc

@@ -22,9 +22,10 @@ public interface SjMapper extends BaseMapper<Sj> {
      * 条件查询实践信息
      * @param pcId
      * @param sjlx
+     * @param export
      * @return
      */
-    List<SjDTO> getByCondition(@Param("pcId") Long pcId, @Param("sjlx") String sjlx, @Param("name") String name);
+    List<SjDTO> getByCondition(@Param("pcId") Long pcId, @Param("sjlx") String sjlx, @Param("name") String name, @Param("export") Integer export);
 
     /**
      * 条件查询实践信息

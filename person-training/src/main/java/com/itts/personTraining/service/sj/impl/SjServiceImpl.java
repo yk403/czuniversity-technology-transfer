@@ -89,13 +89,14 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
      * @param pageSize
      * @param pcId
      * @param sjlx
+     * @param export
      * @return
      */
     @Override
-    public PageInfo<SjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String sjlx, String name) {
-        log.info("【人才培养 - 根据pcId:{},实践类型:{},姓名/学号:{}获取实践列表】",pcId,sjlx,name);
+    public PageInfo<SjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String sjlx, String name, Integer export) {
+        log.info("【人才培养 - 根据pcId:{},实践类型:{},姓名/学号:{}获取实践列表,是否导出:{}】",pcId,sjlx,name,export);
         PageHelper.startPage(pageNum, pageSize);
-        List<SjDTO> sjDTOs = sjMapper.getByCondition(pcId, sjlx, name);
+        List<SjDTO> sjDTOs = sjMapper.getByCondition(pcId, sjlx, name, export);
         return new PageInfo<>(sjDTOs);
     }
 
@@ -365,7 +366,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     @Override
     public List<SjDTO> getAll() {
         log.info("【人才培养 - 查询所有实践】");
-        List<SjDTO> sjDTOs = sjMapper.getByCondition(null,null,null);
+        List<SjDTO> sjDTOs = sjMapper.getByCondition(null,null,null,null);
         return sjDTOs;
     }
 
