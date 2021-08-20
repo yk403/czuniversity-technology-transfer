@@ -22,9 +22,11 @@ import com.itts.personTraining.mapper.tzXs.TzXsMapper;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pcXs.PcXs;
+import com.itts.personTraining.model.sj.Sj;
 import com.itts.personTraining.model.sjzd.Sjzd;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.mapper.xs.XsMapper;
+import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.model.yh.Yh;
 import com.itts.personTraining.request.feign.UpdateUserRequest;
@@ -644,6 +646,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         Xs xs = new Xs();
         BeanUtils.copyProperties(stuDTO,xs);
         if (xsService.updateById(xs)) {
+            deleteXscjAndSj(stuDTO);
             List<Long> pcIds = stuDTO.getPcIds();
             if (pcIds != null && pcIds.size() > 0) {
                 HashMap<String, Object> map = new HashMap<>();
@@ -720,6 +723,13 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         }
         return false;
     }
+    /***
+    * @Description: 添加学生同时添加成绩表和实践表
+    * @Param: [dto]
+    * @return: void
+    * @Author: yukai
+    * @Date: 2021/8/20
+    */
     private void addXscjAndSj(StuDTO dto){
         //添加学生成绩表和实践表
         XsCjDTO xsCjDTO=new XsCjDTO();
@@ -731,5 +741,36 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         sjDTO.setXsId(dto.getId());
         sjDTO.setPcId(dto.getPcIds().get(0));
         sjService.add(sjDTO);
+    }
+    /**
+    * @Description: 删除学生表时同时删除成绩表和实践表
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/8/20
+    */
+    private void deleteXscjAndSj(StuDTO dto){
+        QueryWrapper<XsCj> xsCjQueryWrapper = new QueryWrapper<>();
+        xsCjQueryWrapper.eq("xs_id",dto.getId())
+                .eq("sfsc",false);
+        List<XsCj> xsCjs=xsCjMapper.selectList(xsCjQueryWrapper);
+        if(xsCjs!=null){
+            for (XsCj xsCj:xsCjs) {
+                xsCj.setSfsc(true);
+                xsCj.setGxr(getUserId());
+                xsCjMapper.updateById(xsCj);
+            }
+        }
+        QueryWrapper<Sj> sjQueryWrapper = new QueryWrapper<>();
+        sjQueryWrapper.eq("xs_id",dto.getId())
+                .eq("sfsc",false);
+        List<Sj> sjs=sjMapper.selectList(sjQueryWrapper);
+        if(sjs!=null){
+            for (Sj sj:sjs) {
+                sj.setSfsc(true);
+                sj.setGxr(getUserId());
+                sjMapper.updateById(sj);
+            }
+        }
     }
 }
