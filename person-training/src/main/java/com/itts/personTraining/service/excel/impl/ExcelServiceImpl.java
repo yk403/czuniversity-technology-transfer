@@ -10,6 +10,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.*;
+import com.itts.personTraining.feign.userservice.SjzdFeignService;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
@@ -107,6 +108,8 @@ public class ExcelServiceImpl implements ExcelService {
     @Resource
     private RedisTemplate redisTemplate;
 
+    @Resource
+    private SjzdFeignService sjzdFeignService;
     /**
      * 导入学员Excel
      * @param file
@@ -126,6 +129,7 @@ public class ExcelServiceImpl implements ExcelService {
         xsListener.setPcXsService(pcXsService);
         xsListener.setSjService(sjService);
         xsListener.setXsCjService(xsCjService);
+        xsListener.setSjzdFeignService(sjzdFeignService);
         xsListener.setPcId(pcId);
         xsListener.setJylx(jylx);
         xsListener.setPch(pch);
