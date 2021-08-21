@@ -176,9 +176,9 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         if(!StringUtils.isBlank(data.getByjl())){
             xs.setByjl(data.getByjl());
         }
-        if(!StringUtils.isBlank(data.getRxrq().toString())){
-            xs.setRxrq(data.getRxrq());
-        }
+
+            xs.setRxrq(rxrq);
+
         if(!StringUtils.isBlank(data.getLxdh())){
             xs.setLxdh(data.getLxdh());
         }

@@ -202,9 +202,9 @@ public class ExcelServiceImpl implements ExcelService {
                 continue;
             }
 
-            if(xlXwCjDTO.getPcId()!=null){
-                xsCj.setPcId(xlXwCjDTO.getPcId());
-            }
+
+            xsCj.setPcId(pcId);
+
             if(!StringUtils.isBlank(xlXwCjDTO.getXh())){
                 xsCj.setXsId(xs.getId());
             }
@@ -219,7 +219,7 @@ public class ExcelServiceImpl implements ExcelService {
             xsCj.setGxsj(new Date());
             QueryWrapper<XsCj> xsCjQueryWrapper = new QueryWrapper<>();
             xsCjQueryWrapper.eq("sfsc",false)
-                    .eq("pc_id",xlXwCjDTO.getPcId())
+                    .eq("pc_id",pcId)
             .eq("xs_id",xs.getId());
             if(xsCjMapper.selectList(xsCjQueryWrapper).isEmpty()){
                 xsCjService.save(xsCj);
