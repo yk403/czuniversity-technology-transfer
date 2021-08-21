@@ -16,11 +16,16 @@ import com.itts.personTraining.dto.SjDTO;
 import com.itts.personTraining.dto.StuDTO;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsDTO;
+import com.itts.personTraining.enums.SsmkEnum;
+import com.itts.personTraining.feign.userservice.SjzdFeignService;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.pcXs.PcXs;
+import com.itts.personTraining.model.sj.Sj;
+import com.itts.personTraining.model.sjzd.Sjzd;
 import com.itts.personTraining.model.sz.Sz;
+import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.model.yh.GetYhVo;
 import com.itts.personTraining.model.yh.Yh;
 import com.itts.personTraining.service.pcXs.PcXsService;
@@ -42,8 +47,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -90,6 +97,8 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
     private XsCjService xsCjService;
     @Resource
     private SjService sjService;
+    @Resource
+    private SjzdFeignService sjzdFeignService;
 
     public static XsListener xsListener;
 
@@ -122,9 +131,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         if(!StringUtils.isBlank(data.getCsrq().toString())){
             xs.setCsrq(data.getCsrq());
         }
-        if(!StringUtils.isBlank(data.getXslbId())){
-            xs.setXslbId(data.getXslbId());
-        }
+
         if(!StringUtils.isBlank(data.getXslbmc())){
             xs.setXslbmc(data.getXslbmc());
         }
@@ -205,6 +212,54 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         throw exception;
     }
     private void save(Xs xs) {
+        ResponseUtil  list1= sjzdFeignService.getList(null, null, SsmkEnum.USER_TYPE.getKey());
+        List<Sjzd> sjzd1 = new ArrayList<>();
+        if(list1.getErrCode().intValue() == 0){
+            sjzd1= list1.conversionData(new TypeReference<List<Sjzd>>() {});
+        }
+
+        ResponseUtil list2 = sjzdFeignService.getList(null, null, SsmkEnum.POLITICS_STATUS.getKey());
+        List<Sjzd> sjzd2 = new ArrayList<>();
+        if(list2.getErrCode().intValue() == 0){
+            sjzd2= list2.conversionData(new TypeReference<List<Sjzd>>() {});
+        }
+
+        ResponseUtil list3 = sjzdFeignService.getList(null, null, SsmkEnum.STUDY_TYPE.getKey());
+        List<Sjzd> sjzd3 = new ArrayList<>();
+        if(list3.getErrCode().intValue() == 0){
+            sjzd3= list3.conversionData(new TypeReference<List<Sjzd>>() {});
+        }
+
+        ResponseUtil response4 = sjzdFeignService.getList(null, null, SsmkEnum.STUDY_MODE.getKey());
+        List<Sjzd> data4=new ArrayList<Sjzd>();
+        if(response4.getErrCode().intValue() == 0){
+            data4= response4.conversionData(new TypeReference<List<Sjzd>>() {});
+        }
+        for (Sjzd sjzd : sjzd1) {
+            if(Objects.equals(sjzd.getZdmc(),xs.getXslbmc())){
+                xs.setXslbmc(sjzd.getZdbm());
+                break;
+            }
+        }
+        for (Sjzd sjzd : sjzd2) {
+            if(Objects.equals(sjzd.getZdmc(),xs.getZzmm())){
+                xs.setZzmm(sjzd.getZdbm());
+                break;
+            }
+        }
+        for (Sjzd sjzd : sjzd3) {
+            if(Objects.equals(sjzd.getZdmc(),xs.getRxfs())){
+                xs.setRxfs(sjzd.getZdbm());
+                break;
+            }
+        }
+        for (Sjzd sjzd : data4) {
+            if(Objects.equals(sjzd.getZdmc(),xs.getXxxs())){
+                xs.setXxxs(sjzd.getZdbm());
+                break;
+            }
+        }
+
         if (ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
             //说明是学历学位教育
             xs.setXslbmc(POSTGRADUATE.getKey());
@@ -216,7 +271,6 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
 
                 Yh yh = new Yh();
                 String xm = xs.getXm();
-                Long jgId = xs.getJgId();
                 //String lxdh = stuDTO.getLxdh();
                 String yhlx = IN.getKey();
                 String yhlb = POSTGRADUATE.getKey();
@@ -272,10 +326,16 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
                     yh.setLxdh(lxdh);
-                    Object data1 = yhService.rpcAdd(yh, token).getData();
-                    if (data1 == null) {
-                        throw new WebException(USER_INSERT_ERROR);
+                    Object data1=1;
+                    try {
+                        data1 = yhService.rpcAdd(yh, token).getData();
+                        if (data1 == null) {
+                            throw new WebException(USER_INSERT_ERROR);
+                        }
+                    } catch (Exception e) {
+                        log.info(e.getMessage());
                     }
+
                     Yh yh1 = JSONObject.parseObject(JSON.toJSON(data1).toString(), Yh.class);
                     Long yh1Id = yh1.getId();
                     xs.setYhId(yh1Id);
@@ -316,8 +376,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                 String xh = jylx + org.apache.commons.lang3.StringUtils.replace(DateUtils.toString(rxrq),"/","") + String.format("%03d", Long.parseLong(bh));
                 xs.setXh(xh);
                 String xm = xs.getXm();
-                //TODO 暂时是前端传,批量导入都是同一个机构id
-                Long jgId = xs.getJgId();
+
                 String lxdh = xs.getLxdh();
                 String yhlx = IN.getKey();
                 String yhlb = BROKER.getKey();
@@ -383,7 +442,13 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                 PcXs pcXs = new PcXs();
                 pcXs.setXsId(xs.getId());
                 pcXs.setPcId(pcId);
-                return pcXsMapper.insert(pcXs) > 0;
+                PcXs one = pcXsService.getOne(new QueryWrapper<PcXs>().eq("pc_id", pcId).eq("xs_id", xs.getId()));
+                if(one !=null){
+                    return true;
+                }else {
+                    return pcXsMapper.insert(pcXs) > 0;
+                }
+
             }
         }
         return false;
@@ -403,7 +468,12 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                 PcXs pcXs = new PcXs();
                 pcXs.setXsId(xs.getId());
                 pcXs.setPcId(pcId);
-                return pcXsMapper.insert(pcXs) > 0;
+                PcXs one = pcXsService.getOne(new QueryWrapper<PcXs>().eq("pc_id", pcId).eq("xs_id", xs.getId()));
+                if(one !=null){
+                    return true;
+                }else {
+                    return pcXsMapper.insert(pcXs) > 0;
+                }
             }
         }
         return false;
@@ -441,7 +511,12 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                 PcXs pcXs = new PcXs();
                 pcXs.setXsId(xs.getId());
                 pcXs.setPcId(pcId);
-                return pcXsService.save(pcXs);
+                PcXs one = pcXsService.getOne(new QueryWrapper<PcXs>().eq("pc_id", pcId).eq("xs_id", xs.getId()));
+                if(one !=null){
+                    return true;
+                }else {
+                    return pcXsMapper.insert(pcXs) > 0;
+                }
             }
         }
         return false;
@@ -450,13 +525,29 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         //添加学生成绩表和实践表
         XsCjDTO xsCjDTO=new XsCjDTO();
         xsCjDTO.setXsId(dto.getId());
-        xsCjDTO.setPcId(dto.getPcIds().get(0));
+        xsCjDTO.setPcId(pcId);
         xsCjDTO.setType(1);
-        xsCjService.add(xsCjDTO);
+        XsCj xsCj = new XsCj();
+        BeanUtils.copyProperties(xsCjDTO,xsCj);
+        XsCj one = xsCjService.getOne(new QueryWrapper<XsCj>().eq("pc_id", pcId).eq("xs_id", dto.getId()).eq("sfsc", false));
+        if(one !=null){
+            xsCjService.updateById(xsCj);
+        }else {
+            xsCjService.add(xsCjDTO);
+        }
+        Sj one1 = sjService.getOne(new QueryWrapper<Sj>().eq("pc_id", pcId).eq("xs_id", dto.getId()).eq("sfsc", false));
+
         SjDTO sjDTO=new SjDTO();
         sjDTO.setXsId(dto.getId());
-        sjDTO.setPcId(dto.getPcIds().get(0));
-        sjService.add(sjDTO);
+        sjDTO.setPcId(pcId);
+        Sj sj = new Sj();
+        BeanUtils.copyProperties(sjDTO,sj);
+        if(one1 != null){
+            sjService.updateById(sj);
+        }else {
+            sjService.add(sjDTO);
+        }
+
     }
     /**
      * 新增/更新学生
@@ -491,9 +582,16 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
     private void addXsCj(StuDTO dto) {
         XsCjDTO xsCjDTO = new XsCjDTO();
         xsCjDTO.setXsId(dto.getId());
-        xsCjDTO.setPcId(dto.getPcIds().get(0));
+        xsCjDTO.setPcId(pcId);
         xsCjDTO.setType(2);
-        xsCjService.add(xsCjDTO);
+        XsCj xsCj = new XsCj();
+        BeanUtils.copyProperties(xsCjDTO,xsCj);
+        XsCj one = xsCjService.getOne(new QueryWrapper<XsCj>().eq("pc_id", pcId).eq("xs_id", dto.getId()).eq("sfsc", false));
+        if(one !=null){
+            xsCjService.updateById(xsCj);
+        }else {
+            xsCjService.add(xsCjDTO);
+        }
     }
     private StuDTO selectByCondition(String xh,String lxdh, Long yhId) {
         log.info("【人才培养 - 根据学号:{},;联系电话:{},用户id:{}查询学员信息】",xh,lxdh,yhId);
@@ -526,8 +624,12 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
             if (pcId != null) {
                 PcXs pcXs = new PcXs();
                 pcXs.setXsId(xs.getId());
-                pcXs.setPcId(pcId);
-                return pcXsService.save(pcXs);
+                pcXs.setPcId(pcId); PcXs one = pcXsService.getOne(new QueryWrapper<PcXs>().eq("pc_id", pcId).eq("xs_id", xs.getId()));
+                if(one !=null){
+                    return true;
+                }else {
+                    return pcXsMapper.insert(pcXs) > 0;
+                }
             }
         }
         return false;

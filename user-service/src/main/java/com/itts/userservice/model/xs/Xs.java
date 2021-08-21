@@ -82,10 +82,7 @@ public class Xs implements Serializable {
     @ApiModelProperty(value = "出生日期", required = true)
     private Date csrq;
 
-    /**
-     * 学生类别ID (去除)
-     */
-    private String xslbId;
+
 
     /**
      * 学生类别名称 postgraduate - 研究生;	broker - 经纪人

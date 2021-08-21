@@ -12,7 +12,6 @@
         <result column="nj" property="nj" />
         <result column="xb" property="xb" />
         <result column="csrq" property="csrq" />
-        <result column="xslb_id" property="xslbId" />
         <result column="xslbmc" property="xslbmc" />
         <result column="sfzh" property="sfzh" />
         <result column="yjfx" property="yjfx" />
@@ -43,7 +42,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, xh, xm, yx, nj, xb, csrq, xslb_id, xslbmc, sfzh, yjfx, jg, mz, zzmm, rxfs, ybyyx, xz, dsbh, dsxm, yx, xxxs, byjl, rxrq, lxdh, jtdz, yzydm, yzy, zy_id, zymc, sfsc, cjsj, cjr, gxsj, gxr
+        id, xh, xm, yx, nj, xb, csrq, xslbmc, sfzh, yjfx, jg, mz, zzmm, rxfs, ybyyx, xz, dsbh, dsxm, yx, xxxs, byjl, rxrq, lxdh, jtdz, yzydm, yzy, zy_id, zymc, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
     <select id="findXsList" resultType="com.itts.personTraining.dto.StuDTO">
