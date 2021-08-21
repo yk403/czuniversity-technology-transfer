@@ -395,6 +395,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     xs.setId(dto.getId());
                     xs.setGxsj(new Date());
                     insertOrUpfateXs(xs, yhId, dto);
+                    count++;
                 } else {
                     //说明用户表不存在该用户信息,则用户表新增,学生表查询判断是否存在
                     Yh yh = new Yh();
@@ -416,6 +417,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     xs.setYhId(yh1Id);
                     StuDTO dto = xsService.selectByCondition(null, lxdh, null);
                     insertOrUpfateXs(xs, yh1Id, dto);
+                    count++;
                 }
             } else {
                 throw new ServiceException(PHONE_NUMBER_ISEMPTY_ERROR);
