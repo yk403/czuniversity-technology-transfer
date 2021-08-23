@@ -72,9 +72,9 @@ public class ExcelAdminController {
      */
     @PostMapping("/importXlXwCj")
     @ApiOperation(value = "学历学位成绩导入")
-    public ResponseUtil importXlXwCj(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, @RequestParam(value = "pcId")Long pcId, @RequestParam(value = "jylx")String jylx, HttpServletRequest request){
+    public ResponseUtil importXlXwCj(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, @RequestParam(value = "pcId")Long pcId, HttpServletRequest request){
         try{
-            return excelService.importXlXwCj(file, headRowNumber, pcId, jylx, request.getHeader("token"));
+            return excelService.importXlXwCj(file, headRowNumber, pcId,  request.getHeader("token"));
         }catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());

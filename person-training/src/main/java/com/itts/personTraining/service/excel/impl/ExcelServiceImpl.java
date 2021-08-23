@@ -43,6 +43,7 @@ import com.itts.personTraining.service.yh.YhService;
 import com.itts.personTraining.service.zj.ZjService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -177,7 +178,7 @@ public class ExcelServiceImpl implements ExcelService {
      * @return
      */
     @Override
-    public ResponseUtil importXlXwCj(MultipartFile file, Integer headRowNumber, Long pcId, String jylx, String token) {
+    public ResponseUtil importXlXwCj(MultipartFile file, Integer headRowNumber, Long pcId, String token) {
         XlXwCjListener xlXwCjListener = new XlXwCjListener();
         xlXwCjListener.setHeadRowNumber(headRowNumber);
         try {
@@ -190,6 +191,10 @@ public class ExcelServiceImpl implements ExcelService {
             return ResponseUtil.error(SYSTEM_ERROR);
         }*/
         List<XlXwCjDTO> data = explainMergeData(xlXwCjListener.getData(), extraMergeInfoList, headRowNumber);
+        StringBuilder result=new StringBuilder();
+        Integer count=0;
+        StringBuilder result1=new StringBuilder();
+        Integer count1=0;
         //存储excel读取的数据
         for (int i = 0; i < data.size(); i++) {
             XlXwCjDTO xlXwCjDTO = data.get(i);
@@ -221,10 +226,17 @@ public class ExcelServiceImpl implements ExcelService {
             xsCjQueryWrapper.eq("sfsc",false)
                     .eq("pc_id",pcId)
             .eq("xs_id",xs.getId());
-            if(xsCjMapper.selectList(xsCjQueryWrapper).isEmpty()){
+            XsCj xsCj1 = xsCjMapper.selectOne(xsCjQueryWrapper);
+
+            if(xsCj1 == null){
                 xsCjService.save(xsCj);
+                count++;
+
             }else {
-                xsCjService.updateById(xsCj);
+                BeanUtils.copyProperties(xsCj,xsCj1,"cjr","cjsj","id");
+                xsCjService.updateById(xsCj1);
+                count++;
+
             }
             //存入学生课程成绩表
             QueryWrapper<Kc> kcQueryWrapper = new QueryWrapper<>();
@@ -277,12 +289,22 @@ public class ExcelServiceImpl implements ExcelService {
             XsKcCj one = xsKcCjService.getOne(xsKcCjQueryWrapper);
             if(one == null){
                 xsKcCjService.save(xsKcCj);
+                count1++;
+
             }else {
+                BeanUtils.copyProperties(xsKcCj,one,"cjr","cjsj","id");
                 xsKcCjService.updateById(xsKcCj);
+                count1++;
             }
 
         }
-        return ResponseUtil.success();
+        result.append("导入完成，成功导入");
+        result.append(count);
+        result.append("条学生成绩数据");
+        result1.append("导入完成，成功导入");
+        result1.append(count1);
+        result1.append("条学生课程成绩数据");
+        return ResponseUtil.success(result.toString()+"***"+result1.toString());
     }
 
 
