@@ -4,6 +4,7 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
@@ -64,25 +65,20 @@ public class JxjyCjListener extends AnalysisEventListener<JxjyCjDTO> {
         ReadRowHolder rrh = analysisContext.readRowHolder();
         int rowIndex = rrh.getRowIndex() + 1;
         log.info("解析第" + rowIndex + "行数据:{}", JSON.toJSONString(data));
-        //判断是否是继续教育
-        if (!ADULT_EDUCATION.getKey().equals(jylx)) {
-            throw new WebException(EDU_TYPE_ERROR);
-        }
+
         XsCj xsCj = new XsCj();
         StuDTO stuDTO = xsService.selectByCondition(data.getXh(), null, null);
         if (stuDTO == null) {
             throw new WebException(STUDENT_MSG_NOT_EXISTS_ERROR);
         }
-        List<StuDTO> stuDTOList = pcXsMapper.selectStuByPcId(pcId);
-        if (stuDTOList.contains(data.getXh())) {
-            //综合成绩
-            if (!StringUtils.isBlank(data.getZhcj())) {
-                xsCj.setZhcj(data.getZhcj());
-                xsCj.setPcId(pcId);
-                xsCj.setXsId(stuDTO.getId());
-                save(xsCj);
-            }
+        if (!StringUtils.isBlank(data.getZhcj())) {
+            xsCj.setZhcj(data.getZhcj());
+            xsCj.setPcId(pcId);
+            xsCj.setXsId(stuDTO.getId());
+            xsCj.setType(2);
+            save(xsCj);
         }
+
     }
 
     @Override
@@ -100,17 +96,23 @@ public class JxjyCjListener extends AnalysisEventListener<JxjyCjDTO> {
     }
 
     private void save(XsCj xsCj) {
-        XsCjDTO xsCjDTO = xsCjMapper.selectByPcIdAndXsId(xsCj.getPcId(),xsCj.getXsId());
+        QueryWrapper<XsCj> xsCjQueryWrapper = new QueryWrapper<>();
+        xsCjQueryWrapper.eq("sfsc",false)
+                .eq("pc_id",pcId)
+                .eq("xs_id",xsCj.getXsId());
+        XsCj xsCjDTO = xsCjMapper.selectOne(xsCjQueryWrapper);
         if (xsCjDTO == null) {
             //新增
             xsCj.setCjr(getUserId());
             xsCj.setGxr(getUserId());
             xsCjMapper.insert(xsCj);
+            count++;
         } else {
             //更新
             xsCj.setId(xsCjDTO.getId());
             xsCj.setGxr(getUserId());
             xsCjMapper.updateById(xsCj);
+            count++;
         }
 
     }

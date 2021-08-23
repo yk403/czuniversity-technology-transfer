@@ -28,8 +28,8 @@ import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATIO
 import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
 
 /**
- * @Author: Austin
- * @Data: 2021/6/4
+ * @Author: fuli
+ * @Data: 2021/8/23
  * @Version: 1.0.0
  * @Description: 原专业成绩解析
  */
@@ -39,9 +39,6 @@ import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
 public class YzyCjListener extends AnalysisEventListener<YzyCjDTO> {
     private StringBuilder result = new StringBuilder();
     private Integer count = 0;
-    private String token;
-    private Long pcId;
-    private String jylx;
 
     @Resource
     private XsService xsService;
@@ -64,9 +61,7 @@ public class YzyCjListener extends AnalysisEventListener<YzyCjDTO> {
         int rowIndex = rrh.getRowIndex() + 1;
         log.info("解析第" + rowIndex + "行数据:{}", JSON.toJSONString(data));
         //判断是否是学历学位
-        if (!ACADEMIC_DEGREE_EDUCATION.getKey().equals(jylx)) {
-            throw new WebException(EDU_TYPE_ERROR);
-        }
+
 
 
     }
@@ -85,21 +80,7 @@ public class YzyCjListener extends AnalysisEventListener<YzyCjDTO> {
         throw exception;
     }
 
-    private void save(XsCj xsCj) {
-        XsCjDTO xsCjDTO = xsCjMapper.selectByPcIdAndXsId(xsCj.getPcId(),xsCj.getXsId());
-        if (xsCjDTO == null) {
-            //新增
-            xsCj.setCjr(getUserId());
-            xsCj.setGxr(getUserId());
-            xsCjMapper.insert(xsCj);
-        } else {
-            //更新
-            xsCj.setId(xsCjDTO.getId());
-            xsCj.setGxr(getUserId());
-            xsCjMapper.updateById(xsCj);
-        }
 
-    }
 
     public String getResult() {
         return result.toString();

@@ -32,6 +32,7 @@ public class ExcelAdminController {
     private ExcelService excelService;
     /**
      * 学员导入
+     * @Author: fuli
      */
     @PostMapping("/importXs")
     @ApiOperation(value = "学员导入")
@@ -69,12 +70,32 @@ public class ExcelAdminController {
 
     /**
      * 学历学位成绩导入
+     * @Author: fuli
      */
     @PostMapping("/importXlXwCj")
     @ApiOperation(value = "学历学位成绩导入")
-    public ResponseUtil importXlXwCj(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, @RequestParam(value = "pcId")Long pcId, HttpServletRequest request){
+    public ResponseUtil importXlXwCj(@RequestParam(value = "file") MultipartFile file,
+                                     @RequestParam(value = "headRowNumber")Integer headRowNumber,
+                                     @RequestParam(value = "pcId")Long pcId, HttpServletRequest request){
         try{
             return excelService.importXlXwCj(file, headRowNumber, pcId,  request.getHeader("token"));
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            return ResponseUtil.error(SYSTEM_UPLOAD_ERROR);
+        }
+    }
+    /**
+     * 原专业成绩导入
+     * @Author: fuli
+     */
+    @PostMapping("/importYzyCj")
+    @ApiOperation(value = "原专业成绩导入")
+    public ResponseUtil importYzyCj(@RequestParam(value = "file") MultipartFile file,
+                                     @RequestParam(value = "headRowNumber")Integer headRowNumber,
+                                     @RequestParam(value = "pcId")Long pcId, HttpServletRequest request){
+        try{
+            return excelService.importYzyCj(file, headRowNumber, pcId,  request.getHeader("token"));
         }catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
@@ -87,9 +108,12 @@ public class ExcelAdminController {
      */
     @PostMapping("/importJxjyCj")
     @ApiOperation(value = "继续教育成绩导入")
-    public ResponseUtil importJxjyCj(@RequestParam(value = "file") MultipartFile file, @RequestParam(value = "headRowNumber")Integer headRowNumber, @RequestParam(value = "pcId")Long pcId, @RequestParam(value = "jylx")String jylx, HttpServletRequest request){
+    public ResponseUtil importJxjyCj(@RequestParam(value = "file") MultipartFile file,
+                                     @RequestParam(value = "headRowNumber")Integer headRowNumber,
+                                     @RequestParam(value = "pcId")Long pcId,
+                                     HttpServletRequest request){
         try{
-            return excelService.importJxjyCj(file, headRowNumber, pcId, jylx, request.getHeader("token"));
+            return excelService.importJxjyCj(file, headRowNumber, pcId, request.getHeader("token"));
         }catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());

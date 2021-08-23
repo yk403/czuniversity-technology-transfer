@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Author: Austin
+ * @Author: fuli
  * @Data: 2021/6/3
  * @Version: 1.0.0
  * @Description: 学历学位成绩解析
