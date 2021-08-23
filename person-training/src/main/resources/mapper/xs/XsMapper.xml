@@ -38,7 +38,55 @@
         <result column="gxr" property="gxr" />
     </resultMap>
 
-
+    <resultMap id="ResultMap" type="com.itts.personTraining.dto.StuDTO">
+        <id column="id" property="id" />
+        <result column="yh_id" property="yhId" />
+        <result column="qyds_id" property="qydsId" />
+        <result column="yzyds_id" property="yzydsId" />
+        <result column="jg_id" property="jgId" />
+        <result column="yx" property="yx" />
+        <result column="jylx" property="jylx" />
+        <result column="xh" property="xh" />
+        <result column="xm" property="xm" />
+        <result column="nj" property="nj" />
+        <result column="lxdh" property="lxdh" />
+        <result column="xb" property="xb" />
+        <result column="csrq" property="csrq" />
+        <result column="xslb_id" property="xslbId" />
+        <result column="xslbmc" property="xslbmc" />
+        <result column="sfzh" property="sfzh" />
+        <result column="yjfx" property="yjfx" />
+        <result column="jg" property="jg" />
+        <result column="mz" property="mz" />
+        <result column="zzmm" property="zzmm" />
+        <result column="rxfs" property="rxfs" />
+        <result column="bmfs" property="bmfs" />
+        <result column="ybyyx" property="ybyyx" />
+        <result column="xz" property="xz" />
+        <result column="yzydsbh" property="yzydsbh" />
+        <result column="yzydsxm" property="yzydsxm" />
+        <result column="qydsbh" property="qydsbh" />
+        <result column="qydsxm" property="qydsxm" />
+        <result column="xxxs" property="xxxs" />
+        <result column="byjl" property="byjl" />
+        <result column="rxrq" property="rxrq" />
+        <result column="jtdz" property="jtdz" />
+        <result column="yzydm" property="yzydm" />
+        <result column="yzy" property="yzy" />
+        <result column="zy_id" property="zyId" />
+        <result column="zymc" property="zymc" />
+        <result column="sfsc" property="sfsc" />
+        <result column="cjsj" property="cjsj" />
+        <result column="cjr" property="cjr" />
+        <result column="gxsj" property="gxsj" />
+        <result column="gxr" property="gxr" />
+        <result column="jyxs" property="jyxs" />
+        <collection property="pcIds" ofType="long">
+            <constructor>
+                <arg column="tpx.pc_id"/>
+            </constructor>
+        </collection>
+    </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
@@ -46,7 +94,7 @@
     </sql>
 
     <select id="findXsList" resultType="com.itts.personTraining.dto.StuDTO">
-        select xs.*, sz.dsbh as yzydsbh, sz.dsxm as yzydsxm, tsz.dsbh as qydsbh, tsz.dsxm as qydsxm
+        select xs.id,xs.xm, sz.dsbh as yzydsbh, sz.dsxm as yzydsxm, tsz.dsbh as qydsbh, tsz.dsxm as qydsxm
         from t_xs xs left join t_sz sz on (xs.yzyds_id=sz.id) left join t_sz tsz on (xs.qyds_id=tsz.id) left join t_pc_xs tpx on (tpx.xs_id=xs.id)
         where xs.sfsc = false
             <if test="pcId != null">and tpx.pc_id = #{pcId}</if>
@@ -55,6 +103,7 @@
             <if test="qydsId != null and qydsId != ''" >and xs.qyds_id = #{qydsId}</if>
             <if test="yzydsId != null and yzydsId != ''" >and xs.yzyds_id = #{yzydsId}</if>
             <if test="name != null and name != ''">and (xs.xh like concat('%',trim(#{name}),'%') or xs.xm like concat('%',trim(#{name}),'%'))</if>
+        group by xs.id
         order by xs.cjsj desc
     </select>
     <select id="getByYhId" resultType="com.itts.personTraining.dto.XsMsgDTO">

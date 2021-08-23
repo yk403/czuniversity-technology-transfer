@@ -109,13 +109,13 @@ public class StuDTO {
     private Date csrq;
 
     /**
-     * 学生类别ID	postgraduate - 研究生;	broker - 经纪人
+     * 学生类别ID
      */
     @ApiModelProperty(value = "学生类别ID")
     private String xslbId;
 
     /**
-     * 学生类别名称
+     * 学生类别名称 postgraduate - 研究生;	broker - 经纪人
      */
     @ApiModelProperty(value = "学生类别名称", required = true)
     private String xslbmc;
