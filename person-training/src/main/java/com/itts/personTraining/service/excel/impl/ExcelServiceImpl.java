@@ -214,9 +214,7 @@ public class ExcelServiceImpl implements ExcelService {
                 xsCj.setXsId(xs.getId());
             }
             xsCj.setType(1);
-            if(!StringUtils.isBlank(xlXwCjDTO.getLwcj())){
-                xsCj.setLwcj(xlXwCjDTO.getLwcj());
-            }
+
             Long userId = getUserId();
             xsCj.setCjr(userId);
             xsCj.setGxr(userId);
@@ -247,21 +245,15 @@ public class ExcelServiceImpl implements ExcelService {
             if(kc==null){
                 continue;
             }
-            xsKcCj.setXsId(xs.getId());
+
+            XsCj xsCj2 = xsCjMapper.selectOne(xsCjQueryWrapper);
+
+            xsKcCj.setXsCjId(xsCj2.getId());
             xsKcCj.setKcId(kc.getId());
-            xsKcCj.setKclx(1);
-            if(!StringUtils.isBlank(xlXwCjDTO.getKcdm())){
-                xsKcCj.setKcdm(xlXwCjDTO.getKcdm());
-            }
-            xsKcCj.setKcmc(kc.getKcmc());
+            xsKcCj.setKclx(2);
+
             if(xlXwCjDTO.getSfbx()!=null){
                 xsKcCj.setSfbx(xlXwCjDTO.getSfbx());
-            }
-            if(xlXwCjDTO.getXwk()!=null){
-                xsKcCj.setXwk(xlXwCjDTO.getXwk());
-            }
-            if(xlXwCjDTO.getYzyxf()!=null){
-                xsKcCj.setYzyxf(xlXwCjDTO.getYzyxf());
             }
             if(xlXwCjDTO.getDqxf()!=null){
                 xsKcCj.setDqxf(xlXwCjDTO.getDqxf());
@@ -269,9 +261,7 @@ public class ExcelServiceImpl implements ExcelService {
             if(!StringUtils.isBlank(xlXwCjDTO.getCj())){
                 xsKcCj.setCj(xlXwCjDTO.getCj());
             }
-            if(!StringUtils.isBlank(xlXwCjDTO.getXxxq())){
-                xsKcCj.setXxxq(xlXwCjDTO.getXxxq());
-            }
+
             if(!StringUtils.isBlank(xlXwCjDTO.getCjsx())){
                 xsKcCj.setCjsx(xlXwCjDTO.getCjsx());
             }
@@ -283,7 +273,7 @@ public class ExcelServiceImpl implements ExcelService {
             xsKcCj.setCjsj(new Date());
             xsKcCj.setGxsj(new Date());
             QueryWrapper<XsKcCj> xsKcCjQueryWrapper = new QueryWrapper<>();
-            xsKcCjQueryWrapper.eq("xs_id",xs.getId())
+            xsKcCjQueryWrapper.eq("xs_cj_id",xsCj2.getId())
                     .eq("kc_id",kc.getId())
                     .eq("sfsc",false);
             XsKcCj one = xsKcCjService.getOne(xsKcCjQueryWrapper);
