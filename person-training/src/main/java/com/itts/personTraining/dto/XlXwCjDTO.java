@@ -62,7 +62,7 @@ public class XlXwCjDTO implements Serializable {
     /**
      * 学位课(0:否;1:是)
      */
-    @ExcelProperty(value = "学位课", index = 5)
+    @ExcelProperty(value = "1", index = 5)
     private Boolean xwk;
 
     /**
