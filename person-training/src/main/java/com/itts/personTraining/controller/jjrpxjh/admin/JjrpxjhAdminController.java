@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.jjrpxjh.Jjrpxjh;
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.itts.common.enums.ErrorCodeEnum.GROUNDING_EXISTS_ERROR;
 
 /**
  * <p>
@@ -102,6 +105,10 @@ public class JjrpxjhAdminController {
         Jjrpxjh old = jjrpxjhService.getById(id);
         if (old == null) {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+        int size = jjrpxjhService.list(new QueryWrapper<Jjrpxjh>().eq("sfsc", false).eq("sfsj", true)).size();
+        if (size == 1 & sfsj) {
+            throw new ServiceException(GROUNDING_EXISTS_ERROR);
         }
 
         Jjrpxjh jjrpxjh = jjrpxjhService.updateStatus(old, sfsj);
