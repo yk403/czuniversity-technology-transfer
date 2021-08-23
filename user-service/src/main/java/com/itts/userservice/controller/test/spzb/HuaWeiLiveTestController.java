@@ -3,6 +3,7 @@ package com.itts.userservice.controller.test.spzb;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.userservice.model.spzb.Spzb;
 import com.itts.userservice.response.thirdparty.GetAssetInfoResponse;
 import com.itts.userservice.service.spzb.thirdparty.HuaWeiLiveService;
 import org.apache.commons.lang3.StringUtils;
@@ -33,8 +34,9 @@ public class HuaWeiLiveTestController {
 
     @GetMapping("/deal/video/")
     public ResponseUtil testDealVideo(@RequestParam("assetId") String assetId) {
-
-        String result = huaWeiLiveService.dealLive(assetId);
+        Spzb spzb=new Spzb();
+        spzb.setMzId(assetId);
+        String result = huaWeiLiveService.dealLive(spzb);
         if (StringUtils.isNotBlank(result)) {
             return ResponseUtil.success();
         }
