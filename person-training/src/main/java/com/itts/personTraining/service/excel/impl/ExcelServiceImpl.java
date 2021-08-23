@@ -296,6 +296,18 @@ public class ExcelServiceImpl implements ExcelService {
         result1.append("条学生课程成绩数据");
         return ResponseUtil.success(result.toString()+"***"+result1.toString());
     }
+    /**
+     * 导入原专业成绩Excel
+     * @Author: fuli
+     * @param file
+     * @param headRowNumber
+     * @return
+     */
+    @Override
+    public ResponseUtil importYzyCj(MultipartFile file, Integer headRowNumber, Long pcId, String token) {
+
+        return null;
+    }
 
 
     /**
@@ -305,14 +317,13 @@ public class ExcelServiceImpl implements ExcelService {
      * @return
      */
     @Override
-    public ResponseUtil importJxjyCj(MultipartFile file, Integer headRowNumber, Long pcId, String jylx, String token) {
+    public ResponseUtil importJxjyCj(MultipartFile file, Integer headRowNumber, Long pcId, String token) {
         JxjyCjListener jxjyCjListener = new JxjyCjListener();
         jxjyCjListener.setXsService(xsService);
         jxjyCjListener.setPcXsMapper(pcXsMapper);
         jxjyCjListener.setXsCjMapper(xsCjMapper);
         jxjyCjListener.setToken(token);
         jxjyCjListener.setPcId(pcId);
-        jxjyCjListener.setJylx(jylx);
         try{
             EasyExcel.read(file.getInputStream(), JxjyCjDTO.class, jxjyCjListener).headRowNumber(headRowNumber).sheet().doRead();
             return ResponseUtil.success(jxjyCjListener.getResult());
