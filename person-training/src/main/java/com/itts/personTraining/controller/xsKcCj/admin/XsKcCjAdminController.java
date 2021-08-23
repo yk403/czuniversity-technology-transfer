@@ -54,6 +54,20 @@ public class XsKcCjAdminController {
         checkRequest(kclx);
         return ResponseUtil.success(xsKcCjService.getByXsCjId(xsCjId,kclx,xsId));
     }
+    /**
+     * Excel继续教育
+     * @author fuli
+     * @param
+     * @return
+     */
+    @GetMapping("/getJxjy")
+    @ApiOperation(value = "根据学生成绩id和课程类型查询学生课程成绩集合")
+    public ResponseUtil getByXsCjId(@RequestParam(value = "pcId",required = false) Long pcId,
+                                    @RequestParam(value = "jylx") String jylx) {
+
+        return ResponseUtil.success(xsKcCjService.getByPcId(pcId,jylx));
+    }
+
 
     /**
      * 更新学生课程成绩(原专业不可修改)

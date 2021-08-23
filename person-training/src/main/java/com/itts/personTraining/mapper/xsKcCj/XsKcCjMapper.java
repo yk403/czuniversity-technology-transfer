@@ -1,6 +1,7 @@
 package com.itts.personTraining.mapper.xsKcCj;
 
 import com.itts.personTraining.dto.XsKcCjDTO;
+import com.itts.personTraining.model.xsCj.XsCjExcel;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -83,4 +84,6 @@ public interface XsKcCjMapper extends BaseMapper<XsKcCj> {
      * @return
      */
     Integer getCountXf(@Param("xsCjId") Long xsCjId, @Param("kclx") String kclx);
+
+    List<XsCjExcel> findByJxjy(@Param("pcId") Long pcId, @Param("jylx") String jylx);
 }

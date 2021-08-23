@@ -5,6 +5,7 @@ import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.model.xsCj.XsCj;
+import com.itts.personTraining.model.xsCj.XsCjExcel;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
 import com.itts.personTraining.service.xsKcCj.XsKcCjService;
@@ -85,6 +86,18 @@ public class XsKcCjServiceImpl extends ServiceImpl<XsKcCjMapper, XsKcCj> impleme
             xsKcCjs.add(xsKcCj);
         }
         return xsKcCjService.updateBatchById(xsKcCjs);
+    }
+
+    /**
+     * @author fuli
+     * @param pcId
+     * @param jylx
+     * @return
+     */
+    @Override
+    public List<XsCjExcel> getByPcId(Long pcId,String jylx) {
+        List<XsCjExcel> jxjy = xsKcCjMapper.findByJxjy(pcId,jylx);
+        return jxjy;
     }
 
     /**
