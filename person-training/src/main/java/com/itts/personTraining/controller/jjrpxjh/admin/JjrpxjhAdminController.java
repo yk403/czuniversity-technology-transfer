@@ -107,7 +107,7 @@ public class JjrpxjhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         int size = jjrpxjhService.list(new QueryWrapper<Jjrpxjh>().eq("sfsc", false).eq("sfsj", true)).size();
-        if (size == 1 & sfsj) {
+        if (size == 1 && sfsj) {
             throw new ServiceException(GROUNDING_EXISTS_ERROR);
         }
 
