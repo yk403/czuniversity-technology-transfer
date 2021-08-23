@@ -7,16 +7,26 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.userservice.enmus.HuaWeiAssetTypeEnum;
+import com.itts.userservice.enmus.HuaWeiTranscodeStatusEnum;
+import com.itts.userservice.mapper.spzb.SpzbMapper;
 import com.itts.userservice.model.spzb.Spzb;
+import com.itts.userservice.response.thirdparty.GetAssetInfoResponse;
 import com.itts.userservice.response.thirdparty.LiveCallBackResponse;
 import com.itts.userservice.service.spzb.SpzbService;
+import com.itts.userservice.service.spzb.thirdparty.HuaWeiLiveService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -34,6 +44,10 @@ public class SpzbAdminController {
 
     @Autowired
     private SpzbService spzbService;
+    @Autowired
+    private SpzbMapper spzbMapper;
+    @Autowired
+    private HuaWeiLiveService huaWeiLiveService;
 
     /**
      * 获取列表 - 分页
@@ -160,7 +174,75 @@ public class SpzbAdminController {
 
         return ResponseUtil.success();
     }
+    /***
+    * @Description: 华为云自动转码失败转手动转码接口
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/8/23
+    */
+    @PutMapping("/transcode/")
+    @ApiOperation(value = "视频转码")
+    public ResponseUtil transcode(@RequestBody Spzb spzb) {
 
+        if (spzb.getId() == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+
+        checkSpzb(spzb);
+
+        Spzb checkResult = spzbService.getById(spzb.getId());
+        if (checkResult == null) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        if (checkResult.getSfsc()) {
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        //Spzb result = spzbService.update(spzb);
+        try {
+            log.info("【视频直播转码】视频直播转码");
+            String mzId=huaWeiLiveService.dealLive(checkResult);
+            log.info("【视频直播转码】视频直播转码完成，媒资ID：{}", mzId);
+            //处理成功
+            if (StringUtils.isNotBlank(mzId)) {
+                log.info("【视频直播转码】获取华为云媒资信息；媒资ID:{}", mzId);
+                GetAssetInfoResponse result = huaWeiLiveService.getVideoInfo(mzId, HuaWeiAssetTypeEnum.TRANSCODE_INFO.getKey());
+                log.info("【视频直播转码】获取华为云媒资信息, 数据信息：{}", JSONUtil.toJsonStr(result));
+                if (result != null) {
+                    GetAssetInfoResponse.TranscodeInfo transcodeInfo=result.getTranscodeInfo();
+                    if (transcodeInfo != null){
+                        //转码成功
+                        if (Objects.equals(transcodeInfo.getTranscodeStatus(), HuaWeiTranscodeStatusEnum.TRANSCODE_SUCCEED.getKey())) {
+                            log.info("【视频直播转码】视频转码完成");
+                            List<String> urls = transcodeInfo.getOutput().stream().map(GetAssetInfoResponse.Output::getUrl).collect(Collectors.toList());
+                            if (!CollectionUtils.isEmpty(urls)) {
+
+                                String str = "";
+                                for (String url : urls) {
+
+                                    str = str + url + ",";
+                                }
+
+                                str.substring(0, str.length() - 1);
+                                log.info("【视频直播转码】视频转码完成, 播放地址：{}", str);
+                                //转码成功设置转码状态为已转码
+                                spzb.setSfzm(1);
+                                spzb.setBfdz(str);
+                            }
+                        }
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            log.info("【视频直播转码】视频转码失败");
+        }
+        spzbMapper.updateById(spzb);
+        log.info("【视频直播转码】视频信息更新完成：{}", JSONUtil.toJsonStr(spzb));
+        return ResponseUtil.success("转码成功");
+    }
     /**
      * 视频录制完成回调接口
      */

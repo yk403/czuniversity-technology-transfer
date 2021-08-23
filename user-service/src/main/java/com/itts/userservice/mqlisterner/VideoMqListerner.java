@@ -84,7 +84,8 @@ public class VideoMqListerner {
 
                 str.substring(0, str.length() - 1);
                 log.info("【视频直播回调】视频转码完成, 播放地址：{}", str);
-
+                //转码成功设置转码状态为已转码
+                spzb.setSfzm(1);
                 spzb.setBfdz(str);
                 spzbMapper.updateById(spzb);
                 //消费消息

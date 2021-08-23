@@ -1,5 +1,6 @@
 package com.itts.userservice.service.spzb.thirdparty;
 
+import com.itts.userservice.model.spzb.Spzb;
 import com.itts.userservice.response.thirdparty.GetAssetInfoResponse;
 
 /**
@@ -17,7 +18,7 @@ public interface HuaWeiLiveService {
     /**
      * 处理视频
      */
-    String dealLive(String assetId);
+    String dealLive(Spzb spzb);
 
     /**
      * 通过ID获取媒资信息

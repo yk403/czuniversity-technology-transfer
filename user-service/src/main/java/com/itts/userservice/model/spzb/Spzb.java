@@ -237,4 +237,9 @@ public class Spzb implements Serializable {
      */
     @ApiModelProperty(value = "更新人")
     private Long gxr;
+    /**
+     * 是否转码 0默认 1已转码 2未转码
+     */
+    @ApiModelProperty(value = "是否转码")
+    private Integer sfzm;
 }

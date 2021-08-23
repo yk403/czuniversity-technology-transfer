@@ -202,7 +202,7 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
             try {
 
                 log.info("【视频直播回调】处理视频直播");
-                String mzId = huaWeiLiveService.dealLive(spzb.getMzId());
+                String mzId = huaWeiLiveService.dealLive(spzb);
                 log.info("【视频直播回调】处理视频直播完成，媒资ID：{}", mzId);
 
                 //处理成功
@@ -231,7 +231,8 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
 
                                     str.substring(0, str.length() - 1);
                                     log.info("【视频直播回调】视频转码完成, 播放地址：{}", str);
-
+                                    //转码成功设置转码状态为已转码
+                                    spzb.setSfzm(1);
                                     spzb.setBfdz(str);
                                 }
                             }

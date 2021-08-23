@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.userservice.config.HuaWeiLiveConfig;
+import com.itts.userservice.mapper.spzb.SpzbMapper;
+import com.itts.userservice.model.spzb.Spzb;
 import com.itts.userservice.request.spzb.thirdparty.DealVideoRequest;
 import com.itts.userservice.request.spzb.thirdparty.GetTokenRequest;
 import com.itts.userservice.response.thirdparty.GetAssetInfoResponse;
@@ -17,6 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -31,6 +34,8 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Service
 public class HuaWeiLiveServiceImpl implements HuaWeiLiveService {
+    @Autowired
+    private SpzbMapper spzbMapper;
 
     @Autowired
     private HuaWeiLiveConfig huaWeiLiveConfig;
@@ -113,7 +118,7 @@ public class HuaWeiLiveServiceImpl implements HuaWeiLiveService {
      * 处理视频
      */
     @Override
-    public String dealLive(String assetId) {
+    public String dealLive(Spzb spzb) {
 
         String token = "";
         Object tokenObj = redisTemplate.opsForValue().get(HuaWeiLiveConfig.CACHE_TOKEN_KEY);
@@ -126,7 +131,7 @@ public class HuaWeiLiveServiceImpl implements HuaWeiLiveService {
 
 
         DealVideoRequest request = new DealVideoRequest();
-        request.setAssetId(assetId);
+        request.setAssetId(spzb.getMzId());
         request.setTemplateGroupName(huaWeiLiveConfig.getTemplateGroupName());
 
         log.info("【华为云第三方接口】处理视频， 请求参数：{}", JSONUtil.toJsonStr(request));
@@ -141,7 +146,16 @@ public class HuaWeiLiveServiceImpl implements HuaWeiLiveService {
         HttpEntity<String> formEntity = new HttpEntity<String>(json, headers);
 
         log.info("【华为云第三方接口】处理视频， 请求地址：{}", huaWeiLiveConfig.getVideoUrl() + String.format(HuaWeiLiveConfig.DEAL_VIDEO_URL, huaWeiLiveConfig.getProjectId()));
-        ResponseEntity<String> response = restTemplate.exchange(huaWeiLiveConfig.getVideoUrl() + String.format(HuaWeiLiveConfig.DEAL_VIDEO_URL, huaWeiLiveConfig.getProjectId()), HttpMethod.POST, formEntity, String.class);
+        ResponseEntity<String> response =null;
+        try {
+            response=restTemplate.exchange(huaWeiLiveConfig.getVideoUrl() + String.format(HuaWeiLiveConfig.DEAL_VIDEO_URL, huaWeiLiveConfig.getProjectId()), HttpMethod.POST, formEntity, String.class);
+        } catch (Exception e) {
+            log.info("【视频直播回调】视频转码失败, {}", e);
+            //转码失败则先更新视频直播实体类信息,并提示转码状态为未转码
+            spzb.setSfzm(2);
+            spzbMapper.updateById(spzb);
+
+        }
 
         log.info("【华为云第三方接口】处理视频， 响应结果：{}", response.getBody());
 
