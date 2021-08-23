@@ -238,7 +238,7 @@ public class SpzbAdminController {
             }
         } catch (Exception e) {
             log.info("【视频直播转码】视频转码失败");
-            return ResponseUtil.error(500,"转码失败");
+            throw new WebException(ErrorCodeEnum.HUA_WEI_YUN_DEAL_VIDEO_ERROR);
         }
         spzbMapper.updateById(spzb);
         log.info("【视频直播转码】视频信息更新完成：{}", JSONUtil.toJsonStr(spzb));
