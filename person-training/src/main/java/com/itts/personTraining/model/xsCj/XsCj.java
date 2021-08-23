@@ -22,8 +22,8 @@ import lombok.EqualsAndHashCode;
 @TableName("t_xs_cj")
 public class XsCj implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 5699271664870818757L;
     /**
      * 主键
      */

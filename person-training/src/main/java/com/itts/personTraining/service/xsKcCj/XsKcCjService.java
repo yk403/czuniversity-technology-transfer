@@ -2,6 +2,7 @@ package com.itts.personTraining.service.xsKcCj;
 
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
+import com.itts.personTraining.model.xsCj.XsCjExcel;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -33,4 +34,6 @@ public interface XsKcCjService extends IService<XsKcCj> {
      * @return
      */
     boolean update(List<XsKcCjDTO> xsKcCjDTOs);
+
+    List<XsCjExcel> getByPcId(Long pcId,String jylx);
 }

@@ -117,5 +117,12 @@
           and kccj.xs_cj_id = #{xsCjId}
           and kc.kclx = #{kclx}
     </select>
+    <select id="findByJxjy" resultType="com.itts.personTraining.model.xsCj.XsCjExcel">
+        select pc.pch as pch,pc.pcmc as pcmc,xs.xh as xh,xs.xm as xm,xscj.zhcj as zhcj
+        from t_xs xs left join t_xs_cj xscj on(xs.id = xscj.xs_id) left join t_pc pc on(pc.id = xscj.pc_id)
+        where xs.sfsc =false and xscj.sfsc = false and pc.sfsc = false
+        <if test="pcId != null"> and xscj.pc_id = #{pcId}</if>
+        <if test="jylx != null"> and pc.jylx = #{jylx}</if>
+    </select>
 
 </mapper>
