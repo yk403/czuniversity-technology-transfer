@@ -10,6 +10,7 @@ import lombok.Data;
 @ApiModel("课程时间对象")
 public class KcXsXfDTO {
 
+    private Long pcId;
     /**
      * 主键
      */
@@ -95,4 +96,5 @@ public class KcXsXfDTO {
     private String xqs;
 
 
+    private String skszmc;
 }
