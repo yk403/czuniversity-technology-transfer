@@ -67,6 +67,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
                     .withValidator(new WechatPay2Validator(verifier))
                     .build();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ServiceException(PAY_INITORDER_ERROR);
         }
     }
@@ -125,7 +126,7 @@ public class WxPaymentServiceImpl implements WxPatmentService {
                     //交易结束时间(当前时间向后两小时)
                     .put("time_expire",format);
             rootNode.putObject("amount")
-                    .put("total", ddxfjl.getZje().multiply(new BigDecimal(100)))
+                    .put("total", ddxfjl.getZje().multiply(new BigDecimal(100)).intValue())
                     .put("currency", "CNY");
             //rootNode.putObject("payer").put("openid", "oUpF8uMuAJO_M2pxb1Q9zNjWeS6o");
             objectMapper.writeValue(bos, rootNode);
