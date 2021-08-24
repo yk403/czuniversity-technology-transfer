@@ -103,9 +103,9 @@ public class XxzyController {
       throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
     }
 
-    if (StringUtils.isBlank(buyXxzyRequest.getLxdh())) {
+/*    if (StringUtils.isBlank(buyXxzyRequest.getLxdh())) {
       throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-    }
+    }*/
   }
 
   @ApiOperation(value = "基地云平台获取学习资源")
