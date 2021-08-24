@@ -28,6 +28,7 @@ import com.itts.personTraining.model.xs.XsListener;
 import com.itts.personTraining.model.xsCj.JxjyCjListener;
 import com.itts.personTraining.model.xsCj.XlXwCjListener;
 import com.itts.personTraining.model.xsCj.XsCj;
+import com.itts.personTraining.model.xsCj.YzyCjListener;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.itts.personTraining.model.zj.ZjListener;
 import com.itts.personTraining.service.excel.ExcelService;
@@ -288,13 +289,11 @@ public class ExcelServiceImpl implements ExcelService {
             }
 
         }
-        result.append("导入完成，成功导入");
-        result.append(count);
-        result.append("条学生成绩数据");
+
         result1.append("导入完成，成功导入");
         result1.append(count1);
         result1.append("条学生课程成绩数据");
-        return ResponseUtil.success(result.toString()+"***"+result1.toString());
+        return ResponseUtil.success(result1.toString());
     }
     /**
      * 导入原专业成绩Excel
@@ -305,8 +304,91 @@ public class ExcelServiceImpl implements ExcelService {
      */
     @Override
     public ResponseUtil importYzyCj(MultipartFile file, Integer headRowNumber, Long pcId, String token) {
+        YzyCjListener yzyCjListener = new YzyCjListener();
+        yzyCjListener.setHeadRowNumber(headRowNumber);
+        try {
+            EasyExcel.read(file.getInputStream(), YzyCjDTO.class, yzyCjListener).extraRead(CellExtraTypeEnum.MERGE).sheet().headRowNumber(headRowNumber).doRead();
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+        List<CellExtra> extraMergeInfoList = yzyCjListener.getExtraMergeInfoList();
+        /*if (CollectionUtils.isEmpty(extraMergeInfoList)) {
+            return ResponseUtil.error(SYSTEM_ERROR);
+        }*/
+        List<YzyCjDTO> data = explainMerge(yzyCjListener.getData(), extraMergeInfoList, headRowNumber);
+        StringBuilder result=new StringBuilder();
+        Integer count=0;
+        for (int i = 0; i < data.size(); i++) {
+            YzyCjDTO yzyCjDTO = data.get(i);
+            XsKcCj xsKcCj = new XsKcCj();
+            //存入学生成绩表
+            Xs xs;
+            xs=xsMapper.getByXhAndXm(yzyCjDTO.getXh(), yzyCjDTO.getXm());
+            if(xs==null){
+                continue;
+            }
+            xsKcCj.setXsId(xs.getId());
 
-        return null;
+            xsKcCj.setKclx(1);
+
+            if(yzyCjDTO.getKcdm()!=null){
+                xsKcCj.setKcdm(yzyCjDTO.getKcdm());
+            }else {
+                continue;
+            }
+            if(yzyCjDTO.getKcmc()!=null){
+                xsKcCj.setKcmc(yzyCjDTO.getKcmc());
+            }
+            if(yzyCjDTO.getSfbx()!=null){
+                xsKcCj.setSfbx(yzyCjDTO.getSfbx());
+            }
+
+            if(yzyCjDTO.getXwk()!=null){
+                xsKcCj.setXwk(yzyCjDTO.getXwk());
+            }
+            if(yzyCjDTO.getYzyxf()!=null){
+                xsKcCj.setYzyxf(yzyCjDTO.getYzyxf());
+            }
+            if(yzyCjDTO.getDqxf()!=null){
+                xsKcCj.setDqxf(yzyCjDTO.getDqxf());
+            }
+            if(!StringUtils.isBlank(yzyCjDTO.getCj())){
+                xsKcCj.setCj(yzyCjDTO.getCj());
+            }
+            if(yzyCjDTO.getXxxq()!=null){
+                xsKcCj.setXxxq(yzyCjDTO.getXxxq());
+            }
+            if(!StringUtils.isBlank(yzyCjDTO.getCjsx())){
+                xsKcCj.setCjsx(yzyCjDTO.getCjsx());
+            }
+            if(!StringUtils.isBlank(yzyCjDTO.getBkcj())){
+                xsKcCj.setBkcj(yzyCjDTO.getBkcj());
+            }
+            Long userId = getUserId();
+            xsKcCj.setCjr(userId);
+            xsKcCj.setGxr(userId);
+            xsKcCj.setCjsj(new Date());
+            xsKcCj.setGxsj(new Date());
+            QueryWrapper<XsKcCj> xsKcCjQueryWrapper = new QueryWrapper<>();
+            xsKcCjQueryWrapper.eq("xs_id",xs.getId())
+                    .eq("kcdm",yzyCjDTO.getKcdm())
+                    .eq("sfsc",false);
+            XsKcCj one = xsKcCjService.getOne(xsKcCjQueryWrapper);
+            if(one == null){
+                xsKcCjService.save(xsKcCj);
+                count++;
+            }else {
+                BeanUtils.copyProperties(xsKcCj,one,"cjr","cjsj","id");
+                xsKcCjService.updateById(xsKcCj);
+                count++;
+            }
+
+        }
+
+        result.append("导入完成，成功导入");
+        result.append(count);
+        result.append("条学生课程成绩数据");
+        return ResponseUtil.success(result.toString());
     }
 
 
@@ -408,6 +490,32 @@ public class ExcelServiceImpl implements ExcelService {
         });
         return data;
     }
+    /**
+     * 处理合并单元格
+     *
+     * @param data               解析数据
+     * @param extraMergeInfoList 合并单元格信息
+     * @param headRowNumber      起始行
+     * @return 填充好的解析数据
+     */
+    public static List<YzyCjDTO> explainMerge(List<YzyCjDTO> data, List<CellExtra> extraMergeInfoList, Integer headRowNumber) {
+//        循环所有合并单元格信息
+        extraMergeInfoList.forEach(cellExtra -> {
+            int firstRowIndex = cellExtra.getFirstRowIndex() - headRowNumber;
+            int lastRowIndex = cellExtra.getLastRowIndex() - headRowNumber;
+            int firstColumnIndex = cellExtra.getFirstColumnIndex();
+            int lastColumnIndex = cellExtra.getLastColumnIndex();
+//            获取初始值
+            Object initValue = getInitValue(firstRowIndex, firstColumnIndex, data);
+//            设置值
+            for (int i = firstRowIndex; i <= lastRowIndex; i++) {
+                for (int j = firstColumnIndex; j <= lastColumnIndex; j++) {
+                    setInitValue(initValue, i, j, data);
+                }
+            }
+        });
+        return data;
+    }
 
     /**
      * 设置合并单元格的值
@@ -436,7 +544,33 @@ public class ExcelServiceImpl implements ExcelService {
             }
         }
     }
+    /**
+     * 设置合并单元格的值
+     *
+     * @param filedValue  值
+     * @param rowIndex    行
+     * @param columnIndex 列
+     * @param data        解析数据
+     */
+    public static void setInitValue(Object filedValue, Integer rowIndex, Integer columnIndex, List<YzyCjDTO> data) {
+        YzyCjDTO object = data.get(rowIndex);
 
+        for (Field field : object.getClass().getDeclaredFields()) {
+            //提升反射性能，关闭安全检查
+            field.setAccessible(true);
+            ExcelProperty annotation = field.getAnnotation(ExcelProperty.class);
+            if (annotation != null) {
+                if (annotation.index() == columnIndex) {
+                    try {
+                        field.set(object, filedValue);
+                        break;
+                    } catch (IllegalAccessException e) {
+                        throw new WebException("解析数据时发生异常!");
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * 获取合并单元格的初始值
@@ -451,6 +585,36 @@ public class ExcelServiceImpl implements ExcelService {
     private static Object getInitValueFromList(Integer firstRowIndex, Integer firstColumnIndex, List<XlXwCjDTO> data) {
         Object filedValue = null;
         XlXwCjDTO object = data.get(firstRowIndex);
+        for (Field field : object.getClass().getDeclaredFields()) {
+            //提升反射性能，关闭安全检查
+            field.setAccessible(true);
+            ExcelProperty annotation = field.getAnnotation(ExcelProperty.class);
+            if (annotation != null) {
+                if (annotation.index() == firstColumnIndex) {
+                    try {
+                        filedValue = field.get(object);
+                        break;
+                    } catch (IllegalAccessException e) {
+                        throw new WebException("解析数据时发生异常!");
+                    }
+                }
+            }
+        }
+        return filedValue;
+    }
+    /**
+     * 获取合并单元格的初始值
+     * rowIndex对应list的索引
+     * columnIndex对应实体内的字段
+     *
+     * @param firstRowIndex    起始行
+     * @param firstColumnIndex 起始列
+     * @param data             列数据
+     * @return 初始值
+     */
+    private static Object getInitValue(Integer firstRowIndex, Integer firstColumnIndex, List<YzyCjDTO> data) {
+        Object filedValue = null;
+        YzyCjDTO object = data.get(firstRowIndex);
         for (Field field : object.getClass().getDeclaredFields()) {
             //提升反射性能，关闭安全检查
             field.setAccessible(true);
