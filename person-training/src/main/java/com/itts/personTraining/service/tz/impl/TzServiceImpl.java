@@ -65,21 +65,23 @@ public class TzServiceImpl extends ServiceImpl<TzMapper, Tz> implements TzServic
         switch (userCategory) {
             case "postgraduate":
             case "broker":
-                PageHelper.startPage(pageNum, pageSize);
+
                 XsMsgDTO xsMsgDTO = xsMapper.getByYhId(userId);
                 if (xsMsgDTO == null) {
                     throw new ServiceException(STUDENT_MSG_NOT_EXISTS_ERROR);
                 }
+                PageHelper.startPage(pageNum, pageSize);
                 tzDTOList = tzMapper.findTzDTOByXsIdAndTzlx(xsMsgDTO.getId(),tzlx);
                 break;
             case "tutor":
             case "corporate_mentor":
             case "teacher":
-                PageHelper.startPage(pageNum, pageSize);
+
                 Sz sz = szMapper.getSzByYhId(userId);
                 if (sz == null) {
                     throw new ServiceException(TEACHER_MSG_NOT_EXISTS_ERROR);
                 }
+                PageHelper.startPage(pageNum, pageSize);
                 tzDTOList = tzMapper.findTzDTOBySzIdAndTzlx(sz.getId(),tzlx);
                 break;
             default:
