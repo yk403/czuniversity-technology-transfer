@@ -423,6 +423,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         Long ssjgId = sz.getSsjgId();
         String dsbh = sz.getDsbh();
         String dsxm = sz.getDsxm();
+        String lxdh = sz.getDh();
         if (data != null) {
             //用户表存在用户信息,更新用户信息,师资表判断是否存在
             GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
@@ -434,6 +435,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             yh.setZsxm(dsxm);
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
+            yh.setLxdh(lxdh);
             yh.setJgId(ssjgId);
             yhService.update(yh,token);
             Sz sz1 = szService.selectByCondition(dsbh,null, null,null);
