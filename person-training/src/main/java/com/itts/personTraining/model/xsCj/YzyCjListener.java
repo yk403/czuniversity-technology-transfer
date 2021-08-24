@@ -2,30 +2,31 @@ package com.itts.personTraining.model.xsCj;
 
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
+import com.alibaba.excel.metadata.CellExtra;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.extension.api.Assert;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
-import com.itts.common.exception.WebException;
-import com.itts.personTraining.dto.JxjyCjDTO;
-import com.itts.personTraining.dto.StuDTO;
-import com.itts.personTraining.dto.XsCjDTO;
-import com.itts.personTraining.dto.YzyCjDTO;
+import com.itts.personTraining.dto.*;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.service.xs.XsService;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
-import static com.itts.personTraining.enums.EduTypeEnum.ACADEMIC_DEGREE_EDUCATION;
-import static com.itts.personTraining.enums.EduTypeEnum.ADULT_EDUCATION;
 
 /**
  * @Author: fuli
@@ -49,9 +50,26 @@ public class YzyCjListener extends AnalysisEventListener<YzyCjDTO> {
 
     public static YzyCjListener YzyCjListener;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(YzyCjListener.class);
     @PostConstruct
     public void init() {
         YzyCjListener = this;
+    }
+    /**
+     * 正文起始行
+     */
+    private Integer headRowNumber;
+    /**
+     * 解析的数据
+     */
+    List<YzyCjDTO> list = new ArrayList<>();
+    /**
+     * 合并单元格
+     */
+    private List<CellExtra> extraMergeInfoList = new ArrayList<>();
+    public YzyCjListener() {}
+    public YzyCjListener(Integer headRowNumber) {
+        this.headRowNumber = headRowNumber;
     }
 
     @SneakyThrows
@@ -60,10 +78,17 @@ public class YzyCjListener extends AnalysisEventListener<YzyCjDTO> {
         ReadRowHolder rrh = analysisContext.readRowHolder();
         int rowIndex = rrh.getRowIndex() + 1;
         log.info("解析第" + rowIndex + "行数据:{}", JSON.toJSONString(data));
-        //判断是否是学历学位
+
+        list.add(data);
 
 
+    }
 
+    /**
+     * 加上存储数据库
+     */
+    public List<YzyCjDTO> getData() {
+        return list;
     }
 
     @Override
@@ -80,12 +105,51 @@ public class YzyCjListener extends AnalysisEventListener<YzyCjDTO> {
         throw exception;
     }
 
-
+    @Override
+    public void extra(CellExtra extra, AnalysisContext context) {
+        log.info("读取到了一条额外信息:{}", JSON.toJSONString(extra));
+        switch (extra.getType()) {
+            case COMMENT: {
+                LOGGER.info("额外信息是批注,在rowIndex:{},columnIndex;{},内容是:{}", extra.getRowIndex(), extra.getColumnIndex(),
+                        extra.getText());
+                break;
+            }
+            case HYPERLINK: {
+                if ("Sheet1!A1".equals(extra.getText())) {
+                    LOGGER.info("额外信息是超链接,在rowIndex:{},columnIndex;{},内容是:{}", extra.getRowIndex(),
+                            extra.getColumnIndex(), extra.getText());
+                } else if ("Sheet2!A1".equals(extra.getText())) {
+                    LOGGER.info(
+                            "额外信息是超链接,而且覆盖了一个区间,在firstRowIndex:{},firstColumnIndex;{},lastRowIndex:{},lastColumnIndex:{},"
+                                    + "内容是:{}",
+                            extra.getFirstRowIndex(), extra.getFirstColumnIndex(), extra.getLastRowIndex(),
+                            extra.getLastColumnIndex(), extra.getText());
+                } else {
+                    Assert.fail("Unknown hyperlink!");
+                }
+                break;
+            }
+            case MERGE: {
+                LOGGER.info(
+                        "额外信息是合并单元格,而且覆盖了一个区间,在firstRowIndex:{},firstColumnIndex;{},lastRowIndex:{},lastColumnIndex:{}",
+                        extra.getFirstRowIndex(), extra.getFirstColumnIndex(), extra.getLastRowIndex(),
+                        extra.getLastColumnIndex());
+                if (extra.getRowIndex() >= headRowNumber) {
+                    extraMergeInfoList.add(extra);
+                }
+                break;
+            }
+            default: {
+            }
+        }
+    }
 
     public String getResult() {
         return result.toString();
     }
-
+    public List<CellExtra> getExtraMergeInfoList() {
+        return extraMergeInfoList;
+    }
     /**
      * 获取当前用户id
      * @return
