@@ -33,10 +33,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
@@ -268,14 +265,14 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                     String xylx = pcList.get(0).getXylx();
                     if(xylx!=null){
-                        kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
                     }else {
                         kcXsXfDTOList=null;
                     }
                 } else {
                     Pc pcById = pcMapper.getPcById(pcId);
                     String xylx = pcById.getXylx();
-                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
                 }
                 break;
             case "tutor":
@@ -290,7 +287,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                     String xylx = pcList.get(0).getXylx();
                     if(xylx!=null){
-                        kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
                     }else {
                         kcXsXfDTOList=null;
                     }
@@ -298,7 +295,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                 } else {
                     Pc pcById = pcMapper.getPcById(pcId);
                     String xylx = pcById.getXylx();
-                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
                 }
                 break;
             //企业导师
@@ -314,14 +311,14 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                     String xylx = pcList.get(0).getXylx();
                     if(xylx!=null){
-                        kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
                     }else {
                         kcXsXfDTOList=null;
                     }
                 } else {
                     Pc pcById = pcMapper.getPcById(pcId);
                     String xylx = pcById.getXylx();
-                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
                 }
                 break;
             case "teacher":
@@ -336,25 +333,25 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                     String xylx = pcList.get(0).getXylx();
                     if(xylx!=null){
-                        kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
                     }else {
                         kcXsXfDTOList=null;
                     }
                 } else {
                     Pc pcById = pcMapper.getPcById(pcId);
                     String xylx = pcById.getXylx();
-                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
                 }
                 break;
             case "school_leader":
             case "administrator":
                 if (pcId == null) {
                     String xylx =null;
-                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
                 } else {
                     Pc pcById = pcMapper.getPcById(pcId);
                     String xylx = pcById.getXylx();
-                    kcXsXfDTOList = getKcXsXfDTOList(xylx);
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
                 }
                 break;
             default:
@@ -555,25 +552,54 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         return userCategory;
     }
 
+
     /**
      * 获取课程学时列表
      * @param xylx
      * @return
      */
-    private List<KcXsXfDTO> getKcXsXfDTOList(String xylx){
+    private List<KcXsXfDTO> getKcXsXfDTOList(String xylx,Long pcId){
         List<KcXsXfDTO> kcXsXfDTOList = kcMapper.findByXylx(xylx);
-        List<KcXsXfDTO> pkByXylx = kcMapper.findPkByXylx(xylx);
+
+        List<KcXsXfDTO> pkByXylx= kcMapper.findPkByXylx(xylx,pcId);
         for (int i = 0; i < kcXsXfDTOList.size(); i++) {
             KcXsXfDTO kcXsXfDTO = kcXsXfDTOList.get(i);
             Long id = kcXsXfDTO.getId();
-            for (int i1 = 0; i1 < pkByXylx.size(); i1++) {
-                KcXsXfDTO kcXsXfDTO1 = pkByXylx.get(i1);
-                if(id == kcXsXfDTO1.getId()){
-                    kcXsXfDTO.setQsz(kcXsXfDTO1.getQsz());
-                    kcXsXfDTO.setJsz(kcXsXfDTO1.getJsz());
-                    kcXsXfDTO.setXqs(kcXsXfDTO1.getXqs());
+
+            if (id != null) {
+                for (int i1 = 0; i1 < pkByXylx.size(); i1++) {
+                    KcXsXfDTO kcXsXfDTO1 = pkByXylx.get(i1);
+                    if(id == kcXsXfDTO1.getId()){
+                        if(kcXsXfDTO.getQsz()!=null){
+                            if(kcXsXfDTO.getQsz()>kcXsXfDTO1.getQsz()){
+                                kcXsXfDTO.setQsz(kcXsXfDTO1.getQsz());
+                            }
+                        }else {
+                            kcXsXfDTO.setQsz(kcXsXfDTO1.getQsz());
+                        }
+                        if(kcXsXfDTO.getJsz() !=null){
+                            if(kcXsXfDTO.getJsz()<kcXsXfDTO1.getJsz()){
+                                kcXsXfDTO.setJsz(kcXsXfDTO1.getJsz());
+                            }
+                        }else {
+                            kcXsXfDTO.setJsz(kcXsXfDTO1.getJsz());
+                        }
+
+                        if(kcXsXfDTO.getXqs() == null){
+                            kcXsXfDTO.setXqs(kcXsXfDTO1.getXqs());
+                        }else {
+                            kcXsXfDTO.setXqs(kcXsXfDTO.getXqs()+"/"+kcXsXfDTO1.getXqs());
+                        }
+                        if(kcXsXfDTO.getSkszmc() == null){
+                            kcXsXfDTO.setSkszmc(kcXsXfDTO1.getSkszmc());
+                        }else {
+                            kcXsXfDTO.setSkszmc(kcXsXfDTO.getSkszmc()+"/"+kcXsXfDTO1.getSkszmc());
+                        }
+
+                    }
                 }
             }
+
         }
         return kcXsXfDTOList;
     }
