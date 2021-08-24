@@ -94,7 +94,7 @@ public interface KcMapper extends BaseMapper<Kc> {
      * @param xylx
      * @return
      */
-    List<KcXsXfDTO> findPkByXylx(@Param("xylx") String xylx);
+    List<KcXsXfDTO> findPkByXylx(@Param("xylx") String xylx,@Param("pcId") Long pcId);
 
     /**
      * 查询课程表
