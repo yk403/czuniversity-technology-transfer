@@ -120,9 +120,20 @@
     <select id="findByJxjy" resultType="com.itts.personTraining.model.xsCj.XsCjExcel">
         select pc.pch as pch,pc.pcmc as pcmc,xs.xh as xh,xs.xm as xm,xscj.zhcj as zhcj
         from t_xs xs left join t_xs_cj xscj on(xs.id = xscj.xs_id) left join t_pc pc on(pc.id = xscj.pc_id)
-        where xs.sfsc =false and xscj.sfsc = false and pc.sfsc = false
+        where xs.sfsc =false and xscj.sfsc = false and pc.sfsc = false and xscj.sfxf = true
         <if test="pcId != null"> and xscj.pc_id = #{pcId}</if>
         <if test="jylx != null"> and pc.jylx = #{jylx}</if>
+    </select>
+    <select id="findByXixw" resultType="com.itts.personTraining.model.xsCj.XixwExcel">
+        select pc.pch as pch,pc.pcmc as pcmc,xs.xh as xh,xs.xm as xm,kc.kcdm as kcdm,
+        kc.kcmc as kcmc,xskc.sfbx as sfbx,xskc.dqxf as dqxf,xskc.cj as cj,xskc.cjsx as cjsx,xskc.bkcj as bkcj
+        from t_xs xs
+        left join t_xs_cj xscj on(xs.id = xscj.xs_id)
+        left join t_pc pc on(pc.id = xscj.pc_id)
+        left join t_xs_kc_cj xskc on(xskc.xs_cj_id = xscj.id)
+        left join t_kc kc on(kc.id = xskc.kc_id)
+        where xs.sfsc =false and xscj.sfsc = false and pc.sfsc = false and xscj.sfxf = true and xskc.sfsc = false and kc.sfsc = false
+        <if test="pcId != null"> and xscj.pc_id = #{pcId}</if>
     </select>
 
 </mapper>
