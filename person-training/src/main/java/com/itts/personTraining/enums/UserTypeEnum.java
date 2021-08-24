@@ -23,6 +23,8 @@ public enum UserTypeEnum {
 
     TEACHER("teacher", "任课教师"),
 
+    CLOUD_ADMIN("cloud_admin","基地云平台管理员"),
+
     ADMINISTRATOR("administrator", "管理员"),
 
     SCHOOL_LEADER("school_leader", "校领导"),

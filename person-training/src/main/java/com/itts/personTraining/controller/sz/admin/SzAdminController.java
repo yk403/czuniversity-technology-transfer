@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.personTraining.enums.UserTypeEnum.*;
 
 /**
  * <p>
@@ -238,7 +239,7 @@ public class SzAdminController {
         if (dslb == null) {
             throw new WebException(TEACHER_TYPE_ISEMPTY_ERROR);
         }
-        if (!dslb.equals(UserTypeEnum.TUTOR.getKey()) && !dslb.equals(UserTypeEnum.CORPORATE_MENTOR.getKey()) && !dslb.equals(UserTypeEnum.TEACHER.getKey()) && !dslb.equals(UserTypeEnum.SCHOOL_LEADER.getKey())) {
+        if (!dslb.equals(TUTOR.getKey()) && !dslb.equals(CORPORATE_MENTOR.getKey()) && !dslb.equals(TEACHER.getKey()) && !dslb.equals(SCHOOL_LEADER.getKey()) && !dslb.equals(CLOUD_ADMIN.getKey())) {
             throw new WebException(TEACHER_TYPE_ERROR);
         }
         if (sz.getSsjgId() == null) {
