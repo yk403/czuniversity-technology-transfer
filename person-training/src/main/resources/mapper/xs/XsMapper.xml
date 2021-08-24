@@ -94,7 +94,7 @@
     </sql>
 
     <select id="findXsList" resultType="com.itts.personTraining.dto.StuDTO">
-        select xs.id,xs.xm, sz.dsbh as yzydsbh, sz.dsxm as yzydsxm, tsz.dsbh as qydsbh, tsz.dsxm as qydsxm
+        select xs.*, sz.dsbh as yzydsbh, sz.dsxm as yzydsxm, tsz.dsbh as qydsbh, tsz.dsxm as qydsxm
         from t_xs xs left join t_sz sz on (xs.yzyds_id=sz.id) left join t_sz tsz on (xs.qyds_id=tsz.id) left join t_pc_xs tpx on (tpx.xs_id=xs.id)
         where xs.sfsc = false
             <if test="pcId != null">and tpx.pc_id = #{pcId}</if>
