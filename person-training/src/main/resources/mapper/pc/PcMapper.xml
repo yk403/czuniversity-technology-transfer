@@ -65,6 +65,7 @@
         select distinct pc.xylx
         from t_pc pc left join t_pc_xs tpx on (tpx.pc_id=pc.id)
         where pc.sfsc = false and tpx.xs_id = #{xsId}
+        order by pc.cjsj desc
     </select>
     <select id="findPcs" resultType="com.itts.personTraining.model.pc.Pc">
         select *
