@@ -4,6 +4,7 @@ import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.model.xsCj.XixwExcel;
 import com.itts.personTraining.model.xsCj.XsCjExcel;
+import com.itts.personTraining.model.xsCj.YzyCjExcel;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Param;
@@ -39,4 +40,5 @@ public interface XsKcCjService extends IService<XsKcCj> {
 
     List<XsCjExcel> getByPcId(Long pcId,String jylx);
     List<XixwExcel> findByXixw(Long pcId);
+    List<YzyCjExcel> findByYzy(Long pcId);
 }

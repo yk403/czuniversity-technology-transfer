@@ -7,6 +7,7 @@ import com.itts.personTraining.dto.XsKcCjDTO;
 import com.itts.personTraining.model.xsCj.XixwExcel;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.model.xsCj.XsCjExcel;
+import com.itts.personTraining.model.xsCj.YzyCjExcel;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
 import com.itts.personTraining.service.xsKcCj.XsKcCjService;
@@ -110,6 +111,12 @@ public class XsKcCjServiceImpl extends ServiceImpl<XsKcCjMapper, XsKcCj> impleme
     public List<XixwExcel> findByXixw(Long pcId) {
         List<XixwExcel> byXixw = xsKcCjMapper.findByXixw(pcId);
         return byXixw;
+    }
+
+    @Override
+    public List<YzyCjExcel> findByYzy(Long pcId) {
+        List<YzyCjExcel> byYzy = xsKcCjMapper.findByYzy(pcId);
+        return byYzy;
     }
 
     /**

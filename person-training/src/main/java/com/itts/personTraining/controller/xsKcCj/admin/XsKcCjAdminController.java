@@ -62,7 +62,7 @@ public class XsKcCjAdminController {
      */
     @GetMapping("/getJxjy")
     @ApiOperation(value = "根据pcid和教育类型查询继续教育课程成绩集合")
-    public ResponseUtil getByXsCjId(@RequestParam(value = "pcId",required = false) Long pcId,
+    public ResponseUtil getByJxjy(@RequestParam(value = "pcId",required = false) Long pcId,
                                     @RequestParam(value = "jylx") String jylx) {
 
         return ResponseUtil.success(xsKcCjService.getByPcId(pcId,jylx));
@@ -75,11 +75,23 @@ public class XsKcCjAdminController {
      */
     @GetMapping("/getXlxw")
     @ApiOperation(value = "根据pcid查询Excel学历学位教育成绩集合")
-    public ResponseUtil getByXsCjId(@RequestParam(value = "pcId",required = false) Long pcId) {
+    public ResponseUtil getByXlxw(@RequestParam(value = "pcId",required = false) Long pcId) {
 
         return ResponseUtil.success(xsKcCjService.findByXixw(pcId));
     }
 
+    /**
+     * Excel原专业
+     * @author fuli
+     * @param
+     * @return
+     */
+    @GetMapping("/getYzy")
+    @ApiOperation(value = "根据pcid查询Excel原专业成绩集合")
+    public ResponseUtil getByYzy(@RequestParam(value = "pcId",required = false) Long pcId) {
+
+        return ResponseUtil.success(xsKcCjService.findByYzy(pcId));
+    }
 
     /**
      * 更新学生课程成绩(原专业不可修改)
