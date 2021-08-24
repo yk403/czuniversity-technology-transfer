@@ -61,7 +61,7 @@ public class XsKcCjAdminController {
      * @return
      */
     @GetMapping("/getJxjy")
-    @ApiOperation(value = "根据学生成绩id和课程类型查询学生课程成绩集合")
+    @ApiOperation(value = "根据pcid和教育类型查询学生继续教育成绩集合")
     public ResponseUtil getByXsCjId(@RequestParam(value = "pcId",required = false) Long pcId,
                                     @RequestParam(value = "jylx") String jylx) {
 
