@@ -4,6 +4,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.dto.XsCjDTO;
 import com.itts.personTraining.dto.XsKcCjDTO;
+import com.itts.personTraining.model.xsCj.XixwExcel;
 import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.model.xsCj.XsCjExcel;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
@@ -98,6 +99,17 @@ public class XsKcCjServiceImpl extends ServiceImpl<XsKcCjMapper, XsKcCj> impleme
     public List<XsCjExcel> getByPcId(Long pcId,String jylx) {
         List<XsCjExcel> jxjy = xsKcCjMapper.findByJxjy(pcId,jylx);
         return jxjy;
+    }
+
+    /**
+     * @author fuli
+     * @param pcId
+     * @return
+     */
+    @Override
+    public List<XixwExcel> findByXixw(Long pcId) {
+        List<XixwExcel> byXixw = xsKcCjMapper.findByXixw(pcId);
+        return byXixw;
     }
 
     /**
