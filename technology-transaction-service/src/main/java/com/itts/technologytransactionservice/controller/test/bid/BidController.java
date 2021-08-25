@@ -57,6 +57,7 @@ public class BidController {
         System.out.println("close.....");
 
         SessionPool.close(session.getId());
+        log.info("用户"+session.getId()+"已关闭");
         session.close();
     }
 
