@@ -159,14 +159,26 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
         if(!StringUtils.isBlank(data.getXz())){
             xs.setXz(data.getXz());
         }
+        if(!StringUtils.isBlank(data.getQydsbh())){
+            QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
+            szQueryWrapper.eq("sfsc",false)
+                    .eq("dsbh",data.getQydsbh())
+                    .eq("dslb","corporate_mentor");
+            Sz sz = szService.getOne(szQueryWrapper);
+            if (sz != null) {
+                xs.setQydsId(sz.getId());
+            }
+        }
         if(!StringUtils.isBlank(data.getYzydsbh())){
-            Sz sz = szService.selectByCondition(data.getYzydsbh(), null, null,null);
+            QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
+            szQueryWrapper.eq("sfsc",false)
+                    .eq("dsbh",data.getYzydsbh())
+                    .eq("dslb","tutor");
+            Sz sz = szService.getOne(szQueryWrapper);
             if (sz != null) {
                 xs.setYzydsId(sz.getId());
             }
-            //TODO:如果为空则跳过
         }
-
         if(!StringUtils.isBlank(data.getYx())){
             xs.setYx(data.getYx());
         }

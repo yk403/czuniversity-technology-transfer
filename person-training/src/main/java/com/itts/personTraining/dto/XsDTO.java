@@ -103,11 +103,12 @@ public class XsDTO implements Serializable {
      */
     @ExcelProperty(value = "原专业导师编号", index = 14)
     private String yzydsbh;
+
     /**
-     * 原专业导师姓名
+     * 企业导师编号
      */
-    @ExcelProperty(value = "原专业导师姓名", index = 15)
-    private String yzydsxm;
+    @ExcelProperty(value = "企业导师编号", index = 15)
+    private String qydsbh;
     /**
      * 院系
      */
