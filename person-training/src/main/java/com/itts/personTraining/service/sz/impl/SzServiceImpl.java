@@ -90,8 +90,8 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
                     .orderByDesc("cjsj");
         } else {
             //总基地
+            PageHelper.startPage(pageNum, pageSize);
             if(Objects.equals(jglx,"headquarters")){
-
                 if(StringUtils.isNotBlank(dslb)){
                     szQueryWrapper.eq("sfsc",false).eq("dslb", dslb)
                             .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
@@ -101,7 +101,6 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
                             .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
                             .orderByDesc("cjsj");
                 }
-
             }else {
                 //分基地
                 ResponseUtil response = jgglFeignService.findChildrenById(fjjgId);
@@ -120,8 +119,6 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
                         .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
                         .orderByDesc("cjsj");
             }
-            PageHelper.startPage(pageNum, pageSize);
-
         }
         return new PageInfo<>(szMapper.selectList(szQueryWrapper));
     }
@@ -424,6 +421,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         String dsbh = sz.getDsbh();
         String dsxm = sz.getDsxm();
         String lxdh = sz.getDh();
+        String grzp = sz.getGrzp();
         if (data != null) {
             //用户表存在用户信息,更新用户信息,师资表判断是否存在
             GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
@@ -436,6 +434,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             yh.setYhlx(yhlx);
             yh.setYhlb(yhlb);
             yh.setLxdh(lxdh);
+            yh.setYhtx(grzp);
             yh.setJgId(ssjgId);
             yhService.update(yh,token);
             Sz sz1 = szService.selectByCondition(dsbh,null, null,null);

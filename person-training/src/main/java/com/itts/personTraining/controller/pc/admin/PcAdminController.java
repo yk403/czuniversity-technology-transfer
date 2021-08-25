@@ -43,8 +43,9 @@ public class PcAdminController {
     public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                 @RequestParam(value = "name", required = false) String name,
+                                @RequestParam(value = "jylx", required = false) String jylx,
                                 @RequestParam(value = "lx", required = false) String lx){
-        return ResponseUtil.success(pcService.findByPage(pageNum, pageSize, name, lx));
+        return ResponseUtil.success(pcService.findByPage(pageNum, pageSize, name, jylx, lx));
     }
 
     /**

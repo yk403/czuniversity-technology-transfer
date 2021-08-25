@@ -67,8 +67,8 @@ public class PcServiceImpl implements PcService {
      * @return
      */
     @Override
-    public PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize, String name, String lx) {
-        log.info("【人才培养 - 根据批次号/批次名称:{},类型:{}分页查询批次】");
+    public PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize, String name, String jylx, String lx) {
+        log.info("【人才培养 - 根据批次号/批次名称:{},教育类型:{},类型:{}分页查询批次】",name,jylx,lx);
         if (pageNum == -1) {
             QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
             pcQueryWrapper.eq("sfsc",false)
@@ -79,6 +79,7 @@ public class PcServiceImpl implements PcService {
         PageHelper.startPage(pageNum,pageSize);
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
         pcQueryWrapper.eq("sfsc",false)
+                      .eq(StringUtils.isNotBlank(jylx),"jylx",jylx)
                       .eq(StringUtils.isNotBlank(lx),"lx",lx)
                       .like(StringUtils.isNotBlank(name),"pch",name).or()
                       .like(StringUtils.isNotBlank(name),"pcmc",name)
