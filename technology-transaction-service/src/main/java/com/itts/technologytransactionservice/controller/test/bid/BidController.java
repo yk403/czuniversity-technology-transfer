@@ -72,7 +72,10 @@ public class BidController {
         //检测心跳
         if (message.equalsIgnoreCase("ping")) {
 
-            SessionPool.heartbeatDetection("1");
+            //SessionPool.heartbeatDetection("1");
+            for (String sessionId : SessionPool.sessions.keySet()) {
+                SessionPool.heartbeatDetection(sessionId);
+            }
             return;
         }
 
