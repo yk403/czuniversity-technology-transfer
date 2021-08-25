@@ -388,7 +388,8 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         });
         List<Long> ids = jgglVOList.stream().map(JgglVO::getId).collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(ids)) {
-            QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<Sz>().eq("sfsc", false).in("ssjg_id",ids);
+            QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<Sz>().eq("sfsc", false).in("ssjg_id",ids)
+                    .orderByDesc("cjsj");
             return szMapper.selectList(szQueryWrapper);
         }
         return null;
