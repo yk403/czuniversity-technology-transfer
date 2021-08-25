@@ -63,6 +63,12 @@ public class Pc implements Serializable {
     private String xylx;
 
     /**
+     * 类型
+     */
+    @ApiModelProperty(value = "类型")
+    private String lx;
+
+    /**
      * 是否删除(0:未删除;1已删除)
      */
     private Boolean sfsc;
