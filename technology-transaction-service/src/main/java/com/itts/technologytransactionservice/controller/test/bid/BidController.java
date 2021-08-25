@@ -44,7 +44,7 @@ public class BidController {
     public void onOpen(@PathParam("userId") String userId, Session session) {
 
         SessionPool.open(userId, session);
-
+        log.info("用户"+userId+"已连接");
         System.out.println("open....");
     }
 
