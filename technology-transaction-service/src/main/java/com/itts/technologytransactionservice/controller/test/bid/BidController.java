@@ -67,7 +67,7 @@ public class BidController {
     @OnMessage
     public void onMessage(String message) throws IOException {
 
-        System.out.println(message);
+        System.out.println("推送消息是"+message);
 
         //检测心跳
         if (message.equalsIgnoreCase("ping")) {
