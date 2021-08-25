@@ -18,6 +18,7 @@ import com.itts.userservice.request.yh.RpcAddYhRequest;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.service.yh.YhService;
+import com.itts.userservice.vo.yh.GetSystemsVO;
 import com.itts.userservice.vo.yh.GetYhVO;
 import com.itts.userservice.vo.yh.YhListVO;
 import io.swagger.annotations.Api;
@@ -34,6 +35,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
 
 /**
  * <p>
@@ -137,6 +140,23 @@ public class YhAdminController {
         GetYhVO getYhVO = DTO2VO(yh);
 
         return ResponseUtil.success(getYhVO);
+    }
+
+    /**
+     * 获取当前用户所属哪些系统
+     */
+    @ApiOperation(value = "获取当前用户所属哪些系统")
+    @GetMapping("/find/systems/")
+    public ResponseUtil findSystemByUser() {
+
+        LoginUser loginUser = threadLocal.get();
+        if(loginUser == null){
+            throw new WebException(ErrorCodeEnum.NOT_LOGIN_ERROR);
+        }
+
+        List<GetSystemsVO> result = yhService.findSystems(loginUser.getUserId());
+
+        return ResponseUtil.success(result);
     }
 
     /**
