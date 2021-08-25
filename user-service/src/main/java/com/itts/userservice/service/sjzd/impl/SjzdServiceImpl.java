@@ -314,7 +314,7 @@ public class SjzdServiceImpl implements SjzdService {
                 addSjzd.setFjId(fjzd.getId());
                 addSjzd.setFjBm(fjzd.getZdbm());
                 addSjzd.setFjmc(fjzd.getZdmc());
-                addSjzd.setZdbm(fjzd.getZdbm() + sjzdItem.getZdbm());
+                addSjzd.setZdbm(sjzdItem.getZdbm());
             } else {
 
                 addSjzd.setZdbm(sjzdItem.getZdbm());
