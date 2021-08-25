@@ -95,6 +95,18 @@ public class SzMsgDTO {
     private String gbzw;
 
     /**
+     * 电话
+     */
+    @ApiModelProperty(value = "电话")
+    private String dh;
+
+    /**
+     * 个人照片
+     */
+    @ApiModelProperty(value = "个人照片")
+    private String grzp;
+
+    /**
      * 从事专业1
      */
     @ApiModelProperty(value = "从事专业1")
