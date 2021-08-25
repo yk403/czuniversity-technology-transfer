@@ -1,5 +1,7 @@
 package com.itts.common.bean;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.websocket.Session;
 import java.io.IOException;
 import java.util.Map;
@@ -11,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Author：lym
  * @Date: 2021/4/2
  */
+@Slf4j
 public class SessionPool {
 
     /**
@@ -64,6 +67,7 @@ public class SessionPool {
     public static void sendMessage(String message) {
 
         for (String sessionId : sessions.keySet()) {
+            log.info("用户"+sessionId+"已推送");
             sessions.get(sessionId).getAsyncRemote().sendText(message);
         }
     }
