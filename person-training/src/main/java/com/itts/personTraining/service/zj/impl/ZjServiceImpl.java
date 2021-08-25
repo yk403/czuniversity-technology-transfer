@@ -254,9 +254,11 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
      * @return
      */
     @Override
-    public boolean update(Zj zj,String token) {
+    public boolean update(Zj zj,ZjInfoDTO zjInfoDTO, String token) {
         log.info("【人才培养 - 更新专家:{}信息】",zj);
         Zj zjOld = zjService.getById(zj.getId());
+        String lxdh = zjInfoDTO.getYhMsg().getLxdh();
+        String yhtx = zjInfoDTO.getYhMsg().getYhtx();
         ResponseUtil response = yhService.getByPhone(zjOld.getDh(), token);
         String yhlb = zj.getLx();
         if(response.getErrCode() != 0 ){
@@ -280,8 +282,13 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             yh.setMm(zj.getBh());
             yh.setZsxm(zj.getXm());
             yh.setYhlb(yhlb);
-            yh.setLxdh(zj.getDh());
             yh.setYhlx(yhlx);
+            if (zjInfoDTO != null) {
+                yh.setLxdh(lxdh);
+                yh.setYhtx(yhtx);
+            } else {
+                yh.setLxdh(zj.getDh());
+            }
             yh.setJgId(zj.getJgId());
             yh.setGxr(getUserId());
             yhService.update(yh,token);

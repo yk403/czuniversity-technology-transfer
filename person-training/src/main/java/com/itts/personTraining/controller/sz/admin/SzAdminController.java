@@ -8,6 +8,7 @@ import com.itts.personTraining.model.sz.Sz;
 import com.itts.personTraining.service.sz.SzService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -165,9 +166,11 @@ public class SzAdminController {
         if (szOld == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        if (!szOld.getDsbh().equals(sz.getDsbh())) {
-            if (szService.selectByCondition(sz.getDsbh(),null,null,null) != null) {
-                throw new WebException(TEACHER_NUMBER_EXISTS_ERROR);
+        if (StringUtils.isNotBlank(sz.getDsbh())) {
+            if (!szOld.getDsbh().equals(sz.getDsbh())) {
+                if (szService.selectByCondition(sz.getDsbh(),null,null,null) != null) {
+                    throw new WebException(TEACHER_NUMBER_EXISTS_ERROR);
+                }
             }
         }
         if (!szService.update(sz,request.getHeader("token"))) {

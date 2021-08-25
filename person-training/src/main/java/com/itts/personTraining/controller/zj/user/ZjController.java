@@ -47,7 +47,7 @@ public class ZjController {
     }
     /**
      * 更新专家信息
-     * @param zj
+     * @param zjInfoDTO
      * @return
      * @throws WebException
      */
@@ -62,7 +62,7 @@ public class ZjController {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         checkUpdateRequest(zj);
-        if (!zjService.update(zj, request.getHeader("token"))) {
+        if (!zjService.update(zj, zjInfoDTO, request.getHeader("token"))) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success(zjInfoDTO);

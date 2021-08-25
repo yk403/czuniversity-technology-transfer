@@ -53,10 +53,11 @@ public interface ZjService extends IService<Zj> {
     /**
      * 更新专家
      * @param zj
+     * @param zjInfoDTO
      * @param token
      * @return
      */
-    boolean update(Zj zj,String token);
+    boolean update(Zj zj,ZjInfoDTO zjInfoDTO,String token);
 
     /**
      * 删除专家信息
