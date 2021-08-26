@@ -84,7 +84,7 @@ public class XsKcCjServiceImpl extends ServiceImpl<XsKcCjMapper, XsKcCj> impleme
         for (XsKcCjDTO xsKcCjDTO : xsKcCjDTOs) {
             XsKcCj xsKcCj = new XsKcCj();
             xsKcCjDTO.setGxr(getUserId());
-            BeanUtils.copyProperties(xsKcCjDTO,xsKcCj);
+            BeanUtils.copyProperties(xsKcCjDTO,xsKcCj,"kcdm","kcmc");
             xsKcCjs.add(xsKcCj);
         }
         return xsKcCjService.updateBatchById(xsKcCjs);
