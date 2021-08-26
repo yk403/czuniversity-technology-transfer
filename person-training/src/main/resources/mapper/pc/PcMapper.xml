@@ -71,6 +71,7 @@
         select *
         from t_pc pc
         where pc.sfsc = false and pc.id not in (select distinct tpj.pc_id from t_py_jh tpj left join t_pc pc on (pc.id=tpj.pc_id) where tpj.sfsc = false and pc.sfsc = false )
+        order by pc.cjsj desc
     </select>
 
     <update id="updatePcList"  parameterType="java.util.List">
