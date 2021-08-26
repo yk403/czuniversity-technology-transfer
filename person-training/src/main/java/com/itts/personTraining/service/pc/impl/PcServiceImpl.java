@@ -262,7 +262,8 @@ public class PcServiceImpl implements PcService {
         log.info("【人才培养 - 根据教育类型:{}查询批次信息】",jylx);
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
         pcQueryWrapper.eq("sfsc",false)
-                .eq("jylx",jylx);
+                .eq("jylx",jylx)
+                .orderByDesc("cjsj");
         return pcMapper.selectList(pcQueryWrapper);
     }
 
