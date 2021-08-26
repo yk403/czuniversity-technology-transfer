@@ -82,7 +82,11 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         log.info("【人才培养 - 分页条件查询课程列表,课程类型:{},课程代码/名称:{},学院id:{}】",kclx,name,jylx,xylx);
         List<KcDTO> kcDTOs = null;
         if (pageNum == -1) {
-            kcDTOs = kcMapper.findByPage(null,null,null,null);
+            String[] xylxArr = null;
+            if (xylx != null&& !xylx.equals("")) {
+                xylxArr = xylx.split(",");
+            }
+            kcDTOs = kcMapper.findByPage(null,null,null,xylxArr);
             for (KcDTO kcDTO : kcDTOs) {
                 QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
                 kcSzQueryWrapper.eq("kc_id",kcDTO.getId());
