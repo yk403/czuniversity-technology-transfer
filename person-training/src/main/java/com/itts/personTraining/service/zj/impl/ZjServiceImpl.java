@@ -85,7 +85,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             zjQueryWrapper.eq("sfsc",false)
 
                     .eq(StringUtils.isNotBlank(yjly),"yjly",yjly)
-                    .like(StringUtils.isNotBlank(name),"xm",name.trim()).or().like(StringUtils.isNotBlank(name),"bh",name.trim())
+                    .like(StringUtils.isNotBlank(name),"xm",StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"bh",StringUtils.isNotBlank(name)?name.trim():name)
                     .like(StringUtils.isNotBlank(lx),"lx",lx)
                     .orderByDesc("cjsj");
         }
