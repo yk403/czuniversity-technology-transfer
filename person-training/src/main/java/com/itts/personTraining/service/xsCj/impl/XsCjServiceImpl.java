@@ -150,7 +150,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                     xsKcCj.setGxr(userId);
                     xsKcCjs.add(xsKcCj);
                 }
-                return true;
+                return xsKcCjService.saveBatch(xsKcCjs);
             }
         }
         return false;
