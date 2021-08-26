@@ -59,9 +59,9 @@
         and kc.xylx = (select xylx from t_pc pc where pc.sfsc = false and pc.id = #{pcId})
     </select>
     <select id="findByXylx" resultType="com.itts.personTraining.dto.KcXsXfDTO">
-        select kc.id as id,kc.jylx as jylx,kc.xylx as xylx,kc.kclx as kclx, kc.kctp as kctp, kc.kcmc as kcmc,kc.kcdm as kcdm,kc.kcxf as kcxf,kc.kcxs as kcxs,kc.kkxq as kkxq,kc.kkxy as kkxy,kc.sfbx as sfbx,sz.dsxm as dsxm
-        from t_kc kc left join t_kc_sz kcsz on kcsz.kc_id =kc.id  left join t_sz sz on kcsz.sz_id = sz.id
-        where   kc.sfsc = false and sz.sfsc = false
+        select kc.id as id,kc.jylx as jylx,kc.xylx as xylx,kc.kclx as kclx, kc.kctp as kctp, kc.kcmc as kcmc,kc.kcdm as kcdm,kc.kcxf as kcxf,kc.kcxs as kcxs,kc.kkxq as kkxq,kc.kkxy as kkxy,kc.sfbx as sfbx
+        from t_kc kc
+        where   kc.sfsc = false
         <if test="xylx != null and xylx != ''">and kc.xylx = #{xylx}</if>
         order by kc.cjsj desc
     </select>
