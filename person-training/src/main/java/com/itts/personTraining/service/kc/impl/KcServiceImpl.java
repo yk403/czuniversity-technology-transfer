@@ -433,7 +433,12 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                         collect=null;
                     }
                 } else {
-                    collect = kcMapper.findByPcId(pcId);
+                    Pc pcById = pcMapper.getPcById(pcId);
+                    if(Objects.equals(pcById.getJylx(),"A")){
+                        collect = kcMapper.findByPcId(pcId);
+                    }else if(Objects.equals(pcById.getJylx(),"C")){
+                        collect = kcMapper.findPcId(pcId);
+                    }
                 }
                 break;
             //企业导师
@@ -454,7 +459,12 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                         collect=null;
                     }
                 } else {
-                    collect = kcMapper.findByPcId(pcId);
+                    Pc pcById = pcMapper.getPcById(pcId);
+                    if(Objects.equals(pcById.getJylx(),"A")){
+                        collect = kcMapper.findByPcId(pcId);
+                    }else if(Objects.equals(pcById.getJylx(),"C")){
+                        collect = kcMapper.findPcId(pcId);
+                    }
                 }
                 break;
             case "teacher":
@@ -474,7 +484,12 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                         collect=null;
                     }
                 } else {
-                    collect = kcMapper.findByPcId(pcId);
+                    Pc pcById = pcMapper.getPcById(pcId);
+                    if(Objects.equals(pcById.getJylx(),"A")){
+                        collect = kcMapper.findByPcId(pcId);
+                    }else if(Objects.equals(pcById.getJylx(),"C")){
+                        collect = kcMapper.findPcId(pcId);
+                    }
                 }
                 break;
             case "school_leader":
@@ -486,7 +501,12 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     Long id = pcMapper.selectList(pcQueryWrapper).get(0).getId();
                     collect = kcMapper.findByPcId(id);
                 } else {
-                    collect = kcMapper.findByPcId(pcId);
+                    Pc pcById = pcMapper.getPcById(pcId);
+                    if(Objects.equals(pcById.getJylx(),"A")){
+                        collect = kcMapper.findByPcId(pcId);
+                    }else if(Objects.equals(pcById.getJylx(),"C")){
+                        collect = kcMapper.findPcId(pcId);
+                    }
                 }
                 break;
             default:
