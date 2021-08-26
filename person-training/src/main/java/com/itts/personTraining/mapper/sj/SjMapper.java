@@ -78,4 +78,13 @@ public interface SjMapper extends BaseMapper<Sj> {
      * @return
      */
     String getSjcjByXsIdAndPcId(@Param("xsId") Long xsId, @Param("pcId") Long pcId);
+
+    /**
+     * 根据学生id和批次id查询实践成绩
+     * @param xsId
+     * @param pcId
+     * @return
+     */
+    String selectSjcjByXsIdAndPcId(@Param("xsId") Long xsId, @Param("pcId") Long pcId);
+
 }

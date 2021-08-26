@@ -11,6 +11,7 @@ import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.mapper.ks.KsMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
+import com.itts.personTraining.mapper.sj.SjMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
 import com.itts.personTraining.model.kc.Kc;
@@ -23,6 +24,7 @@ import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.mapper.xsCj.XsCjMapper;
 import com.itts.personTraining.model.xsKcCj.XsKcCj;
 import com.itts.personTraining.service.pc.PcService;
+import com.itts.personTraining.service.sj.SjService;
 import com.itts.personTraining.service.tz.TzService;
 import com.itts.personTraining.service.tzSz.TzSzService;
 import com.itts.personTraining.service.tzXs.TzXsService;
@@ -78,6 +80,10 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
     private TzXsService tzXsService;
     @Autowired
     private TzSzService tzSzService;
+    @Autowired
+    private SjService sjService;
+    @Resource
+    private SjMapper sjMapper;
     @Resource
     private XsMapper xsMapper;
     @Resource
@@ -672,7 +678,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                     throw new ServiceException(NO_STUDENT_MSG_ERROR);
                 }
                 //实践成绩
-                abilityInfoDTO.setSjcj(xsKcCjMapper.getAvgfxcj(xsCjDTO1.getId(), PRACTICE_COURSE.getKey()));
+                abilityInfoDTO.setSjcj(Integer.parseInt(sjMapper.selectSjcjByXsIdAndPcId(xsId,pcId)));
                 //实训成绩
                 abilityInfoDTO.setSxcj(xsKcCjMapper.getAvgfxcj(xsCjDTO1.getId(), PRACTICAL_TRAINING.getKey()));
                 abilityInfoDTO.setXl(30);
