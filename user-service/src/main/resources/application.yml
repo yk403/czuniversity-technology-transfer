@@ -25,6 +25,10 @@ aliyun:
   signName: 后台管理系统
   templateCode: SMS_194050461
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
   application:
     name: user-service
   main:
