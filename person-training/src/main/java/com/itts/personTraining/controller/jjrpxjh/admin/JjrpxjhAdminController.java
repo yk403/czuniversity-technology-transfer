@@ -8,6 +8,7 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
+import com.itts.common.utils.DateUtils;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.jjrpxjh.Jjrpxjh;
 import com.itts.personTraining.request.jjrpxjh.AddJjrpxjhRequest;
@@ -20,6 +21,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import static com.itts.common.enums.ErrorCodeEnum.GROUNDING_EXISTS_ERROR;
@@ -74,12 +77,11 @@ public class JjrpxjhAdminController {
     @ApiOperation(value = "新增")
     @PostMapping("/add/")
     public ResponseUtil add(@RequestBody AddJjrpxjhRequest addJjrpxjhRequest) {
-
         checkAddRequest(addJjrpxjhRequest);
 
         Jjrpxjh jjrpxjh = jjrpxjhService.add(addJjrpxjhRequest);
 
-        return ResponseUtil.success(jjrpxjh);
+        return ResponseUtil.success("新增成功！",jjrpxjh);
     }
 
     @ApiOperation(value = "更新")
@@ -95,7 +97,7 @@ public class JjrpxjhAdminController {
 
         Jjrpxjh jjrpxjh = jjrpxjhService.update(old, updateJjrpxjhRequest);
 
-        return ResponseUtil.success(jjrpxjh);
+        return ResponseUtil.success("更新成功！",jjrpxjh);
     }
 
     @ApiOperation(value = "更新状态")

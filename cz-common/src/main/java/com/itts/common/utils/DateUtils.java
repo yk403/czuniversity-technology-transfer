@@ -93,6 +93,10 @@ public class DateUtils {
         return format(date, DATE_PATTERN);
     }
 
+    public static Date formatDate(Date date) throws ParseException {
+        return format(date, DATE_TIME_PATTERN);
+    }
+
     public static Date format(Date date, String pattern) throws ParseException {
         if (date != null) {
             SimpleDateFormat df = new SimpleDateFormat(pattern);
