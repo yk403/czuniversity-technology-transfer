@@ -8,9 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
-import com.itts.technologytransactionservice.mapper.JsShMapper;
-import com.itts.technologytransactionservice.mapper.JsXqDoMapper;
-import com.itts.technologytransactionservice.mapper.JsXqMapper;
+import com.itts.technologytransactionservice.mapper.*;
 import com.itts.technologytransactionservice.model.*;
 import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.cd.JsShAdminService;
@@ -51,6 +49,10 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     private JsShMapper jsShMapper;
     @Autowired
     private JsXtxxService jsXtxxService;
+    @Autowired
+    private JsLbMapper jsLbMapper;
+    @Autowired
+    private JsLyMapper jsLyMapper;
 
 
     /**
@@ -64,6 +66,29 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         log.info("【技术交易 - 分页查询需求(后台审批管理)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据,1表示管理员
         //params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
+        //判断当类别领域名称为全部时，将筛选条件删除
+        if(params.get("lbId")!=null){
+            QueryWrapper<TJsLb> tJsLbQueryWrapper = new QueryWrapper<>();
+            tJsLbQueryWrapper.eq("id",params.get("lbId").toString());
+            TJsLb tJsLb=jsLbMapper.selectOne(tJsLbQueryWrapper);
+            if(tJsLb!=null) {
+                if(tJsLb.getMc().equals("全部")){
+                    params.remove("lbId");
+                }
+            }
+
+        }
+        if(params.get("lyId")!=null){
+            QueryWrapper<TJsLy> tJsLyQueryWrapper = new QueryWrapper<>();
+            tJsLyQueryWrapper.eq("id",params.get("lyId").toString());
+            TJsLy tJsLy=jsLyMapper.selectOne(tJsLyQueryWrapper);
+            if(tJsLy!=null) {
+                if(tJsLy.getMc().equals("全部")){
+                    params.remove("lyId");
+                }
+            }
+
+        }
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsXq> list = jsXqMapper.findJsXq(query);

@@ -7,17 +7,13 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
-import com.itts.technologytransactionservice.mapper.JsCgDoMapper;
-import com.itts.technologytransactionservice.mapper.JsCgMapper;
-import com.itts.technologytransactionservice.mapper.JsHdMapper;
-import com.itts.technologytransactionservice.mapper.JsShMapper;
-import com.itts.technologytransactionservice.model.TJsCg;
-import com.itts.technologytransactionservice.model.TJsCgDo;
-import com.itts.technologytransactionservice.model.TJsSh;
+import com.itts.technologytransactionservice.mapper.*;
+import com.itts.technologytransactionservice.model.*;
 import com.itts.technologytransactionservice.service.JsXtxxService;
 import com.itts.technologytransactionservice.service.cd.JsCgAdminService;
 import com.itts.technologytransactionservice.service.cd.JsShAdminService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -48,7 +44,10 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     private JsXtxxService jsXtxxService;
     @Autowired
     private JsShAdminService jsShAdminService;
-
+    @Autowired
+    private JsLbMapper jsLbMapper;
+    @Autowired
+    private JsLyMapper jsLyMapper;
     @Autowired
     private JsShMapper jsShMapper;
     @Autowired
@@ -65,6 +64,30 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         //前端传输标识type(0：审批管理;1：信息采集)
         //TODO 从ThreadLocal中获取管理员id 暂时是假数据
         //params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
+        //判断当类别领域名称为全部时，将筛选条件删除
+        if(params.get("lbId")!=null){
+            QueryWrapper<TJsLb> tJsLbQueryWrapper = new QueryWrapper<>();
+            tJsLbQueryWrapper.eq("id",params.get("lbId").toString());
+            TJsLb tJsLb=jsLbMapper.selectOne(tJsLbQueryWrapper);
+            if(tJsLb!=null) {
+                if(tJsLb.getMc().equals("全部")){
+                    params.remove("lbId");
+                }
+            }
+
+        }
+        if(params.get("lyId")!=null){
+            QueryWrapper<TJsLy> tJsLyQueryWrapper = new QueryWrapper<>();
+            tJsLyQueryWrapper.eq("id",params.get("lyId").toString());
+            TJsLy tJsLy=jsLyMapper.selectOne(tJsLyQueryWrapper);
+            if(tJsLy!=null) {
+                if(tJsLy.getMc().equals("全部")){
+                    params.remove("lyId");
+                }
+            }
+
+        }
+
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsCg> list = jsCgMapper.findJsCg(query);
