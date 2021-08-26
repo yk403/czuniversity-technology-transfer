@@ -13,6 +13,7 @@ import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.mapper.xsKcCj.XsKcCjMapper;
+import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.tz.Tz;
 import com.itts.personTraining.model.tzSz.TzSz;
@@ -123,9 +124,9 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
         BeanUtils.copyProperties(xsCjDTO,xsCj);
         if (xsCjService.save(xsCj)) {
             List<XsKcCjDTO> xsKcCjDTOList = xsCjDTO.getXsKcCjDTOList();
+            Long id = xsCj.getId();
+            List<XsKcCj> xsKcCjs = new ArrayList<>();
             if (xsKcCjDTOList != null && xsKcCjDTOList.size() > 0) {
-                Long id = xsCj.getId();
-                List<XsKcCj> xsKcCjs = new ArrayList<>();
                 for (XsKcCjDTO xsKcCjDTO : xsKcCjDTOList) {
                     XsKcCj xsKcCj = new XsKcCj();
                     xsKcCjDTO.setXsCjId(id);
@@ -136,8 +137,21 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                     xsKcCjs.add(xsKcCj);
                 }
                 return xsKcCjService.saveBatch(xsKcCjs);
+            } else {
+                Long pcId = xsCjDTO.getPcId();
+                //Pc pcById = pcMapper.getPcById(pcId);
+                List<Long> kcIds = kcMapper.findKcByPcId(pcId).stream().map(Kc::getId).collect(Collectors.toList());
+                for (Long kcId : kcIds) {
+                    XsKcCj xsKcCj = new XsKcCj();
+                    xsKcCj.setXsCjId(id);
+                    xsKcCj.setKcId(kcId);
+                    xsKcCj.setKclx(Integer.parseInt(TECHNOLOGY_TRANSFER_COURSE.getKey()));
+                    xsKcCj.setCjr(userId);
+                    xsKcCj.setGxr(userId);
+                    xsKcCjs.add(xsKcCj);
+                }
+                return true;
             }
-            return true;
         }
         return false;
     }

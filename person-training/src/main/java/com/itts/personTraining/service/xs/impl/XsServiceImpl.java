@@ -742,6 +742,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
         sjDTO.setXsId(dto.getId());
         sjDTO.setPcId(dto.getPcIds().get(0));
         sjService.add(sjDTO);
+
     }
     /**
     * @Description: 删除学生表时同时删除成绩表和实践表
