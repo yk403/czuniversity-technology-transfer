@@ -257,8 +257,8 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
     public boolean update(Zj zj,ZjInfoDTO zjInfoDTO, String token) {
         log.info("【人才培养 - 更新专家:{}信息】",zj);
         Zj zjOld = zjService.getById(zj.getId());
-
-        ResponseUtil response = yhService.getByPhone(zjOld.getDh(), token);
+        ResponseUtil response = yhService.getById(zj.getYhId());
+        //ResponseUtil response = yhService.getByPhone(zjOld.getDh(), token);
         String yhlb = zj.getLx();
         if(response.getErrCode() != 0 ){
             throw new ServiceException(USER_NOT_FIND_ERROR);

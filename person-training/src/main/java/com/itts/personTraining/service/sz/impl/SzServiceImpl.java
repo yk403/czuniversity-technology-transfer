@@ -415,7 +415,13 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         Long userId = getUserId();
         sz.setGxr(userId);
         //通过用户编号查询
-        Object data = yhService.getByCode(sz.getDsbh(), token).getData();
+        ResponseUtil response = yhService.getById(sz.getYhId());
+        if(response.getErrCode() != 0 ){
+            throw new ServiceException(USER_NOT_FIND_ERROR);
+        }
+        GetYhVo vo = response.conversionData(new TypeReference<GetYhVo>() {
+        });
+        //Object data = yhService.getByCode(sz.getDsbh(), token).getData();
         String yhlx = IN.getKey();
         String yhlb = sz.getDslb();
         Long ssjgId = sz.getSsjgId();
@@ -423,11 +429,11 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         String dsxm = sz.getDsxm();
         String lxdh = sz.getDh();
         String grzp = sz.getGrzp();
-        if (data != null) {
+        if (vo != null) {
             //用户表存在用户信息,更新用户信息,师资表判断是否存在
-            GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
+            //GetYhVo getYhVo = JSONObject.parseObject(JSON.toJSON(data).toString(), GetYhVo.class);
             Yh yh = new Yh();
-            yh.setId(getYhVo.getId());
+            yh.setId(vo.getId());
             yh.setYhbh(dsbh);
             yh.setYhm(dsbh);
             yh.setMm(dsbh);
