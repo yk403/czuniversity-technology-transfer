@@ -150,7 +150,7 @@ public class ZjAdminController {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         checkUpdateRequest(zj);
-        if (!zjService.update(zj, request.getHeader("token"))) {
+        if (!zjService.update(zj,null, request.getHeader("token"))) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新专家成功!");
