@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -317,6 +318,7 @@ public class YhAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         BeanUtils.copyProperties(yh,byId);
+        byId.setMm(new BCryptPasswordEncoder().encode(byId.getMm()));
         byId.setGxsj(new Date());
         byId.setGxr(yh.getId());
         return ResponseUtil.success(yhService.updateById(byId));
