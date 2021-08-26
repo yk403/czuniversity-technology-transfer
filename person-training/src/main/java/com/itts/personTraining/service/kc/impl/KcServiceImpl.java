@@ -269,7 +269,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                     String xylx = pcList.get(0).getXylx();
                     if(xylx!=null){
-                        kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx,pcList.get(0).getId());
                     }else {
                         kcXsXfDTOList=null;
                     }
@@ -291,7 +291,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                     String xylx = pcList.get(0).getXylx();
                     if(xylx!=null){
-                        kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx,pcList.get(0).getId());
                     }else {
                         kcXsXfDTOList=null;
                     }
@@ -315,7 +315,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                     String xylx = pcList.get(0).getXylx();
                     if(xylx!=null){
-                        kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx,pcList.get(0).getId());
                     }else {
                         kcXsXfDTOList=null;
                     }
@@ -337,7 +337,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     }
                     String xylx = pcList.get(0).getXylx();
                     if(xylx!=null){
-                        kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
+                        kcXsXfDTOList = getKcXsXfDTOList(xylx,pcList.get(0).getId());
                     }else {
                         kcXsXfDTOList=null;
                     }
@@ -350,8 +350,13 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             case "school_leader":
             case "administrator":
                 if (pcId == null) {
-                    String xylx =null;
-                    kcXsXfDTOList = getKcXsXfDTOList(xylx,pcId);
+                    QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
+                    pcQueryWrapper.eq("sfsc",false)
+                            .orderByDesc("cjsj");
+                    Pc pc = pcMapper.selectList(pcQueryWrapper).get(0);
+                    String xylx =pc.getXylx();
+                    Long id = pc.getId();
+                    kcXsXfDTOList = getKcXsXfDTOList(xylx,id);
                 } else {
                     Pc pcById = pcMapper.getPcById(pcId);
                     String xylx = pcById.getXylx();
