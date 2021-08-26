@@ -37,7 +37,8 @@ public class ZjAdminController {
     public ResponseUtil getList(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                 @ApiParam(value = "研究领域(与技术领域数据字典相关)") @RequestParam(value = "yjly", required = false) String yjly,
-                                @ApiParam(value = "名称") @RequestParam(value = "name", required = false) String name) {
-        return zjService.getList(pageNum, pageSize, yjly, name);
+                                @ApiParam(value = "名称") @RequestParam(value = "name", required = false) String name,
+                                @RequestParam(value = "lx", required = false) String lx) {
+        return zjService.getList(pageNum, pageSize, yjly, name,lx);
     }
 }
