@@ -257,8 +257,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
     public boolean update(Zj zj,ZjInfoDTO zjInfoDTO, String token) {
         log.info("【人才培养 - 更新专家:{}信息】",zj);
         Zj zjOld = zjService.getById(zj.getId());
-        String lxdh = zjInfoDTO.getYhMsg().getLxdh();
-        String yhtx = zjInfoDTO.getYhMsg().getYhtx();
+
         ResponseUtil response = yhService.getByPhone(zjOld.getDh(), token);
         String yhlb = zj.getLx();
         if(response.getErrCode() != 0 ){
@@ -284,6 +283,8 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             yh.setYhlb(yhlb);
             yh.setYhlx(yhlx);
             if (zjInfoDTO != null) {
+                String lxdh = zjInfoDTO.getYhMsg().getLxdh();
+                String yhtx = zjInfoDTO.getYhMsg().getYhtx();
                 yh.setLxdh(lxdh);
                 yh.setYhtx(yhtx);
             } else {
