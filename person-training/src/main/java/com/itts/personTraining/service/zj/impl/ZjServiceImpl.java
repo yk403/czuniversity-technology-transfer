@@ -191,7 +191,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             yh.setYhlb(yhlb);
             yh.setLxdh(dh);
             yh.setJgId(jgId);
-            yhService.update(yh,token);
+            yhService.updateYh(yh,token);
             Zj zj1 = zjMapper.getByCondition(zj.getDh());
             zj.setYhId(getYhVo.getId());
             if (zj1 != null) {
@@ -292,7 +292,7 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
             }
             yh.setJgId(zj.getJgId());
             yh.setGxr(getUserId());
-            yhService.update(yh,token);
+            yhService.updateYh(yh,token);
         }
         zj.setGxr(getUserId());
         return zjService.updateById(zj);

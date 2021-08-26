@@ -227,7 +227,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             yh.setYhlb(yhlb);
             yh.setJgId(ssjgId);
             yh.setLxdh(dh);
-            yhService.update(yh,token);
+            yhService.updateYh(yh,token);
             sz.setYhId(getYhVo.getId());
             Sz sz1 = szService.selectByCondition(dsbh,null, null,null);
             if (sz1 != null) {
@@ -437,7 +437,7 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
             yh.setLxdh(lxdh);
             yh.setYhtx(grzp);
             yh.setJgId(ssjgId);
-            yhService.update(yh,token);
+            yhService.updateYh(yh,token);
             Sz sz1 = szService.selectByCondition(dsbh,null, null,null);
             if (sz1 != null) {
                 //存在,则更新

@@ -305,7 +305,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                             updateXsAndAddPcXs(xs,pcId);
                             addXscjAndSj(dto);
                             try {
-                                yhService.update(yh, token);
+                                yhService.updateYh(yh, token);
                                 count++;
                             } catch (Exception e) {
                                 log.info(e.getMessage());
@@ -402,7 +402,7 @@ public class XsListener extends AnalysisEventListener<XsDTO> {
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
-                    yhService.update(yh,token);
+                    yhService.updateYh(yh,token);
                     StuDTO dto = xsService.selectByCondition(null, null, yhId);
                     xs.setId(dto.getId());
                     xs.setGxsj(new Date());

@@ -230,7 +230,7 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
             yh.setYhlb(yhlb);
             yh.setJgId(ssjgId);
             yh.setLxdh(lxdh);
-            yhService.update(yh,token);
+            yhService.updateYh(yh,token);
             Sz sz1 = szService.selectByCondition(dsbh,null, null,null);
             if (sz1 != null) {
                 //存在,则更新

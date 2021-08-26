@@ -400,7 +400,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
-                    ResponseUtil update = yhService.update(yh, token);
+                    ResponseUtil update = yhService.updateYh(yh, token);
                     if (update.getData() == null) {
                         throw new ServiceException(UPDATE_FAIL);
                     }
@@ -489,7 +489,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                     yh.setYhlx(yhlx);
                     yh.setYhlb(yhlb);
                     yh.setJgId(jgId);
-                    ResponseUtil update = yhService.update(yh, token);
+                    ResponseUtil update = yhService.updateYh(yh, token);
                     if (update.getData() == null) {
                         throw new ServiceException(UPDATE_FAIL);
                     }
@@ -604,7 +604,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
             yh.setLxdh(stuDTO.getLxdh());
             yh.setYhlx(IN.getKey());
             yh.setJgId(stuDTO.getJgId());
-            yhService.update(yh,token);
+            yhService.updateYh(yh,token);
         }
         Long userId = getUserId();
         stuDTO.setGxr(userId);

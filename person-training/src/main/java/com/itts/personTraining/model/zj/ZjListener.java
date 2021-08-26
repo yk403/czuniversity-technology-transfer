@@ -250,7 +250,7 @@ public class ZjListener extends AnalysisEventListener<ZjDTO> {
             yh.setYhlb(yhlb);
             yh.setLxdh(lxdh);
             yh.setJgId(jgId);
-            yhService.update(yh,token);
+            yhService.updateYh(yh,token);
             Zj zj1 = zjMapper.getByCondition(zj.getDh());
             zj.setYhId(getYhVo.getId());
             if (zj1 != null) {

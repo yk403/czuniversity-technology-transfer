@@ -48,9 +48,9 @@ public interface YhService {
      * 更新
      */
     @ApiOperation(value = "更新")
-    @PutMapping(ADMIN_BASE_URL + "/v1/yh/update/")
+    @PutMapping(ADMIN_BASE_URL + "/v1/yh/updateYh")
     @Transactional(rollbackFor = Exception.class)
-    ResponseUtil update(@RequestBody Yh yh,@RequestHeader(name = "token") String token) throws WebException;
+    ResponseUtil updateYh(@RequestBody Yh yh,@RequestHeader(name = "token") String token) throws WebException;
 
     /**
      * 通过用户编号查询用户
