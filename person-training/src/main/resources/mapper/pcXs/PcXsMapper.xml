@@ -31,8 +31,8 @@
     </select>
     <select id="findPcByXsId" resultType="com.itts.personTraining.model.pc.Pc">
         select pc.*
-        from t_pc_xs tpx left join t_pc pc on (pc.id=tpx.pc_id)
-        where pc.sfsc = false and tpx.xs_id = #{xsId}
+        from t_pc_xs tpx left join t_pc pc on (pc.id=tpx.pc_id) left join t_py_jh tpj on (tpj.pc_id = pc.id)
+        where pc.sfsc = false and tpj.sfsc = false and tpj.sfxf = true and tpx.xs_id = #{xsId}
         order by pc.cjsj desc
     </select>
     <select id="findBySzId" resultType="com.itts.personTraining.model.pc.Pc">
@@ -49,8 +49,8 @@
     </select>
     <select id="findByYzydsIdOrQydsId" resultType="com.itts.personTraining.model.pc.Pc">
         select distinct pc.*
-        from t_pc_xs tpx left join t_pc pc on (pc.id=tpx.pc_id)
-        where pc.sfsc = false and tpx.xs_id in (select xs.id from t_xs xs where xs.sfsc = false <if test="yzydsId != null">and xs.yzyds_id = #{yzydsId} </if> <if test="qydsId != null">and xs.qyds_id = #{qydsId} </if>)
+        from t_pc_xs tpx left join t_pc pc on (pc.id=tpx.pc_id) left join t_py_jh tpj on (tpj.pc_id = pc.id)
+        where pc.sfsc = false and tpj.sfsc = false and tpj.sfxf = true and tpx.xs_id in (select xs.id from t_xs xs where xs.sfsc = false <if test="yzydsId != null">and xs.yzyds_id = #{yzydsId} </if> <if test="qydsId != null">and xs.qyds_id = #{qydsId} </if>)
         order by pc.cjsj desc
     </select>
 
