@@ -14,6 +14,7 @@ import com.itts.personTraining.mapper.kcSz.KcSzMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.pk.PkMapper;
+import com.itts.personTraining.mapper.pyjh.PyJhMapper;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
 import com.itts.personTraining.model.kc.Kc;
@@ -70,6 +71,8 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     private SzMapper szMapper;
     @Autowired
     private PkMapper pkMapper;
+    @Resource
+    private PyJhMapper pyJhMapper;
 
     /**
      * 分页条件查询课程列表
@@ -350,10 +353,8 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             case "school_leader":
             case "administrator":
                 if (pcId == null) {
-                    QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
-                    pcQueryWrapper.eq("sfsc",false)
-                            .orderByDesc("cjsj");
-                    Pc pc = pcMapper.selectList(pcQueryWrapper).get(0);
+                    List<Pc> pcList = pyJhMapper.findAllPc();
+                    Pc pc = pcList.get(0);
                     String xylx =pc.getXylx();
                     Long id = pc.getId();
                     kcXsXfDTOList = getKcXsXfDTOList(xylx,id);
@@ -469,10 +470,8 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             case "school_leader":
             case "administrator":
                 if (pcId == null) {
-                    QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
-                    pcQueryWrapper.eq("sfsc",false)
-                            .orderByDesc("cjsj");
-                    Pc pc = pcMapper.selectList(pcQueryWrapper).get(0);
+                    List<Pc> pcList = pyJhMapper.findAllPc();
+                    Pc pc = pcList.get(0);
                     collect = findKcb(pc);
                 } else {
                     collect = findKcbByPcId(pcId);
