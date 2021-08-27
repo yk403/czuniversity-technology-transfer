@@ -1,6 +1,8 @@
 package com.itts.technologytransactionservice.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
@@ -14,8 +16,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.itts.common.constant.SystemConstant.BASE_URL;
-import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
+import static com.itts.common.constant.SystemConstant.*;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 
 /**
@@ -40,6 +42,19 @@ public class JsHdController extends BaseController {
     @PostMapping("/page")
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
 
+        //查询列表数据
+        Query query = new Query(params);
+        return ResponseUtil.success(jsHdService.page(query));
+    }
+    /**
+     * 分页查询(根据当前用户)
+     *
+     * @param params
+     * @return
+     */
+    @PostMapping("/pageUser")
+    public ResponseUtil pageUser(@RequestBody Map<String, Object> params) {
+        params.put("userId",getUserId().toString());
         //查询列表数据
         Query query = new Query(params);
         return ResponseUtil.success(jsHdService.page(query));
@@ -107,5 +122,19 @@ public class JsHdController extends BaseController {
         TJsHd tJsHd=new TJsHd();
         tJsHd.setHddqsj(new Date());
         return ResponseUtil.success(tJsHd.getHddqsj());
+    }
+    /**
+     * 获取当前用户id
+     * @return
+     */
+    private Long getUserId() {
+        LoginUser loginUser = threadLocal.get();
+        Long userId;
+        if (loginUser != null) {
+            userId = loginUser.getUserId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return userId;
     }
 }
