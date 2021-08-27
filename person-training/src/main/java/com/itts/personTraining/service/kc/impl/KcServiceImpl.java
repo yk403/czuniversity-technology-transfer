@@ -426,19 +426,11 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     if (CollectionUtils.isEmpty(pcList)) {
                         throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
                     }
-                    Long id = pcList.get(0).getId();
-                    if(id!=null){
-                        collect = kcMapper.findByPcId(id);
-                    }else {
-                        collect=null;
-                    }
+                    Pc pc = pcList.get(0);
+                    collect = findKcb(pc);
+
                 } else {
-                    Pc pcById = pcMapper.getPcById(pcId);
-                    if(Objects.equals(pcById.getJylx(),"A")){
-                        collect = kcMapper.findByPcId(pcId);
-                    }else if(Objects.equals(pcById.getJylx(),"C")){
-                        collect = kcMapper.findPcId(pcId);
-                    }
+                    collect = findKcbByPcId(pcId);
                 }
                 break;
             //企业导师
@@ -452,19 +444,10 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     if (CollectionUtils.isEmpty(pcList)) {
                         throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
                     }
-                    Long id = pcList.get(0).getId();
-                    if(id!=null){
-                        collect = kcMapper.findByPcId(id);
-                    }else {
-                        collect=null;
-                    }
+                    Pc pc = pcList.get(0);
+                    collect = findKcb(pc);
                 } else {
-                    Pc pcById = pcMapper.getPcById(pcId);
-                    if(Objects.equals(pcById.getJylx(),"A")){
-                        collect = kcMapper.findByPcId(pcId);
-                    }else if(Objects.equals(pcById.getJylx(),"C")){
-                        collect = kcMapper.findPcId(pcId);
-                    }
+                    collect = findKcbByPcId(pcId);
                 }
                 break;
             case "teacher":
@@ -477,19 +460,10 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     if (CollectionUtils.isEmpty(pcList)) {
                         throw new ServiceException(BATCH_NUMBER_ISEMPTY_NO_MSG_ERROR);
                     }
-                    Long id = pcList.get(0).getId();
-                    if(id!=null){
-                        collect = kcMapper.findByPcId(id);
-                    }else {
-                        collect=null;
-                    }
+                    Pc pc = pcList.get(0);
+                    collect = findKcb(pc);
                 } else {
-                    Pc pcById = pcMapper.getPcById(pcId);
-                    if(Objects.equals(pcById.getJylx(),"A")){
-                        collect = kcMapper.findByPcId(pcId);
-                    }else if(Objects.equals(pcById.getJylx(),"C")){
-                        collect = kcMapper.findPcId(pcId);
-                    }
+                    collect = findKcbByPcId(pcId);
                 }
                 break;
             case "school_leader":
@@ -498,19 +472,40 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                     QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
                     pcQueryWrapper.eq("sfsc",false)
                             .orderByDesc("cjsj");
-                    Long id = pcMapper.selectList(pcQueryWrapper).get(0).getId();
-                    collect = kcMapper.findByPcId(id);
+                    Pc pc = pcMapper.selectList(pcQueryWrapper).get(0);
+                    collect = findKcb(pc);
                 } else {
-                    Pc pcById = pcMapper.getPcById(pcId);
-                    if(Objects.equals(pcById.getJylx(),"A")){
-                        collect = kcMapper.findByPcId(pcId);
-                    }else if(Objects.equals(pcById.getJylx(),"C")){
-                        collect = kcMapper.findPcId(pcId);
-                    }
+                    collect = findKcbByPcId(pcId);
                 }
                 break;
             default:
                 break;
+        }
+        return collect;
+    }
+    private List<KcbDTO> findKcb(Pc pc){
+        List<KcbDTO> collect = null;
+        if(pc == null){
+            return collect;
+        }else {
+            Long id = pc.getId();
+            if(Objects.equals(pc.getJylx(),"A")){
+                collect = kcMapper.findByPcId(id);
+            }else if(Objects.equals(pc.getJylx(),"C")){
+                collect = kcMapper.findPcId(id);
+            }
+            return collect;
+        }
+
+    }
+
+    private List<KcbDTO> findKcbByPcId(Long pcId){
+        List<KcbDTO> collect = null;
+        Pc pcById = pcMapper.getPcById(pcId);
+        if(Objects.equals(pcById.getJylx(),"A")){
+            collect = kcMapper.findByPcId(pcId);
+        }else if(Objects.equals(pcById.getJylx(),"C")){
+            collect = kcMapper.findPcId(pcId);
         }
         return collect;
     }
