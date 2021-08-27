@@ -68,9 +68,9 @@
         </where>
     </select>
     <select id="findPcsBySzId" resultType="com.itts.personTraining.model.pc.Pc">
-        select pk.pc_id as id, pc.pch, pc.pcmc,pc.jylx
-        from t_pk pk left join t_pc pc on (pc.id=pk.pc_id)
-        where pk.sfsc = false and pc.sfsc = false and pk.sz_id = #{szId} group by pk.pc_id
+        select pk.pc_id as id, pc.pch, pc.pcmc
+        from t_pk pk left join t_pc pc on (pc.id=pk.pc_id) left join t_py_jh tpj on (tpj.pc_id = pc.id)
+        where pk.sfsc = false and tpj.sfsc = false and tpj.sfxf = true and pc.sfsc = false and pk.sz_id = #{szId} group by pk.pc_id
         order by pc.cjsj desc
     </select>
     <select id="findPcIdsBySzId" resultType="java.lang.Long">
