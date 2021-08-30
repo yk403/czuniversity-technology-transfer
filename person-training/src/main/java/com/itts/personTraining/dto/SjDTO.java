@@ -103,6 +103,12 @@ public class SjDTO {
     private String pjbmc;
 
     /**
+     * 评价结果(优；良；中；差)
+     */
+    @ApiModelProperty(value = "评价表名称")
+    private String pjjg;
+
+    /**
      * 实践成绩
      */
     @ApiModelProperty(value = "实践成绩", required = true)

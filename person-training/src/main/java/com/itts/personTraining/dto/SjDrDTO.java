@@ -107,4 +107,9 @@ public class SjDrDTO {
     @ExcelProperty(value = "结束日期", index = 12)
     private Date jsrq;
 
+    /**
+     * 评价结果(优；良；中；差)
+     */
+    @ExcelProperty(value = "评价结果(优；良；中；差)", index = 13)
+    private String pjjg;
 }

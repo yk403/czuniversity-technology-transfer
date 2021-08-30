@@ -86,6 +86,12 @@ public class KsDTO {
     private String kslx;
 
     /**
+     * 考试方式(开卷、闭卷、讨论、汇报、答辩、实操)
+     */
+    @ApiModelProperty(value = "考试方式(开卷、闭卷、讨论、汇报、答辩、实操)", required = true)
+    private String ksfs;
+
+    /**
      * 考试日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")

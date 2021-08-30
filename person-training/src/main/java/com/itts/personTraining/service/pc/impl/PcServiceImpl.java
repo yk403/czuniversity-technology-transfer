@@ -32,6 +32,7 @@ import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
+import static com.itts.personTraining.enums.JdlxEnum.HEADQUARTERS;
 
 /**
  * <p>
@@ -67,24 +68,26 @@ public class PcServiceImpl implements PcService {
      * @return
      */
     @Override
-    public PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize, String name, String jylx, String lx) {
-        log.info("【人才培养 - 根据批次号/批次名称:{},教育类型:{},类型:{}分页查询批次】",name,jylx,lx);
-        if (pageNum == -1) {
+    public PageInfo<Pc> findByPage(Integer pageNum, Integer pageSize, String name, String jylx, String lx, Long fjjgId, String userType) {
+        log.info("【人才培养 - 根据批次号/批次名称:{},教育类型:{},类型:{},父级机构ID:{},用户类型:{}分页查询批次】",name,jylx,lx,fjjgId,userType);
+            if (pageNum == -1) {
+                QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
+                pcQueryWrapper.eq("sfsc",false)
+                        .eq(fjjgId != null,"fjjg_id",fjjgId)
+                        .orderByDesc("cjsj");
+                List<Pc> pcs = pcMapper.selectList(pcQueryWrapper);
+                return new PageInfo<>(pcs);
+            }
+            PageHelper.startPage(pageNum,pageSize);
             QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
             pcQueryWrapper.eq("sfsc",false)
-                          .orderByDesc("cjsj");
+                    .eq(fjjgId != null,"fjjg_id",fjjgId)
+                    .eq(StringUtils.isNotBlank(jylx),"jylx",jylx)
+                    .eq(StringUtils.isNotBlank(lx),"lx",lx)
+                    .like(StringUtils.isNotBlank(name),"pch",name).or()
+                    .like(StringUtils.isNotBlank(name),"pcmc",name)
+                    .orderByDesc("cjsj");
             List<Pc> pcs = pcMapper.selectList(pcQueryWrapper);
-            return new PageInfo<>(pcs);
-        }
-        PageHelper.startPage(pageNum,pageSize);
-        QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
-        pcQueryWrapper.eq("sfsc",false)
-                      .eq(StringUtils.isNotBlank(jylx),"jylx",jylx)
-                      .eq(StringUtils.isNotBlank(lx),"lx",lx)
-                      .like(StringUtils.isNotBlank(name),"pch",name).or()
-                      .like(StringUtils.isNotBlank(name),"pcmc",name)
-                      .orderByDesc("cjsj");
-        List<Pc> pcs = pcMapper.selectList(pcQueryWrapper);
         return new PageInfo<>(pcs);
     }
 

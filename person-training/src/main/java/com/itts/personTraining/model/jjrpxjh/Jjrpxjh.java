@@ -37,6 +37,11 @@ public class Jjrpxjh implements Serializable {
     private String pxjhmc;
 
     /**
+     * 父级机构ID
+     */
+    private Long fjjgId;
+
+    /**
      * 机构ID
      */
     private Long jgId;

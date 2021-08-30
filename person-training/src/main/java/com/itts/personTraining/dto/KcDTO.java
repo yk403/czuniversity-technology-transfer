@@ -29,10 +29,15 @@ public class KcDTO {
     private Long kcId;
 
     /**
+     * 父级机构ID
+     */
+    private Long fjjgId;
+
+    /**
      * 师资ids
      */
-    @ApiModelProperty(value = "师资ids", required = true)
-    private List<Long> szIds;
+   /* @ApiModelProperty(value = "师资ids", required = true)
+    private List<Long> szIds;*/
 
     /**
      * 知识模块ID(1:公共知识模块;2:政策法规模块;3:实务技能模块一;4:实务技能模块二;5:实务技能模块三;6:能力提升模块)
@@ -88,9 +93,9 @@ public class KcDTO {
     private Integer kcxf;
 
     /**
-     * 开课学期
+     * 开课时间
      */
-    @ApiModelProperty(value = "开课学期", required = true)
+    @ApiModelProperty(value = "开课时间", required = true)
     private String kkxq;
 
     /**
@@ -100,9 +105,9 @@ public class KcDTO {
     private String kkxy;
 
     /**
-     * 授课方式:	seminar - 讲授/研讨;	discuss - 讲授讨论;	practice - 实训
+     * 授课方式:	线上授课；线下授课
      */
-    @ApiModelProperty(value = "授课方式", required = true)
+    @ApiModelProperty(value = "授课方式: 线上授课；线下授课", required = true)
     private String skfs;
 
     /**

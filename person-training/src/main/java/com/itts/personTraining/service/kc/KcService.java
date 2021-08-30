@@ -29,9 +29,11 @@ public interface KcService extends IService<Kc> {
      * @param name
      * @param jylx
      * @param xylx
+     * @param fjjgId
+     * @param userType
      * @return
      */
-    PageInfo<KcDTO> findByPage(Integer pageNum, Integer pageSize, String kclx, String name, String jylx, String xylx);
+    PageInfo<KcDTO> findByPage(Integer pageNum, Integer pageSize, String kclx, String name, String jylx, String xylx, Long fjjgId, String userType);
 
     /**
      * 新增课程

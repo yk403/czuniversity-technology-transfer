@@ -45,8 +45,10 @@ public class KcAdminController {
                                    @RequestParam(value = "kclx", required = false) String kclx,
                                    @RequestParam(value = "name", required = false) String name,
                                    @RequestParam(value = "jylx", required = false) String jylx,
-                                   @RequestParam(value = "xylx", required = false) String xylx) {
-        return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name,jylx,xylx));
+                                   @RequestParam(value = "xylx", required = false) String xylx,
+                                   @RequestParam(value = "fjjgId", required = false) Long fjjgId,
+                                   @RequestParam(value = "userType", required = false) String userType) {
+        return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name,jylx,xylx,fjjgId,userType));
     }
 
     /**
@@ -154,9 +156,9 @@ public class KcAdminController {
         if (kcDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        if(kcDTO.getSzIds() == null) {
+        /*if(kcDTO.getSzIds() == null) {
             throw new WebException(TEACHER_ISEMPTY_ERROR);
-        }
+        }*/
         if (kcDTO.getKcdm() == null) {
             throw new WebException(TEACH_TYPE_ISEMPTY_ERROR);
         }

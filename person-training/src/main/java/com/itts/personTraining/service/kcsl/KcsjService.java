@@ -20,7 +20,7 @@ public interface KcsjService extends IService<Kcsj> {
     /**
      * 列表 - 分页
      */
-    PageInfo<Kcsj> fingByPage(Integer pageNum, Integer pageSize);
+    PageInfo<Kcsj> fingByPage(Integer pageNum, Integer pageSize, Long fjjgId);
 
     /**
      * 新增

@@ -76,6 +76,11 @@ public class Sj implements Serializable {
     private String pjbmc;
 
     /**
+     * 评价结果(优；良；中；差)
+     */
+    private String pjjg;
+
+    /**
      * 实践成绩
      */
     private String sjcj;

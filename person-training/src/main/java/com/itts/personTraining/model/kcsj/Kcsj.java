@@ -35,6 +35,12 @@ public class Kcsj implements Serializable {
     private Long id;
 
     /**
+     * 父级机构ID
+     */
+    @ApiModelProperty(value = "父级机构ID", required = true)
+    private Long fjjgId;
+
+    /**
      * 开始时间
      */
     @ApiModelProperty(value = "开始时间", required = true)

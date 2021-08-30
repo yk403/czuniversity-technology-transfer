@@ -32,7 +32,7 @@ public interface KcMapper extends BaseMapper<Kc> {
      * @return
      * @prram xylx
      */
-    List<KcDTO> findByPage(@Param("kclx") String kclx, @Param("name") String name, @Param("jylx") String jylx, @Param("xylxArr") String[] xylxArr);
+    List<KcDTO> findByPage(@Param("kclx") String kclx, @Param("name") String name, @Param("jylx") String jylx, @Param("xylxArr") String[] xylxArr, @Param("fjjgId") Long fjjgId);
 
     /**
      * 根据批次id查询课程集合

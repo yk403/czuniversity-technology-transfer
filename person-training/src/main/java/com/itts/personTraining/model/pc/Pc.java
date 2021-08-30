@@ -32,6 +32,12 @@ public class Pc implements Serializable {
     private Long id;
 
     /**
+     * 父级机构ID
+     */
+    @ApiModelProperty(value = "父级机构ID", required = true)
+    private Long fjjgId;
+
+    /**
      * 入学日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")

@@ -48,12 +48,14 @@ public class JjrpxjhAdminController {
     public ResponseUtil list(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                              @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                              @ApiParam(value = "名称") @RequestParam(value = "mc", required = false) String mc,
-                             @ApiParam(value = "批次") @RequestParam(value = "pcId", required = false) Long pcId) {
+                             @ApiParam(value = "批次") @RequestParam(value = "pcId", required = false) Long pcId,
+                             @ApiParam(value = "父级机构ID")@RequestParam(value = "fjjgId", required = false) Long fjjgId) {
 
         PageHelper.startPage(pageNum, pageSize);
 
         List<Jjrpxjh> list = jjrpxjhService.list(new QueryWrapper<Jjrpxjh>()
                 .eq("sfsc", false)
+                .eq(fjjgId != null,"fjjg_id", fjjgId)
                 .like(StringUtils.isNotBlank(mc), "pxjhmc", mc)
                 .eq(pcId != null, "pc_id", pcId).orderByDesc("cjsj"));
 
