@@ -4,6 +4,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.annotation.write.style.ContentRowHeight;
 import com.alibaba.excel.annotation.write.style.HeadRowHeight;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -154,6 +155,42 @@ public class SzDTO implements Serializable {
     @ExcelProperty(value = "导师类别", index = 20)
     private String dslb;
 
+    @ExcelProperty(value = "从事技术转移工作时长", index = 21)
+    private String csjszysj;
+    @ExcelProperty(value = "最后学历", index = 22)
+    private String zhxl;
+    @ExcelProperty(value = "最后学位", index = 23)
+    private String zhxw;
+    @ExcelProperty(value = "最后毕业院校", index = 24)
+    private String byyx;
+    @ExcelProperty(value = "最后专业", index = 25)
+    private String zhzy;
+    @ExcelProperty(value = "最后毕业时间", index = 26)
+    private Date zhsj;
+    @ExcelProperty(value = "学位授予时间", index = 27)
+    private Date xwsysj;
+    @ExcelProperty(value = "是否硕导", index = 28)
+    private Boolean sfsd;
+    @ExcelProperty(value = "曾任硕导单位及专业", index = 29)
+    private String crsddwjzy;
+    @ExcelProperty(value = "所属一级学科名称", index = 30)
+    private String ssyjxkmc;
+    @ExcelProperty(value = "二级学科（一）名称", index = 31)
+    private String ejxky;
+    @ExcelProperty(value = "二级学科（二）名称", index = 32)
+    private String ejxke;
+    @ExcelProperty(value = "研究成果", index = 33)
+    private String yjcg;
+    @ExcelProperty(value = "出版作品", index = 34)
+    private String cbzp;
+    @ExcelProperty(value = "各种奖励", index = 35)
+    private String gzjl;
+    @ExcelProperty(value = "科研项目", index = 36)
+    private String kyxm;
+    @ExcelProperty(value = "职务", index = 37)
+    private String zw;
+    @ExcelProperty(value = "定职时间", index = 38)
+    private Date dzsj;
     /**
      * 个人照片
      *//*
