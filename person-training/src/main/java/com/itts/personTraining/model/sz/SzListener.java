@@ -161,6 +161,24 @@ public class SzListener extends AnalysisEventListener<SzDTO> {
         if (!StringUtils.isBlank(data.getZgzt())) {
             sz.setZgzt(data.getZgzt());
         }
+        sz.setCsjszysj(data.getCsjszysj());
+        sz.setZhxl(data.getZhxl());
+        sz.setZhxw(data.getZhxw());
+        sz.setByyx(data.getByyx());
+        sz.setZhzy(data.getZhzy());
+        sz.setZhsj(data.getZhsj());
+        sz.setXwsysj(data.getXwsysj());
+        sz.setSfsd(data.getSfsd());
+        sz.setCrsddwjzy(data.getCrsddwjzy());
+        sz.setSsyjxkmc(data.getSsyjxkmc());
+        sz.setEjxky(data.getEjxky());
+        sz.setEjxke(data.getEjxke());
+        sz.setYjcg(data.getYjcg());
+        sz.setCbzp(data.getCbzp());
+        sz.setGzjl(data.getGzjl());
+        sz.setKyxm(data.getKyxm());
+        sz.setZw(data.getZw());
+        sz.setDzsj(data.getDzsj());
         //导师类别
         String dslb = data.getDslb();
         if (!StringUtils.isBlank(dslb)) {

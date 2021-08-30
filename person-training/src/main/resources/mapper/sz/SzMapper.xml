@@ -32,11 +32,29 @@
         <result column="cjr" property="cjr" />
         <result column="gxsj" property="gxsj" />
         <result column="gxr" property="gxr" />
+        <result column="zw" property="zw" />
+        <result column="dzsj" property="dzsj" />
+        <result column="csjszysj" property="csjszysj" />
+        <result column="zhxl" property="zhxl" />
+        <result column="zhxw" property="byyx" />
+        <result column="zhzy" property="zhzy" />
+        <result column="zhsj" property="zhsj" />
+        <result column="xwsysj" property="xwsysj" />
+        <result column="sfsd" property="sfsd" />
+        <result column="crsddwjzy" property="crsddwjzy" />
+        <result column="ssyjxkmc" property="ssyjxkmc" />
+        <result column="ejxky" property="ejxky" />
+        <result column="ejxke" property="ejxke" />
+        <result column="yjcg" property="yjcg" />
+        <result column="cbzp" property="cbzp" />
+        <result column="gzjl" property="gzjl" />
+        <result column="kyxm" property="kyxm" />
+
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, yx, dsbh, dsxm, dh, xb, sfzh, jg, csrq, mz, zzmm, whcd, yx, ssjg_id, gbzw, cszy_one, cszy_two, cszy_three, jszc, dwdh, zzdh, hxwsj, hxlyx, hxlsj, sxzy, zgxl, pzsdny, pzbdny, dssqsny, dbsqsny, zgzt, dslb, sczt, cjsj, cjr, gxsj, gxr
+        id, yx, dsbh, dsxm, dh, xb, sfzh, jg, csrq, mz, zzmm, whcd, yx, ssjg_id, gbzw, cszy_one, cszy_two, cszy_three, jszc, dwdh, zzdh, hxwsj, hxlyx, hxlsj, sxzy, zgxl, pzsdny, pzbdny, dssqsny, dbsqsny, zgzt, dslb, sczt, cjsj, cjr, gxsj, gxr, csjszysj,zhxl,zhxw,byyx,zhzy,zhsj,xwsysj,sfsd,crsddwjzy,ssyjxkmc,ejxky,ejxke,yjcg,cbzp,gzjl,kyxm
     </sql>
     <select id="getSzByYhId" resultType="com.itts.personTraining.model.sz.Sz">
         select *
