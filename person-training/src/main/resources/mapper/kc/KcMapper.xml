@@ -31,10 +31,11 @@
     </sql>
 
     <select id="findByPage" resultType="com.itts.personTraining.dto.KcDTO">
-        select kc.id as id,xylx,zsmk_id as zsmkId,jylx,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfsc,sfbx,bz,sfxf,cjsj,cjr,gxsj,gxr
+        select kc.id as id,fjjg_id,xylx,zsmk_id as zsmkId,jylx,kcmc,kcdm,kclx,kcxs,kcxf,kkxq,kkxy,skfs,jxjy,jcfj,kj,ja,kjsp,sp,sfsc,sfbx,bz,sfxf,cjsj,cjr,gxsj,gxr
         from t_kc kc
         <where>
             kc.sfsc = false
+            <if test="fjjgId != null"> and kc.fjjg_id = #{fjjgId} </if>
             <if test="kclx != null and kclx != ''"> and kc.kclx like trim(#{kclx}) </if>
             <if test="jylx != null and jylx != ''"> and kc.jylx like trim(#{jylx}) </if>
             <if test="xylxArr != null and xylxArr != ''">

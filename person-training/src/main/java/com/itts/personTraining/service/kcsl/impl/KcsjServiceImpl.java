@@ -50,13 +50,14 @@ public class KcsjServiceImpl extends ServiceImpl<KcsjMapper, Kcsj> implements Kc
      * 列表 - 分页
      */
     @Override
-    public PageInfo<Kcsj> fingByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<Kcsj> fingByPage(Integer pageNum, Integer pageSize, Long fjjgId) {
 
         PageHelper.startPage(pageNum, pageSize);
 
-        QueryWrapper query = new QueryWrapper();
-        query.eq("sfsc",false);
-        query.orderByAsc("kssj");
+        QueryWrapper<Kcsj> query = new QueryWrapper();
+        query.eq("sfsc",false)
+             .eq(fjjgId != null,"fjjg_id",fjjgId)
+             .orderByAsc("kssj");
         List<Kcsj> kcsjs = kcsjMapper.selectList(query);
 
         PageInfo<Kcsj> pageInfo = new PageInfo<>(kcsjs);

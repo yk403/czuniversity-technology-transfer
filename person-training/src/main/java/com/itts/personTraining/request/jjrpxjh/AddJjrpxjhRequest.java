@@ -26,6 +26,12 @@ public class AddJjrpxjhRequest implements Serializable {
     private String pxjhmc;
 
     /**
+     * 父级机构ID
+     */
+    @ApiModelProperty(value = "父级机构ID")
+    private Long fjjgId;
+
+    /**
      * 机构ID
      */
     @ApiModelProperty(value = "机构ID")

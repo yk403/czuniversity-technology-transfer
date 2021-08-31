@@ -31,6 +31,11 @@ public class Kc implements Serializable {
     private Long id;
 
     /**
+     * 父级机构ID
+     */
+    private Long fjjgId;
+
+    /**
      * 知识模块ID(1:公共知识模块;2:政策法规模块;3:实务技能模块一;4:实务技能模块二;5:实务技能模块三;6:能力提升模块)
      */
     private Long zsmkId;
@@ -76,12 +81,12 @@ public class Kc implements Serializable {
     private Integer kcxf;
 
     /**
-     * 开课学期
+     * 开课时间
      */
     private String kkxq;
 
     /**
-     * 开课学院
+     * 开课单位
      */
     private String kkxy;
 

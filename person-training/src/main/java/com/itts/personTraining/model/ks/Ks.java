@@ -69,6 +69,11 @@ public class Ks implements Serializable {
     private String kslx;
 
     /**
+     * 考试方式(开卷、闭卷、讨论、汇报、答辩、实操)
+     */
+    private String ksfs;
+
+    /**
      * 考试日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")

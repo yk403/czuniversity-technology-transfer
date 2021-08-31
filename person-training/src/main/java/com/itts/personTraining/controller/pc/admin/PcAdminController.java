@@ -44,8 +44,10 @@ public class PcAdminController {
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                 @RequestParam(value = "name", required = false) String name,
                                 @RequestParam(value = "jylx", required = false) String jylx,
-                                @RequestParam(value = "lx", required = false) String lx){
-        return ResponseUtil.success(pcService.findByPage(pageNum, pageSize, name, jylx, lx));
+                                @RequestParam(value = "lx", required = false) String lx,
+                                @RequestParam(value = "fjjgId", required = false) Long fjjgId,
+                                @RequestParam(value = "userType", required = false) String userType){
+        return ResponseUtil.success(pcService.findByPage(pageNum, pageSize, name, jylx, lx, fjjgId, userType));
     }
 
     /**

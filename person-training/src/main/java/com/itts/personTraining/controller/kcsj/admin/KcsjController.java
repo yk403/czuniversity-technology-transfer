@@ -44,9 +44,10 @@ public class KcsjController {
     @GetMapping("/list/")
     @ApiOperation(value = "获取列表 - 分页")
     public ResponseUtil list(@ApiParam(value = "当前页数") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                             @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+                             @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                             @ApiParam(value = "父级机构ID")@RequestParam(value = "fjjgId", required = false) Long fjjgId) {
 
-        PageInfo pageInfo = kcsjService.fingByPage(pageNum, pageSize);
+        PageInfo pageInfo = kcsjService.fingByPage(pageNum, pageSize, fjjgId);
 
         return ResponseUtil.success(pageInfo);
     }

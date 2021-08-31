@@ -111,6 +111,10 @@ public class SjListener extends AnalysisEventListener<SjDrDTO> {
                     if (StringUtils.isNotBlank(data.getJdjjTwo())) {
                         sj.setJdjjTwo(data.getJdjjTwo());
                     }
+                    //评价结果
+                    if (StringUtils.isNotBlank(data.getPjjg())) {
+                        sj.setPjjg(data.getPjjg());
+                    }
                     save(sj);
                 }
 
