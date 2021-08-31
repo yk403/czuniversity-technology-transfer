@@ -50,10 +50,9 @@ public class JsAdminController {
                              @ApiParam("当前页数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                              @ApiParam("角色名称") @RequestParam(value = "name", required = false) String name,
                              @ApiParam("系统类型") @RequestParam(value = "systemType", required = false) String systemType,
-                             @RequestParam(value = "jgId", required = false) Long jgId,
-                             @RequestParam(value = "jglx", required = false) String jglx) {
+                             @RequestParam(value = "jgId", required = false) Long jgId) {
 
-        PageInfo<Js> byPage = jsService.findByPage(pageNum, pageSize, name, systemType ,jgId,jglx);
+        PageInfo<Js> byPage = jsService.findByPage(pageNum, pageSize, name, systemType ,jgId);
         return ResponseUtil.success(byPage);
     }
 
