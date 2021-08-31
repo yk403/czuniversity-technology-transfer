@@ -38,7 +38,7 @@ public interface CdService {
     /**
      * 通过角色获取菜单
      */
-    List<CdTreeVO> getMenuByRole(List<Js> js);
+    List<CdTreeVO> getMenuByRole(List<Js> js,String xtlx);
 
     /**
      * 通过菜单编码获取当前菜单和所有子菜单

@@ -31,10 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -173,7 +170,7 @@ public class CdServiceImpl implements CdService {
      * 通过角色获取菜单
      */
     @Override
-    public List<CdTreeVO> getMenuByRole(List<Js> js) {
+    public List<CdTreeVO> getMenuByRole(List<Js> js,String xtlx) {
 
         List<Long> jsIds = js.stream().map(Js::getId).collect(Collectors.toList());
         if (CollectionUtils.isEmpty(jsIds)) {
@@ -190,18 +187,34 @@ public class CdServiceImpl implements CdService {
             return null;
         }
 
-        List<Cd> cds = cdMapper.selectList(new QueryWrapper<Cd>().in("id", cdIds).eq("sfsc", false));
-        if (CollectionUtils.isEmpty(cds)) {
-            return null;
-        }
+        List<Cd> collect = cdMapper.selectList(new QueryWrapper<Cd>().in("id", cdIds).eq("sfsc", false));
+        List<Cd> cds =new ArrayList<>();
+        if(StringUtils.isNotBlank(xtlx)){
+            cds = collect.stream().filter(cd -> Objects.equals(cd.getXtlx(), xtlx)).collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(cds)) {
+                return null;
+            }
 
+        }else {
+            //获取菜单的一级菜单
+            List<Cd> parentCds = getParentMenu(collect);
+
+            //菜单层级组装
+            List<CdTreeVO> vos = parentCds.stream().map(obj -> {
+
+                CdTreeVO vo = assemblyLevel(collect, obj);
+                return vo;
+            }).collect(Collectors.toList());
+            return vos;
+        }
         //获取菜单的一级菜单
         List<Cd> parentCds = getParentMenu(cds);
 
         //菜单层级组装
+        List<Cd> finalCds = cds;
         List<CdTreeVO> vos = parentCds.stream().map(obj -> {
 
-            CdTreeVO vo = assemblyLevel(cds, obj);
+            CdTreeVO vo = assemblyLevel(finalCds, obj);
             return vo;
         }).collect(Collectors.toList());
 

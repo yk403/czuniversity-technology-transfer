@@ -151,7 +151,7 @@ public class CdController {
 
     @ApiOperation(value = "获取当前用户角色菜单列表")
     @GetMapping("/get/user/menu")
-    public ResponseUtil getMenuByUser() {
+    public ResponseUtil getMenuByUser(@RequestParam(value = "xtlx",required = false) String xtlx) {
 
         //获取登录用户信息
         LoginUser loginUser = threadLocal.get();
@@ -165,7 +165,7 @@ public class CdController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
 
-        List<CdTreeVO> vos = cdService.getMenuByRole(js);
+        List<CdTreeVO> vos = cdService.getMenuByRole(js,xtlx);
 
 
        /* Map<String, Object> resultMap = Maps.newHashMap();
