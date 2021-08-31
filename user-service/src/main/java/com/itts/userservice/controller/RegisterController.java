@@ -4,10 +4,12 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.js.Js;
 import com.itts.userservice.model.yh.Yh;
 import com.itts.userservice.request.RegisterRequest;
 import com.itts.userservice.service.RegisterService;
+import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.RegisterYhVO;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -42,6 +45,8 @@ public class RegisterController {
 
     @Autowired
     private RegisterService registerService;
+    @Resource
+    private JgglService jgglService;
 
     /**
      * 用户注册（门户端）
@@ -63,8 +68,10 @@ public class RegisterController {
             throw new WebException(ErrorCodeEnum.REGISTER_USERNAME_EXISTS_ERROR);
         }
 
+        Jggl jggl = jgglService.selectByJgbm(request.getJgCode());
+
         //获取门户系统默认角色
-        List<Js> jsList = jsService.findByUserTypeAndDefault(request.getUserType(), true);
+        List<Js> jsList = jsService.findByUserTypeAndDefault(request.getUserType(),jggl.getId(), true);
         if (CollectionUtils.isEmpty(jsList)) {
             throw new WebException(ErrorCodeEnum.REGISTER_DEFAULT_ROLE_NOT_FIND_ERROR);
         }
