@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.userservice.common.UserServiceCommon;
 import com.itts.userservice.enmus.GroupTypeEnum;
+import com.itts.userservice.enmus.JgTpyeEnum;
 import com.itts.userservice.feign.persontraining.gngl.GnglFeignService;
 import com.itts.userservice.feign.persontraining.rmdt.RmdtFeignService;
 import com.itts.userservice.mapper.jggl.JgglMapper;
@@ -17,6 +18,7 @@ import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.vo.JgglVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -184,6 +186,8 @@ public class JgglServiceImpl extends ServiceImpl<JgglMapper, Jggl> implements Jg
 
         //获取机构树
         List<JgglVO> jgglVOList = buildJgglVOTree(jgglVOS, jgbm);
+
+
         return jgglVOList;
     }
 

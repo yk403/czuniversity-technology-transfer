@@ -41,4 +41,7 @@ public class RegisterRequest implements Serializable {
      */
     @ApiModelProperty("手机号码")
     private String mobile;
+
+    @ApiModelProperty("机构Code")
+    private String jgCode;
 }

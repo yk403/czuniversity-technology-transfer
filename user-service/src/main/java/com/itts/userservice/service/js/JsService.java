@@ -31,7 +31,7 @@ public interface JsService {
      * @return
      * @author liuyingming
      */
-    List<Js> findByUserTypeAndDefault(String userType, Boolean defaultFlag);
+    List<Js> findByUserTypeAndDefault(String userType,Long jgId, Boolean defaultFlag);
 
     /**
      * 通过用户ID获取

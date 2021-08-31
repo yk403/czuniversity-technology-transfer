@@ -101,12 +101,14 @@ public class JsServiceImpl implements JsService {
      * @author liuyingming
      */
     @Override
-    public List<Js> findByUserTypeAndDefault(String userType, Boolean defaultFlag) {
+    public List<Js> findByUserTypeAndDefault(String userType,Long jgId, Boolean defaultFlag) {
 
         QueryWrapper query = new QueryWrapper();
         query.eq("yhjslx", userType);
         query.eq("sfmr", defaultFlag);
         query.eq("sfsc", false);
+        query.eq("jg_id",jgId);
+
 
         List jsList = jsMapper.selectList(query);
 
