@@ -95,4 +95,5 @@ public class Js implements Serializable {
      */
     @ApiModelProperty(value = "更新人")
     private Long gxr;
+    private Long jgId;
 }

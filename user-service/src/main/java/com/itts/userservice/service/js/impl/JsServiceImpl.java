@@ -6,12 +6,15 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.userservice.enmus.JgTpyeEnum;
 import com.itts.userservice.enmus.UserTypeEnum;
 import com.itts.userservice.mapper.cz.CzMapper;
+import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.mapper.js.JsCdCzGlMapper;
 import com.itts.userservice.mapper.js.JsCdGlMapper;
 import com.itts.userservice.mapper.js.JsMapper;
 import com.itts.userservice.model.cz.Cz;
+import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.js.Js;
 import com.itts.userservice.model.js.JsCdCzGl;
 import com.itts.userservice.model.js.JsCdGl;
@@ -56,12 +59,14 @@ public class JsServiceImpl implements JsService {
 
     @Resource
     private CzMapper czMapper;
+    @Resource
+    private JgglMapper jgglMapper;
 
     /**
      * 获取列表 - 分页
      */
     @Override
-    public PageInfo<Js> findByPage(Integer pageNum, Integer pageSize, String name, String systemType) {
+    public PageInfo<Js> findByPage(Integer pageNum, Integer pageSize, String name, String systemType,Long jgId,String jglx) {
         log.info("分页是否起效,pageNum:{}",pageNum);
         if(pageNum != -1){
             PageHelper.startPage(pageNum, pageSize);
@@ -76,6 +81,21 @@ public class JsServiceImpl implements JsService {
         if (StringUtils.isNotBlank(systemType)) {
             query.eq("yhjslx", systemType);
         }
+        //查询条件jgId
+        if(Objects.equals(jglx, JgTpyeEnum.HEADQUARTERS.getKey())){
+            if(jgId== null){
+                QueryWrapper<Jggl> jgglQueryWrapper = new QueryWrapper<>();
+                jgglQueryWrapper.eq("lx",JgTpyeEnum.HEADQUARTERS.getKey())
+                        .eq("sfsc",false);
+                Jggl jggl = jgglMapper.selectOne(jgglQueryWrapper);
+                query.eq("jg_id",jggl.getId());
+            }else {
+                query.eq(jgId!=null,"jg_id",jgId);
+            }
+        }else {
+            query.eq(jgId!=null,"jg_id",jgId);
+        }
+
 
         query.orderByDesc("cjsj");
 
