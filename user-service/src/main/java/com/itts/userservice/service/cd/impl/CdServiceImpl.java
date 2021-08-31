@@ -187,25 +187,20 @@ public class CdServiceImpl implements CdService {
             return null;
         }
 
-        List<Cd> collect = cdMapper.selectList(new QueryWrapper<Cd>().in("id", cdIds).eq("sfsc", false));
+
         List<Cd> cds =new ArrayList<>();
         if(StringUtils.isNotBlank(xtlx)){
+            List<Cd> collect = cdMapper.selectList(new QueryWrapper<Cd>().in("id", cdIds).eq("sfsc", false));
             cds = collect.stream().filter(cd -> Objects.equals(cd.getXtlx(), xtlx)).collect(Collectors.toList());
             if (CollectionUtils.isEmpty(cds)) {
                 return null;
             }
-
         }else {
-            //获取菜单的一级菜单
-            List<Cd> parentCds = getParentMenu(collect);
+            cds = cdMapper.selectList(new QueryWrapper<Cd>().in("id", cdIds).eq("sfsc", false));
+            if (CollectionUtils.isEmpty(cds)) {
+                return null;
+            }
 
-            //菜单层级组装
-            List<CdTreeVO> vos = parentCds.stream().map(obj -> {
-
-                CdTreeVO vo = assemblyLevel(collect, obj);
-                return vo;
-            }).collect(Collectors.toList());
-            return vos;
         }
         //获取菜单的一级菜单
         List<Cd> parentCds = getParentMenu(cds);
