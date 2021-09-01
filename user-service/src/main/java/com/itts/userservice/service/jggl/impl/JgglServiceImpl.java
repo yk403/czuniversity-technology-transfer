@@ -8,10 +8,13 @@ import com.itts.common.bean.LoginUser;
 import com.itts.userservice.common.UserServiceCommon;
 import com.itts.userservice.enmus.GroupTypeEnum;
 import com.itts.userservice.enmus.JgTpyeEnum;
+import com.itts.userservice.enmus.LmglEnum;
 import com.itts.userservice.feign.persontraining.gngl.GnglFeignService;
+import com.itts.userservice.feign.persontraining.lmgl.LmglRpcService;
 import com.itts.userservice.feign.persontraining.rmdt.RmdtFeignService;
 import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.model.jggl.Jggl;
+import com.itts.userservice.model.lmgl.Lmgl;
 import com.itts.userservice.request.gngl.AddGnglRequest;
 import com.itts.userservice.request.rmdt.AddRmdtRequest;
 import com.itts.userservice.service.jggl.JgglService;
@@ -45,6 +48,8 @@ public class JgglServiceImpl extends ServiceImpl<JgglMapper, Jggl> implements Jg
 
     @Resource
     private JgglMapper jgglMapper;
+    @Resource
+    private LmglRpcService lmglRpcService;
 
     @Autowired
     private GnglFeignService gnglFeignService;
@@ -283,7 +288,28 @@ public class JgglServiceImpl extends ServiceImpl<JgglMapper, Jggl> implements Jg
                 }
                 rmdtFeignService.add(addRmdtRequest);
             }
-
+            for (int i = 1; i <= 5; i++) {
+                Lmgl lmgl = new Lmgl();
+                lmgl.setJgId(jggl.getId());
+                switch (i){
+                    case 1:
+                        lmgl.setMc(LmglEnum.TALENT_TRAINING.getMsg());
+                        lmgl.setLmbm(LmglEnum.TALENT_TRAINING.getKey());
+                    case 2:
+                        lmgl.setMc(LmglEnum.TECHNICAL_SERVICE.getMsg());
+                        lmgl.setLmbm(LmglEnum.TECHNICAL_SERVICE.getKey());
+                    case 3:
+                        lmgl.setMc(LmglEnum.TECHNOLOGY_TRANSACT.getMsg());
+                        lmgl.setLmbm(LmglEnum.TECHNOLOGY_TRANSACT.getKey());
+                    case 4:
+                        lmgl.setMc(LmglEnum.BASE_CLOUD.getMsg());
+                        lmgl.setLmbm(LmglEnum.BASE_CLOUD.getKey());
+                    case 5:
+                        lmgl.setMc(LmglEnum.TRAINING_PLATFORM.getMsg());
+                        lmgl.setLmbm(LmglEnum.TRAINING_PLATFORM.getKey());
+                }
+                lmglRpcService.add(lmgl);
+            }
             for (int i = 1; i <= 5; i++) {
 
                 AddGnglRequest request = new AddGnglRequest();

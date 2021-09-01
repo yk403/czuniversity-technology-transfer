@@ -3,6 +3,7 @@ package com.itts.userservice.controller.cd;
 
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
@@ -15,10 +16,13 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.dto.GetCdAndCzDTO;
 import com.itts.userservice.enmus.CdEnum;
 import com.itts.userservice.enmus.JgTpyeEnum;
+import com.itts.userservice.enmus.LmglEnum;
 import com.itts.userservice.enmus.UserTypeEnum;
+import com.itts.userservice.feign.persontraining.lmgl.LmglRpcService;
 import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.model.cz.Cz;
 import com.itts.userservice.model.js.Js;
+import com.itts.userservice.model.lmgl.Lmgl;
 import com.itts.userservice.request.AddCdRequest;
 import com.itts.userservice.service.cd.CdService;
 import com.itts.userservice.service.js.JsService;
@@ -65,6 +69,9 @@ public class CdController {
     @Resource
     private RedisTemplate redisTemplate;
 
+    @Resource
+    private LmglRpcService lmglRpcService;
+
     /**
      * 获取列表
      */
@@ -87,6 +94,7 @@ public class CdController {
     @ApiOperation(value = "通过ID获取当前菜单及其子菜单（树形）")
     public ResponseUtil findByTree(@ApiParam(value = "菜单ID(可不填写，默认查询所有)") @RequestParam(value = "id", required = false) Long id,
                                    @ApiParam(value = "类型(不填写查询所有)：in - 内部系统；out - 外部系统") @RequestParam(value = "type", required = false) String systemType,
+                                   @RequestParam(value = "jgId") Long jgId,
                                    @RequestParam(value = "jglx", required = false) String jglx) {
 
         List<Cd> cds = Lists.newArrayList();
@@ -114,20 +122,44 @@ public class CdController {
         if (!CollectionUtils.isEmpty(cds)) {
             //分基地菜单树
             if(Objects.equals(jglx, JgTpyeEnum.BRANCH.getKey())){
+                //人才培养模块
+                ResponseUtil one = lmglRpcService.getOne(jgId, LmglEnum.TALENT_TRAINING.getKey());
+                if(one == null || one.getErrCode().intValue() != 0){
+                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                }
+                Lmgl lmgl1 = one.conversionData(new TypeReference<Lmgl>() {});
+                Boolean sfsy1 = lmgl1.getSfsy();
+                //技术交易
+                ResponseUtil two = lmglRpcService.getOne(jgId, LmglEnum.TALENT_TRAINING.getKey());
+                if(two == null || two.getErrCode().intValue() != 0){
+                    throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+                }
+                Lmgl lmgl2 = two.conversionData(new TypeReference<Lmgl>() {});
+                Boolean sfsy2 = lmgl2.getSfsy();
+
                 Iterator<Cd> iterator = cds.iterator();
 
                 while (iterator.hasNext()){
                     Cd next = iterator.next();
                     //删除
-                    if(Objects.equals(next.getCdmc(), CdEnum.CDDMBGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.SJZDGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.CZDMBGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.DMGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.SJBWH.getMsg())){
+                    if(Objects.equals(next.getCdmc(), CdEnum.DMGL.getMsg())){
                         iterator.remove();
                     }
-
+                    if(!sfsy1){
+                        if(Objects.equals(next.getCdmc(),CdEnum.XXGL) || Objects.equals(next.getCdmc(),CdEnum.JSZB) || Objects.equals(next.getCdmc(),CdEnum.JSPM) || Objects.equals(next.getCdmc(),CdEnum.JSGP) || Objects.equals(next.getCdmc(),CdEnum.SCLY)){
+                            iterator.remove();
+                        }
+                    }
+                    if(!sfsy2){
+                        if(Objects.equals(next.getCdmc(),CdEnum.ZHGL) || Objects.equals(next.getCdmc(),CdEnum.RLZYGL) || Objects.equals(next.getCdmc(),CdEnum.YTHJX) || Objects.equals(next.getCdmc(),CdEnum.SZHXXZX)){
+                            iterator.remove();
+                        }
+                    }
                 }
 
             }
 
-            List<CdTreeVO> tree = cdService.findByTree(cds);
+            List<CdTreeVO> tree = cdService.findByTree(cds,jglx);
             return ResponseUtil.success(tree);
         }
 

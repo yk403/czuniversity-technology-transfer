@@ -9,6 +9,8 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.userservice.dto.GetCdAndCzDTO;
 import com.itts.userservice.dto.GetCdCzGlDTO;
+import com.itts.userservice.enmus.CdEnum;
+import com.itts.userservice.enmus.JgTpyeEnum;
 import com.itts.userservice.mapper.cd.CdCzGlMapper;
 import com.itts.userservice.mapper.cd.CdMapper;
 import com.itts.userservice.mapper.cz.CzMapper;
@@ -110,7 +112,7 @@ public class CdServiceImpl implements CdService {
      * 通过ID获取当前菜单及其子菜单（树形）
      */
     @Override
-    public List<CdTreeVO> findByTree(List<Cd> cds) {
+    public List<CdTreeVO> findByTree(List<Cd> cds,String jglx) {
 
         List<CdTreeVO> vos = Lists.newArrayList();
 
@@ -130,6 +132,16 @@ public class CdServiceImpl implements CdService {
 
             //获取当前菜单及所有子菜单
             List<Cd> children = findThisAndAllChildrenByCode(cd.getCdbm());
+
+            if(Objects.equals(jglx, JgTpyeEnum.BRANCH.getKey()) && Objects.equals(cd.getCdmc(),CdEnum.ZDMHWH.getMsg())){
+                Iterator<Cd> iterator = children.iterator();
+                while (iterator.hasNext()){
+                    Cd next = iterator.next();
+                    if(Objects.equals(next.getCdmc(), CdEnum.SJBWH.getMsg())){
+                        iterator.remove();
+                    }
+                }
+            }
 
             //去除当前菜单
             children.remove(cd);

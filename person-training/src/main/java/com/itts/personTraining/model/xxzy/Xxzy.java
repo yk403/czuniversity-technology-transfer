@@ -54,10 +54,10 @@ public class Xxzy implements Serializable {
     private Long kcId;
 
     /**
-     * 机构ID
+     * 父级机构ID
      */
-    @ApiModelProperty(value = "机构ID")
-    private Long jgId;
+    @ApiModelProperty(value = "父级机构ID")
+    private Long fjjgId;
 
     /**
      * 课程名称

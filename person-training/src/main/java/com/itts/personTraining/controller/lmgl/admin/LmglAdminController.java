@@ -1,6 +1,7 @@
 package com.itts.personTraining.controller.lmgl.admin;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
@@ -81,6 +82,18 @@ public class LmglAdminController {
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
         return ResponseUtil.success(lmgl);
+    }
+    /**
+     * 查询
+     */
+    @GetMapping("/getOne")
+    @ApiOperation(value = "查询")
+    public ResponseUtil getOne(@RequestParam(value = "jgId") Long jgId,
+                               @RequestParam(value = "lmbm") String lmbm) throws WebException{
+        Lmgl one = lmglService.getOne(new QueryWrapper<Lmgl>().eq("jg_id",jgId)
+                .eq("lmbm", lmbm)
+                .eq("sfsc", false));
+        return ResponseUtil.success(one);
     }
     /**
      * 删除
