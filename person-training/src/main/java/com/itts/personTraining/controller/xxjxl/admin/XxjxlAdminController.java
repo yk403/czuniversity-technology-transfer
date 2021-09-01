@@ -1,10 +1,9 @@
-package com.itts.personTraining.controller.xxjs.admin;
-
+package com.itts.personTraining.controller.xxjxl.admin;
 
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
-import com.itts.personTraining.model.xxjs.Xxjs;
-import com.itts.personTraining.service.xxjs.XxjsService;
+import com.itts.personTraining.model.xxjxl.Xxjxl;
+import com.itts.personTraining.service.xxjxl.XxjxlService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +14,19 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
  * <p>
- * 学校教室表 前端控制器
+ * 学校教学楼表 前端控制器
  * </p>
  *
  * @author Austin
- * @since 2021-04-22
+ * @since 2021-09-01
  */
 @RestController
-@RequestMapping(ADMIN_BASE_URL + "/v1/xxjs")
-@Api(value = "XxjsAdminController", tags = "学校教室管理")
-public class XxjsAdminController {
+@RequestMapping(ADMIN_BASE_URL + "/v1/xxjxl")
+@Api(value = "XxjxlAdminController", tags = "学校教室管理")
+public class XxjxlAdminController {
+
     @Autowired
-    private XxjsService xxjsService;
+    private XxjxlService xxjxlService;
 
     /**
      * 查询学校教室列表
@@ -39,17 +39,8 @@ public class XxjsAdminController {
     @ApiOperation(value = "获取列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                   @RequestParam(value = "xxjxlId", required = false) Long xxjxlId) {
-        return ResponseUtil.success(xxjsService.findByPage(pageNum, pageSize, xxjxlId));
-    }
-
-    /**
-     * 查询所有教学楼
-     */
-    @GetMapping("/findAllJxlmc")
-    @ApiOperation(value = "查询所有教学楼")
-    public ResponseUtil findAllJxlmc() {
-        return ResponseUtil.success(xxjsService.findAllJxlmc());
+                                   @RequestParam(value = "jxlmc", required = false) String jxlmc) {
+        return ResponseUtil.success(xxjxlService.findByPage(pageNum, pageSize, jxlmc));
     }
 
     /**
@@ -61,48 +52,22 @@ public class XxjsAdminController {
     @GetMapping("/get/{id}")
     @ApiOperation(value = "获取详情")
     public ResponseUtil get(@PathVariable("id") Long id) {
-        return ResponseUtil.success(xxjsService.get(id));
-    }
-
-    /**
-     * 查询所有学校教室
-     * @return
-     */
-    @GetMapping("/getAll")
-    @ApiOperation(value = "查询所有学校教室")
-    public ResponseUtil getAll() {
-        return ResponseUtil.success(xxjsService.getAll());
-    }
-
-    /**
-     * 根据教学楼名称或教室编号查询学校教室信息
-     * @param xxjxlId
-     * @param jsbh
-     * @return
-     */
-    @GetMapping("/getByMcOrBh")
-    @ApiOperation(value = "根据教学楼ID或教室编号查询学校教室信息")
-    public ResponseUtil getByMcOrBh(@RequestParam(value = "xxjxlId", required = false) Long xxjxlId,
-                                    @RequestParam(value = "jsbh", required = false) String jsbh){
-        if (xxjxlId == null && jsbh == null) {
-            throw new WebException(TEACHING_NAME_OR_BH_ISEMPTY_ERROR);
-        }
-        return ResponseUtil.success(xxjsService.getByMcOrBh(xxjxlId,jsbh));
+        return ResponseUtil.success(xxjxlService.get(id));
     }
 
     /**
      * 新增学校教室
      *
-     * @param xxjs
+     * @param xxjxl
      * @return
      * @throws WebException
      */
     @PostMapping("/add")
     @ApiOperation(value = "新增学校教室")
-    public ResponseUtil add(@RequestBody Xxjs xxjs) throws WebException {
+    public ResponseUtil add(@RequestBody Xxjxl xxjxl) throws WebException {
         //检查参数是否合法
-        checkRequest(xxjs);
-        if (!xxjsService.add(xxjs)) {
+        checkRequest(xxjxl);
+        if (!xxjxlService.add(xxjxl)) {
             throw new WebException(INSERT_FAIL);
         }
         return ResponseUtil.success("新增学校教室成功!");
@@ -111,24 +76,23 @@ public class XxjsAdminController {
     /**
      * 更新学校教室
      *
-     * @param xxjs
+     * @param xxjxl
      * @return
      * @throws WebException
      */
     @PutMapping("/update")
     @ApiOperation(value = "更新学校教室")
-    public ResponseUtil update(@RequestBody Xxjs xxjs) throws WebException {
-        checkRequest(xxjs);
-        Long id = xxjs.getId();
+    public ResponseUtil update(@RequestBody Xxjxl xxjxl) throws WebException {
+        Long id = xxjxl.getId();
         //检查参数是否合法
         if (id == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         //检查数据库中是否存在要更新的数据
-        if (xxjsService.get(id) == null) {
+        if (xxjxlService.get(id) == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        if (!xxjsService.update(xxjs)) {
+        if (!xxjxlService.update(xxjxl)) {
             throw new WebException(UPDATE_FAIL);
         }
         return ResponseUtil.success("更新学校教室成功!");
@@ -148,12 +112,12 @@ public class XxjsAdminController {
         if (id == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        Xxjs xxjs = xxjsService.get(id);
-        if (xxjs == null) {
+        Xxjxl xxjxl = xxjxlService.get(id);
+        if (xxjxl == null) {
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
         //更新删除状态
-        if (!xxjsService.delete(xxjs)) {
+        if (!xxjxlService.delete(xxjxl)) {
             throw new WebException(DELETE_FAIL);
         }
         return ResponseUtil.success("删除学校教室成功!");
@@ -162,12 +126,9 @@ public class XxjsAdminController {
     /**
      * 校验参数
      */
-    private void checkRequest(Xxjs xxjs) throws WebException {
-        if (xxjs == null) {
+    private void checkRequest(Xxjxl xxjxl) throws WebException {
+        if (xxjxl == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
-        if (!xxjsService.selectExists(xxjs)) {
-            throw new WebException(TEACHING_BUILDING_EXISTS_ERROR);
         }
     }
 }

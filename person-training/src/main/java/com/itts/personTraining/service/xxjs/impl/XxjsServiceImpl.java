@@ -5,8 +5,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.mapper.xxjxl.XxjxlMapper;
 import com.itts.personTraining.model.xxjs.Xxjs;
 import com.itts.personTraining.mapper.xxjs.XxjsMapper;
+import com.itts.personTraining.model.xxjxl.Xxjxl;
 import com.itts.personTraining.service.xxjs.XxjsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,9 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
     @Resource
     private XxjsMapper xxjsMapper;
 
+    @Resource
+    private XxjxlMapper xxjxlMapper;
+
     @Autowired
     private XxjsService xxjsService;
 
@@ -43,16 +48,16 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
      * 查询学校教室列表
      * @param pageNum
      * @param pageSize
-     * @param jxlmc
+     * @param xxjxlId
      * @return
      */
     @Override
-    public PageInfo<Xxjs> findByPage(Integer pageNum, Integer pageSize, String jxlmc) {
-        log.info("【人才培养 - 查询学校教室列表,教学楼名称:{}】",jxlmc);
+    public PageInfo<Xxjs> findByPage(Integer pageNum, Integer pageSize, Long xxjxlId) {
+        log.info("【人才培养 - 查询学校教室列表,教学楼名称:{}】",xxjxlId);
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
         xxjsQueryWrapper.eq("sfsc",false)
-                      .eq(StringUtils.isNotBlank(jxlmc), "jxlmc", jxlmc);
+                      .eq(xxjxlId!=null, "xxjxl_id", xxjxlId);
         return new PageInfo<>(xxjsMapper.selectList(xxjsQueryWrapper));
     }
 
@@ -122,7 +127,7 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
         xxjsQueryWrapper.eq("sfsc",false);
         List<Xxjs> xxjsList = xxjsMapper.selectList(xxjsQueryWrapper);
         for (Xxjs xxjs1 : xxjsList) {
-            if (xxjs1.getJxlmc().equals(xxjs.getJxlmc()) && xxjs1.getJsbh().equals(xxjs.getJsbh())) {
+            if (xxjs1.getXxjxlId().equals(xxjs.getXxjxlId()) && xxjs1.getJsbh().equals(xxjs.getJsbh())) {
                 return false;
             }
         }
@@ -131,16 +136,16 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
 
     /**
      * 根据教学楼名称或教室编号查询学校教室
-     * @param jxlmc
+     * @param xxjxlId
      * @param jsbh
      * @return
      */
     @Override
-    public List<Xxjs> getByMcOrBh(String jxlmc,String jsbh) {
-        log.info("【人才培养 - 根据教学楼名称:{},教室编号:{}查询学校教室信息】",jxlmc,jsbh);
+    public List<Xxjs> getByMcOrBh(Long xxjxlId,String jsbh) {
+        log.info("【人才培养 - 根据教学楼名称:{},教室编号:{}查询学校教室信息】",xxjxlId,jsbh);
         QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
         xxjsQueryWrapper.eq("sfsc",false)
-                .eq(StringUtils.isNotBlank(jxlmc), "jxlmc", jxlmc)
+                .eq(xxjxlId!=null, "xxjxl_id", xxjxlId)
                 .eq(StringUtils.isNotBlank(jsbh), "jsbh", jsbh);
         return xxjsMapper.selectList(xxjsQueryWrapper);
     }
@@ -162,9 +167,9 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
      * @return
      */
     @Override
-    public List<Xxjs> findAllJxlmc() {
+    public List<Xxjxl> findAllJxlmc() {
         log.info("【人才培养 - 查询所有教学楼】");
-        List<Xxjs> jxlmcList = xxjsMapper.findAllJxlmc();
+        List<Xxjxl> jxlmcList = xxjxlMapper.findAllJxlmc();
         return jxlmcList;
     }
 

@@ -3,6 +3,7 @@ package com.itts.personTraining.service.xxjs;
 import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.model.xxjs.Xxjs;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.itts.personTraining.model.xxjxl.Xxjxl;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface XxjsService extends IService<Xxjs> {
      * @param jxlmc
      * @return
      */
-    PageInfo<Xxjs> findByPage(Integer pageNum, Integer pageSize, String jxlmc);
+    PageInfo<Xxjs> findByPage(Integer pageNum, Integer pageSize, Long jxlmc);
 
     /**
      * 根据id查询学校教室详情
@@ -65,7 +66,7 @@ public interface XxjsService extends IService<Xxjs> {
      * @param jsbh
      * @return
      */
-    List<Xxjs> getByMcOrBh(String jxlmc,String jsbh);
+    List<Xxjs> getByMcOrBh(Long jxlmc,String jsbh);
 
     /**
      * 查询所有学校教室
@@ -77,5 +78,5 @@ public interface XxjsService extends IService<Xxjs> {
      * 查询所有教学楼
      * @return
      */
-    List<Xxjs> findAllJxlmc();
+    List<Xxjxl> findAllJxlmc();
 }

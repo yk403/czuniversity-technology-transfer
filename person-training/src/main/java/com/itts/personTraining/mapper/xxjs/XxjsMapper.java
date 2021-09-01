@@ -15,10 +15,10 @@ import java.util.List;
  */
 public interface XxjsMapper extends BaseMapper<Xxjs> {
 
-    /**
-     * 查询所有教学楼
-     * @return
-     */
-    List<Xxjs> findAllJxlmc();
+//    /**
+//     * 查询所有教学楼
+//     * @return
+//     */
+//    List<Xxjs> findAllJxlmc();
 
 }
