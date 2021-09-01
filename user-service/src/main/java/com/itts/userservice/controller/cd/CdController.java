@@ -13,6 +13,8 @@ import com.itts.common.enums.SystemTypeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.dto.GetCdAndCzDTO;
+import com.itts.userservice.enmus.CdEnum;
+import com.itts.userservice.enmus.JgTpyeEnum;
 import com.itts.userservice.enmus.UserTypeEnum;
 import com.itts.userservice.model.cd.Cd;
 import com.itts.userservice.model.cz.Cz;
@@ -32,6 +34,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -83,7 +86,8 @@ public class CdController {
     @GetMapping("/tree/")
     @ApiOperation(value = "通过ID获取当前菜单及其子菜单（树形）")
     public ResponseUtil findByTree(@ApiParam(value = "菜单ID(可不填写，默认查询所有)") @RequestParam(value = "id", required = false) Long id,
-                                   @ApiParam(value = "类型(不填写查询所有)：in - 内部系统；out - 外部系统") @RequestParam(value = "type", required = false) String systemType) {
+                                   @ApiParam(value = "类型(不填写查询所有)：in - 内部系统；out - 外部系统") @RequestParam(value = "type", required = false) String systemType,
+                                   @RequestParam(value = "jglx", required = false) String jglx) {
 
         List<Cd> cds = Lists.newArrayList();
 
@@ -108,6 +112,21 @@ public class CdController {
         }
 
         if (!CollectionUtils.isEmpty(cds)) {
+            //分基地菜单树
+            if(Objects.equals(jglx, JgTpyeEnum.BRANCH.getKey())){
+                Iterator<Cd> iterator = cds.iterator();
+
+                while (iterator.hasNext()){
+                    Cd next = iterator.next();
+                    //删除
+                    if(Objects.equals(next.getCdmc(), CdEnum.CDDMBGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.SJZDGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.CZDMBGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.DMGL.getMsg())){
+                        iterator.remove();
+                    }
+
+                }
+
+            }
+
             List<CdTreeVO> tree = cdService.findByTree(cds);
             return ResponseUtil.success(tree);
         }
