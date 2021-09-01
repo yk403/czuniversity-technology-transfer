@@ -70,6 +70,7 @@
         <where>
             ks.sfsc = false and pc.sfsc = false
             <if test="pcId != null">and ks.pc_id = #{pcId}</if>
+            <if test="fjjgId != null">and pc.fjjg_id = #{fjjgId}</if>
             <if test="ksmc != null and ksmc != ''">and ks.ksmc like concat('%',trim(#{ksmc}),'%')</if>
             <if test="kslx != null and kslx != ''">and ks.kslx = #{kslx}</if>
         </where>

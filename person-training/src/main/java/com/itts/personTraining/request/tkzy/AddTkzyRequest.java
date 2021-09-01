@@ -55,6 +55,12 @@ public class AddTkzyRequest implements Serializable {
     private String tmlx;
 
     /**
+     * 题目难度(易；中；难)
+     */
+    @ApiModelProperty(value = "题目难度(易；中；难)", required = true)
+    private String tmnd;
+
+    /**
      * 分值
      */
     @ApiModelProperty(value = "分值", required = true)

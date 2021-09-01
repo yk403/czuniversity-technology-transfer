@@ -46,7 +46,7 @@ public class KcAdminController {
                                    @RequestParam(value = "name", required = false) String name,
                                    @RequestParam(value = "jylx", required = false) String jylx,
                                    @RequestParam(value = "xylx", required = false) String xylx,
-                                   @RequestParam(value = "fjjgId", required = false) Long fjjgId,
+                                   @RequestParam(value = "fjjgId") Long fjjgId,
                                    @RequestParam(value = "userType", required = false) String userType) {
         return ResponseUtil.success(kcService.findByPage(pageNum, pageSize, kclx, name,jylx,xylx,fjjgId,userType));
     }

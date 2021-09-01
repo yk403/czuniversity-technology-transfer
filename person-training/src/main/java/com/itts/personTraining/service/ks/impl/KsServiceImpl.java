@@ -113,10 +113,10 @@ public class KsServiceImpl extends ServiceImpl<KsMapper, Ks> implements KsServic
      * @return
      */
     @Override
-    public PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String ksmc, String kslx) {
-        log.info("【人才培养 - 分页条件查询考试列表,,批次id:{},考试名称:{},考试类型:{}】",pcId,ksmc,kslx);
+    public PageInfo<KsDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String ksmc, String kslx, Long fjjgId) {
+        log.info("【人才培养 - 分页条件查询考试列表,,批次id:{},考试名称:{},考试类型:{},父级机构ID:{}】",pcId,ksmc,kslx,fjjgId);
         PageHelper.startPage(pageNum, pageSize);
-        List<KsDTO> ksDTOs = ksMapper.findByPage(pcId, ksmc, kslx);
+        List<KsDTO> ksDTOs = ksMapper.findByPage(pcId, ksmc, kslx, fjjgId);
         for (KsDTO ksDTO : ksDTOs) {
             List<Long> szIds = szKsMapper.getByKsId(ksDTO.getId());
             ksDTO.setSzIds(szIds);
