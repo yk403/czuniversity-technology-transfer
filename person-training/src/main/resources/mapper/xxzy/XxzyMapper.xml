@@ -36,4 +36,37 @@
         id, mc, bm, kc_id, jg_id, kcmc, zylb, zyyjfl, zyejfl, zylx, zyfx, jj, lll, jg, zz, fjzy_id, sffx, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
     </sql>
 
+    <select id="findByPage" resultType="com.itts.personTraining.vo.xxzy.GetXxzyVO">
+             select a.*,b.fjjg_id as fjjgId from t_xxzy a left join t_kc b on a.kc_id = b.id
+             <where>
+                 a.sfsc = false
+                 <if test="type != null and type != ''">
+                   and a.zylb = #{type}
+                 </if>
+                 <if test="firstCategory != null and firstCategory != ''">
+                     and a.zyyjfl = #{firstCategory}
+                 </if>
+                 <if test="secondCategory != null and secondCategory != ''">
+                     and a.zyejfl = #{secondCategory}
+                 </if>
+                 <if test="category != null and category != ''">
+                     and a.zylx = #{category}
+                 </if>
+                 <if test="courseId != null and courseId != ''">
+                     and a.kc_id = #{courseId}
+                 </if>
+                 <if test="condition != null and condition != ''">
+                     and a.mc like concat('%',trim(#{condition}),'%')
+                 </if>
+                 <if test="groupId != null and groupId != ''">
+                     and a.jg_id = #{groupId}
+                 </if>
+                 <if test="fjjgId != null and fjjgId != ''">
+                     and b.fjjg_id = #{fjjgId}
+                 </if>
+                 order by a.cjsj desc
+            </where>
+
+    </select>
+
 </mapper>
