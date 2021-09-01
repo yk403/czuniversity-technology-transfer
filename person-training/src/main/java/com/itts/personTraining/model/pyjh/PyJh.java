@@ -29,6 +29,11 @@ public class PyJh implements Serializable {
     private Long id;
 
     /**
+     * 父级机构ID
+     */
+    private Long fjjgId;
+
+    /**
      * 批次ID
      */
     private Long pcId;

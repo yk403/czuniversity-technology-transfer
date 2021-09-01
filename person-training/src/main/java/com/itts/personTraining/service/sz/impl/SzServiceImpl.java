@@ -83,42 +83,48 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
      */
     @Override
     public PageInfo<Sz> findByPage(Integer pageNum, Integer pageSize, String name, String dslb, String hyly, Long fjjgId, String jglx) {
-        log.info("【人才培养 - 分页条件查询师资列表,导师编号/姓名:{},导师类别:{},行业领域:{},父级机构ID:{}】",name,dslb,hyly,fjjgId);
+        log.info("【人才培养 - 分页条件查询师资列表,导师编号/姓名:{},导师类别:{},行业领域:{},父级机构ID:{}】", name, dslb, hyly, fjjgId);
         QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
-        if (pageNum == -1) {
-            szQueryWrapper.eq("sfsc",false)
+        //总基地
+        PageHelper.startPage(pageNum, pageSize);
+        if (Objects.equals(jglx, "headquarters")) {
+            ResponseUtil response = jgglFeignService.findChildrenById(fjjgId);
+            if (response == null || response.getErrCode().intValue() != 0) {
+                throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
+            }
+            List<JgglVO> jgglVOList = response.conversionData(new TypeReference<List<JgglVO>>() {
+            });
+            List<Long> ids = jgglVOList.stream().map(JgglVO::getId).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(ids)) {
+                szQueryWrapper.in(fjjgId != null, "ssjg_id", ids);
+            }
+            szQueryWrapper.eq("sfsc", false).eq(StringUtils.isNotBlank(dslb), "dslb", dslb)
+                    .like(StringUtils.isNotBlank(name), "dsxm", StringUtils.isNotBlank(name) ? name.trim() : name).or().like(StringUtils.isNotBlank(name), "dsbh", StringUtils.isNotBlank(name) ? name.trim() : name)
                     .orderByDesc("cjsj");
-        } else {
-            //总基地
-            PageHelper.startPage(pageNum, pageSize);
-            if(Objects.equals(jglx,"headquarters")){
-                if(StringUtils.isNotBlank(dslb)){
-                    szQueryWrapper.eq("sfsc",false).eq("dslb", dslb)
-                            .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
-                            .orderByDesc("cjsj");
+                /*if(StringUtils.isNotBlank(dslb)){
+
                 }else {
                     szQueryWrapper.eq("sfsc",false).ne("dslb","cloud_admin")
                             .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
                             .orderByDesc("cjsj");
-                }
-            }else {
-                //分基地
-                ResponseUtil response = jgglFeignService.findChildrenById(fjjgId);
-                if (response == null || response.getErrCode().intValue() != 0) {
-                    throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
-                }
-                List<JgglVO> jgglVOList = response.conversionData(new TypeReference<List<JgglVO>>() {
-                });
-                List<Long> ids = jgglVOList.stream().map(JgglVO::getId).collect(Collectors.toList());
-                if (!CollectionUtils.isEmpty(ids)) {
-                    szQueryWrapper.in(fjjgId != null, "ssjg_id",ids);
-                }
-                szQueryWrapper.eq("sfsc",false)
-                        .eq(StringUtils.isNotBlank(dslb),"dslb", dslb)
-                        .eq(StringUtils.isNotBlank(hyly),"hyly", hyly)
-                        .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
-                        .orderByDesc("cjsj");
+                }*/
+        } else {
+            //分基地
+            ResponseUtil response = jgglFeignService.findChildrenById(fjjgId);
+            if (response == null || response.getErrCode().intValue() != 0) {
+                throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
             }
+            List<JgglVO> jgglVOList = response.conversionData(new TypeReference<List<JgglVO>>() {
+            });
+            List<Long> ids = jgglVOList.stream().map(JgglVO::getId).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(ids)) {
+                szQueryWrapper.in(fjjgId != null, "ssjg_id", ids);
+            }
+            szQueryWrapper.eq("sfsc", false)
+                    .eq(StringUtils.isNotBlank(dslb), "dslb", dslb)
+                    .eq(StringUtils.isNotBlank(hyly), "hyly", hyly)
+                    .like(StringUtils.isNotBlank(name), "dsxm", StringUtils.isNotBlank(name) ? name.trim() : name).or().like(StringUtils.isNotBlank(name), "dsbh", StringUtils.isNotBlank(name) ? name.trim() : name)
+                    .orderByDesc("cjsj");
         }
         return new PageInfo<>(szMapper.selectList(szQueryWrapper));
     }

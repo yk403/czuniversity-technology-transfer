@@ -98,6 +98,7 @@
         from t_xs xs left join t_sz sz on (xs.yzyds_id=sz.id) left join t_sz tsz on (xs.qyds_id=tsz.id) left join t_pc_xs tpx on (tpx.xs_id=xs.id)
         where xs.sfsc = false
             <if test="pcId != null">and tpx.pc_id = #{pcId}</if>
+            <if test="fjjgId != null">and xs.fjjg_id = #{fjjgId}</if>
             <if test="xslbmc != null and xslbmc != ''">and xs.xslbmc like concat('%',trim(#{xslbmc}),'%')</if>
             <if test="jyxs != null and jyxs != ''" >and xs.jyxs like concat('%',trim(#{jyxs}),'%')</if>
             <if test="qydsId != null and qydsId != ''" >and xs.qyds_id = #{qydsId}</if>

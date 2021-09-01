@@ -21,7 +21,7 @@ public interface SjService extends IService<Sj> {
      * 查询所有实践
      * @return
      */
-    List<SjDTO> getAll();
+    List<SjDTO> getAll(Long fjjgId);
 
     /**
      * 新增实践
@@ -52,9 +52,10 @@ public interface SjService extends IService<Sj> {
      * @param sjlx
      * @param name
      * @param export
+     * @param fjjgId
      * @return
      */
-    PageInfo<SjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String sjlx, String name, Integer export);
+    PageInfo<SjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String sjlx, String name, Integer export, Long fjjgId);
 
     /**
      * 删除实践

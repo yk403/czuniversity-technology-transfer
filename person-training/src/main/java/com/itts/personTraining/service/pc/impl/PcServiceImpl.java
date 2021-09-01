@@ -171,10 +171,11 @@ public class PcServiceImpl implements PcService {
      * @return
      */
     @Override
-    public List<Pc> getAll() {
-        log.info("【人才培养 - 获取所有批次详情】");
+    public List<Pc> getAll(Long fjjgId) {
+        log.info("【人才培养 - 父级机构ID:{}获取所有批次详情】",fjjgId);
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
         pcQueryWrapper.eq("sfsc",false)
+                      .eq(fjjgId != null,"fjjg_id",fjjgId)
                       .orderByDesc("cjsj");
         return pcMapper.selectList(pcQueryWrapper);
     }
@@ -261,10 +262,11 @@ public class PcServiceImpl implements PcService {
      * @return
      */
     @Override
-    public List<Pc> getByJylx(String jylx) {
+    public List<Pc> getByJylx(String jylx, Long fjjgId) {
         log.info("【人才培养 - 根据教育类型:{}查询批次信息】",jylx);
         QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
         pcQueryWrapper.eq("sfsc",false)
+                .eq("fjjg_id",fjjgId)
                 .eq("jylx",jylx)
                 .orderByDesc("cjsj");
         return pcMapper.selectList(pcQueryWrapper);

@@ -82,13 +82,14 @@ public class PyJhServiceImpl extends ServiceImpl<PyJhMapper, PyJh> implements Py
      * @param pch
      * @param jylx
      * @param jhmc
+     * @param fjjgId
      * @return
      */
     @Override
-    public PageInfo<PyJhDTO> findByPage(Integer pageNum, Integer pageSize, String pch, String jylx, String jhmc) {
-        log.info("【人才培养 - 分页条件查询培养计划列表,批次号:{},教育类型:{},计划名称:{}】",pch,jylx,jhmc);
+    public PageInfo<PyJhDTO> findByPage(Integer pageNum, Integer pageSize, String pch, String jylx, String jhmc, Long fjjgId) {
+        log.info("【人才培养 - 分页条件查询培养计划列表,批次号:{},教育类型:{},计划名称:{},父级机构ID:{}】",pch,jylx,jhmc,fjjgId);
         PageHelper.startPage(pageNum, pageSize);
-        List<PyJhDTO> pyJhDTOList = pyJhMapper.findByPage(pch,jylx,jhmc);
+        List<PyJhDTO> pyJhDTOList = pyJhMapper.findByPage(pch,jylx,jhmc,fjjgId);
         return new PageInfo<>(pyJhDTOList);
     }
 

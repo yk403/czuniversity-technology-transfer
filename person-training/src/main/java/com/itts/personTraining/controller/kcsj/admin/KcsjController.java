@@ -90,7 +90,7 @@ public class KcsjController {
         checkKcsj(kcsj);
 
         //获取数据库中排课时间，判断时间是否合法
-        List<Kcsj> kcsjs = kcsjService.list(new QueryWrapper<Kcsj>().eq("sfsc",false));
+        List<Kcsj> kcsjs = kcsjService.list(new QueryWrapper<Kcsj>().eq("sfsc",false).eq(kcsj.getFjjgId() != null,"fjjg_id",kcsj.getFjjgId()));
         if (!CollectionUtils.isEmpty(kcsjs)) {
 
             for (Kcsj dbKcsj : kcsjs) {
@@ -127,7 +127,7 @@ public class KcsjController {
         checkKcsj(kcsj);
 
         //获取数据库中排课时间，判断时间是否合法
-        List<Kcsj> kcsjs = kcsjService.list(new QueryWrapper<Kcsj>().eq("sfsc",false));
+        List<Kcsj> kcsjs = kcsjService.list(new QueryWrapper<Kcsj>().eq("sfsc",false).eq(kcsj.getFjjgId() != null,"fjjg_id",kcsj.getFjjgId()));
         if (!CollectionUtils.isEmpty(kcsjs)) {
 
             for (Kcsj dbKcsj : kcsjs) {

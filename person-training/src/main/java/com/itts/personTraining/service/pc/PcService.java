@@ -46,9 +46,10 @@ public interface PcService  {
     /**
      * 根据教育类型查询批次信息
      * @param jylx
+     * @param fjjgId
      * @return
      */
-    List<Pc> getByJylx(String jylx);
+    List<Pc> getByJylx(String jylx,Long fjjgId);
 
     /**
      * 删除批次
@@ -61,7 +62,7 @@ public interface PcService  {
      * 获取所有批次详情
      * @return
      */
-    List<Pc> getAll();
+    List<Pc> getAll(Long fjjgId);
 
     /**
      * 根据id查询课程信息列表

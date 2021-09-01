@@ -28,11 +28,12 @@ public interface XsService extends IService<Xs> {
      * @param xslbmc
      * @param jyxs
      * @param name
+     * @param fjjgId
      * @return
      */
-    PageInfo<StuDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbmc, String jyxs, String name,Long qydsId,Long yzydsId);
+    PageInfo<StuDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbmc, String jyxs, String name,Long qydsId,Long yzydsId,Long fjjgId);
 
-    List<StuDTO> findExport( Long pcId, String xslbmc, String jyxs, String name);
+    List<StuDTO> findExport( Long pcId, String xslbmc, String jyxs, String name, Long fjjgId);
 
     /**
      * 根据id查询学员信息

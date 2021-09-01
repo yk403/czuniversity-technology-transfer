@@ -27,6 +27,12 @@ public class StuDTO {
      */
     private Long id;
 
+    /**
+     * 父级机构ID
+     */
+    @ApiModelProperty(value = "父级机构ID")
+    private Long fjjgId;
+
     private GetYhVo yhMsg;
 
     /**

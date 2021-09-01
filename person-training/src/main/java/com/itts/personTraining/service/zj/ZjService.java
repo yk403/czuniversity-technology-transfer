@@ -24,11 +24,12 @@ public interface ZjService extends IService<Zj> {
      * @param yjly
      * @param name
      * @param lx
+     * @param fjjgId
      * @return
      */
-    PageInfo<Zj> findByPage(Integer pageNum, Integer pageSize, String yjly, String name, String lx);
+    PageInfo<Zj> findByPage(Integer pageNum, Integer pageSize, String yjly, String name, String lx, Long fjjgId);
 
-    List<Zj> findExport(String yjly, String name);
+    List<Zj> findExport(String yjly, String name, Long fjjgId);
     /**
      * 查询所有专家
      * @return

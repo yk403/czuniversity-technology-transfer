@@ -68,8 +68,9 @@ public class KcAdminController {
      */
     @GetMapping("/getByCondition")
     @ApiOperation(value = "根据条件查询课程")
-    public ResponseUtil getByCondition(@RequestParam(value = "xylx", required = false) String xylx) {
-        return ResponseUtil.success(kcService.getByCondition(xylx));
+    public ResponseUtil getByCondition(@RequestParam(value = "xylx", required = false) String xylx,
+                                       @RequestParam(value = "fjjgId") Long fjjgId) {
+        return ResponseUtil.success(kcService.getByCondition(xylx,fjjgId));
     }
 
     /**
@@ -159,10 +160,13 @@ public class KcAdminController {
         /*if(kcDTO.getSzIds() == null) {
             throw new WebException(TEACHER_ISEMPTY_ERROR);
         }*/
+        if (kcDTO.getFjjgId() == null) {
+            throw new WebException(FJJGID_IS_EMPTY_ERROR);
+        }
         if (kcDTO.getKcdm() == null) {
             throw new WebException(TEACH_TYPE_ISEMPTY_ERROR);
         }
-        List<KcDTO> kcList = kcService.getByCondition(null);
+        List<KcDTO> kcList = kcService.getByCondition(null,kcDTO.getFjjgId());
 
         for (KcDTO kcDTO1 : kcList) {
             if (kcDTO1.getKcdm().equals(kcDTO.getKcdm()) || kcDTO1.getKcmc().equals(kcDTO.getKcmc())) {
