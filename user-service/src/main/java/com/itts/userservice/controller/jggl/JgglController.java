@@ -142,7 +142,7 @@ public class JgglController {
      * 获取机构树
      */
     @GetMapping("/addTree/")
-    @ApiOperation(value = "获取页面机构树")
+    @ApiOperation(value = "获取添加页面机构树")
     public ResponseUtil findJggl(@RequestParam(value = "jgId",required = false) Long jgId) {
 
         List<JgglVO> jgglVOList = jgglService.findJgglVO(null);
