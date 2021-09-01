@@ -46,7 +46,8 @@ public class LmglServiceImpl extends ServiceImpl<LmglMapper, Lmgl> implements Lm
     @Override
     public Lmgl add(Lmgl lmgl) {
         QueryWrapper<Lmgl> lmglQueryWrapper = new QueryWrapper<>();
-        lmglQueryWrapper.eq("sfsc",false);
+        lmglQueryWrapper.eq("sfsc",false)
+        .eq("jg_id",lmgl.getJgId());
         List<Lmgl> lmgls = lmglMapper.selectList(lmglQueryWrapper);
         Long userId = getUserId();
         lmgl.setCjr(userId);
