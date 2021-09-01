@@ -15,6 +15,7 @@ public enum CdEnum {
     CZDMBGL("czdmbgl","操作代码表管理"),
 
     DMGL("dmgl","代码管理表"),
+    SJBWH("sjbwh","数据表维护"),
 
     SJZDGL("sjzdgl","数据字典管理");
 

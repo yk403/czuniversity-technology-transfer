@@ -119,7 +119,7 @@ public class CdController {
                 while (iterator.hasNext()){
                     Cd next = iterator.next();
                     //删除
-                    if(Objects.equals(next.getCdmc(), CdEnum.CDDMBGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.SJZDGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.CZDMBGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.DMGL.getMsg())){
+                    if(Objects.equals(next.getCdmc(), CdEnum.CDDMBGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.SJZDGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.CZDMBGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.DMGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.SJBWH.getMsg())){
                         iterator.remove();
                     }
 
