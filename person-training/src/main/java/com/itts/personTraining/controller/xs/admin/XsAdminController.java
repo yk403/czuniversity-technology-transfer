@@ -55,8 +55,9 @@ public class XsAdminController {
                                    @RequestParam(value = "jyxs", required = false) String jyxs,
                                    @RequestParam(value = "name", required = false) String name,
                                    @RequestParam(value = "qydsId", required = false) Long qydsId,
-                                   @RequestParam(value = "yzydsId", required = false) Long yzydsId) {
-        return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbmc, jyxs, name,qydsId,yzydsId));
+                                   @RequestParam(value = "yzydsId", required = false) Long yzydsId,
+                                   @RequestParam(value = "fjjgId", required = false) Long fjjgId) {
+        return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbmc, jyxs, name,qydsId,yzydsId,fjjgId));
     }
     /**
      * 查询学员列表
@@ -68,8 +69,9 @@ public class XsAdminController {
     public ResponseUtil findByPage(@RequestParam(value = "pcId", required = false) Long pcId,
                                    @RequestParam(value = "xslbmc", required = false) String xslbmc,
                                    @RequestParam(value = "jyxs", required = false) String jyxs,
-                                   @RequestParam(value = "name", required = false) String name) {
-        return ResponseUtil.success(xsService.findExport(pcId, xslbmc, jyxs, name));
+                                   @RequestParam(value = "name", required = false) String name,
+                                   @RequestParam(value = "fjjgId", required = false) Long fjjgId) {
+        return ResponseUtil.success(xsService.findExport(pcId, xslbmc, jyxs, name, fjjgId));
     }
     /**
      * 获取机构列表

@@ -93,10 +93,10 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
      * @return
      */
     @Override
-    public PageInfo<SjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String sjlx, String name, Integer export) {
-        log.info("【人才培养 - 根据pcId:{},实践类型:{},姓名/学号:{}获取实践列表,是否导出:{}】",pcId,sjlx,name,export);
+    public PageInfo<SjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String sjlx, String name, Integer export, Long fjjgId) {
+        log.info("【人才培养 - 根据pcId:{},实践类型:{},姓名/学号:{}获取实践列表,是否导出:{},父级机构ID:{}】",pcId,sjlx,name,export,fjjgId);
         PageHelper.startPage(pageNum, pageSize);
-        List<SjDTO> sjDTOs = sjMapper.getByCondition(pcId, sjlx, name, export);
+        List<SjDTO> sjDTOs = sjMapper.getByCondition(pcId, sjlx, name, export, fjjgId);
         return new PageInfo<>(sjDTOs);
     }
 
@@ -364,9 +364,9 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
      * @return
      */
     @Override
-    public List<SjDTO> getAll() {
+    public List<SjDTO> getAll(Long fjjgId) {
         log.info("【人才培养 - 查询所有实践】");
-        List<SjDTO> sjDTOs = sjMapper.getByCondition(null,null,null,null);
+        List<SjDTO> sjDTOs = sjMapper.getByCondition(null,null,null,null,fjjgId);
         return sjDTOs;
     }
 

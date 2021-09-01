@@ -64,6 +64,7 @@
         join t_kc kc on (kc.id=txkc.kc_id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
         where txc.sfsc = false and txkc.sfsc = false and xs.sfsc = false and pc.sfsc = false and kc.sfsc = false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
+        <if test="fjjgId != null"> and xs.fjjg_id = #{fjjgId} </if>
         <if test="xsId != null"> and txc.xs_id = #{xsId} </if>
         <if test="xh != null and xh != ''"> and xs.xh like concat('%',trim(#{xh}),'%') </if>
         <if test="xm != null and xm != ''"> and xs.xm like concat('%',trim(#{xm}),'%') </if>
@@ -75,6 +76,7 @@
         from t_xs xs  left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id) left join t_xs_cj txc on (txc.xs_id=xs.id and txc.pc_id=pc.id)
         where  xs.sfsc = false and pc.sfsc = false  and txc.sfsc =false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
+        <if test="fjjgId != null"> and xs.fjjg_id = #{fjjgId} </if>
         <if test="jylx != null and jylx != ''"> and pc.jylx = #{jylx} </if>
         <if test="xh != null and xh != ''"> and xs.xh like concat('%',trim(#{xh}),'%') </if>
         <if test="xm != null and xm != ''"> and xs.xm like concat('%',trim(#{xm}),'%') </if>
@@ -86,6 +88,7 @@
         from t_xs_cj txc left join t_xs xs on (txc.xs_id=xs.id) left join t_pc_xs tpx on (tpx.xs_id=xs.id) left join t_pc pc on (pc.id=tpx.pc_id and pc.id=txc.pc_id)
         where txc.sfsc = false and xs.sfsc = false and pc.sfsc = false
         <if test="pcId != null"> and pc.id = #{pcId} </if>
+        <if test="fjjgId != null"> and xs.fjjg_id = #{fjjgId} </if>
         <if test="jylx != null and jylx != ''"> and txc.type = 2 </if>
         <if test="xh != null and xh != ''"> and xs.xh like concat('%',trim(#{xh}),'%') </if>
         <if test="xm != null and xm != ''"> and xs.xm like concat('%',trim(#{xm}),'%') </if>

@@ -33,6 +33,11 @@ public class Xs implements Serializable {
     private Long id;
 
     /**
+     * 父级机构ID
+     */
+    private Long fjjgId;
+
+    /**
      * 用户ID
      */
     private Long yhId;

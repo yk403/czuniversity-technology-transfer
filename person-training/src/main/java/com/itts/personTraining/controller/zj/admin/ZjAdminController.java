@@ -49,14 +49,16 @@ public class ZjAdminController {
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "yjly", required = false) String yjly,
                                    @RequestParam(value = "name", required = false) String name,
-                                   @RequestParam(value = "lx", required = false) String lx) {
-        return ResponseUtil.success(zjService.findByPage(pageNum, pageSize, yjly, name, lx));
+                                   @RequestParam(value = "lx", required = false) String lx,
+                                   @RequestParam(value = "fjjgId", required = false) Long fjjgId) {
+        return ResponseUtil.success(zjService.findByPage(pageNum, pageSize, yjly, name, lx, fjjgId));
     }
     @GetMapping("/getlist")
     @ApiOperation(value = "获取excel列表")
     public ResponseUtil findExport(@RequestParam(value = "yjly", required = false) String yjly,
-                                   @RequestParam(value = "name", required = false) String name) {
-        return ResponseUtil.success(zjService.findExport(yjly, name));
+                                   @RequestParam(value = "name", required = false) String name,
+                                   @RequestParam(value = "fjjgId", required = false) Long fjjgId) {
+        return ResponseUtil.success(zjService.findExport(yjly, name, fjjgId));
     }
 
     /**

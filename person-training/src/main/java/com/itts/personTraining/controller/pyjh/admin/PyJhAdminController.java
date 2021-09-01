@@ -46,8 +46,9 @@ public class PyJhAdminController {
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "pch", required = false) String pch,
                                    @RequestParam(value = "jylx", required = false) String jylx,
-                                   @RequestParam(value = "jhmc", required = false) String jhmc) {
-        return ResponseUtil.success(pyJhService.findByPage(pageNum, pageSize, pch, jylx, jhmc));
+                                   @RequestParam(value = "jhmc", required = false) String jhmc,
+                                   @RequestParam(value = "fjjgId", required = false) Long fjjgId) {
+        return ResponseUtil.success(pyJhService.findByPage(pageNum, pageSize, pch, jylx, jhmc, fjjgId));
     }
 
     /**

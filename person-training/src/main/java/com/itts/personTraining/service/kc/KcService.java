@@ -72,9 +72,10 @@ public interface KcService extends IService<Kc> {
     /**
      * 查询所有课程
      * @param xylx
+     * @param fjjgId
      * @return
      */
-    List<KcDTO> getByCondition(String xylx);
+    List<KcDTO> getByCondition(String xylx, Long fjjgId);
     /**
      * 根据用户id查询课程列表
      * @param pcId

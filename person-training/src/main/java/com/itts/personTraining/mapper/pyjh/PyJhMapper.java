@@ -23,9 +23,10 @@ public interface PyJhMapper extends BaseMapper<PyJh> {
      * @param pch
      * @param jylx
      * @param jhmc
+     * @param fjjgId
      * @return
      */
-    List<PyJhDTO> findByPage(@Param("pch") String pch, @Param("jylx") String jylx, @Param("jhmc") String jhmc);
+    List<PyJhDTO> findByPage(@Param("pch") String pch, @Param("jylx") String jylx, @Param("jhmc") String jhmc, @Param("fjjgId") Long fjjgId);
 
     /**
      * 根据批次id查询培养计划列表

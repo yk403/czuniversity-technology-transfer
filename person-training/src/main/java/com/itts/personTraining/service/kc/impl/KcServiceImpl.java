@@ -188,10 +188,11 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
      * @return
      */
     @Override
-    public List<KcDTO> getByCondition(String xylx) {
+    public List<KcDTO> getByCondition(String xylx, Long fjjgId) {
         log.info("【人才培养 - 根据条件查询课程信息】");
         QueryWrapper<Kc> kcQueryWrapper = new QueryWrapper<>();
         kcQueryWrapper.eq("sfsc",false)
+                      .eq("fjjg_id",fjjgId)
                       .eq(!StringUtils.isEmpty(xylx),"xylx",xylx);
         List<Kc> kcList = kcMapper.selectList(kcQueryWrapper);
         //将id放到kcId中,方便前端使用

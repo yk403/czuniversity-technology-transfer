@@ -25,6 +25,11 @@ public class SjDTO {
     private Long id;
 
     /**
+     * 父级机构ID
+     */
+    private Long fjjgId;
+
+    /**
      * 学生ID
      */
     @ApiModelProperty(value = "学生ID", required = true)

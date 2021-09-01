@@ -27,6 +27,11 @@ public class PyJhDTO {
     private Long id;
 
     /**
+     * 父级机构ID
+     */
+    private Long fjjgId;
+
+    /**
      * 批次ID
      */
     @ApiModelProperty(value = "批次ID", required = true)

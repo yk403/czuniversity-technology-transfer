@@ -116,10 +116,10 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
      * @return
      */
     @Override
-    public PageInfo<StuDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbmc, String jyxs, String name,Long qydsId,Long yzydsId) {
-        log.info("【人才培养 - 分页条件查询学员列表,批次id:{},学生类别名称:{},教育形式:{},学号/姓名:{}】",pcId,xslbmc,jyxs,name);
+    public PageInfo<StuDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xslbmc, String jyxs, String name,Long qydsId,Long yzydsId,Long fjjgId) {
+        log.info("【人才培养 - 分页条件查询学员列表,批次id:{},学生类别名称:{},教育形式:{},学号/姓名:{},父级机构ID:{}】",pcId,xslbmc,jyxs,name,fjjgId);
         PageHelper.startPage(pageNum, pageSize);
-        List<StuDTO> stuDTOList = xsMapper.findXsList(pcId,xslbmc,jyxs,name,qydsId,yzydsId);
+        List<StuDTO> stuDTOList = xsMapper.findXsList(pcId,xslbmc,jyxs,name,qydsId,yzydsId,fjjgId);
         for (StuDTO stuDTO : stuDTOList) {
             List<Long> pcIds = pcXsMapper.selectByXsId(stuDTO.getId());
             stuDTO.setPcIds(pcIds);
@@ -128,8 +128,8 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
     }
 
     @Override
-    public List<StuDTO> findExport(Long pcId, String xslbmc, String jyxs, String name) {
-        List<StuDTO> stuDTOList = xsMapper.findXsList(pcId,xslbmc,jyxs,name,null,null);
+    public List<StuDTO> findExport(Long pcId, String xslbmc, String jyxs, String name, Long fjjgId) {
+        List<StuDTO> stuDTOList = xsMapper.findXsList(pcId,xslbmc,jyxs,name,null,null, fjjgId);
 
         ResponseUtil  list1= sjzdFeignService.getList(null, null, SsmkEnum.USER_TYPE.getKey());
         List<Sjzd> sjzd1 = new ArrayList<>();
@@ -386,6 +386,7 @@ public class XsServiceImpl extends ServiceImpl<XsMapper, Xs> implements XsServic
                 Yh yh = new Yh();
                 String xm = stuDTO.getXm();
                 Long jgId = stuDTO.getJgId();
+                Long fjjgId = stuDTO.getFjjgId();
                 String lxdh = stuDTO.getLxdh();
                 String yhlx = IN.getKey();
                 String yhlb = POSTGRADUATE.getKey();
