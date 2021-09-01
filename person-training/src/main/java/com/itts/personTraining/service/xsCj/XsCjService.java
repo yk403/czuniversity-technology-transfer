@@ -64,9 +64,10 @@ public interface XsCjService extends IService<XsCj> {
      * @param xm
      * @param xymc
      * @param jylx
+     * @param fjjgId
      * @return
      */
-    PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String xymc, String jylx);
+    PageInfo<XsCjDTO> findByPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String xymc, String jylx, Long fjjgId);
 
     /**
      * 分页条件查询学生成绩
@@ -79,7 +80,7 @@ public interface XsCjService extends IService<XsCj> {
      * @param jylx
      * @return
      */
-    PageInfo<XsCjDTO> findPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String xymc, String jylx);
+    PageInfo<XsCjDTO> findPage(Integer pageNum, Integer pageSize, Long pcId, String xh, String xm, String xymc, String jylx, Long fjjgId);
     /**
      * 更新学生成绩
      * @param xsCjDTO

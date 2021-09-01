@@ -47,8 +47,9 @@ public class SjAdminController {
                                    @RequestParam(value = "pcId", required = false) Long pcId,
                                    @RequestParam(value = "sjlx", required = false) String sjlx,
                                    @RequestParam(value = "name", required = false) String name,
-                                   @RequestParam(value = "export", required = false) Integer export) {
-        return ResponseUtil.success(sjService.findByPage(pageNum, pageSize, pcId, sjlx, name, export));
+                                   @RequestParam(value = "export", required = false) Integer export,
+                                   @RequestParam(value = "fjjgId", required = false) Long fjjgId) {
+        return ResponseUtil.success(sjService.findByPage(pageNum, pageSize, pcId, sjlx, name, export, fjjgId));
     }
 
     /**
@@ -68,8 +69,8 @@ public class SjAdminController {
      */
     @GetMapping("/getAll")
     @ApiOperation(value = "查询所有实践")
-    public ResponseUtil getAll() {
-        return ResponseUtil.success(sjService.getAll());
+    public ResponseUtil getAll(@RequestParam(value = "fjjgId", required = false) Long fjjgId) {
+        return ResponseUtil.success(sjService.getAll(fjjgId));
     }
 
     /**
@@ -158,7 +159,7 @@ public class SjAdminController {
         if (sjDTO == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        List<SjDTO> sjDTOs = sjService.getAll();
+        List<SjDTO> sjDTOs = sjService.getAll(sjDTO.getFjjgId());
         for (SjDTO dto : sjDTOs) {
             if (dto.getXh().equals(sjDTO.getXh())) {
                 throw new WebException(STUDENT_NUMBER_EXISTS_ERROR);

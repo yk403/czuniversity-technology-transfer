@@ -63,8 +63,9 @@ public class XsCjAdminController {
                                    @RequestParam(value = "xh", required = false) String xh,
                                    @RequestParam(value = "xm", required = false) String xm,
                                    @RequestParam(value = "xymc", required = false) String xymc,
-                                   @RequestParam(value = "jylx", required = false) String jylx) {
-        return ResponseUtil.success(xsCjService.findByPage(pageNum, pageSize, pcId, xh, xm, xymc, jylx));
+                                   @RequestParam(value = "jylx", required = false) String jylx,
+                                   @RequestParam(value = "fjjgId") Long fjjgId) {
+        return ResponseUtil.success(xsCjService.findByPage(pageNum, pageSize, pcId, xh, xm, xymc, jylx, fjjgId));
     }
     /**
      * 分页查询学生成绩列表
@@ -81,8 +82,9 @@ public class XsCjAdminController {
                                    @RequestParam(value = "xh", required = false) String xh,
                                    @RequestParam(value = "xm", required = false) String xm,
                                    @RequestParam(value = "xymc", required = false) String xymc,
-                                   @RequestParam(value = "jylx", required = false) String jylx) {
-        return ResponseUtil.success(xsCjService.findPage(pageNum, pageSize, pcId, xh, xm, xymc, jylx));
+                                   @RequestParam(value = "jylx", required = false) String jylx,
+                                   @RequestParam(value = "fjjgId") Long fjjgId) {
+        return ResponseUtil.success(xsCjService.findPage(pageNum, pageSize, pcId, xh, xm, xymc, jylx, fjjgId));
     }
 
     /**

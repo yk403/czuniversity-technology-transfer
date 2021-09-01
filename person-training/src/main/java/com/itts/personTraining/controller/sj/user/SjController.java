@@ -151,7 +151,7 @@ public class SjController {
         if (sjDTO.getKsrq().compareTo(sjDTO.getJsrq()) == 1) {
             throw new WebException(STARTDATE_GREATER_THAN_ENDDATE_ERROR);
         }
-        List<SjDTO> sjDTOs = sjService.getAll();
+        List<SjDTO> sjDTOs = sjService.getAll(sjDTO.getFjjgId());
         for (SjDTO dto : sjDTOs) {
             if (dto.getXh().equals(sjDTO.getXh())) {
                 throw new WebException(STUDENT_NUMBER_EXISTS_ERROR);

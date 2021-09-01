@@ -32,6 +32,12 @@ public class Zj implements Serializable {
     private Long id;
 
     /**
+     * 父级机构ID
+     */
+    @ApiModelProperty(value = "父级机构ID", required = true)
+    private Long fjjgId;
+
+    /**
      * 机构id
      */
     @ApiModelProperty(value = "机构id", required = true)

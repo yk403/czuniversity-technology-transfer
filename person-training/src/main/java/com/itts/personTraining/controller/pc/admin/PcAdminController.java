@@ -45,7 +45,7 @@ public class PcAdminController {
                                 @RequestParam(value = "name", required = false) String name,
                                 @RequestParam(value = "jylx", required = false) String jylx,
                                 @RequestParam(value = "lx", required = false) String lx,
-                                @RequestParam(value = "fjjgId", required = false) Long fjjgId,
+                                @RequestParam(value = "fjjgId") Long fjjgId,
                                 @RequestParam(value = "userType", required = false) String userType){
         return ResponseUtil.success(pcService.findByPage(pageNum, pageSize, name, jylx, lx, fjjgId, userType));
     }
@@ -87,10 +87,10 @@ public class PcAdminController {
      * 获取所有批次详情
      * @return
      */
-    @GetMapping("/getAll")
+    @GetMapping("/getAll/")
     @ApiOperation(value = "获取所有批次详情")
-    public ResponseUtil getAll(){
-        List<Pc> pcs = pcService.getAll();
+    public ResponseUtil getAll(@RequestParam(value = "fjjgId") Long fjjgId){
+        List<Pc> pcs = pcService.getAll(fjjgId);
         return ResponseUtil.success(pcs);
     }
 
@@ -99,13 +99,14 @@ public class PcAdminController {
      * @param jylx
      * @return
      */
-    @GetMapping("/getByJylx/{jylx}")
+    @GetMapping("/getByJylx/")
     @ApiOperation(value = "根据教育类型查询批次信息")
-    public ResponseUtil getByJylx(@PathVariable("jylx")String jylx){
+    public ResponseUtil getByJylx(@RequestParam(value = "jylx")String jylx,
+                                  @RequestParam(value = "fjjgId") Long fjjgId){
         if (jylx == null) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        return ResponseUtil.success(pcService.getByJylx(jylx));
+        return ResponseUtil.success(pcService.getByJylx(jylx,fjjgId));
     }
 
     /**
@@ -207,7 +208,7 @@ public class PcAdminController {
         if(pc==null){
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
-        List<Pc> pcList = pcService.getAll();
+        List<Pc> pcList = pcService.getAll(pc.getFjjgId());
         for (Pc pc1 : pcList) {
             if (pc1.getPch().equals(pc.getPch())) {
                 throw new WebException(BATCH_NUMBER_EXISTS_ERROR);

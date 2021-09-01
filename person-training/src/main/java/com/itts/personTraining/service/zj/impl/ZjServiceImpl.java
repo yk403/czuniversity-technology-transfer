@@ -71,31 +71,34 @@ public class ZjServiceImpl extends ServiceImpl<ZjMapper, Zj> implements ZjServic
      * @param yjly
      * @param name
      * @param lx
+     * @param fjjgId
      * @return
      */
     @Override
-    public PageInfo<Zj> findByPage(Integer pageNum, Integer pageSize, String yjly, String name, String lx) {
-        log.info("【人才培养 - 分页条件查询专家列表,研究类型:{},姓名:{},类型:{}】",yjly,name,lx);
+    public PageInfo<Zj> findByPage(Integer pageNum, Integer pageSize, String yjly, String name, String lx, Long fjjgId) {
+        log.info("【人才培养 - 分页条件查询专家列表,研究类型:{},姓名:{},类型:{},父级机构ID:{}】",yjly,name,lx,fjjgId);
         QueryWrapper<Zj> zjQueryWrapper = new QueryWrapper<>();
         if (pageNum == -1) {
             zjQueryWrapper.eq("sfsc",false)
-                    .orderByDesc("cjsj");
+                          .eq(fjjgId != null,"fjjg_id",fjjgId)
+                          .orderByDesc("cjsj");
         } else {
             PageHelper.startPage(pageNum, pageSize);
             zjQueryWrapper.eq("sfsc",false)
-
+                    .eq(fjjgId != null,"fjjg_id",fjjgId)
                     .eq(StringUtils.isNotBlank(yjly),"yjly",yjly)
+                    .eq(StringUtils.isNotBlank(lx),"lx",lx)
                     .like(StringUtils.isNotBlank(name),"xm",StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"bh",StringUtils.isNotBlank(name)?name.trim():name)
-                    .like(StringUtils.isNotBlank(lx),"lx",lx)
                     .orderByDesc("cjsj");
         }
         return new PageInfo<>(zjMapper.selectList(zjQueryWrapper));
     }
 
     @Override
-    public List<Zj> findExport(String yjly, String name) {
+    public List<Zj> findExport(String yjly, String name, Long fjjgId) {
         QueryWrapper<Zj> zjQueryWrapper = new QueryWrapper<>();
         zjQueryWrapper.eq("sfsc",false)
+                .eq(fjjgId != null,"fjjg_id",fjjgId)
                 .eq(StringUtils.isNotBlank(yjly),"yjly",yjly)
                 .like(StringUtils.isNotBlank(name),"xm",name)
                 .orderByDesc("cjsj");

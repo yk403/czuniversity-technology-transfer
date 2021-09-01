@@ -242,4 +242,6 @@ public class Spzb implements Serializable {
      */
     @ApiModelProperty(value = "是否转码")
     private Integer sfzm;
+    @ApiModelProperty(value = "机构id")
+    private Long jgId;
 }

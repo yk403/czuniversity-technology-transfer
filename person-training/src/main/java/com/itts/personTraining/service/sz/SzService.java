@@ -30,6 +30,7 @@ public interface SzService extends IService<Sz> {
     PageInfo<Sz> findByPage(Integer pageNum, Integer pageSize, String name, String dslb, String hyly, Long fjjgId, String jglx);
 
     List<Sz>  findXsBySz(String dslb);
+
     List<Sz>  findExport(String dsxm, String dslb, String hyly);
     /**
      * 根据id查询师资详情
