@@ -53,7 +53,9 @@ public class TkzyController {
                              @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
                              @ApiParam(value = "题库所属：my - 我的") @RequestParam(value = "belong", required = false) String belong,
                              @ApiParam(value = "题目类型: single_choice - 单选; multiple_choice - 多选;judgment - 判断") @RequestParam(value = "type", required = false) String type,
-                             @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition) {
+                             @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
+                             @ApiParam(value = "机构ID") @RequestParam(value = "fjjgId", required = false) Long fjjgId
+    ) {
 
         LoginUser loginUser = SystemConstant.threadLocal.get();
 
@@ -89,6 +91,10 @@ public class TkzyController {
 
         if (StringUtils.isNotBlank(condition)) {
             query.like("mc", condition.trim());
+        }
+
+        if (fjjgId != null) {
+            query.eq("fjjg_id", fjjgId);
         }
 
         query.orderByDesc("cjsj");
