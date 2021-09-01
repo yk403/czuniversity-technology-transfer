@@ -1,9 +1,8 @@
-package com.itts.userservice.request;
+package com.itts.personTraining.request.yh;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.Serializable;
 

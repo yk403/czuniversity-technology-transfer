@@ -197,4 +197,10 @@ public class GetXxzyVO implements Serializable {
      */
     @ApiModelProperty(value = "是否已收藏")
     private Boolean sfshouc;
+
+    /**
+     * 父级机构id
+     */
+    @ApiModelProperty(value = "父级机构id")
+    private Long fjjgId;
 }

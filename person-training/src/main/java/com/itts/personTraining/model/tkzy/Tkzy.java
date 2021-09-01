@@ -139,4 +139,10 @@ public class Tkzy implements Serializable {
      */
     @ApiModelProperty(value = "更新人")
     private Long gxr;
+
+    /**
+     * 父级机构id
+     */
+    @ApiModelProperty(value = "父级机构id")
+    private Long fjjgId;
 }

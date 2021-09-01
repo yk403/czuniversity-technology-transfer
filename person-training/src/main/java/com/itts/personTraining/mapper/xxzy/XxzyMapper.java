@@ -1,9 +1,14 @@
 package com.itts.personTraining.mapper.xxzy;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itts.personTraining.dto.PyJhDTO;
 import com.itts.personTraining.model.xxzy.Xxzy;
+import com.itts.personTraining.vo.xxzy.GetXxzyVO;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -23,5 +28,13 @@ public interface XxzyMapper extends BaseMapper<Xxzy> {
             "sfsj=#{sfsj}, sfgk=#{sfgk}, gkkssj = #{gkkssj}, gkjssj = #{gkjssj} " +
             " WHERE (id = #{id})")
     int update(Xxzy xxzy);
+
+    /**
+     * 分页查询学习列表
+     * @return
+     */
+    List<GetXxzyVO> findByPage(@Param("type") String type,
+                               @Param("firstCategory") String firstCategory,@Param("secondCategory")  String secondCategory,@Param("category")  String category,
+                               @Param("courseId") Long courseId,@Param("condition")  String condition,@Param("groupId")  Long groupId,@Param("fjjgId") Long fjjgId);
 
 }

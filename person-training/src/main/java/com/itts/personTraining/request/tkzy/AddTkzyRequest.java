@@ -83,4 +83,10 @@ public class AddTkzyRequest implements Serializable {
      */
     @ApiModelProperty(value = "题目选项")
     private List<AddTmxxRequest> tmxxs;
+
+    /**
+     * 父级机构id
+     */
+    @ApiModelProperty(value = "父级机构id")
+    private Long fjjgId;
 }

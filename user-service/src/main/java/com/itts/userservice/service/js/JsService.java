@@ -21,7 +21,7 @@ public interface JsService {
     /**
      * 查询列表
      */
-    PageInfo<Js> findByPage(Integer pageNum, Integer pageSize, String name, String systemType);
+    PageInfo<Js> findByPage(Integer pageNum, Integer pageSize, String name, String systemType,Long jgId);
 
     /**
      * 通过系统类型是否为默认角色获取角色信息
@@ -31,7 +31,7 @@ public interface JsService {
      * @return
      * @author liuyingming
      */
-    List<Js> findByUserTypeAndDefault(String userType, Boolean defaultFlag);
+    List<Js> findByUserTypeAndDefault(String userType,Long jgId, Boolean defaultFlag);
 
     /**
      * 通过用户ID获取

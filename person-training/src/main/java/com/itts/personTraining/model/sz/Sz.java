@@ -195,5 +195,25 @@ public class Sz implements Serializable {
      * 驻入时间
      */
     private Date zrsj;
+    private String zw;
+    private Date dzsj;
+    private String csjszysj;
+    private String zhxl;
+    private String zhxw;
+    private String byyx;
+    private String zhzy;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date zhsj;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date xwsysj;
+    private Boolean sfsd;
+    private String crsddwjzy;
+    private String ssyjxkmc;
+    private String ejxky;
+    private String ejxke;
+    private String yjcg;
+    private String cbzp;
+    private String gzjl;
+    private String kyxm;
 
 }

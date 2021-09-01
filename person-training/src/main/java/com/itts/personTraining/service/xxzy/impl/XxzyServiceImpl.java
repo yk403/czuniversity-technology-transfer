@@ -252,42 +252,44 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
   @Override
   public PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type,
                              String firstCategory, String secondCategory, String category,
-                             Long courseId, String condition, Long groupId) {
+                             Long courseId, String condition, Long groupId,Long fjjgId) {
 
     PageHelper.startPage(pageNum, pageSize);
 
-    QueryWrapper query = new QueryWrapper();
+//    QueryWrapper query = new QueryWrapper();
+//
+//    query.eq("zylb", type);
+//    query.eq("sfsc", false);
+//
+//    if (StringUtils.isNotBlank(firstCategory)) {
+//      query.eq("zyyjfl", firstCategory);
+//    }
+//
+//    if (StringUtils.isNotBlank(secondCategory)) {
+//      query.eq("zyejfl", secondCategory);
+//    }
+//
+//    if (courseId != null) {
+//      query.eq("kc_id", courseId);
+//    }
+//
+//    if (StringUtils.isNotBlank(condition)) {
+//      query.like("mc", condition.trim());
+//    }
+//
+//    if (StringUtils.isNotBlank(category)) {
+//      query.eq("zylx", category);
+//    }
+//
+//    if (groupId != null) {
+//      query.eq("jg_id", groupId);
+//    }
+//
+//    query.orderByDesc("cjsj");
+//
+//    List xxzys = xxzyMapper.selectList(query);
 
-    query.eq("zylb", type);
-    query.eq("sfsc", false);
-
-    if (StringUtils.isNotBlank(firstCategory)) {
-      query.eq("zyyjfl", firstCategory);
-    }
-
-    if (StringUtils.isNotBlank(secondCategory)) {
-      query.eq("zyejfl", secondCategory);
-    }
-
-    if (courseId != null) {
-      query.eq("kc_id", courseId);
-    }
-
-    if (StringUtils.isNotBlank(condition)) {
-      query.like("mc", condition.trim());
-    }
-
-    if (StringUtils.isNotBlank(category)) {
-      query.eq("zylx", category);
-    }
-
-    if (groupId != null) {
-      query.eq("jg_id", groupId);
-    }
-
-    query.orderByDesc("cjsj");
-
-    List xxzys = xxzyMapper.selectList(query);
+    List<GetXxzyVO> xxzys = xxzyMapper.findByPage( type, firstCategory,  secondCategory,  category, courseId,  condition,  groupId, fjjgId);
 
     PageInfo pageInfo = new PageInfo(xxzys);
 

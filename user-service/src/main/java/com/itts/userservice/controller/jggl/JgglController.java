@@ -9,6 +9,7 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.common.UserServiceCommon;
+import com.itts.userservice.enmus.JgTpyeEnum;
 import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.service.jggl.JgglService;
@@ -111,10 +112,59 @@ public class JgglController {
      * 获取机构树
      */
     @GetMapping("/tree/")
-    @ApiOperation(value = "获取机构树")
-    public ResponseUtil findJgglVO(@RequestParam(required = false) String jgbm) {
-        List<JgglVO> jgglVO = jgglService.findJgglVO(jgbm);
-        return ResponseUtil.success(jgglVO);
+    @ApiOperation(value = "获取页面机构树")
+    public ResponseUtil findJgglVO(@RequestParam(value = "jgId",required = false) Long jgId,
+                                   @RequestParam(value = "jglx", required = false) String jglx) {
+
+
+        List<JgglVO> jgglVOList = jgglService.findJgglVO(null);
+        //分基地
+        if(Objects.equals(jglx, JgTpyeEnum.BRANCH.getKey())){
+            String jgbm = null;
+            Jggl jggl = jgglService.get(jgId);
+            if(jggl != null){
+                jgbm = jggl.getJgbm();
+            }
+            for (int i = 0; i < jgglVOList.size(); i++) {
+                //分基地
+                JgglVO jgglVO = jgglVOList.get(i);
+                if(Objects.equals(jgbm,jgglVO.getJgbm())){
+                    ArrayList<JgglVO> jgglVOS1 = new ArrayList<>();
+                    jgglVOS1.add(jgglVO);
+                    jgglVOList = jgglVOS1;
+                    break;
+                }
+            }
+        }
+        return ResponseUtil.success(jgglVOList);
+    }
+    /**
+     * 获取机构树
+     */
+    @GetMapping("/addTree/")
+    @ApiOperation(value = "获取添加页面机构树")
+    public ResponseUtil findJggl(@RequestParam(value = "jgId",required = false) Long jgId) {
+
+        List<JgglVO> jgglVOList = jgglService.findJgglVO(null);
+
+        String jgbm = null;
+        Jggl jggl = jgglService.get(jgId);
+        if(jggl != null){
+            jgbm = jggl.getJgbm();
+        }
+        for (int i = 0; i < jgglVOList.size(); i++) {
+
+            JgglVO jgglVO = jgglVOList.get(i);
+
+            if(Objects.equals(jgbm,jgglVO.getJgbm())){
+                ArrayList<JgglVO> jgglVOS1 = new ArrayList<>();
+                jgglVOS1.add(jgglVO);
+                jgglVOList = jgglVOS1;
+                break;
+            }
+        }
+
+        return ResponseUtil.success(jgglVOList);
     }
 
     /**
