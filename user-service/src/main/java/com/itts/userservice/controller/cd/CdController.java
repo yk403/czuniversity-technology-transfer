@@ -119,7 +119,7 @@ public class CdController {
                 while (iterator.hasNext()){
                     Cd next = iterator.next();
                     //删除
-                    if(Objects.equals(next.getCdmc(), CdEnum.CDDMBGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.SJZDGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.CZDMBGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.DMGL.getMsg()) || Objects.equals(next.getCdmc(), CdEnum.SJBWH.getMsg())){
+                    if(Objects.equals(next.getCdmc(), CdEnum.DMGL.getMsg())){
                         iterator.remove();
                     }
 
@@ -127,7 +127,7 @@ public class CdController {
 
             }
 
-            List<CdTreeVO> tree = cdService.findByTree(cds);
+            List<CdTreeVO> tree = cdService.findByTree(cds,jglx);
             return ResponseUtil.success(tree);
         }
 
