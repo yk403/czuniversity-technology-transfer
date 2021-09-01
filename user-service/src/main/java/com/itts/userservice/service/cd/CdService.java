@@ -28,7 +28,7 @@ public interface CdService {
     /**
      * 通过ID获取当前菜单及其子菜单（树形）
      */
-    List<CdTreeVO> findByTree(List<Cd> cds);
+    List<CdTreeVO> findByTree(List<Cd> cds,String jglx);
 
     /**
      * 通过角色获取菜单操作
