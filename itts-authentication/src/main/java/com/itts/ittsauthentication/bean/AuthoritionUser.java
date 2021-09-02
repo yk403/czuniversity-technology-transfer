@@ -105,8 +105,8 @@ public class AuthoritionUser implements Serializable {
     private Long gxr;
     /***
     * @Description: 机构id
-    * @Param: 
-    * @return: 
+    * @Param:
+    * @return:
     * @Author: yukai
     * @Date: 2021/9/2
     */
@@ -119,6 +119,11 @@ public class AuthoritionUser implements Serializable {
      * @Date: 2021/9/2
      */
     private String lx;
+
+    /**
+     * 父级机构ID
+     */
+    private Long fjjgId;
 
 
 }
