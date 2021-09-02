@@ -174,8 +174,13 @@ public class JgglController {
     @ApiOperation(value = "获取机构列表")
     public ResponseUtil getlist(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                @RequestParam(value = "jgbm", required = false) String jgbm) {
+                                @RequestParam(value = "jgbm", required = false) String jgbm,
+                                @RequestParam(value = "jgId",required = false) Long jgId) {
 
+        if(jgId != null){
+            Jggl jggl = jgglService.get(jgId);
+            jgbm = jggl.getJgbm();
+        }
         PageInfo<Jggl> byPage = jgglService.findByPage(pageNum, pageSize, jgbm);
 
         return ResponseUtil.success(byPage);
