@@ -295,18 +295,23 @@ public class JgglServiceImpl extends ServiceImpl<JgglMapper, Jggl> implements Jg
                     case 1:
                         lmgl.setMc(LmglEnum.TALENT_TRAINING.getMsg());
                         lmgl.setLmbm(LmglEnum.TALENT_TRAINING.getKey());
+                        break;
                     case 2:
                         lmgl.setMc(LmglEnum.TECHNICAL_SERVICE.getMsg());
                         lmgl.setLmbm(LmglEnum.TECHNICAL_SERVICE.getKey());
+                        break;
                     case 3:
                         lmgl.setMc(LmglEnum.TECHNOLOGY_TRANSACT.getMsg());
                         lmgl.setLmbm(LmglEnum.TECHNOLOGY_TRANSACT.getKey());
+                        break;
                     case 4:
                         lmgl.setMc(LmglEnum.BASE_CLOUD.getMsg());
                         lmgl.setLmbm(LmglEnum.BASE_CLOUD.getKey());
+                        break;
                     case 5:
                         lmgl.setMc(LmglEnum.TRAINING_PLATFORM.getMsg());
                         lmgl.setLmbm(LmglEnum.TRAINING_PLATFORM.getKey());
+                        break;
                 }
                 lmglRpcService.add(lmgl);
             }

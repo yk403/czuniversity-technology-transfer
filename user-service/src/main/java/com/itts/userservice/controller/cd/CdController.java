@@ -146,12 +146,12 @@ public class CdController {
                         iterator.remove();
                     }
                     if(!sfsy1){
-                        if(Objects.equals(next.getCdmc(),CdEnum.XXGL) || Objects.equals(next.getCdmc(),CdEnum.JSZB) || Objects.equals(next.getCdmc(),CdEnum.JSPM) || Objects.equals(next.getCdmc(),CdEnum.JSGP) || Objects.equals(next.getCdmc(),CdEnum.SCLY)){
+                        if(Objects.equals(next.getCdmc(),CdEnum.XXGL.getMsg()) || Objects.equals(next.getCdmc(),CdEnum.JSZB.getMsg()) || Objects.equals(next.getCdmc(),CdEnum.JSPM.getMsg()) || Objects.equals(next.getCdmc(),CdEnum.JSGP.getMsg()) || Objects.equals(next.getCdmc(),CdEnum.SCLY.getMsg())){
                             iterator.remove();
                         }
                     }
                     if(!sfsy2){
-                        if(Objects.equals(next.getCdmc(),CdEnum.ZHGL) || Objects.equals(next.getCdmc(),CdEnum.RLZYGL) || Objects.equals(next.getCdmc(),CdEnum.YTHJX) || Objects.equals(next.getCdmc(),CdEnum.SZHXXZX)){
+                        if(Objects.equals(next.getCdmc(),CdEnum.ZHGL.getMsg()) || Objects.equals(next.getCdmc(),CdEnum.RLZYGL.getMsg()) || Objects.equals(next.getCdmc(),CdEnum.YTHJX.getMsg()) || Objects.equals(next.getCdmc(),CdEnum.SZHXXZX.getMsg())){
                             iterator.remove();
                         }
                     }

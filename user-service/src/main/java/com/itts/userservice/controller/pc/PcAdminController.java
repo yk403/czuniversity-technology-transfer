@@ -6,10 +6,7 @@ import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.feign.persontraining.pc.PcRpcService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -38,10 +35,11 @@ public class PcAdminController {
      * @param jylx
      * @return
      */
-    @GetMapping("/getByJylx/{jylx}")
+    @GetMapping("/getByJylx/")
     @ApiOperation(value = "根据教育类型查询批次信息")
-    public ResponseUtil getByJylx(@PathVariable("jylx")String jylx){
+    public ResponseUtil getByJylx(@RequestParam(value = "jylx")String jylx,
+                                  @RequestParam(value = "fjjgId") Long fjjgId){
 
-        return pcRpcService.getByJylx(jylx);
+        return pcRpcService.getByJylx(jylx,fjjgId);
     }
 }
