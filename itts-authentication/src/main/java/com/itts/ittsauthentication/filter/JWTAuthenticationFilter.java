@@ -107,6 +107,8 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
         AuthoritionUser user = authoritionUserMapper.getByUserName(loginUser.getUserName());
 
+        String fjjgId = authoritionUserMapper.getFjjgId(loginUser.getUserName());
+        user.setFjjgId(Long.valueOf(fjjgId));
         if(user != null){
 
             loginUser.setUserCategory(user.getYhlb());
