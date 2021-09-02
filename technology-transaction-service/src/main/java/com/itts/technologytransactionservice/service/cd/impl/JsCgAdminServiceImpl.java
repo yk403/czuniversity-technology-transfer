@@ -66,17 +66,19 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         //params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
         //判断当类别领域名称为全部时，将筛选条件删除
         Long fjjgId = getFjjgId();
-        String fjjgId1 = params.get("fjjgId").toString();
-        Long l = Long.parseLong(fjjgId1);
-        if(l != null){
-            fjjgId = l;
+        if(params.get("fjjgId") != null){
+            String fjjgId1 = params.get("fjjgId").toString();
+            Long l = Long.parseLong(fjjgId1);
+            if(l != null){
+                fjjgId = l;
+            }
         }
+
         params.put("fjjgId",fjjgId);
 
         if(params.get("lbId")!=null){
             QueryWrapper<TJsLb> tJsLbQueryWrapper = new QueryWrapper<>();
-            tJsLbQueryWrapper.eq("id",params.get("lbId").toString())
-            .eq("fjjg_id",fjjgId);
+            tJsLbQueryWrapper.eq("id",params.get("lbId").toString());
             TJsLb tJsLb=jsLbMapper.selectOne(tJsLbQueryWrapper);
             if(tJsLb!=null) {
                 if(tJsLb.getMc().equals("全部")){
@@ -87,8 +89,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         }
         if(params.get("lyId")!=null){
             QueryWrapper<TJsLy> tJsLyQueryWrapper = new QueryWrapper<>();
-            tJsLyQueryWrapper.eq("id",params.get("lyId").toString())
-                    .eq("fjjg_id",fjjgId);
+            tJsLyQueryWrapper.eq("id",params.get("lyId").toString());
             TJsLy tJsLy=jsLyMapper.selectOne(tJsLyQueryWrapper);
             if(tJsLy!=null) {
                 if(tJsLy.getMc().equals("全部")){
@@ -238,7 +239,8 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     @Override
     public TJsCg selectByName(String name) {
         log.info("【技术交易 - 根据成果名称:{}查询详细信息】", name);
-        return jsCgMapper.selectByName(name);
+        Long fjjgId = getFjjgId();
+        return jsCgMapper.selectByName(name,fjjgId);
     }
 
     /**
@@ -246,7 +248,8 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
      */
     @Override
     public boolean saveCg(TJsCg tJsCg) {
-        TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc());
+        Long fjjgId = getFjjgId();
+        TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc(),fjjgId);
         if (tJsCg2 != null) {
             return false;
         }

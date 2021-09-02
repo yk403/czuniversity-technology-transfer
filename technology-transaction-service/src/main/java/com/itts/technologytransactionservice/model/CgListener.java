@@ -6,6 +6,8 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.exception.ServiceException;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.service.JsCgService;
@@ -20,6 +22,9 @@ import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 @Slf4j
 @Data
@@ -197,7 +202,8 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
     }
 
     private void save(TJsCg tJsCg) {
-        TJsCg tJsCgOld = jsCgMapper.selectByName(tJsCg.getCgmc());
+        Long fjjgId = getFjjgId();
+        TJsCg tJsCgOld = jsCgMapper.selectByName(tJsCg.getCgmc(),fjjgId);
         if (tJsCgOld != null) {
             tJsCg.setId(tJsCgOld.getId());
 
@@ -231,5 +237,15 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
 
     public String getResult() {
         return result.toString();
+    }
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getJgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
     }
 }

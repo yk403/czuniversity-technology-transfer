@@ -56,10 +56,12 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     public PageInfo<TJsCg> findJsCgFront(Map<String, Object> params) {
         //log.info("【技术交易 - 分页条件查询成果(前台)】");
         Long fjjgId = getFjjgId();
-        String fjjgId1 = params.get("fjjgId").toString();
-        Long l = Long.parseLong(fjjgId1);
-        if(l != null){
-            fjjgId = l;
+        if(params.get("fjjgId") != null){
+            String fjjgId1 = params.get("fjjgId").toString();
+            Long l = Long.parseLong(fjjgId1);
+            if(l != null){
+                fjjgId = l;
+            }
         }
         params.put("fjjgId",fjjgId);
         Query query = new Query(params);
@@ -78,10 +80,12 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         log.info("【技术交易 - 分页查询成果(个人详情)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据
         Long fjjgId = getFjjgId();
-        String fjjgId1 = params.get("fjjgId").toString();
-        Long l = Long.parseLong(fjjgId1);
-        if(l != null){
-            fjjgId = l;
+        if(params.get("fjjgId") != null){
+            String fjjgId1 = params.get("fjjgId").toString();
+            Long l = Long.parseLong(fjjgId1);
+            if(l != null){
+                fjjgId = l;
+            }
         }
         params.put("fjjgId",fjjgId);
         params.put("userId",Integer.parseInt(String.valueOf(getUserId())));
@@ -99,7 +103,8 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     @Override
     public TJsCg selectByName(String name) {
         log.info("【技术交易 - 根据成果名称:{}查询详细信息】",name);
-        return jsCgMapper.selectByName(name);
+        Long fjjgId = getFjjgId();
+        return jsCgMapper.selectByName(name,fjjgId);
     }
 
     /**
@@ -109,10 +114,11 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
      */
     @Override
     public boolean saveCg(TJsCg tJsCg) {
+        Long fjjgId = getFjjgId();
         if (tJsCg.getId() != null) {
             return false;
         } else {
-            TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc());
+            TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc(),fjjgId);
             if (tJsCg2 != null) {
                 throw new ServiceException(NAME_REPEAT);
             }
@@ -358,11 +364,9 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 
     private Long getFjjgId(){
         LoginUser loginUser = threadLocal.get();
-        Long fjjgId;
+        Long fjjgId = null;
         if (loginUser != null) {
             fjjgId = loginUser.getJgId();
-        } else {
-            throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return fjjgId;
     }
