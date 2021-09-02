@@ -43,6 +43,15 @@ public class JsHdController extends BaseController {
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
 
         //查询列表数据
+        Long fjjgId = getFjjgId();
+        if(params.get("fjjgId") != null){
+            String fjjgId1 = params.get("fjjgId").toString();
+            Long l = Long.parseLong(fjjgId1);
+            if(l != null){
+                fjjgId = l;
+            }
+        }
+        params.put("fjjgId",fjjgId);
         Query query = new Query(params);
         return ResponseUtil.success(jsHdService.page(query));
     }
@@ -56,6 +65,15 @@ public class JsHdController extends BaseController {
     public ResponseUtil pageUser(@RequestBody Map<String, Object> params) {
         params.put("userId",getUserId().toString());
         //查询列表数据
+        Long fjjgId = getFjjgId();
+        if(params.get("fjjgId") != null){
+            String fjjgId1 = params.get("fjjgId").toString();
+            Long l = Long.parseLong(fjjgId1);
+            if(l != null){
+                fjjgId = l;
+            }
+        }
+        params.put("fjjgId",fjjgId);
         Query query = new Query(params);
         return ResponseUtil.success(jsHdService.page(query));
     }
@@ -67,6 +85,15 @@ public class JsHdController extends BaseController {
     @PostMapping("/pageFront1")
     public ResponseUtil pageFront1(@RequestBody Map<String, Object> params) {
         //查询列表数据
+        Long fjjgId = getFjjgId();
+        if(params.get("fjjgId") != null){
+            String fjjgId1 = params.get("fjjgId").toString();
+            Long l = Long.parseLong(fjjgId1);
+            if(l != null){
+                fjjgId = l;
+            }
+        }
+        params.put("fjjgId",fjjgId);
         Query query = new Query(params);
         return ResponseUtil.success(jsHdService.pageFront1(query));
     }
@@ -136,5 +163,13 @@ public class JsHdController extends BaseController {
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId = null;
+        if (loginUser != null) {
+            fjjgId = loginUser.getJgId();
+        }
+        return fjjgId;
     }
 }
