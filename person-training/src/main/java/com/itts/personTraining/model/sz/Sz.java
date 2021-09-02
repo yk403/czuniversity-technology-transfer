@@ -196,26 +196,98 @@ public class Sz implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date zrsj;
+
+    /**
+     * 职务
+     */
     private String zw;
+
+    /**
+     * 定职时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date dzsj;
+
+    /**
+     * 从事技术转移工作时长
+     */
     private String csjszysj;
+
+    /**
+     * 最后学历
+     */
     private String zhxl;
+
+    /**
+     * 最后学位
+     */
     private String zhxw;
+
+    /**
+     * 最后毕业院校
+     */
     private String byyx;
+
+    /**
+     * 最后专业
+     */
     private String zhzy;
+
+    /**
+     * 最后毕业时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date zhsj;
+
+    /**
+     * 学位授予时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date xwsysj;
+
+    /**
+     * 是否硕导（0：否；1：是）
+     */
     private Boolean sfsd;
+
+    /**
+     * 曾任硕导单位及专业
+     */
     private String crsddwjzy;
+
+    /**
+     * 所属一级学科名称
+     */
     private String ssyjxkmc;
+
+    /**
+     * 二级学科一
+     */
     private String ejxky;
+
+    /**
+     * 二级学科二
+     */
     private String ejxke;
+
+    /**
+     * 研究成果
+     */
     private String yjcg;
+
+    /**
+     * 出版作品
+     */
     private String cbzp;
+
+    /**
+     * 各种奖励
+     */
     private String gzjl;
+
+    /**
+     * 科研项目
+     */
     private String kyxm;
 
 }
