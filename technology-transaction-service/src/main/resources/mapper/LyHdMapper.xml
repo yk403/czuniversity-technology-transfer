@@ -193,6 +193,7 @@
     <select id="findLyHdBack" resultType="com.itts.technologytransactionservice.model.LyHdDto">
         select
         hd.id,
+        hd.fjjg_id,
         hd.cjsj,
         hd.gxsj,
         hd.hdmc,
@@ -220,6 +221,7 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             hd.is_delete = 0
+            <if test="map.fjjgId != null"> and hd.fjjg_id = #{map.fjjgId} </if>
             <if test="map.hztype !=null and map.hztype == 0">and (hd.hzmc != null and hd.hzmc != '')</if>
             <if test="map.hdmc != null"> and hd.hdmc like concat('%',trim(#{map.hdmc}),'%') </if>
             <if test="map.selectType != null and map.selectType == 0"> and hz.id is null </if>

@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,11 +47,11 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
 public class LyHdAdminServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implements LyHdAdminService {
-    @Autowired
+    @Resource
     private LyHdMapper lyHdMapper;
     @Autowired
     private FjzyMapper fjzyMapper;
-    @Autowired
+    @Resource
     private LyZwMapper lyZwMapper;
     @Autowired
     private JsXtxxService jsXtxxService;
@@ -67,6 +68,7 @@ public class LyHdAdminServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implemen
     public Boolean saveHd(LyHdDto lyHdDto) {
         LyHd lyHd = new LyHd();
         BeanUtils.copyProperties(lyHdDto,lyHd);
+        lyHd.setFjjgId(getFjjgId());
         //保存附件
         if (!CollectionUtils.isEmpty(lyHdDto.getFjzyList())) {
             String fjzyId = CommonUtils.generateUUID();
@@ -150,10 +152,11 @@ public class LyHdAdminServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implemen
         List<LyHdDto> list = lyHdMapper.findLyHzBack(query);
         return new PageInfo<>(list);
     }
-//    *
-//     * 获取当前用户id
-//     * @return
 
+    /**
+     * 获取当前用户id
+     * @return
+     */
     public Long getUserId() {
         LoginUser loginUser = threadLocal.get();
         Long userId;
@@ -163,6 +166,20 @@ public class LyHdAdminServiceImpl extends ServiceImpl<LyHdMapper, LyHd> implemen
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    /**
+     * 获取父级机构ID
+     */
+    public Long getFjjgId() {
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
     }
 
 }
