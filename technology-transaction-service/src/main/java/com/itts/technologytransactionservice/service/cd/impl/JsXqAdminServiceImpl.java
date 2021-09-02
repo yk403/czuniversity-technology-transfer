@@ -138,7 +138,8 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
     @Override
     public TJsXq selectByName(String name) {
         log.info("【技术交易 - 根据需求名称:{}查询详细信息】", name);
-        return jsXqMapper.selectByName(name);
+        Long fjjgId = getFjjgId();
+        return jsXqMapper.selectByName(name,fjjgId);
     }
 
     @Override
@@ -369,5 +370,14 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId = null;
+        if (loginUser != null) {
+            fjjgId = loginUser.getJgId();
+        }
+        return fjjgId;
     }
 }

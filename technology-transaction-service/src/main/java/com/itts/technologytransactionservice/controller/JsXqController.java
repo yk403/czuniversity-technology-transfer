@@ -2,6 +2,7 @@ package com.itts.technologytransactionservice.controller;
 
 
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
@@ -21,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.itts.common.constant.SystemConstant.BASE_URL;
-import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
+import static com.itts.common.constant.SystemConstant.*;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
@@ -159,6 +159,15 @@ public class JsXqController extends BaseController {
     @PostMapping("/PageByTJsFb")
     public ResponseUtil PageByTJsFb(@RequestBody Map<String, Object> params) {
         //查询邻域类别审核状态列表数据
+        Long fjjgId = getFjjgId();
+        if(params.get("fjjgId") != null){
+            String fjjgId1 = params.get("fjjgId").toString();
+            Long l = Long.parseLong(fjjgId1);
+            if(l != null){
+                fjjgId = l;
+            }
+        }
+        params.put("fjjgId",fjjgId);
         Query query = new Query(params);
         return ResponseUtil.success(jsXqService.PageByTJsFb(query));
     }
@@ -218,5 +227,12 @@ public class JsXqController extends BaseController {
         }
         return remove(jsXqService.assistanceIssueBatch(list));
     }
-
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId = null;
+        if (loginUser != null) {
+            fjjgId = loginUser.getJgId();
+        }
+        return fjjgId;
+    }
 }

@@ -28,8 +28,8 @@ public interface JsXqMapper extends BaseMapper<TJsXq> {
     @Select("select * from t_js_xq where id = #{id} and is_delete = 0")
     TJsXq getById(Integer id);
 
-    @Select("select * from t_js_xq where xqmc like #{name} and is_delete = 0")
-    TJsXq selectByName(String name);
+    @Select("select * from t_js_xq where fjjg_id = #{fjjgId} and xqmc like #{name} and is_delete = 0")
+    TJsXq selectByName(String name,Long fjjgId);
 
     List<TJsFb> PageByTJsFb(@Param("map") Map map);
 
