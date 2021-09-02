@@ -55,6 +55,15 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     @Override
     public PageInfo<TJsCg> findJsCgFront(Map<String, Object> params) {
         //log.info("【技术交易 - 分页条件查询成果(前台)】");
+        Long fjjgId = getFjjgId();
+        if(params.get("fjjgId") != null){
+            String fjjgId1 = params.get("fjjgId").toString();
+            Long l = Long.parseLong(fjjgId1);
+            if(l != null){
+                fjjgId = l;
+            }
+        }
+        params.put("fjjgId",fjjgId);
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsCg> list = jsCgMapper.findJsCgFront(query);
@@ -70,6 +79,15 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     public PageInfo<TJsCg> findJsCgUser(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询成果(个人详情)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        Long fjjgId = getFjjgId();
+        if(params.get("fjjgId") != null){
+            String fjjgId1 = params.get("fjjgId").toString();
+            Long l = Long.parseLong(fjjgId1);
+            if(l != null){
+                fjjgId = l;
+            }
+        }
+        params.put("fjjgId",fjjgId);
         params.put("userId",Integer.parseInt(String.valueOf(getUserId())));
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
@@ -85,7 +103,8 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     @Override
     public TJsCg selectByName(String name) {
         log.info("【技术交易 - 根据成果名称:{}查询详细信息】",name);
-        return jsCgMapper.selectByName(name);
+        Long fjjgId = getFjjgId();
+        return jsCgMapper.selectByName(name,fjjgId);
     }
 
     /**
@@ -95,10 +114,11 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
      */
     @Override
     public boolean saveCg(TJsCg tJsCg) {
+        Long fjjgId = getFjjgId();
         if (tJsCg.getId() != null) {
             return false;
         } else {
-            TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc());
+            TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc(),fjjgId);
             if (tJsCg2 != null) {
                 throw new ServiceException(NAME_REPEAT);
             }
@@ -199,6 +219,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     @Override
     public boolean assistanceUpdateTJsCg(Map<String, Object> params,Integer jylx) {
         TJsSh tJsSh = jsShService.selectByCgId(Integer.valueOf(params.get("id").toString()));
+        Long fjjgId = getFjjgId();
         if (tJsSh.getFbshzt() != 2) {
             log.error("发布审核状态未通过,无法申请拍卖挂牌!");
             return false;
@@ -215,6 +236,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             cg.setSyfx(params.get("syfx").toString());
             cg.setZscqxs(params.get("zscqxs").toString());
             cg.setZzqk(params.get("zzqk").toString());
+            cg.setFjjgId(fjjgId);
             cg.setGxsj(new Date());
             tJsSh.setAssistanceStatus(1);
             tJsSh.setJylx(jylx);
@@ -342,6 +364,14 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         return userId;
     }
 
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId = null;
+        if (loginUser != null) {
+            fjjgId = loginUser.getJgId();
+        }
+        return fjjgId;
+    }
 }
 
 

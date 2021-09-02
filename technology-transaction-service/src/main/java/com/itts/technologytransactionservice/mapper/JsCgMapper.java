@@ -35,8 +35,8 @@ public interface JsCgMapper extends BaseMapper<TJsCg> {
 	 * @param name
 	 * @return
 	 */
-	@Select("select * from t_js_cg where cgmc like #{name} and is_delete = 0")
-	TJsCg selectByName(String name);
+	@Select("select * from t_js_cg where fjjg_id = #{fjjgId} and cgmc like #{name} and is_delete = 0")
+	TJsCg selectByName(String name,Long fjjgId);
 
 	/**
 	 * 更新成果信息

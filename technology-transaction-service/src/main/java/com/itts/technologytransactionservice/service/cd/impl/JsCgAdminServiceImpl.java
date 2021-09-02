@@ -66,6 +66,17 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         //TODO 从ThreadLocal中获取管理员id 暂时是假数据
         //params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
         //判断当类别领域名称为全部时，将筛选条件删除
+        Long fjjgId = getFjjgId();
+        if(params.get("fjjgId") != null){
+            String fjjgId1 = params.get("fjjgId").toString();
+            Long l = Long.parseLong(fjjgId1);
+            if(l != null){
+                fjjgId = l;
+            }
+        }
+
+        params.put("fjjgId",fjjgId);
+
         if(params.get("lbId")!=null){
             QueryWrapper<TJsLb> tJsLbQueryWrapper = new QueryWrapper<>();
             tJsLbQueryWrapper.eq("id",params.get("lbId").toString());
@@ -236,7 +247,8 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     @Override
     public TJsCg selectByName(String name) {
         log.info("【技术交易 - 根据成果名称:{}查询详细信息】", name);
-        return jsCgMapper.selectByName(name);
+        Long fjjgId = getFjjgId();
+        return jsCgMapper.selectByName(name,fjjgId);
     }
 
     /**
@@ -244,7 +256,8 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
      */
     @Override
     public boolean saveCg(TJsCg tJsCg) {
-        TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc());
+        Long fjjgId = getFjjgId();
+        TJsCg tJsCg2 = jsCgMapper.selectByName(tJsCg.getCgmc(),fjjgId);
         if (tJsCg2 != null) {
             return false;
         }
@@ -390,6 +403,16 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getJgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
     }
 
 }
