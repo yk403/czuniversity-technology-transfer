@@ -75,7 +75,7 @@ public class JsCgController extends BaseController {
      * @param cgmc
      * @return
      */
-    @GetMapping("/getByName/{cgmc}/{jgId}")
+    @GetMapping("/getByName/{cgmc}")
     public R getByName(@PathVariable("cgmc") String cgmc) {
         return success(jsCgService.selectByName(cgmc));
     }

@@ -219,6 +219,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     @Override
     public boolean assistanceUpdateTJsCg(Map<String, Object> params,Integer jylx) {
         TJsSh tJsSh = jsShService.selectByCgId(Integer.valueOf(params.get("id").toString()));
+        Long fjjgId = getFjjgId();
         if (tJsSh.getFbshzt() != 2) {
             log.error("发布审核状态未通过,无法申请拍卖挂牌!");
             return false;
@@ -235,6 +236,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             cg.setSyfx(params.get("syfx").toString());
             cg.setZscqxs(params.get("zscqxs").toString());
             cg.setZzqk(params.get("zzqk").toString());
+            cg.setFjjgId(fjjgId);
             cg.setGxsj(new Date());
             tJsSh.setAssistanceStatus(1);
             tJsSh.setJylx(jylx);
