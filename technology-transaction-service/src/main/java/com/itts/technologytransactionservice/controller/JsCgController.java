@@ -44,7 +44,7 @@ public class JsCgController extends BaseController {
      * @return
      */
     @PostMapping("/page")
-    public ResponseUtil findJsCgFront(@RequestBody Map<String, Object> params) {
+    public ResponseUtil findJsCgFront(@RequestBody(required=false) Map<String, Object> params) {
         return ResponseUtil.success(jsCgService.findJsCgFront(params));
     }
 

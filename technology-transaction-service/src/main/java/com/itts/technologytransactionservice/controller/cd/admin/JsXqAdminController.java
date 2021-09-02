@@ -3,6 +3,8 @@ package com.itts.technologytransactionservice.controller.cd.admin;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
@@ -168,6 +170,11 @@ public class JsXqAdminController extends BaseController {
     @PostMapping("/PageByTJsFb")
     public ResponseUtil PageByTJsFb(@RequestBody Map<String, Object> params) {
         //查询邻域类别审核状态列表数据
+        if(params.get("fjjgId")==null){
+            LoginUser loginUser = SystemConstant.threadLocal.get();
+            Long fjjgId = loginUser.getJgId();
+            params.put("fjjgId",fjjgId);
+        }
         Query query = new Query(params);
         return ResponseUtil.success(jsXqAdminService.PageByTJsFb(query));
     }

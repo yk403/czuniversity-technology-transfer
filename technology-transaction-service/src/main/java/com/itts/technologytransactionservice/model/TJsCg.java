@@ -3,6 +3,7 @@ package com.itts.technologytransactionservice.model;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -304,4 +305,9 @@ public class TJsCg implements Serializable {
 	 * 采集方式(0为审核采集，1为管理员采集)
 	 */
 	private Integer cjfs;
+
+	/**
+	 * 父级机构id
+	 */
+	private Long fjjgId;
 }

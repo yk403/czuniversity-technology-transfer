@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.mapper.xxjxl.XxjxlMapper;
 import com.itts.personTraining.mapper.xxjxl.XxjxlMapper;
@@ -84,6 +85,9 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
         log.info("【人才培养 - 新增学校教学楼:{}】",xxjxl);
         Long userId = getUserId();
         Date now = new Date();
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        Long fjjgId = loginUser.getJgId();
+        xxjxl.setFjjgId(fjjgId);
         xxjxl.setSfsc(false);
         xxjxl.setCjr(userId);
         xxjxl.setGxr(userId);

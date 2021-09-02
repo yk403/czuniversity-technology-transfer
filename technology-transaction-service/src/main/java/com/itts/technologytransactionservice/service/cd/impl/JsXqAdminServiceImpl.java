@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.*;
@@ -88,6 +89,12 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
                 }
             }
 
+        }
+
+        if(params.get("fjjgId")==null){
+            LoginUser loginUser = SystemConstant.threadLocal.get();
+            Long fjjgId = loginUser.getJgId();
+            params.put("fjjgId",fjjgId);
         }
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
@@ -177,6 +184,10 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         }
         log.info("【技术交易 - 新增需求信息:{}】", tJsXq);
         tJsXq.setJylx(null);
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        Long fjjgId = loginUser.getJgId();
+        tJsXq.setFjjgId(fjjgId);
+        save(tJsXq);
         save(tJsXq);
         tJsSh.setLx(2);
         tJsSh.setXqId(tJsXq.getId());

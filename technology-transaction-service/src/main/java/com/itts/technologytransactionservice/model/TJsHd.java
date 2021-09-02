@@ -126,4 +126,9 @@ public class TJsHd implements Serializable {
 	 * 活动正在进行中的技术商品的soft(序号)
 	 */
 	private Integer zzjxz;
+
+	/**
+	 * 父级机构id
+	 */
+	private Long fjjgId;
 }

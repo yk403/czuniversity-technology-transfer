@@ -27,6 +27,7 @@
             <if test="map.hdmc != null and map.hdmc != ''"> and hd.hdmc = #{map.hdmc} </if>
             <if test="map.hdzt != null"> and hd.hdzt = #{map.hdzt} </if>
             <if test="map.hdlx != null"> and hd.hdlx = #{map.hdlx} </if>
+            <if test="map.fjjgId != null and map.fjjgId != ''"> and hd.fjjg_id = #{map.fjjgId} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">

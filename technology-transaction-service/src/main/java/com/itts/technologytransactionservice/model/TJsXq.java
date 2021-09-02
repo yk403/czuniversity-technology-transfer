@@ -322,4 +322,9 @@ public class TJsXq implements Serializable {
 	 * 采集方式(0为审核采集，1为管理员采集)
 	 */
 	private Integer cjfs;
+
+	/**
+	 * 父级机构id
+	 */
+	private Long fjjgId;
 }

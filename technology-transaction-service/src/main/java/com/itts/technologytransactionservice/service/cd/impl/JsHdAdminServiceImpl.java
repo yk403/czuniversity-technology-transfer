@@ -3,6 +3,8 @@ package com.itts.technologytransactionservice.service.cd.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
@@ -77,6 +79,9 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 		jsHdDTO.setCjsj(new Date());
 		jsHdDTO.setGxsj(new Date());
 		BeanUtils.copyProperties(jsHdDTO,tJsHd);
+		LoginUser loginUser = SystemConstant.threadLocal.get();
+		Long fjjgId = loginUser.getJgId();
+		tJsHd.setFjjgId(fjjgId);
 		if (!jsHdAdminService.save(tJsHd)) {
 			return false;
 		}

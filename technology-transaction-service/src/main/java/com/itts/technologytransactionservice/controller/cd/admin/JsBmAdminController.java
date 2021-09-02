@@ -1,6 +1,8 @@
 package com.itts.technologytransactionservice.controller.cd.admin;
 
 
+import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
@@ -47,6 +49,12 @@ public class JsBmAdminController extends BaseController {
     */
     @PostMapping("/page")
     public ResponseUtil page(@RequestBody Map<String, Object> params) {
+
+        if(params.get("fjjgId")==null){
+            LoginUser loginUser = SystemConstant.threadLocal.get();
+            Long fjjgId = loginUser.getJgId();
+            params.put("fjjgId",fjjgId);
+        }
         //查询列表数据
         Query query = new Query(params);
         return ResponseUtil.success(jsBmAdminService.page(query));

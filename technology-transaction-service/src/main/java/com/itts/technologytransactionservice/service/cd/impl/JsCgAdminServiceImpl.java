@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.Query;
 import com.itts.technologytransactionservice.mapper.*;
@@ -88,6 +89,14 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
 
         }
 
+        if(params.get("fjjgId")==null){
+            LoginUser loginUser = SystemConstant.threadLocal.get();
+            Long fjjgId = loginUser.getJgId();
+            params.put("fjjgId",fjjgId);
+        }
+
+
+
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsCg> list = jsCgMapper.findJsCg(query);
@@ -102,7 +111,6 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
     public PageInfo<TJsCg> findGdJsCg(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询成果(后台审批管理)】");
         //前端传输标识type(0：审批管理;1：信息采集)
-        //TODO 从ThreadLocal中获取管理员id 暂时是假数据
         params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
@@ -264,6 +272,9 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         }
         tJsCg.setJylx(null);
         log.info("【技术交易 - 新增成果信息:{},交易类型:{}】", tJsCg, jylx);
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        Long fjjgId = loginUser.getJgId();
+        tJsCg.setFjjgId(fjjgId);
         save(tJsCg);
         tJsSh.setLx(1);
         tJsSh.setCgId(tJsCg.getId());

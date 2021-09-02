@@ -4,7 +4,7 @@
 <mapper namespace="com.itts.technologytransactionservice.mapper.JsHdMapper">
 
 	<select id="list" resultType="com.itts.technologytransactionservice.model.TJsHd">
-		select hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.bmrs,hd.hdfs,hd.hdtp,hd.hddqsj,hd.is_bm,hd.anzt,hd.lpzt,hd.zzjxz
+		select hd.fjjg_id as fjjgId,hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.bmrs,hd.hdfs,hd.hdtp,hd.hddqsj,hd.is_bm,hd.anzt,hd.lpzt,hd.zzjxz
 		from t_js_hd hd
         <where>
 			hd.is_delete = 0
@@ -32,6 +32,7 @@
 		  		  <if test="map.cjsj != null and map.cjsj != ''"> and hd.cjsj = #{map.cjsj} </if>
 			      <if test="map.hdfs != null"> and hd.hdfs = #{map.hdfs} </if>
 			      <if test="map.isBm != null"> and hd.is_bm = #{map.isBm} </if>
+			      <if test="map.fjjgId != null and map.fjjgId != ''"> and hd.fjjg_id = #{map.fjjgId} </if>
 		  		</where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
@@ -44,7 +45,7 @@
 	</select>
 	<!-- 判断报名人数-->
 	<select id="listCount" resultType="com.itts.technologytransactionservice.model.TJsHd">
-		select hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.hdfs,hd.hdtp,hd.hddqsj,count(DISTINCT bm.id) as bmrs,hd.is_bm,hd.anzt,hd.lpzt,hd.zzjxz
+		select hd.fjjg_id as fjjgId,hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.hdfs,hd.hdtp,hd.hddqsj,count(DISTINCT bm.id) as bmrs,hd.is_bm,hd.anzt,hd.lpzt,hd.zzjxz
 		from t_js_hd hd
 		LEFT JOIN
 		(select * from t_js_bm
@@ -70,6 +71,7 @@
 			<if test="map.hdfs != null"> and hd.hdfs = #{map.hdfs} </if>
 			<if test="map.isBm != null"> and hd.is_bm = #{map.isBm} </if>
 			<if test="map.hdfbzt != null"> and hd.hdfbzt = #{map.hdfbzt} </if>
+			<if test="map.fjjgId != null and map.fjjgId != ''"> and hd.fjjg_id = #{map.fjjgId} </if>
 		</where>
 		GROUP BY hd.id
 		<choose>
@@ -82,7 +84,7 @@
 		</choose>
 	</select>
 	<select id="listHdBm" resultType="com.itts.technologytransactionservice.model.TJsHd">
-		SELECT	hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.bmrs,hd.hdfs,hd.hdtp,hd.hddqsj,hd.is_bm,hd.anzt,hd.lpzt,hd.zzjxz
+		SELECT	hd.fjjg_id as fjjgId,hd.id,hd.hdmc,hd.hdlx,hd.hdjj,hd.hdgz,hd.hdkssj,hd.hdjssj,hd.hdzt,hd.cjsj,hd.zxdh,hd.hdfzr,hd.hdnr,hd.hdfbzt,hd.bmrs,hd.hdfs,hd.hdtp,hd.hddqsj,hd.is_bm,hd.anzt,hd.lpzt,hd.zzjxz
 		FROM
 		t_js_hd hd
 		LEFT JOIN (
@@ -109,6 +111,7 @@
 			<if test="map.cjsj != null and map.cjsj != ''"> and hd.cjsj = #{map.cjsj} </if>
 			<if test="map.isBm != null"> and hd.is_bm = #{map.isBm} </if>
 			<if test="map.hdfbzt != null"> and hd.hdfbzt = #{map.hdfbzt} </if>
+			<if test="map.fjjgId != null and map.fjjgId != ''"> and hd.fjjg_id = #{map.fjjgId} </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">

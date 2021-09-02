@@ -6,6 +6,8 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.SystemConstant;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.service.JsCgService;
@@ -209,8 +211,10 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
             }
         } else {
             try {
-                //TODO 暂时假数据,管理员userId为1
-                tJsCg.setUserId(1);
+                LoginUser loginUser = SystemConstant.threadLocal.get();
+                Long fjjgId = loginUser.getJgId();
+                tJsCg.setFjjgId(fjjgId);
+                tJsCg.setUserId(loginUser.getUserId().intValue());
                 tJsCg.setCjsj(new Date());
                 tJsCg.setGxsj(new Date());
                 jsCgMapper.insert(tJsCg);

@@ -186,4 +186,9 @@ public class TJsCgDo implements Serializable {
 	@TableField(value = "gxsj", fill = FieldFill.INSERT_UPDATE) // 新增和更新执行
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date gxsj;
+
+	/**
+	 * 父级机构id
+	 */
+	private Long fjjgId;
 }

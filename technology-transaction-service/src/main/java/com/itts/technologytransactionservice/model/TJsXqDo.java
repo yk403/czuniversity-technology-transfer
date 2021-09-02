@@ -177,4 +177,9 @@ public class TJsXqDo implements Serializable {
 	 * 手机号码
 	 */
 	private String sjhm;
+
+	/**
+	 * 父级机构id
+	 */
+	private Long fjjgId;
 }
