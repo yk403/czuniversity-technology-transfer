@@ -170,7 +170,7 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
     private void save(TJsXq tJsXq) {
         LoginUser loginUser = SystemConstant.threadLocal.get();
         Long fjjgId = loginUser.getJgId();
-        TJsXq tJsXqOld = jsXqMapper.selectByName(tJsXq.getXqmc());
+        TJsXq tJsXqOld = jsXqMapper.selectByName(tJsXq.getXqmc(),fjjgId);
         if (tJsXqOld != null) {
             tJsXq.setId(tJsXqOld.getId());
 

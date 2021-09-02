@@ -53,6 +53,15 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     @Override
     public PageInfo findJsXqFront(Map<String, Object> params) {
         log.info("【技术交易 - 分页条件查询(前台)】");
+        Long fjjgId = getFjjgId();
+        if(params.get("fjjgId") != null){
+            String fjjgId1 = params.get("fjjgId").toString();
+            Long l = Long.parseLong(fjjgId1);
+            if(l != null){
+                fjjgId = l;
+            }
+        }
+        params.put("fjjgId",fjjgId);
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsXq> list = jsXqMapper.findJsXqFront(query);
@@ -69,7 +78,8 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
 
     @Override
     public TJsXq selectByName(String name) {
-        return jsXqMapper.selectByName(name);
+        Long fjjgId = getFjjgId();
+        return jsXqMapper.selectByName(name,fjjgId);
     }
 
     @Override
@@ -293,5 +303,13 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId = null;
+        if (loginUser != null) {
+            fjjgId = loginUser.getJgId();
+        }
+        return fjjgId;
     }
 }

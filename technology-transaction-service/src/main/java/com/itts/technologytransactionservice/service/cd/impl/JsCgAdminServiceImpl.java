@@ -100,13 +100,6 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
 
         }
 
-        if(params.get("fjjgId")==null){
-            LoginUser loginUser = SystemConstant.threadLocal.get();
-            Long fjjgId = loginUser.getJgId();
-            params.put("fjjgId",fjjgId);
-        }
-
-
 
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
@@ -285,8 +278,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         }
         tJsCg.setJylx(null);
         log.info("【技术交易 - 新增成果信息:{},交易类型:{}】", tJsCg, jylx);
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        Long fjjgId = loginUser.getJgId();
+
         tJsCg.setFjjgId(fjjgId);
         save(tJsCg);
         tJsSh.setLx(1);
