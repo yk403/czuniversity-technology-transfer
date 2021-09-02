@@ -90,6 +90,7 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
         log.info("【人才培养 - 新增学校教室:{}】",xxjs);
         Long userId = getUserId();
         Date now = new Date();
+        xxjs.setSfsc(false);
         xxjs.setCjr(userId);
         xxjs.setGxr(userId);
         xxjs.setCjsj(now);

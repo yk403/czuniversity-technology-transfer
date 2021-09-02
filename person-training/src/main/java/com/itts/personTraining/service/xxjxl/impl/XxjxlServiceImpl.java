@@ -84,6 +84,7 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
         log.info("【人才培养 - 新增学校教学楼:{}】",xxjxl);
         Long userId = getUserId();
         Date now = new Date();
+        xxjxl.setSfsc(false);
         xxjxl.setCjr(userId);
         xxjxl.setGxr(userId);
         xxjxl.setGxr(userId);
