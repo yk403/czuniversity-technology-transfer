@@ -194,8 +194,10 @@ public class Sz implements Serializable {
     /**
      * 驻入时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date zrsj;
     private String zw;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date dzsj;
     private String csjszysj;
     private String zhxl;
