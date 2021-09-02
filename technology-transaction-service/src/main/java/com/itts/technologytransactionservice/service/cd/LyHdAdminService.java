@@ -20,7 +20,7 @@ public interface LyHdAdminService extends IService<LyHd> {
     PageInfo findLyHdBack(Map<String, Object> params);
 
     Boolean saveHd(LyHdDto lyHdDto);
-    Long getUserId();
+    //Long getUserId();
 
     boolean updateHd(LyHdDto lyHdDto);
 

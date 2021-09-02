@@ -77,6 +77,7 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             ly.is_delete = 0
+            <if test="map.fjjgId != null"> and hd.fjjg_id = #{map.fjjgId} </if>
             <if test="map.lyxq != null"> and ly.lyxq = #{map.lyxq} </if>
             <if test="map.qymc != null"> and ly.qymc = #{map.qymc} </if>
             <if test="map.lxfs != null"> and ly.lxfs = #{map.lxfs} </if>
