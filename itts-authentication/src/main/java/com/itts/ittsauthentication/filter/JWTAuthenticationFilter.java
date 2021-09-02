@@ -115,6 +115,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
             loginUser.setIntegral(user.getYhjf());
             loginUser.setUserLevel(user.getYhjb());
             loginUser.setTheme(user.getYhtx());
+            loginUser.setFjjgId(user.getFjjgId());
             if(user.getJgId()!=null){
                 loginUser.setJgId(user.getJgId());
                 loginUser.setLx(user.getLx());
