@@ -106,12 +106,17 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
         LoginUser loginUser = JSONUtil.toBean(claims.get("data").toString(), LoginUser.class);
 
         AuthoritionUser user = authoritionUserMapper.getByUserName(loginUser.getUserName());
+
         if(user != null){
 
             loginUser.setUserCategory(user.getYhlb());
             loginUser.setIntegral(user.getYhjf());
             loginUser.setUserLevel(user.getYhjb());
             loginUser.setTheme(user.getYhtx());
+            if(user.getJgId()!=null){
+                loginUser.setJgId(user.getJgId());
+                loginUser.setLx(user.getLx());
+            }
         }
 
         //将用户信息设置到threadLocal

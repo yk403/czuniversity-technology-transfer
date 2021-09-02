@@ -103,6 +103,22 @@ public class AuthoritionUser implements Serializable {
      * 更新人
      */
     private Long gxr;
+    /***
+    * @Description: 机构id
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/9/2
+    */
+    private Long jgId;
+    /***
+     * @Description: 机构类型
+     * @Param:
+     * @return:
+     * @Author: yukai
+     * @Date: 2021/9/2
+     */
+    private String lx;
 
 
 }

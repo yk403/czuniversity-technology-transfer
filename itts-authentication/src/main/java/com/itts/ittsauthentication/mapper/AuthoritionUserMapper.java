@@ -20,6 +20,6 @@ public interface AuthoritionUserMapper extends BaseMapper<AuthoritionUser> {
     /**
      * 通过账号获取用户信息
      */
-    @Select("SELECT * FROM t_yh WHERE yhm = #{userName}")
+    @Select("SELECT yh.*,jggl.lx FROM t_yh yh left join t_jggl jggl on(yh.jg_id=jggl.id) WHERE yhm = #{userName}")
     AuthoritionUser getByUserName(String userName);
 }

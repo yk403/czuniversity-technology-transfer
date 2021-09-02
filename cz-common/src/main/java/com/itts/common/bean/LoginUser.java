@@ -53,4 +53,20 @@ public class LoginUser implements Serializable {
      * 系统类型
      */
     private String systemType;
+    /***
+    * @Description: 用户所属机构id()
+    * @Param: 
+    * @return: 
+    * @Author: yukai
+    * @Date: 2021/9/2
+    */
+    private Long jgId;
+    /***
+    * @Description: 所属机构类型
+    * @Param:
+    * @return:
+    * @Author: yukai
+    * @Date: 2021/9/2
+    */
+    private String lx;
 }
