@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.itts.common.constant.SystemConstant.BASE_URL;
-import static com.itts.common.constant.SystemConstant.UNCHECK_BASE_URL;
+import static com.itts.common.constant.SystemConstant.*;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 
 
@@ -76,7 +75,7 @@ public class JsCgController extends BaseController {
      * @param cgmc
      * @return
      */
-    @GetMapping("/getByName/{cgmc}")
+    @GetMapping("/getByName/{cgmc}/{jgId}")
     public R getByName(@PathVariable("cgmc") String cgmc) {
         return success(jsCgService.selectByName(cgmc));
     }

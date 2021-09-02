@@ -55,6 +55,13 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     @Override
     public PageInfo<TJsCg> findJsCgFront(Map<String, Object> params) {
         //log.info("【技术交易 - 分页条件查询成果(前台)】");
+        Long fjjgId = getFjjgId();
+        String fjjgId1 = params.get("fjjgId").toString();
+        Long l = Long.parseLong(fjjgId1);
+        if(l != null){
+            fjjgId = l;
+        }
+        params.put("fjjgId",fjjgId);
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsCg> list = jsCgMapper.findJsCgFront(query);
@@ -70,6 +77,13 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     public PageInfo<TJsCg> findJsCgUser(Map<String, Object> params) {
         log.info("【技术交易 - 分页查询成果(个人详情)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据
+        Long fjjgId = getFjjgId();
+        String fjjgId1 = params.get("fjjgId").toString();
+        Long l = Long.parseLong(fjjgId1);
+        if(l != null){
+            fjjgId = l;
+        }
+        params.put("fjjgId",fjjgId);
         params.put("userId",Integer.parseInt(String.valueOf(getUserId())));
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
@@ -342,6 +356,16 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         return userId;
     }
 
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getJgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
+    }
 }
 
 

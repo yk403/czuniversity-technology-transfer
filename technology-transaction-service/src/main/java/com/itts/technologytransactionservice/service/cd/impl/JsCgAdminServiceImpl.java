@@ -65,9 +65,18 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         //TODO 从ThreadLocal中获取管理员id 暂时是假数据
         //params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
         //判断当类别领域名称为全部时，将筛选条件删除
+        Long fjjgId = getFjjgId();
+        String fjjgId1 = params.get("fjjgId").toString();
+        Long l = Long.parseLong(fjjgId1);
+        if(l != null){
+            fjjgId = l;
+        }
+        params.put("fjjgId",fjjgId);
+
         if(params.get("lbId")!=null){
             QueryWrapper<TJsLb> tJsLbQueryWrapper = new QueryWrapper<>();
-            tJsLbQueryWrapper.eq("id",params.get("lbId").toString());
+            tJsLbQueryWrapper.eq("id",params.get("lbId").toString())
+            .eq("fjjg_id",fjjgId);
             TJsLb tJsLb=jsLbMapper.selectOne(tJsLbQueryWrapper);
             if(tJsLb!=null) {
                 if(tJsLb.getMc().equals("全部")){
@@ -78,7 +87,8 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         }
         if(params.get("lyId")!=null){
             QueryWrapper<TJsLy> tJsLyQueryWrapper = new QueryWrapper<>();
-            tJsLyQueryWrapper.eq("id",params.get("lyId").toString());
+            tJsLyQueryWrapper.eq("id",params.get("lyId").toString())
+                    .eq("fjjg_id",fjjgId);
             TJsLy tJsLy=jsLyMapper.selectOne(tJsLyQueryWrapper);
             if(tJsLy!=null) {
                 if(tJsLy.getMc().equals("全部")){
@@ -379,6 +389,16 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getJgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
     }
 
 }
