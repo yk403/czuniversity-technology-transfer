@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
+import java.util.Date;
+
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
@@ -81,8 +83,11 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
     public boolean add(Xxjxl xxjxl) {
         log.info("【人才培养 - 新增学校教学楼:{}】",xxjxl);
         Long userId = getUserId();
+        Date now = new Date();
         xxjxl.setCjr(userId);
         xxjxl.setGxr(userId);
+        xxjxl.setGxr(userId);
+        xxjxl.setGxsj(now);
         return xxjxlService.save(xxjxl);
     }
 
@@ -94,7 +99,9 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
     @Override
     public boolean update(Xxjxl xxjxl) {
         log.info("【人才培养 - 更新学校教学楼:{}】",xxjxl);
+        Date now = new Date();
         xxjxl.setGxr(getUserId());
+        xxjxl.setGxsj(now);
         return xxjxlService.updateById(xxjxl);
     }
 
@@ -106,9 +113,11 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
     @Override
     public boolean delete(Xxjxl xxjxl) {
         log.info("【人才培养 - 删除学校教学楼:{}】",xxjxl);
+        Date now = new Date();
         //设置删除状态
         xxjxl.setSfsc(true);
         xxjxl.setGxr(getUserId());
+        xxjxl.setGxsj(now);
         return xxjxlService.updateById(xxjxl);
     }
 

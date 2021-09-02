@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
@@ -88,8 +89,11 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
     public boolean add(Xxjs xxjs) {
         log.info("【人才培养 - 新增学校教室:{}】",xxjs);
         Long userId = getUserId();
+        Date now = new Date();
         xxjs.setCjr(userId);
         xxjs.setGxr(userId);
+        xxjs.setCjsj(now);
+        xxjs.setGxsj(now);
         return xxjsService.save(xxjs);
     }
 
@@ -101,7 +105,9 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
     @Override
     public boolean update(Xxjs xxjs) {
         log.info("【人才培养 - 更新学校教室:{}】",xxjs);
+        Date now = new Date();
         xxjs.setGxr(getUserId());
+        xxjs.setGxsj(now);
         return xxjsService.updateById(xxjs);
     }
 
@@ -113,9 +119,11 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
     @Override
     public boolean delete(Xxjs xxjs) {
         log.info("【人才培养 - 删除学校教室:{}】",xxjs);
+        Date now = new Date();
         //设置删除状态
         xxjs.setSfsc(true);
         xxjs.setGxr(getUserId());
+        xxjs.setGxsj(now);
         return xxjsService.updateById(xxjs);
     }
 
