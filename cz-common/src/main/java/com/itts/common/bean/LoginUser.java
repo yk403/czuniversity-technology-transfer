@@ -69,4 +69,9 @@ public class LoginUser implements Serializable {
     * @Date: 2021/9/2
     */
     private String lx;
+
+    /**
+     * 用户父级机构id
+     */
+    private Long fjjgId;
 }
