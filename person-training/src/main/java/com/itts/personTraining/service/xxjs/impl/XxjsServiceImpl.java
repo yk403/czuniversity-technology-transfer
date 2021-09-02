@@ -5,12 +5,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.dto.XxjsDTO;
 import com.itts.personTraining.mapper.xxjxl.XxjxlMapper;
 import com.itts.personTraining.model.xxjs.Xxjs;
 import com.itts.personTraining.mapper.xxjs.XxjsMapper;
 import com.itts.personTraining.model.xxjxl.Xxjxl;
 import com.itts.personTraining.service.xxjs.XxjsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itts.personTraining.vo.xxzy.GetXxzyVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,13 +54,15 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
      * @return
      */
     @Override
-    public PageInfo<Xxjs> findByPage(Integer pageNum, Integer pageSize, Long xxjxlId) {
+    public PageInfo<XxjsDTO> findByPage(Integer pageNum, Integer pageSize, Long xxjxlId,Long fjjg_id) {
         log.info("【人才培养 - 查询学校教室列表,教学楼名称:{}】",xxjxlId);
         PageHelper.startPage(pageNum, pageSize);
-        QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
-        xxjsQueryWrapper.eq("sfsc",false)
-                      .eq(xxjxlId!=null, "xxjxl_id", xxjxlId);
-        return new PageInfo<>(xxjsMapper.selectList(xxjsQueryWrapper));
+//        QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
+//        xxjsQueryWrapper.eq("sfsc",false)
+//                      .eq(xxjxlId!=null, "xxjxl_id", xxjxlId);
+        List<XxjsDTO> xxjs = xxjsMapper.findByPage(xxjxlId,fjjg_id);
+        PageInfo pageInfo = new PageInfo(xxjs);
+        return pageInfo;
     }
 
     /**

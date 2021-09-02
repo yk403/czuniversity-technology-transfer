@@ -1,6 +1,7 @@
 package com.itts.personTraining.service.xxjs;
 
 import com.github.pagehelper.PageInfo;
+import com.itts.personTraining.dto.XxjsDTO;
 import com.itts.personTraining.model.xxjs.Xxjs;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.itts.personTraining.model.xxjxl.Xxjxl;
@@ -21,10 +22,10 @@ public interface XxjsService extends IService<Xxjs> {
      * 查询学校教室列表
      * @param pageNum
      * @param pageSize
-     * @param jxlmc
+     * @param xxjxlId
      * @return
      */
-    PageInfo<Xxjs> findByPage(Integer pageNum, Integer pageSize, Long jxlmc);
+    PageInfo<XxjsDTO> findByPage(Integer pageNum, Integer pageSize, Long xxjxlId,Long fjjg_id);
 
     /**
      * 根据id查询学校教室详情

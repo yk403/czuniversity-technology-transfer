@@ -48,11 +48,12 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
      * @return
      */
     @Override
-    public PageInfo<Xxjxl> findByPage(Integer pageNum, Integer pageSize, String jxlmc) {
+    public PageInfo<Xxjxl> findByPage(Integer pageNum, Integer pageSize, String jxlmc,Long fjjgId) {
         log.info("【人才培养 - 查询学校教学楼列表,教学楼名称:{}】",jxlmc);
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Xxjxl> xxjxlQueryWrapper = new QueryWrapper<>();
         xxjxlQueryWrapper.eq("sfsc",false)
+        .eq("fjjg_id",fjjgId)
                 .like(StringUtils.isNotBlank(jxlmc), "jxlmc", jxlmc);
         return new PageInfo<>(xxjxlMapper.selectList(xxjxlQueryWrapper));
     }

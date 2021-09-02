@@ -1,7 +1,10 @@
 package com.itts.personTraining.mapper.xxjs;
 
+import com.itts.personTraining.dto.XxjsDTO;
 import com.itts.personTraining.model.xxjs.Xxjs;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.itts.personTraining.vo.xxzy.GetXxzyVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,5 +23,11 @@ public interface XxjsMapper extends BaseMapper<Xxjs> {
 //     * @return
 //     */
 //    List<Xxjs> findAllJxlmc();
+
+    /**
+     * 分页查询教室列表
+     * @return
+     */
+    List<XxjsDTO> findByPage( @Param("xxjxlId") Long xxjxlId,@Param("fjjgId") Long fjjgId);
 
 }

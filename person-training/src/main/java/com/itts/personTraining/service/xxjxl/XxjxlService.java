@@ -21,7 +21,7 @@ public interface XxjxlService extends IService<Xxjxl> {
      * @param jxlmc
      * @return
      */
-    PageInfo<Xxjxl> findByPage(Integer pageNum, Integer pageSize, String jxlmc);
+    PageInfo<Xxjxl> findByPage(Integer pageNum, Integer pageSize, String jxlmc,Long fjjgId);
 
     /**
      * 根据id查询学校教学楼详情

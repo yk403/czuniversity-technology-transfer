@@ -22,14 +22,14 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
  */
 @RestController
 @RequestMapping(ADMIN_BASE_URL + "/v1/xxjxl")
-@Api(value = "XxjxlAdminController", tags = "学校教室管理")
+@Api(value = "XxjxlAdminController", tags = "学校教学楼管理")
 public class XxjxlAdminController {
 
     @Autowired
     private XxjxlService xxjxlService;
 
     /**
-     * 查询学校教室列表
+     * 查询学校教学楼列表
      *
      * @param pageNum
      * @param pageSize
@@ -39,12 +39,14 @@ public class XxjxlAdminController {
     @ApiOperation(value = "获取列表")
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                   @RequestParam(value = "jxlmc", required = false) String jxlmc) {
-        return ResponseUtil.success(xxjxlService.findByPage(pageNum, pageSize, jxlmc));
+                                   @RequestParam(value = "jxlmc", required = false) String jxlmc,
+                                   @RequestParam(value = "fjjgId", required = false) Long fjjgId
+                                   ) {
+        return ResponseUtil.success(xxjxlService.findByPage(pageNum, pageSize, jxlmc,fjjgId));
     }
 
     /**
-     * 根据id查询学校教室详情
+     * 根据id查询学校教学楼详情
      *
      * @param id
      * @return
@@ -56,32 +58,32 @@ public class XxjxlAdminController {
     }
 
     /**
-     * 新增学校教室
+     * 新增学校教学楼
      *
      * @param xxjxl
      * @return
      * @throws WebException
      */
     @PostMapping("/add")
-    @ApiOperation(value = "新增学校教室")
+    @ApiOperation(value = "新增学校教学楼")
     public ResponseUtil add(@RequestBody Xxjxl xxjxl) throws WebException {
         //检查参数是否合法
         checkRequest(xxjxl);
         if (!xxjxlService.add(xxjxl)) {
             throw new WebException(INSERT_FAIL);
         }
-        return ResponseUtil.success("新增学校教室成功!");
+        return ResponseUtil.success("新增学校教学楼成功!");
     }
 
     /**
-     * 更新学校教室
+     * 更新学校教学楼
      *
      * @param xxjxl
      * @return
      * @throws WebException
      */
     @PutMapping("/update")
-    @ApiOperation(value = "更新学校教室")
+    @ApiOperation(value = "更新学校教学楼")
     public ResponseUtil update(@RequestBody Xxjxl xxjxl) throws WebException {
         Long id = xxjxl.getId();
         //检查参数是否合法
@@ -95,18 +97,18 @@ public class XxjxlAdminController {
         if (!xxjxlService.update(xxjxl)) {
             throw new WebException(UPDATE_FAIL);
         }
-        return ResponseUtil.success("更新学校教室成功!");
+        return ResponseUtil.success("更新学校教学楼成功!");
 
     }
 
     /**
-     * 删除学校教室
+     * 删除学校教学楼
      * @param id
      * @return
      * @throws WebException
      */
     @DeleteMapping("/delete/{id}")
-    @ApiOperation(value = "删除学校教室")
+    @ApiOperation(value = "删除学校教学楼")
     public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
         //检查参数是否为空
         if (id == null) {
@@ -120,7 +122,7 @@ public class XxjxlAdminController {
         if (!xxjxlService.delete(xxjxl)) {
             throw new WebException(DELETE_FAIL);
         }
-        return ResponseUtil.success("删除学校教室成功!");
+        return ResponseUtil.success("删除学校教学楼成功!");
     }
 
     /**

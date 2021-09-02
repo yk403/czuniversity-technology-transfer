@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -59,5 +61,9 @@ public class Xxjxl implements Serializable {
      */
     private Long gxr;
 
-
+    /**
+     * 父级机构id
+     */
+    @ApiModelProperty(value = "父级机构id")
+    private Long fjjgId;
 }
