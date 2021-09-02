@@ -6,6 +6,8 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.SystemConstant;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.mapper.JsXqMapper;
 import lombok.Data;
@@ -166,6 +168,8 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
     }
 
     private void save(TJsXq tJsXq) {
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        Long fjjgId = loginUser.getJgId();
         TJsXq tJsXqOld = jsXqMapper.selectByName(tJsXq.getXqmc());
         if (tJsXqOld != null) {
             tJsXq.setId(tJsXqOld.getId());
@@ -178,8 +182,9 @@ public class XqListener extends AnalysisEventListener<TJsXqDto> {
             }
         } else {
             try {
+                tJsXq.setFjjgId(fjjgId);
                 //TODO 暂时假数据,管理员userId为1
-                tJsXq.setUserId(1);
+                tJsXq.setUserId(loginUser.getUserId().intValue());
                 tJsXq.setCjsj(new Date());
                 tJsXq.setGxsj(new Date());
                 jsXqMapper.insert(tJsXq);

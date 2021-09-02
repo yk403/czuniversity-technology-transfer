@@ -199,7 +199,9 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
     }
 
     private void save(TJsCg tJsCg) {
-        TJsCg tJsCgOld = jsCgMapper.selectByName(tJsCg.getCgmc());
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        Long fjjgId = loginUser.getJgId();
+        TJsCg tJsCgOld = jsCgMapper.selectByName(tJsCg.getCgmc(),fjjgId);
         if (tJsCgOld != null) {
             tJsCg.setId(tJsCgOld.getId());
 
@@ -211,8 +213,6 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
             }
         } else {
             try {
-                LoginUser loginUser = SystemConstant.threadLocal.get();
-                Long fjjgId = loginUser.getJgId();
                 tJsCg.setFjjgId(fjjgId);
                 tJsCg.setUserId(loginUser.getUserId().intValue());
                 tJsCg.setCjsj(new Date());
