@@ -435,7 +435,7 @@ public class YhAdminController {
                         if (fjjg != null) {
 
                             getYhVO.setFjjgId(fjjg.getId());
-                            getYhVO.setJglx(GroupTypeEnum.HEADQUARTERS.getKey());
+                            getYhVO.setJglx(fjjg.getLx());
                         }
                     }
                 }
