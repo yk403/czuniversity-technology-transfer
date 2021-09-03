@@ -94,6 +94,7 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             msg.is_delete = 0
+            <if test="map.fjjgId != null"> and hd.fjjg_id = #{map.fjjgId} </if>
             <if test="map.yhId != null"> and msg.yh_id = #{map.yhId} </if>
             <if test="map.yhm != null"> and yh.yhm like concat('%',trim(#{map.yhm}),'%') </if>
             <if test="map.yhlb != null"> and yh.yhlb = #{map.yhlb} </if>

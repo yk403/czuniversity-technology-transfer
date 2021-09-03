@@ -68,6 +68,7 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             ry.is_delete = 0
+            <if test="map.fjjgId != null"> and hd.fjjg_id = #{map.fjjgId} </if>
             <if test="map.zjId != null"> and ry.zj_id = #{map.zjId} </if>
             <if test="map.hdId != null"> and ry.hd_id = #{map.hdId} </if>
             <if test="map.hdmc != null"> and hd.hdmc like concat('%',trim(#{map.hdmc}),'%') </if>

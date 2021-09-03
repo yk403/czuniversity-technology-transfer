@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 @Slf4j
 @Transactional(rollbackFor = Exception.class)
 public class LyBmAdminServiceImpl extends ServiceImpl<LyBmMapper, LyBm> implements LyBmAdminService {
-    @Autowired
+    @Resource
     private LyBmMapper lyBmMapper;
     @Override
     public PageInfo findLyBmBack(Map<String, Object> params) {

@@ -35,7 +35,7 @@ public interface LyBmMapper extends BaseMapper<LyBm> {
     /**
      * 更新报名表
      *
-     * @param tJsXq
+     * @param lyBm
      */
     boolean updateLyBm(LyBm lyBm);
 }

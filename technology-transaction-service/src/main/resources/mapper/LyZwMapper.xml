@@ -180,6 +180,7 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             zw.is_delete = 0
+            <if test="map.fjjgId != null"> and hd.fjjg_id = #{map.fjjgId} </if>
             <if test="map.zwjj != null"> and zw.zwjj = #{map.zwjj} </if>
             <if test="map.hdmc != null"> and hd.hdmc = #{map.hdmc} </if>
             <if test="map.zwmc != null"> and zw.zwmc like concat('%',trim(#{map.zwmc}),'%') </if>

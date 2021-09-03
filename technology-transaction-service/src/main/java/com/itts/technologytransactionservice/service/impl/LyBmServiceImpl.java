@@ -62,6 +62,7 @@ public class LyBmServiceImpl extends ServiceImpl<LyBmMapper, LyBm> implements Ly
     @Override
     public Boolean saveBm(LyBm lyBm) {
         lyBm.setUserId(getUserId());
+
         if(save(lyBm)){
             return true;
         }else{
@@ -81,5 +82,20 @@ public class LyBmServiceImpl extends ServiceImpl<LyBmMapper, LyBm> implements Ly
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    /**
+     * 获取当前用户父级机构ID
+     * @return
+     */
+    public Long getFjjgId() {
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
     }
 }

@@ -29,6 +29,7 @@
         <where>
             <!--后台能查询0或者1的数据 -->
             bm.is_delete = 0
+            <if test="map.fjjgId != null"> and hd.fjjg_id = #{map.fjjgId} </if>
             <if test="map.userId != null"> and bm.user_id = #{map.userId} </if>
             <if test="map.hdId != null"> and bm.hd_id = #{map.hdId} </if>
             <if test="map.shzt != null"> and bm.shzt = #{map.shzt} </if>
