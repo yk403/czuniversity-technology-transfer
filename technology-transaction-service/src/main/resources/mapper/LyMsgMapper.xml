@@ -26,7 +26,6 @@
         zd.zdmc AS yhlb,
         zjyh.yhtx as zjtx,
         msg.sfckzt
-
         from t_ly_msg msg
         left join t_ly_ry ry on(ry.id = msg.ry_id)
         LEFT JOIN t_ly_hd hd ON (hd.id = ry.hd_id)
@@ -54,7 +53,7 @@
                 order by ${map.sort1} ${map.order1}, ${map.sort2} ${map.order2}
             </when>
             <otherwise>
-                order by id desc
+                order by id asc
             </otherwise>
         </choose>
     </select>
@@ -82,7 +81,6 @@
         zd.zdmc AS yhlb,
         zjyh.yhtx as zjtx,
         msg.sfckzt
-
         from t_ly_msg msg
         left join t_ly_ry ry on(ry.id = msg.ry_id)
         LEFT JOIN t_ly_hd hd ON (hd.id = ry.hd_id)

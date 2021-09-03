@@ -76,4 +76,18 @@ public class LyMsgServiceImpl extends ServiceImpl<LyMsgMapper, LyMsg> implements
         }
         return userId;
     }
+
+    /**
+     * 获取父级机构ID
+     */
+    public Long getFjjgId() {
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
+    }
 }

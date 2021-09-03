@@ -28,6 +28,7 @@ public class LyMsg implements Serializable {
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
     /**
      * 创建时间
      */
