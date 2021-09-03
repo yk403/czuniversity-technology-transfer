@@ -188,6 +188,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         LoginUser loginUser = SystemConstant.threadLocal.get();
         Long fjjgId = loginUser.getFjjgId();
         tJsXq.setFjjgId(fjjgId);
+        tJsXq.setUserId(loginUser.getUserId().intValue());
         save(tJsXq);
         tJsSh.setLx(2);
         tJsSh.setXqId(tJsXq.getId());
