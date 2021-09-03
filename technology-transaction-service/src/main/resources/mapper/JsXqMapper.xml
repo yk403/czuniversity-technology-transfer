@@ -114,7 +114,7 @@
 		</where>
 		UNION
 		SELECT
-		e.id AS id,e.cgmc as name,e.release_type as releaseType,b.mc as lyName,e.hzjg,e.dz,d.cjsj as applyTime,d.jylx as jylx,e.cgtp as tp,e.ly_id as lyId
+		a.fjjg_id as fjjgId,e.id AS id,e.cgmc as name,e.release_type as releaseType,b.mc as lyName,e.hzjg,e.dz,d.cjsj as applyTime,d.jylx as jylx,e.cgtp as tp,e.ly_id as lyId
 		FROM
 		t_js_cg e
 		LEFT JOIN t_js_ly b ON (e.ly_id = b.id)
@@ -125,6 +125,7 @@
 			<if test="map.releaseAssistanceStatus != null and map.releaseAssistanceStatus != ''"> and d.release_assistance_status = #{map.releaseAssistanceStatus} </if>
 			<if test="map.name != null and map.name != ''"> and e.cgmc like concat('%',trim(#{map.name}),'%') </if>
 			<if test="map.jylx != null"> and d.jylx = #{map.jylx} </if>
+			<if test="map.fjjgId != null and map.fjjgId != ''"> and a.fjjg_id = #{map.fjjgId} </if>
 		</where>
 		<choose>
 			<when test="map.sort != null and map.sort.trim() != ''">
