@@ -138,6 +138,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
             tJsCg.setReleaseType("技术成果");
             tJsCg.setCjsj(new Date());
             tJsCg.setGxsj(new Date());
+            tJsCg.setFjjgId(fjjgId);
             log.info("【技术交易 - 新增成果信息】",tJsCg);
             save(tJsCg);
             TJsSh tJsSh = new TJsSh();
