@@ -200,7 +200,7 @@ public class CgListener extends AnalysisEventListener<TJsCgDto> {
 
     private void save(TJsCg tJsCg) {
         LoginUser loginUser = SystemConstant.threadLocal.get();
-        Long fjjgId = loginUser.getJgId();
+        Long fjjgId = loginUser.getFjjgId();
         TJsCg tJsCgOld = jsCgMapper.selectByName(tJsCg.getCgmc(),fjjgId);
         if (tJsCgOld != null) {
             tJsCg.setId(tJsCgOld.getId());

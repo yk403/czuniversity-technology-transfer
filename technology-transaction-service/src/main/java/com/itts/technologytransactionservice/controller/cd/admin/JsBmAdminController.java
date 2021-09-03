@@ -52,7 +52,7 @@ public class JsBmAdminController extends BaseController {
 
         if(params.get("fjjgId")==null){
             LoginUser loginUser = SystemConstant.threadLocal.get();
-            Long fjjgId = loginUser.getJgId();
+            Long fjjgId = loginUser.getFjjgId();
             params.put("fjjgId",fjjgId);
         }
         //查询列表数据

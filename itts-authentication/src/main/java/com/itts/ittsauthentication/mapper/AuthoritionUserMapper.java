@@ -28,6 +28,6 @@ public interface AuthoritionUserMapper extends BaseMapper<AuthoritionUser> {
      * @param userName
      * @return
      */
-    @Select("select left(tj.cj,3) from t_jggl tj left join t_yh y on (y.jg_id=tj.id) where tj.sfsc = false and tj.sfsc = false and y.yhm = #{userName}")
-    String getFjjgId(String userName);
+    @Select("select tj1.id from t_jggl tj1 where tj1.jgbm = (select left(tj.cj,3) from t_jggl tj left join t_yh y on (y.jg_id=tj.id) where tj.sfsc = false and tj.sfsc = false and y.yhm = #{userName})")
+    Long getFjjgId(String userName);
 }

@@ -179,7 +179,7 @@ public class JsHdController extends BaseController {
         LoginUser loginUser = threadLocal.get();
         Long fjjgId = null;
         if (loginUser != null) {
-            fjjgId = loginUser.getJgId();
+            fjjgId = loginUser.getFjjgId();
         }
         return fjjgId;
     }

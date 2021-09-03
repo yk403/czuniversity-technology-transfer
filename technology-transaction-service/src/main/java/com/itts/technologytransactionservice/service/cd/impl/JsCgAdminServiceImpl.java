@@ -400,7 +400,7 @@ public class JsCgAdminServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> impleme
         LoginUser loginUser = threadLocal.get();
         Long fjjgId;
         if (loginUser != null) {
-            fjjgId = loginUser.getJgId();
+            fjjgId = loginUser.getFjjgId();
         } else {
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
