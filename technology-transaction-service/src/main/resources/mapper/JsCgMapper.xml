@@ -252,7 +252,7 @@
 			<if test="cgxqtp != null">cgxqtp = #{cgxqtp},</if>
 			<if test="cgxqtpmc != null">cgxqtpmc = #{cgxqtpmc},</if>
 			<if test="cjjg != null">cjjg = #{cjjg},</if>
-			<if test="gxsj != null">gxsj = #{gxsj}</if>
+			<if test="gxsj != null">gxsj = #{gxsj},</if>
 			<if test="fjjgId != null">fjjg_id = #{fjjgId} </if>
 		</set>
 		where id = #{id}

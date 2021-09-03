@@ -323,8 +323,8 @@
 			<if test="yxqkssj != null">yxqkssj = #{yxqkssj},</if>
 			<if test="yxqjssj != null">yxqjssj = #{yxqjssj},</if>
 			<if test="zbxmqd != null">zbxmqd = #{zbxmqd},</if>
-			<if test="zbxmgs != null">zbxmgs = #{zbxmgs}</if>
-
+			<if test="zbxmgs != null">zbxmgs = #{zbxmgs},</if>
+			<if test="fjjgId != null">fjjg_id = #{fjjgId} </if>
 		</set>
 		where id = #{id}
 	</update>
