@@ -1,12 +1,16 @@
 package com.itts.technologytransactionservice.controller;
 
 
+import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.technologytransactionservice.feign.userservice.JgglFeignService;
+import com.itts.technologytransactionservice.model.JgglVO;
 import com.itts.technologytransactionservice.model.TJsFb;
 import com.itts.technologytransactionservice.model.TJsXq;
 import com.itts.technologytransactionservice.service.JsShService;
@@ -17,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +46,8 @@ public class JsXqController extends BaseController {
     @Autowired
     private JsXqAdminService jsXqAdminService;
 
+    @Resource
+    private JgglFeignService jgglFeignService;
     /**
      * 分页条件查询需求(前台)
      *
@@ -160,12 +167,13 @@ public class JsXqController extends BaseController {
     public ResponseUtil PageByTJsFb(@RequestBody Map<String, Object> params) {
         //查询邻域类别审核状态列表数据
         Long fjjgId = getFjjgId();
-        if(params.get("fjjgId") != null){
-            String fjjgId1 = params.get("fjjgId").toString();
-            Long l = Long.parseLong(fjjgId1);
-            if(l != null){
-                fjjgId = l;
+        if(params.get("jgCode") != null){
+            ResponseUtil response = jgglFeignService.getByCode(params.get("jgCode").toString());
+            if(response == null || response.getErrCode().intValue() != 0){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
             }
+            JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {});
+            fjjgId = jggl.getId();
         }
         params.put("fjjgId",fjjgId);
         Query query = new Query(params);
