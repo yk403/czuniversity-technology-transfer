@@ -56,6 +56,7 @@ public class LyZwAdminServiceImpl extends ServiceImpl<LyZwMapper, LyZw> implemen
     }
     @Override
     public Boolean saveZw(LyZw lyZw) {
+        lyZw.setFjjgId(getFjjgId());
         if(save(lyZw)){
             return true;
         }else{
@@ -75,5 +76,19 @@ public class LyZwAdminServiceImpl extends ServiceImpl<LyZwMapper, LyZw> implemen
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    /**
+     * 获取父级机构ID
+     */
+    public Long getFjjgId() {
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
     }
 }

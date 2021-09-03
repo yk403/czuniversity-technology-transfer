@@ -29,6 +29,12 @@ public class LyZw implements Serializable {
      */
       @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
+    /**
+     * 父级机构ID
+     */
+    private Long fjjgId;
+
     /**
      * 创建时间
      */
