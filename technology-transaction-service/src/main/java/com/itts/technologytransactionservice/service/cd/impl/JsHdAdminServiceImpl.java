@@ -80,7 +80,7 @@ public class JsHdAdminServiceImpl extends ServiceImpl<JsHdMapper,TJsHd> implemen
 		jsHdDTO.setGxsj(new Date());
 		BeanUtils.copyProperties(jsHdDTO,tJsHd);
 		LoginUser loginUser = SystemConstant.threadLocal.get();
-		Long fjjgId = loginUser.getJgId();
+		Long fjjgId = loginUser.getFjjgId();
 		tJsHd.setFjjgId(fjjgId);
 		if (!jsHdAdminService.save(tJsHd)) {
 			return false;
