@@ -189,7 +189,6 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         Long fjjgId = loginUser.getFjjgId();
         tJsXq.setFjjgId(fjjgId);
         save(tJsXq);
-        save(tJsXq);
         tJsSh.setLx(2);
         tJsSh.setXqId(tJsXq.getId());
         tJsSh.setCjsj(new Date());
