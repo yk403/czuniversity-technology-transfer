@@ -86,7 +86,7 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
         Long userId = getUserId();
         Date now = new Date();
         LoginUser loginUser = SystemConstant.threadLocal.get();
-        Long fjjgId = loginUser.getJgId();
+        Long fjjgId = loginUser.getFjjgId();
         xxjxl.setFjjgId(fjjgId);
         xxjxl.setSfsc(false);
         xxjxl.setCjr(userId);

@@ -90,6 +90,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
 
     @Override
     public boolean saveXq(TJsXq tJsXq) throws Exception {
+        Long fjjgId = getFjjgId();
         if (tJsXq.getId() != null) {
             return false;
         } else {
@@ -100,6 +101,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
             //TODO 从ThreadLocal中取userId,暂时是假数据,用户id为2
             tJsXq.setUserId(Integer.parseInt(String.valueOf(getUserId())));
             tJsXq.setReleaseType("技术需求");
+            tJsXq.setFjjgId(fjjgId);
             //tJsXq.setCjsj(new Date());
             //tJsXq.setGxsj(new Date());
             save(tJsXq);
@@ -324,7 +326,7 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
         LoginUser loginUser = threadLocal.get();
         Long fjjgId = null;
         if (loginUser != null) {
-            fjjgId = loginUser.getJgId();
+            fjjgId = loginUser.getFjjgId();
         }
         return fjjgId;
     }

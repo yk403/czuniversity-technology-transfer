@@ -29,7 +29,7 @@ public interface JsXqMapper extends BaseMapper<TJsXq> {
     TJsXq getById(Integer id);
 
     @Select("select * from t_js_xq where fjjg_id = #{fjjgId} and xqmc like #{name} and is_delete = 0")
-    TJsXq selectByName(String name,Long fjjgId);
+    TJsXq selectByName(@Param("name") String name,@Param("fjjgId") Long fjjgId);
 
     List<TJsFb> PageByTJsFb(@Param("map") Map map);
 

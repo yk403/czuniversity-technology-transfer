@@ -156,7 +156,7 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
         tkzy.setGxr(userId);
         tkzy.setCjsj(now);
         tkzy.setGxsj(now);
-        Long fjjgId = loginUser.getJgId();
+        Long fjjgId = loginUser.getFjjgId();
         tkzy.setFjjgId(fjjgId);
         tkzyMapper.insert(tkzy);
 

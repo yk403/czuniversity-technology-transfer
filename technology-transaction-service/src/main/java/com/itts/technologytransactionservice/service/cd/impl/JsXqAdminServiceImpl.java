@@ -93,7 +93,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
 
         if(params.get("fjjgId")==null){
             LoginUser loginUser = SystemConstant.threadLocal.get();
-            Long fjjgId = loginUser.getJgId();
+            Long fjjgId = loginUser.getFjjgId();
             params.put("fjjgId",fjjgId);
         }
         Query query = new Query(params);
@@ -186,7 +186,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         log.info("【技术交易 - 新增需求信息:{}】", tJsXq);
         tJsXq.setJylx(null);
         LoginUser loginUser = SystemConstant.threadLocal.get();
-        Long fjjgId = loginUser.getJgId();
+        Long fjjgId = loginUser.getFjjgId();
         tJsXq.setFjjgId(fjjgId);
         save(tJsXq);
         save(tJsXq);
@@ -376,7 +376,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         LoginUser loginUser = threadLocal.get();
         Long fjjgId = null;
         if (loginUser != null) {
-            fjjgId = loginUser.getJgId();
+            fjjgId = loginUser.getFjjgId();
         }
         return fjjgId;
     }
