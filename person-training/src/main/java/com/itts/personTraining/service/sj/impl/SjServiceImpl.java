@@ -345,7 +345,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                 if(pcId != null){
                     sjDTOs = sjMapper.getCondition(pcId);
                 }else {
-                    pcList = pyJhMapper.findAllPc();
+                    pcList = pyJhMapper.findAllPc(getFjjgId());
                     if(pcList == null){
                         return sjDTOs;
                     }
@@ -440,6 +440,20 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userCategory;
+    }
+
+    /**
+     * 获取父级机构ID
+     */
+    public Long getFjjgId() {
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
     }
 
 }

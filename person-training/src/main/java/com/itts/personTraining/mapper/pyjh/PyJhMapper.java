@@ -37,7 +37,8 @@ public interface PyJhMapper extends BaseMapper<PyJh> {
 
     /**
      * 查询所有批次列表
+     * @param fjjgId
      * @return
      */
-    List<Pc> findAllPc();
+    List<Pc> findAllPc(@Param("fjjgId") Long fjjgId);
 }

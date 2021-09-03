@@ -352,7 +352,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             case "school_leader":
             case "administrator":
                 if (pcId == null) {
-                    List<Pc> pcList = pyJhMapper.findAllPc();
+                    List<Pc> pcList = pyJhMapper.findAllPc(getFjjgId());
                     Pc pc = pcList.get(0);
                     String xylx =pc.getXylx();
                     Long id = pc.getId();
@@ -469,7 +469,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
             case "school_leader":
             case "administrator":
                 if (pcId == null) {
-                    List<Pc> pcList = pyJhMapper.findAllPc();
+                    List<Pc> pcList = pyJhMapper.findAllPc(getFjjgId());
                     Pc pc = pcList.get(0);
                     collect = findKcb(pc);
                 } else {
@@ -625,4 +625,19 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         }
         return kcXsXfDTOList;
     }
+
+    /**
+     * 获取父级机构ID
+     */
+    public Long getFjjgId() {
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
+    }
+
 }

@@ -48,7 +48,7 @@
     <select id="findAllPc" resultType="com.itts.personTraining.model.pc.Pc">
         select distinct pc.*
         from t_pc pc left join t_py_jh tpj on (tpj.pc_id = pc.id)
-        where tpj.sfsc = false and tpj.sfxf = true and pc.sfsc = false
+        where tpj.sfsc = false and tpj.sfxf = true and pc.sfsc = false and pc.fjjg_id = #{fjjgId}
         order by pc.cjsj desc
     </select>
 

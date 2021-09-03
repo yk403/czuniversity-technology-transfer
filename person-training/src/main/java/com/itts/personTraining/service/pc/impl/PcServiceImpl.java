@@ -237,7 +237,7 @@ public class PcServiceImpl implements PcService {
             case "administrator":
             case "professor":
             case "out_professor":
-                pcList = pyJhMapper.findAllPc();
+                pcList = pyJhMapper.findAllPc(getFjjgId());
                 break;
             default:
                 break;
@@ -300,6 +300,20 @@ public class PcServiceImpl implements PcService {
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userCategory;
+    }
+
+    /**
+     * 获取父级机构ID
+     */
+    public Long getFjjgId() {
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
     }
 
 }
