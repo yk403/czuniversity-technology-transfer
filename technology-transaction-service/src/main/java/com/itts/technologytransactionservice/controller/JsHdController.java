@@ -1,17 +1,23 @@
 package com.itts.technologytransactionservice.controller;
 
+import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.technologytransactionservice.feign.userservice.JgglFeignService;
+import com.itts.technologytransactionservice.model.JgglVO;
 import com.itts.technologytransactionservice.model.TJsHd;
 import com.itts.technologytransactionservice.service.JsHdService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +39,8 @@ public class JsHdController extends BaseController {
     @Autowired
     private JsHdService jsHdService;
 
+    @Resource
+    private JgglFeignService jgglFeignService;
     /**
      * 分页查询
      *
@@ -44,12 +52,13 @@ public class JsHdController extends BaseController {
 
         //查询列表数据
         Long fjjgId = getFjjgId();
-        if(params.get("fjjgId") != null){
-            String fjjgId1 = params.get("fjjgId").toString();
-            Long l = Long.parseLong(fjjgId1);
-            if(l != null){
-                fjjgId = l;
+        if(params.get("jgCode") != null){
+            ResponseUtil response = jgglFeignService.getByCode(params.get("jgCode").toString());
+            if(response == null || response.getErrCode().intValue() != 0){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
             }
+            JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {});
+            fjjgId = jggl.getId();
         }
         params.put("fjjgId",fjjgId);
         Query query = new Query(params);
@@ -66,12 +75,13 @@ public class JsHdController extends BaseController {
         params.put("userId",getUserId().toString());
         //查询列表数据
         Long fjjgId = getFjjgId();
-        if(params.get("fjjgId") != null){
-            String fjjgId1 = params.get("fjjgId").toString();
-            Long l = Long.parseLong(fjjgId1);
-            if(l != null){
-                fjjgId = l;
+        if(params.get("jgCode") != null){
+            ResponseUtil response = jgglFeignService.getByCode(params.get("jgCode").toString());
+            if(response == null || response.getErrCode().intValue() != 0){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
             }
+            JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {});
+            fjjgId = jggl.getId();
         }
         params.put("fjjgId",fjjgId);
         Query query = new Query(params);
@@ -86,12 +96,13 @@ public class JsHdController extends BaseController {
     public ResponseUtil pageFront1(@RequestBody Map<String, Object> params) {
         //查询列表数据
         Long fjjgId = getFjjgId();
-        if(params.get("fjjgId") != null){
-            String fjjgId1 = params.get("fjjgId").toString();
-            Long l = Long.parseLong(fjjgId1);
-            if(l != null){
-                fjjgId = l;
+        if(params.get("jgCode") != null){
+            ResponseUtil response = jgglFeignService.getByCode(params.get("jgCode").toString());
+            if(response == null || response.getErrCode().intValue() != 0){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
             }
+            JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {});
+            fjjgId = jggl.getId();
         }
         params.put("fjjgId",fjjgId);
         Query query = new Query(params);

@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -8,10 +9,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.DateUtils;
 import com.itts.common.utils.Query;
+import com.itts.common.utils.common.ResponseUtil;
+import com.itts.technologytransactionservice.feign.userservice.JgglFeignService;
 import com.itts.technologytransactionservice.mapper.JsCgMapper;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
+import com.itts.technologytransactionservice.model.JgglVO;
 import com.itts.technologytransactionservice.model.TJsCg;
 import com.itts.technologytransactionservice.model.TJsSh;
 import com.itts.technologytransactionservice.service.JsCgService;
@@ -21,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
@@ -46,6 +53,8 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
 	@Autowired
 	private JsShMapper jsShMapper;
 
+	@Resource
+    private JgglFeignService jgglFeignService;
 
     /**
      * 分页条件查询成果(前台)
@@ -56,12 +65,13 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
     public PageInfo<TJsCg> findJsCgFront(Map<String, Object> params) {
         //log.info("【技术交易 - 分页条件查询成果(前台)】");
         Long fjjgId = getFjjgId();
-        if(params.get("fjjgId") != null){
-            String fjjgId1 = params.get("fjjgId").toString();
-            Long l = Long.parseLong(fjjgId1);
-            if(l != null){
-                fjjgId = l;
+        if(params.get("jgCode") != null){
+            ResponseUtil response = jgglFeignService.getByCode(params.get("jgCode").toString());
+            if(response == null || response.getErrCode().intValue() != 0){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
             }
+            JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {});
+            fjjgId = jggl.getId();
         }
         params.put("fjjgId",fjjgId);
         Query query = new Query(params);
@@ -80,12 +90,13 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         log.info("【技术交易 - 分页查询成果(个人详情)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据
         Long fjjgId = getFjjgId();
-        if(params.get("fjjgId") != null){
-            String fjjgId1 = params.get("fjjgId").toString();
-            Long l = Long.parseLong(fjjgId1);
-            if(l != null){
-                fjjgId = l;
+        if(params.get("jgCode") != null){
+            ResponseUtil response = jgglFeignService.getByCode(params.get("jgCode").toString());
+            if(response == null || response.getErrCode().intValue() != 0){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
             }
+            JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {});
+            fjjgId = jggl.getId();
         }
         params.put("fjjgId",fjjgId);
         params.put("userId",Integer.parseInt(String.valueOf(getUserId())));

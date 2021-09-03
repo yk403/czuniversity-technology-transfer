@@ -1,6 +1,8 @@
 package com.itts.technologytransactionservice.controller.cd.admin;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.itts.common.bean.LoginUser;
+import com.itts.common.constant.SystemConstant;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
 import com.itts.common.utils.R;
@@ -43,6 +45,11 @@ public class JsShAdminController extends BaseController {
     @PostMapping("/page")
     public R page(@RequestBody Map<String, Object> params) {
         //查询列表数据
+        if(params.get("fjjgId")==null){
+            LoginUser loginUser = SystemConstant.threadLocal.get();
+            Long fjjgId = loginUser.getJgId();
+            params.put("fjjgId",fjjgId);
+        }
         Query query = new Query(params);
         return success(JsShAdminService.page(query));
     }

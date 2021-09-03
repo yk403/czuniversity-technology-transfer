@@ -1,18 +1,20 @@
 package com.itts.technologytransactionservice.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
+import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.Query;
+import com.itts.common.utils.common.ResponseUtil;
+import com.itts.technologytransactionservice.feign.userservice.JgglFeignService;
 import com.itts.technologytransactionservice.mapper.JsShMapper;
 import com.itts.technologytransactionservice.mapper.JsXqMapper;
-import com.itts.technologytransactionservice.model.TJsCg;
-import com.itts.technologytransactionservice.model.TJsFb;
-import com.itts.technologytransactionservice.model.TJsSh;
-import com.itts.technologytransactionservice.model.TJsXq;
+import com.itts.technologytransactionservice.model.*;
 import com.itts.technologytransactionservice.service.JsShService;
 import com.itts.technologytransactionservice.service.JsXqService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -44,6 +47,8 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     @Autowired
     private JsShMapper jsShMapper;
 
+    @Resource
+    private JgglFeignService jgglFeignService;
     /**
      * 分页条件查询需求(前台)
      *
@@ -54,12 +59,13 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
     public PageInfo findJsXqFront(Map<String, Object> params) {
         log.info("【技术交易 - 分页条件查询(前台)】");
         Long fjjgId = getFjjgId();
-        if(params.get("fjjgId") != null){
-            String fjjgId1 = params.get("fjjgId").toString();
-            Long l = Long.parseLong(fjjgId1);
-            if(l != null){
-                fjjgId = l;
+        if(params.get("jgCode") != null){
+            ResponseUtil response = jgglFeignService.getByCode(params.get("jgCode").toString());
+            if(response == null || response.getErrCode().intValue() != 0){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
             }
+            JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {});
+            fjjgId = jggl.getId();
         }
         params.put("fjjgId",fjjgId);
         Query query = new Query(params);
@@ -213,6 +219,16 @@ public class JsXqServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> implements J
         log.info("【技术交易 - 分页查询需求(个人详情)】");
         //TODO 从ThreadLocal中获取用户id 暂时是假数据
         params.put("userId", Integer.parseInt(String.valueOf(getUserId())));
+        Long fjjgId = getFjjgId();
+        if(params.get("jgCode") != null){
+            ResponseUtil response = jgglFeignService.getByCode(params.get("jgCode").toString());
+            if(response == null || response.getErrCode().intValue() != 0){
+                throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            }
+            JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {});
+            fjjgId = jggl.getId();
+        }
+        params.put("fjjgId",fjjgId);
         Query query = new Query(params);
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<TJsXq> list = jsXqMapper.findJsXqFront(query);
