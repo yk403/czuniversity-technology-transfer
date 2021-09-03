@@ -380,7 +380,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         LoginUser loginUser = threadLocal.get();
         Long fjjgId = null;
         if (loginUser != null) {
-            fjjgId = loginUser.getJgId();
+            fjjgId = loginUser.getFjjgId();
         }
         return fjjgId;
     }
