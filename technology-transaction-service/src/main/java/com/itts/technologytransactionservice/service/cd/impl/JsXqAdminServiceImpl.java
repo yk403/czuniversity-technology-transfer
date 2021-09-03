@@ -376,7 +376,7 @@ public class JsXqAdminServiceImpl extends ServiceImpl<JsXqMapper, TJsXq> impleme
         LoginUser loginUser = threadLocal.get();
         Long fjjgId = null;
         if (loginUser != null) {
-            fjjgId = loginUser.getJgId();
+            fjjgId = loginUser.getFjjgId();
         }
         return fjjgId;
     }

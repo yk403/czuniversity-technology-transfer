@@ -47,7 +47,7 @@ public class JsShAdminController extends BaseController {
         //查询列表数据
         if(params.get("fjjgId")==null){
             LoginUser loginUser = SystemConstant.threadLocal.get();
-            Long fjjgId = loginUser.getJgId();
+            Long fjjgId = loginUser.getFjjgId();
             params.put("fjjgId",fjjgId);
         }
         Query query = new Query(params);
