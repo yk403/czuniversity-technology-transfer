@@ -71,8 +71,10 @@ public class JsServiceImpl implements JsService {
         if(pageNum != -1){
             PageHelper.startPage(pageNum, pageSize);
         }
-
-
+        Jggl jggl = jgglMapper.selectOne(new QueryWrapper<Jggl>().eq("id", jgId).eq("sfsc", false));
+        Jggl jggl1 = jgglMapper.selectOne(new QueryWrapper<Jggl>().eq("jgbm", StringUtils.substring(jggl.getCj(), 0, 3))
+                .eq("sfsc", false));
+        jgId = jggl1.getId();
         QueryWrapper<Js> query = new QueryWrapper<>();
         query.eq("sfsc", false);
         if (StringUtils.isNotBlank(name)) {
