@@ -13,6 +13,7 @@ import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.service.js.JsService;
 import com.itts.userservice.service.yh.YhService;
 import com.itts.userservice.vo.RegisterYhVO;
+import com.itts.userservice.vo.yh.GetYhVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -67,7 +68,10 @@ public class RegisterController {
         if (yh != null) {
             throw new WebException(ErrorCodeEnum.REGISTER_USERNAME_EXISTS_ERROR);
         }
-
+        GetYhVO byphone = yhService.getByphone(request.getMobile());
+        if(byphone != null){
+            throw new WebException(ErrorCodeEnum.PHONE_NUMBER_EXISTS_ERROR);
+        }
         Jggl jggl = jgglService.selectByJgbm(request.getJgCode());
 
         //获取门户系统默认角色
