@@ -207,7 +207,7 @@ public class JsServiceImpl implements JsService {
 
 
                 Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>().eq("jslb", request.getJslb())
-                        .eq("yhjslx", UserTypeEnum.IN_USER.getCode()).eq("sfmr", true));
+                        .eq("yhjslx", UserTypeEnum.IN_USER.getCode()).eq("sfmr", true).eq("jg_id",request.getJgId()));
 
                 if (updateDefaultJs != null) {
 
@@ -218,7 +218,7 @@ public class JsServiceImpl implements JsService {
             } else {
 
                 Js updateDefaultJs = jsMapper.selectOne(new QueryWrapper<Js>().eq("jslb", request.getJslb())
-                        .eq("yhjslx", UserTypeEnum.OUT_USER.getCode()).eq("sfmr", true));
+                        .eq("yhjslx", UserTypeEnum.OUT_USER.getCode()).eq("sfmr", true).eq("jg_id",request.getJgId()));
 
                 if (updateDefaultJs != null) {
                     updateDefaultJs.setSfmr(false);
