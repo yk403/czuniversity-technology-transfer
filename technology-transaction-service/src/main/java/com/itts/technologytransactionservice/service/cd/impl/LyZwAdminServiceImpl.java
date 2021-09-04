@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.service.cd.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +39,8 @@ import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 public class LyZwAdminServiceImpl extends ServiceImpl<LyZwMapper, LyZw> implements LyZwAdminService {
     @Autowired
     private LyZwMapper lyZwMapper;
+    @Autowired
+    private LyZwService lyZwService;
     @Override
     public PageInfo findLyZwBack(Map<String, Object> params) {
         log.info("【技术交易 - 分页条件查询(前台)】");
@@ -76,6 +79,20 @@ public class LyZwAdminServiceImpl extends ServiceImpl<LyZwMapper, LyZw> implemen
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    /**
+     * 查询所有展位
+     * @return
+     */
+    @Override
+    public List<LyZw> findAll() {
+        log.info("查询所有展位");
+        QueryWrapper<LyZw> lyZwQueryWrapper = new QueryWrapper<>();
+        lyZwQueryWrapper.eq("is_delete",false)
+                        .eq("fjjg_id",getFjjgId());
+        List<LyZw> lyZws = lyZwMapper.selectList(lyZwQueryWrapper);
+        return lyZws;
     }
 
     /**

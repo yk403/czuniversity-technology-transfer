@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.constant.SystemConstant.BASE_URL;
@@ -67,6 +69,13 @@ public class LyZwAdminController {
     @PostMapping("/save")
     @ApiOperation(value ="新增")
     public ResponseUtil save(@RequestBody LyZw lyZw) {
+        List<LyZw> lyZwList = lyZwAdminService.findAll();
+        List<String> list = lyZwList.stream().map(LyZw::getZwmc).collect(Collectors.toList());
+        for (String s : list) {
+            if (s.equals(lyZw.getZwmc())) {
+                throw new WebException(ZW_NAME_EXISTS_ERROR);
+            }
+        }
         if (!lyZwAdminService.saveZw(lyZw)) {
             throw new WebException(INSERT_FAIL);
         }

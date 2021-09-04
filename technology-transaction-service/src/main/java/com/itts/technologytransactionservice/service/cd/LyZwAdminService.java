@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.itts.technologytransactionservice.model.LyZw;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,4 +20,10 @@ public interface LyZwAdminService extends IService<LyZw> {
     PageInfo findLyZwBackSelect(Map<String, Object> params);
     Boolean saveZw(LyZw lyZw);
     Long getUserId();
+
+    /**
+     * 查询所有展位
+     * @return
+     */
+    List<LyZw> findAll();
 }
