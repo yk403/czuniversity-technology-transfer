@@ -133,6 +133,7 @@ public enum ErrorCodeEnum {
     EXAM_MSG_EXISTS_ERROR(-45048, "考试信息已存在!"),
     GROUNDING_EXISTS_ERROR(-45049, "培训计划已存在上架!"),
     FJJGID_IS_EMPTY_ERROR(-45050,"父级机构ID不可为空!"),
+    TEACHING_NAME_EXISTS_ERROR(-45051,"教学楼名称已存在!"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================

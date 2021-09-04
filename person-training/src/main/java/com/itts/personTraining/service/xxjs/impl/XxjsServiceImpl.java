@@ -89,12 +89,8 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
     public boolean add(Xxjs xxjs) {
         log.info("【人才培养 - 新增学校教室:{}】",xxjs);
         Long userId = getUserId();
-        Date now = new Date();
-        xxjs.setSfsc(false);
         xxjs.setCjr(userId);
         xxjs.setGxr(userId);
-        xxjs.setCjsj(now);
-        xxjs.setGxsj(now);
         return xxjsService.save(xxjs);
     }
 
@@ -124,7 +120,6 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
         //设置删除状态
         xxjs.setSfsc(true);
         xxjs.setGxr(getUserId());
-        xxjs.setGxsj(now);
         return xxjsService.updateById(xxjs);
     }
 

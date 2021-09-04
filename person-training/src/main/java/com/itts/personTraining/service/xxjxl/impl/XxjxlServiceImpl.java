@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
@@ -56,8 +57,8 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Xxjxl> xxjxlQueryWrapper = new QueryWrapper<>();
         xxjxlQueryWrapper.eq("sfsc",false)
-        .eq("fjjg_id",fjjgId)
-                .like(StringUtils.isNotBlank(jxlmc), "jxlmc", jxlmc);
+                         .eq(fjjgId != null,"fjjg_id",fjjgId)
+                         .like(StringUtils.isNotBlank(jxlmc), "jxlmc", jxlmc);
         return new PageInfo<>(xxjxlMapper.selectList(xxjxlQueryWrapper));
     }
 
@@ -84,15 +85,10 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
     public boolean add(Xxjxl xxjxl) {
         log.info("【人才培养 - 新增学校教学楼:{}】",xxjxl);
         Long userId = getUserId();
-        Date now = new Date();
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        Long fjjgId = loginUser.getFjjgId();
+        Long fjjgId = getFjjgId();
         xxjxl.setFjjgId(fjjgId);
-        xxjxl.setSfsc(false);
         xxjxl.setCjr(userId);
         xxjxl.setGxr(userId);
-        xxjxl.setGxr(userId);
-        xxjxl.setGxsj(now);
         return xxjxlService.save(xxjxl);
     }
 
@@ -104,9 +100,7 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
     @Override
     public boolean update(Xxjxl xxjxl) {
         log.info("【人才培养 - 更新学校教学楼:{}】",xxjxl);
-        Date now = new Date();
         xxjxl.setGxr(getUserId());
-        xxjxl.setGxsj(now);
         return xxjxlService.updateById(xxjxl);
     }
 
@@ -127,6 +121,20 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
     }
 
     /**
+     * 查询所有学校教学楼名称
+     * @return
+     */
+    @Override
+    public List<Xxjxl> findAll() {
+        log.info("【人才培养 - 查询所有学校教学楼名称】");
+        QueryWrapper<Xxjxl> xxjxlQueryWrapper = new QueryWrapper<>();
+        xxjxlQueryWrapper.eq("sfsc",false)
+                         .eq("fjjg_id",getFjjgId());
+        List<Xxjxl> xxjxls = xxjxlMapper.selectList(xxjxlQueryWrapper);
+        return xxjxls;
+    }
+
+    /**
      * 获取当前用户id
      * @return
      */
@@ -139,6 +147,20 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    /**
+     * 获取父级机构ID
+     */
+    public Long getFjjgId() {
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
     }
 
 }
