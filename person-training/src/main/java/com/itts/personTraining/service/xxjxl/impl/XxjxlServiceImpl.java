@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
@@ -117,6 +118,20 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
         xxjxl.setGxr(getUserId());
         xxjxl.setGxsj(now);
         return xxjxlService.updateById(xxjxl);
+    }
+
+    /**
+     * 查询所有学校教学楼名称
+     * @return
+     */
+    @Override
+    public List<Xxjxl> findAll() {
+        log.info("【人才培养 - 查询所有学校教学楼名称】");
+        QueryWrapper<Xxjxl> xxjxlQueryWrapper = new QueryWrapper<>();
+        xxjxlQueryWrapper.eq("sfsc",false)
+                         .eq("fjjg_id",getFjjgId());
+        List<Xxjxl> xxjxls = xxjxlMapper.selectList(xxjxlQueryWrapper);
+        return xxjxls;
     }
 
     /**

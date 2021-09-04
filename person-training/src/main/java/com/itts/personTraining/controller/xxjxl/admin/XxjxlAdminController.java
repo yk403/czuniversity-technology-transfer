@@ -9,6 +9,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 
@@ -129,9 +132,13 @@ public class XxjxlAdminController {
      * 校验参数
      */
     private void checkRequest(Xxjxl xxjxl) throws WebException {
-        if (xxjxl == null) {
-            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
-        }
+        List<Xxjxl> xxjxlList = xxjxlService.findAll();
+        List<String> jxlmcList = xxjxlList.stream().map(Xxjxl::getJxlmc).collect(Collectors.toList());
+        jxlmcList.stream().forEach(jxlmc -> {
+            if (jxlmc.equals(xxjxl.getJxlmc())) {
+                throw new WebException(TEACHING_NAME_EXISTS_ERROR);
+            }
+        });
     }
 }
 

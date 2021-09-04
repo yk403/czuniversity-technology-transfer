@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.itts.personTraining.model.xxjxl.Xxjxl;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 学校教学楼表 服务类
@@ -51,4 +53,9 @@ public interface XxjxlService extends IService<Xxjxl> {
      */
     boolean delete(Xxjxl xxjxl);
 
+    /**
+     * 查询所有学校教学楼
+     * @return
+     */
+    List<Xxjxl> findAll();
 }
