@@ -80,7 +80,8 @@ public class YhController {
         //获取当前用户最顶级机构信息
         Jggl jg = jgglService.get(getYhVO.getJgId());
         if (jg != null) {
-
+            //获取父级机构编码
+            getYhVO.setJgbm(jg.getCj().substring(0,3));
             //总基地
             if (Objects.equals(jg.getLx(), GroupTypeEnum.HEADQUARTERS.getKey())) {
 
