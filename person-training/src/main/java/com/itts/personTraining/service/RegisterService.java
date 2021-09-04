@@ -19,7 +19,7 @@ public interface RegisterService {
      * @return
      * @author liuyingming
      */
-    @PostMapping(SystemConstant.BASE_URL + "/register/")
+    @PostMapping(SystemConstant.BASE_URL + "/v1/api/register/")
     @ApiOperation(value = "用户注册")
     ResponseUtil register(@RequestBody RegisterRequest request);
 }
