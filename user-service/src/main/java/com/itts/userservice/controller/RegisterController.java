@@ -32,7 +32,7 @@ import java.util.List;
  * @Author：lym
  * @Date: 2021/3/26
  */
-@RequestMapping(SystemConstant.BASE_URL)
+@RequestMapping(SystemConstant.BASE_URL+"/v1/api")
 @RestController
 @Api(tags = "注册管理")
 public class RegisterController {

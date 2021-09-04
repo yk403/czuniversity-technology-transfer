@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
-@RequestMapping(SystemConstant.BASE_URL)
+@RequestMapping(SystemConstant.BASE_URL+"/v1/api")
 @RestController
 @Api(tags = "注册管理")
 public class RegisterController {
