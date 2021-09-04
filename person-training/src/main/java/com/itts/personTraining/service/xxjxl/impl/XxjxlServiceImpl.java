@@ -57,8 +57,8 @@ public class XxjxlServiceImpl extends ServiceImpl<XxjxlMapper, Xxjxl> implements
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<Xxjxl> xxjxlQueryWrapper = new QueryWrapper<>();
         xxjxlQueryWrapper.eq("sfsc",false)
-        .eq("fjjg_id",fjjgId)
-                .like(StringUtils.isNotBlank(jxlmc), "jxlmc", jxlmc);
+                         .eq(fjjgId != null,"fjjg_id",fjjgId)
+                         .like(StringUtils.isNotBlank(jxlmc), "jxlmc", jxlmc);
         return new PageInfo<>(xxjxlMapper.selectList(xxjxlQueryWrapper));
     }
 
