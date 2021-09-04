@@ -228,7 +228,7 @@ public class JsServiceImpl implements JsService {
         }
 
         Integer count = jsMapper.selectCount(new QueryWrapper<Js>());
-        String code = String.format(" %04d", count.intValue());
+        String code = String.format(" %04d", count.intValue() + 1);
 
         Js js = new Js();
         BeanUtils.copyProperties(request, js);
