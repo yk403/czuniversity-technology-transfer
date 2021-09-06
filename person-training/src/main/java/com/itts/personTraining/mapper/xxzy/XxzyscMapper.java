@@ -36,6 +36,9 @@ public interface XxzyscMapper extends BaseMapper<Xxzysc> {
             "   <if test='category != null and category != \"\"'> " +
             "       AND zy.zylx = #{category}" +
             "   </if>" +
+            "   <if test='fjjgId != null and fjjgId != \"\"'> " +
+            "       AND zy.fjjgId = #{fjjgId}" +
+            "   </if>" +
             "   <if test='direction != null and direction != \"\"'> " +
             "       AND zy.zyfx = #{direction}" +
             "   </if>" +
@@ -46,6 +49,6 @@ public interface XxzyscMapper extends BaseMapper<Xxzysc> {
             "</script> ")
     List<Xxzy> findScByPage(@Param("userId") Long userId, @Param("firstCategory") String firstCategory,
                             @Param("secondCategory") String secondCategory, @Param("category") String category,
-                            @Param("direction") String direction, @Param("id") Long id);
+                            @Param("direction") String direction, @Param("id") Long id,@Param("fjjgId")Long fjjgId);
 
 }
