@@ -37,7 +37,7 @@ public interface XxzyscMapper extends BaseMapper<Xxzysc> {
             "       AND zy.zylx = #{category}" +
             "   </if>" +
             "   <if test='fjjgId != null and fjjgId != \"\"'> " +
-            "       AND zy.fjjgId = #{fjjgId}" +
+            "       AND zy.fjjg_id = #{fjjgId}" +
             "   </if>" +
             "   <if test='direction != null and direction != \"\"'> " +
             "       AND zy.zyfx = #{direction}" +
