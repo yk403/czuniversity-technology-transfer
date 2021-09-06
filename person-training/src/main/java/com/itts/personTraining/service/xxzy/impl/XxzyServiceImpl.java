@@ -340,9 +340,14 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
     if (StringUtils.isNotBlank(condition)) {
       query.like("mc", condition.trim());
     }
+    LoginUser loginUser1 = threadLocal.get();
+    Long fjjgId = null;
+    if(loginUser1 != null){
+      fjjgId= loginUser1.getFjjgId();
+    }
 
-    if (groupId != null) {
-      query.eq("jg_id", groupId);
+    if (fjjgId != null) {
+      query.eq("fjjg_id", fjjgId);
     }
 
     if (StringUtils.isNotBlank(groupCode)) {
