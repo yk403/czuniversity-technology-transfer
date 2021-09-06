@@ -174,12 +174,8 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
         kcDTO.setGxr(getUserId());
         Kc kc = new Kc();
         BeanUtils.copyProperties(kcDTO,kc);
-        if (kcService.updateById(kc)) {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("kc_id", kcDTO.getId());
-            return kcSzService.removeByMap(map);
-        }
-        return false;
+        kcService.updateById(kc);
+        return true;
     }
 
     /**
