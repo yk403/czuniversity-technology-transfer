@@ -338,7 +338,7 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 tz1.setGxr(userId);
                 tz1.setTzlx("成绩通知");
                 tz1.setTzmc(xsCjDTO.getPch() + "成绩通知" + DateUtils.getDateFormat(new Date()));
-                tz1.setNr("您好，您的"+xs.getXm()+"学生的批次："+ xsCjDTO.getPch() +"的成绩结果已出，请悉知！");
+                tz1.setNr("您好，您所教授的批次"+ xsCjDTO.getPch()+"中的"+xs.getXm() +"的成绩结果已出，请悉知！");
                 tzList.add(tz1);
             }
             if (tzService.saveBatch(tzList)) {
