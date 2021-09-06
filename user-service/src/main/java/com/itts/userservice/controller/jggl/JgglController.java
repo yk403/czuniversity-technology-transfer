@@ -146,6 +146,10 @@ public class JgglController {
     public ResponseUtil findJggl(@RequestParam(value = "jgId",required = false) Long jgId) {
 
         List<JgglVO> jgglVOList = jgglService.findJgglVO(null);
+        Jggl jggl1 = jgglMapper.selectOne(new QueryWrapper<Jggl>().eq("id", jgId).eq("sfsc", false));
+        Jggl jggl2 = jgglMapper.selectOne(new QueryWrapper<Jggl>().eq("jgbm", StringUtils.substring(jggl1.getCj(), 0, 3))
+                .eq("sfsc", false));
+        jgId = jggl2.getId();
 
         String jgbm = null;
         Jggl jggl = jgglService.get(jgId);

@@ -324,7 +324,11 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
         //如果角色配置为空，则设置默认角色
         if (CollectionUtils.isEmpty(addYhRequest.getJsidlist())) {
 
-            Js defaultJs = jsMapper.getDefault(addYhRequest.getYhlx(), addYhRequest.getYhlb());
+            Js defaultJs = jsMapper.selectOne(new QueryWrapper<Js>().eq("jg_id", addYhRequest.getJgId())
+                    .eq("yhjslx", addYhRequest.getYhlx())
+                    .eq("sfmr", true)
+                    .eq("jslb", addYhRequest.getYhlb())
+                    .eq("sfsc", false));
 
             if (defaultJs != null) {
 
@@ -408,7 +412,11 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
         yhMapper.insert(yh);
 
         //设置默认角色
-        Js defaultJs = jsMapper.getDefault(addYhRequest.getYhlx(), addYhRequest.getYhlb());
+        Js defaultJs = jsMapper.selectOne(new QueryWrapper<Js>().eq("jg_id", addYhRequest.getJgId())
+                .eq("yhjslx", addYhRequest.getYhlx())
+                .eq("sfmr", true)
+                .eq("jslb", addYhRequest.getYhlb())
+                .eq("sfsc", false));
 
         if (defaultJs != null) {
 
