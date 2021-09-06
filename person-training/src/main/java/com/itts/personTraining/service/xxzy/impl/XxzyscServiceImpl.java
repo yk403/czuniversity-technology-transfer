@@ -3,6 +3,7 @@ package com.itts.personTraining.service.xxzy.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.personTraining.mapper.xxzy.XxzyscMapper;
 import com.itts.personTraining.model.xxzy.Xxzy;
 import com.itts.personTraining.model.xxzy.Xxzysc;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
 
 /**
  * <p>
@@ -35,8 +38,8 @@ public class XxzyscServiceImpl extends ServiceImpl<XxzyscMapper, Xxzysc> impleme
                                        String secondCategory, String category, String direction, Long id) {
 
         PageHelper.startPage(pageNum, pageSize);
-
-        List<Xxzy> xxzys = xxzyscMapper.findScByPage(userId, firstCategory, secondCategory, category, direction, id);
+        Long fjjgId = getFjjgId();
+        List<Xxzy> xxzys = xxzyscMapper.findScByPage(userId, firstCategory, secondCategory, category, direction, id,fjjgId);
 
         PageInfo pageInfo = new PageInfo(xxzys);
 
@@ -67,5 +70,13 @@ public class XxzyscServiceImpl extends ServiceImpl<XxzyscMapper, Xxzysc> impleme
     public void delete(Long id) {
 
         xxzyscMapper.deleteById(id);
+    }
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId = null;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        }
+        return fjjgId;
     }
 }
