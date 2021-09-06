@@ -10,6 +10,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.enums.SystemTypeEnum;
+import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.CommonUtils;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.enums.UserTypeEnum;
@@ -46,6 +47,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 /**
  * <p>
@@ -155,15 +159,16 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
    */
   @Override
   public PageInfo<GetXxzyVO> findByJgId(Integer pageNum, Integer pageSize, String type, String firstCategory,
-                                        String secondCategory, String category, String direction, Long courseId, String condition, List<Long> jgIds) {
+                                        String secondCategory, String category, String direction, Long courseId, String condition) {
 
     PageHelper.startPage(pageNum, pageSize);
-
+    LoginUser loginUser = threadLocal.get();
+    Long fjjgId = loginUser.getFjjgId();
     List<Xxzy> result = xxzyMapper.selectList(new QueryWrapper<Xxzy>().eq("zylb", type).eq("sfsc", false)
         .eq("sfsj", true).eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory)
         .eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory).eq(StringUtils.isNotBlank(category), "zylx", category)
         .eq(StringUtils.isNotBlank(direction), "zyfx", direction).eq(courseId != null, "kc_id", courseId)
-        .like(StringUtils.isNotBlank(condition), "mc", condition).in(!CollectionUtils.isEmpty(jgIds), "jg_id", jgIds));
+        .like(StringUtils.isNotBlank(condition), "mc", condition).eq(fjjgId != null,"fjjg_id",fjjgId));
 
     PageInfo pageInfo = new PageInfo(result);
 
@@ -503,5 +508,16 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
     }
 
     return xxzy;
+  }
+
+  private Long getUserId() {
+    LoginUser loginUser = threadLocal.get();
+    Long userId;
+    if (loginUser != null) {
+      userId = loginUser.getUserId();
+    } else {
+      throw new ServiceException(GET_THREADLOCAL_ERROR);
+    }
+    return userId;
   }
 }
