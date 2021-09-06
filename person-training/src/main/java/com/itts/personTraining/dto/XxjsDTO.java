@@ -11,5 +11,5 @@ import lombok.Data;
  */
 @Data
 public class XxjsDTO extends Xxjs {
-    private Long fjjgId;
+    private String jxlmc;
 }

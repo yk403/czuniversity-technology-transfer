@@ -25,7 +25,7 @@ public interface XxjsService extends IService<Xxjs> {
      * @param xxjxlId
      * @return
      */
-    PageInfo<XxjsDTO> findByPage(Integer pageNum, Integer pageSize, Long xxjxlId,Long fjjg_id);
+    PageInfo<XxjsDTO> findByPage(Integer pageNum, Integer pageSize, Long xxjxlId,Long fjjgId);
 
     /**
      * 根据id查询学校教室详情
