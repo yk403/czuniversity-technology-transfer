@@ -18,13 +18,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
-import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
  * <p>
@@ -55,13 +57,14 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
      * @return
      */
     @Override
-    public PageInfo<XxjsDTO> findByPage(Integer pageNum, Integer pageSize, Long xxjxlId,Long fjjg_id) {
-        log.info("【人才培养 - 查询学校教室列表,教学楼名称:{}】",xxjxlId);
+    public PageInfo<XxjsDTO> findByPage(Integer pageNum, Integer pageSize, Long xxjxlId,Long fjjgId) {
+        log.info("【人才培养 - 查询学校教室列表,教学楼名称:{},父级机构ID:{}】",xxjxlId,fjjgId);
         PageHelper.startPage(pageNum, pageSize);
-//        QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
-//        xxjsQueryWrapper.eq("sfsc",false)
-//                      .eq(xxjxlId!=null, "xxjxl_id", xxjxlId);
-        List<XxjsDTO> xxjs = xxjsMapper.findByPage(xxjxlId,fjjg_id);
+       /* QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
+        xxjsQueryWrapper.eq("sfsc",false)
+                        .eq(fjjgId != null,"fjjg_id",fjjgId)
+                      .eq(xxjxlId!=null, "xxjxl_id", xxjxlId);*/
+        List<XxjsDTO> xxjs = xxjsMapper.findByPage(xxjxlId,fjjgId);
         PageInfo pageInfo = new PageInfo(xxjs);
         return pageInfo;
     }
@@ -131,8 +134,21 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
     @Override
     public boolean selectExists(Xxjs xxjs) {
         log.info("【人才培养 - 查询学校教室是否存在:{}】",xxjs);
+        Long fjjgId = getFjjgId();
+        if (fjjgId == null) {
+            throw new ServiceException(FJJGID_IS_EMPTY_ERROR);
+        }
+        QueryWrapper<Xxjxl> xxjxlQueryWrapper = new QueryWrapper<>();
+        xxjxlQueryWrapper.eq("sfsc",false)
+                         .eq("fjjg_id",fjjgId);
+        List<Xxjxl> xxjxls = xxjxlMapper.selectList(xxjxlQueryWrapper);
+        if (CollectionUtils.isEmpty(xxjxls)) {
+            throw new ServiceException(TEACHING_NAME_ISEMPTY_ERROR);
+        }
+        List<Long> xxjxlIds = xxjxls.stream().map(Xxjxl::getId).collect(Collectors.toList());
         QueryWrapper<Xxjs> xxjsQueryWrapper = new QueryWrapper<>();
-        xxjsQueryWrapper.eq("sfsc",false);
+        xxjsQueryWrapper.eq("sfsc",false)
+                        .in("xxjxl_id",xxjxlIds);
         List<Xxjs> xxjsList = xxjsMapper.selectList(xxjsQueryWrapper);
         for (Xxjs xxjs1 : xxjsList) {
             if (xxjs1.getXxjxlId().equals(xxjs.getXxjxlId()) && xxjs1.getJsbh().equals(xxjs.getJsbh())) {
@@ -194,5 +210,19 @@ public class XxjsServiceImpl extends ServiceImpl<XxjsMapper, Xxjs> implements Xx
             throw new ServiceException(GET_THREADLOCAL_ERROR);
         }
         return userId;
+    }
+
+    /**
+     * 获取父级机构ID
+     */
+    public Long getFjjgId() {
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
     }
 }

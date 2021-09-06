@@ -26,17 +26,16 @@
 <!--    </select>-->
 
     <select id="findByPage" resultType="com.itts.personTraining.dto.XxjsDTO">
-        select a.*,b.fjjg_id as fjjgId from t_xxjs a left join t_xxjxl b on a.xxjxl_id = b.id
-        <where>
-            a.sfsc = false
-            <if test="xxjxlId != null and xxjxlId != ''">
+        select a.*,b.fjjg_id as fjjgId,b.jxlmc from t_xxjs a left join t_xxjxl b on a.xxjxl_id = b.id
+        where
+            a.sfsc = false and b.sfsc = false
+            <if test="xxjxlId != null">
                 and a.xxjxl_id = #{xxjxlId}
             </if>
-            <if test="fjjgId != null and fjjgId != ''">
+            <if test="fjjgId != null">
                 and b.fjjg_id = #{fjjgId}
             </if>
             order by a.cjsj desc
-        </where>
 
     </select>
 

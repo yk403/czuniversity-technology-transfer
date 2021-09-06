@@ -40,9 +40,9 @@ public class XxjsAdminController {
     public ResponseUtil findByPage(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "xxjxlId", required = false) Long xxjxlId,
-                                   @RequestParam(value = "fjjgId", required = false) Long fjjg_id
+                                   @RequestParam(value = "fjjgId", required = false) Long fjjgId
                                    ) {
-        return ResponseUtil.success(xxjsService.findByPage(pageNum, pageSize, xxjxlId,fjjg_id));
+        return ResponseUtil.success(xxjsService.findByPage(pageNum, pageSize, xxjxlId,fjjgId));
     }
 
     /**
