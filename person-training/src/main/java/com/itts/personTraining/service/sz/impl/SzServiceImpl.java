@@ -87,45 +87,24 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         QueryWrapper<Sz> szQueryWrapper = new QueryWrapper<>();
         //总基地
         PageHelper.startPage(pageNum, pageSize);
-        if (Objects.equals(jglx, "headquarters")) {
-            ResponseUtil response = jgglFeignService.findChildrenById(fjjgId);
-            if (response == null || response.getErrCode().intValue() != 0) {
-                throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
-            }
-            List<JgglVO> jgglVOList = response.conversionData(new TypeReference<List<JgglVO>>() {
-            });
-            List<Long> ids = jgglVOList.stream().map(JgglVO::getId).collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(ids)) {
-                szQueryWrapper.in(fjjgId != null, "ssjg_id", ids);
-            }
-            szQueryWrapper.eq("sfsc", false).eq(StringUtils.isNotBlank(dslb), "dslb", dslb)
-                    .like(StringUtils.isNotBlank(name), "dsxm", StringUtils.isNotBlank(name) ? name.trim() : name).or().like(StringUtils.isNotBlank(name), "dsbh", StringUtils.isNotBlank(name) ? name.trim() : name)
-                    .orderByDesc("cjsj");
-                /*if(StringUtils.isNotBlank(dslb)){
-
-                }else {
-                    szQueryWrapper.eq("sfsc",false).ne("dslb","cloud_admin")
-                            .like(StringUtils.isNotBlank(name),"dsxm", StringUtils.isNotBlank(name)?name.trim():name).or().like(StringUtils.isNotBlank(name),"dsbh", StringUtils.isNotBlank(name)?name.trim():name)
-                            .orderByDesc("cjsj");
-                }*/
-        } else {
-            //分基地
-            ResponseUtil response = jgglFeignService.findChildrenById(fjjgId);
-            if (response == null || response.getErrCode().intValue() != 0) {
-                throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
-            }
-            List<JgglVO> jgglVOList = response.conversionData(new TypeReference<List<JgglVO>>() {
-            });
-            List<Long> ids = jgglVOList.stream().map(JgglVO::getId).collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(ids)) {
-                szQueryWrapper.in(fjjgId != null, "ssjg_id", ids);
-            }
-            szQueryWrapper.eq("sfsc", false)
-                    .eq(StringUtils.isNotBlank(dslb), "dslb", dslb)
-                    .eq(StringUtils.isNotBlank(hyly), "hyly", hyly)
-                    .like(StringUtils.isNotBlank(name), "dsxm", StringUtils.isNotBlank(name) ? name.trim() : name).or().like(StringUtils.isNotBlank(name), "dsbh", StringUtils.isNotBlank(name) ? name.trim() : name)
-                    .orderByDesc("cjsj");
+        if(fjjgId == null){
+            fjjgId = getFjjgId();
         }
+        ResponseUtil response = jgglFeignService.findChildrenById(fjjgId);
+        if (response == null || response.getErrCode().intValue() != 0) {
+            throw new ServiceException(SYSTEM_NOT_FIND_ERROR);
+        }
+        List<JgglVO> jgglVOList = response.conversionData(new TypeReference<List<JgglVO>>() {});
+        List<Long> ids = jgglVOList.stream().map(JgglVO::getId).collect(Collectors.toList());
+        if (!CollectionUtils.isEmpty(ids)) {
+            szQueryWrapper.in(fjjgId != null, "ssjg_id", ids);
+        }
+        szQueryWrapper.eq("sfsc", false)
+                .eq(StringUtils.isNotBlank(dslb), "dslb", dslb)
+                .eq(StringUtils.isNotBlank(hyly), "hyly", hyly)
+                .like(StringUtils.isNotBlank(name), "dsxm", StringUtils.isNotBlank(name) ? name.trim() : name).or().like(StringUtils.isNotBlank(name), "dsbh", StringUtils.isNotBlank(name) ? name.trim() : name)
+                .orderByDesc("cjsj");
+
         return new PageInfo<>(szMapper.selectList(szQueryWrapper));
     }
 
@@ -551,5 +530,12 @@ public class SzServiceImpl extends ServiceImpl<SzMapper, Sz> implements SzServic
         }
         return userCategory;
     }
-
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId = null;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        }
+        return fjjgId;
+    }
 }
