@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.enums.TkzyTypeEnum;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.mapper.kssj.KssjMapper;
@@ -33,6 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.itts.common.constant.SystemConstant.threadLocal;
+import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
 
 /**
  * <p>
@@ -178,6 +182,8 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         QueryWrapper query = new QueryWrapper();
         query.in("id", addKssjRequest.getTmIds());
 
+        //获取当前用户父级机构ID
+        kssj.setFjjgId(getFjjgId());
         kssjMapper.insert(kssj);
 
         //添加试卷题目关联
@@ -248,5 +254,19 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         });
 
         return kssj;
+    }
+
+    /**
+     * 获取父级机构ID
+     */
+    public Long getFjjgId() {
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        } else {
+            throw new ServiceException(GET_THREADLOCAL_ERROR);
+        }
+        return fjjgId;
     }
 }
