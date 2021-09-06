@@ -74,6 +74,7 @@ public class PcServiceImpl implements PcService {
                 QueryWrapper<Pc> pcQueryWrapper = new QueryWrapper<>();
                 pcQueryWrapper.eq("sfsc",false)
                         .eq(fjjgId != null,"fjjg_id",fjjgId)
+                        .eq(StringUtils.isNotBlank(jylx),"jylx",jylx)
                         .orderByDesc("cjsj");
                 List<Pc> pcs = pcMapper.selectList(pcQueryWrapper);
                 return new PageInfo<>(pcs);
