@@ -144,7 +144,7 @@ public class XxzyscController {
      */
     private List<Xxzy> cache2Redis(Long userId) {
 
-        PageHelper.startPage(1, 10);
+        /*PageHelper.startPage(1, 10);*/
         List<Xxzysc> list = xxzyscService.list(new QueryWrapper<Xxzysc>().eq("yh_id", userId).orderByDesc("cjsj"));
 
         if (!CollectionUtils.isEmpty(list)) {
