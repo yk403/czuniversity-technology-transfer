@@ -508,7 +508,9 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     public List<KcDTO> findByXylx(String xylx) {
         log.info("【人才培养 - 根据学员类型:{}查询课程列表】",xylx);
         String[] xylxArr = xylx.split(",");
-        List<KcDTO> kcDTOs = kcMapper.findByPage(null,null,null,xylxArr,null);
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId = loginUser.getFjjgId();
+        List<KcDTO> kcDTOs = kcMapper.findByPage(null,null,null,xylxArr,fjjgId);
         /*for (KcDTO kcDTO : kcDTOs) {
             QueryWrapper<KcSz> kcSzQueryWrapper = new QueryWrapper<>();
             kcSzQueryWrapper.eq("kc_id",kcDTO.getId());
