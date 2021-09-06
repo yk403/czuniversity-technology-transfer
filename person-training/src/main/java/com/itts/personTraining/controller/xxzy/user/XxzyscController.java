@@ -152,7 +152,7 @@ public class XxzyscController {
             List<Long> xxzyIds = list.stream().map(Xxzysc::getXxzyId).collect(Collectors.toList());
             if(!CollectionUtils.isEmpty(xxzyIds)){
 
-                List<Xxzy> xxzys = xxzyService.list(new QueryWrapper<Xxzy>().in("id", xxzyIds));
+                List<Xxzy> xxzys = xxzyService.list(new QueryWrapper<Xxzy>().eq("sfsc",false).in("id", xxzyIds));
 
                 redisTemplate.opsForValue().set(RedisConstant.USER_LEARNING_RESOURCES_FAVORITES_PREFIX + userId,
                         JSONUtil.toJsonStr(xxzys), RedisConstant.USER_LEARNING_RESOURCES_FAVORITES_EXPIRE, TimeUnit.DAYS);
