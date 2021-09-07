@@ -6,6 +6,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
+
 /**
  * @Description：
  * @Author：lym
@@ -17,7 +19,7 @@ public interface StglFeignService {
     /**
      * 新增
      */
-    @PostMapping("/add/")
+    @PostMapping(ADMIN_BASE_URL +"/v1/stgl/add/")
     ResponseUtil add(@RequestBody AddStglRequest stgl);
 
 }
