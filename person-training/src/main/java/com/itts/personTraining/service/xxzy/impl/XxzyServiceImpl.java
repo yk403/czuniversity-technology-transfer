@@ -11,6 +11,7 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.enums.SystemTypeEnum;
 import com.itts.common.exception.ServiceException;
+import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.CommonUtils;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.enums.UserTypeEnum;
@@ -159,8 +160,19 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
    */
   @Override
   public PageInfo<GetXxzyVO> findByJgId(Integer pageNum, Integer pageSize, String type, String firstCategory,
-                                        String secondCategory, String category, String direction, Long courseId, String condition) {
+                                        String secondCategory, String category, String direction, Long courseId, String condition,
+                                        String jgCode) {
 
+    if(StringUtils.isBlank(jgCode)){
+      throw new WebException(ErrorCodeEnum.SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+    }
+
+    ResponseUtil response = groupFeignService.getByCode(jgCode);
+    if(response == null || response.getErrCode().intValue() != 0){
+      throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+    }
+
+    JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {});
     PageHelper.startPage(pageNum, pageSize);
     LoginUser loginUser = threadLocal.get();
     Long fjjgId = loginUser.getFjjgId();
@@ -168,7 +180,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
         .eq("sfsj", true).eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory)
         .eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory).eq(StringUtils.isNotBlank(category), "zylx", category)
         .eq(StringUtils.isNotBlank(direction), "zyfx", direction).eq(courseId != null, "kc_id", courseId)
-        .like(StringUtils.isNotBlank(condition), "mc", condition).eq(fjjgId != null,"fjjg_id",fjjgId));
+        .like(StringUtils.isNotBlank(condition), "mc", condition).eq(fjjgId != null,"fjjg_id",jggl.getId()));
 
     PageInfo pageInfo = new PageInfo(result);
 

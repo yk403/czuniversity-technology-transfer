@@ -42,7 +42,7 @@ public interface XxzyService extends IService<Xxzy> {
    */
   PageInfo<GetXxzyVO> findByJgId(Integer pageNum, Integer pageSize, String type, String firstCategory,
                                  String secondCategory, String category, String direction, Long courseId,
-                                 String condition);
+                                 String condition,String jgCode);
 
   /**
    * 获取详情

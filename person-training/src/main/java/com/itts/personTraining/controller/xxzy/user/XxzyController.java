@@ -120,24 +120,9 @@ public class XxzyController {
                                 @ApiParam(value = "机构编码") @RequestParam(value = "jgCode", required = false) String jgCode) {
 
 
-   /* List<Long> jgIds = new ArrayList<Long>();
-    if(!Objects.equals(jgCode,"001")){
-      ResponseUtil childrenResponse = groupFeignService.findChildrenByCode(jgCode);
-      if (childrenResponse == null || childrenResponse.getErrCode().intValue() != 0) {
-        throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-      }
 
-      List<JgglVO> childrenGroup = childrenResponse.conversionData(new TypeReference<List<JgglVO>>() {
-      });
-      if (CollectionUtils.isEmpty(childrenGroup)) {
-        throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
-      }
 
-      jgIds = childrenGroup.stream().map(JgglVO::getId).collect(Collectors.toList());
-
-    }*/
-
-    PageInfo<GetXxzyVO> result = xxzyService.findByJgId(pageNum, pageSize, type, firstCategory, secondCategory, category, direction, courseId, condition);
+    PageInfo<GetXxzyVO> result = xxzyService.findByJgId(pageNum, pageSize, type, firstCategory, secondCategory, category, direction, courseId, condition,jgCode);
 
     return ResponseUtil.success(result);
   }
