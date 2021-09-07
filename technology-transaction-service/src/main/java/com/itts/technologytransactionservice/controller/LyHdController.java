@@ -74,6 +74,7 @@ public class LyHdController {
     @PostMapping("/save")
     @ApiOperation(value ="新增")
     public ResponseUtil save(@RequestBody LyHd lyHd) {
+
         if (!lyHdService.saveHd(lyHd)) {
             throw new WebException(INSERT_FAIL);
         }

@@ -50,6 +50,7 @@
             <if test="map.hztp != null"> and hd.hztp = #{map.hztp} </if>
             <if test="map.hztpmc != null"> and hd.hztpmc = #{map.hztpmc} </if>
             <if test="map.hzmc != null"> and hd.hzmc = #{map.hzmc} </if>
+            <if test="map.fjjgId != null and map.fjjgId != ''"> and hd.fjjg_id = #{map.fjjgId} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">

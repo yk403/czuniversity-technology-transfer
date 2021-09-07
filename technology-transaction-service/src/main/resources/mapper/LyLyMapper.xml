@@ -40,6 +40,7 @@
             <if test="map.lybt != null"> and ly.lybt like concat('%',trim(#{map.lybt}),'%') </if>
             <if test="map.lyjj != null"> and ly.lyjj = #{map.lyjj} </if>
             <if test="map.zbdz != null"> and ly.zbdz = #{map.zbdz} </if>
+            <if test="map.fjjgId != null and map.fjjgId != ''"> and hd.fjjg_id = #{map.fjjgId} </if>
         </where>
         <choose>
             <when test="map.sort != null and map.sort.trim() != ''">
