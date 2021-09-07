@@ -8,6 +8,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.pk.PkMapper;
@@ -60,6 +61,8 @@ public class PcServiceImpl implements PcService {
     @Resource
     private PyJhMapper pyJhMapper;
 
+    @Resource
+    private KcMapper kcMapper;
 
     /**
      * 获取分页
@@ -189,7 +192,10 @@ public class PcServiceImpl implements PcService {
     @Override
     public List<Kc> getKcListById(Long id) {
         log.info("【人才培养 - 根据id:{}查询课程信息列表】",id);
-        List<Kc> kcList = pcMapper.findKcListById(id);
+        Pc pcById = pcMapper.getPcById(id);
+        String xylx = pcById.getXylx();
+        Long fjjgId = pcById.getFjjgId();
+        List<Kc> kcList = kcMapper.selectList(new QueryWrapper<Kc>().eq("xylx", xylx).eq("sfsc", false).eq("fjjg_id", fjjgId));
         return kcList;
     }
 
