@@ -53,7 +53,10 @@ public class KcsjServiceImpl extends ServiceImpl<KcsjMapper, Kcsj> implements Kc
     public PageInfo<Kcsj> fingByPage(Integer pageNum, Integer pageSize, Long fjjgId) {
 
         PageHelper.startPage(pageNum, pageSize);
-        fjjgId = getFjjgId();
+        if(fjjgId == null){
+            fjjgId = getFjjgId();
+        }
+
         QueryWrapper<Kcsj> query = new QueryWrapper();
         query.eq("sfsc",false)
              .eq(fjjgId != null,"fjjg_id",fjjgId)

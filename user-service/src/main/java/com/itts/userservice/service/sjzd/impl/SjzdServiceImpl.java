@@ -21,8 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 
@@ -265,13 +267,16 @@ public class SjzdServiceImpl implements SjzdService {
     @Override
     public UpdateSjzdRequest update(UpdateSjzdRequest sjzd) {
 
+        //父级编码不可以为技术类别和邻域
+
+            
         LoginUser loginUser=threadLocal.get();
 
         Long userId=null;
         if (loginUser != null) {
             userId=loginUser.getUserId();
         }
-
+        List<Long> longs = new ArrayList<>();
         List<Sjzd> oldSjzds=sjzdMapper.findBySsmk(sjzd.getXtlb(), sjzd.getMklx(), sjzd.getSsmk());
 
         Date now=new Date();
@@ -280,18 +285,48 @@ public class SjzdServiceImpl implements SjzdService {
 
             //删除所有旧的数据字典
             for (Sjzd oldSjzd : oldSjzds) {
-                //判断删除的数据字典是否是技术类别或者技术领域
-                if (oldSjzd.getSsmk() != null) {
-                    if (oldSjzd.getSsmk().equals("technology_category")) {
+                //子数据字典
+                QueryWrapper<Sjzd> sjzdQueryWrapper = new QueryWrapper<>();
+                sjzdQueryWrapper.eq("fj_id",oldSjzd.getId())
+                        .eq("sfsc",false);
+                List<Sjzd> sjzdList = sjzdMapper.selectList(sjzdQueryWrapper);
+                //如果存在
+                if(!sjzdList.isEmpty()){
+                    List<UpdateSjzdItemRequest> sjzdItems = sjzd.getSjzdItems();
+                    for (int i = 0; i < sjzdItems.size(); i++) {
 
-                        jslbService.remove(Long.toString(oldSjzd.getId()));
-                    }
-                    if (oldSjzd.getSsmk().equals("technical_field")) {
-                        jslyService.remove(Long.toString(oldSjzd.getId()));
-                    }
 
+                            if(Objects.equals(oldSjzd.getId(),sjzdItems.get(i).getId())){
+                                BeanUtils.copyProperties(sjzdItems.get(i),oldSjzd);
+                                sjzdMapper.updateById(oldSjzd);
+
+                                for (Sjzd sjzd1 : sjzdList) {
+                                    sjzd1.setFjBm(oldSjzd.getZdbm());
+                                    sjzd1.setFjmc(oldSjzd.getZdmc());
+                                    sjzd1.setGxsj(new Date());
+                                    sjzd1.setGxr(userId);
+                                    sjzdMapper.updateById(sjzd1);
+                                }
+
+                                longs.add(oldSjzd.getId());
+                            }
+
+                    }
+                }else {
+                    //判断删除的数据字典是否是技术类别或者技术领域
+                    if (oldSjzd.getSsmk() != null) {
+                        if (oldSjzd.getSsmk().equals("technology_category")) {
+
+                            jslbService.remove(Long.toString(oldSjzd.getId()));
+                        }
+                        if (oldSjzd.getSsmk().equals("technical_field")) {
+                            jslyService.remove(Long.toString(oldSjzd.getId()));
+                        }
+
+                    }
+                    sjzdMapper.deleteById(oldSjzd.getId());
                 }
-                sjzdMapper.deleteById(oldSjzd.getId());
+
             }
         }
 
@@ -303,51 +338,58 @@ public class SjzdServiceImpl implements SjzdService {
         //增加新的数据字典
         for (UpdateSjzdItemRequest sjzdItem : sjzd.getSjzdItems()) {
 
-            Sjzd addSjzd=new Sjzd();
+            for (Long aLong : longs) {
+                if(Objects.equals(aLong,sjzdItem.getId())){
+                    continue;
+                }else {
+                    Sjzd addSjzd=new Sjzd();
 
-            BeanUtils.copyProperties(sjzd, addSjzd);
+                    BeanUtils.copyProperties(sjzd, addSjzd);
 
-            addSjzd.setZdmc(sjzdItem.getZdmc());
+                    addSjzd.setZdmc(sjzdItem.getZdmc());
 
-            if (fjzd != null) {
+                    if (fjzd != null) {
 
-                addSjzd.setFjId(fjzd.getId());
-                addSjzd.setFjBm(fjzd.getZdbm());
-                addSjzd.setFjmc(fjzd.getZdmc());
-                addSjzd.setZdbm(sjzdItem.getZdbm());
-            } else {
+                        addSjzd.setFjId(fjzd.getId());
+                        addSjzd.setFjBm(fjzd.getZdbm());
+                        addSjzd.setFjmc(fjzd.getZdmc());
+                        addSjzd.setZdbm(sjzdItem.getZdbm());
+                    } else {
 
-                addSjzd.setZdbm(sjzdItem.getZdbm());
+                        addSjzd.setZdbm(sjzdItem.getZdbm());
+                    }
+
+                    addSjzd.setPx(sjzdItem.getPx());
+
+                    //新增时设置更新时间和更新人
+                    addSjzd.setCjsj(now);
+                    addSjzd.setCjr(userId);
+                    addSjzd.setGxsj(now);
+                    addSjzd.setGxr(userId);
+                    sjzdMapper.insert(addSjzd);
+                    //判断修改的数据字典是否是技术类别或者技术领域
+                    if (addSjzd.getSsmk() != null) {
+                        if (addSjzd.getSsmk().equals("technology_category")) {
+                            TJsLb tJsLb=new TJsLb();
+                            tJsLb.setId(addSjzd.getId());
+                            tJsLb.setBh(addSjzd.getXtlb());
+                            tJsLb.setMc(addSjzd.getZdmc());
+                            tJsLb.setXq(addSjzd.getZdmc()+"详情");
+                            jslbService.save(tJsLb);
+                        }
+                        if (addSjzd.getSsmk().equals("technical_field")) {
+                            TJsLy tJsLy=new TJsLy();
+                            tJsLy.setId(addSjzd.getId());
+                            tJsLy.setBh(addSjzd.getXtlb());
+                            tJsLy.setMc(addSjzd.getZdmc());
+                            tJsLy.setXq(addSjzd.getZdmc()+"详情");
+                            jslyService.save(tJsLy);
+                        }
+
+                    }
+                }
             }
 
-            addSjzd.setPx(sjzdItem.getPx());
-
-            //新增时设置更新时间和更新人
-            addSjzd.setCjsj(now);
-            addSjzd.setCjr(userId);
-            addSjzd.setGxsj(now);
-            addSjzd.setGxr(userId);
-            sjzdMapper.insert(addSjzd);
-            //判断修改的数据字典是否是技术类别或者技术领域
-            if (addSjzd.getSsmk() != null) {
-                if (addSjzd.getSsmk().equals("technology_category")) {
-                    TJsLb tJsLb=new TJsLb();
-                    tJsLb.setId(addSjzd.getId());
-                    tJsLb.setBh(addSjzd.getXtlb());
-                    tJsLb.setMc(addSjzd.getZdmc());
-                    tJsLb.setXq(addSjzd.getZdmc()+"详情");
-                    jslbService.save(tJsLb);
-                }
-                if (addSjzd.getSsmk().equals("technical_field")) {
-                    TJsLy tJsLy=new TJsLy();
-                    tJsLy.setId(addSjzd.getId());
-                    tJsLy.setBh(addSjzd.getXtlb());
-                    tJsLy.setMc(addSjzd.getZdmc());
-                    tJsLy.setXq(addSjzd.getZdmc()+"详情");
-                    jslyService.save(tJsLy);
-                }
-
-            }
         }
 
         return sjzd;
