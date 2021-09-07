@@ -53,7 +53,7 @@ public class KcsjServiceImpl extends ServiceImpl<KcsjMapper, Kcsj> implements Kc
     public PageInfo<Kcsj> fingByPage(Integer pageNum, Integer pageSize, Long fjjgId) {
 
         PageHelper.startPage(pageNum, pageSize);
-
+        fjjgId = getFjjgId();
         QueryWrapper<Kcsj> query = new QueryWrapper();
         query.eq("sfsc",false)
              .eq(fjjgId != null,"fjjg_id",fjjgId)
@@ -128,5 +128,13 @@ public class KcsjServiceImpl extends ServiceImpl<KcsjMapper, Kcsj> implements Kc
         kcsj.setSfsc(true);
 
         kcsjMapper.updateById(kcsj);
+    }
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId = null;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        }
+        return fjjgId;
     }
 }
