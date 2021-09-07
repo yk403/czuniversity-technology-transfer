@@ -579,7 +579,9 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
      * @return
      */
     private List<KcXsXfDTO> getKcXsXfDTOList(String xylx,Long pcId){
-        List<KcXsXfDTO> kcXsXfDTOList = kcMapper.findByXylx(xylx);
+        Pc pc = pcMapper.selectOne(new QueryWrapper<Pc>().eq("sfsc", false).eq("id", pcId));
+        Long fjjgId = pc.getFjjgId();
+        List<KcXsXfDTO> kcXsXfDTOList = kcMapper.findByXylx(xylx,fjjgId);
 
         List<KcXsXfDTO> pkByXylx= kcMapper.findPkByXylx(xylx,pcId);
         for (int i = 0; i < kcXsXfDTOList.size(); i++) {
