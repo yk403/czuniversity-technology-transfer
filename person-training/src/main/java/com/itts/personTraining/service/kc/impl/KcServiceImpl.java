@@ -615,7 +615,18 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                         if(kcXsXfDTO.getSkszmc() == null){
                             kcXsXfDTO.setSkszmc(kcXsXfDTO1.getSkszmc());
                         }else {
-                            kcXsXfDTO.setSkszmc(kcXsXfDTO.getSkszmc()+"/"+kcXsXfDTO1.getSkszmc());
+                            String skszmc = kcXsXfDTO.getSkszmc();
+                            String[] split = skszmc.split("/");
+                            int n = 0;
+                            for (String s : split) {
+                                if(Objects.equals(s,kcXsXfDTO1.getSkszmc())){
+                                    n++;
+                                }
+                            }
+                            if(n == 0){
+                                kcXsXfDTO.setSkszmc(kcXsXfDTO.getSkszmc()+"/"+kcXsXfDTO1.getSkszmc());
+                            }
+
                         }
 
                     }

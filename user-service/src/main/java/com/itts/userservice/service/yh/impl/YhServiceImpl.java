@@ -541,7 +541,11 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
         if(!Objects.equals(request.getYhlb(),old.getYhlb())){
             yhJsGlMapper.deleteByUserId(old.getId());
             //设置默认角色
-            Js defaultJs = jsMapper.getDefault(request.getYhlx(), request.getYhlb());
+            Js defaultJs = jsMapper.selectOne(new QueryWrapper<Js>().eq("jg_id", request.getJgId())
+                    .eq("yhjslx", request.getYhlx())
+                    .eq("sfmr", true)
+                    .eq("jslb", request.getYhlb())
+                    .eq("sfsc", false));
 
             if (defaultJs != null) {
 
