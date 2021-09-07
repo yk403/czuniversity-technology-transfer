@@ -246,7 +246,7 @@ public class JjrpxjhServiceImpl extends ServiceImpl<JjrpxjhMapper, Jjrpxjh> impl
         JjrpxjhDTO jjrpxjhDTO = jjrpxjhMapper.getJirpxjh();
         if (jjrpxjhDTO != null) {
             //根据学员类型查询课程
-            List<KcXsXfDTO> kcDTOList = kcMapper.findByXylx(jjrpxjhDTO.getXylx());
+            List<KcXsXfDTO> kcDTOList = kcMapper.findByXylx(jjrpxjhDTO.getXylx(),null);
             jjrpxjhDTO.setKcDTOList(kcDTOList);
         }
         //查询授课教师

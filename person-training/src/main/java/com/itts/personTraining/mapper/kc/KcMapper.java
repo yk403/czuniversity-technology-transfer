@@ -88,7 +88,7 @@ public interface KcMapper extends BaseMapper<Kc> {
      * @param xylx
      * @return
      */
-    List<KcXsXfDTO> findByXylx(@Param("xylx") String xylx);
+    List<KcXsXfDTO> findByXylx(@Param("xylx") String xylx,@Param("fjjgId")Long fjjgId);
     /**
      * 查询课程排课列表
      * @param xylx

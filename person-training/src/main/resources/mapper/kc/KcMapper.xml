@@ -64,6 +64,7 @@
         from t_kc kc
         where   kc.sfsc = false
         <if test="xylx != null and xylx != ''">and kc.xylx = #{xylx}</if>
+        <if test="fjjgId != null and fjjgId != ''">and kc.fjjg_id = #{fjjgId}</if>
         order by kc.cjsj desc
     </select>
     <select id="findPkByXylx" resultType="com.itts.personTraining.dto.KcXsXfDTO">
