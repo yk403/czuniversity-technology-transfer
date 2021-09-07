@@ -74,6 +74,6 @@ public interface PcMapper extends BaseMapper<Pc> {
      * 查询未录入批次
      * @return
      */
-    List<Pc> findPcs();
+    List<Pc> findPcs(@Param("fjjgId") Long fjjgId);
 
 }
