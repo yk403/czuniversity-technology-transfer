@@ -20,7 +20,7 @@ public interface TkzyService extends IService<Tkzy> {
     /**
      * 列表 - 有题目选项
      */
-    PageInfo listByDetail(Integer pageNum, Integer pageSize, String firstCategory, String secondCategory, Long courseId, Integer score, String type, Boolean putOnShelf);
+    PageInfo listByDetail(Integer pageNum, Integer pageSize, String firstCategory, String secondCategory, Long courseId, Integer score, String type, Boolean putOnShelf, Long fjjgId);
 
     /**
      * 详情

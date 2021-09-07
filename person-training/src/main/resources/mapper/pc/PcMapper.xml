@@ -70,7 +70,7 @@
     <select id="findPcs" resultType="com.itts.personTraining.model.pc.Pc">
         select *
         from t_pc pc
-        where pc.sfsc = false and pc.id not in (select distinct tpj.pc_id from t_py_jh tpj left join t_pc pc on (pc.id=tpj.pc_id) where tpj.sfsc = false and pc.sfsc = false )
+        where pc.sfsc = false and pc.fjjg_id = #{fjjgId} and pc.id not in (select distinct tpj.pc_id from t_py_jh tpj left join t_pc pc on (pc.id=tpj.pc_id) where tpj.sfsc = false and pc.sfsc = false )
         order by pc.cjsj desc
     </select>
 

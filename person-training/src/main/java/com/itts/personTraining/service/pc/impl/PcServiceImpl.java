@@ -260,7 +260,8 @@ public class PcServiceImpl implements PcService {
     @Override
     public List<Pc> findPcs() {
         log.info("【人才培养 - 查询未录入批次】");
-        List<Pc> pcList = pcMapper.findPcs();
+
+        List<Pc> pcList = pcMapper.findPcs(getFjjgId());
         return pcList;
     }
 
