@@ -843,8 +843,6 @@ public class YhServiceImpl extends ServiceImpl<YhMapper, Yh> implements YhServic
             case "tutor":
             case "corporate_mentor":
             case "teacher":
-            case "school_leader":
-            case "cloud_admin":
                 addSzgl(yh, token);
                 break;
             case "professor":
