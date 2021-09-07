@@ -195,6 +195,7 @@ public class PcServiceImpl implements PcService {
         Pc pcById = pcMapper.getPcById(id);
         String xylx = pcById.getXylx();
         Long fjjgId = pcById.getFjjgId();
+
         List<Kc> kcList = kcMapper.selectList(new QueryWrapper<Kc>().eq("xylx", xylx).eq("sfsc", false).eq("fjjg_id", fjjgId));
         return kcList;
     }

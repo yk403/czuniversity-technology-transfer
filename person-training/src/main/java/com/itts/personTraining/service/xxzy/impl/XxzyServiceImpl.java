@@ -174,13 +174,12 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
     JgglVO jggl = response.conversionData(new TypeReference<JgglVO>() {});
     PageHelper.startPage(pageNum, pageSize);
-    LoginUser loginUser = threadLocal.get();
-    Long fjjgId = loginUser.getFjjgId();
+
     List<Xxzy> result = xxzyMapper.selectList(new QueryWrapper<Xxzy>().eq("zylb", type).eq("sfsc", false)
         .eq("sfsj", true).eq(StringUtils.isNotBlank(firstCategory), "zyyjfl", firstCategory)
         .eq(StringUtils.isNotBlank(secondCategory), "zyejfl", secondCategory).eq(StringUtils.isNotBlank(category), "zylx", category)
         .eq(StringUtils.isNotBlank(direction), "zyfx", direction).eq(courseId != null, "kc_id", courseId)
-        .like(StringUtils.isNotBlank(condition), "mc", condition).eq(fjjgId != null,"fjjg_id",jggl.getId()));
+        .like(StringUtils.isNotBlank(condition), "mc", condition).eq( jggl.getId() != null,"fjjg_id",jggl.getId()));
 
     PageInfo pageInfo = new PageInfo(result);
 
