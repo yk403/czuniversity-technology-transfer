@@ -269,4 +269,12 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         }
         return fjjgId;
     }
+
+    /**
+     * 随机生成考试试卷
+     */
+    public Kssj randomTest(int zf) {
+
+        return null;
+    }
 }

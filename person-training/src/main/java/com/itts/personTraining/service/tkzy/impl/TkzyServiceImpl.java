@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.itts.common.constant.SystemConstant.threadLocal;
+
 /**
  * <p>
  * 题库资源 服务实现类
@@ -50,7 +52,7 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
      * 列表 - 有题目选项
      */
     @Override
-    public PageInfo listByDetail(Integer pageNum, Integer pageSize, String firstCategory, String secondCategory, Long courseId, Integer score, String type, Boolean putOnShelf) {
+    public PageInfo listByDetail(Integer pageNum, Integer pageSize, String firstCategory, String secondCategory, Long courseId, Integer score, String type, Boolean putOnShelf, Long fjjgId) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -60,7 +62,8 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
                 .eq(courseId != null, "kc_id", courseId)
                 .eq(score != null, "fz", score)
                 .eq(putOnShelf != null, "sfsj", putOnShelf)
-                .eq(StringUtils.isNotBlank(type), "tmlx", type));
+                .eq(StringUtils.isNotBlank(type), "tmlx", type)
+                .eq(fjjgId != null, "fjjg_id", fjjgId));
 
         if (CollectionUtils.isEmpty(tkzys)) {
             return null;
@@ -156,8 +159,7 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
         tkzy.setGxr(userId);
         tkzy.setCjsj(now);
         tkzy.setGxsj(now);
-        Long fjjgId = loginUser.getFjjgId();
-        tkzy.setFjjgId(fjjgId);
+        tkzy.setFjjgId(getFjjgId());
         tkzyMapper.insert(tkzy);
 
         if (CollectionUtils.isEmpty(addTkzyRequest.getTmxxs())) {
@@ -265,5 +267,18 @@ public class TkzyServiceImpl extends ServiceImpl<TkzyMapper, Tkzy> implements Tk
         }
 
         return tkzy;
+    }
+
+    /**
+     * 获取父级机构ID
+     * @return
+     */
+    private Long getFjjgId(){
+        LoginUser loginUser = threadLocal.get();
+        Long fjjgId = null;
+        if (loginUser != null) {
+            fjjgId = loginUser.getFjjgId();
+        }
+        return fjjgId;
     }
 }

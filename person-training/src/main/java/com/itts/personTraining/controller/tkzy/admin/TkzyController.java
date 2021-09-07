@@ -115,9 +115,10 @@ public class TkzyController {
                                       @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
                                       @ApiParam(value = "分值") @RequestParam(value = "score", required = false) Integer score,
                                       @ApiParam(value = "题目类型") @RequestParam(value = "type", required = false) String type,
-                                      @ApiParam(value = "是否上架") @RequestParam(value = "putOnShelf", required = false) Boolean putOnShelf) {
+                                      @ApiParam(value = "是否上架") @RequestParam(value = "putOnShelf", required = false) Boolean putOnShelf,
+                                      @ApiParam(value = "父级机构ID") @RequestParam(value = "fjjgId", required = false) Long fjjgId) {
 
-        PageInfo tkzys = tkzyService.listByDetail(pageNum, pageSize, firstCategory, secondCategory, courseId, score, type, putOnShelf);
+        PageInfo tkzys = tkzyService.listByDetail(pageNum, pageSize, firstCategory, secondCategory, courseId, score, type, putOnShelf, fjjgId);
         return ResponseUtil.success(tkzys);
     }
 
