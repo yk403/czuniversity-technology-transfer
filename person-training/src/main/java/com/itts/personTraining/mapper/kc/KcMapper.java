@@ -40,7 +40,7 @@ public interface KcMapper extends BaseMapper<Kc> {
      * @param pcId
      * @return
      */
-    List<Kc> findKcByPcId(@Param("pcId") Long pcId);
+    List<Kc> findKcByPcId(@Param("pcId") Long pcId,@Param("fjjgId")Long fjjgId);
 
     /**
      * 通过批次id查询学生课程成绩集合

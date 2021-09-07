@@ -145,8 +145,9 @@ public class XsCjServiceImpl extends ServiceImpl<XsCjMapper, XsCj> implements Xs
                 return xsKcCjService.saveBatch(xsKcCjs);
             } else {
                 Long pcId = xsCjDTO.getPcId();
+                Pc pc = pcMapper.selectOne(new QueryWrapper<Pc>().eq("sfsc", false).eq("id", pcId));
                 //Pc pcById = pcMapper.getPcById(pcId);
-                List<Long> kcIds = kcMapper.findKcByPcId(pcId).stream().map(Kc::getId).collect(Collectors.toList());
+                List<Long> kcIds = kcMapper.findKcByPcId(pcId,pc.getFjjgId()).stream().map(Kc::getId).collect(Collectors.toList());
                 for (Long kcId : kcIds) {
                     XsKcCj xsKcCj = new XsKcCj();
                     xsKcCj.setXsCjId(id);
