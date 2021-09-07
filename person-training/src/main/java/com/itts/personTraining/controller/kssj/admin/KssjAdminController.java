@@ -11,9 +11,11 @@ import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.kssj.Kssj;
 import com.itts.personTraining.request.kssj.AddKssjRequest;
+import com.itts.personTraining.request.kssj.RandomKssjRequest;
 import com.itts.personTraining.request.kssj.UpdateKssjRequest;
 import com.itts.personTraining.service.kssj.KssjService;
 import com.itts.personTraining.vo.kssj.GetKssjVO;
+import com.itts.personTraining.vo.sjpz.SjpzVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -51,7 +53,8 @@ public class KssjAdminController {
                              @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
                              @ApiParam(value = "试卷类型") @RequestParam(value = "paperType", required = false) String paperType,
                              @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
-                             @ApiParam(value = "父级机构ID") @RequestParam(value = "fjjgId", required = false) Long fjjgId) {
+                             @ApiParam(value = "父级机构ID") @RequestParam(value = "fjjgId", required = false) Long fjjgId,
+                             @RequestParam(value = "lx",required = false)String lx) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -62,6 +65,7 @@ public class KssjAdminController {
                 .eq(StringUtils.isNotBlank(paperType), "sjlx", paperType)
                 .eq(courseId != null, "kc_id", courseId)
                 .eq(fjjgId != null, "fjjg_id", fjjgId)
+                .eq(lx !=null,"lx",lx)
                 .like(StringUtils.isNotBlank(condition), "sjmc", condition)
                 .orderByDesc("cjsj"));
 
@@ -93,6 +97,12 @@ public class KssjAdminController {
         Kssj kssj = kssjService.add(addKssjRequest);
 
         return ResponseUtil.success(kssj);
+    }
+    @ApiOperation(value = "随机组卷")
+    @PostMapping("/random/add/")
+    public ResponseUtil randomAdd(@RequestBody RandomKssjRequest randomKssjRequest) {
+        Boolean aBoolean = kssjService.randomAdd(randomKssjRequest);
+        return ResponseUtil.success(aBoolean);
     }
 
     @ApiOperation(value = "更新")

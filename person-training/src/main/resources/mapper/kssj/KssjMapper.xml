@@ -23,12 +23,15 @@
         <result column="cjr" property="cjr"/>
         <result column="gxsj" property="gxsj"/>
         <result column="gxr" property="gxr"/>
+        <result column="gxr" property="gxr"/>
+        <result column="lx" property="lx"/>
+        <result column="sjpz_id" property="sjpzId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id
-        , kc_id, kc_mc, sjmc, tmzs, sjzf, pdzf, danzf, duozf, jylx, xylx, sjlx, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr
+        , kc_id, kc_mc, sjmc, tmzs, sjzf, pdzf, danzf, duozf, jylx, xylx, sjlx, sfsj, sjsj, sfsc, cjsj, cjr, gxsj, gxr,lx,sjpz_id
     </sql>
 
 </mapper>

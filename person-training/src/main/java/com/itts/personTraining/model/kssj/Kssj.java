@@ -151,4 +151,7 @@ public class Kssj implements Serializable {
      */
     @ApiModelProperty(value = "更新人")
     private Long gxr;
+
+    private String lx;
+    private Long sjpzId;
 }

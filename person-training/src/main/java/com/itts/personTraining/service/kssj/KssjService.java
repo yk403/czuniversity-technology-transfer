@@ -3,8 +3,10 @@ package com.itts.personTraining.service.kssj;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.itts.personTraining.model.kssj.Kssj;
 import com.itts.personTraining.request.kssj.AddKssjRequest;
+import com.itts.personTraining.request.kssj.RandomKssjRequest;
 import com.itts.personTraining.request.kssj.UpdateKssjRequest;
 import com.itts.personTraining.vo.kssj.GetKssjVO;
+import com.itts.personTraining.vo.sjpz.SjpzVO;
 
 /**
  * <p>
@@ -21,6 +23,7 @@ public interface KssjService extends IService<Kssj> {
      */
     GetKssjVO get(Long id);
 
+    Boolean randomAdd(RandomKssjRequest randomKssjRequest);
     /**
      * 新增
      */
