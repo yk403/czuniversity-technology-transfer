@@ -12,11 +12,14 @@ import com.itts.userservice.enmus.LmglEnum;
 import com.itts.userservice.feign.persontraining.gngl.GnglFeignService;
 import com.itts.userservice.feign.persontraining.lmgl.LmglRpcService;
 import com.itts.userservice.feign.persontraining.rmdt.RmdtFeignService;
+import com.itts.userservice.feign.persontraining.stgl.StglFeignService;
 import com.itts.userservice.mapper.jggl.JgglMapper;
 import com.itts.userservice.model.jggl.Jggl;
 import com.itts.userservice.model.lmgl.Lmgl;
+import com.itts.userservice.model.stgl.Stgl;
 import com.itts.userservice.request.gngl.AddGnglRequest;
 import com.itts.userservice.request.rmdt.AddRmdtRequest;
+import com.itts.userservice.request.stgl.AddStglRequest;
 import com.itts.userservice.service.jggl.JgglService;
 import com.itts.userservice.vo.JgglVO;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +58,8 @@ public class JgglServiceImpl extends ServiceImpl<JgglMapper, Jggl> implements Jg
     private GnglFeignService gnglFeignService;
     @Resource
     private RmdtFeignService rmdtFeignService;
+    @Resource
+    private StglFeignService stglFeignService;
 
     /**
      * 轮播图功能简介
@@ -314,6 +319,30 @@ public class JgglServiceImpl extends ServiceImpl<JgglMapper, Jggl> implements Jg
                         break;
                 }
                 lmglRpcService.add(lmgl);
+            }
+            for (int i = 0; i < 4; i++) {
+                AddStglRequest stgl = new AddStglRequest();
+
+                stgl.setJgId(jggl.getId());
+                switch (i){
+                    case 1:
+                        stgl.setMc("需求大厅");
+                        stgl.setPx("1");
+                        break;
+                    case 2:
+                        stgl.setMc("技术成果");
+                        stgl.setPx("2");
+                        break;
+                    case 3:
+                        stgl.setMc("教学资源");
+                        stgl.setPx("3");
+                        break;
+                    case 4:
+                        stgl.setMc("师资团队");
+                        stgl.setPx("4");
+                        break;
+                }
+                stglFeignService.add(stgl);
             }
             for (int i = 1; i <= 5; i++) {
 
