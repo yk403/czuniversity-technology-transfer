@@ -68,9 +68,7 @@ public class JsServiceImpl implements JsService {
     @Override
     public PageInfo<Js> findByPage(Integer pageNum, Integer pageSize, String name, String systemType,Long jgId) {
         log.info("分页是否起效,pageNum:{}",pageNum);
-        if(pageNum != -1){
-            PageHelper.startPage(pageNum, pageSize);
-        }
+
         Jggl jggl = jgglMapper.selectOne(new QueryWrapper<Jggl>().eq("id", jgId).eq("sfsc", false));
         Jggl jggl1 = jgglMapper.selectOne(new QueryWrapper<Jggl>().eq("jgbm", StringUtils.substring(jggl.getCj(), 0, 3))
                 .eq("sfsc", false));
@@ -87,6 +85,10 @@ public class JsServiceImpl implements JsService {
         query.eq(jgId!=null,"jg_id",jgId);
 
         query.orderByDesc("cjsj");
+
+        if(pageNum != -1){
+            PageHelper.startPage(pageNum, pageSize);
+        }
 
         List<Js> js = jsMapper.selectList(query);
         PageInfo<Js> tJsPageInfo = new PageInfo<>(js);
