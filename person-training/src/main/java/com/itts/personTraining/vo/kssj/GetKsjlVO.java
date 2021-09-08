@@ -1,5 +1,6 @@
 package com.itts.personTraining.vo.kssj;
 
+import com.itts.personTraining.vo.sjpz.SjpzVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -65,4 +66,7 @@ public class GetKsjlVO implements Serializable {
      */
     @ApiModelProperty(value = "考试记录题目")
     private List<GetKsjlTmVO> ksjlTms;
+
+    @ApiModelProperty(value = "试卷配置")
+    private SjpzVO sjpzVO;
 }

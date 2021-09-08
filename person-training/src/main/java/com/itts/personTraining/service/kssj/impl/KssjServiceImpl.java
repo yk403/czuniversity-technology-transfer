@@ -212,9 +212,9 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
 
         //新增试卷题目关联
         List<Long> kcIdList = null;
-        if(Objects.equals(sjlb,"选课")){
+        if(Objects.equals(sjlx,"single_subject")){
             kcIdList = randomKssjRequest.getKcIdList();
-        }else if(Objects.equals(sjlb,"综合")){
+        }else if(Objects.equals(sjlx,"comprehensive")){
             List<Kc> kcs = kcMapper.selectList(new QueryWrapper<Kc>().eq("fjjg_id", fjjgId)
                     .eq("xylx", xylx)
                     .eq("sfsc", false));
@@ -307,6 +307,7 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
 
     private void random(Long id,Sjtxndpz sjtxndpz,String sjtxnd,String tkzyType,List<Long> kcIdList){
         List<Tkzy> by = getBy(sjtxnd, tkzyType, kcIdList);
+        //随机获取题目
         Collections.shuffle(by);
         List<Tkzy> tkzies = by.subList(0, sjtxndpz.getTs());
         if(tkzies.size() < sjtxndpz.getTs()){
@@ -315,6 +316,7 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
             kssjMapper.updateById(kssj);
             throw new ServiceException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
+        //建立试卷题目关联
         List<Long> collect = tkzies.stream().map(Tkzy::getId).collect(Collectors.toList());
         for (Long aLong : collect) {
             SjTmGl sjTmGl = new SjTmGl();

@@ -32,15 +32,19 @@ import com.itts.personTraining.model.xsCj.XsCj;
 import com.itts.personTraining.request.kssj.CommitKsjlRequest;
 import com.itts.personTraining.request.kssj.CommitKsjlXxRequest;
 import com.itts.personTraining.service.kssj.KsjlService;
+import com.itts.personTraining.service.sjpz.SjpzService;
 import com.itts.personTraining.vo.kssj.GetKsjlTmVO;
 import com.itts.personTraining.vo.kssj.GetKsjlTmXxVO;
 import com.itts.personTraining.vo.kssj.GetKsjlVO;
+import com.itts.personTraining.vo.sjpz.SjpzVO;
+import com.itts.personTraining.vo.sjpz.SjtxpzVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -86,6 +90,8 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
     @Autowired
     private TzXsMapper tzXsMapper;
+    @Resource
+    private SjpzService sjpzService;
 
     /**
      * 获取详情
@@ -222,6 +228,9 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         BeanUtils.copyProperties(ksjl, getKsjlVO);
         getKsjlVO.setCjsj(ksjl.getCjsj().getTime());
 
+        Long sjpzId = kssj.getSjpzId();
+
+
         //获取当前试卷的题目
         List<Tkzy> tms = tkzyMapper.findBySjId(kssj.getId());
         //获取题目ID
@@ -250,7 +259,20 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         while (tmIterator.hasNext()) {
 
             Tkzy tm = tmIterator.next();
-
+            //将题目分值替换为试卷配置的分值
+            if(sjpzId != null){
+                SjpzVO sjpzVO = sjpzService.get(sjpzId);
+                SjtxpzVO judge = sjpzVO.getJudge();
+                SjtxpzVO single = sjpzVO.getSingle();
+                SjtxpzVO multiple = sjpzVO.getMultiple();
+                if(Objects.equals(tm.getTmlx(),TkzyTypeEnum.JUDGMENT.getKey())){
+                    tm.setFz(judge.getDtfz());
+                }else if(Objects.equals(tm.getTmlx(),TkzyTypeEnum.SINGLE_CHOICE.getKey())){
+                    tm.setFz(single.getDtfz());
+                }else if(Objects.equals(tm.getTmlx(),TkzyTypeEnum.MULTIPLE_CHOICE.getKey())){
+                    tm.setFz(multiple.getDtfz());
+                }
+            }
             GetKsjlTmVO getKsjlTmVO = new GetKsjlTmVO();
             BeanUtils.copyProperties(tm, getKsjlTmVO);
 
@@ -288,6 +310,8 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         BeanUtils.copyProperties(ksjl, getKsjlVO);
         getKsjlVO.setCjsj(ksjl.getCjsj().getTime());
 
+        Kssj kssj = kssjMapper.selectOne(new QueryWrapper<Kssj>().eq("id", ksjl.getSjId()).eq("sfsc", false));
+        Long sjpzId = kssj.getSjpzId();
         //获取当前考试记录所有考试选项
         List<Ksjlxx> ksjlxxs = ksjlxxMapper.selectList(new QueryWrapper<Ksjlxx>().eq("ksjl_id", ksjl.getId()));
         if (CollectionUtils.isEmpty(ksjlxxs)) {
@@ -304,7 +328,23 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             return getKsjlVO;
         }
 
+
         List<GetKsjlTmVO> tmVOs = tms.stream().map(obj -> {
+
+            //将题目分值替换为试卷配置的分值
+            if(sjpzId != null){
+                SjpzVO sjpzVO = sjpzService.get(sjpzId);
+                SjtxpzVO judge = sjpzVO.getJudge();
+                SjtxpzVO single = sjpzVO.getSingle();
+                SjtxpzVO multiple = sjpzVO.getMultiple();
+                if(Objects.equals(obj.getTmlx(),TkzyTypeEnum.JUDGMENT.getKey())){
+                    obj.setFz(judge.getDtfz());
+                }else if(Objects.equals(obj.getTmlx(),TkzyTypeEnum.SINGLE_CHOICE.getKey())){
+                    obj.setFz(single.getDtfz());
+                }else if(Objects.equals(obj.getTmlx(),TkzyTypeEnum.MULTIPLE_CHOICE.getKey())){
+                    obj.setFz(multiple.getDtfz());
+                }
+            }
 
             GetKsjlTmVO getKsjlTmVO = new GetKsjlTmVO();
             BeanUtils.copyProperties(obj, getKsjlTmVO);
@@ -342,11 +382,28 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         if (ksjl == null) {
             return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-
+        Kssj kssj2 = kssjMapper.selectOne(new QueryWrapper<Kssj>().eq("id", ksjl.getSjId()).eq("sfsc", false));
+        Long sjpzId = kssj2.getSjpzId();
         //获取当前试卷所有题目
         List<Tkzy> tms = tkzyMapper.findBySjId(ksjl.getSjId());
         if (CollectionUtils.isEmpty(tms)) {
             return ResponseUtil.error(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+        if (sjpzId != null) {
+            SjpzVO sjpzVO = sjpzService.get(sjpzId);
+            SjtxpzVO judge = sjpzVO.getJudge();
+            SjtxpzVO single = sjpzVO.getSingle();
+            SjtxpzVO multiple = sjpzVO.getMultiple();
+            for (Tkzy tm : tms) {
+                //将题目分值替换为试卷配置的分值
+                if(Objects.equals(tm.getTmlx(),TkzyTypeEnum.JUDGMENT.getKey())){
+                    tm.setFz(judge.getDtfz());
+                }else if(Objects.equals(tm.getTmlx(),TkzyTypeEnum.SINGLE_CHOICE.getKey())){
+                    tm.setFz(single.getDtfz());
+                }else if(Objects.equals(tm.getTmlx(),TkzyTypeEnum.MULTIPLE_CHOICE.getKey())){
+                    tm.setFz(multiple.getDtfz());
+                }
+            }
         }
 
         Map<Long, Tkzy> tmMap = tms.stream().collect(Collectors.toMap(Tkzy::getId, Function.identity()));
