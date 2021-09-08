@@ -22,4 +22,5 @@ public interface SjpzService extends IService<Sjpz> {
     SjpzVO add(SjpzVO sjpzVO);
     Sjpz getByMc(String mc);
     SjpzVO update(SjpzVO sjpzVO);
+    Boolean delete(Long id);
 }

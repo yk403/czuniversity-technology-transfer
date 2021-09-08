@@ -26,6 +26,7 @@ import com.itts.personTraining.request.kssj.RandomKssjRequest;
 import com.itts.personTraining.request.kssj.UpdateKssjRequest;
 import com.itts.personTraining.service.kssj.KssjService;
 import com.itts.personTraining.vo.kssj.GetKssjVO;
+import com.itts.personTraining.vo.kssj.GetRandomKssjVO;
 import com.itts.personTraining.vo.sjpz.SjpzVO;
 import com.itts.personTraining.vo.sjpz.SjtxpzVO;
 import com.itts.personTraining.vo.tkzy.GetTkzyVO;
@@ -152,6 +153,11 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         return vo;
     }
 
+    /**
+     * 随机组卷添加
+     * @param randomKssjRequest
+     * @return
+     */
     @Override
     public Boolean randomAdd(RandomKssjRequest randomKssjRequest) {
         Kssj bySjmc = getBySjmc(randomKssjRequest.getSjmc());
@@ -215,10 +221,16 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         random(id,multiple.getDifficulty(),SjtxndpzEnum.DIFFCULTY.getValue(),TkzyTypeEnum.MULTIPLE_CHOICE.getKey(), kcIdList);
         return true;
     }
+
+    @Override
+    public GetRandomKssjVO getRandom(Long id) {
+        return null;
+    }
+
     private void random(Long id,Sjtxndpz sjtxndpz,String sjtxnd,String tkzyType,List<Long> kcIdList){
         List<Tkzy> by = getBy(sjtxnd, tkzyType, kcIdList);
         Collections.shuffle(by);
-        List<Tkzy> tkzies = by.subList(0, sjtxndpz.getTs());
+        List<Tkzy> tkzies = by.subList(0, sjtxndpz.getTs()-1);
         List<Long> collect = tkzies.stream().map(Tkzy::getId).collect(Collectors.toList());
         for (Long aLong : collect) {
             SjTmGl sjTmGl = new SjTmGl();

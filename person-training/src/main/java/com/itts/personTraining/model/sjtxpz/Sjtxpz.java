@@ -69,7 +69,7 @@ public class Sjtxpz implements Serializable {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date cjsj;
 
     /**
@@ -80,7 +80,7 @@ public class Sjtxpz implements Serializable {
     /**
      * 更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date gxsj;
 
     /**
