@@ -30,6 +30,7 @@ import javax.annotation.Resource;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.GET_THREADLOCAL_ERROR;
@@ -81,50 +82,36 @@ public class SjpzServiceImpl extends ServiceImpl<SjpzMapper, Sjpz> implements Sj
         BeanUtils.copyProperties(sjpz,sjpzVO);
         //试卷题型配置
         //判断
-        Sjtxpz sjtxpz = sjtxpzService.get(id, TkzyTypeEnum.JUDGMENT.getMsg());
+        sjpzVO = getBy(id,sjpzVO,TkzyTypeEnum.JUDGMENT.getMsg());
+        //单选
+        sjpzVO = getBy(id,sjpzVO,TkzyTypeEnum.SINGLE_CHOICE.getMsg());
+        //多选
+        sjpzVO = getBy(id,sjpzVO,TkzyTypeEnum.MULTIPLE_CHOICE.getMsg());
+
+        return sjpzVO;
+    }
+    private SjpzVO getBy(Long id,SjpzVO sjpzVO,String tkzyTypeEnum){
+        Sjtxpz sjtxpz = sjtxpzService.get(id, tkzyTypeEnum);
         Long sjtxpzid1 = sjtxpz.getId();
-        SjtxpzVO judgment = new SjtxpzVO();
-        BeanUtils.copyProperties(sjtxpz,judgment);
+        SjtxpzVO sjtxpzVO = new SjtxpzVO();
+        BeanUtils.copyProperties(sjtxpz,sjtxpzVO);
 
         Sjtxndpz easy = sjtxndpzService.get(sjtxpzid1, SjtxndpzEnum.EASY.getValue());
-        judgment.setEasy(easy);
+        sjtxpzVO.setEasy(easy);
 
         Sjtxndpz commonly = sjtxndpzService.get(sjtxpzid1, SjtxndpzEnum.COMMONLY.getValue());
-        judgment.setCommonly(commonly);
+        sjtxpzVO.setCommonly(commonly);
 
         Sjtxndpz difficulty = sjtxndpzService.get(sjtxpzid1, SjtxndpzEnum.DIFFCULTY.getValue());
-        judgment.setDifficulty(difficulty);
-        sjpzVO.setJudge(judgment);
-        //单选
-        Sjtxpz sjtxpz1 = sjtxpzService.get(id, TkzyTypeEnum.SINGLE_CHOICE.getMsg());
-        Long id1 = sjtxpz1.getId();
-        SjtxpzVO single = new SjtxpzVO();
-        BeanUtils.copyProperties(sjtxpz1,single);
+        sjtxpzVO.setDifficulty(difficulty);
 
-        Sjtxndpz easy1 = sjtxndpzService.get(id1, SjtxndpzEnum.EASY.getValue());
-        single.setEasy(easy1);
-
-        Sjtxndpz commonly1 = sjtxndpzService.get(id1, SjtxndpzEnum.COMMONLY.getValue());
-        single.setCommonly(commonly1);
-
-        Sjtxndpz difficulty1 = sjtxndpzService.get(id1, SjtxndpzEnum.DIFFCULTY.getValue());
-        single.setDifficulty(difficulty1);
-        sjpzVO.setSingle(single);
-        //多选
-        Sjtxpz sjtxpz2 = sjtxpzService.get(id, TkzyTypeEnum.MULTIPLE_CHOICE.getMsg());
-        Long id2 = sjtxpz2.getId();
-        SjtxpzVO multiple = new SjtxpzVO();
-        BeanUtils.copyProperties(sjtxpz2,multiple);
-
-        Sjtxndpz easy2 = sjtxndpzService.get(id2, SjtxndpzEnum.EASY.getValue());
-        multiple.setEasy(easy2);
-
-        Sjtxndpz commonly2 = sjtxndpzService.get(id2, SjtxndpzEnum.COMMONLY.getValue());
-        multiple.setCommonly(commonly2);
-
-        Sjtxndpz difficulty2 = sjtxndpzService.get(id2, SjtxndpzEnum.DIFFCULTY.getValue());
-        multiple.setDifficulty(difficulty2);
-        sjpzVO.setMultiple(multiple);
+        if(Objects.equals(tkzyTypeEnum,TkzyTypeEnum.JUDGMENT.getMsg())){
+            sjpzVO.setJudge(sjtxpzVO);
+        }else if(Objects.equals(tkzyTypeEnum,TkzyTypeEnum.SINGLE_CHOICE.getMsg())){
+            sjpzVO.setSingle(sjtxpzVO);
+        }else if(Objects.equals(tkzyTypeEnum,TkzyTypeEnum.MULTIPLE_CHOICE.getMsg())){
+            sjpzVO.setMultiple(sjtxpzVO);
+        }
 
         return sjpzVO;
     }
@@ -150,65 +137,34 @@ public class SjpzServiceImpl extends ServiceImpl<SjpzMapper, Sjpz> implements Sj
         Long id = getByMc(sjpz.getMc()).getId();
         //新增试卷题型配置
         //判断
-        SjtxpzVO judge = sjpzVO.getJudge();
-        judge.setSjpzId(id);
-        Sjtxpz sjtxpz = new Sjtxpz();
-        BeanUtils.copyProperties(judge,sjtxpz);
-        sjtxpzMapper.insert(sjtxpz);
-        Long judgeid1 = sjtxpzService.get(id, TkzyTypeEnum.JUDGMENT.getMsg()).getId();
-        //判断简单
-        Sjtxndpz easy = judge.getEasy();
-        easy.setSjtxpzId(judgeid1);
-        sjtxndpzMapper.insert(easy);
-
-        Sjtxndpz commonly = judge.getCommonly();
-        commonly.setSjtxpzId(judgeid1);
-        sjtxndpzMapper.insert(commonly);
-
-        Sjtxndpz difficulty= judge.getDifficulty();
-        difficulty.setSjtxpzId(judgeid1);
-        sjtxndpzMapper.insert(difficulty);
+        insertSjpz(id,sjpzVO.getJudge(),TkzyTypeEnum.JUDGMENT.getMsg());
 
         //单选
-        SjtxpzVO single = sjpzVO.getSingle();
-        single.setSjpzId(id);
-        Sjtxpz sjtxpz1 = new Sjtxpz();
-        BeanUtils.copyProperties(single,sjtxpz1);
-        sjtxpzMapper.insert(sjtxpz1);
-        Long singleid1 = sjtxpzService.get(id, TkzyTypeEnum.SINGLE_CHOICE.getMsg()).getId();
-        //判断简单
-        Sjtxndpz easy1 = single.getEasy();
-        easy1.setSjtxpzId(singleid1);
-        sjtxndpzMapper.insert(easy1);
-
-        Sjtxndpz commonly1 = single.getCommonly();
-        commonly1.setSjtxpzId(singleid1);
-        sjtxndpzMapper.insert(commonly1);
-
-        Sjtxndpz difficulty1= single.getDifficulty();
-        difficulty1.setSjtxpzId(singleid1);
-        sjtxndpzMapper.insert(difficulty1);
+        insertSjpz(id,sjpzVO.getSingle(),TkzyTypeEnum.SINGLE_CHOICE.getMsg());
 
         //多选
-        SjtxpzVO multiple = sjpzVO.getMultiple();
-        multiple.setSjpzId(id);
-        Sjtxpz sjtxpz2 = new Sjtxpz();
-        BeanUtils.copyProperties(multiple,sjtxpz2);
-        sjtxpzMapper.insert(sjtxpz2);
-        Long multipleid1 = sjtxpzService.get(id, TkzyTypeEnum.MULTIPLE_CHOICE.getMsg()).getId();
-        //判断简单
-        Sjtxndpz easy2 = multiple.getEasy();
-        easy2.setSjtxpzId(multipleid1);
-        sjtxndpzMapper.insert(easy2);
-
-        Sjtxndpz commonly2 = multiple.getCommonly();
-        commonly2.setSjtxpzId(multipleid1);
-        sjtxndpzMapper.insert(commonly2);
-
-        Sjtxndpz difficulty2= multiple.getDifficulty();
-        difficulty2.setSjtxpzId(multipleid1);
-        sjtxndpzMapper.insert(difficulty2);
+        insertSjpz(id, sjpzVO.getMultiple(),TkzyTypeEnum.MULTIPLE_CHOICE.getMsg());
         return sjpzVO;
+    }
+    private void insertSjpz(Long id,SjtxpzVO sjtxpzVO,String tkzyTypeEnum){
+
+        sjtxpzVO.setSjpzId(id);
+        Sjtxpz sjtxpz = new Sjtxpz();
+        BeanUtils.copyProperties(sjtxpzVO,sjtxpz);
+        sjtxpzMapper.insert(sjtxpz);
+        Long id1 = sjtxpzService.get(id, tkzyTypeEnum).getId();
+        //判断简单
+        Sjtxndpz easy = sjtxpzVO.getEasy();
+        easy.setSjtxpzId(id1);
+        sjtxndpzMapper.insert(easy);
+
+        Sjtxndpz commonly = sjtxpzVO.getCommonly();
+        commonly.setSjtxpzId(id1);
+        sjtxndpzMapper.insert(commonly);
+
+        Sjtxndpz difficulty= sjtxpzVO.getDifficulty();
+        difficulty.setSjtxpzId(id1);
+        sjtxndpzMapper.insert(difficulty);
     }
 
     @Override
