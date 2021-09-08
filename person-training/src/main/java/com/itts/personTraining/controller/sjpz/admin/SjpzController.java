@@ -7,6 +7,7 @@ import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.sjpz.Sjpz;
 import com.itts.personTraining.service.sjpz.SjpzService;
 import com.itts.personTraining.vo.sjpz.SjpzVO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
-import static com.itts.common.enums.ErrorCodeEnum.INSERT_FAIL;
-import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR;
+import static com.itts.common.enums.ErrorCodeEnum.*;
 
 /**
  * <p>
@@ -27,6 +27,7 @@ import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR;
  */
 @RestController
 @RequestMapping(ADMIN_BASE_URL + "/v1/sjpz")
+@Api(tags = "试卷后台配置")
 public class SjpzController {
 
     @Resource
@@ -74,6 +75,17 @@ public class SjpzController {
         }
         SjpzVO update = sjpzService.update(sjpzVO);
         return ResponseUtil.success(update);
+    }
+    /**
+     * 删除
+     */
+    @ApiOperation(value ="删除")
+    @DeleteMapping("/delete/{id}")
+    public ResponseUtil delete(@PathVariable("id") Long id) throws WebException {
+        if (id == null) {
+            throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
+        }
+        return ResponseUtil.success(sjpzService.delete(id));
     }
 }
 

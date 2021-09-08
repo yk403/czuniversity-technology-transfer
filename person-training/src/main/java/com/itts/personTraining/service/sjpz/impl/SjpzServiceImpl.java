@@ -230,6 +230,14 @@ public class SjpzServiceImpl extends ServiceImpl<SjpzMapper, Sjpz> implements Sj
         return sjpzVO;
     }
 
+    @Override
+    public Boolean delete(Long id) {
+        Sjpz sjpz = sjpzMapper.selectById(id);
+        sjpz.setSfsc(true);
+        sjpzMapper.updateById(sjpz);
+        return true;
+    }
+
     /**
      * 获取当前用户id
      * @return
