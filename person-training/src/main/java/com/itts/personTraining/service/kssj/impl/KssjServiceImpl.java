@@ -326,9 +326,11 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         }
     }
     private List<Tkzy> getBy(String tmnd,String tmlx,List<Long> kcIdList){
+        Long fjjgId = getFjjgId();
         List<Tkzy> tkzies = tkzyMapper.selectList(new QueryWrapper<Tkzy>().eq("sfsc", false)
                 .eq("tmnd", tmnd)
                 .eq("tmlx",tmlx)
+                .eq("fjjg_id",fjjgId)
                 .in("kc_id", kcIdList));
         return tkzies;
     }
