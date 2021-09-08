@@ -275,7 +275,7 @@ public class JgglServiceImpl extends ServiceImpl<JgglMapper, Jggl> implements Jg
                 || Objects.equals(jggl.getLx(), GroupTypeEnum.BRANCH.getKey())) {
 
             Date now = new Date();
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i <= 2; i++) {
                 AddRmdtRequest addRmdtRequest = new AddRmdtRequest();
                 addRmdtRequest.setJgId(jggl.getId());
                 addRmdtRequest.setKssysj(now);
@@ -320,7 +320,7 @@ public class JgglServiceImpl extends ServiceImpl<JgglMapper, Jggl> implements Jg
                 }
                 lmglRpcService.add(lmgl);
             }
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i <= 4; i++) {
                 AddStglRequest stgl = new AddStglRequest();
 
                 stgl.setJgId(jggl.getId());
