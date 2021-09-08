@@ -25,6 +25,7 @@ import com.itts.personTraining.request.kssj.AddKssjRequest;
 import com.itts.personTraining.request.kssj.RandomKssjRequest;
 import com.itts.personTraining.request.kssj.UpdateKssjRequest;
 import com.itts.personTraining.service.kssj.KssjService;
+import com.itts.personTraining.service.sjpz.SjpzService;
 import com.itts.personTraining.vo.kssj.GetKssjVO;
 import com.itts.personTraining.vo.kssj.GetRandomKssjVO;
 import com.itts.personTraining.vo.sjpz.SjpzVO;
@@ -37,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -68,6 +70,9 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
 
     @Autowired
     private KcMapper kcMapper;
+
+    @Resource
+    private SjpzService sjpzService;
 
     /**
      * 获取试卷详情
@@ -165,10 +170,17 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
             throw new ServiceException(ErrorCodeEnum.NAME_EXIST_ERROR);
         }
         String sjmc = randomKssjRequest.getSjmc();
+        String sjlb = randomKssjRequest.getSjlb();
         String sjlx = randomKssjRequest.getSjlx();
         String xylx = randomKssjRequest.getXylx();
-        SjpzVO sjpzVO = randomKssjRequest.getSjpzVO();
+        Long sjpzId = randomKssjRequest.getSjpzId();
+        SjpzVO sjpzVO = sjpzService.get(sjpzId);
+
         String jylx = randomKssjRequest.getJylx();
+        SjtxpzVO judge = sjpzVO.getJudge();
+        SjtxpzVO single = sjpzVO.getSingle();
+        SjtxpzVO multiple = sjpzVO.getMultiple();
+
         LoginUser loginUser = SystemConstant.threadLocal.get();
         Long userId = null;
         if (loginUser != null) {
@@ -182,7 +194,11 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         kssj.setSjmc(sjmc);
         kssj.setTmzs(sjpzVO.getSjts());
         kssj.setSjzf(sjpzVO.getSjzf());
+        kssj.setPdzf(judge.getTxzf());
+        kssj.setDanzf(single.getTxzf());
+        kssj.setDuozf(multiple.getTxzf());
         kssj.setJylx(jylx);
+        kssj.setSjlb(sjlb);
         kssj.setXylx(xylx);
         kssj.setSjlx(sjlx);
         kssj.setLx("random");
@@ -196,26 +212,26 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
 
         //新增试卷题目关联
         List<Long> kcIdList = null;
-        if(Objects.equals(sjlx,"选课")){
+        if(Objects.equals(sjlb,"选课")){
             kcIdList = randomKssjRequest.getKcIdList();
-        }else if(Objects.equals(sjlx,"综合")){
+        }else if(Objects.equals(sjlb,"综合")){
             List<Kc> kcs = kcMapper.selectList(new QueryWrapper<Kc>().eq("fjjg_id", fjjgId)
                     .eq("xylx", xylx)
                     .eq("sfsc", false));
             kcIdList = kcs.stream().map(Kc::getId).collect(Collectors.toList());
         }
         //判断题
-        SjtxpzVO judge = sjpzVO.getJudge();
+
         random(id,judge.getEasy(),SjtxndpzEnum.EASY.getValue(),TkzyTypeEnum.JUDGMENT.getKey(),kcIdList);
         random(id,judge.getCommonly(),SjtxndpzEnum.COMMONLY.getValue(),TkzyTypeEnum.JUDGMENT.getKey(), kcIdList);
         random(id,judge.getDifficulty(),SjtxndpzEnum.DIFFCULTY.getValue(),TkzyTypeEnum.JUDGMENT.getKey(), kcIdList);
 
-        SjtxpzVO single = sjpzVO.getSingle();
+
         random(id,single.getEasy(),SjtxndpzEnum.EASY.getValue(),TkzyTypeEnum.SINGLE_CHOICE.getKey(),kcIdList);
         random(id,single.getCommonly(),SjtxndpzEnum.COMMONLY.getValue(),TkzyTypeEnum.SINGLE_CHOICE.getKey(), kcIdList);
         random(id,single.getDifficulty(),SjtxndpzEnum.DIFFCULTY.getValue(),TkzyTypeEnum.SINGLE_CHOICE.getKey(), kcIdList);
 
-        SjtxpzVO multiple = sjpzVO.getMultiple();
+
         random(id,multiple.getEasy(),SjtxndpzEnum.EASY.getValue(),TkzyTypeEnum.MULTIPLE_CHOICE.getKey(),kcIdList);
         random(id,multiple.getCommonly(),SjtxndpzEnum.COMMONLY.getValue(),TkzyTypeEnum.MULTIPLE_CHOICE.getKey(), kcIdList);
         random(id,multiple.getDifficulty(),SjtxndpzEnum.DIFFCULTY.getValue(),TkzyTypeEnum.MULTIPLE_CHOICE.getKey(), kcIdList);
@@ -224,13 +240,81 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
 
     @Override
     public GetRandomKssjVO getRandom(Long id) {
-        return null;
+        Kssj kssj = kssjMapper.selectOne(new QueryWrapper<Kssj>().eq("id", id).eq("sfsc", false));
+        GetRandomKssjVO vo = new GetRandomKssjVO();
+        BeanUtils.copyProperties(kssj, vo);
+        //获取试卷配置
+        SjpzVO sjpzVO = sjpzService.get(kssj.getSjpzId());
+
+        Integer dtfz = sjpzVO.getJudge().getDtfz();
+        Integer px = sjpzVO.getJudge().getPx();
+        vo.setPddt(dtfz);
+
+        Integer dtfz1 = sjpzVO.getSingle().getDtfz();
+        Integer px1 = sjpzVO.getSingle().getPx();
+        vo.setDandt(dtfz1);
+
+        Integer dtfz2 = sjpzVO.getMultiple().getDtfz();
+        Integer px2 = sjpzVO.getMultiple().getPx();
+        vo.setDuodt(dtfz2);
+
+        //获取当前考试试卷的所有题目
+        List<SjTmGl> sjTmgls = sjTmGlMapper.selectList(new QueryWrapper<SjTmGl>().eq("kssj_id",id));
+        if (CollectionUtils.isEmpty(sjTmgls)) {
+            return vo;
+        }
+        List<GetTkzyVO> tkzyVOs = Lists.newArrayList();
+        //获取试卷所有题目ID
+        List<Long> sjTmIds = sjTmgls.stream().map(SjTmGl::getTmId).collect(Collectors.toList());
+        //获取所有题目信息
+        List<Tkzy> tms = tkzyMapper.selectList(new QueryWrapper<Tkzy>().in("id",sjTmIds));
+        //循环获取题目选项
+        for (Tkzy tm : tms) {
+            GetTkzyVO tkzyVo = new GetTkzyVO();
+            BeanUtils.copyProperties(tm, tkzyVo);
+            tkzyVOs.add(tkzyVo);
+            List<Tmxx> tmxx = tmxxMapper.findByTmId(tm.getId());
+            if (CollectionUtils.isEmpty(tmxx)) {
+                continue;
+            }
+            List<GetTmxxVO> tmxxVOs = tmxx.stream().map(obj -> {
+                GetTmxxVO tmxxVo = new GetTmxxVO();
+                BeanUtils.copyProperties(obj, tmxxVo);
+                return tmxxVo;
+            }).collect(Collectors.toList());
+            tkzyVo.setTmxxs(tmxxVOs);
+        }
+        Map<String, List<GetTkzyVO>> judgmentMap = Maps.newHashMap();
+        Map<String, List<GetTkzyVO>> singleChoiceMap = Maps.newHashMap();
+        Map<String, List<GetTkzyVO>> multipleChoiceMap = Maps.newHashMap();
+        Map<Integer,Map<String, List<GetTkzyVO>>> pxtmMap = Maps.newHashMap();
+        //将所有题目按照单选、多选、判断分组
+        List<GetTkzyVO> judgmentList = tkzyVOs.stream().filter(obj -> Objects.equals(obj.getTmlx(), TkzyTypeEnum.JUDGMENT.getKey())).collect(Collectors.toList());
+        judgmentMap.put(TkzyTypeEnum.JUDGMENT.getKey(), judgmentList);
+        pxtmMap.put(px,judgmentMap);
+
+        List<GetTkzyVO> singleChoiceList = tkzyVOs.stream().filter(obj -> Objects.equals(obj.getTmlx(), TkzyTypeEnum.SINGLE_CHOICE.getKey())).collect(Collectors.toList());
+        singleChoiceMap.put(TkzyTypeEnum.SINGLE_CHOICE.getKey(), singleChoiceList);
+        pxtmMap.put(px1,singleChoiceMap);
+
+        List<GetTkzyVO> multipleChoiceList = tkzyVOs.stream().filter(obj -> Objects.equals(obj.getTmlx(), TkzyTypeEnum.MULTIPLE_CHOICE.getKey())).collect(Collectors.toList());
+        multipleChoiceMap.put(TkzyTypeEnum.MULTIPLE_CHOICE.getKey(), multipleChoiceList);
+        pxtmMap.put(px2,multipleChoiceMap);
+
+        vo.setTms(pxtmMap);
+        return vo;
     }
 
     private void random(Long id,Sjtxndpz sjtxndpz,String sjtxnd,String tkzyType,List<Long> kcIdList){
         List<Tkzy> by = getBy(sjtxnd, tkzyType, kcIdList);
         Collections.shuffle(by);
-        List<Tkzy> tkzies = by.subList(0, sjtxndpz.getTs()-1);
+        List<Tkzy> tkzies = by.subList(0, sjtxndpz.getTs());
+        if(tkzies.size() < sjtxndpz.getTs()){
+            Kssj kssj = kssjMapper.selectOne(new QueryWrapper<Kssj>().eq("id", id).eq("sfsc", false));
+            kssj.setSfsc(true);
+            kssjMapper.updateById(kssj);
+            throw new ServiceException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
         List<Long> collect = tkzies.stream().map(Tkzy::getId).collect(Collectors.toList());
         for (Long aLong : collect) {
             SjTmGl sjTmGl = new SjTmGl();
