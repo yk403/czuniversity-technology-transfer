@@ -19,6 +19,7 @@ public class TJsFb implements Serializable {
      * 主键
      */
     private Integer id;
+
     /**
      * 名称
      */
@@ -55,5 +56,10 @@ public class TJsFb implements Serializable {
      * 领域id
      */
     private Integer lyId;
+
+    /**
+     * 落槌定价
+     */
+    private BigDecimal lcdj;
 
 }
