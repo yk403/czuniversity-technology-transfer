@@ -1,5 +1,6 @@
 package com.itts.technologytransactionservice.service.cd.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -68,6 +69,7 @@ public class LyRyAdminServiceImpl extends ServiceImpl<LyRyMapper, LyRy> implemen
         }
         return userId;
     }
+
 
 
 }

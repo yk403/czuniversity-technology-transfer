@@ -47,6 +47,7 @@ public enum ErrorCodeEnum {
     BID_OVERTIME_ERROR(-41015, "叫价超时"),
     MIN_BIDHISTORY_ERROR(-41016, "出价价格不能大于等于最高价格"),
     ZW_NAME_EXISTS_ERROR(-41017,"展位名称已存在!"),
+    ZJ_HD_EXISTS_ERROR(-41018,"该专家关联活动已存在!"),
 
     //====================      技术交易服务错误提示  END     ====================
 
