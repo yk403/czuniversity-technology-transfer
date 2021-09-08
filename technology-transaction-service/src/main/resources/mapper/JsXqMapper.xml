@@ -98,12 +98,13 @@
 	</select>
 	<select id="PageByTJsFb" resultType="com.itts.technologytransactionservice.model.TJsFb">
 		SELECT
-		a.fjjg_id as fjjgId,a.id AS id,a.xqmc as name,a.release_type as releaseType,b.mc as lyName,a.hzjg,a.dz,d.cjsj as applyTime,d.jylx as jylx,a.xqtp as tp,a.ly_id as lyId
+		a.fjjg_id as fjjgId,a.id AS id,a.xqmc as name,a.release_type as releaseType,b.mc as lyName,a.hzjg,a.dz,d.cjsj as applyTime,d.jylx as jylx,a.xqtp as tp,a.ly_id as lyId, lckz.lcdj
 		FROM
 		t_js_xq a
 		LEFT JOIN t_js_ly b ON (a.ly_id = b.id)
 		LEFT JOIN t_js_lb c ON (a.lb_id = c.id)
 		LEFT JOIN t_js_sh d ON (a.id = d.xq_id)
+		LEFT JOIN t_js_lc_kz lckz ON (a.id = lckz.xq_id)
 		<where>
 		    a.is_delete = 0
 			<if test="map.name != null and map.name != ''"> and a.xqmc like concat('%',trim(#{map.name}),'%') </if>
@@ -114,11 +115,12 @@
 		</where>
 		UNION
 		SELECT
-		e.fjjg_id as fjjgId,e.id AS id,e.cgmc as name,e.release_type as releaseType,b.mc as lyName,e.hzjg,e.dz,d.cjsj as applyTime,d.jylx as jylx,e.cgtp as tp,e.ly_id as lyId
+		e.fjjg_id as fjjgId,e.id AS id,e.cgmc as name,e.release_type as releaseType,b.mc as lyName,e.hzjg,e.dz,d.cjsj as applyTime,d.jylx as jylx,e.cgtp as tp,e.ly_id as lyId, lckz.lcdj
 		FROM
 		t_js_cg e
 		LEFT JOIN t_js_ly b ON (e.ly_id = b.id)
 		LEFT JOIN t_js_sh d ON (e.id = d.cg_id)
+		LEFT JOIN t_js_lc_kz lckz ON (e.id = lckz.cg_id)
 		<where>
 		    e.is_delete = 0
 			<if test="map.lyId != null"> and e.ly_id = #{map.lyId} </if>
