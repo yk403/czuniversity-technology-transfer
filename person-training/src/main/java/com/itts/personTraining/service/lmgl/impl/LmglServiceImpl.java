@@ -101,13 +101,6 @@ public class LmglServiceImpl extends ServiceImpl<LmglMapper, Lmgl> implements Lm
             }
         }
         Lmgl two = lmgls.get(s + 1);
-        for (int j = 0; j < lmgls.size(); j++) {
-            if(two.getSfsc()){
-                two=lmgls.get(s+1+j+1);
-            }else if(two.getSfsc()==false){
-                break;
-            }
-        }
         String px1 = two.getPx();
         two.setPx(px);
         lmgl.setPx(px1);
@@ -130,13 +123,6 @@ public class LmglServiceImpl extends ServiceImpl<LmglMapper, Lmgl> implements Lm
             }
         }
         Lmgl two = lmgls.get(s + 1);
-        for (int j = 0; j < lmgls.size(); j++) {
-            if(two.getSfsc()){
-                two=lmgls.get(s+1+j+1);
-            }else if(two.getSfsc()==false){
-                break;
-            }
-        }
         String px1 = two.getPx();
         two.setPx(px);
         lmgl.setPx(px1);
