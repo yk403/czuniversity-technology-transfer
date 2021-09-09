@@ -106,7 +106,7 @@ public class StglServiceImpl extends ServiceImpl<StglMapper, Stgl> implements St
                 .orderByDesc("px"));
         int s = 0;
         for (int i = 0; i < stgls.size(); i++) {
-            if(stgls.get(i).getId()==stgl.getId()){
+            if(stgls.get(i).getId().intValue()==stgl.getId().intValue()){
                 s=i;
             }
         }
@@ -127,7 +127,7 @@ public class StglServiceImpl extends ServiceImpl<StglMapper, Stgl> implements St
                 .orderByAsc("px"));
         int s=0;
         for (int i = 0; i < stgls.size(); i++) {
-            if(stgls.get(i).getId()==stgl.getId()){
+            if(stgls.get(i).getId().intValue()==stgl.getId().intValue()){
                 s=i;
             }
         }

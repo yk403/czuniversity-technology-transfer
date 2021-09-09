@@ -95,7 +95,7 @@ public class LmglServiceImpl extends ServiceImpl<LmglMapper, Lmgl> implements Lm
                 .orderByDesc("px"));
         int s = 0;
         for (int i = 0; i < lmgls.size(); i++) {
-            if(lmgls.get(i).getId()==lmgl.getId()){
+            if(lmgls.get(i).getId().intValue()==lmgl.getId().intValue()){
                 s=i;
                 break;
             }
@@ -117,7 +117,7 @@ public class LmglServiceImpl extends ServiceImpl<LmglMapper, Lmgl> implements Lm
                 .orderByAsc("px"));
         int s=0;
         for (int i = 0; i < lmgls.size(); i++) {
-            if(lmgls.get(i).getId()==lmgl.getId()){
+            if(lmgls.get(i).getId().intValue()==lmgl.getId().intValue()){
                 s=i;
                 break;
             }
