@@ -73,7 +73,7 @@ public class SjpzController {
         if(old == null){
             throw new WebException(SYSTEM_NOT_FIND_ERROR);
         }
-        SjpzVO update = sjpzService.update(sjpzVO);
+        SjpzVO update = sjpzService.update(old,sjpzVO);
         return ResponseUtil.success(update);
     }
     /**
