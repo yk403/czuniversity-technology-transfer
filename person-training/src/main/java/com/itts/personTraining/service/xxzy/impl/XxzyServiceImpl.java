@@ -351,13 +351,9 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
     if (StringUtils.isNotBlank(condition)) {
       query.like("mc", condition.trim());
     }
-    LoginUser loginUser1 = threadLocal.get();
-    Long fjjgId = null;
-    if(loginUser1 != null){
-      fjjgId= loginUser1.getFjjgId();
-    }
+    Long fjjgId = getFjjgId();
 
-    if (fjjgId != null) {
+    if (fjjgId != null && StringUtils.isBlank(groupCode)) {
       query.eq("fjjg_id", fjjgId);
     }
 
@@ -365,11 +361,10 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
       ResponseUtil response = groupFeignService.getByCode(groupCode);
       if (response.getErrCode().intValue() == 0) {
 
-        JgglVO jg = response.conversionData(new TypeReference<JgglVO>() {
-        });
+        JgglVO jg = response.conversionData(new TypeReference<JgglVO>() {});
 
         if (jg != null) {
-          query.eq("jg_id", jg.getId());
+          query.eq("fjjg_id", jg.getId());
         }
       }
     }
@@ -535,5 +530,16 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
       throw new ServiceException(GET_THREADLOCAL_ERROR);
     }
     return userId;
+  }
+  /**
+   * 获取父级机构ID
+   */
+  public Long getFjjgId() {
+    LoginUser loginUser = threadLocal.get();
+    Long fjjgId = null;
+    if (loginUser != null) {
+      fjjgId = loginUser.getFjjgId();
+    }
+    return fjjgId;
   }
 }
