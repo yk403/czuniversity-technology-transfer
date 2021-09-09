@@ -305,6 +305,18 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         return vo;
     }
 
+    @Override
+    public RandomKssjRequest randomUpdate(Kssj old, RandomKssjRequest randomKssjRequest) {
+        Kssj bySjmc = getBySjmc(randomKssjRequest.getSjmc());
+        if(bySjmc != null && bySjmc.getId().intValue() != randomKssjRequest.getId().intValue()){
+            throw new ServiceException(ErrorCodeEnum.NAME_EXIST_ERROR);
+        }
+        old.setSfsc(true);
+        kssjMapper.updateById(old);
+        randomAdd(randomKssjRequest);
+        return randomKssjRequest;
+    }
+
     private void random(Long id,Sjtxndpz sjtxndpz,String sjtxnd,String tkzyType,List<Long> kcIdList){
         List<Tkzy> by = getBy(sjtxnd, tkzyType, kcIdList);
         //随机获取题目

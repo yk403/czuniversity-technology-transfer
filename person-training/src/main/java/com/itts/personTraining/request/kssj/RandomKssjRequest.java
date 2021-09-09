@@ -1,5 +1,7 @@
 package com.itts.personTraining.request.kssj;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.itts.personTraining.vo.sjpz.SjpzVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,6 +14,11 @@ public class RandomKssjRequest implements Serializable {
 
     private static final long serialVersionUID = 4523402879345905996L;
 
+    /**
+     * 主键
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
     /**
      * 试卷名称
      */

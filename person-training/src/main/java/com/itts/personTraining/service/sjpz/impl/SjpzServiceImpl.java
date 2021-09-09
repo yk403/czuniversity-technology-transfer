@@ -179,7 +179,7 @@ public class SjpzServiceImpl extends ServiceImpl<SjpzMapper, Sjpz> implements Sj
         Sjpz byMc = getByMc(sjpzVO.getMc());
         //重名不通过
         if(byMc != null && byMc.getId().intValue() != sjpzVO.getId().intValue()){
-            throw new ServiceException(ErrorCodeEnum.SYSTEM_FIND_ERROR);
+            throw new ServiceException(ErrorCodeEnum.NAME_EXIST_ERROR);
         }
         old.setSfsc(true);
         sjpzMapper.updateById(old);
