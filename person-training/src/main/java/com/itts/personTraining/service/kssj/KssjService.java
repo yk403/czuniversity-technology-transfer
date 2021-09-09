@@ -26,6 +26,7 @@ public interface KssjService extends IService<Kssj> {
 
     Boolean randomAdd(RandomKssjRequest randomKssjRequest);
     GetRandomKssjVO getRandom(Long id);
+    RandomKssjRequest randomUpdate(Kssj old,RandomKssjRequest randomKssjRequest);
     /**
      * 新增
      */

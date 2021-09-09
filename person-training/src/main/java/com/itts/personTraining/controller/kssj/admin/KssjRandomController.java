@@ -9,10 +9,12 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.model.kssj.Kssj;
+import com.itts.personTraining.model.sjpz.Sjpz;
 import com.itts.personTraining.request.kssj.RandomKssjRequest;
 import com.itts.personTraining.service.kssj.KssjService;
 import com.itts.personTraining.vo.kssj.GetKssjVO;
 import com.itts.personTraining.vo.kssj.GetRandomKssjVO;
+import com.itts.personTraining.vo.sjpz.SjpzVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR;
 
 @RestController
 @RequestMapping(SystemConstant.ADMIN_BASE_URL + "/v1/kssjRandom")
@@ -77,6 +81,16 @@ public class KssjRandomController {
     public ResponseUtil randomAdd(@RequestBody RandomKssjRequest randomKssjRequest) {
         Boolean aBoolean = kssjService.randomAdd(randomKssjRequest);
         return ResponseUtil.success(aBoolean);
+    }
+    @ApiOperation(value = "更新")
+    @PutMapping("/update/")
+    public ResponseUtil update(@RequestBody RandomKssjRequest randomKssjRequest)throws WebException{
+        Kssj old = kssjService.getById(randomKssjRequest.getId());
+        if(old == null){
+            throw new WebException(SYSTEM_NOT_FIND_ERROR);
+        }
+        RandomKssjRequest randomKssj = kssjService.randomUpdate(old, randomKssjRequest);
+        return ResponseUtil.success(randomKssj);
     }
 
 
