@@ -69,4 +69,20 @@ public class GetKsjlVO implements Serializable {
 
     @ApiModelProperty(value = "试卷配置")
     private SjpzVO sjpzVO;
+
+    /**
+     * 排序
+     */
+    @ApiModelProperty(value = "判断排序")
+    private Integer judgepx;
+    /**
+     * 排序
+     */
+    @ApiModelProperty(value = "单选排序")
+    private Integer singlepx;
+    /**
+     * 排序
+     */
+    @ApiModelProperty(value = "多选排序")
+    private Integer multiplepx;
 }

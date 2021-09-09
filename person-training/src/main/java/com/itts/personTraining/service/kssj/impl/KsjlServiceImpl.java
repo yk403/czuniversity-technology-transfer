@@ -254,6 +254,19 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         List<GetKsjlTmVO> ksjlTms = Lists.newArrayList();
 
+        SjtxpzVO judge = null;
+        SjtxpzVO single = null;
+        SjtxpzVO multiple = null;
+        if(sjpzId !=null){
+            SjpzVO sjpzVO = sjpzService.get(sjpzId);
+            judge = sjpzVO.getJudge();
+            single = sjpzVO.getSingle();
+            multiple = sjpzVO.getMultiple();
+            getKsjlVO.setJudgepx(judge.getPx());
+            getKsjlVO.setSinglepx(single.getPx());
+            getKsjlVO.setMultiplepx(multiple.getPx());
+        }
+
         //便利所有题目，生成试卷记录选项
         Iterator<Tkzy> tmIterator = tms.iterator();
         while (tmIterator.hasNext()) {
@@ -261,10 +274,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
             Tkzy tm = tmIterator.next();
             //将题目分值替换为试卷配置的分值
             if(sjpzId != null){
-                SjpzVO sjpzVO = sjpzService.get(sjpzId);
-                SjtxpzVO judge = sjpzVO.getJudge();
-                SjtxpzVO single = sjpzVO.getSingle();
-                SjtxpzVO multiple = sjpzVO.getMultiple();
+
                 if(Objects.equals(tm.getTmlx(),TkzyTypeEnum.JUDGMENT.getKey())){
                     tm.setFz(judge.getDtfz());
                 }else if(Objects.equals(tm.getTmlx(),TkzyTypeEnum.SINGLE_CHOICE.getKey())){
