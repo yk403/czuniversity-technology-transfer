@@ -8,6 +8,7 @@ import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
+import com.itts.personTraining.enums.KsjlXxbhEnum;
 import com.itts.personTraining.enums.SjtxndpzEnum;
 import com.itts.personTraining.enums.TkzyTypeEnum;
 import com.itts.personTraining.mapper.kc.KcMapper;
@@ -137,6 +138,13 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
                 BeanUtils.copyProperties(obj, tmxxVo);
                 return tmxxVo;
             }).collect(Collectors.toList());
+
+            for (int i = 0; i < tmxxVOs.size(); i++) {
+                GetTmxxVO getTmxxVO = tmxxVOs.get(i);
+                int num = i + 1;
+                getTmxxVO.setXxnr(KsjlXxbhEnum.getByKey(num).getValue()+"."+getTmxxVO.getXxnr());
+
+            }
 
             tkzyVo.setTmxxs(tmxxVOs);
         }
@@ -282,6 +290,12 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
                 BeanUtils.copyProperties(obj, tmxxVo);
                 return tmxxVo;
             }).collect(Collectors.toList());
+            for (int i = 0; i < tmxxVOs.size(); i++) {
+                GetTmxxVO getTmxxVO = tmxxVOs.get(i);
+                int num = i + 1;
+                getTmxxVO.setXxnr(KsjlXxbhEnum.getByKey(num).getValue()+"."+getTmxxVO.getXxnr());
+
+            }
             tkzyVo.setTmxxs(tmxxVOs);
         }
         Map<String, List<GetTkzyVO>> judgmentMap = Maps.newHashMap();

@@ -46,7 +46,7 @@ public class KssjRandomController {
                              @ApiParam(value = "试卷类型") @RequestParam(value = "paperType", required = false) String paperType,
                              @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
                              @ApiParam(value = "父级机构ID") @RequestParam(value = "fjjgId", required = false) Long fjjgId,
-                             @RequestParam(value = "lx",required = false)String lx) {
+                             @RequestParam(value = "lx")String lx) {
 
         PageHelper.startPage(pageNum, pageSize);
 

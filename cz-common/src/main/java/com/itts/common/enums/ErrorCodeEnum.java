@@ -136,6 +136,7 @@ public enum ErrorCodeEnum {
     FJJGID_IS_EMPTY_ERROR(-45050,"父级机构ID不可为空!"),
     TEACHING_NAME_EXISTS_ERROR(-45051,"教学楼名称已存在!"),
     TEACHING_NAME_ISEMPTY_ERROR(-45052, "学校教学楼为空!"),
+    EXISTENCE_CONFIGURED(-45053,"存在已配置的试卷"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
