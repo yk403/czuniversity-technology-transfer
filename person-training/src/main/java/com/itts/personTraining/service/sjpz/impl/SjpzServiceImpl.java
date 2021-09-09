@@ -176,7 +176,7 @@ public class SjpzServiceImpl extends ServiceImpl<SjpzMapper, Sjpz> implements Sj
     @Override
     public SjpzVO update(SjpzVO sjpzVO) {
         Sjpz byMc = getByMc(sjpzVO.getMc());
-        if(byMc != null){
+        if(byMc != null && byMc.getId().intValue() != sjpzVO.getId().intValue()){
             throw new ServiceException(ErrorCodeEnum.SYSTEM_FIND_ERROR);
         }
         byMc.setSfsc(true);
