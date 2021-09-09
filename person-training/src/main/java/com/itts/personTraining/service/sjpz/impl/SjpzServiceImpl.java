@@ -8,12 +8,15 @@ import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.ServiceException;
 import com.itts.personTraining.enums.SjtxndpzEnum;
 import com.itts.personTraining.enums.TkzyTypeEnum;
+import com.itts.personTraining.mapper.kssj.KssjMapper;
 import com.itts.personTraining.mapper.sjpz.SjpzMapper;
 import com.itts.personTraining.mapper.sjtxndpz.SjtxndpzMapper;
 import com.itts.personTraining.mapper.sjtxpz.SjtxpzMapper;
+import com.itts.personTraining.model.kssj.Kssj;
 import com.itts.personTraining.model.sjpz.Sjpz;
 import com.itts.personTraining.model.sjtxndpz.Sjtxndpz;
 import com.itts.personTraining.model.sjtxpz.Sjtxpz;
+import com.itts.personTraining.service.kssj.KssjService;
 import com.itts.personTraining.service.sjpz.SjpzService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.sjtxndpz.SjtxndpzService;
@@ -59,6 +62,8 @@ public class SjpzServiceImpl extends ServiceImpl<SjpzMapper, Sjpz> implements Sj
 
     @Resource
     private SjpzMapper sjpzMapper;
+    @Resource
+    private KssjMapper kssjMapper;
 
     @Override
     public PageInfo<Sjpz> getList(Integer pageNum, Integer pageSize, Long fjjgId, String nd, String mc) {
@@ -190,6 +195,10 @@ public class SjpzServiceImpl extends ServiceImpl<SjpzMapper, Sjpz> implements Sj
 
     @Override
     public Boolean delete(Long id) {
+        List<Kssj> kssjs = kssjMapper.selectList(new QueryWrapper<Kssj>().eq("sjpz_id", id).eq("sfsc", false));
+        if(kssjs.size() > 0 || kssjs != null){
+            throw new ServiceException(ErrorCodeEnum.EXISTENCE_CONFIGURED);
+        }
         Sjpz sjpz = sjpzMapper.selectById(id);
         sjpz.setSfsc(true);
         sjpzMapper.updateById(sjpz);
