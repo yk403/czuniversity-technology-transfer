@@ -174,13 +174,15 @@ public class SjpzServiceImpl extends ServiceImpl<SjpzMapper, Sjpz> implements Sj
     }
 
     @Override
-    public SjpzVO update(SjpzVO sjpzVO) {
+    public SjpzVO update(Sjpz old,SjpzVO sjpzVO) {
+
         Sjpz byMc = getByMc(sjpzVO.getMc());
+        //重名不通过
         if(byMc != null && byMc.getId().intValue() != sjpzVO.getId().intValue()){
             throw new ServiceException(ErrorCodeEnum.SYSTEM_FIND_ERROR);
         }
-        byMc.setSfsc(true);
-        sjpzMapper.updateById(byMc);
+        old.setSfsc(true);
+        sjpzMapper.updateById(old);
         sjpzVO.setId(null);
         add(sjpzVO);
         return sjpzVO;
