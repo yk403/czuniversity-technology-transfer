@@ -1,11 +1,13 @@
 package com.itts.technologytransactionservice.controller.cd.admin;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.technologytransactionservice.mapper.LyRyMapper;
 import com.itts.technologytransactionservice.model.LyRy;
 import com.itts.technologytransactionservice.service.LyRyService;
 import com.itts.technologytransactionservice.service.cd.LyRyAdminService;
@@ -14,7 +16,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
@@ -35,6 +39,8 @@ import static com.itts.common.enums.ErrorCodeEnum.*;
 public class LyRyAdminController {
     @Autowired
     private LyRyAdminService lyRyAdminService;
+    @Resource
+    private LyRyMapper lyRyMapper;
 //    *
 //     * 获取列表
 
@@ -59,6 +65,14 @@ public class LyRyAdminController {
     @PostMapping("/save")
     @ApiOperation(value ="新增")
     public ResponseUtil save(@RequestBody LyRy lyRy) {
+        QueryWrapper<LyRy> lyRyQueryWrapper = new QueryWrapper<>();
+        lyRyQueryWrapper.eq("is_delete",false);
+        List<LyRy> lyRIES = lyRyMapper.selectList(lyRyQueryWrapper);
+        lyRIES.stream().forEach(lyRy1 -> {
+            if (lyRy1.getZjId().equals(lyRy.getZjId())&&lyRy1.getHdId().equals(lyRy.getHdId())) {
+                throw new WebException(ZJ_HD_EXISTS_ERROR);
+            }
+        });
         if (!lyRyAdminService.saveRy(lyRy)) {
             throw new WebException(INSERT_FAIL);
         }

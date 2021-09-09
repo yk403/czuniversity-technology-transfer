@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.itts.technologytransactionservice.model.LyRy;
 import com.itts.technologytransactionservice.model.LyRyDto;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,4 +21,5 @@ public interface LyRyAdminService extends IService<LyRy> {
 
     Boolean saveRy(LyRy lyRy);
     Long getUserId();
+
 }
