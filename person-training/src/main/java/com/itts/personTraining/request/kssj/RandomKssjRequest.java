@@ -42,12 +42,6 @@ public class RandomKssjRequest implements Serializable {
     @ApiModelProperty(value = "考试类型：选课；综合", required = true)
     private String sjlx;
 
-    /**
-     * 考试类型：single_subject - 单科；comprehensive - 综合
-     */
-    @ApiModelProperty(value = "考试类别：选课；综合", required = true)
-    private String sjlb;
-
 
 
     private Long sjpzId;

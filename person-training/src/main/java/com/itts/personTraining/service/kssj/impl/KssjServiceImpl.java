@@ -178,7 +178,6 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
             throw new ServiceException(ErrorCodeEnum.NAME_EXIST_ERROR);
         }
         String sjmc = randomKssjRequest.getSjmc();
-        String sjlb = randomKssjRequest.getSjlb();
         String sjlx = randomKssjRequest.getSjlx();
         String xylx = randomKssjRequest.getXylx();
         Long sjpzId = randomKssjRequest.getSjpzId();
@@ -206,7 +205,6 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         kssj.setDanzf(single.getTxzf());
         kssj.setDuozf(multiple.getTxzf());
         kssj.setJylx(jylx);
-        kssj.setSjlb(sjlb);
         kssj.setXylx(xylx);
         kssj.setSjlx(sjlx);
         kssj.setLx("random");
