@@ -216,6 +216,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
 
         GetKsjlVO getKsjlVO = getKsjlVO(ksjl, kssj);
 
+        getKsjlVO.setZt("false");
         return getKsjlVO;
     }
 
