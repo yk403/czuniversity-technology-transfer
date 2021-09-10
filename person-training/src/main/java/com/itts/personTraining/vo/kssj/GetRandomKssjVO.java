@@ -126,5 +126,5 @@ public class GetRandomKssjVO implements Serializable {
      * 试卷题目
      */
     @ApiModelProperty(value = "试卷题目")
-    private Map<Integer,Map<String, List<GetTkzyVO>>> tms;
+    private  Map<String,Map<Integer, List<GetTkzyVO>>> tms;
 }

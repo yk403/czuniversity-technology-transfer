@@ -307,22 +307,22 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
             }
             tkzyVo.setTmxxs(tmxxVOs);
         }
-        Map<String, List<GetTkzyVO>> judgmentMap = Maps.newHashMap();
-        Map<String, List<GetTkzyVO>> singleChoiceMap = Maps.newHashMap();
-        Map<String, List<GetTkzyVO>> multipleChoiceMap = Maps.newHashMap();
-        Map<Integer,Map<String, List<GetTkzyVO>>> pxtmMap = Maps.newHashMap();
+        Map<Integer, List<GetTkzyVO>> judgmentMap = Maps.newHashMap();
+        Map<Integer, List<GetTkzyVO>> singleChoiceMap = Maps.newHashMap();
+        Map<Integer, List<GetTkzyVO>> multipleChoiceMap = Maps.newHashMap();
+        Map<String,Map<Integer, List<GetTkzyVO>>> pxtmMap = Maps.newHashMap();
         //将所有题目按照单选、多选、判断分组
         List<GetTkzyVO> judgmentList = tkzyVOs.stream().filter(obj -> Objects.equals(obj.getTmlx(), TkzyTypeEnum.JUDGMENT.getKey())).collect(Collectors.toList());
-        judgmentMap.put(TkzyTypeEnum.JUDGMENT.getKey(), judgmentList);
-        pxtmMap.put(px,judgmentMap);
+        judgmentMap.put(px, judgmentList);
+        pxtmMap.put(TkzyTypeEnum.JUDGMENT.getKey(),judgmentMap);
 
         List<GetTkzyVO> singleChoiceList = tkzyVOs.stream().filter(obj -> Objects.equals(obj.getTmlx(), TkzyTypeEnum.SINGLE_CHOICE.getKey())).collect(Collectors.toList());
-        singleChoiceMap.put(TkzyTypeEnum.SINGLE_CHOICE.getKey(), singleChoiceList);
-        pxtmMap.put(px1,singleChoiceMap);
+        singleChoiceMap.put(px1, singleChoiceList);
+        pxtmMap.put(TkzyTypeEnum.SINGLE_CHOICE.getKey(),singleChoiceMap);
 
         List<GetTkzyVO> multipleChoiceList = tkzyVOs.stream().filter(obj -> Objects.equals(obj.getTmlx(), TkzyTypeEnum.MULTIPLE_CHOICE.getKey())).collect(Collectors.toList());
-        multipleChoiceMap.put(TkzyTypeEnum.MULTIPLE_CHOICE.getKey(), multipleChoiceList);
-        pxtmMap.put(px2,multipleChoiceMap);
+        multipleChoiceMap.put(px2, multipleChoiceList);
+        pxtmMap.put(TkzyTypeEnum.MULTIPLE_CHOICE.getKey(),multipleChoiceMap);
 
         vo.setTms(pxtmMap);
         return vo;
