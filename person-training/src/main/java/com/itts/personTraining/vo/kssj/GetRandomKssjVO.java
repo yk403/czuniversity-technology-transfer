@@ -59,6 +59,7 @@ public class GetRandomKssjVO implements Serializable {
     private Integer pdzf;
     @ApiModelProperty(value = "判断题单题分")
     private Integer pddt;
+    private Integer pdpx;
 
     /**
      * 单选题总分
@@ -68,6 +69,7 @@ public class GetRandomKssjVO implements Serializable {
     @ApiModelProperty(value = "单选题单题分")
     private Integer dandt;
 
+    private Integer danpx;
     /**
      * 多选题总分
      */
@@ -75,6 +77,7 @@ public class GetRandomKssjVO implements Serializable {
     private Integer duozf;
     @ApiModelProperty(value = "多选题单题分")
     private Integer duodt;
+    private Integer duopx;
 
     /**
      * 教育类型
@@ -126,5 +129,5 @@ public class GetRandomKssjVO implements Serializable {
      * 试卷题目
      */
     @ApiModelProperty(value = "试卷题目")
-    private  Map<String,Map<Integer, List<GetTkzyVO>>> tms;
+    private  Map<String, List<GetTkzyVO>> tms;
 }

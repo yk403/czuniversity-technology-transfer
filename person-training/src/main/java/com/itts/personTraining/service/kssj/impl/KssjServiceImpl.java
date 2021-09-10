@@ -266,14 +266,17 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         Integer dtfz = sjpzVO.getJudge().getDtfz();
         Integer px = sjpzVO.getJudge().getPx();
         vo.setPddt(dtfz);
+        vo.setPdpx(px);
 
         Integer dtfz1 = sjpzVO.getSingle().getDtfz();
         Integer px1 = sjpzVO.getSingle().getPx();
         vo.setDandt(dtfz1);
+        vo.setDanpx(px1);
 
         Integer dtfz2 = sjpzVO.getMultiple().getDtfz();
         Integer px2 = sjpzVO.getMultiple().getPx();
         vo.setDuodt(dtfz2);
+        vo.setDuopx(px2);
 
         //获取当前考试试卷的所有题目
         List<SjTmGl> sjTmgls = sjTmGlMapper.selectList(new QueryWrapper<SjTmGl>().eq("kssj_id",id));
@@ -307,24 +310,20 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
             }
             tkzyVo.setTmxxs(tmxxVOs);
         }
-        Map<Integer, List<GetTkzyVO>> judgmentMap = Maps.newHashMap();
-        Map<Integer, List<GetTkzyVO>> singleChoiceMap = Maps.newHashMap();
-        Map<Integer, List<GetTkzyVO>> multipleChoiceMap = Maps.newHashMap();
-        Map<String,Map<Integer, List<GetTkzyVO>>> pxtmMap = Maps.newHashMap();
+        Map<String, List<GetTkzyVO>> tmMap = Maps.newHashMap();
+
         //将所有题目按照单选、多选、判断分组
         List<GetTkzyVO> judgmentList = tkzyVOs.stream().filter(obj -> Objects.equals(obj.getTmlx(), TkzyTypeEnum.JUDGMENT.getKey())).collect(Collectors.toList());
-        judgmentMap.put(px, judgmentList);
-        pxtmMap.put(TkzyTypeEnum.JUDGMENT.getKey(),judgmentMap);
+        tmMap.put(TkzyTypeEnum.JUDGMENT.getKey(), judgmentList);
 
         List<GetTkzyVO> singleChoiceList = tkzyVOs.stream().filter(obj -> Objects.equals(obj.getTmlx(), TkzyTypeEnum.SINGLE_CHOICE.getKey())).collect(Collectors.toList());
-        singleChoiceMap.put(px1, singleChoiceList);
-        pxtmMap.put(TkzyTypeEnum.SINGLE_CHOICE.getKey(),singleChoiceMap);
+        tmMap.put(TkzyTypeEnum.SINGLE_CHOICE.getKey(), singleChoiceList);
 
         List<GetTkzyVO> multipleChoiceList = tkzyVOs.stream().filter(obj -> Objects.equals(obj.getTmlx(), TkzyTypeEnum.MULTIPLE_CHOICE.getKey())).collect(Collectors.toList());
-        multipleChoiceMap.put(px2, multipleChoiceList);
-        pxtmMap.put(TkzyTypeEnum.MULTIPLE_CHOICE.getKey(),multipleChoiceMap);
+        tmMap.put(TkzyTypeEnum.MULTIPLE_CHOICE.getKey(), multipleChoiceList);
 
-        vo.setTms(pxtmMap);
+        vo.setTms(tmMap);
+
         return vo;
     }
 
