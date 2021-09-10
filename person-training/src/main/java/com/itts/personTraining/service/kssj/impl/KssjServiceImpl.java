@@ -181,6 +181,7 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         String sjlx = randomKssjRequest.getSjlx();
         String xylx = randomKssjRequest.getXylx();
         Long sjpzId = randomKssjRequest.getSjpzId();
+        String sjlb = randomKssjRequest.getSjlb();
         SjpzVO sjpzVO = sjpzService.get(sjpzId);
 
         String jylx = randomKssjRequest.getJylx();
@@ -222,6 +223,7 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         kssj.setGxr(userId);
         kssj.setCjsj(now);
         kssj.setGxsj(now);
+        kssj.setSjlb(sjlb);
         kssjMapper.insert(kssj);
         Long id = getBySjmc(sjmc).getId();
 

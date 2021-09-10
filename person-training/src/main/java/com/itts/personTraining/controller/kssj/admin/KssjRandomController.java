@@ -46,7 +46,8 @@ public class KssjRandomController {
                              @ApiParam(value = "试卷类型") @RequestParam(value = "paperType", required = false) String paperType,
                              @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
                              @ApiParam(value = "父级机构ID") @RequestParam(value = "fjjgId", required = false) Long fjjgId,
-                             @RequestParam(value = "lx")String lx) {
+                             @RequestParam(value = "lx")String lx,
+                             @RequestParam(value = "sjlb",required = false)String sjlb  ) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -57,6 +58,7 @@ public class KssjRandomController {
                 .eq(StringUtils.isNotBlank(paperType), "sjlx", paperType)
                 .eq(fjjgId != null, "fjjg_id", fjjgId)
                 .eq(lx !=null,"lx",lx)
+                .eq(StringUtils.isNoneBlank(sjlb),"sjlb",sjlb)
                 .like(StringUtils.isNotBlank(condition), "sjmc", condition)
                 .orderByDesc("cjsj"));
 

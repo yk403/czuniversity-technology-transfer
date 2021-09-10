@@ -83,6 +83,7 @@ public class GetRandomKssjVO implements Serializable {
     @ApiModelProperty(value = "考试类型：single_subject - 单科；comprehensive - 综合", required = true)
     private String sjlx;
 
+    private String sjlb;
     /**
      * 是否上架
      */
