@@ -320,6 +320,7 @@ public class KsjlServiceImpl extends ServiceImpl<KsjlMapper, Ksjl> implements Ks
         BeanUtils.copyProperties(ksjl, getKsjlVO);
         getKsjlVO.setCjsj(ksjl.getCjsj().getTime());
 
+        getKsjlVO.setZt("true");
         Kssj kssj = kssjMapper.selectOne(new QueryWrapper<Kssj>().eq("id", ksjl.getSjId()).eq("sfsc", false));
         Long sjpzId = kssj.getSjpzId();
         //获取当前考试记录所有考试选项
