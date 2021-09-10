@@ -142,7 +142,7 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
             for (int i = 0; i < tmxxVOs.size(); i++) {
                 GetTmxxVO getTmxxVO = tmxxVOs.get(i);
                 int num = i + 1;
-                getTmxxVO.setXxnr(KsjlXxbhEnum.getByKey(num).getValue()+"."+getTmxxVO.getXxnr());
+                getTmxxVO.setXxnr(KsjlXxbhEnum.getByKey(num).getValue()+"、"+getTmxxVO.getXxnr());
 
             }
 
@@ -302,7 +302,7 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
             for (int i = 0; i < tmxxVOs.size(); i++) {
                 GetTmxxVO getTmxxVO = tmxxVOs.get(i);
                 int num = i + 1;
-                getTmxxVO.setXxnr(KsjlXxbhEnum.getByKey(num).getValue()+"."+getTmxxVO.getXxnr());
+                getTmxxVO.setXxnr(KsjlXxbhEnum.getByKey(num).getValue()+"、"+getTmxxVO.getXxnr());
 
             }
             tkzyVo.setTmxxs(tmxxVOs);
