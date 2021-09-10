@@ -332,14 +332,15 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
     private void random(Long id,Sjtxndpz sjtxndpz,String sjtxnd,String tkzyType,List<Long> kcIdList){
         List<Tkzy> by = getBy(sjtxnd, tkzyType, kcIdList);
         //随机获取题目
-        Collections.shuffle(by);
-        List<Tkzy> tkzies = by.subList(0, sjtxndpz.getTs());
-        if(tkzies.size() < sjtxndpz.getTs()){
+        if(by.size() < sjtxndpz.getTs()){
             Kssj kssj = kssjMapper.selectOne(new QueryWrapper<Kssj>().eq("id", id).eq("sfsc", false));
             kssj.setSfsc(true);
             kssjMapper.updateById(kssj);
             throw new ServiceException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
+        Collections.shuffle(by);
+        List<Tkzy> tkzies = by.subList(0, sjtxndpz.getTs());
+
         //建立试卷题目关联
         List<Long> collect = tkzies.stream().map(Tkzy::getId).collect(Collectors.toList());
         for (Long aLong : collect) {
