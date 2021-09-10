@@ -1,17 +1,23 @@
 package com.itts.userservice.service.spzb.impl;
 
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.WebException;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.userservice.config.MqConfig;
+import com.itts.userservice.dto.KcDTO;
 import com.itts.userservice.enmus.HuaWeiAssetTypeEnum;
 import com.itts.userservice.enmus.HuaWeiTranscodeStatusEnum;
 import com.itts.userservice.enmus.VideoEnum;
 import com.itts.userservice.enmus.VideoStatusEnum;
+import com.itts.userservice.feign.persontraining.pk.KcRpcService;
 import com.itts.userservice.mapper.spzb.SpzbMapper;
 import com.itts.userservice.model.spzb.Spzb;
 import com.itts.userservice.response.thirdparty.GetAssetInfoResponse;
@@ -56,6 +62,9 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
     @Autowired
     private MqConfig mqConfig;
 
+    @Autowired
+    private KcRpcService kcRpcService;
+
     /**
      * 获取列表 - 分页
      *
@@ -64,7 +73,16 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
      * @author liuyingming
      */
     @Override
-    public PageInfo<Spzb> findByPage(Integer pageNum, Integer pageSize, String name, Long courseId, String videoType,Long jgId) {
+    public PageInfo<Spzb> findByPage(Integer pageNum, Integer pageSize, String name, Long courseId, String videoType,Long jgId,String jylx,String xylx) {
+
+        ResponseUtil response = kcRpcService.findByPage(xylx, jylx);
+        if(response == null || response.getErrCode().intValue() != 0){
+            throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
+
+        List<KcDTO> kcDTOList = response.conversionData(new TypeReference<List<KcDTO>>() {
+        });
+        List<Long> kcIds = kcDTOList.stream().map(KcDTO::getId).collect(Collectors.toList());
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -78,9 +96,12 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
         if (StringUtils.isNotBlank(videoType)) {
             query.eq("splx", videoType);
         }
-
         if (courseId != null) {
             query.eq("kc_id", courseId);
+        } else {
+            if (!CollectionUtils.isEmpty(kcIds)) {
+                query.in("kc_id", kcIds);
+            }
         }
         if(jgId != null){
             query.eq("jg_id",jgId);

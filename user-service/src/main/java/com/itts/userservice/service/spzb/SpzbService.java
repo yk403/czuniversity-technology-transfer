@@ -22,7 +22,7 @@ public interface SpzbService extends IService<Spzb> {
      * @return
      * @author liuyingming
      */
-    PageInfo findByPage(Integer pageNum, Integer pageSize, String name, Long courseId, String videoType,Long jgId);
+    PageInfo findByPage(Integer pageNum, Integer pageSize, String name, Long courseId, String videoType,Long jgId,String jylx,String xylx);
 
     /**
      * 新增

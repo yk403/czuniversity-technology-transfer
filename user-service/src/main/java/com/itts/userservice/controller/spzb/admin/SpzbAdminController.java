@@ -63,9 +63,11 @@ public class SpzbAdminController {
                              @ApiParam(value = "直播视频名称") @RequestParam(value = "name", required = false) String name,
                              @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
                              @ApiParam(value = "视频类型： live_broadcast - 直播；recording - 录播") @RequestParam(value = "videoType", required = false) String videoType,
-                             @RequestParam(value = "jgId", required = false) Long jgId) {
+                             @RequestParam(value = "jgId", required = false) Long jgId,
+                             @ApiParam(value = "教育类型") @RequestParam(value = "jylx", required = false) String jylx,
+                             @ApiParam(value = "学员类型") @RequestParam(value = "xylx", required = false) String xylx) {
 
-        PageInfo pageInfo = spzbService.findByPage(pageNum, pageSize, name, courseId, videoType,jgId);
+        PageInfo pageInfo = spzbService.findByPage(pageNum, pageSize, name, courseId, videoType,jgId,jylx,xylx);
 
         return ResponseUtil.success(pageInfo);
     }
