@@ -53,8 +53,8 @@ public class KssjAdminController {
                              @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
                              @ApiParam(value = "试卷类型") @RequestParam(value = "paperType", required = false) String paperType,
                              @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
-                             @ApiParam(value = "父级机构ID") @RequestParam(value = "fjjgId", required = false) Long fjjgId,
-                             @RequestParam(value = "lx",required = false)String lx) {
+                             @ApiParam(value = "父级机构ID") @RequestParam(value = "fjjgId", required = false) Long fjjgId
+                             ) {
 
         PageHelper.startPage(pageNum, pageSize);
 
@@ -65,7 +65,7 @@ public class KssjAdminController {
                 .eq(StringUtils.isNotBlank(paperType), "sjlx", paperType)
                 .eq(courseId != null, "kc_id", courseId)
                 .eq(fjjgId != null, "fjjg_id", fjjgId)
-                .eq(lx !=null,"lx",lx)
+                .ne("lx","random")
                 .like(StringUtils.isNotBlank(condition), "sjmc", condition)
                 .orderByDesc("cjsj"));
 
