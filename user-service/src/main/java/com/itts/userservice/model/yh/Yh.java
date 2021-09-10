@@ -75,7 +75,7 @@ public class Yh implements Serializable {
     private String yhlx;
 
     /**
-     * 用户类别：研究生；经纪人；导师；企业导师；任课教师；管理员
+     * 用户类别：研究生；经纪人；导师；企业导师；任课教师；内部专家；外部专家；管理员
      */
     @ApiModelProperty(value = "用户类别：研究生；经纪人；导师；企业导师；任课教师；管理员", required = true)
     private String yhlb;

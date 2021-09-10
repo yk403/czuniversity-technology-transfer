@@ -64,7 +64,8 @@ public class KcController {
      */
     @GetMapping("/findByXylx")
     @ApiOperation(value = "根据学员类型查询课程列表")
-    public ResponseUtil findByPage(@RequestParam(value = "xylx", required = false) String xylx) {
-        return ResponseUtil.success(kcService.findByXylx(xylx));
+    public ResponseUtil findByPage(@RequestParam(value = "xylx", required = false) String xylx,
+                                   @RequestParam(value = "jylx", required = false) String jylx) {
+        return ResponseUtil.success(kcService.findByXylx(xylx,jylx));
     }
 }

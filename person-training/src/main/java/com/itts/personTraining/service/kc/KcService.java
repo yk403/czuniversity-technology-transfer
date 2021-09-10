@@ -93,7 +93,8 @@ public interface KcService extends IService<Kc> {
     /**
      * 根据学员类型查询课程列表
      * @param xylx
+     * @param jylx
      * @return
      */
-    List<KcDTO> findByXylx(String xylx);
+    List<KcDTO> findByXylx(String xylx,String jylx);
 }
