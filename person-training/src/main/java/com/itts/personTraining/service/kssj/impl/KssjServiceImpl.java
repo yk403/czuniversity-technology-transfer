@@ -403,6 +403,7 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
 
         //获取当前用户父级机构ID
         kssj.setFjjgId(getFjjgId());
+        kssj.setLx("custom");
         kssjMapper.insert(kssj);
 
         //添加试卷题目关联
@@ -424,7 +425,7 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
     @Override
     public Kssj update(UpdateKssjRequest updateKssjRequest, Kssj kssj, Long userId) {
         Kssj bySjmc = getBySjmc(updateKssjRequest.getSjmc());
-        if(bySjmc != null){
+        if(bySjmc != null && bySjmc.getId().intValue() != kssj.getId().intValue() ){
             throw new ServiceException(ErrorCodeEnum.NAME_EXIST_ERROR);
         }
         BeanUtils.copyProperties(updateKssjRequest, kssj);
