@@ -33,7 +33,9 @@ public enum UserTypeEnum {
 
     OUT_PROFESSOR("out_professor","外部"),
 
-    IN("in", "内部用户");
+    IN("in", "内部"),
+
+    OUT("out", "外部");
 
     private String key;
 

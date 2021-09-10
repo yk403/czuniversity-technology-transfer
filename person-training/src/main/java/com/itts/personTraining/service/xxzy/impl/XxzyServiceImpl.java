@@ -305,7 +305,12 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 //
 //    List xxzys = xxzyMapper.selectList(query);
 
-    List<GetXxzyVO> xxzys = xxzyMapper.findByPage( type, firstCategory,  secondCategory,  category, courseId,  condition,  groupId, fjjgId);
+    List<GetXxzyVO> xxzys = null;
+    if (UserTypeEnum.IN.getKey().equals(type)) {
+      xxzys = xxzyMapper.findByPage( type, firstCategory,  secondCategory,  category, courseId,  condition,  groupId, fjjgId);
+    } else if (UserTypeEnum.OUT.getKey().equals(type)){
+      xxzys = xxzyMapper.findOutPage(type, firstCategory,  secondCategory,  category, courseId,  condition,  groupId, fjjgId);
+    }
 
     PageInfo pageInfo = new PageInfo(xxzys);
 
