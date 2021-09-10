@@ -336,7 +336,7 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
             Kssj kssj = kssjMapper.selectOne(new QueryWrapper<Kssj>().eq("id", id).eq("sfsc", false));
             kssj.setSfsc(true);
             kssjMapper.updateById(kssj);
-            throw new ServiceException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+            throw new ServiceException(ErrorCodeEnum.QUSETION_BANK_EXISTS_ERROR);
         }
         Collections.shuffle(by);
         List<Tkzy> tkzies = by.subList(0, sjtxndpz.getTs());

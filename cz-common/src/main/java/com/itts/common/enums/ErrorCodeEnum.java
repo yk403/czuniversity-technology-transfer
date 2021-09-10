@@ -137,6 +137,7 @@ public enum ErrorCodeEnum {
     TEACHING_NAME_EXISTS_ERROR(-45051,"教学楼名称已存在!"),
     TEACHING_NAME_ISEMPTY_ERROR(-45052, "学校教学楼为空!"),
     EXISTENCE_CONFIGURED(-45053,"存在已配置的试卷"),
+    QUSETION_BANK_EXISTS_ERROR(-45054,"缺少题库资源"),
     //====================      技术交易服务错误提示  END     ====================
 
     //====================       用户服务错误提示（服务码440）      ====================
