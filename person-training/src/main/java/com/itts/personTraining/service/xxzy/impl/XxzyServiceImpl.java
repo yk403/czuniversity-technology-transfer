@@ -268,7 +268,7 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
   @Override
   public PageInfo<Xxzy> list(Integer pageNum, Integer pageSize, String type,
                              String firstCategory, String secondCategory, String category,
-                             Long courseId, String condition, Long groupId,Long fjjgId) {
+                             Long courseId, String condition, Long fjjgId) {
 
     PageHelper.startPage(pageNum, pageSize);
 
@@ -307,9 +307,9 @@ public class XxzyServiceImpl extends ServiceImpl<XxzyMapper, Xxzy> implements Xx
 
     List<GetXxzyVO> xxzys = null;
     if (UserTypeEnum.IN.getKey().equals(type)) {
-      xxzys = xxzyMapper.findByPage( type, firstCategory,  secondCategory,  category, courseId,  condition,  groupId, fjjgId);
+      xxzys = xxzyMapper.findByPage( type, firstCategory,  secondCategory,  category, courseId,  condition,  fjjgId);
     } else if (UserTypeEnum.OUT.getKey().equals(type)){
-      xxzys = xxzyMapper.findOutPage(type, firstCategory,  secondCategory,  category, courseId,  condition,  groupId, fjjgId);
+      xxzys = xxzyMapper.findOutPage(type, firstCategory,  secondCategory,  category, courseId,  condition,   fjjgId);
     }
 
     PageInfo pageInfo = new PageInfo(xxzys);

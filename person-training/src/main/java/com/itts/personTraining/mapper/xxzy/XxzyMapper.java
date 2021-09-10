@@ -34,8 +34,18 @@ public interface XxzyMapper extends BaseMapper<Xxzy> {
      * @return
      */
     List<GetXxzyVO> findByPage(@Param("type") String type,
-                               @Param("firstCategory") String firstCategory,@Param("secondCategory")  String secondCategory,@Param("category")  String category,
-                               @Param("courseId") Long courseId,@Param("condition")  String condition,@Param("groupId")  Long groupId,@Param("fjjgId") Long fjjgId);
+                               @Param("firstCategory") String firstCategory,
+                               @Param("secondCategory")  String secondCategory,
+                               @Param("category")  String category,
+                               @Param("courseId") Long courseId,
+                               @Param("condition")  String condition,
+                               @Param("fjjgId") Long fjjgId);
 
-    List<GetXxzyVO> findOutPage(@Param("type") String type, @Param("firstCategory") String firstCategory, @Param("secondCategory") String secondCategory, @Param("category") String category, @Param("courseId") Long courseId, @Param("condition") String condition, @Param("groupId") Long groupId, @Param("fjjgId") Long fjjgId);
+    List<GetXxzyVO> findOutPage(@Param("type") String type,
+                                @Param("firstCategory") String firstCategory,
+                                @Param("secondCategory") String secondCategory,
+                                @Param("category") String category,
+                                @Param("courseId") Long courseId,
+                                @Param("condition") String condition,
+                                @Param("fjjgId") Long fjjgId);
 }

@@ -58,9 +58,6 @@
                  <if test="condition != null and condition != ''">
                      and a.mc like concat('%',trim(#{condition}),'%')
                  </if>
-                 <if test="groupId != null and groupId != ''">
-                     and a.fjjg_id = #{groupId}
-                 </if>
                  <if test="fjjgId != null and fjjgId != ''">
                      and b.fjjg_id = #{fjjgId}
                  </if>
@@ -90,7 +87,7 @@
             <if test="condition != null and condition != ''">
                 and a.mc like concat('%',trim(#{condition}),'%')
             </if>
-            <if test="groupId != null and groupId != ''">
+            <if test="fjjgId != null and fjjgId != ''">
                 and a.fjjg_id = #{fjjgId}
             </if>
             order by a.cjsj desc

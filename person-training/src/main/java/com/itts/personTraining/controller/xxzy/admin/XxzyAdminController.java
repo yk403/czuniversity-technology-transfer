@@ -51,11 +51,10 @@ public class XxzyAdminController {
                              @ApiParam(value = "资源类型: video - 视频; textbook - 教材; courseware - 课件") @RequestParam(value = "category", required = false) String category,
                              @ApiParam(value = "课程ID") @RequestParam(value = "courseId", required = false) Long courseId,
                              @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
-                             @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId,
                              @ApiParam(value = "父级机构ID") @RequestParam(value = "fjjgId", required = false) Long fjjgId
     ) {
 
-        PageInfo<Xxzy> pageInfo = xxzyService.list(pageNum, pageSize, type, firstCategory, secondCategory, category, courseId, condition, groupId,fjjgId);
+        PageInfo<Xxzy> pageInfo = xxzyService.list(pageNum, pageSize, type, firstCategory, secondCategory, category, courseId, condition,fjjgId);
 
         return ResponseUtil.success(pageInfo);
     }
