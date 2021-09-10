@@ -198,6 +198,15 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
         //新增考试试卷
         Kssj kssj = new Kssj();
         kssj.setFjjgId(fjjgId);
+        if(Objects.equals(sjlx,"single_subject")){
+            Kc kc = kcMapper.selectOne(new QueryWrapper<Kc>().eq("id", randomKssjRequest.getKcIdList().get(0))
+                    .eq("sfsc", false));
+            if(kc == null ){
+                throw new ServiceException(ErrorCodeEnum.COURSE_ISEMPTY_ERROR);
+            }
+            kssj.setKcId(kc.getId());
+            kssj.setKcMc(kc.getKcmc());
+        }
         kssj.setSjmc(sjmc);
         kssj.setTmzs(sjpzVO.getSjts());
         kssj.setSjzf(sjpzVO.getSjzf());
