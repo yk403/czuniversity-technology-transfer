@@ -86,5 +86,5 @@ public class GetKsjlVO implements Serializable {
     @ApiModelProperty(value = "多选排序")
     private Integer multiplepx;
 
-    private String zt;
+    private Boolean zt;
 }
