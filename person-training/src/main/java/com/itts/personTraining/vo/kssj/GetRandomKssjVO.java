@@ -24,6 +24,17 @@ public class GetRandomKssjVO implements Serializable {
     private Long id;
 
     /**
+     * 课程ID
+     */
+    @ApiModelProperty(value = "课程ID")
+    private Long kcId;
+
+    /**
+     * 课程名称
+     */
+    @ApiModelProperty(value = "课程名称")
+    private String kcMc;
+    /**
      * 试卷名称
      */
     @ApiModelProperty(value = "试卷名称", required = true)

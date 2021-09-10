@@ -57,7 +57,7 @@ public class KssjRandomController {
                 .eq(StringUtils.isNotBlank(studentType), "xylx", studentType)
                 .eq(StringUtils.isNotBlank(paperType), "sjlx", paperType)
                 .eq(fjjgId != null, "fjjg_id", fjjgId)
-                .eq(lx !=null,"lx",lx)
+                .eq(StringUtils.isNotBlank(lx),"lx",lx)
                 .eq(StringUtils.isNoneBlank(sjlb),"sjlb",sjlb)
                 .like(StringUtils.isNotBlank(condition), "sjmc", condition)
                 .orderByDesc("cjsj"));
