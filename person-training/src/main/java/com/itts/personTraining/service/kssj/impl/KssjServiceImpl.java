@@ -258,6 +258,9 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
     @Override
     public GetRandomKssjVO getRandom(Long id) {
         Kssj kssj = kssjMapper.selectOne(new QueryWrapper<Kssj>().eq("id", id).eq("sfsc", false));
+        if(kssj == null){
+            throw new ServiceException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
+        }
         GetRandomKssjVO vo = new GetRandomKssjVO();
         BeanUtils.copyProperties(kssj, vo);
         //获取试卷配置

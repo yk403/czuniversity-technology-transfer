@@ -181,7 +181,12 @@ public class SjpzServiceImpl extends ServiceImpl<SjpzMapper, Sjpz> implements Sj
 
     @Override
     public SjpzVO update(Sjpz old,SjpzVO sjpzVO) {
-
+        List<Kssj> kssjs = kssjMapper.selectList(new QueryWrapper<Kssj>().eq("sjpz_id", old.getId()).eq("sfsc", false));
+        if(kssjs.size() > 0){
+            old.setMc(sjpzVO.getMc());
+            sjpzMapper.updateById(old);
+            throw new ServiceException(ErrorCodeEnum.EXISTENCE_CONFIGURED);
+        }
         Sjpz byMc = getByMc(sjpzVO.getMc());
         //重名不通过
         if(byMc != null && byMc.getId().intValue() != sjpzVO.getId().intValue()){
