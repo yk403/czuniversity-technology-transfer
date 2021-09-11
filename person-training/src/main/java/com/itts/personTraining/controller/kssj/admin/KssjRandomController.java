@@ -12,19 +12,24 @@ import com.itts.personTraining.model.kssj.Kssj;
 import com.itts.personTraining.model.sjpz.Sjpz;
 import com.itts.personTraining.request.kssj.RandomKssjRequest;
 import com.itts.personTraining.service.kssj.KssjService;
+import com.itts.personTraining.service.sjpz.SjpzService;
 import com.itts.personTraining.vo.kssj.GetKssjVO;
 import com.itts.personTraining.vo.kssj.GetRandomKssjVO;
+import com.itts.personTraining.vo.kssj.KssjVO;
 import com.itts.personTraining.vo.sjpz.SjpzVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.itts.common.enums.ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR;
 
@@ -35,6 +40,8 @@ public class KssjRandomController {
 
     @Autowired
     private KssjService kssjService;
+    @Resource
+    private SjpzService sjpzService;
 
 
     @ApiOperation(value = "列表")
@@ -51,7 +58,7 @@ public class KssjRandomController {
 
         PageHelper.startPage(pageNum, pageSize);
 
-        List kssjs = kssjService.list(new QueryWrapper<Kssj>()
+        List<Kssj> kssjs = kssjService.list(new QueryWrapper<Kssj>()
                 .eq("sfsc", false)
                 .eq(StringUtils.isNotBlank(educationType), "jylx", educationType)
                 .eq(StringUtils.isNotBlank(studentType), "xylx", studentType)
@@ -61,8 +68,17 @@ public class KssjRandomController {
                 .eq(StringUtils.isNoneBlank(sjlb),"sjlb",sjlb)
                 .like(StringUtils.isNotBlank(condition), "sjmc", condition)
                 .orderByDesc("cjsj"));
+        List<KssjVO> collect = kssjs.stream().map(kssj -> {
+            KssjVO kssjVO = new KssjVO();
+            BeanUtils.copyProperties(kssj, kssjVO);
+            Sjpz one = sjpzService.getOne(new QueryWrapper<Sjpz>().eq("id", kssj.getSjpzId()).eq("sfsc", false));
+            if (one != null) {
+                kssjVO.setSjpzmc(one.getMc());
+            }
+            return kssjVO;
+        }).collect(Collectors.toList());
 
-        PageInfo<Kssj> pageInfo = new PageInfo<>(kssjs);
+        PageInfo<KssjVO> pageInfo = new PageInfo<>(collect);
 
         return ResponseUtil.success(pageInfo);
     }
