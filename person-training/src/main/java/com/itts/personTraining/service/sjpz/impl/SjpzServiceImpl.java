@@ -196,7 +196,7 @@ public class SjpzServiceImpl extends ServiceImpl<SjpzMapper, Sjpz> implements Sj
     @Override
     public Boolean delete(Long id) {
         List<Kssj> kssjs = kssjMapper.selectList(new QueryWrapper<Kssj>().eq("sjpz_id", id).eq("sfsc", false));
-        if(kssjs.size() > 0 || kssjs != null){
+        if(kssjs.size() > 0){
             throw new ServiceException(ErrorCodeEnum.EXISTENCE_CONFIGURED);
         }
         Sjpz sjpz = sjpzMapper.selectById(id);
