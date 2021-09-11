@@ -341,6 +341,12 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
 
     private void random(Long id,Sjtxndpz sjtxndpz,String sjtxnd,String tkzyType,List<Long> kcIdList){
         List<Tkzy> by = getBy(sjtxnd, tkzyType, kcIdList);
+        if(by == null){
+            Kssj kssj = kssjMapper.selectOne(new QueryWrapper<Kssj>().eq("id", id).eq("sfsc", false));
+            kssj.setSfsc(true);
+            kssjMapper.updateById(kssj);
+            throw new ServiceException(ErrorCodeEnum.QUSETION_BANK_EXISTS_ERROR);
+        }
         //随机获取题目
         if(by.size() < sjtxndpz.getTs().intValue()){
             Kssj kssj = kssjMapper.selectOne(new QueryWrapper<Kssj>().eq("id", id).eq("sfsc", false));
@@ -366,6 +372,7 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
                 .eq("tmnd", tmnd)
                 .eq("tmlx",tmlx)
                 .eq("fjjg_id",fjjgId)
+                .eq("sfsj",true)
                 .in("kc_id", kcIdList));
         return tkzies;
     }
