@@ -341,8 +341,12 @@ public class KssjServiceImpl extends ServiceImpl<KssjMapper, Kssj> implements Ks
 
     private void random(Long id,Sjtxndpz sjtxndpz,String sjtxnd,String tkzyType,List<Long> kcIdList){
         List<Tkzy> by = getBy(sjtxnd, tkzyType, kcIdList);
+        int n =0;
+        if(!CollectionUtils.isEmpty(by)){
+            n = by.size();
+        }
         //随机获取题目
-        if(by == null || by.size() < sjtxndpz.getTs().intValue()){
+        if(n < sjtxndpz.getTs().intValue()){
             Kssj kssj = kssjMapper.selectOne(new QueryWrapper<Kssj>().eq("id", id).eq("sfsc", false));
             kssj.setSfsc(true);
             kssjMapper.updateById(kssj);
