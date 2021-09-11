@@ -68,6 +68,7 @@ public class KssjRandomController {
                 .eq(StringUtils.isNoneBlank(sjlb),"sjlb",sjlb)
                 .like(StringUtils.isNotBlank(condition), "sjmc", condition)
                 .orderByDesc("cjsj"));
+
         List<KssjVO> collect = kssjs.stream().map(kssj -> {
             KssjVO kssjVO = new KssjVO();
             BeanUtils.copyProperties(kssj, kssjVO);
@@ -78,9 +79,11 @@ public class KssjRandomController {
             return kssjVO;
         }).collect(Collectors.toList());
 
-        PageInfo<KssjVO> pageInfo = new PageInfo<>(collect);
-
-        return ResponseUtil.success(pageInfo);
+        PageInfo<Kssj> pageInfo = new PageInfo<>(kssjs);
+        PageInfo<KssjVO> kssjVOPageInfo = new PageInfo<>();
+        BeanUtils.copyProperties(pageInfo,kssjVOPageInfo);
+        kssjVOPageInfo.setList(collect);
+        return ResponseUtil.success(kssjVOPageInfo);
     }
 
     @ApiOperation(value = "详情")
