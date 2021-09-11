@@ -74,7 +74,8 @@ public class SjpzServiceImpl extends ServiceImpl<SjpzMapper, Sjpz> implements Sj
         List<Sjpz> sjpzs = sjpzMapper.selectList(new QueryWrapper<Sjpz>().eq("fjjg_id", fjjgId)
                 .eq("sfsc", false)
                 .eq(StringUtils.isNotBlank(nd),"nd", nd)
-                .eq(StringUtils.isNotBlank(mc),"mc", mc));
+                .eq(StringUtils.isNotBlank(mc),"mc", mc)
+        .orderByDesc("cjsj"));
         return new PageInfo<>(sjpzs);
     }
 
