@@ -38,6 +38,7 @@ public interface SjzdService {
      * 获取通过id
      */
     Sjzd get(Long id);
+    Sjzd getByZdbm(String zdbm);
 
     /**
      * 通过所属模块获取数据

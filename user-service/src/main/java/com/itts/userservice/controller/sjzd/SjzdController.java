@@ -84,6 +84,12 @@ public class SjzdController {
         List<Sjzd> bySsmk = sjzdService.findBySsmk(xtlb, mklx, ssmk);
         return ResponseUtil.success(bySsmk);
     }
+    @GetMapping("/getOne/")
+    @ApiOperation(value = "获取")
+    public ResponseUtil getByZdbm(@ApiParam(value = "字典编码") @RequestParam(value = "zdbm") String zdbm){
+        Sjzd byZdbm = sjzdService.getByZdbm(zdbm);
+        return ResponseUtil.success(byZdbm);
+    }
     /**
      * 获取数据字典详情
      */

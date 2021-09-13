@@ -1,6 +1,7 @@
 package com.itts.userservice.service.sjzd.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -37,7 +38,7 @@ import static com.itts.common.constant.SystemConstant.threadLocal;
  * @since 2021-03-31
  */
 @Service
-public class SjzdServiceImpl implements SjzdService {
+public class SjzdServiceImpl extends ServiceImpl<SjzdMapper,Sjzd> implements SjzdService {
 
     @Resource
     private SjzdMapper sjzdMapper;
@@ -123,6 +124,12 @@ public class SjzdServiceImpl implements SjzdService {
     @Override
     public Sjzd get(Long id) {
         Sjzd sjzd=sjzdMapper.selectById(id);
+        return sjzd;
+    }
+
+    @Override
+    public Sjzd getByZdbm(String zdbm) {
+        Sjzd sjzd = sjzdMapper.selectOne(new QueryWrapper<Sjzd>().eq("zdbm", zdbm).eq("sfsc", false));
         return sjzd;
     }
 

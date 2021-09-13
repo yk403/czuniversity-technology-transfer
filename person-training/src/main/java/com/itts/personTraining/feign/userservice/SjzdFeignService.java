@@ -27,8 +27,10 @@ public interface SjzdFeignService {
      * 获取列表
      */
     @GetMapping(BASE_URL + "/v1/sjzd/findList/")
-    @ApiOperation(value = "获取列表")
     ResponseUtil findList(@RequestParam(value = "xtlb", required = false) String xtlb,
                           @RequestParam(value = "mklx", required = false) String mklx,
                           @RequestParam(value = "ssmk", required = false) String ssmk);
+
+    @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/sjzd/getOne/")
+    ResponseUtil getByZdbm(@ApiParam(value = "字典编码") @RequestParam(value = "zdbm") String zdbm);
 }

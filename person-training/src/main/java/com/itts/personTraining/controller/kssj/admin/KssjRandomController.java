@@ -1,5 +1,6 @@
 package com.itts.personTraining.controller.kssj.admin;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -8,11 +9,14 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.personTraining.feign.userservice.SjzdFeignService;
 import com.itts.personTraining.model.kssj.Kssj;
 import com.itts.personTraining.model.sjpz.Sjpz;
+import com.itts.personTraining.model.sjzd.Sjzd;
 import com.itts.personTraining.request.kssj.RandomKssjRequest;
 import com.itts.personTraining.service.kssj.KssjService;
 import com.itts.personTraining.service.sjpz.SjpzService;
+import com.itts.personTraining.service.sjzd.SjzdService;
 import com.itts.personTraining.vo.kssj.GetKssjVO;
 import com.itts.personTraining.vo.kssj.GetRandomKssjVO;
 import com.itts.personTraining.vo.kssj.KssjVO;
@@ -42,6 +46,8 @@ public class KssjRandomController {
     private KssjService kssjService;
     @Resource
     private SjpzService sjpzService;
+    @Resource
+    private SjzdFeignService sjzdFeignService;
 
 
     @ApiOperation(value = "列表")
@@ -76,6 +82,13 @@ public class KssjRandomController {
             if (one != null) {
                 kssjVO.setSjpzmc(one.getMc());
             }
+            ResponseUtil byZdbm = sjzdFeignService.getByZdbm(kssj.getJylx());
+            if(byZdbm != null){
+                Sjzd sjzd = byZdbm.conversionData(new TypeReference<Sjzd>() {});
+                if(sjzd != null){
+                    kssjVO.setJylxId(sjzd.getId());
+                }
+            }
             return kssjVO;
         }).collect(Collectors.toList());
 
@@ -83,6 +96,7 @@ public class KssjRandomController {
         PageInfo<KssjVO> kssjVOPageInfo = new PageInfo<>();
         BeanUtils.copyProperties(pageInfo,kssjVOPageInfo);
         kssjVOPageInfo.setList(collect);
+
         return ResponseUtil.success(kssjVOPageInfo);
     }
 
