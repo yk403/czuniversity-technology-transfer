@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.itts.common.constant.SystemConstant.threadLocal;
+
 /**
  * <p>
  * 视频直播 服务实现类
@@ -101,10 +103,19 @@ public class SpzbServiceImpl extends ServiceImpl<SpzbMapper, Spzb> implements Sp
         } else {
             if (!CollectionUtils.isEmpty(kcIds)) {
                 query.in("kc_id", kcIds);
+            }else {
+                return null;
             }
         }
         if(jgId != null){
             query.eq("jg_id",jgId);
+        }else {
+            LoginUser loginUser = threadLocal.get();
+            Long fjjgId = null;
+            if (loginUser != null) {
+                fjjgId = loginUser.getFjjgId();
+            }
+            query.eq(fjjgId != null,"jg_id",fjjgId);
         }
         query.orderByDesc("cjsj");
 
