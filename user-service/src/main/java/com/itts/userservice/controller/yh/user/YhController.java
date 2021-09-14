@@ -127,6 +127,18 @@ public class YhController {
 
         return ResponseUtil.success(getYhVO);
     }
+    /**
+     * 获取详情
+     *
+     * @param id
+     * @author fl
+     */
+    @GetMapping("/get/{id}")
+    @ApiOperation(value = "获取详情")
+    public ResponseUtil get(@PathVariable("id") Long id){
+        Yh byId = yhService.getById(id);
+        return ResponseUtil.success(byId);
+    }
 
     /**
      * 新增

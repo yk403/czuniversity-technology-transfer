@@ -1,13 +1,16 @@
 package com.itts.personTraining.service.sj.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.ServiceException;
 import com.itts.common.utils.DateUtils;
+import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.SjDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.feign.userservice.UserFeignService;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
 import com.itts.personTraining.mapper.pk.PkMapper;
@@ -23,6 +26,7 @@ import com.itts.personTraining.model.tzSz.TzSz;
 import com.itts.personTraining.model.tzXs.TzXs;
 import com.itts.personTraining.model.xs.Xs;
 import com.itts.personTraining.model.xsCj.XsCj;
+import com.itts.personTraining.model.yh.Yh;
 import com.itts.personTraining.service.sj.SjService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.tz.TzService;
@@ -82,6 +86,8 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
     @Resource
     private PyJhMapper pyJhMapper;
 
+    @Resource
+    private UserFeignService userFeignService;
 
     /**
      * 获取实践列表
@@ -355,6 +361,21 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                 break;
             default:
                 break;
+        }
+        for (SjDTO sjDTO : sjDTOs) {
+            Xs xs = xsMapper.selectById(sjDTO.getXsId());
+            if(xs != null){
+                ResponseUtil byId = userFeignService.getById(xs.getYhId());
+                Yh yh = null;
+                if(byId != null){
+                    if(byId.getErrCode().intValue() == 0){
+                        yh = byId.conversionData(new TypeReference<Yh>() {});
+                    }
+                }
+                if(yh != null){
+                    sjDTO.setYhtx(yh.getYhtx());
+                }
+            }
         }
         return sjDTOs;
     }

@@ -34,6 +34,7 @@ public class SjDTO {
      */
     @ApiModelProperty(value = "学生ID", required = true)
     private Long xsId;
+    private String yhtx;
 
     /**
      * 学号

@@ -3,6 +3,7 @@ package com.itts.personTraining.feign.userservice;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.request.feign.UpdateUserRequest;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,8 @@ public interface UserFeignService {
     @PutMapping(SystemConstant.BASE_URL + "/v1/yh/update/")
     ResponseUtil update(@RequestBody UpdateUserRequest updateUserRequest);
 
+    @GetMapping(SystemConstant.BASE_URL + "/v1/yh/get/{id}")
+    ResponseUtil getById(@PathVariable("id") Long id);
     /**
      * 删除用户信息
      * @param id
