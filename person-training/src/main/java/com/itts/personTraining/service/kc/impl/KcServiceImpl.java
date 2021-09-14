@@ -39,6 +39,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -643,12 +645,25 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                         }else if(Objects.equals(jylx,EduTypeEnum.ADULT_EDUCATION.getKey())){
                             kcXsXfDTO.setSkdd(kcXsXfDTO1.getSkdd());
                             //经纪人开课结课日期
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            String s = sdf.format(rxrq);
+                            try {
+                                rxrq =  sdf.parse(s);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                             kcXsXfDTO.setKkrq(rxrq);
 
                             Calendar instance = Calendar.getInstance();
                             instance.setTime(rxrq);
                             instance.add(Calendar.DAY_OF_YEAR,kcXsXfDTO.getJsz() * 7);
                             Date time = instance.getTime();
+                            String format = sdf.format(time);
+                            try {
+                                time = sdf.parse(format);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                             kcXsXfDTO.setJkrq(time);
                         }
 
