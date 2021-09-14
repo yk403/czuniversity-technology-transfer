@@ -161,7 +161,8 @@ public class XxzyController {
                                                      @ApiParam(value = "资源方向: knowledge - 知识; skill - 技能; ability - 能力") @RequestParam(value = "direction", required = false) String direction,
                                                      @ApiParam(value = "课程ID字符串，多个以\",\"分割") @RequestParam(value = "courseIds", required = false) String courseIds,
                                                      @ApiParam(value = "查询条件") @RequestParam(value = "condition", required = false) String condition,
-                                                     @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId) {
+                                                     @ApiParam(value = "机构ID") @RequestParam(value = "groupId", required = false) Long groupId,
+                                                     @RequestParam(value = "tj",required = false)Boolean tj) {
 
     PageHelper.startPage(pageNum, pageSize);
 
@@ -170,7 +171,7 @@ public class XxzyController {
         .eq(StringUtils.isNotBlank(category), "zylx", category).eq(StringUtils.isNotBlank(direction), "zyfx", direction)
         .in(StringUtils.isNotBlank(courseIds), "kc_id", Arrays.asList(courseIds.split(",")))
         .like(StringUtils.isNotBlank(condition), "mc", condition)
-        .eq(groupId != null, "jg_id", groupId));
+        .eq(groupId != null, "jg_id", groupId).orderByDesc(tj != null,"lll").orderByDesc(tj == null,"cjsj"));
 
     PageInfo pageInfo = new PageInfo(xxzys);
 
