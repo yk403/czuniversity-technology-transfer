@@ -633,17 +633,22 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                                 Xxjxl xxjxl = xxjxlMapper.selectOne(new QueryWrapper<Xxjxl>().eq("id", xxjs.getXxjxlId())
                                         .eq("sfsc", false));
                                 if(xxjxl != null){
-                                    kcXsXfDTO.setSkdd(xxjxl.getJxlmc() + xxjs.getJsbh());
+                                    if(kcXsXfDTO.getSkdd() != null){
+                                        kcXsXfDTO.setSkdd(kcXsXfDTO.getSkdd() + "/" + xxjxl.getJxlmc() + xxjs.getJsbh());
+                                    }else {
+                                        kcXsXfDTO.setSkdd(xxjxl.getJxlmc() + xxjs.getJsbh());
+                                    }
                                 }
                             }
                         }else if(Objects.equals(jylx,EduTypeEnum.ADULT_EDUCATION.getKey())){
                             kcXsXfDTO.setSkdd(kcXsXfDTO1.getSkdd());
                             //经纪人开课结课日期
+                            kcXsXfDTO.setKkrq(rxrq);
+
                             Calendar instance = Calendar.getInstance();
                             instance.setTime(rxrq);
                             instance.add(Calendar.DAY_OF_YEAR,(kcXsXfDTO.getJsz() - kcXsXfDTO.getQsz()) * 7);
                             Date time = instance.getTime();
-                            kcXsXfDTO.setKkrq(rxrq);
                             kcXsXfDTO.setJkrq(time);
                         }
 
