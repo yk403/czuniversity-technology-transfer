@@ -69,7 +69,7 @@
         order by kc.cjsj desc
     </select>
     <select id="findPkByXylx" resultType="com.itts.personTraining.dto.KcXsXfDTO">
-        select kc.id as id,pk.qsz as qsz,pk.jsz as jsz,pk.xqs as xqs,pk.pc_id as pcId,sz.dsxm as skszmc
+        select kc.id as id,pk.qsz as qsz,pk.jsz as jsz,pk.xqs as xqs,pk.pc_id as pcId,sz.dsxm as skszmc,pk.xxjs_id as xxjsId,pk.skdd as skdd
         from t_kc kc    join t_pk pk on pk.kc_id = kc.id left join t_sz sz on pk.sz_id = sz.id
         where   kc.sfsc = false and sz.sfsc = false and pk.sfsc = false
         <if test="xylx != null and xylx != ''">and kc.xylx = #{xylx}</if>

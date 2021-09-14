@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @ApiModel("课程时间对象")
 public class KcXsXfDTO {
@@ -97,4 +99,21 @@ public class KcXsXfDTO {
 
 
     private String skszmc;
+
+    /**
+     * 上课地点
+     */
+    private String skdd;
+    /**
+     * 教室Id
+     */
+    private Long xxjsId;
+    /**
+     * 开课日期
+     */
+    private Date kkrq;
+    /**
+     * 结课日期
+     */
+    private Date jkrq;
 }

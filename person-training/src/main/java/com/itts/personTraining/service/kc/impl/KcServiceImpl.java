@@ -10,6 +10,7 @@ import com.itts.personTraining.dto.KcDTO;
 import com.itts.personTraining.dto.KcXsXfDTO;
 import com.itts.personTraining.dto.KcbDTO;
 import com.itts.personTraining.dto.XsMsgDTO;
+import com.itts.personTraining.enums.EduTypeEnum;
 import com.itts.personTraining.mapper.kcSz.KcSzMapper;
 import com.itts.personTraining.mapper.pc.PcMapper;
 import com.itts.personTraining.mapper.pcXs.PcXsMapper;
@@ -17,11 +18,15 @@ import com.itts.personTraining.mapper.pk.PkMapper;
 import com.itts.personTraining.mapper.pyjh.PyJhMapper;
 import com.itts.personTraining.mapper.sz.SzMapper;
 import com.itts.personTraining.mapper.xs.XsMapper;
+import com.itts.personTraining.mapper.xxjs.XxjsMapper;
+import com.itts.personTraining.mapper.xxjxl.XxjxlMapper;
 import com.itts.personTraining.model.kc.Kc;
 import com.itts.personTraining.mapper.kc.KcMapper;
 import com.itts.personTraining.model.kcSz.KcSz;
 import com.itts.personTraining.model.pc.Pc;
 import com.itts.personTraining.model.sz.Sz;
+import com.itts.personTraining.model.xxjs.Xxjs;
+import com.itts.personTraining.model.xxjxl.Xxjxl;
 import com.itts.personTraining.service.kc.KcService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itts.personTraining.service.kcSz.KcSzService;
@@ -74,6 +79,11 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
     private PkMapper pkMapper;
     @Resource
     private PyJhMapper pyJhMapper;
+
+    @Resource
+    private XxjsMapper xxjsMapper;
+    @Resource
+    private XxjxlMapper xxjxlMapper;
 
     /**
      * 分页条件查询课程列表
@@ -585,6 +595,9 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
      */
     private List<KcXsXfDTO> getKcXsXfDTOList(String xylx,Long pcId){
         Pc pc = pcMapper.selectOne(new QueryWrapper<Pc>().eq("sfsc", false).eq("id", pcId));
+        String jylx = pc.getJylx();
+        Date rxrq = pc.getRxrq();
+
         Long fjjgId = pc.getFjjgId();
         List<KcXsXfDTO> kcXsXfDTOList = kcMapper.findByXylx(xylx,fjjgId);
 
@@ -597,6 +610,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                 for (int i1 = 0; i1 < pkByXylx.size(); i1++) {
                     KcXsXfDTO kcXsXfDTO1 = pkByXylx.get(i1);
                     if(id == kcXsXfDTO1.getId()){
+                        //开课日期
                         if(kcXsXfDTO.getQsz()!=null){
                             if(kcXsXfDTO.getQsz()>kcXsXfDTO1.getQsz()){
                                 kcXsXfDTO.setQsz(kcXsXfDTO1.getQsz());
@@ -610,6 +624,27 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
                             }
                         }else {
                             kcXsXfDTO.setJsz(kcXsXfDTO1.getJsz());
+                        }
+                        //上课地点
+                        if(Objects.equals(jylx, EduTypeEnum.ACADEMIC_DEGREE_EDUCATION.getKey())){
+                            Xxjs xxjs = xxjsMapper.selectOne(new QueryWrapper<Xxjs>().eq("id", kcXsXfDTO1.getXxjsId())
+                                    .eq("sfsc", false));
+                            if(xxjs != null){
+                                Xxjxl xxjxl = xxjxlMapper.selectOne(new QueryWrapper<Xxjxl>().eq("id", xxjs.getXxjxlId())
+                                        .eq("sfsc", false));
+                                if(xxjxl != null){
+                                    kcXsXfDTO.setSkdd(xxjxl.getJxlmc() + xxjs.getJsbh());
+                                }
+                            }
+                        }else if(Objects.equals(jylx,EduTypeEnum.ADULT_EDUCATION.getKey())){
+                            kcXsXfDTO.setSkdd(kcXsXfDTO1.getSkdd());
+                            //经纪人开课结课日期
+                            Calendar instance = Calendar.getInstance();
+                            instance.setTime(rxrq);
+                            instance.add(Calendar.DAY_OF_YEAR,(kcXsXfDTO.getJsz() - kcXsXfDTO.getQsz()) * 7);
+                            Date time = instance.getTime();
+                            kcXsXfDTO.setKkrq(rxrq);
+                            kcXsXfDTO.setJkrq(time);
                         }
 
                         if(kcXsXfDTO.getXqs() == null){
