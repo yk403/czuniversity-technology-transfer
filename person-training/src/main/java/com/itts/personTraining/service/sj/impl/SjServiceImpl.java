@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -362,18 +363,20 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
             default:
                 break;
         }
-        for (SjDTO sjDTO : sjDTOs) {
-            Xs xs = xsMapper.selectById(sjDTO.getXsId());
-            if(xs != null){
-                ResponseUtil byId = userFeignService.getById(xs.getYhId());
-                Yh yh = null;
-                if(byId != null){
-                    if(byId.getErrCode().intValue() == 0){
-                        yh = byId.conversionData(new TypeReference<Yh>() {});
+        if(!CollectionUtils.isEmpty(sjDTOs)){
+            for (SjDTO sjDTO : sjDTOs) {
+                Xs xs = xsMapper.selectById(sjDTO.getXsId());
+                if(xs != null){
+                    ResponseUtil byId = userFeignService.getById(xs.getYhId());
+                    Yh yh = null;
+                    if(byId != null){
+                        if(byId.getErrCode().intValue() == 0){
+                            yh = byId.conversionData(new TypeReference<Yh>() {});
+                        }
                     }
-                }
-                if(yh != null){
-                    sjDTO.setYhtx(yh.getYhtx());
+                    if(yh != null){
+                        sjDTO.setYhtx(yh.getYhtx());
+                    }
                 }
             }
         }
