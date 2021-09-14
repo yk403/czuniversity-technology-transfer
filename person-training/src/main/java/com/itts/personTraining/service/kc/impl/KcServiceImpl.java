@@ -647,7 +647,7 @@ public class KcServiceImpl extends ServiceImpl<KcMapper, Kc> implements KcServic
 
                             Calendar instance = Calendar.getInstance();
                             instance.setTime(rxrq);
-                            instance.add(Calendar.DAY_OF_YEAR,(kcXsXfDTO.getJsz() - kcXsXfDTO.getQsz()) * 7);
+                            instance.add(Calendar.DAY_OF_YEAR,kcXsXfDTO.getJsz() * 7);
                             Date time = instance.getTime();
                             kcXsXfDTO.setJkrq(time);
                         }
