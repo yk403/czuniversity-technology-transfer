@@ -236,6 +236,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
         sjDTO.setGxr(getUserId());
         Sj sj = new Sj();
         BeanUtils.copyProperties(sjDTO,sj);
+        sj.setSfxf(false);
         return sjService.updateById(sj);
     }
 
