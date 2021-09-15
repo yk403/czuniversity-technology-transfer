@@ -51,6 +51,7 @@ public class DdxfjlServiceImpl extends ServiceImpl<DdxfjlMapper, Ddxfjl> impleme
         ddxfjl.setGxr(loginUser.getUserId());
         ddxfjl.setCjsj(now);
         ddxfjl.setGxsj(now);
+        ddxfjl.setFjjgId(loginUser.getFjjgId());
 
         String orderNo = PaymentUtils.generateOrderNo();
         ddxfjl.setBh(orderNo);

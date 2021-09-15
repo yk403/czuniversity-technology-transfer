@@ -30,6 +30,10 @@ public class Ddxfjl implements Serializable {
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+    /**
+     * 父级机构ID
+     */
+    private Long fjjgId;
 
     /**
      * 订单编号

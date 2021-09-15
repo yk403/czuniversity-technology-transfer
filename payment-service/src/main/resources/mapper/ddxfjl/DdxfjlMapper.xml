@@ -38,11 +38,12 @@
         <result column="cjr" property="cjr" />
         <result column="gxsj" property="gxsj" />
         <result column="gxr" property="gxr" />
+        <result column="fjjg_id" property="fjjgId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, bh, ddmc, sp_id, spmc, yhj_id, xtlx, xflx, xfsm, zffs, zsl, zje, sjzfje, yhje, zfbje, wxje, jfje, yeje, zt, lxdh, sf, cs, qx, xxdz, tkly, sfsc, zfsj, sqtksj, tksj, qxsj, cjsj, cjr, gxsj, gxr
+        id, bh, ddmc, sp_id, spmc, yhj_id, xtlx, xflx, xfsm, zffs, zsl, zje, sjzfje, yhje, zfbje, wxje, jfje, yeje, zt, lxdh, sf, cs, qx, xxdz, tkly, sfsc, zfsj, sqtksj, tksj, qxsj, cjsj, cjr, gxsj, gxr,fjjg_id
     </sql>
 
 </mapper>

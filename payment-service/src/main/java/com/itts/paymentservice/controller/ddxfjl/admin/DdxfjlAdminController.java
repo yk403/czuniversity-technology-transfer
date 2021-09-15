@@ -3,6 +3,7 @@ package com.itts.paymentservice.controller.ddxfjl.admin;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
@@ -36,13 +37,23 @@ public class DdxfjlAdminController {
     public ResponseUtil list(@ApiParam(value = "当前页码") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                              @ApiParam(value = "每页显示记录数") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                              @ApiParam(value = "订单编号") @RequestParam(value = "ddbh", required = false) String ddbh,
-                             @ApiParam(value = "联系电话") @RequestParam(value = "lxdh", required = false) String lxdh) {
+                             @ApiParam(value = "联系电话") @RequestParam(value = "lxdh", required = false) String lxdh,
+                             @RequestParam(value = "fjjgId", required = false) Long fjjgId,
+                             @ApiParam(value = "系统类型") @RequestParam(value = "xtlx", required = false) String xtlx,
+                             @ApiParam(value = "支付方式") @RequestParam(value = "zffs", required = false) String zffs) {
 
         PageHelper.startPage(pageNum, pageSize);
 
+        LoginUser loginUser = SystemConstant.threadLocal.get();
+        if(loginUser != null){
+            fjjgId = loginUser.getFjjgId();
+        }
         List<Ddxfjl> list = ddxfjlService.list(new QueryWrapper<Ddxfjl>()
                 .eq(StringUtils.isNotBlank(ddbh), "bh", ddbh)
-                .eq(StringUtils.isNotBlank(lxdh), "lxdh", lxdh));
+                .eq(StringUtils.isNotBlank(lxdh), "lxdh", lxdh)
+                .eq(StringUtils.isNotBlank(xtlx),"xtlx",xtlx)
+                .eq(StringUtils.isNotBlank(zffs),"zffs",zffs)
+                .eq(fjjgId!=null,"fjjgId",fjjgId));
 
         PageInfo pageInfo = new PageInfo(list);
 
