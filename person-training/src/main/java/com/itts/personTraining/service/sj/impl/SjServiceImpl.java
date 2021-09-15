@@ -135,6 +135,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
         for (Sj sj : sjList) {
             sj.setGxr(userId);
             sj.setSfxf(true);
+            sj.setSfck(true);
             Pc pc = pcMapper.getPcById(sj.getPcId());
             List<Tz> tzList = new ArrayList<>();
             Tz tz = new Tz();
@@ -262,7 +263,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                     sjQueryWrapper.eq("pc_id",pcId)
                             .eq("xs_id",xsMsg.getId())
                             .eq("sfsc",false)
-                            .eq("sfxf",true);
+                            .eq("sfck",true);
                     List<Sj> sjs = sjMapper.selectList(sjQueryWrapper);
                     for (int i = 0; i < sjs.size(); i++) {
                         Sj sj = sjs.get(i);
@@ -285,7 +286,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                     sjQueryWrapper.eq("pc_id",pcList.get(0).getId())
                             .eq("xs_id",xsMsg.getId())
                             .eq("sfsc",false)
-                            .eq("sfxf",true);
+                            .eq("sfck",true);
                     List<Sj> sjs = sjMapper.selectList(sjQueryWrapper);
                     for (int i = 0; i < sjs.size(); i++) {
                         Sj sj = sjs.get(i);
