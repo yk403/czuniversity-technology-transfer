@@ -134,7 +134,7 @@
 				order by ${map.sort} ${map.order}
 			</when>
 			<otherwise>
-				order by a.cjsj desc,e.cjsj desc
+				order by id desc
 			</otherwise>
 		</choose>
 	</select>
