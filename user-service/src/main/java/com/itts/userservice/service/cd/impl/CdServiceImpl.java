@@ -7,6 +7,8 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.itts.common.bean.LoginUser;
 import com.itts.common.constant.SystemConstant;
+import com.itts.common.enums.ErrorCodeEnum;
+import com.itts.common.exception.ServiceException;
 import com.itts.userservice.dto.GetCdAndCzDTO;
 import com.itts.userservice.dto.GetCdCzGlDTO;
 import com.itts.userservice.enmus.CdEnum;
@@ -389,7 +391,10 @@ public class CdServiceImpl implements CdService {
      */
     @Override
     public Cd add(AddCdRequest cd) {
-
+        Cd cdbm = cdMapper.selectOne(new QueryWrapper<Cd>().eq("cdbm", cd.getCdbm()));
+        if(cdbm != null){
+            throw new ServiceException(ErrorCodeEnum.USER_NUMBER_EXISTS_ERROR);
+        }
         LoginUser loginUser = SystemConstant.threadLocal.get();
 
         Long userId = null;

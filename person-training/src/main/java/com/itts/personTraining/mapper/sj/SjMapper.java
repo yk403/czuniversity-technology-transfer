@@ -69,7 +69,7 @@ public interface SjMapper extends BaseMapper<Sj> {
      * @param cjr
      * @return
      */
-    List<SjDTO> findByCategory(@Param("yhId") Long yhId, @Param("cjr") Long cjr);
+    /*List<SjDTO> findByCategory(@Param("yhId") Long yhId, @Param("cjr") Long cjr);*/
 
     /**
      * 根据学生id和批次id查询实践成绩
