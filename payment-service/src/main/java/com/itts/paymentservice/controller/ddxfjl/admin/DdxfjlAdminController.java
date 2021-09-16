@@ -52,10 +52,11 @@ public class DdxfjlAdminController {
                              @ApiParam(value = "支付方式") @RequestParam(value = "zffs", required = false) String zffs) {
 
         PageHelper.startPage(pageNum, pageSize);
-
-        LoginUser loginUser = SystemConstant.threadLocal.get();
-        if(loginUser != null){
-            fjjgId = loginUser.getFjjgId();
+        if(fjjgId == null){
+            LoginUser loginUser = SystemConstant.threadLocal.get();
+            if(loginUser != null){
+                fjjgId = loginUser.getFjjgId();
+            }
         }
         List<Ddxfjl> list = ddxfjlService.list(new QueryWrapper<Ddxfjl>()
                 .eq(StringUtils.isNotBlank(ddbh), "bh", ddbh)
