@@ -1,5 +1,6 @@
 package com.itts.paymentservice.controller.ddxfjl.admin;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -8,16 +9,22 @@ import com.itts.common.constant.SystemConstant;
 import com.itts.common.enums.ErrorCodeEnum;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
+import com.itts.paymentservice.feign.userservice.YhService;
 import com.itts.paymentservice.model.ddxfjl.Ddxfjl;
+import com.itts.paymentservice.model.ddxfjl.DdxfjlVO;
+import com.itts.paymentservice.model.yh.Yh;
 import com.itts.paymentservice.service.DdxfjlService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description：
@@ -31,6 +38,8 @@ public class DdxfjlAdminController {
     
     @Autowired
     private DdxfjlService ddxfjlService;
+    @Resource
+    private YhService yhService;
 
     @ApiOperation("获取列表")
     @GetMapping("/list/")
@@ -55,9 +64,24 @@ public class DdxfjlAdminController {
                 .eq(StringUtils.isNotBlank(zffs),"zffs",zffs)
                 .eq(fjjgId!=null,"fjjg_id",fjjgId));
 
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<Ddxfjl> pageInfo = new PageInfo(list);
 
-        return ResponseUtil.success(pageInfo);
+        List<DdxfjlVO> collect = list.stream().map(ddxfjl -> {
+            DdxfjlVO ddxfjlVO = new DdxfjlVO();
+            BeanUtils.copyProperties(ddxfjl, ddxfjlVO);
+            ResponseUtil byId = yhService.getById(ddxfjl.getCjr());
+            if (byId != null && byId.getErrCode().intValue() == 0) {
+                Yh yh = byId.conversionData(new TypeReference<Yh>() {
+                });
+                ddxfjlVO.setYhm(yh.getYhm());
+            }
+            return ddxfjlVO;
+        }).collect(Collectors.toList());
+        PageInfo<DdxfjlVO> ddxfjlVOPageInfo = new PageInfo<>();
+        BeanUtils.copyProperties(pageInfo,ddxfjlVOPageInfo);
+        ddxfjlVOPageInfo.setList(collect);
+
+        return ResponseUtil.success(ddxfjlVOPageInfo);
     }
 
     @ApiOperation("获取详情")
