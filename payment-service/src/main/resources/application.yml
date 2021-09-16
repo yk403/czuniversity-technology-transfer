@@ -31,5 +31,5 @@ mqconfig:
   order_release_delay_routing_key: order.release.delay.routing.key
   #消息过期，进入释放死信队列的key
   order_release_routing_key: order.release.routing.key
-  #消息过期时间,毫秒,30分钟
-  ttl: 1800000
+  #消息过期时间,毫秒,15分钟
+  ttl: 900000

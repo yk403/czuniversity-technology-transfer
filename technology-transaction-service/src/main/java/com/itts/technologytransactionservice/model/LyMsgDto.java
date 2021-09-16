@@ -168,6 +168,6 @@ public class LyMsgDto implements Serializable {
     */
     private String hdmc;
 
-    private String mk;
+
 
 }
