@@ -53,7 +53,11 @@ public class SjDTO {
      */
     @ApiModelProperty(value = "原专业")
     private String yzy;
-
+    /**
+     * 院系
+     */
+    @ApiModelProperty(value = "院系")
+    private String yx;
     /**
      * 批次ID
      */

@@ -271,6 +271,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                         BeanUtils.copyProperties(sj,sjDTO);
                         sjDTO.setXh(xsMsg.getXh());
                         sjDTO.setXm(xsMsg.getXm());
+                        sjDTO.setYx(xsMsg.getYx());
                         sjDTOs.add(sjDTO);
                     }
                 }else {
@@ -294,6 +295,7 @@ public class SjServiceImpl extends ServiceImpl<SjMapper, Sj> implements SjServic
                         BeanUtils.copyProperties(sj,sjDTO);
                         sjDTO.setXh(xsMsg.getXh());
                         sjDTO.setXm(xsMsg.getXm());
+                        sjDTO.setYx(xsMsg.getYx());
                         sjDTOs.add(sjDTO);
                     }
                 }
