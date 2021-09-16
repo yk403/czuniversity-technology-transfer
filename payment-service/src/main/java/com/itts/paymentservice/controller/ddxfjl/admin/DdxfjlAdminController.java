@@ -53,7 +53,7 @@ public class DdxfjlAdminController {
                 .eq(StringUtils.isNotBlank(lxdh), "lxdh", lxdh)
                 .eq(StringUtils.isNotBlank(xtlx),"xtlx",xtlx)
                 .eq(StringUtils.isNotBlank(zffs),"zffs",zffs)
-                .eq(fjjgId!=null,"fjjgId",fjjgId));
+                .eq(fjjgId!=null,"fjjg_id",fjjgId));
 
         PageInfo pageInfo = new PageInfo(list);
 
