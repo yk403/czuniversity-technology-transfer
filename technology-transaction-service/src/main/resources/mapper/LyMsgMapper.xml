@@ -16,6 +16,7 @@
         msg.lyzt,
         msg.ckzt,
         msg.hfsj,
+        msg.mk,
         yh.yhtx as yhtx,
         yh.yhm as yhm,
         yh.zsxm as zsxm,
@@ -47,6 +48,7 @@
             <if test="map.sfckzt != null"> and msg.sfckzt = #{map.sfckzt} </if>
             <if test="map.ckzt != null || map.ckzt == 0"> and msg.lysj &gt; #{map.afterTime}</if>
             <if test="map.lysj != null"> and msg.lysj = #{map.lysj} </if>
+             <if test="map.mk != null"> and msg.mk = #{map.mk}</if>
         </where>
         <choose>
             <when test="(map.sort1 != null and map.sort1.trim() != '') and (map.sort2 != null and map.sort2.trim() != '')">
@@ -71,6 +73,7 @@
         msg.lyzt,
         msg.ckzt,
         msg.hfsj,
+        msg.mk,
         yh.yhtx as yhtx,
         yh.yhm as yhm,
         yh.zsxm as zsxm,
@@ -101,6 +104,7 @@
             <if test="map.hfnr != null"> and msg.hfnr = #{map.hfnr} </if>
             <if test="map.lyzt != null"> and msg.lyzt = #{map.lyzt} </if>
             <if test="map.lysj != null"> and msg.lysj = #{map.lysj} </if>
+            <if test="map.mk != null"> and msg.mk = #{map.mk}</if>
         </where>
         <choose>
             <when test="(map.sort1 != null and map.sort1.trim() != '') and (map.sort2 != null and map.sort2.trim() != '')">

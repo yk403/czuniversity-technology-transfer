@@ -90,4 +90,6 @@ public class LyMsg implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date hfsj;
+
+    private String mk;
 }
