@@ -43,7 +43,7 @@ public class JsJjrAdminController {
     @ApiOperation(value = "经纪人列表")
     public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                @RequestParam(value = "xslbmcArr")String xslbmcArr,
+                                @RequestParam(value = "xslbmcArr",required = false)String xslbmcArr,
                                 @RequestParam(value = "fjjgId",required = false)Long jgId,
                                 @RequestParam(value = "zsxm",required = false)String zsxm){
         PageInfo<JsJjrDTO> page = jsJjrService.findPage(pageNum, pageSize, xslbmcArr, jgId, zsxm);

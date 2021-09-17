@@ -13,6 +13,7 @@ import com.itts.technologytransactionservice.model.JsJjrDTO;
 import com.itts.technologytransactionservice.service.JsJjrService;
 import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -39,9 +40,14 @@ public class JsJjrServiceImpl extends ServiceImpl<JsJjrMapper, JsJjr> implements
         if(jgId == null){
             jgId = getFjjgId();
         }
-        String[] split = xslbmcArr.split(",");
         PageHelper.startPage(pageNum,pageSize);
-        List<JsJjrDTO> page = jsJjrMapper.findPage(split, jgId, zsxm);
+        String[] split;
+        if(!StringUtils.isEmpty(xslbmcArr)){
+            split = xslbmcArr.split(",");
+        }else {
+            split = new String[]{"C01", "C02", "C03"};
+        }
+        List<JsJjrDTO> page= jsJjrMapper.findPage(split, jgId, zsxm);
         PageInfo<JsJjrDTO> jsJjrDTOPageInfo = new PageInfo<>(page);
         return jsJjrDTOPageInfo;
     }
