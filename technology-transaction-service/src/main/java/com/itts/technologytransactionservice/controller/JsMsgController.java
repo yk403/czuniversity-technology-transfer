@@ -44,7 +44,7 @@ public class JsMsgController {
     @GetMapping("/list/")
     @ApiOperation(value = "留言列表")
     public ResponseUtil getList(@RequestParam(value = "jjrId")Long jjrId){
-        List<JsMsg> jsMsgs = jsMsgService.list(new QueryWrapper<JsMsg>().eq("jjr_id", jjrId));
+        List<JsMsg> jsMsgs = jsMsgService.list(new QueryWrapper<JsMsg>().eq("jjr_id", jjrId).eq("yh_id",getUserId()));
         return ResponseUtil.success(jsMsgs);
     }
     @PostMapping("/add/")
