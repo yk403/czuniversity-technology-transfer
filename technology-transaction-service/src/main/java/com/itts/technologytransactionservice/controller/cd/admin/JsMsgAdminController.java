@@ -58,11 +58,11 @@ public class JsMsgAdminController {
         if(byId == null){
             throw new WebException(ErrorCodeEnum.SYSTEM_NOT_FIND_ERROR);
         }
-        BeanUtils.copyProperties(byId,jsMsg);
-        jsMsg.setLyzt(true);
-        jsMsg.setGxsj(new Date());
-        jsMsg.setHfsj(new Date());
-        return ResponseUtil.success(jsMsgService.updateById(jsMsg));
+        BeanUtils.copyProperties(jsMsg,byId);
+        byId.setLyzt(true);
+        byId.setGxsj(new Date());
+        byId.setHfsj(new Date());
+        return ResponseUtil.success(jsMsgService.updateById(byId));
     }
 }
 

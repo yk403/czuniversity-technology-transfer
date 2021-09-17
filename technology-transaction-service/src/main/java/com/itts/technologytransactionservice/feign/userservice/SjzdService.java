@@ -27,5 +27,11 @@ public interface SjzdService {
                          @ApiParam(value = "字典项类型") @RequestParam(value = "dictionary", required = false) String dictionary,
                          @ApiParam(value = "字典编码") @RequestParam(value = "zdbm", required = false) String zdbm,
                          @ApiParam(value = "父级字典ID") @RequestParam(value = "parentId", required = false) Long parentId);
-
+    /**
+     * 获取列表
+     */
+    @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/sjzd/getList/")
+    ResponseUtil getNotList(@RequestParam(value = "xtlb", required = false) String xtlb,
+                         @RequestParam(value = "mklx", required = false) String mklx,
+                         @RequestParam(value = "ssmk", required = false) String ssmk);
 }
