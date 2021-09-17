@@ -27,10 +27,12 @@
         where jjr.sfsc = false and yh.sfsc = false and xs.sfsc = false
         <if test="jgId !=null">and xs.fjjg_id = #{jgId}</if>
         <if test="zsxm != null">and yh.zsxm = #{zsxm}</if>
+        <if test="xslbmcArr != null">
         and xs.xslbmc in
         <foreach collection="xslbmcArr" open="(" close=")" separator="," item="xslbmcArr">
             #{xslbmcArr}
         </foreach>
+        </if>
         order by jjr.cjsj desc
     </select>
     <select id="getByJjrId" resultType="com.itts.technologytransactionservice.model.JsJjrDTO">

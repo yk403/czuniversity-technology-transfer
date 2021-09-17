@@ -1,6 +1,9 @@
 package com.itts.personTraining.controller.xs.admin;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.itts.common.bean.LoginUser;
 import com.itts.common.exception.WebException;
 import com.itts.common.utils.common.ResponseUtil;
 import com.itts.personTraining.dto.StuDTO;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
+import static com.itts.common.constant.SystemConstant.threadLocal;
 import static com.itts.common.enums.ErrorCodeEnum.*;
 import static com.itts.personTraining.enums.UserTypeEnum.POSTGRADUATE;
 
@@ -58,6 +62,18 @@ public class XsAdminController {
                                    @RequestParam(value = "yzydsId", required = false) Long yzydsId,
                                    @RequestParam(value = "fjjgId", required = false) Long fjjgId) {
         return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbmc, jyxs, name,qydsId,yzydsId,fjjgId));
+    }
+    @GetMapping("/rpc/list")
+    public ResponseUtil findByPage(@RequestParam(value = "xslbmc", required = false) String xslbmc,
+                                   @RequestParam(value = "fjjgId", required = false) Long fjjgId) {
+        LoginUser loginUser = threadLocal.get();
+        if(loginUser != null){
+            fjjgId = loginUser.getFjjgId();
+        }
+        List<Xs> list = xsService.list(new QueryWrapper<Xs>().eq(!StringUtils.isEmpty(xslbmc),"xslbmc", xslbmc)
+                .eq("sfsc", false)
+                .eq(fjjgId!=null,"fjjg_id", fjjgId));
+        return ResponseUtil.success(list);
     }
     /**
      * 查询学员列表
