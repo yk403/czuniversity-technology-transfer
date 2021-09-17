@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itts.technologytransactionservice.mapper.JsJjrMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itts.technologytransactionservice.model.JsJjr">
+        <id column="id" property="id" />
+        <result column="yh_id" property="yhId" />
+        <result column="sfsc" property="sfsc" />
+        <result column="cjsj" property="cjsj" />
+        <result column="gxsj" property="gxsj" />
+        <result column="zxkssj" property="zxkssj" />
+        <result column="zxjssj" property="zxjssj" />
+        <result column="ryjj" property="ryjj" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, yh_id, sfsc, cjsj, gxsj, zxkssj, zxjssj, ryjj
+    </sql>
+    <select id="findPage" resultType="com.itts.technologytransactionservice.model.JsJjrDTO">
+        select jjr.*,yh.yhm,yh.yhbh,yh.zsxm,yh.lxdh,yh.yhtx,yh.yhlb,yh.yhjb,yh.yhyx,
+        xs.yx,xs.xslbmc,xs.xb,xs.yjfx,xs.ybyyx
+        from t_js_jjr jjr
+        left join t_yh yh on(yh.id = jjr.yh_id)
+        left join t_xs xs on(xs.yh_id = jjr.yh_id)
+        where jjr.sfsc = false and yh.sfsc = false and xs.sfsc = false
+        <if test="jgId !=null">and xs.fjjg_id = #{jgId}</if>
+        <if test="zsxm != null">and yh.zsxm = #{zsxm}</if>
+        and xs.xslbmc in
+        <foreach collection="xslbmcArr" open="(" close=")" separator="," item="xslbmcArr">
+            #{xslbmcArr}
+        </foreach>
+        order by jjr.cjsj desc
+    </select>
+    <select id="getByJjrId" resultType="com.itts.technologytransactionservice.model.JsJjrDTO">
+        select jjr.*,yh.yhm,yh.yhbh,yh.zsxm,yh.lxdh,yh.yhtx,yh.yhlb,yh.yhjb,yh.yhyx,
+        xs.yx,xs.xslbmc,xs.xb,xs.yjfx,xs.ybyyx
+        from t_js_jjr jjr
+        left join t_yh yh on(yh.id = jjr.yh_id)
+        left join t_xs xs on(xs.yh_id = jjr.yh_id)
+        where jjr.sfsc = false and yh.sfsc = false and xs.sfsc = false
+        and jjr.id = #{id}
+    </select>
+
+</mapper>
