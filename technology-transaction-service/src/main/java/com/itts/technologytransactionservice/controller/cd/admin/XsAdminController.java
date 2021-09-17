@@ -15,7 +15,7 @@ import static com.itts.common.constant.SystemConstant.ADMIN_BASE_URL;
 
 @RestController
 @RequestMapping(ADMIN_BASE_URL + "/v1/jjr")
-@Api(value = "经纪人下拉框")
+@Api(tags = "经纪人下拉框")
 public class XsAdminController {
 
 

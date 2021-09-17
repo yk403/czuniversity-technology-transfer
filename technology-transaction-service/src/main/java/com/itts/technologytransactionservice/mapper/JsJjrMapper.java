@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itts.technologytransactionservice.model.JsJjr;
 import com.itts.technologytransactionservice.model.JsJjrDTO;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * @author fuli
  * @since 2021-09-17
  */
+@Repository
 public interface JsJjrMapper extends BaseMapper<JsJjr> {
 
     List<JsJjrDTO> findPage(@Param("xslbmcArr") String[] xslbmcArr,

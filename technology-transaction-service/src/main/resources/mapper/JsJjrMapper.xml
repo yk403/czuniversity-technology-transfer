@@ -26,7 +26,7 @@
         left join t_xs xs on(xs.yh_id = jjr.yh_id)
         where jjr.sfsc = false and yh.sfsc = false and xs.sfsc = false
         <if test="jgId !=null">and xs.fjjg_id = #{jgId}</if>
-        <if test="zsxm != null">and yh.zsxm = #{zsxm}</if>
+        <if test="zsxm != null and zsxm != ''">and yh.zsxm = #{zsxm}</if>
         <if test="xslbmcArr != null">
         and xs.xslbmc in
         <foreach collection="xslbmcArr" open="(" close=")" separator="," item="xslbmcArr">
