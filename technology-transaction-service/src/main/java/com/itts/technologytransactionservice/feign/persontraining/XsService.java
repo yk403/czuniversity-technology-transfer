@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "person-training-service")
 public interface XsService {
 
-    @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/rpc/list")
-    ResponseUtil findByPage(@RequestParam(value = "xslbmc", required = false) String xslbmc,
+    @GetMapping(SystemConstant.ADMIN_BASE_URL + "/v1/xs/rpc/list")
+    ResponseUtil findByXslbmc(@RequestParam(value = "xslbmc", required = false) String xslbmc,
                                    @RequestParam(value = "fjjgId", required = false) Long fjjgId);
 }

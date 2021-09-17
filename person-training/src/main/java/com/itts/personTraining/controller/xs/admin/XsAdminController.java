@@ -64,7 +64,7 @@ public class XsAdminController {
         return ResponseUtil.success(xsService.findByPage(pageNum, pageSize, pcId, xslbmc, jyxs, name,qydsId,yzydsId,fjjgId));
     }
     @GetMapping("/rpc/list")
-    public ResponseUtil findByPage(@RequestParam(value = "xslbmc", required = false) String xslbmc,
+    public ResponseUtil findByXslbmc(@RequestParam(value = "xslbmc", required = false) String xslbmc,
                                    @RequestParam(value = "fjjgId", required = false) Long fjjgId) {
         LoginUser loginUser = threadLocal.get();
         if(loginUser != null){
