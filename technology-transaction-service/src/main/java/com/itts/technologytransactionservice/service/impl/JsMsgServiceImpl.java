@@ -34,10 +34,10 @@ public class JsMsgServiceImpl extends ServiceImpl<JsMsgMapper, JsMsg> implements
 
 
     @Override
-    public PageInfo<JsMsgDTO> findPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<JsMsgDTO> findPage(Integer pageNum, Integer pageSize,String yhm) {
         PageHelper.startPage(pageNum,pageSize);
         Long userId = getUserId();
-        List<JsMsgDTO> page = jsMsgMapper.findPage(userId);
+        List<JsMsgDTO> page = jsMsgMapper.findPage(userId,yhm);
         PageInfo<JsMsgDTO> jsMsgDTOPageInfo = new PageInfo<>(page);
         return jsMsgDTOPageInfo;
     }

@@ -16,5 +16,5 @@ import com.itts.technologytransactionservice.model.JsMsgDTO;
  */
 public interface JsMsgService extends IService<JsMsg> {
 
-    PageInfo<JsMsgDTO> findPage(Integer pageNum,Integer pageSize);
+    PageInfo<JsMsgDTO> findPage(Integer pageNum,Integer pageSize,String yhm);
 }

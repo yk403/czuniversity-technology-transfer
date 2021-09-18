@@ -47,8 +47,9 @@ public class JsMsgAdminController {
     @GetMapping("/list/")
     @ApiOperation(value = "留言列表")
     public ResponseUtil getList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
-        PageInfo<JsMsgDTO> page = jsMsgService.findPage(pageNum, pageSize);
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                @RequestParam(value = "yhm",required = false)String yhm){
+        PageInfo<JsMsgDTO> page = jsMsgService.findPage(pageNum, pageSize,yhm);
         return ResponseUtil.success(page);
     }
     @PutMapping("/update/")

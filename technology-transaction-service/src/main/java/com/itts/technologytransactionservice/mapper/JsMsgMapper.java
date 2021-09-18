@@ -20,5 +20,5 @@ import java.util.List;
 @Repository
 public interface JsMsgMapper extends BaseMapper<JsMsg> {
 
-    List<JsMsgDTO> findPage(@Param("userId") Long userId);
+    List<JsMsgDTO> findPage(@Param("userId") Long userId,@Param("yhm") String yhm);
 }

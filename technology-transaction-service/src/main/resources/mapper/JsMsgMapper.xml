@@ -28,6 +28,7 @@
         from t_js_msg msg left join t_yh yh on(yh.id = msg.yh_id)
         left join t_js_jjr jjr on(jjr.id = msg.jjr_id)
         where jjr.yh_id = #{userId} and jjr.sfsc = false and msg.sfsc = false and yh.sfsc = false
+        <if test="yhm != null and yhm != ''">and yh.yhm = #{yhm}</if>
     </select>
 
 </mapper>
