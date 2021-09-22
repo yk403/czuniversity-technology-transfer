@@ -49,7 +49,8 @@ public class DdxfjlAdminController {
                              @ApiParam(value = "联系电话") @RequestParam(value = "lxdh", required = false) String lxdh,
                              @RequestParam(value = "fjjgId", required = false) Long fjjgId,
                              @ApiParam(value = "系统类型") @RequestParam(value = "xtlx", required = false) String xtlx,
-                             @ApiParam(value = "支付方式") @RequestParam(value = "zffs", required = false) String zffs) {
+                             @ApiParam(value = "支付方式") @RequestParam(value = "zffs", required = false) String zffs,
+                             @RequestParam(value = "zt",required = false)String zt) {
 
         PageHelper.startPage(pageNum, pageSize);
         if(fjjgId == null){
@@ -62,8 +63,8 @@ public class DdxfjlAdminController {
                 .eq(StringUtils.isNotBlank(ddbh), "bh", ddbh)
                 .eq(StringUtils.isNotBlank(lxdh), "lxdh", lxdh)
                 .eq(StringUtils.isNotBlank(xtlx),"xtlx",xtlx)
-                .eq(StringUtils.isNotBlank(zffs),"zffs",zffs)
-                .eq(fjjgId!=null,"fjjg_id",fjjgId));
+                .eq(StringUtils.isNotBlank(zffs),"zffs",zffs).eq(StringUtils.isNotBlank(zt),"zt",zt)
+                .eq(fjjgId!=null,"fjjg_id",fjjgId).orderByDesc("cjsj"));
 
         PageInfo<Ddxfjl> pageInfo = new PageInfo(list);
 
