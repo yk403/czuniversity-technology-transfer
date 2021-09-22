@@ -12,11 +12,12 @@
         <result column="zxkssj" property="zxkssj" />
         <result column="zxjssj" property="zxjssj" />
         <result column="ryjj" property="ryjj" />
+        <result column="zc" property="zc" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, yh_id, sfsc, cjsj, gxsj, zxkssj, zxjssj, ryjj
+        id, yh_id, sfsc, cjsj, gxsj, zxkssj, zxjssj, ryjj,zc
     </sql>
     <select id="findPage" resultType="com.itts.technologytransactionservice.model.JsJjrDTO">
         select jjr.*,yh.yhm,yh.yhbh,yh.zsxm,yh.lxdh,yh.yhtx,yh.yhlb,yh.yhjb,yh.yhyx,

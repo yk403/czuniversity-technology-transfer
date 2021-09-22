@@ -182,4 +182,6 @@ public class TJsXqDo implements Serializable {
 	 * 父级机构id
 	 */
 	private Long fjjgId;
+	private String jsgf;
+	private String zscq;
 }

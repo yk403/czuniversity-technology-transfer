@@ -70,5 +70,5 @@ public class JsJjr implements Serializable {
      */
     private String ryjj;
 
-
+    private String zc;
 }
