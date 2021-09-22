@@ -126,7 +126,7 @@ public class OrderMqListerner {
                         channel.basicAck(msgTag, false);
                     }
                 } catch (AlipayApiException e) {
-                    channel.basicNack(msgTag,false,true);
+                    channel.basicNack(msgTag,false,false);
                     e.printStackTrace();
                 }
             }else if(Objects.equals(ddxfjl.getZffs(),"wechat")){
@@ -159,7 +159,11 @@ public class OrderMqListerner {
                     httpClient.close();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    channel.basicNack(msgTag,false,true);
+                    ddxfjl.setZt(OrderStatusEnum.CANCELLED.getKey());
+                    ddxfjl.setQxsj(new Date());
+                    //更新表记录
+                    ddxfjlService.updateById(ddxfjl);
+                    channel.basicNack(msgTag,false,false);
                 }
                 JSONObject jsonObject = JSONObject.parseObject(bodyAsString);
                 String trade_state=jsonObject.getString("trade_state");
