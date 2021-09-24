@@ -136,13 +136,13 @@ public class JsCgController extends BaseController {
             throw new WebException(REQUEST_PARAMS_ISEMPTY);
         }
         Integer jylx = Integer.valueOf(params.get("jylx").toString());
-        if (jylx != 0 && jylx != 2) {
+        if (jylx != 0 && jylx != 2 && jylx != 3) {
             throw new WebException(SYSTEM_REQUEST_PARAMS_ILLEGAL_ERROR);
         }
         if (!jsCgService.assistanceUpdateTJsCg(params, jylx)) {
             throw new WebException(MSG_AUDIT_FAIL);
         }
-        return ResponseUtil.success("成果申请拍卖挂牌!");
+        return ResponseUtil.success("成果申请成功!");
     }
 
     /**

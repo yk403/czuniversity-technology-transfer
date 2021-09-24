@@ -233,7 +233,7 @@ public class JsCgServiceImpl extends ServiceImpl<JsCgMapper, TJsCg> implements J
         TJsSh tJsSh = jsShService.selectByCgId(Integer.valueOf(params.get("id").toString()));
         Long fjjgId = getFjjgId();
         if (tJsSh.getFbshzt() != 2) {
-            log.error("发布审核状态未通过,无法申请拍卖挂牌!");
+            log.error("发布审核状态未通过,无法申请!");
             return false;
         }
         TJsCg cg= new TJsCg();
